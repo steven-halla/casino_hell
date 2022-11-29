@@ -28,6 +28,8 @@ while True:
             sys.exit()
             pygame.QUIT
 
+    player.main()
+
 
     clock.tick(60)
     pygame.display.update()
