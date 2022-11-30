@@ -1,6 +1,9 @@
 import pygame
 import sys
 
+import math
+
+
 
 pygame.init()
 
@@ -18,17 +21,43 @@ class Player:
     def main(self, display):
         pygame.draw.rect(display, (255, 0, 0 ), (self.x, self.y, self.width, self.height))
 
+class PlayerBullet:
+    def __init__(self,x,y,mouse_x, mouse_y):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.speed = 15
+        self.angle = math.atan2(y - mouse_y, x - mouse_x)
+        self.x_vel = math.cos(self.angle) * speed
+        self.y_vel = math.sin (self.angle) * speed
+
+    def main(self, display):
+        self.x -= int(self.x_val)
+        self.y -= int(self.y_val)
+
+        pygame.draw.circle(display, (0,0,0), (self.x, self.y), 5)
+
+
 player = Player(400, 300, 32, 32)
 
 display_scroll = [0,0]
 
+player_bullets = []
+
 while True:
     display.fill((24,164,86))
+
+    mouse_x, mouse_y = pygame.mouse.get_pos()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
             pygame.QUIT
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.utton == 1:
+                player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y ))
 
     keys = pygame.key.get_pressed()
 
@@ -45,6 +74,9 @@ while True:
 
     player.main(display)
 
+
+    for bullet in player_bullets:
+        bullet
 
     clock.tick(60)
     pygame.display.update()
