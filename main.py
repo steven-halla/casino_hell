@@ -76,7 +76,7 @@ while True:
 
 
     for bullet in player_bullets:
-        bullet
+        bullet.main(display)
 
     clock.tick(60)
     pygame.display.update()
