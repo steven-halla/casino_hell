@@ -25,16 +25,16 @@ class PlayerBullet:
     def __init__(self,x,y,mouse_x, mouse_y):
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
+        self.mouse_x = mouse_x
+        self.mouse_y = mouse_y
         self.speed = 15
         self.angle = math.atan2(y - mouse_y, x - mouse_x)
-        self.x_vel = math.cos(self.angle) * speed
-        self.y_vel = math.sin (self.angle) * speed
+        self.x_vel = math.cos(self.angle) * self.speed
+        self.y_vel = math.sin (self.angle) * self.speed
 
     def main(self, display):
-        self.x -= int(self.x_val)
-        self.y -= int(self.y_val)
+        self.x -= int(self.x_vel)
+        self.y -= int(self.y_vel)
 
         pygame.draw.circle(display, (0,0,0), (self.x, self.y), 5)
 
@@ -56,7 +56,7 @@ while True:
             pygame.QUIT
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.utton == 1:
+            if event.button == 1:
                 player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y ))
 
     keys = pygame.key.get_pressed()
@@ -65,12 +65,25 @@ while True:
 
     if keys[pygame.K_a]:
         display_scroll[0] -= 5
+
+        for bullet in player_bullets:
+            bullet.x += 5
     if keys[pygame.K_d]:
         display_scroll[0] += 5
+
+        for bullet in player_bullets:
+            bullet.x -= 5
     if keys[pygame.K_w]:
         display_scroll[1] -= 5
+
+        for bullet in player_bullets:
+            bullet.y += 5
+
     if keys[pygame.K_s]:
         display_scroll[1] += 5
+
+        for bullet in player_bullets:
+            bullet.y -= 5
 
     player.main(display)
 
