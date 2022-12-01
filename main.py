@@ -11,6 +11,8 @@ pygame.init()
 display = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 
+player_walk_images = [pygame.image.load("player_walk_0_png")]
+
 
 class Player:
     def __init__(self, x, y, width, height):
