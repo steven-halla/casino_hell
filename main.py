@@ -11,7 +11,8 @@ pygame.init()
 display = pygame.display.set_mode((800, 600))
 clock = pygame.time.Clock()
 
-player_walk_images = [pygame.image.load("player_walk_0_png")]
+player_walk_images = [pygame.image.load("images/player_walk_0.png"), pygame.image.load("images/player_walk_1.png"),
+                      pygame.image.load("images/player_walk_2.png"), pygame.image.load("images/player_walk_3.png")]
 
 
 class Player:
@@ -20,8 +21,25 @@ class Player:
         self.y = y
         self.width = width
         self.height = height
+        self.animation_count = 0
+        self.moving_right = false
+        self.moving_left = false
     def main(self, display):
-        pygame.draw.rect(display, (255, 0, 0 ), (self.x, self.y, self.width, self.height))
+        if self.animation_count + 1 >= 16:
+            self.animation_count = 0
+
+
+
+        self.animation_count += 1
+
+        display.blit(pygame.transform.scale(player_walk_images[self.animation_count//4],(32, 42)), (self.x, self.y))
+        self.moving_right = false
+        self.moving_left = false
+
+
+
+        # pygame.draw.rect(display, (255, 0, 0 ), (self.x, self.y, self.width, self.height))
+
 
 class PlayerBullet:
     def __init__(self,x,y,mouse_x, mouse_y):
