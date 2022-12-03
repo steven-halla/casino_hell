@@ -33,11 +33,11 @@ class Player:
         self.animation_count += 1
 
         if self.moving_right:
-            display.blit(pygame.transform.scale(player_walk_images[self.animation_count//4], (32,42)), (self.x, self.y))
-
+            display.blit(pygame.transform.scale(player_walk_images[self.animation_count//4], (32, 42)), (self.x, self.y))
         elif self.moving_left:
-            display.blit(pygame.transform.scale(pygame.transform.flip(player_walk_images[self.animation_count//4],True,False), (32,42)), (self.x, self.y))
-
+            display.blit(pygame.transform.scale(pygame.transform.flip(player_walk_images[self.animation_count//4], True, False), (32, 42)), (self.x, self.y))
+        else:
+            display.blit(pygame.transform.scale(player_walk_images[0], (32, 42)), (self.x, self.y))
 
         self.moving_right = False
         self.moving_left = False
@@ -96,6 +96,7 @@ while True:
 
         for bullet in player_bullets:
             bullet.x += 5
+
     if keys[pygame.K_d]:
         display_scroll[0] += 5
 
@@ -103,6 +104,7 @@ while True:
 
         for bullet in player_bullets:
             bullet.x -= 5
+
     if keys[pygame.K_w]:
         display_scroll[1] -= 5
 
@@ -111,7 +113,6 @@ while True:
 
     if keys[pygame.K_s]:
         display_scroll[1] += 5
-
         for bullet in player_bullets:
             bullet.y -= 5
 
