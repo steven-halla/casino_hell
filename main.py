@@ -76,8 +76,8 @@ class SlimeEnemy:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.animation_images = [pygame.image.load("slime_animation_0.png"),pygame.image.load("slime_animation_1.png"),
-                                 pygame.image.load("slime_animation_2.png"),pygame.image.load("slime_animation_3.png")
+        self.animation_images = [pygame.image.load("images/slime_animation_0.png"),pygame.image.load("images/slime_animation_1.png"),
+                                 pygame.image.load("images/slime_animation_2.png"),pygame.image.load("images/slime_animation_3.png")
                                  ]
         self.animation_count = 0
         self.reset_offset = 0
@@ -106,9 +106,11 @@ class SlimeEnemy:
         elif player.y + self.offset_y > self.y - display_scroll[1]:
             self.y -= 1
 
+        display.blit(pygame.transform.scale(self.animation_images[self.animation_count//4], (32, 30)), (self.x - display_scroll[0], self.y - display_scroll[1]))
 
 
 
+enemies = [SlimeEnemy(400,300)]
 
 player = Player(400, 300, 32, 32)
 
@@ -166,6 +168,9 @@ while True:
 
     for bullet in player_bullets:
         bullet.main(display)
+
+    for enemy in enemies:
+        enemy.main(display)
 
     clock.tick(60)
     pygame.display.update()
