@@ -81,8 +81,8 @@ class SlimeEnemy:
                                  ]
         self.animation_count = 0
         self.reset_offset = 0
-        self.offset_x = random.randrange(-150, 150)
-        self.offset_y = random.randrange(-150, 150)
+        self.offset_x = random.randrange(-300, 300)
+        self.offset_y = random.randrange(-300, 300)
 
     def main(self, display):
         if self.animation_count + 1 == 16:
@@ -90,8 +90,8 @@ class SlimeEnemy:
         self.animation_count += 1
 
         if self.reset_offset == 0:
-            self.offset_x = random.randrange(-150, 150)
-            self.offset_y = random.randrange(-150, 150)
+            self.offset_x = random.randrange(-300, 300)
+            self.offset_y = random.randrange(-300, 300)
             self.reset_offset = random.randrange(120, 150)
         else:
             self.reset_offset -= 1
@@ -101,8 +101,8 @@ class SlimeEnemy:
         elif player.x + self.offset_x > self.x - display_scroll[0]:
             self.x -= 1
 
-        if player.x + self.offset_y > self.y - display_scroll[1]:
-            self.x += 1
+        if player.y + self.offset_y > self.y - display_scroll[1]:
+            self.y += 1
         elif player.y + self.offset_y > self.y - display_scroll[1]:
             self.y -= 1
 
@@ -110,7 +110,7 @@ class SlimeEnemy:
 
 
 
-enemies = [SlimeEnemy(400,300)]
+enemies = [SlimeEnemy(400, 300)]
 
 player = Player(400, 300, 32, 32)
 
