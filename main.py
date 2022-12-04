@@ -1,7 +1,15 @@
 import pygame
 import sys
-
+import random
 import math
+
+# example of a way to handle our images
+# images = {
+# "player" : {
+#     "run"  :  [pygame.image.load("player_run_1.png"), pygame.image.load("player_run_2.png"), pygame.image.load("player_run_3.png"),]
+#     "jump" : [pygame.image.load("player_jump_1.png"),pygame.image.load("player_jump_2.png"),]
+#     }
+# }
 
 
 
@@ -63,6 +71,43 @@ class PlayerBullet:
         self.y -= int(self.y_vel)
 
         pygame.draw.circle(display, (0,0,0), (self.x, self.y), 5)
+
+class SlimeEnemy:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.animation_images = [pygame.image.load("slime_animation_0.png"),pygame.image.load("slime_animation_1.png"),
+                                 pygame.image.load("slime_animation_2.png"),pygame.image.load("slime_animation_3.png")
+                                 ]
+        self.animation_count = 0
+        self.reset_offset = 0
+        self.offset_x = random.randrange(-150, 150)
+        self.offset_y = random.randrange(-150, 150)
+
+    def main(self, display):
+        if self.animation_count + 1 == 16:
+            self.animation_count = 0
+        self.animation_count += 1
+
+        if self.reset_offset == 0:
+            self.offset_x = random.randrange(-150, 150)
+            self.offset_y = random.randrange(-150, 150)
+            self.reset_offset = random.randrange(120, 150)
+        else:
+            self.reset_offset -= 1
+
+        if player.x + self.offset_x > self.x - display_scroll[0]:
+            self.x += 1
+        elif player.x + self.offset_x > self.x - display_scroll[0]:
+            self.x -= 1
+
+        if player.x + self.offset_y > self.y - display_scroll[1]:
+            self.x += 1
+        elif player.y + self.offset_y > self.y - display_scroll[1]:
+            self.y -= 1
+
+
+
 
 
 player = Player(400, 300, 32, 32)
