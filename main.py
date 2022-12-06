@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import math
+# https://www.geeksforgeeks.org/python-display-text-to-pygame-window/
 
 # example of a way to handle our images
 # images = {
@@ -15,9 +16,32 @@ import math
 
 pygame.init()
 
+# this is the display for the game screen
+# display = pygame.display.set_mode((800, 600))
 
+white = (255, 255, 255)
+green = (0, 255, 0)
+blue = (0, 0, 128)
+
+#new code
+X = 400
+Y = 400
+
+#order of display is important!
+display_surface = pygame.display.set_mode((X,Y))
 display = pygame.display.set_mode((800, 600))
 
+
+#set the pygame window name
+pygame.display.set_caption('Show Text')
+
+font = pygame.font.Font('freesansbold.ttf', 32)
+text = font.render("Hi there Im the shop keeper", True, green, blue)
+
+textRect = text.get_rect()
+
+#cordinates of our tet
+textRect.center = (X // 1, Y // 2)
 
 
 clock = pygame.time.Clock()
@@ -77,8 +101,7 @@ class SlimeEnemy:
         if self.animation_count + 1 == 16:
             self.animation_count = 0
         self.animation_count += 1
-
-
+        # display_surface.blit(text, textRect)
 
         display.blit(pygame.transform.scale(self.animation_images[self.animation_count//4], (32, 30)), (self.x - display_scroll[0], self.y - display_scroll[1]))
 
@@ -92,16 +115,22 @@ display_scroll = [0,0]
 
 
 
-
+# this is the game loop
 
 while True:
-    display.fill((24,164,86))
+    #background color
+    display.fill((124,164,114))
+
+    display_surface.blit(text, textRect)
+
 
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            sys.exit()
-            pygame.QUIT
+            #quits pygame library
+            pygame.quit()
+            #quiet the program
+            quit()
 
 
 
