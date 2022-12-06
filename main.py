@@ -17,6 +17,9 @@ pygame.init()
 
 
 display = pygame.display.set_mode((800, 600))
+
+
+
 clock = pygame.time.Clock()
 
 player_walk_images = [pygame.image.load("images/player_walk_0.png"), pygame.image.load("images/player_walk_1.png"),
@@ -50,6 +53,10 @@ class Player:
         self.moving_right = False
         self.moving_left = False
 
+    def draw_speech_bubble(self, display, text, text_colour, bg_colour, pos, size):
+        font = pygame.font.SysFont(None, size,)
+        text_surface =  font.render(text)
+
 
 
 
@@ -82,6 +89,8 @@ enemies = [SlimeEnemy(500, 400)]
 player = Player(400, 300, 32, 32)
 
 display_scroll = [0,0]
+
+
 
 
 
@@ -122,9 +131,6 @@ while True:
 
 
     player.main(display)
-
-
-
 
     for enemy in enemies:
         enemy.main(display)
