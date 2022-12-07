@@ -40,7 +40,7 @@ text = font.render("Hi there Im the shop keeper", True, green, blue)
 
 textRect = text.get_rect()
 
-#cordinates of our tet
+#cordinates of our text
 textRect.center = (X // 1, Y // 2)
 
 
@@ -63,7 +63,11 @@ def draw_speech_bubble(screen, text, text_colour, bg_colour, pos, size):
     frame_rect = bg_rect.copy()
     frame_rect.inflate_ip(4, 4)
 
-    pg.draw.rect(screen, text)
+    pygame.draw.rect(screen, text_colour, frame_rect)
+    pygame.draw.rect(screen, bg_colour, bg_rect)
+    screen.blit(text_surface, text_rect)
+
+
 
 class Player:
     def __init__(self, x, y, width, height):
@@ -74,6 +78,7 @@ class Player:
         self.animation_count = 0
         self.moving_right = False
         self.moving_left = False
+        self.rect = self.image.get_rect(topleft=(50, screen.get_height() - til))
     def main(self, display):
         if self.animation_count + 1 >= 16:
             self.animation_count = 0
@@ -91,6 +96,10 @@ class Player:
 
         self.moving_right = False
         self.moving_left = False
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect.topleft)
+        draw_speech_bubble(screen, "hello",(255, 255,255),(0,0,0), self.rect.midtop, 25)
 
 
 
