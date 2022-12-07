@@ -92,6 +92,7 @@ class SlimeEnemy:
 
 
 
+
 enemies = [SlimeEnemy(500, 400)]
 
 player = Player(400, 300, 32, 32)
