@@ -50,6 +50,21 @@ player_walk_images = [pygame.image.load("images/player_walk_0.png"), pygame.imag
                       pygame.image.load("images/player_walk_2.png"), pygame.image.load("images/player_walk_3.png")]
 
 
+def draw_speech_bubble(screen, text, text_colour, bg_colour, pos, size):
+    font = pygame.font.SysFont(None, size, )
+    text_surface = font.render(text, True, text_colour)
+    text_rect = text_surface.get_rect(midbottom=pos)
+
+    #background
+    bg_rect = text_rect.copy()
+    bg_rect.inflate_ip(10, 10)
+
+    #frame
+    frame_rect = bg_rect.copy()
+    frame_rect.inflate_ip(4, 4)
+
+    pg.draw.rect(screen, text)
+
 class Player:
     def __init__(self, x, y, width, height):
         self.x = x
@@ -77,9 +92,6 @@ class Player:
         self.moving_right = False
         self.moving_left = False
 
-    def draw_speech_bubble(self, display, text, text_colour, bg_colour, pos, size):
-        font = pygame.font.SysFont(None, size,)
-        text_surface =  font.render(text)
 
 
 
