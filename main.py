@@ -34,13 +34,11 @@ display = pygame.display.set_mode((800, 600))
 
 #set the pygame window name
 pygame.display.set_caption('Show Text')
-
 font = pygame.font.Font('freesansbold.ttf', 32)
 text = font.render("Hi there Im the shop keeper", True, green, blue)
-
 textRect = text.get_rect()
 
-#cordinates of our text
+#cordinates of our tet
 textRect.center = (X // 1, Y // 2)
 
 
@@ -48,25 +46,6 @@ clock = pygame.time.Clock()
 
 player_walk_images = [pygame.image.load("images/player_walk_0.png"), pygame.image.load("images/player_walk_1.png"),
                       pygame.image.load("images/player_walk_2.png"), pygame.image.load("images/player_walk_3.png")]
-
-
-def draw_speech_bubble(screen, text, text_colour, bg_colour, pos, size):
-    font = pygame.font.SysFont(None, size, )
-    text_surface = font.render(text, True, text_colour)
-    text_rect = text_surface.get_rect(midbottom=pos)
-
-    #background
-    bg_rect = text_rect.copy()
-    bg_rect.inflate_ip(10, 10)
-
-    #frame
-    frame_rect = bg_rect.copy()
-    frame_rect.inflate_ip(4, 4)
-
-    pygame.draw.rect(screen, text_colour, frame_rect)
-    pygame.draw.rect(screen, bg_colour, bg_rect)
-    screen.blit(text_surface, text_rect)
-
 
 
 class Player:
@@ -78,33 +57,18 @@ class Player:
         self.animation_count = 0
         self.moving_right = False
         self.moving_left = False
-        self.rect = self.image.get_rect(topleft=(50, screen.get_height() - til))
     def main(self, display):
         if self.animation_count + 1 >= 16:
             self.animation_count = 0
-
-
-
         self.animation_count += 1
-
         if self.moving_right:
             display.blit(pygame.transform.scale(player_walk_images[self.animation_count//4], (32, 42)), (self.x, self.y))
         elif self.moving_left:
             display.blit(pygame.transform.scale(pygame.transform.flip(player_walk_images[self.animation_count//4], True, False), (32, 42)), (self.x, self.y))
         else:
             display.blit(pygame.transform.scale(player_walk_images[0], (32, 42)), (self.x, self.y))
-
         self.moving_right = False
         self.moving_left = False
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect.topleft)
-        draw_speech_bubble(screen, "hello",(255, 255,255),(0,0,0), self.rect.midtop, 25)
-
-
-
-
-
 
 class SlimeEnemy:
     def __init__(self, x, y):
@@ -141,8 +105,8 @@ display_scroll = [0,0]
 while True:
     #background color
     display.fill((124,164,114))
-
-    display_surface.blit(text, textRect)
+    #
+    # display_surface.blit(text, textRect)
 
 
 
@@ -162,6 +126,9 @@ while True:
         display_scroll[0] -= 5
 
         player.moving_left = True
+
+    if keys[pygame.K_f]:
+        display_surface.blit(text,textRect)
 
 
 
