@@ -28,14 +28,19 @@ class PlayerRed(pygame.sprite.Sprite):
     def move_left(self):
         self.x -= self.speed
 
+    def move_right(self):
+        self.x += self.speed
 
-player = PlayerRed(10, 10, 50, 50)
+
+player = PlayerRed(20, 30, 50, 50)
 
 
 running = True
 while running:
 
     display.fill((124,164,114))
+    pygame.draw.rect(display,Blue, [170,70,50,50])
+
 
     # check for events
     for event in pygame.event.get():
@@ -45,6 +50,8 @@ while running:
         # check if the left arrow key is pressed
         if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
             player.move_left()
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+            player.move_right()
 
 
     # fill the screen with white
