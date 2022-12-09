@@ -16,48 +16,46 @@ class PlayerRed(pygame.sprite.Sprite):
 
         self.x = x
         self.y = y
-        self.direction = 1
+        self.speed = 5
         self.width = width
         self.height = height
 
-    def main(self, display):
 
-        pygame.draw.rect(display,Red, [10,10,50,50])
+    def draw(self, display):
+        pygame.draw.rect(display, Red, (self.x, self.y, self.width, self.height))
 
-    def move(self, moving_left, moving_right):
-        if moving_left:
-            self.direction = - 1
-        if moving_right:
-            self.direction = + 1
+
+    def move_left(self):
+        self.x -= self.speed
+
 
 player = PlayerRed(10, 10, 50, 50)
 
 
+running = True
+while running:
 
-while True:
-    display.fill((124, 164, 114))
-    # pygame.draw.rect(display,Red, [10,10,50,50])
-    pygame.draw.rect(display,Blue, [170,70,50,50])
+    display.fill((124,164,114))
 
-
-
-
-
+    # check for events
     for event in pygame.event.get():
-
-        # keyboard input
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                player.moving_left = True
-            if event.key == pygame.K_d:
-                player.moving_right = True
-
         if event.type == pygame.QUIT:
-            # quits pygame library
-            pygame.quit()
+            running = False
 
-            # quiet the program
-            quit()
-    player.main(display)
+        # check if the left arrow key is pressed
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+            player.move_left()
 
+
+    # fill the screen with white
+
+    # draw the rectangle on the screen
+    player.draw(display)
+
+
+    # update the screen
     pygame.display.update()
+
+# close Pygame when the game loop is finished
+pygame.quit()
+
