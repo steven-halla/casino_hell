@@ -20,6 +20,10 @@ class PlayerRed(pygame.sprite.Sprite):
         self.width = width
         self.height = height
 
+    def main(self, display):
+
+        pygame.draw.rect(display,Red, [10,10,50,50])
+
     def move(self, moving_left, moving_right):
         if moving_left:
             self.direction = - 1
@@ -44,9 +48,9 @@ while True:
         # keyboard input
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
-                moving_left = True
+                player.moving_left = True
             if event.key == pygame.K_d:
-                moving_right = True
+                player.moving_right = True
 
         if event.type == pygame.QUIT:
             # quits pygame library
@@ -54,5 +58,6 @@ while True:
 
             # quiet the program
             quit()
+    player.main(display)
 
     pygame.display.update()
