@@ -63,6 +63,8 @@ class Entity:
         # print(self.velocity)
 
     def isOverlap(self, entity):
+
+
         return self.collision.isOverlap(entity.collision)
 
     print("entitiy class shoutout")
@@ -80,6 +82,8 @@ class Controller:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
+
+
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -165,11 +169,21 @@ class Game:
 
     def start(self):
         while running:
+            # collide = pygame.Rect.colliderect(self.player, self.enemy)
+            #
+            # if collide:
+            #     self.player.velocity = 0
+
+
             # update entities and handle collision
             self.player.update()
             self.enemy.update()
 
             if self.enemy.isOverlap(self.player):
+                # self.player.velocity.x = -50
+                # Controller.update.isRightPressed = False
+                self.player.controller.isRightPressed = False
+                self.player.velocity.x = - 1
                 print("player overlapped with enemy")
 
             # render everything
