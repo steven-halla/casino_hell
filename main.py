@@ -54,20 +54,22 @@ class Entity:
         pygame.draw.rect(display, RED, self.collision.toTuple())
 
     def update(self):
-        self.position.x += self.velocity.x
-        self.position.y += self.velocity.y
-        self.collision.x = self.position.x
-        self.collision.y = self.position.y
+        self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
         # print("update entity")
         # print(self.position)
         # print(self.velocity)
 
+    def undoLastMove(self):
+        self.setPosition(self.position.x - self.velocity.x, self.position.y - self.velocity.y)
+
+    def setPosition(self, x: float, y: float):
+        self.position.x = x
+        self.position.y = y
+        self.collision.x = x
+        self.collision.y = y
+
     def isOverlap(self, entity):
-
-
         return self.collision.isOverlap(entity.collision)
-
-    print("entitiy class shoutout")
 
 
 class Controller:
@@ -82,8 +84,6 @@ class Controller:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
-
-
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -147,7 +147,10 @@ class Player(Entity):
             if abs(self.velocity.y) < 0.15: # if y velocity is close to zero, just set to zero
                 self.velocity.y = 0
 
-        super().update()
+        # move player by velocity
+        # note that if we have any collisions later we will undo the movements.
+        # TODO test collision BEFORE moving
+        self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
 
 class Enemy(Entity):
@@ -179,12 +182,8 @@ class Game:
             self.player.update()
             self.enemy.update()
 
-            if self.enemy.isOverlap(self.player):
-                # self.player.velocity.x = -50
-                # Controller.update.isRightPressed = False
-                self.player.controller.isRightPressed = False
-                self.player.velocity.x = - 1
-                print("player overlapped with enemy")
+            if self.player.isOverlap(self.enemy):
+                self.player.undoLastMove()
 
             # render everything
             display.fill((124, 164, 114))
