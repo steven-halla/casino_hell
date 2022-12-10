@@ -36,8 +36,10 @@ class Rectangle:
     #   -------------
     # (x,y)         (x+width,y)
 
-    # type for r is r: Rectangle =>
+    #  r: Rectangle =>
     def isOverlap(self, r):
+        # print("hi")
+
         return self.x < r.x + r.width and self.x + self.width > r.x \
                and self.y < r.y + r.height and self.y + self.height > r.y
 
@@ -62,6 +64,8 @@ class Entity:
 
     def isOverlap(self, entity):
         return self.collision.isOverlap(entity.collision)
+
+    print("entitiy class shoutout")
 
 
 class Controller:
