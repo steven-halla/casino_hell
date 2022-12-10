@@ -164,11 +164,23 @@ class Enemy(Entity):
     def update(self):
         super().update()
 
+class Obstacle(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y, 33, 33)
+        self.color = GREEN
+
+    def draw(self, display):
+        pygame.draw.rect(display, self.color, self.collision.toTuple())
+
+    def update(self):
+        super().update()
+
 
 class Game:
     def __init__(self):
         self.player = Player(50, 100)
         self.enemy = Enemy(170, 70)
+        self.obstacle = Obstacle(111, 111)
 
     def start(self):
         while running:
@@ -181,8 +193,9 @@ class Game:
             # update entities and handle collision
             self.player.update()
             self.enemy.update()
+            self.obstacle.update()
 
-            if self.player.isOverlap(self.enemy):
+            if self.player.isOverlap(self.enemy and self.obstacle):
                 self.player.undoLastMove()
 
             # render everything
@@ -190,6 +203,7 @@ class Game:
 
             self.player.draw(display)
             self.enemy.draw(display)
+            self.obstacle.draw(display)
 
             # update the screen
             pygame.display.update()
