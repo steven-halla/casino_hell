@@ -195,7 +195,9 @@ class Game:
             self.enemy.update()
             self.obstacle.update()
 
-            if self.player.isOverlap(self.enemy and self.obstacle):
+            if self.player.isOverlap(self.enemy):
+                self.player.undoLastMove()
+            elif self.player.isOverlap(self.obstacle):
                 self.player.undoLastMove()
 
             # render everything
