@@ -35,6 +35,8 @@ class Rectangle:
     #  |    (x2,y2)  |
     #   -------------
     # (x,y)         (x+width,y)
+
+    # type for r is r: Rectangle =>
     def isOverlap(self, r):
         return self.x < r.x + r.width and self.x + self.width > r.x \
                and self.y < r.y + r.height and self.y + self.height > r.y
