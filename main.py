@@ -113,8 +113,7 @@ class Controller:
 
                 elif event.key == pygame.K_a:
                     self.isAPressed = True
-                    pygame.display.get_surface().blit(text_surface,(100,100))
-                    pygame.display.update()
+
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
@@ -126,6 +125,8 @@ class Controller:
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False
+                elif event.key == pygame.K_a:
+                    self.isAPressed = False
 
 
 
@@ -188,6 +189,9 @@ class Npc(Entity):
     def update(self):
         super().update()
 
+    def talk(self):
+
+
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 33, 33)
@@ -234,6 +238,10 @@ class Game:
             if self.player.isOverlap(self.npc):
 
                 self.player.undoLastMove()
+                if self.player.controller.isAPressed:
+                    print("I'm talking")
+                    pygame.display.get_surface().blit(text_surface, (100, 100))
+                    pygame.display.update()
 
             elif self.player.isOverlap(self.obstacle):
                 self.player.undoLastMove()
