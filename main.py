@@ -264,8 +264,14 @@ class Game:
             #     print("hehehe")
             # if self.player.isOverlap(entity=self.npc)  >= 1:
             #     print("Noway")
-            distance = math.sqrt((self.npc.collision.x - self.player.collision.x))**2 + (self.npc.collision.y - self.player.collision.y)**2
-            if distance <= self.npc.collision.width + self.npc.collision.height + self.player.collision.width + self.player.collision.height:
+            # distance = math.sqrt((self.npc.collision.x - self.player.collision.x))**2 + (self.npc.collision.y - self.player.collision.y)**2
+            # if distance <= self.npc.collision.width + self.npc.collision.height + self.player.collision.width + self.player.collision.height and self.player.controller.isAPressed == True:
+            #     print("Rectangle collision detected")
+
+            if (self.player.collision.x + self.player.collision.width >= self.npc.collision.x and
+                    self.player.collision.x <= self.npc.collision.x + self.npc.collision.width and
+                    self.player.collision.y + self.player.collision.height >= self.npc.collision.y and
+                    self.player.collision.y <= self.npc.collision.y + self.npc.collision.height):
                 print("Rectangle collision detected")
 
             # render everything
