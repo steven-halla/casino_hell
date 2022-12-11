@@ -1,15 +1,28 @@
 import pygame
 
-pygame.init()
 
+pygame.init()
+X = 400
+Y = 400
 WINDOWS_SIZE: [int, int] = [500, 500]
 display = pygame.display.set_mode(WINDOWS_SIZE)
 pygame.display.set_caption("Shooter")
 GREEN: (int, int, int) = (0, 255, 0)
+WHITE: (int, int, int) = (255, 255, 255)
 BLUE: (int, int, int) = (0, 0, 255)
 RED: (int, int, int) = (255, 0, 0)
 TILE_SIZE = 32
 running = True
+
+
+font = pygame.font.Font('freesansbold.ttf', 32)
+
+text_surface = font.render('GeeksForGeeks', True, GREEN, BLUE)
+# textRect = text.get_rect()
+# textRect.center = (X // 2, Y // 1.3)
+
+
+
 
 class Vector:
     def __init__(self, x: float, y: float):
@@ -79,11 +92,14 @@ class Controller:
         self.isUpPressed = False
         self.isDownPressed = False
         self.isExitPressed = False
+        self.isAPressed = False
 
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
+
+
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -95,8 +111,14 @@ class Controller:
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = True
 
+                elif event.key == pygame.K_a:
+                    self.isAPressed = True
+                    pygame.display.get_surface().blit(text_surface,(100,100))
+                    pygame.display.update()
+
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
+                    print("nof")
                     self.isLeftPressed = False
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = False
@@ -104,6 +126,8 @@ class Controller:
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False
+
+
 
 
 class Player(Entity):
@@ -153,7 +177,7 @@ class Player(Entity):
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
 
-class Enemy(Entity):
+class Npc(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 100, 100)
         self.color = BLUE
@@ -179,35 +203,57 @@ class Obstacle(Entity):
 class Game:
     def __init__(self):
         self.player = Player(50, 100)
-        self.enemy = Enemy(170, 70)
-        self.obstacle = Obstacle(111, 111)
+        self.npc = Npc(170, 70)
+
+        self.obstacle = Obstacle(55, 55)
+
 
     def start(self):
         while running:
-            # collide = pygame.Rect.colliderect(self.player, self.enemy)
+
+            # for event in pygame.event.get():
+            #     if event.type == pygame.KEYDOWN:
+            #         if event.key == pygame.K_a:
+            #             display.blit(text, textRect)
+            # collide = pygame.Rect.colliderect(self.player, self.Npc)
             #
             # if collide:
             #     self.player.velocity = 0
 
 
+
             # update entities and handle collision
             self.player.update()
-            self.enemy.update()
+            self.npc.update()
             self.obstacle.update()
+            # for event in pygame.event.get():
+            #     if event.type == pygame.KEYDOWN:
+            #         if event.key == pygame.K_a:
+            #             display.blit(text, textRect)
 
-            if self.player.isOverlap(self.enemy):
+            if self.player.isOverlap(self.npc):
+
                 self.player.undoLastMove()
+
             elif self.player.isOverlap(self.obstacle):
                 self.player.undoLastMove()
 
             # render everything
-            display.fill((124, 164, 114))
+            display.fill(WHITE)
 
             self.player.draw(display)
-            self.enemy.draw(display)
+            self.npc.draw(display)
             self.obstacle.draw(display)
 
+
+
+
+
             # update the screen
+            # for event in pygame.event.get():
+            #     if event.type == pygame.KEYDOWN:
+            #         if event.key == pygame.K_a:
+            #             display.blit(text, textRect)
             pygame.display.update()
 
         # close Pygame when the game loop is finished
