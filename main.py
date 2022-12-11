@@ -265,7 +265,8 @@ class Game:
             # Check if distance is within the sum of the widths and heights of the rectangles
             if 40 >= distance <= self.player.collision.width + self.player.collision.height + self.npc.collision.width + self.npc.collision.height :
                 if self.player.controller.isAPressed:
-                    print("We're Talking here!")
+                    pygame.display.get_surface().blit(text_surface, (100, 100))
+                    pygame.display.update()
 
             display.fill(WHITE)
 
