@@ -57,7 +57,7 @@ class Rectangle:
                and self.y < r.y + r.height and self.y + self.height > r.y
 
 
-class Entity:
+class Entity(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height):
         self.position = Vector(x, y)
         self.velocity = Vector(0, 0)
@@ -182,6 +182,7 @@ class Npc(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 100, 100)
         self.color = BLUE
+        self.speaking = False
 
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
@@ -189,7 +190,9 @@ class Npc(Entity):
     def update(self):
         super().update()
 
-    def talk(self):
+
+
+
 
 
 class Obstacle(Entity):
