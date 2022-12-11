@@ -121,7 +121,6 @@ class Controller:
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
-                    print("nof")
                     self.isLeftPressed = False
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = False
@@ -157,9 +156,9 @@ class Player(Entity):
             running = False
 
         if self.controller.isLeftPressed:
-            self.velocity.x = -5
+            self.velocity.x = -4
         elif self.controller.isRightPressed:
-            self.velocity.x = 5
+            self.velocity.x = 4
         else:
             # hard stop
             # self.velocity.x = 0  # default velocity to zero unless key pressed
@@ -170,9 +169,9 @@ class Player(Entity):
 
 
         if self.controller.isUpPressed:
-            self.velocity.y = -5
+            self.velocity.y = -4
         elif self.controller.isDownPressed:
-            self.velocity.y = 5
+            self.velocity.y = 4
         else:
             # hard stop
             # self.velocity.y = 0  # default velocity to zero unless key pressed
@@ -220,9 +219,9 @@ class Obstacle(Entity):
 class Game:
     def __init__(self):
         self.player = Player(50, 100)
-        self.npc = Npc(170, 70)
+        self.npc = Npc(170, 170)
 
-        self.obstacle = Obstacle(55, 55)
+        self.obstacle = Obstacle(22, 22)
 
 
     def start(self):
@@ -260,21 +259,13 @@ class Game:
 
             elif self.player.isOverlap(self.obstacle):
                 self.player.undoLastMove()
-            # if self.player.collision.x < self.npc.collision.x :
-            #     print("hehehe")
-            # if self.player.isOverlap(entity=self.npc)  >= 1:
-            #     print("Noway")
-            # distance = math.sqrt((self.npc.collision.x - self.player.collision.x))**2 + (self.npc.collision.y - self.player.collision.y)**2
-            # if distance <= self.npc.collision.width + self.npc.collision.height + self.player.collision.width + self.player.collision.height and self.player.controller.isAPressed == True:
-            #     print("Rectangle collision detected")
 
-            if (self.player.collision.x + self.player.collision.width >= self.npc.collision.x and
-                    self.player.collision.x <= self.npc.collision.x + self.npc.collision.width and
-                    self.player.collision.y + self.player.collision.height >= self.npc.collision.y and
-                    self.player.collision.y <= self.npc.collision.y + self.npc.collision.height):
-                print("Rectangle collision detected")
+            distance = math.sqrt((self.player.collision.x - self.npc.collision.x) ** 2 + (
+                    self.player.collision.y - self.npc.collision.y) ** 2)
+            # Check if distance is within the sum of the widths and heights of the rectangles
+            if 40 >= distance <= self.player.collision.width + self.player.collision.height + self.npc.collision.width + self.npc.collision.height :
+                print(distance)
 
-            # render everything
             display.fill(WHITE)
 
             self.player.draw(display)
