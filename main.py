@@ -1,4 +1,7 @@
 import pygame
+from pygame.locals import *
+import math
+
 
 
 pygame.init()
@@ -56,8 +59,9 @@ class Rectangle:
         return self.x < r.x + r.width and self.x + self.width > r.x \
                and self.y < r.y + r.height and self.y + self.height > r.y
 
+    # def touching(self, r
 
-class Entity(pygame.sprite.Sprite):
+class Entity:
     def __init__(self, x, y, width, height):
         self.position = Vector(x, y)
         self.velocity = Vector(0, 0)
@@ -137,8 +141,13 @@ class Player(Entity):
         self.color = RED
         self.controller = Controller()
 
+
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
+
+    # def speaking(self, player, npc):
+    #     if npc.collision.x < player.collision.x:
+    #         print("Nice")
 
     def update(self):
         self.controller.update()
@@ -180,24 +189,25 @@ class Player(Entity):
 
 class Npc(Entity):
     def __init__(self, x: int, y: int):
-        super().__init__(x, y, 100, 100)
+        super(Npc, self).__init__(x, y, 32, 32)
         self.color = BLUE
         self.speaking = False
 
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
 
+    # def speaking(self,player):
+    #     if player.collision.x < self.collision.x:
+    #         print("Nice")
+
+
     def update(self):
         super().update()
 
 
-
-
-
-
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
-        super().__init__(x, y, 33, 33)
+        super().__init__(x, y, 32, 32)
         self.color = GREEN
 
     def draw(self, display):
@@ -217,6 +227,8 @@ class Game:
 
     def start(self):
         while running:
+            if self.npc.speaking:
+                print("I'm Trie")
 
             # for event in pygame.event.get():
             #     if event.type == pygame.KEYDOWN:
@@ -248,6 +260,13 @@ class Game:
 
             elif self.player.isOverlap(self.obstacle):
                 self.player.undoLastMove()
+            # if self.player.collision.x < self.npc.collision.x :
+            #     print("hehehe")
+            # if self.player.isOverlap(entity=self.npc)  >= 1:
+            #     print("Noway")
+            distance = math.sqrt((self.npc.collision.x - self.player.collision.x))**2 + (self.npc.collision.y - self.player.collision.y)**2
+            if distance <= self.npc.collision.width + self.npc.collision.height + self.player.collision.width + self.player.collision.height:
+                print("Rectangle collision detected")
 
             # render everything
             display.fill(WHITE)
@@ -255,6 +274,8 @@ class Game:
             self.player.draw(display)
             self.npc.draw(display)
             self.obstacle.draw(display)
+
+
 
 
 
