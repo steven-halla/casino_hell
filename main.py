@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import math
+import keyboard
 
 
 clock = pygame.time.Clock()
@@ -16,6 +17,7 @@ WHITE: (int, int, int) = (255, 255, 255)
 BLUE: (int, int, int) = (0, 0, 255)
 RED: (int, int, int) = (255, 0, 0)
 TILE_SIZE = 32
+
 running = True
 
 
@@ -94,18 +96,24 @@ class Entity:
 
 class Controller:
     def __init__(self):
+        self.keys = pygame.key.get_pressed()
         self.isLeftPressed = False
         self.isRightPressed = False
         self.isUpPressed = False
         self.isDownPressed = False
         self.isExitPressed = False
         self.isAPressed = False
+        #might need to delete this bottom line pygame.init()
+        pygame.init()
+
+    def is_pressed(self,key):
+        return self.keys[key]
+
 
     def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
-
 
 
             if event.type == pygame.KEYDOWN:
@@ -119,7 +127,14 @@ class Controller:
                     self.isDownPressed = True
 
                 elif event.key == pygame.K_a:
-                    self.isAPressed = True
+                    if self.isAPressed == False:
+                        self.isAPressed = True
+                    else:
+                        if self.isAPressed == True:
+                            self.isAPressed = False
+
+                    # if event.key == pygame.K_a:
+                    #     self.isAPressed = False
 
 
             elif event.type == pygame.KEYUP:
@@ -131,8 +146,7 @@ class Controller:
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False
-                elif event.key == pygame.K_a:
-                    self.isAPressed = False
+
 
 
 
@@ -148,6 +162,7 @@ class Player(Entity):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
         if self.controller.isAPressed == True:
             display.blit(text_surface, textRect)
+
 
 
     # def speaking(self, player, npc):
@@ -232,8 +247,10 @@ class Game:
 
     def start(self):
         while running:
-            if self.npc.speaking:
-                print("I'm Trie")
+
+            # keys = pygame.key.get_pressed()
+            #
+
 
             # for event in pygame.event.get():
             #     if event.type == pygame.KEYDOWN:
@@ -245,15 +262,17 @@ class Game:
             #     self.player.velocity = 0
 
 
-
             # update entities and handle collision
             self.player.update()
             self.npc.update()
             self.obstacle.update()
+            self.player.controller.update()
             # for event in pygame.event.get():
             #     if event.type == pygame.KEYDOWN:
             #         if event.key == pygame.K_a:
             #             display.blit(text, textRect)
+            if self.player.controller.is_pressed(pygame.K_q):
+                print("Hi q")
 
             if self.player.isOverlap(self.npc):
 
