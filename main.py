@@ -164,8 +164,8 @@ class Player(Entity):
 
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
-        # if self.controller.isAPressed == True:
-        #     display.blit(text_surface, textRect)
+        if self.controller.isAPressed == True:
+            display.blit(text_surface, textRect)
 
 
 
@@ -225,7 +225,6 @@ class Npc(Entity):
     #         print("Nice")
 
 
-
     def update(self):
         super().update()
 
@@ -282,21 +281,18 @@ class Game:
             if self.player.isOverlap(self.npc):
 
                 self.player.undoLastMove()
-                # if self.player.controller.isAPressed:
-                #     print("I'm talking")
-                #     pygame.display.get_surface().blit(text_surface, (100, 100))
-                #     pygame.display.update()
+
 
             elif self.player.isOverlap(self.obstacle):
                 self.player.undoLastMove()
 
             distance = math.sqrt((self.player.collision.x - self.npc.collision.x) ** 2 + (
                     self.player.collision.y - self.npc.collision.y) ** 2)
-            # # Check if distance is within the sum of the widths and heights of the rectangles
-            # if 40 >= distance <= self.player.collision.width + self.player.collision.height + self.npc.collision.width + self.npc.collision.height :
-            #     if self.player.controller.isAPressed:
-            #         pygame.display.get_surface().blit(text_surface, (100, 100))
-            #         pygame.display.update()
+            # Check if distance is within the sum of the widths and heights of the rectangles
+            if 40 >= distance <= self.player.collision.width + self.player.collision.height + self.npc.collision.width + self.npc.collision.height :
+                if self.player.controller.isAPressed:
+                    pygame.display.get_surface().blit(text_surface, (100, 100))
+                    pygame.display.update()
                     # text_surface.blit(text_surface, (100, 100))
                     # pygame.display.update()
 
