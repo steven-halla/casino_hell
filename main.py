@@ -3,6 +3,7 @@ from pygame.locals import *
 import math
 
 
+clock = pygame.time.Clock()
 
 pygame.init()
 X = 400
@@ -21,6 +22,8 @@ running = True
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 text_surface = font.render('GeeksForGeeks', True, GREEN, BLUE)
+textRect = text_surface.get_rect()
+
 # textRect = text.get_rect()
 # textRect.center = (X // 2, Y // 1.3)
 
@@ -143,6 +146,9 @@ class Player(Entity):
 
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
+        if self.controller.isAPressed == True:
+            display.blit(text_surface, textRect)
+
 
     # def speaking(self, player, npc):
     #     if npc.collision.x < player.collision.x:
@@ -267,6 +273,9 @@ class Game:
                 if self.player.controller.isAPressed:
                     pygame.display.get_surface().blit(text_surface, (100, 100))
                     pygame.display.update()
+                    # text_surface.blit(text_surface, (100, 100))
+                    # pygame.display.update()
+
 
             display.fill(WHITE)
 
