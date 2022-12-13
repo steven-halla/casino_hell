@@ -17,7 +17,12 @@ WHITE: (int, int, int) = (255, 255, 255)
 BLUE: (int, int, int) = (0, 0, 255)
 RED: (int, int, int) = (255, 0, 0)
 TILE_SIZE = 32
-
+isLeftPressed = False
+isRightPressed = False
+isUpPressed = False
+isDownPressed = False
+isExitPressed = False
+isAPressed = False
 running = True
 
 
@@ -94,64 +99,64 @@ class Entity:
         return self.collision.isOverlap(entity.collision)
 
 
-class Controller:
-    def __init__(self):
-        self.keys = pygame.key.get_pressed()
-        self.isLeftPressed = False
-        self.isRightPressed = False
-        self.isUpPressed = False
-        self.isDownPressed = False
-        self.isExitPressed = False
-        self.isAPressed = False
-        #might need to delete this bottom line pygame.init()
-        pygame.init()
-
-    def is_pressed(self,key):
-        return self.keys[key]
-
-
-    def update(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.isExitPressed = True
-
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    self.isLeftPressed = True
-                elif event.key == pygame.K_RIGHT:
-                    self.isRightPressed = True
-                if event.key == pygame.K_UP:
-                    self.isUpPressed = True
-                elif event.key == pygame.K_DOWN:
-                    self.isDownPressed = True
-                #
-                # elif event.key == pygame.K_a:
-                #     if self.isAPressed == False:
-                #         self.isAPressed = True
-                #     else:
-                #         if self.isAPressed == True:
-                #             self.isAPressed = False
-                if event.key == pygame.K_a:
-                    # If isAPressed is currently False, set it to True
-                    # Otherwise, set it to False
-                    self.isAPressed = not self.isAPressed
-
-                    # if event.key == pygame.K_a:
-                    #     self.isAPressed = False
-
-
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT:
-                    self.isLeftPressed = False
-                elif event.key == pygame.K_RIGHT:
-                    self.isRightPressed = False
-                if event.key == pygame.K_UP:
-                    self.isUpPressed = False
-                elif event.key == pygame.K_DOWN:
-                    self.isDownPressed = False
-
-
+# class Controller:
+#     def __init__(self):
+#         self.keys = pygame.key.get_pressed()
+#         self.isLeftPressed = False
+#         self.isRightPressed = False
+#         self.isUpPressed = False
+#         self.isDownPressed = False
+#         self.isExitPressed = False
+#         self.isAPressed = False
+#         #might need to delete this bottom line pygame.init()
+#         pygame.init()
+#
+#     def is_pressed(self,key):
+#         return self.keys[key]
+#
+#
+#     def update(self):
+        # for event in pygame.event.get():
+        #     if event.type == pygame.QUIT:
+        #         self.isExitPressed = True
+        #
+        #
+        #     if event.type == pygame.KEYDOWN:
+        #         if event.key == pygame.K_LEFT:
+        #             self.isLeftPressed = True
+        #         elif event.key == pygame.K_RIGHT:
+        #             self.isRightPressed = True
+        #         if event.key == pygame.K_UP:
+        #             self.isUpPressed = True
+        #         elif event.key == pygame.K_DOWN:
+        #             self.isDownPressed = True
+        #         #
+        #         # elif event.key == pygame.K_a:
+        #         #     if self.isAPressed == False:
+        #         #         self.isAPressed = True
+        #         #     else:
+        #         #         if self.isAPressed == True:
+        #         #             self.isAPressed = False
+        #         if event.key == pygame.K_a:
+        #             # If isAPressed is currently False, set it to True
+        #             # Otherwise, set it to False
+        #             self.isAPressed = not self.isAPressed
+        #
+        #             # if event.key == pygame.K_a:
+        #             #     self.isAPressed = False
+        #
+        #
+        #     elif event.type == pygame.KEYUP:
+        #         if event.key == pygame.K_LEFT:
+        #             self.isLeftPressed = False
+        #         elif event.key == pygame.K_RIGHT:
+        #             self.isRightPressed = False
+        #         if event.key == pygame.K_UP:
+        #             self.isUpPressed = False
+        #         elif event.key == pygame.K_DOWN:
+        #             self.isDownPressed = False
+        #
+        #
 
 
 
@@ -159,13 +164,19 @@ class Player(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color = RED
-        self.controller = Controller()
+        # self.controller = Controller()
 
 
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
-        if self.controller.isAPressed == True:
-            display.blit(text_surface, textRect)
+        # if self.controller.isAPressed == True:
+        #     display.blit(text_surface, textRect)
+
+            # distance = math.sqrt((self.collision.x - self.npc.collision.x) ** 2 + (
+            #         self.collision.y - self.npc.collision.y) ** 2)
+            # # Check if distance is within the sum of the widths and heights of the rectangles
+            # if 40 >= distance <= self.collision.width + self.collision.height + self.npc.collision.width + self.npc.collision.height:
+            #     print("hey you how you do")
 
 
 
@@ -214,11 +225,14 @@ class Player(Entity):
 class Npc(Entity):
     def __init__(self, x: int, y: int):
         super(Npc, self).__init__(x, y, 32, 32)
+
         self.color = BLUE
         self.speaking = False
 
     def draw(self, display):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
+        # if self.player.controller.isAPressed == True:
+        #     display.blit(text_surface, textRect)
 
     # def speaking(self,player):
     #     if player.collision.x < self.collision.x:
@@ -267,6 +281,45 @@ class Game:
 
 
             # update entities and handle collision
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.isExitPressed = True
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        self.isLeftPressed = True
+                    elif event.key == pygame.K_RIGHT:
+                        self.isRightPressed = True
+                    if event.key == pygame.K_UP:
+                        self.isUpPressed = True
+                    elif event.key == pygame.K_DOWN:
+                        self.isDownPressed = True
+                    #
+                    # elif event.key == pygame.K_a:
+                    #     if self.isAPressed == False:
+                    #         self.isAPressed = True
+                    #     else:
+                    #         if self.isAPressed == True:
+                    #             self.isAPressed = False
+                    if event.key == pygame.K_a:
+                        # If isAPressed is currently False, set it to True
+                        # Otherwise, set it to False
+                        self.isAPressed = not self.isAPressed
+
+                        # if event.key == pygame.K_a:
+                        #     self.isAPressed = False
+
+
+                    elif event.type == pygame.KEYUP:
+                        if event.key == pygame.K_LEFT:
+                            self.isLeftPressed = False
+                        elif event.key == pygame.K_RIGHT:
+                            self.isRightPressed = False
+                        if event.key == pygame.K_UP:
+                            self.isUpPressed = False
+                        elif event.key == pygame.K_DOWN:
+                            self.isDownPressed = False
+
             self.player.update()
             self.npc.update()
             self.obstacle.update()
@@ -275,8 +328,7 @@ class Game:
             #     if event.type == pygame.KEYDOWN:
             #         if event.key == pygame.K_a:
             #             display.blit(text, textRect)
-            if self.player.controller.is_pressed(pygame.K_q):
-                print("Hi q")
+
 
             if self.player.isOverlap(self.npc):
 
