@@ -43,12 +43,12 @@ class Vector:
     
 class Rectangle:
     def __init__(self, x: float, y: float, width: float, height: float):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+        self.x: float = x
+        self.y: float = y
+        self.width: float = width
+        self.height: float = height
 
-    def toTuple(self):
+    def toTuple(self) -> Tuple[float, float, float, float]:
         return (self.x, self.y, self.width, self.height)
 
     #           ---------- (x2+width,y2+height)
@@ -61,30 +61,24 @@ class Rectangle:
     # (x,y)         (x+width,y)
 
     #  r: Rectangle =>
-    def isOverlap(self, r):
+    def isOverlap(self, r: "Rectangle") -> bool:
         # print("hi")
 
         return self.x < r.x + r.width and self.x + self.width > r.x \
                and self.y < r.y + r.height and self.y + self.height > r.y
 
-    # def touching(self, r
 
 class Entity:
-    def __init__(self, x, y, width, height):
-        self.position = Vector(x, y)
-        self.velocity = Vector(0, 0)
-        self.collision = Rectangle(x, y, width, height)
-
-        #!!!!!!!!!!!!draw and update should maybe be switched ask kenny on this!!!!!!!!!!!!!!!!!!!!
+    def __init__(self, x: float, y: float, width: float, height: float):
+        self.position: Vector = Vector(x, y)
+        self.velocity: Vector = Vector(0, 0)
+        self.collision: Rectangle = Rectangle(x, y, width, height)
 
     def draw(self, display, state):
         pygame.draw.rect(display, RED, self.collision.toTuple())
 
     def update(self, state):
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
-        # print("update entity")
-        # print(self.position)
-        # print(self.velocity)
 
     def undoLastMove(self):
         self.setPosition(self.position.x - self.velocity.x, self.position.y - self.velocity.y)
@@ -95,8 +89,9 @@ class Entity:
         self.collision.x = x
         self.collision.y = y
 
-    def isOverlap(self, entity):
+    def isOverlap(self, entity: "Entity") -> bool:
         return self.collision.isOverlap(entity.collision)
+
 
 
 class Controller:
