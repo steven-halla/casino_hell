@@ -3,7 +3,7 @@ from pygame.locals import *
 import math
 import keyboard
 import time
-
+from typing import *
 
 clock = pygame.time.Clock()
 
@@ -31,16 +31,14 @@ textRect = text_surface.get_rect()
 # textRect.center = (X // 2, Y // 1.3)
 
 
-
-
-
 class Vector:
     def __init__(self, x: float, y: float):
-        self.x = x
-        self.y = y
+        self.x: float = x
+        self.y: float = y
 
-    def toTuple(self):
+    def toTuple(self) -> Tuple[float, float]:
         return (self.x, self.y)
+
     
     
 class Rectangle:
@@ -287,7 +285,7 @@ class GameState:
         self.npc = Npc(170, 170)
         self.obstacle = Obstacle(22, 22)
         self.isRunning = True
-        
+        self.isPaused = False
         
 
 class Game:
