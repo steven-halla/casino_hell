@@ -76,6 +76,8 @@ class Entity:
         self.velocity = Vector(0, 0)
         self.collision = Rectangle(x, y, width, height)
 
+        #!!!!!!!!!!!!draw and update should maybe be switched ask kenny on this!!!!!!!!!!!!!!!!!!!!
+
     def draw(self, display, state):
         pygame.draw.rect(display, RED, self.collision.toTuple())
 
@@ -154,7 +156,6 @@ class Money(Entity):
         self.textRectangle = self.textSurface.get_rect()
         self.color = PURPLE
 
-
     def update(self, state):
         super().update(state)
 
@@ -162,6 +163,15 @@ class Money(Entity):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
 
         pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
+
+    def add(self, total:int):
+        self.total += total
+
+    def remove(self, total: int):
+        self.total -= total
+
+    def get_total(self):
+        return self.total
 
                     
 
