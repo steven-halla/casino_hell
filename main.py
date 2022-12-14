@@ -185,23 +185,23 @@ class Player(Entity):
     #         print("Nice")
 
     def update(self):
-        self.controller.update()
+        # self.controller.update()
 
-        if self.controller.isExitPressed:
-            global running
-            running = False
-
-        if self.controller.isLeftPressed:
-            self.velocity.x = -4
-        elif self.controller.isRightPressed:
-            self.velocity.x = 4
-        else:
-            # hard stop
-            # self.velocity.x = 0  # default velocity to zero unless key pressed
-            # slow stop
-            self.velocity.x *= 0.65 # gradually slow the x velocity down
-            if abs(self.velocity.x) < 0.15: # if x velocity is close to zero, just set to zero
-                self.velocity.x = 0
+        # if self.controller.isExitPressed:
+        #     global running
+        #     running = False
+        #
+        # if self.controller.isLeftPressed:
+        #     self.velocity.x = -4
+        # elif self.controller.isRightPressed:
+        #     self.velocity.x = 4
+        # else:
+        #     # hard stop
+        #     # self.velocity.x = 0  # default velocity to zero unless key pressed
+        #     # slow stop
+        #     self.velocity.x *= 0.65 # gradually slow the x velocity down
+        #     if abs(self.velocity.x) < 0.15: # if x velocity is close to zero, just set to zero
+        #         self.velocity.x = 0
 
 
         if self.controller.isUpPressed:
@@ -264,7 +264,37 @@ class Game:
 
 
     def start(self):
+
+        global running
         while running:
+
+            if isExitPressed is True:
+                running = False
+
+            if isLeftPressed:
+                self.player.velocity.x = -4
+            elif isRightPressed:
+                self.player.velocity.x = 4
+
+            else:
+                # hard stop
+                # self.velocity.x = 0  # default velocity to zero unless key pressed
+                # slow stop
+                self.player.velocity.x *= 0.65  # gradually slow the x velocity down
+                if abs(self.player.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
+                    self.player.velocity.x = 0
+
+            if self.isUpPressed:
+                self.player.velocity.y = -4
+            elif self.isDownPressed:
+                self.player.velocity.y = 4
+            else:
+                # hard stop
+                # self.velocity.y = 0  # default velocity to zero unless key pressed
+                # slow stop
+                self.player.velocity.y *= 0.65  # gradually slow the y velocity down
+                if abs(self.player.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
+                    self.player.velocity.y = 0
 
             # keys = pygame.key.get_pressed()
             #
@@ -323,7 +353,7 @@ class Game:
             self.player.update()
             self.npc.update()
             self.obstacle.update()
-            self.player.controller.update()
+            # self.controller.update()
             # for event in pygame.event.get():
             #     if event.type == pygame.KEYDOWN:
             #         if event.key == pygame.K_a:
