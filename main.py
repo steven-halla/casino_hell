@@ -166,12 +166,12 @@ class Money(Entity):
     def update(self, state: List[int]):
         super().update(state)
 
-    def draw(self, display: pygame.Surface, state: List[int]):
+    def draw(self, display: pygame.Surface, state):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
 
         pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
 
-    def add(self, total:int):
+    def add(self, total: int):
         self.total += total
 
     def remove(self, total: int):
@@ -185,8 +185,9 @@ class Money(Entity):
                     
 
 
+
 class Player(Entity):
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color = RED
 
@@ -228,19 +229,9 @@ class Player(Entity):
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-
-
-
-    def draw(self, display, state):
+    def draw(self, display:pygame.Surface, state):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
-        # if self.controller.isAPressed == True:
-        #     display.blit(text_surface, textRect)
 
-            # distance = math.sqrt((self.collision.x - self.npc.collision.x) ** 2 + (
-            #         self.collision.y - self.npc.collision.y) ** 2)
-            # # Check if distance is within the sum of the widths and heights of the rectangles
-            # if 40 >= distance <= self.collision.width + self.collision.height + self.npc.collision.width + self.npc.collision.height:
-            #     print("hey you how you do")
 
 
 class Npc(Entity):
@@ -249,31 +240,25 @@ class Npc(Entity):
         self.color = BLUE
         self.speakStartTime = 0
         self.isSpeaking = False
-        
+
     def update(self, state):
         super().update(state)
-        
+
         player = state.player
         # print(time.process_time() - self.speakStartTime)
         if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > 0.05:
-            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            distance = math.sqrt(
+                (player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # Check if distance is within the sum of the widths and heights of the rectangles
             if 48 >= distance <= player.collision.width + player.collision.height + self.collision.width + self.collision.height:
                 self.isSpeaking = not self.isSpeaking
                 self.speakStartTime = time.process_time()
 
-
-
-    def draw(self, display, state):      
+    def draw(self, display: pygame.Surface, state):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
         if self.isSpeaking:
-            pygame.display.get_surface().blit(text_surface, (self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
-        #     display.blit(text_surface, textRect)
-
-    # def speaking(self,player):
-    #     if player.collision.x < self.collision.x:
-    #         print("Nice")
-
+            pygame.display.get_surface().blit(text_surface, (
+            self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
 
 
 class Obstacle(Entity):
@@ -284,20 +269,20 @@ class Obstacle(Entity):
     def update(self, state):
         super().update(state)
         
-    def draw(self, display, state):
+    def draw(self, display: pygame.Surface, state):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
 
 
 
 class GameState:
     def __init__(self):
-        self.controller = Controller()
-        self.player = Player(50, 100)
-        self.money = Money(25, 50,50)
-        self.npc = Npc(170, 170)
-        self.obstacle = Obstacle(22, 22)
-        self.isRunning = True
-        self.isPaused = False
+        self.controller: Controller = Controller()
+        self.player: Player = Player(50, 100)
+        self.money: Money = Money(25, 50,50)
+        self.npc: NPC = Npc(170, 170)
+        self.obstacle: Obstacle = Obstacle(22, 22)
+        self.isRunning: bool = True
+        self.isPaused: bool = False
         
 
 class Game:
