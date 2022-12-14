@@ -94,19 +94,21 @@ class Entity:
 
 
 
+
+
 class Controller:
     def __init__(self):
-        self.keys = pygame.key.get_pressed()
-        self.isLeftPressed = False
-        self.isRightPressed = False
-        self.isUpPressed = False
-        self.isDownPressed = False
-        self.isExitPressed = False
-        self.isAPressed = False
+        self.keys: List[bool] = pygame.key.get_pressed()
+        self.isLeftPressed: bool = False
+        self.isRightPressed: bool = False
+        self.isUpPressed: bool = False
+        self.isDownPressed: bool = False
+        self.isExitPressed: bool = False
+        self.isAPressed: bool = False
         #might need to delete this bottom line pygame.init()
         pygame.init()
 
-    def is_pressed(self, key):
+    def is_pressed(self, key) -> bool:
         return self.keys[key]
 
 
@@ -138,21 +140,25 @@ class Controller:
                     self.isDownPressed = False
                 elif event.key == pygame.K_a:
                     self.isAPressed = False
+
                     
                     
+
+
+
 
 class Money(Entity):
-    def __init__(self, total: int, x, y):
+    def __init__(self, total: int, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
-        self.total = total
-        self.textSurface = font.render(str(total), True, GREEN, PURPLE)
-        self.textRectangle = self.textSurface.get_rect()
-        self.color = PURPLE
+        self.total: int = total
+        self.textSurface: pygame.Surface = font.render(str(total), True, GREEN, PURPLE)
+        self.textRectangle: pygame.Rect = self.textSurface.get_rect()
+        self.color: Tuple[int, int, int] = PURPLE
 
-    def update(self, state):
+    def update(self, state: List[int]):
         super().update(state)
 
-    def draw(self, display, state):
+    def draw(self, display: pygame.Surface, state: List[int]):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
 
         pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
@@ -163,8 +169,10 @@ class Money(Entity):
     def remove(self, total: int):
         self.total -= total
 
-    def get_total(self):
+    def get_total(self) -> int:
         return self.total
+
+
 
                     
 
