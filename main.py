@@ -8,18 +8,18 @@ from typing import *
 clock = pygame.time.Clock()
 
 pygame.init()
-X = 400
-Y = 400
-WINDOWS_SIZE: [int, int] = [500, 500]
+X: int = 400
+Y: int = 400
+WINDOWS_SIZE: Tuple[int, int] = (500, 500)
 display = pygame.display.set_mode(WINDOWS_SIZE)
 pygame.display.set_caption("Shooter4")
-GREEN: (int, int, int) = (0, 255, 0)
-WHITE: (int, int, int) = (255, 255, 255)
-BLUE: (int, int, int) = (0, 0, 255)
-RED: (int, int, int) = (255, 0, 0)
-PURPLE: (int, int, int) = (200, 0, 125)
-TILE_SIZE = 32
-running = True
+GREEN: Tuple[int, int, int] = (0, 255, 0)
+WHITE: Tuple[int, int, int] = (255, 255, 255)
+BLUE: Tuple[int, int, int] = (0, 0, 255)
+RED: Tuple[int, int, int] = (255, 0, 0)
+PURPLE: Tuple[int, int, int] = (200, 0, 125)
+TILE_SIZE: int = 32
+running: bool = True
 
 
 font = pygame.font.Font('freesansbold.ttf', 32)
@@ -264,7 +264,7 @@ class Npc(Entity):
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 32, 32)
-        self.color = GREEN
+        self.color: (int, int, int) = GREEN
 
     def update(self, state):
         super().update(state)
