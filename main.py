@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import math
 import keyboard
+import time
 
 
 clock = pygame.time.Clock()
@@ -126,27 +127,26 @@ class Controller:
                     self.isLeftPressed = True
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = True
-                if event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP:
                     self.isUpPressed = True
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = True
-                if event.key == pygame.K_a:
-                    # If isAPressed is currently False, set it to True
-                    # Otherwise, set it to False
-                    self.isAPressed = not self.isAPressed
-
-                    # if event.key == pygame.K_a:
-                    #     self.isAPressed = False
+                elif event.key == pygame.K_a:
+                    self.isAPressed = True
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     self.isLeftPressed = False
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = False
-                if event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP:
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False
+                elif event.key == pygame.K_a:
+                    self.isAPressed = False
+                    
+                    
 
 class Money(Entity):
     def __init__(self, total: int, x, y):
@@ -238,14 +238,26 @@ class Npc(Entity):
     def __init__(self, x: int, y: int):
         super(Npc, self).__init__(x, y, 32, 32)
         self.color = BLUE
-        self.speaking = False
+        self.speakStartTime = 0
+        self.isSpeaking = False
         
     def update(self, state):
         super().update(state)
+        
+        player = state.player
+        # print(time.process_time() - self.speakStartTime)
+        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > 0.05:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # Check if distance is within the sum of the widths and heights of the rectangles
+            if 48 >= distance <= player.collision.width + player.collision.height + self.collision.width + self.collision.height:
+                self.isSpeaking = not self.isSpeaking
+                self.speakStartTime = time.process_time()
 
-    def draw(self, display, state):
+
+    def draw(self, display, state):      
         pygame.draw.rect(display, self.color, self.collision.toTuple())
-        # if self.player.controller.isAPressed == True:
+        if self.isSpeaking:
+            pygame.display.get_surface().blit(text_surface, (self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
         #     display.blit(text_surface, textRect)
 
     # def speaking(self,player):
@@ -310,13 +322,6 @@ class Game:
             npc.draw(display, state)
             obstacle.draw(display, state)
             money.draw(display, state)
-            
-            if controller.isAPressed:
-                distance = math.sqrt((player.collision.x - npc.collision.x) ** 2 + (player.collision.y - npc.collision.y) ** 2)
-                # Check if distance is within the sum of the widths and heights of the rectangles
-                if 40 >= distance <= player.collision.width + player.collision.height + npc.collision.width + npc.collision.height :
-                    pygame.display.get_surface().blit(text_surface, (100, 100))
-                    # text_surface.blit(text_surface, (100, 100))
 
             pygame.display.update()
 
