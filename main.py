@@ -189,7 +189,7 @@ class Money(Entity):
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
-        self.color = RED
+        self.color: Tuple[int, int, int] = RED
 
     # def speaking(self, player, npc):
     #     if npc.collision.x < player.collision.x:
@@ -237,9 +237,9 @@ class Player(Entity):
 class Npc(Entity):
     def __init__(self, x: int, y: int):
         super(Npc, self).__init__(x, y, 32, 32)
-        self.color = BLUE
-        self.speakStartTime = 0
-        self.isSpeaking = False
+        self.color: Tuple[int, int, int] = BLUE
+        self.speakStartTime: int = 0
+        self.isSpeaking: bool = False
 
     def update(self, state):
         super().update(state)
