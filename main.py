@@ -112,7 +112,7 @@ class Controller:
         return self.keys[key]
 
 
-    def update(self):
+    def update(self, state):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
@@ -120,12 +120,20 @@ class Controller:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     self.isLeftPressed = True
+                    if state.npc.isSpeaking == True:
+                        self.isLeftPressed = False
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = True
+                    if state.npc.isSpeaking == True:
+                        self.isRightPressed = False
                 elif event.key == pygame.K_UP:
                     self.isUpPressed = True
+                    if state.npc.isSpeaking == True:
+                        self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = True
+                    if state.npc.isSpeaking == True:
+                        self.isDownPressed = False
                 elif event.key == pygame.K_a:
                     self.isAPressed = True
 
@@ -188,7 +196,7 @@ class Player(Entity):
 
     def update(self, state):
         controller = state.controller
-        controller.update()
+        controller.update(state)
 
         if controller.isLeftPressed:
             self.velocity.x = -4
@@ -255,6 +263,7 @@ class Npc(Entity):
                 self.speakStartTime = time.process_time()
 
 
+
     def draw(self, display, state):      
         pygame.draw.rect(display, self.color, self.collision.toTuple())
         if self.isSpeaking:
@@ -304,7 +313,7 @@ class Game:
         money = state.money
         
         while state.isRunning:
-            controller.update()
+            controller.update(state)
             
             if controller.isExitPressed is True:
                 state.isRunning = False
