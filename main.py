@@ -11,11 +11,12 @@ X = 400
 Y = 400
 WINDOWS_SIZE: [int, int] = [500, 500]
 display = pygame.display.set_mode(WINDOWS_SIZE)
-pygame.display.set_caption("Shooter")
+pygame.display.set_caption("Shooter4")
 GREEN: (int, int, int) = (0, 255, 0)
 WHITE: (int, int, int) = (255, 255, 255)
 BLUE: (int, int, int) = (0, 0, 255)
 RED: (int, int, int) = (255, 0, 0)
+PURPLE: (int, int, int) = (200, 0, 125)
 TILE_SIZE = 32
 running = True
 
@@ -31,12 +32,16 @@ textRect = text_surface.get_rect()
 
 
 
+
 class Vector:
     def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
 
-
+    def toTuple(self):
+        return (self.x, self.y)
+    
+    
 class Rectangle:
     def __init__(self, x: float, y: float, width: float, height: float):
         self.x = x
@@ -140,6 +145,24 @@ class Controller:
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False
+
+class Money(Entity):
+    def __init__(self, total: int, x, y):
+        super().__init__(x, y, TILE_SIZE, TILE_SIZE)
+        self.total = total
+        self.textSurface = font.render(str(total), True, GREEN, PURPLE)
+        self.textRectangle = self.textSurface.get_rect()
+        self.color = PURPLE
+
+
+    def update(self, state):
+        super().update(state)
+
+    def draw(self, display, state):
+        pygame.draw.rect(display, self.color, self.collision.toTuple())
+
+        pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
+
                     
 
 
@@ -185,6 +208,8 @@ class Player(Entity):
         # note that if we have any collisions later we will undo the movements.
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
+
+
 
 
     def draw(self, display, state):
@@ -236,6 +261,7 @@ class GameState:
     def __init__(self):
         self.controller = Controller()
         self.player = Player(50, 100)
+        self.money = Money(25, 50,50)
         self.npc = Npc(170, 170)
         self.obstacle = Obstacle(22, 22)
         self.isRunning = True
@@ -252,6 +278,7 @@ class Game:
         player = state.player
         npc = state.npc
         obstacle = state.obstacle
+        money = state.money
         
         while state.isRunning:
             controller.update()
@@ -262,6 +289,7 @@ class Game:
             player.update(state)
             npc.update(state)
             obstacle.update(state)
+            money.update(state)
 
             if player.isOverlap(npc) or player.isOverlap(obstacle):
                 player.undoLastMove()
@@ -271,7 +299,8 @@ class Game:
             player.draw(display, state)
             npc.draw(display, state)
             obstacle.draw(display, state)
-
+            money.draw(display, state)
+            
             if controller.isAPressed:
                 distance = math.sqrt((player.collision.x - npc.collision.x) ** 2 + (player.collision.y - npc.collision.y) ** 2)
                 # Check if distance is within the sum of the widths and heights of the rectangles
