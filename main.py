@@ -105,6 +105,7 @@ class Controller:
         self.isDownPressed: bool = False
         self.isExitPressed: bool = False
         self.isAPressed: bool = False
+        self.isQPressed: bool = False
         #might need to delete this bottom line pygame.init()
         pygame.init()
 
@@ -136,6 +137,9 @@ class Controller:
                         self.isDownPressed = False
                 elif event.key == pygame.K_a:
                     self.isAPressed = True
+                elif event.key == pygame.K_q:
+                    self.isQPressed = True
+
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
@@ -148,6 +152,8 @@ class Controller:
                     self.isDownPressed = False
                 elif event.key == pygame.K_a:
                     self.isAPressed = False
+                elif event.key == pygame.K_q:
+                    self.isQPressed = False
 
                     
                     
@@ -172,17 +178,18 @@ class Money(Entity):
         pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
 
     def add(self, total: int):
+        print("We're adding here")
+        # print(str(total))
+
         self.total += total
+        self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
+        # print(str(total))
 
     def remove(self, total: int):
         self.total -= total
 
     def get_total(self) -> int:
         return self.total
-
-
-
-                    
 
 
 
@@ -278,7 +285,7 @@ class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-        self.money: Money = Money(25, 50,50)
+        self.money: Money = Money(23, 50,50)
         self.npc: NPC = Npc(170, 170)
         self.obstacle: Obstacle = Obstacle(22, 22)
         self.isRunning: bool = True
@@ -303,6 +310,13 @@ class Game:
             if controller.isExitPressed is True:
                 state.isRunning = False
 
+            elif controller.isQPressed is True:
+                print("q")
+                print(str(money.textSurface))
+                money.add(20)
+                print(str(money.total))
+
+
             player.update(state)
             npc.update(state)
             obstacle.update(state)
@@ -310,6 +324,7 @@ class Game:
 
             if player.isOverlap(npc) or player.isOverlap(obstacle):
                 player.undoLastMove()
+
 
             display.fill(WHITE)
 
