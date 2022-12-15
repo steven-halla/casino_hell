@@ -92,7 +92,7 @@ class Entity:
     def isOverlap(self, entity: "Entity") -> bool:
         return self.collision.isOverlap(entity.collision)
 
-
+#class Item:
 
 
 
@@ -138,7 +138,10 @@ class Controller:
                 elif event.key == pygame.K_a:
                     self.isAPressed = True
                 elif event.key == pygame.K_q:
-                    self.isQPressed = True
+                    # Only set isQPressed to True if it is not already True
+                    if not self.isQPressed:
+                        self.isQPressed = True
+                        state.money.add(20)
 
 
             elif event.type == pygame.KEYUP:
@@ -153,7 +156,9 @@ class Controller:
                 elif event.key == pygame.K_a:
                     self.isAPressed = False
                 elif event.key == pygame.K_q:
-                    self.isQPressed = False
+                    # Only set isQPressed to False if it is not already False
+                    if self.isQPressed:
+                        self.isQPressed = False
 
                     
                     
@@ -310,11 +315,11 @@ class Game:
             if controller.isExitPressed is True:
                 state.isRunning = False
 
-            elif controller.isQPressed is True:
-                print("q")
-                print(str(money.textSurface))
-                money.add(20)
-                print(str(money.total))
+            # elif controller.isQPressed is True:
+            #     print("q")
+            #     print(str(money.textSurface))
+            #     money.add(20)
+            #     print(str(money.total))
 
 
             player.update(state)
