@@ -1,5 +1,6 @@
 import random
 
+# allow player to pick heads or tails
 
 class CoinFlipGame:
     def __init__(self, min_bet: int, max_bet: int):
@@ -11,16 +12,24 @@ class CoinFlipGame:
     def start_game(self):
         while True:
             print(
-                f"Starting a new game of Coin Flip with a minimum bet of {self.min_bet} and a maximum bet of {self.max_bet}")
+                f"Starting a new game of Coin Flip with a minimum bet of {self.min_bet} and a maximum bet of {self.max_bet} ")
     
             # Get the player's bet
             bet = self.get_bet()
-    
-            # Flip the coin
+
+            while True:
+                choice = input("Please pick 'heads' or 'tails': ")
+                if choice.lower() in ["heads", "tails"]:
+                    break
+                else:
+                    print("Invalid choice. Please enter 'heads' or 'tails'.")
+
+                # Flip the coin
             result = self.flip_coin()
-    
+
             # Calculate the player's new balance
-            self.balance += bet if result == "heads" else -bet
+            self.balance += bet if result == choice else -bet
+
     
             # Print the result
             print(f"The coin landed on {result}! Your new balance is {self.balance}")
