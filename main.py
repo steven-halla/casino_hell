@@ -4,6 +4,8 @@ import math
 import keyboard
 import time
 from typing import *
+from coinflip import CoinFlipGame
+
 
 clock = pygame.time.Clock()
 
@@ -21,11 +23,11 @@ PURPLE: Tuple[int, int, int] = (200, 0, 125)
 TILE_SIZE: int = 32
 running: bool = True
 
-
 font = pygame.font.Font('freesansbold.ttf', 32)
 
 text_surface = font.render('GeeksForGeeks', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
+
 
 # textRect = text.get_rect()
 # textRect.center = (X // 2, Y // 1.3)
@@ -39,8 +41,7 @@ class Vector:
     def toTuple(self) -> Tuple[float, float]:
         return (self.x, self.y)
 
-    
-    
+
 class Rectangle:
     def __init__(self, x: float, y: float, width: float, height: float):
         self.x: float = x
@@ -92,8 +93,8 @@ class Entity:
     def isOverlap(self, entity: "Entity") -> bool:
         return self.collision.isOverlap(entity.collision)
 
-#class Item:
 
+# class Item:
 
 
 class Controller:
@@ -106,12 +107,11 @@ class Controller:
         self.isExitPressed: bool = False
         self.isAPressed: bool = False
         self.isQPressed: bool = False
-        #might need to delete this bottom line pygame.init()
+        # might need to delete this bottom line pygame.init()
         pygame.init()
 
     def is_pressed(self, key) -> bool:
         return self.keys[key]
-
 
     def update(self, state):
         for event in pygame.event.get():
@@ -142,6 +142,11 @@ class Controller:
                     if not self.isQPressed:
                         self.isQPressed = True
                         state.money.add(20)
+                        print("Hi")
+                        coin_flip_game = CoinFlipGame(50, 1000)
+
+                        # Play the game
+                        coin_flip_game.start_coin_game()
 
 
             elif event.type == pygame.KEYUP:
@@ -158,12 +163,8 @@ class Controller:
                 elif event.key == pygame.K_q:
                     # Only set isQPressed to False if it is not already False
                     if self.isQPressed:
+
                         self.isQPressed = False
-
-                    
-                    
-
-
 
 
 class Money(Entity):
@@ -197,7 +198,6 @@ class Money(Entity):
         return self.total
 
 
-
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
@@ -219,10 +219,9 @@ class Player(Entity):
             # hard stop
             # self.velocity.x = 0  # default velocity to zero unless key pressed
             # slow stop
-            self.velocity.x *= 0.65 # gradually slow the x velocity down
-            if abs(self.velocity.x) < 0.15: # if x velocity is close to zero, just set to zero
+            self.velocity.x *= 0.65  # gradually slow the x velocity down
+            if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
                 self.velocity.x = 0
-
 
         if controller.isUpPressed:
             self.velocity.y = -4
@@ -232,8 +231,8 @@ class Player(Entity):
             # hard stop
             # self.velocity.y = 0  # default velocity to zero unless key pressed
             # slow stop
-            self.velocity.y *= 0.65 # gradually slow the y velocity down
-            if abs(self.velocity.y) < 0.15: # if y velocity is close to zero, just set to zero
+            self.velocity.y *= 0.65  # gradually slow the y velocity down
+            if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
                 self.velocity.y = 0
 
         # move player by velocity
@@ -241,9 +240,8 @@ class Player(Entity):
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-    def draw(self, display:pygame.Surface, state):
+    def draw(self, display: pygame.Surface, state):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
-
 
 
 class Npc(Entity):
@@ -270,7 +268,7 @@ class Npc(Entity):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
         if self.isSpeaking:
             pygame.display.get_surface().blit(text_surface, (
-            self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
+                self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
 
 
 class Obstacle(Entity):
@@ -280,27 +278,26 @@ class Obstacle(Entity):
 
     def update(self, state):
         super().update(state)
-        
+
     def draw(self, display: pygame.Surface, state):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
-
 
 
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-        self.money: Money = Money(23, 50,50)
+        self.money: Money = Money(23, 50, 50)
         self.npc: NPC = Npc(170, 170)
         self.obstacle: Obstacle = Obstacle(22, 22)
         self.isRunning: bool = True
         self.isPaused: bool = False
-        
+
 
 class Game:
     def __init__(self):
-        self.state = GameState() # create a new GameState()
-        
+        self.state = GameState()  # create a new GameState()
+
     def start(self):
         state = self.state
         controller = state.controller
@@ -308,10 +305,13 @@ class Game:
         npc = state.npc
         obstacle = state.obstacle
         money = state.money
-        
+
         while state.isRunning:
+
+
+
             controller.update(state)
-            
+
             if controller.isExitPressed is True:
                 state.isRunning = False
 
@@ -321,7 +321,6 @@ class Game:
             #     money.add(20)
             #     print(str(money.total))
 
-
             player.update(state)
             npc.update(state)
             obstacle.update(state)
@@ -329,7 +328,6 @@ class Game:
 
             if player.isOverlap(npc) or player.isOverlap(obstacle):
                 player.undoLastMove()
-
 
             display.fill(WHITE)
 
