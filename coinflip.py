@@ -9,7 +9,7 @@ class CoinFlipGame:
         self.balance = 0
 
 
-    def start_game(self):
+    def start_coin_game(self):
         while True:
             print(
                 f"Starting a new game of Coin Flip with a minimum bet of {self.min_bet} and a maximum bet of {self.max_bet} ")
@@ -73,7 +73,7 @@ class CoinFlipGame:
 
 
 # Create a new CoinFlipGame with a minimum bet of 10 and a maximum bet of 100
-game = CoinFlipGame(50, 1000)
-
-# Play the game
-game.start_game()
+# coin_flip_game = CoinFlipGame(50, 1000)
+# 
+# # Play the game
+# coin_flip_game.start_coin_game()
