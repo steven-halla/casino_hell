@@ -258,7 +258,8 @@ class Player(Entity):
 
 
     def isOutOfBounds(self) -> bool:
-        return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0
+        return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
+
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
