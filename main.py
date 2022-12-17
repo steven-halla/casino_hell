@@ -126,7 +126,7 @@ class Controller:
 
             if event.type == pygame.KEYDOWN:
                 self.keyPressedTimes[event.key] = nowMilliseconds()
-                # print(self.keyPressedTimes)
+                print(self.keyPressedTimes)
 
                 if event.key == pygame.K_LEFT:
                     self.isLeftPressed = True
@@ -196,7 +196,7 @@ class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
-        self.walkSpeed = 1.3
+        self.walkSpeed = 3.5
 
     # def speaking(self, player, npc):
     #     if npc.collision.x < player.collision.x:
