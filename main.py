@@ -4,7 +4,7 @@ import math
 import keyboard
 import time
 from typing import *
-from coinflip import CoinFlipGame
+# from coinflip import CoinFlipGame
 
 
 clock = pygame.time.Clock()
@@ -14,7 +14,7 @@ X: int = 400
 Y: int = 400
 WINDOWS_SIZE: Tuple[int, int] = (500, 500)
 display = pygame.display.set_mode(WINDOWS_SIZE)
-pygame.display.set_caption("Shooter4")
+pygame.display.set_caption("Casino man")
 GREEN: Tuple[int, int, int] = (0, 255, 0)
 WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
@@ -69,17 +69,74 @@ class Rectangle:
                and self.y < r.y + r.height and self.y + self.height > r.y
 
 
+
+class Screen:
+    def __init__(self, window_size: Tuple[int, int]):
+        self.window_size = window_size
+        pygame.display.set_caption("Casino man")
+
+    def draw(self, display):
+        display = pygame.display.set_mode(self.window_size)
+        pygame.display.set_caption("")
+
+class MainScreen(Screen):
+    def __init__(self, window_size: Tuple[int, int]):
+        super().__init__()
+
+    def update(self, state):
+        state = self.state
+        controller = state.controller
+        player = state.player
+        npc = state.npc
+        obstacle = state.obstacle
+        money = state.money
+        controller.update(state)
+
+        if controller.isExitPressed is True:
+            state.isRunning = False
+
+        # elif controller.isQPressed is True:
+        #     print("q")
+        #     print(str(money.textSurface))
+        #     money.add(20)
+        #     print(str(money.total))
+
+        player.update(state)
+        npc.update(state)
+        obstacle.update(state)
+        money.update(state)
+
+        if player.isOverlap(npc) or player.isOverlap(obstacle):
+            player.undoLastMove()
+        return
+
+    def draw(self, display, state):
+        display.fill(WHITE)
+        player.draw(display, state)
+        npc.draw(display, state)
+        obstacle.draw(display, state)
+        money.draw(display, state)
+
+        pygame.display.update()
+        return
+
+
+
+
+
 class Entity:
     def __init__(self, x: float, y: float, width: float, height: float):
         self.position: Vector = Vector(x, y)
         self.velocity: Vector = Vector(0, 0)
         self.collision: Rectangle = Rectangle(x, y, width, height)
 
+    def update(self, state):
+        self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
+
     def draw(self, display, state):
         pygame.draw.rect(display, RED, self.collision.toTuple())
 
-    def update(self, state):
-        self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
+
 
     def undoLastMove(self):
         self.setPosition(self.position.x - self.velocity.x, self.position.y - self.velocity.y)
@@ -143,10 +200,12 @@ class Controller:
                         self.isQPressed = True
                         state.money.add(20)
                         print("Hi")
-                        coin_flip_game = CoinFlipGame(50, 1000)
+
+                    #################    #add these in later$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+                        # coin_flip_game = CoinFlipGame(50, 1000)
 
                         # Play the game
-                        coin_flip_game.start_coin_game()
+                        # coin_flip_game.start_coin_game()
 
 
             elif event.type == pygame.KEYUP:
@@ -283,6 +342,7 @@ class Obstacle(Entity):
         pygame.draw.rect(display, self.color, self.collision.toTuple())
 
 
+
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
@@ -292,6 +352,8 @@ class GameState:
         self.obstacle: Obstacle = Obstacle(22, 22)
         self.isRunning: bool = True
         self.isPaused: bool = False
+
+
 
 
 class Game:
