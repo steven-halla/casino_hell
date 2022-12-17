@@ -24,7 +24,9 @@ TILE_SIZE: int = 32
 
 font = pygame.font.Font('freesansbold.ttf', 32)
 text_surface = font.render('Casino', True, GREEN, BLUE)
+speech_bubble = font.render('We;re adding here', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
+speechRect = speech_bubble.get_rect()
 
 def nowMilliseconds() -> int:
     return round(time.time() * 1000)
@@ -176,18 +178,19 @@ class Money(Entity):
 
         pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
 
-    # def add(self, total: int):
-    #     print("We're adding here")
-    #     # print(str(total))
-    #
-    #     self.total += total
-    #     self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
+    def add(self, total: int):
+        print("We're adding here")
+        print(str(total))
+
+        self.total += total
+        self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
     #     # print(str(total))
 
     # def remove(self, total: int):
     #     self.total -= total
 
     def get_total(self) -> int:
+        print(str(self.total))
         return self.total
 
 
@@ -197,6 +200,8 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walkSpeed = 3.5
+        # self.getMoney: bool = False
+
 
     # def speaking(self, player, npc):
     #     if npc.collision.x < player.collision.x:
@@ -244,9 +249,16 @@ class Player(Entity):
         if self.isOverlap(state.npc) or self.isOverlap(state.obstacle):
             self.undoLastMove()
 
+        if controller.isQPressed:
+            # self.getMoney = True
+            state.money.get_total()
+            state.money.add(10)
+
+
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
 
 
 class Npc(Entity):
