@@ -13,24 +13,21 @@ pygame.init()
 X: int = 400
 Y: int = 400
 WINDOWS_SIZE: Tuple[int, int] = (500, 500)
-display = pygame.display.set_mode(WINDOWS_SIZE)
-pygame.display.set_caption("Casino man")
+DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
+pygame.display.set_caption("Casino Man")
 GREEN: Tuple[int, int, int] = (0, 255, 0)
 WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
 RED: Tuple[int, int, int] = (255, 0, 0)
 PURPLE: Tuple[int, int, int] = (200, 0, 125)
 TILE_SIZE: int = 32
-running: bool = True
 
 font = pygame.font.Font('freesansbold.ttf', 32)
-
-text_surface = font.render('GeeksForGeeks', True, GREEN, BLUE)
+text_surface = font.render('Casino', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
 
-
-# textRect = text.get_rect()
-# textRect.center = (X // 2, Y // 1.3)
+def nowMilliseconds() -> int:
+    return round(time.time() * 1000)
 
 
 class Vector:
@@ -69,74 +66,17 @@ class Rectangle:
                and self.y < r.y + r.height and self.y + self.height > r.y
 
 
-
-class Screen:
-    def __init__(self, window_size: Tuple[int, int]):
-        self.window_size = window_size
-        pygame.display.set_caption("Casino man")
-
-    def draw(self, display):
-        display = pygame.display.set_mode(self.window_size)
-        pygame.display.set_caption("")
-
-class MainScreen(Screen):
-    def __init__(self, window_size: Tuple[int, int]):
-        super().__init__()
-
-    def update(self, state):
-        state = self.state
-        controller = state.controller
-        player = state.player
-        npc = state.npc
-        obstacle = state.obstacle
-        money = state.money
-        controller.update(state)
-
-        if controller.isExitPressed is True:
-            state.isRunning = False
-
-        # elif controller.isQPressed is True:
-        #     print("q")
-        #     print(str(money.textSurface))
-        #     money.add(20)
-        #     print(str(money.total))
-
-        player.update(state)
-        npc.update(state)
-        obstacle.update(state)
-        money.update(state)
-
-        if player.isOverlap(npc) or player.isOverlap(obstacle):
-            player.undoLastMove()
-        return
-
-    def draw(self, display, state):
-        display.fill(WHITE)
-        player.draw(display, state)
-        npc.draw(display, state)
-        obstacle.draw(display, state)
-        money.draw(display, state)
-
-        pygame.display.update()
-        return
-
-
-
-
-
 class Entity:
     def __init__(self, x: float, y: float, width: float, height: float):
         self.position: Vector = Vector(x, y)
         self.velocity: Vector = Vector(0, 0)
         self.collision: Rectangle = Rectangle(x, y, width, height)
 
-    def update(self, state):
+    def update(self, state: "GameState"):
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-    def draw(self, display, state):
+    def draw(self, state: "GameState"):
         pygame.draw.rect(display, RED, self.collision.toTuple())
-
-
 
     def undoLastMove(self):
         self.setPosition(self.position.x - self.velocity.x, self.position.y - self.velocity.y)
@@ -164,51 +104,47 @@ class Controller:
         self.isExitPressed: bool = False
         self.isAPressed: bool = False
         self.isQPressed: bool = False
+        self.keyPressedTimes: Dict[int, int] = {} # Map<key number, key pressed millisecond
+        self.keyReleasedTimes: Dict[int, int] = {} # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
         pygame.init()
 
-    def is_pressed(self, key) -> bool:
-        return self.keys[key]
+    def timeSinceKeyPressed(self, key: int):
+        if key not in self.keyPressedTimes:
+            return -1
+        return nowMilliseconds() - self.keyPressedTimes[event.key]
 
-    def update(self, state):
+    def timeSinceKeyReleased(self, key: int):
+        if key not in self.keyReleasedTimes:
+            return -1
+        return nowMilliseconds() - self.keyReleasedTimes[event.key]
+
+    def update(self, state: "GameState"):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
 
             if event.type == pygame.KEYDOWN:
+                self.keyPressedTimes[event.key] = nowMilliseconds()
+                # print(self.keyPressedTimes)
+
                 if event.key == pygame.K_LEFT:
                     self.isLeftPressed = True
-                    if state.npc.isSpeaking == True:
-                        self.isLeftPressed = False
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = True
-                    if state.npc.isSpeaking == True:
-                        self.isRightPressed = False
                 elif event.key == pygame.K_UP:
                     self.isUpPressed = True
-                    if state.npc.isSpeaking == True:
-                        self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = True
-                    if state.npc.isSpeaking == True:
-                        self.isDownPressed = False
                 elif event.key == pygame.K_a:
                     self.isAPressed = True
                 elif event.key == pygame.K_q:
-                    # Only set isQPressed to True if it is not already True
-                    if not self.isQPressed:
-                        self.isQPressed = True
-                        state.money.add(20)
-                        print("Hi")
-
-                    #################    #add these in later$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-                        # coin_flip_game = CoinFlipGame(50, 1000)
-
-                        # Play the game
-                        # coin_flip_game.start_coin_game()
-
+                    self.isQPressed = True
 
             elif event.type == pygame.KEYUP:
+                self.keyReleasedTimes[event.key] = nowMilliseconds()
+                # print(self.keyReleasedTimes)
+
                 if event.key == pygame.K_LEFT:
                     self.isLeftPressed = False
                 elif event.key == pygame.K_RIGHT:
@@ -220,10 +156,8 @@ class Controller:
                 elif event.key == pygame.K_a:
                     self.isAPressed = False
                 elif event.key == pygame.K_q:
-                    # Only set isQPressed to False if it is not already False
-                    if self.isQPressed:
+                    self.isQPressed = False
 
-                        self.isQPressed = False
 
 
 class Money(Entity):
@@ -234,73 +168,85 @@ class Money(Entity):
         self.textRectangle: pygame.Rect = self.textSurface.get_rect()
         self.color: Tuple[int, int, int] = PURPLE
 
-    def update(self, state: List[int]):
+    def update(self, state: "GameState"):
         super().update(state)
 
-    def draw(self, display: pygame.Surface, state):
-        pygame.draw.rect(display, self.color, self.collision.toTuple())
+    def draw(self, state: "GameState"):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
         pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
 
-    def add(self, total: int):
-        print("We're adding here")
-        # print(str(total))
+    # def add(self, total: int):
+    #     print("We're adding here")
+    #     # print(str(total))
+    #
+    #     self.total += total
+    #     self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
+    #     # print(str(total))
 
-        self.total += total
-        self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
-        # print(str(total))
-
-    def remove(self, total: int):
-        self.total -= total
+    # def remove(self, total: int):
+    #     self.total -= total
 
     def get_total(self) -> int:
         return self.total
+
 
 
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
+        self.walkSpeed = 1.3
 
     # def speaking(self, player, npc):
     #     if npc.collision.x < player.collision.x:
     #         print("Nice")
 
-    def update(self, state):
+    def update(self, state: "GameState"):
         controller = state.controller
         controller.update(state)
 
-        if controller.isLeftPressed:
-            self.velocity.x = -4
-        elif controller.isRightPressed:
-            self.velocity.x = 4
-        else:
-            # hard stop
-            # self.velocity.x = 0  # default velocity to zero unless key pressed
-            # slow stop
-            self.velocity.x *= 0.65  # gradually slow the x velocity down
-            if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
-                self.velocity.x = 0
-
-        if controller.isUpPressed:
-            self.velocity.y = -4
-        elif controller.isDownPressed:
-            self.velocity.y = 4
-        else:
-            # hard stop
-            # self.velocity.y = 0  # default velocity to zero unless key pressed
-            # slow stop
-            self.velocity.y *= 0.65  # gradually slow the y velocity down
-            if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
-                self.velocity.y = 0
-
+        canMove = not state.npc.isSpeaking
+        if canMove:
+            if controller.isLeftPressed:
+                self.velocity.x = -self.walkSpeed
+            elif controller.isRightPressed:
+                self.velocity.x = self.walkSpeed
+            else:
+                # hard stop
+                # self.velocity.x = 0  # default velocity to zero unless key pressed
+                # slow stop
+                self.velocity.x *= 0.65  # gradually slow the x velocity down
+                if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
+                    self.velocity.x = 0
+    
+            if controller.isUpPressed:
+                self.velocity.y = -self.walkSpeed
+            elif controller.isDownPressed:
+                self.velocity.y = self.walkSpeed
+            else:
+                # hard stop
+                # self.velocity.y = 0  # default velocity to zero unless key pressed
+                # slow stop
+                self.velocity.y *= 0.65  # gradually slow the y velocity down
+                if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
+                    self.velocity.y = 0
+                    
+        else: # if can not move, set velocity to zero
+            self.velocity.x = 0
+            self.velocity.y = 0
+            
         # move player by velocity
         # note that if we have any collisions later we will undo the movements.
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-    def draw(self, display: pygame.Surface, state):
-        pygame.draw.rect(display, self.color, self.collision.toTuple())
+        if self.isOverlap(state.npc) or self.isOverlap(state.obstacle):
+            self.undoLastMove()
+
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
 
 class Npc(Entity):
@@ -323,8 +269,8 @@ class Npc(Entity):
                 self.isSpeaking = not self.isSpeaking
                 self.speakStartTime = time.process_time()
 
-    def draw(self, display: pygame.Surface, state):
-        pygame.draw.rect(display, self.color, self.collision.toTuple())
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
         if self.isSpeaking:
             pygame.display.get_surface().blit(text_surface, (
                 self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
@@ -338,8 +284,8 @@ class Obstacle(Entity):
     def update(self, state):
         super().update(state)
 
-    def draw(self, display: pygame.Surface, state):
-        pygame.draw.rect(display, self.color, self.collision.toTuple())
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
 
 
@@ -355,52 +301,82 @@ class GameState:
 
 
 
+class Screen:
+    def __init__(self, screenName: str):
+        self.screenName = screenName
+        pass
+    
+    def start(self, state: "GameState"):
+        pygame.display.set_caption(self.screenName)
+        pass
+        
+    def update(self, state: "GameState"):
+        pass
 
-class Game:
+    def draw(self, state: "GameState"):
+        pass
+
+
+class MainScreen(Screen):
     def __init__(self):
-        self.state = GameState()  # create a new GameState()
+        super().__init__("Casino MainScreen")
+    
 
-    def start(self):
-        state = self.state
+    def update(self, state: "GameState"):
         controller = state.controller
         player = state.player
         npc = state.npc
         obstacle = state.obstacle
         money = state.money
+        controller.update(state)
 
-        while state.isRunning:
+        if controller.isExitPressed is True:
+            state.isRunning = False
+
+        # elif controller.isQPressed is True:
+        #     print("q")
+        #     print(str(money.textSurface))
+        #     money.add(20)
+        #     print(str(money.total))
+
+        player.update(state)
+        npc.update(state)
+        obstacle.update(state)
+        money.update(state)
 
 
 
-            controller.update(state)
+    def draw(self, state: "GameState"):
+        DISPLAY.fill(WHITE)
 
-            if controller.isExitPressed is True:
-                state.isRunning = False
+        state.player.draw(state)
+        state.npc.draw(state)
+        state.obstacle.draw(state)
+        state.money.draw(state)
 
-            # elif controller.isQPressed is True:
-            #     print("q")
-            #     print(str(money.textSurface))
-            #     money.add(20)
-            #     print(str(money.total))
+        pygame.display.update()
 
-            player.update(state)
-            npc.update(state)
-            obstacle.update(state)
-            money.update(state)
+# old code, if q pressed:
+    # NO EXTRA LOGIC IN CONTROLLER CLASS
+    # state.money.add(20)
+    # coinFlipScreen = CoinFlipScreen() # defined in GameState
+    # from MainScreen, if we want to enter the coinFlipScreen, then:
+    # state.currentScreen = state.coinFlipScreen
+    # state.currentScreen.start()
 
-            if player.isOverlap(npc) or player.isOverlap(obstacle):
-                player.undoLastMove()
+class Game:
+    def __init__(self):
+        self.state = GameState()  # create a new GameState()
+        self.mainScreen = MainScreen()
+        self.currentScreen = self.mainScreen
 
-            display.fill(WHITE)
+    def start(self):
+        self.currentScreen.start(self.state)
 
-            player.draw(display, state)
-            npc.draw(display, state)
-            obstacle.draw(display, state)
-            money.draw(display, state)
-
-            pygame.display.update()
-
-        # close Pygame when the game loop is finished
+        while self.state.isRunning:
+            self.currentScreen.update(self.state)
+            self.currentScreen.draw(self.state)
+            
         pygame.quit()
 
 
