@@ -333,11 +333,6 @@ class MainScreen(Screen):
         if controller.isExitPressed is True:
             state.isRunning = False
 
-        # elif controller.isQPressed is True:
-        #     print("q")
-        #     print(str(money.textSurface))
-        #     money.add(20)
-        #     print(str(money.total))
 
         player.update(state)
         npc.update(state)
