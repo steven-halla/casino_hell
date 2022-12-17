@@ -10,9 +10,9 @@ from typing import *
 clock = pygame.time.Clock()
 
 pygame.init()
-X: int = 400
-Y: int = 400
-WINDOWS_SIZE: Tuple[int, int] = (500, 500)
+SCREEN_WIDTH: int = 800
+SCREEN_HEIGHT: int = 600
+WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 pygame.display.set_caption("Casino Man")
 GREEN: Tuple[int, int, int] = (0, 255, 0)
@@ -212,6 +212,8 @@ class Player(Entity):
         controller.update(state)
 
         canMove = not state.npc.isSpeaking
+
+
         if canMove:
             if controller.isLeftPressed:
                 self.velocity.x = -self.walkSpeed
@@ -246,7 +248,7 @@ class Player(Entity):
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-        if self.isOverlap(state.npc) or self.isOverlap(state.obstacle):
+        if self.isOverlap(state.npc) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
             self.undoLastMove()
 
         if controller.isQPressed:
@@ -255,6 +257,8 @@ class Player(Entity):
             state.money.add(10)
 
 
+    def isOutOfBounds(self) -> bool:
+        return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
