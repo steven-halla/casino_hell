@@ -24,7 +24,7 @@ TILE_SIZE: int = 32
 
 font = pygame.font.Font('freesansbold.ttf', 32)
 text_surface = font.render('Casino', True, GREEN, BLUE)
-speech_bubble = font.render('We;re adding here', True, GREEN, BLUE)
+speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
 speechRect = speech_bubble.get_rect()
 
@@ -69,7 +69,7 @@ class Rectangle:
 
 
 class Entity:
-    def __init__(self, x: float, y: float, width: float, height: float):
+    def __init__(sejjjlf, x: float, y: float, width: float, height: float):
         self.position: Vector = Vector(x, y)
         self.velocity: Vector = Vector(0, 0)
         self.collision: Rectangle = Rectangle(x, y, width, height)
@@ -380,6 +380,8 @@ class Game:
     def __init__(self):
         self.state = GameState()  # create a new GameState()
         self.mainScreen = MainScreen()
+        self.testScreen = testScreen()
+
         self.currentScreen = self.mainScreen
 
     def start(self):
