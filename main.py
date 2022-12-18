@@ -256,6 +256,10 @@ class Player(Entity):
 
         if controller.isQPressed:
             self.nextScreen = True
+
+        elif controller.isAPressed:
+            self.nextScreen = False
+
             # self.getMoney = True
             # state.money.get_total()
             # state.money.add(10)
@@ -439,6 +443,14 @@ class Game:
                 elif self.currentScreen == self.testScreen:  # use self.currentScreen here
                     self.testScreen.draw(self.state)
 
+            elif self.currentScreen == self.testScreen:
+                if self.state.player.nextScreen == False:
+                    print("next")
+                    self.currentScreen = self.mainScreen
+                    self.currentScreen.start(self.state)
+                    self.mainScreen.draw(self.state)
+                elif self.currentScreen == self.mainScreen:
+                    self.mainScreen.draw(self.state)
 
 
 
