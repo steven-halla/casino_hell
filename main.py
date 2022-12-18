@@ -22,6 +22,8 @@ RED: Tuple[int, int, int] = (255, 0, 0)
 PURPLE: Tuple[int, int, int] = (200, 0, 125)
 TILE_SIZE: int = 32
 
+# nextScreen = false
+
 font = pygame.font.Font('freesansbold.ttf', 32)
 text_surface = font.render('Casino', True, GREEN, BLUE)
 speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
@@ -69,7 +71,7 @@ class Rectangle:
 
 
 class Entity:
-    def __init__(sejjjlf, x: float, y: float, width: float, height: float):
+    def __init__(self, x: float, y: float, width: float, height: float):
         self.position: Vector = Vector(x, y)
         self.velocity: Vector = Vector(0, 0)
         self.collision: Rectangle = Rectangle(x, y, width, height)
@@ -200,6 +202,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walkSpeed = 3.5
+        self.nextScreen = False
         # self.getMoney: bool = False
 
 
@@ -252,9 +255,13 @@ class Player(Entity):
             self.undoLastMove()
 
         if controller.isQPressed:
+            self.nextScreen = True
             # self.getMoney = True
-            state.money.get_total()
-            state.money.add(10)
+            # state.money.get_total()
+            # state.money.add(10)
+
+
+
 
 
     def isOutOfBounds(self) -> bool:
@@ -368,6 +375,38 @@ class MainScreen(Screen):
 
         pygame.display.update()
 
+
+class TestScreen(Screen):
+    def __init__(self):
+        super().__init__("Casino Test Screen")
+
+    def update(self, state: "GameState"):
+        controller = state.controller
+        player = state.player
+        npc = state.npc
+        obstacle = state.obstacle
+        money = state.money
+        controller.update(state)
+
+        if controller.isExitPressed is True:
+            state.isRunning = False
+
+        player.update(state)
+        npc.update(state)
+        obstacle.update(state)
+        money.update(state)
+
+    def draw(self, state: "GameState"):
+        DISPLAY.fill(GREEN)
+
+        state.player.draw(state)
+        state.npc.draw(state)
+        state.obstacle.draw(state)
+        state.money.draw(state)
+
+        pygame.display.update()
+
+
 # old code, if q pressed:
     # NO EXTRA LOGIC IN CONTROLLER CLASS
     # state.money.add(20)
@@ -380,9 +419,9 @@ class Game:
     def __init__(self):
         self.state = GameState()  # create a new GameState()
         self.mainScreen = MainScreen()
-        self.testScreen = testScreen()
+        self.testScreen = TestScreen()
 
-        self.currentScreen = self.mainScreen
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
     def start(self):
         self.currentScreen.start(self.state)
@@ -390,7 +429,20 @@ class Game:
         while self.state.isRunning:
             self.currentScreen.update(self.state)
             self.currentScreen.draw(self.state)
-            
+            if self.currentScreen == self.mainScreen:  # use self.currentScreen here
+                if self.state.player.nextScreen  == True:
+
+                    print("hi")
+                    self.currentScreen = self.testScreen
+                    self.currentScreen.start(self.state)
+                    self.mainScreen.draw(self.state)
+                elif self.currentScreen == self.testScreen:  # use self.currentScreen here
+                    self.testScreen.draw(self.state)
+
+
+
+
+
         pygame.quit()
 
 
