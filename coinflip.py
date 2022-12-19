@@ -36,7 +36,18 @@ class CoinFlipGame:
             bet = self.get_bet()
 
             while True:
+                textChoice = self.font.render(
+                    f"input heads or tails on console",
+                    True, (255, 255, 255))
+                self.screen.fill((0, 0, 0))
+
+                # Draw the error message
+                self.screen.blit(textChoice, (10, 130))
+
+                # Update the screen
+                pygame.display.flip()
                 choice = input("Please pick 'heads' or 'tails': ")
+
                 if choice.lower() in ["heads", "tails"]:
                     break
                 else:
@@ -94,7 +105,25 @@ class CoinFlipGame:
     def get_bet(self):
         while True:
             try:
-                bet = int(input("How much would you like to bet? "))
+                # bet = int(input("How much would you like to bet? "))
+                print("place your bet between 50-1000 below this line")
+                bet_text = self.font.render("How much would you like to bet?  Please input command on terminal", True, (255, 255, 255))
+
+                # Clear the screen
+                # self.screen.fill((0, 0, 0))
+
+                # Draw the prompt message
+                self.screen.blit(bet_text, (10, 50))
+
+                # Update the screen
+                pygame.display.flip()
+
+                # Accept the player's bet input
+                bet = input()
+
+                # Convert the input to an integer
+                bet = int(bet)
+
                 # Check if the bet is within the minimum and maximum limits
                 if self.min_bet <= bet <= self.max_bet:
                     return bet
