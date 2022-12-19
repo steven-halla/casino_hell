@@ -5,7 +5,6 @@ from typing import *
 import pygame
 
 from coinflip import CoinFlipGame
-# from coinflipscreen import CoinFlipScreen
 
 
 clock = pygame.time.Clock()
@@ -309,11 +308,14 @@ class Obstacle(Entity):
 class Screen:
     def __init__(self, screenName: str):
         self.screenName = screenName
-        pass
+        self.startedAt = nowMilliseconds()
+
 
     def start(self, state: "GameState"):
+        self.startedAt = nowMilliseconds()
+
         pygame.display.set_caption(self.screenName)
-        pass
+
 
     def update(self, state: "GameState"):
         pass
@@ -350,12 +352,28 @@ class MainScreen(Screen):
         state.money.draw(state)
         pygame.display.update()
 
+
 class CoinFlipScreen(Screen):
     def __init__(self, min_bet, max_bet):
         super().__init__("Casino Coin flip  Screen")
         self.min_bet = min_bet
         self.max_bet = max_bet
         self.balance = 0
+        self.font = pygame.font.Font(None, 36)
+
+        # Display the starting message
+
+    def welcomeText(self):
+        print("hihihi")
+        welcomeText = self.font.render(
+                f"Starting a new game of Coin Flip with a minimum bet of {self.min_bet} and a maximum bet of {self.max_bet}",
+                True, (255, 255, 255))
+        DISPLAY.fill((0, 0, 0))
+
+        DISPLAY.blit(welcomeText, (10, 10))
+        pygame.display.flip()
+
+
 
 
     def update(self, state: "GameState"):
@@ -364,6 +382,10 @@ class CoinFlipScreen(Screen):
         money = state.money
         controller.update(state)
 
+        if controller.isAPressed is True:
+            state.currentScreen = state.mainScreen
+            state.currentScreen.start(state)
+
         if controller.isExitPressed is True:
             state.isRunning = False
 
@@ -371,12 +393,9 @@ class CoinFlipScreen(Screen):
         money.update(state)
 
     def draw(self, state: "GameState"):
-        DISPLAY.fill(PURPLE)
-
-        state.player.draw(state)
-
+        print("white me")
+        DISPLAY.fill(WHITE)
         state.money.draw(state)
-
         pygame.display.update()
 
 
