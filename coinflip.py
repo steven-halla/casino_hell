@@ -41,8 +41,8 @@ class CoinFlipGame:
                     break
                 else:
                     # Display the error message
-                    text = font.render("Invalid choice. Please enter 'heads' or 'tails'.", True, (255, 255, 255))
-                    screen.blit(text, (10, 50))
+                    text = self.font.render("Invalid choice. Please enter 'heads' or 'tails'.", True, (255, 255, 255))
+                    self.screen.blit(text, (10, 50))
                     pygame.display.flip()
 
             # Flip the coin
@@ -79,8 +79,16 @@ class CoinFlipGame:
                 print("Thank you for playing!")
                 return False
             else:
+                # Render the error message
                 text = self.font.render("Wrong input. Please enter 'yes' or 'no'.", True, (255, 255, 255))
-                screen.blit(text, (10, 130))
+
+                # Clear the screen
+                self.screen.fill((0, 0, 0))
+
+                # Draw the error message
+                self.screen.blit(text, (10, 130))
+
+                # Update the screen
                 pygame.display.flip()
 
     def get_bet(self):
@@ -91,15 +99,36 @@ class CoinFlipGame:
                 if self.min_bet <= bet <= self.max_bet:
                     return bet
                 else:
-                    print(f"Please enter a bet between {self.min_bet} and {self.max_bet}")
+                    # Render the error message
+                    text = self.font.render(f"Please enter a bet between {self.min_bet} and {self.max_bet}", True,
+                                            (255, 255, 255))
+
+                    # Clear the screen
+                    self.screen.fill((0, 0, 0))
+
+                    # Draw the error message
+                    self.screen.blit(text, (10, 50))
+
+                    # Update the screen
+                    pygame.display.flip()
             except ValueError:
-                print("Please enter a valid bet amount")
+                # Render the error message
+                text = self.font.render("Please enter a valid bet amount", True, (255, 255, 255))
+
+                # Clear the screen
+                self.screen.fill((0, 0, 0))
+
+                # Draw the error message
+                self.screen.blit(text, (10, 50))
+
+                # Update the screen
+                pygame.display.flip()
 
     def flip_coin(self):
         return "heads" if random.randint(0, 1) == 0 else "tails"
 
-    def draw(self,screen):
-        screen.blit(self.text, self.text_rect)
+    # def draw(self,screen):
+    #     screen.blit(self.text, self.text_rect)
 
 # Create a new CoinFlipGame with a minimum bet of 10 and a maximum bet of 100
 coin_flip_game = CoinFlipGame(50, 1000)
