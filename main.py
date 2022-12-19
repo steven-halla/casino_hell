@@ -1,10 +1,11 @@
-import pygame
-from pygame.locals import *
 import math
-import keyboard
 import time
 from typing import *
-# from coinflip import CoinFlipGame
+
+import pygame
+
+from coinflip import CoinFlipGame
+# from coinflipscreen import CoinFlipScreen
 
 
 clock = pygame.time.Clock()
@@ -29,6 +30,7 @@ text_surface = font.render('Casino', True, GREEN, BLUE)
 speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
 speechRect = speech_bubble.get_rect()
+
 
 def nowMilliseconds() -> int:
     return round(time.time() * 1000)
@@ -80,7 +82,7 @@ class Entity:
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
     def draw(self, state: "GameState"):
-        pygame.draw.rect(display, RED, self.collision.toTuple())
+        pygame.draw.rect(DISPLAY, RED, self.collision.toTuple())
 
     def undoLastMove(self):
         self.setPosition(self.position.x - self.velocity.x, self.position.y - self.velocity.y)
@@ -100,7 +102,6 @@ class Entity:
 
 class Controller:
     def __init__(self):
-        self.keys: List[bool] = pygame.key.get_pressed()
         self.isLeftPressed: bool = False
         self.isRightPressed: bool = False
         self.isUpPressed: bool = False
@@ -108,20 +109,20 @@ class Controller:
         self.isExitPressed: bool = False
         self.isAPressed: bool = False
         self.isQPressed: bool = False
-        self.keyPressedTimes: Dict[int, int] = {} # Map<key number, key pressed millisecond
-        self.keyReleasedTimes: Dict[int, int] = {} # Map<key number, key pressed millisecond
+        self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
+        self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
         pygame.init()
 
     def timeSinceKeyPressed(self, key: int):
         if key not in self.keyPressedTimes:
             return -1
-        return nowMilliseconds() - self.keyPressedTimes[event.key]
+        return nowMilliseconds() - self.keyPressedTimes[key]
 
     def timeSinceKeyReleased(self, key: int):
         if key not in self.keyReleasedTimes:
             return -1
-        return nowMilliseconds() - self.keyReleasedTimes[event.key]
+        return nowMilliseconds() - self.keyReleasedTimes[key]
 
     def update(self, state: "GameState"):
         for event in pygame.event.get():
@@ -163,7 +164,6 @@ class Controller:
                     self.isQPressed = False
 
 
-
 class Money(Entity):
     def __init__(self, total: int, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
@@ -186,6 +186,7 @@ class Money(Entity):
 
         self.total += total
         self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
+
     #     # print(str(total))
 
     # def remove(self, total: int):
@@ -196,15 +197,12 @@ class Money(Entity):
         return self.total
 
 
-
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walkSpeed = 3.5
-        self.nextScreen = False
         # self.getMoney: bool = False
-
 
     # def speaking(self, player, npc):
     #     if npc.collision.x < player.collision.x:
@@ -215,7 +213,6 @@ class Player(Entity):
         controller.update(state)
 
         canMove = not state.npc.isSpeaking
-
 
         if canMove:
             if controller.isLeftPressed:
@@ -229,7 +226,7 @@ class Player(Entity):
                 self.velocity.x *= 0.65  # gradually slow the x velocity down
                 if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
                     self.velocity.x = 0
-    
+
             if controller.isUpPressed:
                 self.velocity.y = -self.walkSpeed
             elif controller.isDownPressed:
@@ -241,11 +238,11 @@ class Player(Entity):
                 self.velocity.y *= 0.65  # gradually slow the y velocity down
                 if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
                     self.velocity.y = 0
-                    
-        else: # if can not move, set velocity to zero
+
+        else:  # if can not move, set velocity to zero
             self.velocity.x = 0
             self.velocity.y = 0
-            
+
         # move player by velocity
         # note that if we have any collisions later we will undo the movements.
         # TODO test collision BEFORE moving
@@ -255,26 +252,19 @@ class Player(Entity):
             self.undoLastMove()
 
         if controller.isQPressed:
-            self.nextScreen = True
+            state.currentScreen = state.coinFlipScreen
+            state.coinFlipScreen.start(state)
 
         elif controller.isAPressed:
-            self.nextScreen = False
-
-            # self.getMoney = True
-            # state.money.get_total()
-            # state.money.add(10)
-
-
-
-
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
+            state.money.add(100)
 
     def isOutOfBounds(self) -> bool:
         return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
 
-
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
-
 
 
 class Npc(Entity):
@@ -316,28 +306,15 @@ class Obstacle(Entity):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
 
-
-class GameState:
-    def __init__(self):
-        self.controller: Controller = Controller()
-        self.player: Player = Player(50, 100)
-        self.money: Money = Money(23, 50, 50)
-        self.npc: NPC = Npc(170, 170)
-        self.obstacle: Obstacle = Obstacle(22, 22)
-        self.isRunning: bool = True
-        self.isPaused: bool = False
-
-
-
 class Screen:
     def __init__(self, screenName: str):
         self.screenName = screenName
         pass
-    
+
     def start(self, state: "GameState"):
         pygame.display.set_caption(self.screenName)
         pass
-        
+
     def update(self, state: "GameState"):
         pass
 
@@ -348,7 +325,6 @@ class Screen:
 class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
-    
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -361,20 +337,44 @@ class MainScreen(Screen):
         if controller.isExitPressed is True:
             state.isRunning = False
 
-
         player.update(state)
         npc.update(state)
         obstacle.update(state)
         money.update(state)
 
-
-
     def draw(self, state: "GameState"):
         DISPLAY.fill(WHITE)
-
         state.player.draw(state)
         state.npc.draw(state)
         state.obstacle.draw(state)
+        state.money.draw(state)
+        pygame.display.update()
+
+class CoinFlipScreen(Screen):
+    def __init__(self, min_bet, max_bet):
+        super().__init__("Casino Coin flip  Screen")
+        self.min_bet = min_bet
+        self.max_bet = max_bet
+        self.balance = 0
+
+
+    def update(self, state: "GameState"):
+        controller = state.controller
+        player = state.player
+        money = state.money
+        controller.update(state)
+
+        if controller.isExitPressed is True:
+            state.isRunning = False
+
+        player.update(state)
+        money.update(state)
+
+    def draw(self, state: "GameState"):
+        DISPLAY.fill(PURPLE)
+
+        state.player.draw(state)
+
         state.money.draw(state)
 
         pygame.display.update()
@@ -411,52 +411,63 @@ class TestScreen(Screen):
         pygame.display.update()
 
 
+class GameState:
+    def __init__(self):
+        self.controller: Controller = Controller()
+        self.player: Player = Player(50, 100)
+        self.money: Money = Money(23, 50, 50)
+        self.npc: Npc = Npc(170, 170)
+        self.obstacle: Obstacle = Obstacle(22, 22)
+        self.isRunning: bool = True
+        self.isPaused: bool = False
+
+        self.mainScreen = MainScreen()
+        self.testScreen = TestScreen()
+        self.coinFlipScreen = CoinFlipScreen(50,1000)
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
+
+
 # old code, if q pressed:
-    # NO EXTRA LOGIC IN CONTROLLER CLASS
-    # state.money.add(20)
-    # coinFlipScreen = CoinFlipScreen() # defined in GameState
-    # from MainScreen, if we want to enter the coinFlipScreen, then:
-    # state.currentScreen = state.coinFlipScreen
-    # state.currentScreen.start()
+# NO EXTRA LOGIC IN CONTROLLER CLASS
+# state.money.add(20)
+# coinFlipScreen = CoinFlipScreen() # defined in GameState
+# from MainScreen, if we want to enter the coinFlipScreen, then:
+# state.currentScreen = state.coinFlipScreen
+# state.currentScreen.start()
 
 class Game:
     def __init__(self):
         self.state = GameState()  # create a new GameState()
-        self.mainScreen = MainScreen()
-        self.testScreen = TestScreen()
-
-        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
     def start(self):
-        self.currentScreen.start(self.state)
+        self.state.currentScreen.start(self.state)
 
         while self.state.isRunning:
-            self.currentScreen.update(self.state)
-            self.currentScreen.draw(self.state)
-            if self.currentScreen == self.mainScreen:  # use self.currentScreen here
-                if self.state.player.nextScreen  == True:
-
-                    print("hi")
-                    self.currentScreen = self.testScreen
-                    self.currentScreen.start(self.state)
-                    self.mainScreen.draw(self.state)
-                elif self.currentScreen == self.testScreen:  # use self.currentScreen here
-                    self.testScreen.draw(self.state)
-
-            elif self.currentScreen == self.testScreen:
-                if self.state.player.nextScreen == False:
-                    print("next")
-                    self.currentScreen = self.mainScreen
-                    self.currentScreen.start(self.state)
-                    self.mainScreen.draw(self.state)
-                elif self.currentScreen == self.mainScreen:
-                    self.mainScreen.draw(self.state)
-
-
-
+            # will need to move this to Screen class
+            self.state.currentScreen.update(self.state)
+            self.state.currentScreen.draw(self.state)
 
         pygame.quit()
 
 
 game = Game()
 game.start()
+
+# if self.currentScreen == self.mainScreen:  # use self.currentScreen here
+#     if self.state.player.nextScreen == True:
+#
+#         print("hi")
+#         self.currentScreen = self.testScreen
+#         self.currentScreen.start(self.state)
+#         self.mainScreen.draw(self.state)
+#     elif self.currentScreen == self.testScreen:  # use self.currentScreen here
+#         self.testScreen.draw(self.state)
+#
+# elif self.currentScreen == self.testScreen:
+#     if self.state.player.nextScreen == False:
+#         print("next")
+#         self.currentScreen = self.mainScreen
+#         self.currentScreen.start(self.state)
+#         self.mainScreen.draw(self.state)
+#     elif self.currentScreen == self.mainScreen:
+#         self.mainScreen.draw(self.state)
