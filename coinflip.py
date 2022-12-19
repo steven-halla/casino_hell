@@ -109,10 +109,10 @@ class CoinFlipGame:
                 print("place your bet between 50-1000 below this line")
                 bet_text = self.font.render("How much would you like to bet?  Please input command on terminal", True, (255, 255, 255))
 
-                # Clear the screen
-                # self.screen.fill((0, 0, 0))
-
                 # Draw the prompt message
+
+                self.screen.fill((0, 0, 0))
+
                 self.screen.blit(bet_text, (10, 50))
 
                 # Update the screen
@@ -156,10 +156,7 @@ class CoinFlipGame:
     def flip_coin(self):
         return "heads" if random.randint(0, 1) == 0 else "tails"
 
-    # def draw(self,screen):
-    #     screen.blit(self.text, self.text_rect)
 
-# Create a new CoinFlipGame with a minimum bet of 10 and a maximum bet of 100
 coin_flip_game = CoinFlipGame(50, 1000)
 
 # Play the game
