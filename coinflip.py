@@ -31,7 +31,7 @@ class CoinFlipGame:
             pygame.display.flip()
 
             # Get the player's bet
-            # bet = self.get_bet()
+            bet = self.get_bet()
 
             while True:
                 choice = input("Please pick 'heads' or 'tails': ")
@@ -50,18 +50,23 @@ class CoinFlipGame:
             self.balance += bet if result == choice else -bet
 
             # Display the result message
-            text = font.render(f"The coin landed on {result}! Your new balance is {self.balance}", True,
+            text = self.font.render(f"The coin landed on {result}! Your new balance is {self.balance}", True,
                                (255, 255, 255))
-            screen.blit(text, (10, 90))
+            self.screen.blit(text, (10, 90))
             pygame.display.flip()
 
             # Ask the player if they want to play again
             # play_again = input("Do you want to play again (yes/no)? ").lower()
 
+
+
+
+
+
             is_play_again = self.prompt_is_play_again()
             if not is_play_again:
                 break
-
+    #
     # def prompt_is_play_again(self) -> bool:
     #     while True:
     #         choice = input("Would you like to flip again (yes/y or no/n)? ")
@@ -75,19 +80,19 @@ class CoinFlipGame:
     #             text = self.font.render("Wrong input. Please enter 'yes' or 'no'.", True, (255, 255, 255))
     #             screen.blit(text, (10, 130))
     #             pygame.display.flip()
-
-    def get_bet(self):
-        while True:
-            try:
-                bet = int(input("How much would you like to bet? "))
-                # Check if the bet is within the minimum and maximum limits
-                if self.min_bet <= bet <= self.max_bet:
-                    return bet
-                else:
-                    print(f"Please enter a bet between {self.min_bet} and {self.max_bet}")
-            except ValueError:
-                print("Please enter a valid bet amount")
-
+    #
+    # def get_bet(self):
+    #     while True:
+    #         try:
+    #             bet = int(input("How much would you like to bet? "))
+    #             # Check if the bet is within the minimum and maximum limits
+    #             if self.min_bet <= bet <= self.max_bet:
+    #                 return bet
+    #             else:
+    #                 print(f"Please enter a bet between {self.min_bet} and {self.max_bet}")
+    #         except ValueError:
+    #             print("Please enter a valid bet amount")
+    #
     # def flip_coin(self):
     #     return "heads" if random.randint(0, 1) == 0 else "tails"
 
