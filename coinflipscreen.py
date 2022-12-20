@@ -102,6 +102,7 @@ DISPLAY = pygame.display.set_mode((600, 600))
 
 class CoinFlipGame:
     def __init__(self, min_bet, max_bet):
+        self.result = int
         self.bet = 0
 
         self.isRPressed: bool = False
@@ -116,6 +117,15 @@ class CoinFlipGame:
         self.bet_text = self.font.render("Enter your bet amount:", True, (255, 255, 255))
         self.result_text = None
         self.balance_text = None
+
+    def coin_flip(self):
+        self.result = random.randint(0, 1)  # Generate a random number between 0 and 1
+        if self.result == 0:
+            self.result_text = self.font.render("Heads", True, (255, 255, 255))
+            self.balance += self.bet  # Increase balance by the bet amount
+        else:
+            self.result_text = self.font.render("Tails", True, (255, 255, 255))
+            self.balance -= self.bet  # Decrease balance by the bet amount
 
     def start(self):
         while True:
@@ -132,6 +142,12 @@ class CoinFlipGame:
                     print(self.balance)
                     # self.game_state = "flip"
                     self.isRPressed = True
+                    self.coin_flip()
+                    if self.result == 0:
+                        print("heads")
+                    else:
+                        print("tails")
+
 
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_r:
