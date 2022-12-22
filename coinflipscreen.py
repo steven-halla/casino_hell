@@ -101,31 +101,25 @@ pygame.init()
 DISPLAY = pygame.display.set_mode((600, 600))
 
 class CoinFlipGame:
-    def __init__(self, min_bet, max_bet):
+    def __init__(self):
         self.result = int
         self.bet = 0
-
-        self.isRPressed: bool = False
-        self.min_bet = min_bet
-        self.max_bet = max_bet
+        self.low_bet = False
+        # self.med_bet = False
+        # self.high_bet = False
+        self.isLPressed: bool = False
+        # self.isMPressed: bool = False
+        # self.isHPressed: bool = False
         self.balance = 0
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome"
         self.welcome_text = self.font.render(
-            f"Welcome to Coin Flip! Minimum bet is {self.min_bet} and maximum bet is {self.max_bet}.",
+            f"Welcome to Coin Flip! Minimum bet is 50 and maximum bet is 100.",
             True, (255, 255, 255))
         self.bet_text = self.font.render("Enter your bet amount:", True, (255, 255, 255))
         self.result_text = None
         self.balance_text = None
 
-    def coin_flip(self):
-        self.result = random.randint(0, 1)  # Generate a random number between 0 and 1
-        if self.result == 0:
-            self.result_text = self.font.render("Heads", True, (255, 255, 255))
-            self.balance += self.bet  # Increase balance by the bet amount
-        else:
-            self.result_text = self.font.render("Tails", True, (255, 255, 255))
-            self.balance -= self.bet  # Decrease balance by the bet amount
 
     def start(self):
         while True:
@@ -133,26 +127,10 @@ class CoinFlipGame:
             DISPLAY.blit(self.welcome_text, (10, 10))
             DISPLAY.blit(self.bet_text, (10, 50))
             pygame.display.flip()
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    print("Hi R")
-                    self.bet = 50
-                    self.balance += self.bet
-                    print(self.bet)
-                    print(self.balance)
-                    # self.game_state = "flip"
-                    self.isRPressed = True
-                    self.coin_flip()
-                    if self.result == 0:
-                        print("heads")
-                    else:
-                        print("tails")
 
 
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_r:
-                        print("Bye R")
-                        self.isRPressed = False
+
+
 
 
 
@@ -207,5 +185,5 @@ class CoinFlipGame:
     #         pygame.display.flip()
 
 
-coin_flip_game = CoinFlipGame(50, 1000)
+coin_flip_game = CoinFlipGame()
 coin_flip_game.start()
