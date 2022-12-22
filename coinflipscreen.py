@@ -92,6 +92,7 @@
 #         # DISPLAY.fill(WHITE)
 #         state.money.draw(state)
 #         pygame.display.update()
+import time
 
 import pygame
 import random
@@ -99,6 +100,13 @@ import random
 # Set up the pygame display
 pygame.init()
 DISPLAY = pygame.display.set_mode((600, 600))
+
+bet_amounts = {
+  "low": 100,
+  "med": 500,
+  "high": 1000
+}
+print(bet_amounts)
 
 class CoinFlipGame:
     def __init__(self):
@@ -117,8 +125,25 @@ class CoinFlipGame:
             f"Welcome to Coin Flip! Minimum bet is 50 and maximum bet is 100.",
             True, (255, 255, 255))
         self.bet_text = self.font.render("Enter your bet amount:", True, (255, 255, 255))
+        self.bet_amount = self.font.render("Enter your bet amount:", True, (255, 255, 255))
+        self.heads = False
+        self.tails = False
         self.result_text = None
         self.balance_text = None
+        self.bet_sequence = False
+
+    def flipCoin(self):
+
+    # Generate a random number between 0 and 1 to simulate the coin flip
+        coin = random.random()
+        if coin < 0.5:
+            self.heads = True
+            print("heads")
+            return "heads"
+        else:
+            self.tails = True
+            print("tails")
+            return "tails"
 
 
     def start(self):
@@ -127,12 +152,28 @@ class CoinFlipGame:
             DISPLAY.blit(self.welcome_text, (10, 10))
             DISPLAY.blit(self.bet_text, (10, 50))
             pygame.display.flip()
+            print("place your bet ammount")
+            keys = pygame.key.get_pressed()
+            self.bet_sequence = True
+            for event in pygame.event.get():
+                if self.bet_sequence == True:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_l:
+                            self.isLPressed = True
+                            self.low_bet = True
+                            self.bet = 50
+                            self.bet_sequence = False
 
-
-
-
-
-
+                    elif event.type == pygame.KEYUP:
+                        if event.key == pygame.K_l:
+                            self.isLPressed = False
+                            self.bet_sequence = False
+            print("Im back")
+            print("how much would you like to bet? L for 100")
+            print(self.bet)
+            pygame.display.flip()
+            time.sleep(2)
+            self.flipCoin()
 
 
 
