@@ -4,7 +4,7 @@
 # # Set up the pygame display
 # pygame.init()
 # DISPLAY = pygame.display.set_mode((600, 600))
-
+#
 # class Screen:
 #     def __init__(self, title):
 #         self.title = title
@@ -126,25 +126,23 @@ class CoinFlipGame:
             True, (255, 255, 255))
         self.bet_text = self.font.render("Enter your bet amount:", True, (255, 255, 255))
         self.bet_amount = self.font.render("Enter your bet amount:", True, (255, 255, 255))
+        # self.result_text = self.font.render(f"The coin landed on {result}!", True, (255, 255, 255))
         self.heads = False
         self.tails = False
+
         self.result_text = None
         self.balance_text = None
         self.bet_sequence = False
 
     def flipCoin(self):
-
-    # Generate a random number between 0 and 1 to simulate the coin flip
+        # Generate a random number between 0 and 1 to simulate the coin flip
         coin = random.random()
         if coin < 0.5:
-            self.heads = True
             print("heads")
-            return "heads"
+            self.result = "heads"
         else:
-            self.tails = True
             print("tails")
-            return "tails"
-
+            self.result = "tails"
 
     def start(self):
         while True:
@@ -174,6 +172,8 @@ class CoinFlipGame:
             pygame.display.flip()
             time.sleep(2)
             self.flipCoin()
+            print("flipping coin")
+            print(self.result)
 
 
 
