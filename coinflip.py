@@ -1,10 +1,11 @@
 import random
 import pygame
+# from main import Player
 
 
 # allow player to pick heads or tails
 
-class CoinFlipGame:
+class CoinFlipGame():
     def __init__(self, min_bet: int, max_bet: int):
         self.min_bet = min_bet
         self.max_bet = max_bet
@@ -71,13 +72,10 @@ class CoinFlipGame:
             # Ask the player if they want to play again
             # play_again = input("Do you want to play again (yes/no)? ").lower()
 
-
-
-
-
-
             is_play_again = self.prompt_is_play_again()
             if not is_play_again:
+                # Player.nextScreen = False
+                # self. = False
                 break
     #
     def prompt_is_play_again(self) -> bool:
@@ -159,5 +157,4 @@ class CoinFlipGame:
 
 coin_flip_game = CoinFlipGame(50, 1000)
 
-# Play the game
 coin_flip_game.start_coin_game()
