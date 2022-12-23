@@ -94,6 +94,10 @@
 #         pygame.display.update()
 import time
 
+import pygame as pygame
+
+clock = pygame.time.Clock()
+
 import pygame
 import random
 
@@ -139,18 +143,30 @@ class CoinFlipGame:
         self.balance_text = None
         self.bet_sequence = False
         self.choice_sequence = False
+        self.switch_from_welcome_to_choose_bet = False
 
     #There are multiple player inputs that we need:
     #1)input for bet amount low med high
     #2)chose heads or tails
     #3)play again or quit
     def gameLoop(self):
-        while self.coin_choice_segment == False:
+        if self.game_state == "welcome":
             DISPLAY.fill((0, 0, 0))
-            DISPLAY.blit(self.choose_bet_display, (10, 10))
+            DISPLAY.blit(self.welcome_text, (10, 10))
             pygame.display.flip()
 
 
+            # Transition to the choose bet state
+            if self.isJPressed == True:
+                self.game_state = "choose_bet"
+            else:
+                pass
+
+        elif self.game_state == "choose_bet":
+            DISPLAY.fill((0, 0, 0))
+            DISPLAY.blit(self.choose_bet_display, (10, 10))
+            pygame.display.flip()
+            clock.tick(60)  # Limit the frame rate to 60 fps
 
     def flipCoin(self):
         # Generate a random number between 0 and 1 to simulate the coin flip
@@ -176,6 +192,7 @@ class CoinFlipGame:
 
     def start(self):
         while True:
+            self.gameLoop()
             # self.low_bet = False
             # self.med_bet = False
             # self.high_bet = False
@@ -185,77 +202,74 @@ class CoinFlipGame:
             # pygame.display.flip()
             # keys = pygame.key.get_pressed()
             # self.bet_sequence = True
-            # for event in pygame.event.get():
-            #     if self.bet_sequence == True:
-            #         self.player_choice_made = True
-            #
-            #
-            #         if event.type == pygame.KEYDOWN:
-            #             print("keydownyo")
-            #             if event.key == pygame.K_j:
-            #                 self.isJPressed = True
-            #
-            #                 self.low_bet = True
-            #                 self.med_bet = False
-            #                 self.high_bet = False
-            #                 print("you took the low bet")
-            #
-            #                 # self.bet = 50
-            #                 self.bet_sequence = False
-            #             elif event.key == pygame.K_k:
-            #                 self.isKPressed = True
-            #
-            #                 self.low_bet = False
-            #                 self.med_bet = True
-            #                 self.high_bet = False
-            #                 print("you took the med bet")
-            #
-            #                 # self.bet = 50
-            #                 self.bet_sequence = False
-            #
-            #             elif event.key == pygame.K_l:
-            #                 self.isLPressed = True
-            #
-            #                 self.low_bet = False
-            #                 self.med_bet = False
-            #                 self.high_bet = True
-            #                 print("you took the high bet")
-            #
-            #
-            #                 # self.bet = 50
-            #                 self.bet_sequence = False
-            #
-            #         elif event.type == pygame.KEYUP:
-            #             if event.key == pygame.K_j:
-            #                 self.isJPressed = False
-            #                 self.bet_sequence = False
-            #             elif event.key == pygame.K_k:
-            #                 self.isKPressed = False
-            #                 self.bet_sequence = False
-            #             elif event.key == pygame.K_l:
-            #                 self.isLPressed = False
-            #                 self.bet_sequence = False
-            #
-            #     if self.choice_sequence == True:
-            #
-            #         if event.type == pygame.KEYDOWN:
-            #             if event.key == pygame.K_h:
-            #                 self.isHPressed = True
-            #
-            #                 self.player_choice = "heads"
-            #                 self.choice_sequence = False
-            #             elif event.key == pygame.K_t:
-            #                 self.isTPressed = True
-            #                 self.player_choice = "tails"
-            #                 self.choice_sequence = False
-            #
-            #         elif event.type == pygame.KEYUP:
-            #             if event.key == pygame.K_h:
-            #                 self.isHPressed = False
-            #                 self.choice_sequence = False
-            #             if event.key == pygame.K_t:
-            #                 self.isTPressed = False
-            #                 self.choice_sequence = False
+            for event in pygame.event.get():
+
+                if event.type == pygame.KEYDOWN:
+                    print("keydownyo")
+                    if event.key == pygame.K_j:
+                        self.isJPressed = True
+
+                        self.low_bet = True
+                        self.med_bet = False
+                        self.high_bet = False
+                        print("you took the low bet")
+
+                        # self.bet = 50
+                        self.bet_sequence = False
+                    elif event.key == pygame.K_k:
+                        self.isKPressed = True
+
+                        self.low_bet = False
+                        self.med_bet = True
+                        self.high_bet = False
+                        print("you took the med bet")
+
+                        # self.bet = 50
+                        self.bet_sequence = False
+
+                    elif event.key == pygame.K_l:
+                        self.isLPressed = True
+
+                        self.low_bet = False
+                        self.med_bet = False
+                        self.high_bet = True
+                        print("you took the high bet")
+
+
+                        # self.bet = 50
+                        self.bet_sequence = False
+
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_j:
+                        self.isJPressed = False
+                        self.bet_sequence = False
+                    elif event.key == pygame.K_k:
+                        self.isKPressed = False
+                        self.bet_sequence = False
+                    elif event.key == pygame.K_l:
+                        self.isLPressed = False
+                        self.bet_sequence = False
+
+            if self.choice_sequence == True:
+
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_h:
+                        self.isHPressed = True
+
+                        self.player_choice = "heads"
+                        self.choice_sequence = False
+                    elif event.key == pygame.K_t:
+                        self.isTPressed = True
+                        self.player_choice = "tails"
+                        self.choice_sequence = False
+
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_h:
+                        self.isHPressed = False
+                        self.choice_sequence = False
+                    if event.key == pygame.K_t:
+                        self.isTPressed = False
+                        self.choice_sequence = False
             #
             # # print("how much would you like to bet? L for 100")
             # # print(self.bet)
