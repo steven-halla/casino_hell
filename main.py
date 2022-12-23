@@ -477,9 +477,9 @@ class CoinFlipScreen(Screen):
 
     def draw(self, state: "GameState"):
         print("white me")
-        # DISPLAY.fill(WHITE)
-        # state.money.draw(state)
-        # pygame.display.update()
+        DISPLAY.fill(WHITE)
+        state.money.draw(state)
+        pygame.display.update()
 
 
 class TestScreen(Screen):
