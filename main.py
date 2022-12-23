@@ -1,5 +1,6 @@
 import math
 import time
+import random
 from typing import *
 
 import pygame
@@ -362,7 +363,6 @@ class CoinFlipScreen(Screen):
         self.font = pygame.font.Font(None, 36)
 
         # Display the starting message
-
     def welcomeText(self):
         print("hihihi")
         welcomeText = self.font.render(
@@ -373,8 +373,13 @@ class CoinFlipScreen(Screen):
         DISPLAY.blit(welcomeText, (10, 10))
         pygame.display.flip()
 
-
-
+    def flipCoin(self):
+        # Generate a random number between 0 and 1 to simulate the coin flip
+        coin = random.random()
+        if coin < 0.5:
+            return "heads"
+        else:
+            return "tails"
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -463,6 +468,7 @@ class Game:
 
         while self.state.isRunning:
             # will need to move this to Screen class
+
             self.state.currentScreen.update(self.state)
             self.state.currentScreen.draw(self.state)
 
@@ -472,21 +478,3 @@ class Game:
 game = Game()
 game.start()
 
-# if self.currentScreen == self.mainScreen:  # use self.currentScreen here
-#     if self.state.player.nextScreen == True:
-#
-#         print("hi")
-#         self.currentScreen = self.testScreen
-#         self.currentScreen.start(self.state)
-#         self.mainScreen.draw(self.state)
-#     elif self.currentScreen == self.testScreen:  # use self.currentScreen here
-#         self.testScreen.draw(self.state)
-#
-# elif self.currentScreen == self.testScreen:
-#     if self.state.player.nextScreen == False:
-#         print("next")
-#         self.currentScreen = self.mainScreen
-#         self.currentScreen.start(self.state)
-#         self.mainScreen.draw(self.state)
-#     elif self.currentScreen == self.mainScreen:
-#         self.mainScreen.draw(self.state)
