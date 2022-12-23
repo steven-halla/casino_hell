@@ -425,27 +425,28 @@ class CoinFlipScreen(Screen):
 
 
         self.balance = 0
+        self.bet = 0
         self.font = pygame.font.Font(None, 36)
 
         # Display the starting message
-    def welcomeText(self, state: "GameState"):
-        if self.game_state == "welcome":
-            DISPLAY.fill((0, 0, 0))
-            DISPLAY.blit(self.welcome_text, (10, 10))
-            pygame.display.flip()
-
-            # Transition to the choose bet state
-            if state.controller.isJPressed == True:
-                self.game_state = "choose_bet"
-            else:
-                pass
-
-        elif self.game_state == "choose_bet":
-            print("choose bet portion")
-            DISPLAY.fill((0, 0, 0))
-            DISPLAY.blit(self.choose_bet_display, (10, 10))
-            pygame.display.flip()
-            clock.tick(60)  # Limit the frame rate to 60 fps
+    # def welcomeText(self, state: "GameState"):
+    #     if self.game_state == "welcome":
+    #         DISPLAY.fill((0, 0, 0))
+    #         DISPLAY.blit(self.welcome_text, (10, 10))
+    #         pygame.display.flip()
+    #
+    #         # Transition to the choose bet state
+    #         if state.controller.isJPressed == True:
+    #             self.game_state = "choose_bet"
+    #         else:
+    #             pass
+    #
+    #     elif self.game_state == "choose_bet":
+    #         print("choose bet portion")
+    #         DISPLAY.fill((0, 0, 0))
+    #         DISPLAY.blit(self.choose_bet_display, (10, 10))
+    #         pygame.display.flip()
+    #         clock.tick(60)  # Limit the frame rate to 60 fps
 
     def flipCoin(self):
         # Generate a random number between 0 and 1 to simulate the coin flip
@@ -456,30 +457,72 @@ class CoinFlipScreen(Screen):
             return "tails"
 
     def update(self, state: "GameState"):
-        self.welcomeText(state)
+        # Update the controller
         controller = state.controller
-        player = state.player
-        money = state.money
         controller.update(state)
 
-        if controller.isAPressed is True:
-            state.currentScreen = state.mainScreen
-            state.currentScreen.start(state)
+        # Update the game state based on user input
+        if self.game_state == "welcome":
+            if controller.isJPressed:
+                self.game_state = "choose_bet"
+        elif self.game_state == "choose_bet":
+            if controller.isJPressed:
 
-        if controller.isExitPressed is True:
-            state.isRunning = False
+                print("hi j")
+                self.bet = 50
+                print(self.bet)
+                if controller.isKPressed:
+                    if controller.isLPressed:
+        # Update bet amount
 
-        if controller.isJPressed is True:
-            print("hi")
+        # Update the player and money
+                        player = state.player
 
-        player.update(state)
-        money.update(state)
+                        player.update(state)
+
 
     def draw(self, state: "GameState"):
-        print("white me")
-        DISPLAY.fill(WHITE)
+        # Fill the screen with a solid color
+        DISPLAY.fill((0, 0, 0))
+
+        # Draw the welcome message or choose bet message based on the game state
+        if self.game_state == "welcome":
+            DISPLAY.blit(self.welcome_text, (10, 10))
+        elif self.game_state == "choose_bet":
+            DISPLAY.blit(self.choose_bet_display, (10, 10))
+
+        # Draw the player and money
+        state.player.draw(state)
         state.money.draw(state)
-        pygame.display.update()
+
+        # Update the display
+        pygame.display.flip()
+
+    # def update(self, state: "GameState"):
+    #     self.welcomeText(state)
+    #     controller = state.controller
+    #     player = state.player
+    #     money = state.money
+    #     controller.update(state)
+    #
+    #     if controller.isAPressed is True:
+    #         state.currentScreen = state.mainScreen
+    #         state.currentScreen.start(state)
+    #
+    #     if controller.isExitPressed is True:
+    #         state.isRunning = False
+    #
+    #     if controller.isJPressed is True:
+    #         print("hi")
+    #
+    #     player.update(state)
+    #     money.update(state)
+    #
+    # def draw(self, state: "GameState"):
+    #     print("white me")
+    #     DISPLAY.fill(WHITE)
+    #     state.money.draw(state)
+    #     pygame.display.update()
 
 
 class TestScreen(Screen):
