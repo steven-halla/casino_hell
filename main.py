@@ -5,7 +5,6 @@ from typing import *
 
 import pygame
 
-from coinflip import CoinFlipGame
 
 
 clock = pygame.time.Clock()
@@ -109,6 +108,9 @@ class Controller:
         self.isExitPressed: bool = False
         self.isAPressed: bool = False
         self.isQPressed: bool = False
+        self.isLPressed: bool = False
+        self.isKPressed: bool = False
+        self.isJPressed: bool = False
         self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
@@ -145,6 +147,11 @@ class Controller:
                     self.isAPressed = True
                 elif event.key == pygame.K_q:
                     self.isQPressed = True
+                if event.key == pygame.K_j:
+                    self.isJPressed = True
+
+
+
 
             elif event.type == pygame.KEYUP:
                 self.keyReleasedTimes[event.key] = nowMilliseconds()
@@ -162,6 +169,55 @@ class Controller:
                     self.isAPressed = False
                 elif event.key == pygame.K_q:
                     self.isQPressed = False
+                elif event.key == pygame.K_j:
+                    self.isJPressed = False
+
+            # elif state.currentScreen == state.coinFlipScreen:
+            #
+            #     if event.type == pygame.KEYDOWN:
+            #         print("key pressed on coinflip screen")
+            #         if event.key == pygame.K_j:
+            #             self.isJPressed = True
+            #
+            #             self.low_bet = True
+            #             self.med_bet = False
+            #             self.high_bet = False
+            #             print("you took the low bet")
+            #
+            #             # self.bet = 50
+            #             self.bet_sequence = False
+            #         elif event.key == pygame.K_k:
+            #             self.isKPressed = True
+            #
+            #             self.low_bet = False
+            #             self.med_bet = True
+            #             self.high_bet = False
+            #             print("you took the med bet")
+            #
+            #             # self.bet = 50
+            #             self.bet_sequence = False
+            #
+            #         elif event.key == pygame.K_l:
+            #             self.isLPressed = True
+            #
+            #             self.low_bet = False
+            #             self.med_bet = False
+            #             self.high_bet = True
+            #             print("you took the high bet")
+            #
+            #             # self.bet = 50
+            #             self.bet_sequence = False
+            #
+            #     elif event.type == pygame.KEYUP:
+            #         if event.key == pygame.K_j:
+            #             self.isJPressed = False
+            #             self.bet_sequence = False
+            #         elif event.key == pygame.K_k:
+            #             self.isKPressed = False
+            #             self.bet_sequence = False
+            #         elif event.key == pygame.K_l:
+            #             self.isLPressed = False
+            #             self.bet_sequence = False
 
 
 class Money(Entity):
@@ -355,23 +411,41 @@ class MainScreen(Screen):
 
 
 class CoinFlipScreen(Screen):
-    def __init__(self, min_bet, max_bet):
+    def __init__(self):
         super().__init__("Casino Coin flip  Screen")
-        self.min_bet = min_bet
-        self.max_bet = max_bet
+
+        self.new_font = pygame.font.Font(None, 36)
+
+        self.welcome_text = self.new_font.render(
+            f"Welcome to Coin Flip! your bet is 50 SMACKERS.",
+            True, (255, 255, 255))
+        self.choose_bet_display = self.new_font.render("Enter your bet amount press j or k or l", True, (255, 255, 255))
+
+        self.game_state = "welcome"
+
+
         self.balance = 0
         self.font = pygame.font.Font(None, 36)
 
         # Display the starting message
-    def welcomeText(self):
-        print("hihihi")
-        welcomeText = self.font.render(
-                f"Starting a new game of Coin Flip with a minimum bet of {self.min_bet} and a maximum bet of {self.max_bet}",
-                True, (255, 255, 255))
-        DISPLAY.fill((0, 0, 0))
+    def welcomeText(self, state: "GameState"):
+        if self.game_state == "welcome":
+            DISPLAY.fill((0, 0, 0))
+            DISPLAY.blit(self.welcome_text, (10, 10))
+            pygame.display.flip()
 
-        DISPLAY.blit(welcomeText, (10, 10))
-        pygame.display.flip()
+            # Transition to the choose bet state
+            if state.controller.isJPressed == True:
+                self.game_state = "choose_bet"
+            else:
+                pass
+
+        elif self.game_state == "choose_bet":
+            print("choose bet portion")
+            DISPLAY.fill((0, 0, 0))
+            DISPLAY.blit(self.choose_bet_display, (10, 10))
+            pygame.display.flip()
+            clock.tick(60)  # Limit the frame rate to 60 fps
 
     def flipCoin(self):
         # Generate a random number between 0 and 1 to simulate the coin flip
@@ -382,6 +456,7 @@ class CoinFlipScreen(Screen):
             return "tails"
 
     def update(self, state: "GameState"):
+        self.welcomeText(state)
         controller = state.controller
         player = state.player
         money = state.money
@@ -394,14 +469,17 @@ class CoinFlipScreen(Screen):
         if controller.isExitPressed is True:
             state.isRunning = False
 
+        if controller.isJPressed is True:
+            print("hi")
+
         player.update(state)
         money.update(state)
 
     def draw(self, state: "GameState"):
         print("white me")
-        DISPLAY.fill(WHITE)
-        state.money.draw(state)
-        pygame.display.update()
+        # DISPLAY.fill(WHITE)
+        # state.money.draw(state)
+        # pygame.display.update()
 
 
 class TestScreen(Screen):
@@ -447,7 +525,7 @@ class GameState:
 
         self.mainScreen = MainScreen()
         self.testScreen = TestScreen()
-        self.coinFlipScreen = CoinFlipScreen(50,1000)
+        self.coinFlipScreen = CoinFlipScreen()
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 
@@ -477,4 +555,6 @@ class Game:
 
 game = Game()
 game.start()
+
+# CoinFlipScreen().start()
 
