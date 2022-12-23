@@ -149,8 +149,8 @@ class Controller:
                     self.isQPressed = True
                 if event.key == pygame.K_j:
                     self.isJPressed = True
-
-
+                if event.key == pygame.K_k:
+                    self.isKPressed = True
 
 
             elif event.type == pygame.KEYUP:
@@ -171,53 +171,10 @@ class Controller:
                     self.isQPressed = False
                 elif event.key == pygame.K_j:
                     self.isJPressed = False
+                elif event.key == pygame.K_k:
+                    self.isKPressed = False
 
-            # elif state.currentScreen == state.coinFlipScreen:
-            #
-            #     if event.type == pygame.KEYDOWN:
-            #         print("key pressed on coinflip screen")
-            #         if event.key == pygame.K_j:
-            #             self.isJPressed = True
-            #
-            #             self.low_bet = True
-            #             self.med_bet = False
-            #             self.high_bet = False
-            #             print("you took the low bet")
-            #
-            #             # self.bet = 50
-            #             self.bet_sequence = False
-            #         elif event.key == pygame.K_k:
-            #             self.isKPressed = True
-            #
-            #             self.low_bet = False
-            #             self.med_bet = True
-            #             self.high_bet = False
-            #             print("you took the med bet")
-            #
-            #             # self.bet = 50
-            #             self.bet_sequence = False
-            #
-            #         elif event.key == pygame.K_l:
-            #             self.isLPressed = True
-            #
-            #             self.low_bet = False
-            #             self.med_bet = False
-            #             self.high_bet = True
-            #             print("you took the high bet")
-            #
-            #             # self.bet = 50
-            #             self.bet_sequence = False
-            #
-            #     elif event.type == pygame.KEYUP:
-            #         if event.key == pygame.K_j:
-            #             self.isJPressed = False
-            #             self.bet_sequence = False
-            #         elif event.key == pygame.K_k:
-            #             self.isKPressed = False
-            #             self.bet_sequence = False
-            #         elif event.key == pygame.K_l:
-            #             self.isLPressed = False
-            #             self.bet_sequence = False
+
 
 
 class Money(Entity):
@@ -414,39 +371,22 @@ class CoinFlipScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
 
+        self.side = "Heads"
         self.new_font = pygame.font.Font(None, 36)
 
         self.welcome_text = self.new_font.render(
-            f"Welcome to Coin Flip! your bet is 50 SMACKERS.",
+            f"Welcome to Coin Flip! Press J to continue.",
             True, (255, 255, 255))
         self.choose_bet_display = self.new_font.render("Enter your bet amount press j or k or l", True, (255, 255, 255))
-
+        self.players_coin_side_choice = self.new_font.render(f"You choosed {self.side}", True, (255, 255, 255))
         self.game_state = "welcome"
 
 
         self.balance = 0
+        self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
 
-        # Display the starting message
-    # def welcomeText(self, state: "GameState"):
-    #     if self.game_state == "welcome":
-    #         DISPLAY.fill((0, 0, 0))
-    #         DISPLAY.blit(self.welcome_text, (10, 10))
-    #         pygame.display.flip()
-    #
-    #         # Transition to the choose bet state
-    #         if state.controller.isJPressed == True:
-    #             self.game_state = "choose_bet"
-    #         else:
-    #             pass
-    #
-    #     elif self.game_state == "choose_bet":
-    #         print("choose bet portion")
-    #         DISPLAY.fill((0, 0, 0))
-    #         DISPLAY.blit(self.choose_bet_display, (10, 10))
-    #         pygame.display.flip()
-    #         clock.tick(60)  # Limit the frame rate to 60 fps
 
     def flipCoin(self):
         # Generate a random number between 0 and 1 to simulate the coin flip
@@ -462,7 +402,8 @@ class CoinFlipScreen(Screen):
         controller.update(state)
 
         # Update the game state based on user input
-        if self.game_state == "welcome":
+
+        if self.game_state == "welcome" :
             if controller.isJPressed:
                 self.game_state = "choose_bet"
         elif self.game_state == "choose_bet":
@@ -471,6 +412,7 @@ class CoinFlipScreen(Screen):
                 print("hi j")
                 self.bet = 50
                 print(self.bet)
+                self.game_state = "choose_coin_side"
                 if controller.isKPressed:
                     if controller.isLPressed:
         # Update bet amount
@@ -479,6 +421,12 @@ class CoinFlipScreen(Screen):
                         player = state.player
 
                         player.update(state)
+
+        elif self.game_state == "choose_coin_side":
+            if state.controller.isJPressed:
+                print("you choose heads")
+
+
 
 
     def draw(self, state: "GameState"):
