@@ -147,10 +147,12 @@ class Controller:
                     self.isAPressed = True
                 elif event.key == pygame.K_q:
                     self.isQPressed = True
-                if event.key == pygame.K_j:
+                elif event.key == pygame.K_j:
                     self.isJPressed = True
-                if event.key == pygame.K_k:
+                elif event.key == pygame.K_k:
                     self.isKPressed = True
+                elif event.key == pygame.K_l:
+                    self.isLPressed = True
 
 
             elif event.type == pygame.KEYUP:
@@ -172,6 +174,8 @@ class Controller:
                 elif event.key == pygame.K_j:
                     self.isJPressed = False
                 elif event.key == pygame.K_k:
+                    self.isKPressed = False
+                elif event.key == pygame.K_l:
                     self.isKPressed = False
 
 
@@ -411,6 +415,7 @@ class CoinFlipScreen(Screen):
         controller.update(state)
 
         # Update the game state based on user input
+        print("update, state: " + str(self.game_state))
 
         if self.game_state == "welcome" :
             if controller.isJPressed:
@@ -455,12 +460,18 @@ class CoinFlipScreen(Screen):
                 print(self.balance)
                 self.game_state = "you_lost_the_toss"
 
-        elif self.game_state == "you_won_the_toss" or "you_lost_the_toss":
-            time.sleep(3)
+        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+            time.sleep(3) # don't sleep, use a "state start time" and check current_time() - "state start time" > 3 seconds (3000ms)
             self.game_state = "play_again_or_quit"
 
         elif self.game_state == "play_again_or_quit":
-            pass
+            print("in state: play_again_or_quit")
+            if controller.isJPressed:
+                print("play again")
+            elif controller.isLPressed:
+                print("bye")
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
 
 
 
@@ -489,7 +500,7 @@ class CoinFlipScreen(Screen):
             DISPLAY.blit(self.new_font.render(f"your choice  {self.players_side} coin landed  {self.result}You won! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "you_lost_the_toss":
             DISPLAY.blit(self.new_font.render(f"your choice  {self.players_side}coin landed  {self.result}You lost! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
-        elif self.game_state == "you_lost_the_toss":
+        elif self.game_state == "play_again_or_quit":
             DISPLAY.blit(self.new_font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
 
 
