@@ -371,6 +371,8 @@ class CoinFlipScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
         self.result = "tail"
+        self.balance = 0
+
 
 
         self.players_side = "head"
@@ -390,7 +392,6 @@ class CoinFlipScreen(Screen):
 
         self.game_state = "welcome"
 
-        self.balance = 0
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
