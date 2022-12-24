@@ -394,6 +394,7 @@ class MainScreen(Screen):
 class opossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
+        self.can_one = 1
 
 
 class CoinFlipScreen(Screen):
@@ -412,9 +413,7 @@ class CoinFlipScreen(Screen):
         self.players_coin_side_choice = self.new_font.render(f"You choosed heads", True, (255, 255, 255))
         self.time_to_choose_heads_or_tails = self.new_font.render(f"K for tails, Q for heads", True, (255, 255, 255))
         self.flipping_now = self.new_font.render(f"flipping coin now", True, (255, 255, 255))
-
         self.game_state = "welcome"
-
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
@@ -434,13 +433,6 @@ class CoinFlipScreen(Screen):
         # Update the controller
         controller = state.controller
         controller.update(state)
-
-        # Update the game state based on user input
-        # print("update, state: " + str(self.game_state))
-
-        # if self.game_state == "play_again_or_quit":
-        #     self.play_again = False
-        #     self.game_state = "welcome"
 
         if self.game_state == "welcome" :
             if controller.isRPressed:
