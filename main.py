@@ -1,4 +1,5 @@
 import math
+import sys
 import time
 import random
 from typing import *
@@ -308,6 +309,10 @@ class Player(Entity):
             state.currentScreen = state.coinFlipScreen
             state.coinFlipScreen.start(state)
 
+        elif controller.isPPressed:
+            state.currentScreen = state.opossumInACanScreen
+            state.opossumInACanScreen.start(state)
+
         elif controller.isAPressed:
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
@@ -409,7 +414,123 @@ class MainScreen(Screen):
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
-        self.can_one = 1
+        self.opossum_font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font(None, 36)
+        self.game_state = "welcome_opposum"
+        self.winner_or_looser: List[str] = ["win", "win", "win", "win", "win", "lucky_star", "X3_star", "lose",
+                                            "insurance_eater", "insurance_eater"]
+        self.result = "win"
+        self.bet = 10
+        self.insurance = 300
+        self.X3 = False
+        self.has_opossum_insurance = True
+
+    def shuffle_opposums(self) -> List[str]:
+        """Creates a new list in a random order"""
+
+        random.shuffle(self.winner_or_looser)
+
+        print(str(self.winner_or_looser))
+        return self.winner_or_looser
+
+    def check_results(self):
+        if self.result == "X3_star":
+            self.X3 = True
+            print(self.game_state)
+            self.game_state = "play_again_or_bail"
+
+
+        elif self.result == "win":
+            if self.X3 == False:
+                self.bet = self.bet * 2
+                print("you win")
+                print(self.bet)
+                self.game_state = "play_again_or_bail"
+            else:
+                self.bet = self.bet * 3
+                self.X3 = False
+                self.game_state = "play_again_or_bail"
+
+        elif self.result == "lucky_star":
+            self.insurance = self.insurance * 2
+            self.game_state = "play_again_or_bail"
+
+
+        elif self.result == "insurance_eater":
+            if self.insurance == 0:
+                print("oh no your in trouble")
+                print(self.game_state)
+                self.game_state = "loser_screen"
+            else:
+                self.insurance = 0
+                self.game_state = "play_again_or_bail"
+
+        elif self.result == "lose":
+            self.bet = 0
+            print(self.bet)
+            print("you lose")
+            self.game_state = "loser_screen"
+
+    def update(self, state: "GameState"):
+        controller = state.controller
+        controller.update(state)
+
+        if self.game_state == "welcome_opposum":
+            if controller.isTPressed:
+                self.game_state = "choose_can"
+
+        elif self.game_state == "choose_can":
+            if controller.is1Pressed:
+                self.shuffle_opposums()
+                self.result = self.winner_or_looser[0]
+                del self.winner_or_looser[0]
+                self.check_results()
+
+            #this code is not reachable perhaps
+            player = state.player
+
+            player.update(state)
+
+        elif self.game_state == "play_again_or_bail":
+            if controller.isPPressed:
+                print("bye")
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+            elif controller.isOPressed:
+                print(str(controller.isTPressed))
+                print("ok here we go")
+                self.game_state = "choose_can"
+
+        elif self.game_state == "loser_screen":
+            time.sleep(3)
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
+
+    def draw(self, state: "GameState"):
+        DISPLAY.fill((0,0,0))
+
+        if self.game_state == "welcome_opposum":
+            DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
+        elif self.game_state == "choose_can":
+            DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (10, 10))
+
+        elif self.game_state == "play_again_or_bail":
+            DISPLAY.blit(self.font.render(f"Press O to continue, or P to exit", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (110, 110))
+            DISPLAY.blit(self.font.render(f"your toal money is {self.bet}", True, (255, 255, 255)), (210, 210))
+            DISPLAY.blit(self.font.render(f"your opossum insurance is {self.insurance}", True, (255, 255, 255)), (410, 410))
+
+        elif self.game_state == "loser_screen":
+            DISPLAY.blit(self.font.render(f"yyou drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 210))
+
+
+        pygame.display.flip()
+
+
+
+
+
 
 
 class CoinFlipScreen(Screen):
@@ -601,6 +722,7 @@ class GameState:
         self.mainScreen = MainScreen()
         self.testScreen = TestScreen()
         self.coinFlipScreen = CoinFlipScreen()
+        self.opossumInACanScreen = OpossumInACanScreen()
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 
