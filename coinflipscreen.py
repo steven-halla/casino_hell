@@ -1,4 +1,5 @@
 import random
+import sys
 import time
 from typing import *
 
@@ -13,6 +14,8 @@ class NewController:
     def __init__(self):
         self.is1Pressed: bool = False
         self.isTPressed: bool = False
+        self.isPPressed: bool = False
+        self.isOPressed: bool = False
 
         pygame.init()
 
@@ -24,14 +27,22 @@ class NewController:
 
                 if event.key == pygame.K_1:
                     self.is1Pressed = True
-                if event.key == pygame.K_t:
+                elif event.key == pygame.K_t:
                     self.isTPressed = True
+                elif event.key == pygame.K_p:
+                    self.isPPressed = True
+                elif event.key == pygame.K_o:
+                    self.isOPressed = True
 
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_1:
                         self.is1Pressed = False
                     elif event.key == pygame.K_t:
                         self.isTPressed = False
+                    elif event.key == pygame.K_p:
+                        self.isPPressed = False
+                    elif event.key == pygame.K_o:
+                        self.isOPressed = False
 
 
 class BunnyTimes(NewController):
@@ -46,7 +57,7 @@ class BunnyTimes(NewController):
         pygame.display.set_caption("Russian Roulette")
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["lose", "win", "win"]
+        self.winner_or_looser: List[str] = ["lose", "win", "win", "win", "win", "win"]
         self.result = "win"
         self.bet = 10
 
@@ -97,12 +108,13 @@ class BunnyTimes(NewController):
                 self.check_results()
                 self.game_state = "play_again_or_bail"
 
+        elif self.game_state == "play_again_or_bail":
+            if self.isPPressed:
+                print("bye")
+                sys.exit()
 
-
-
-
-
-
+            elif self.isOPressed:
+                print("ok here we go")
 
 
     def draw(self):
@@ -113,7 +125,7 @@ class BunnyTimes(NewController):
         elif self.game_state == "choose_can":
             DISPLAY.blit(self.font.render(f"Press 1", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "play_again_or_bail":
-            DISPLAY.blit(self.font.render(f"Press C to continue, or E to exit", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Press O to continue, or P to exit", True, (255, 255, 255)), (10, 10))
 
 
 
