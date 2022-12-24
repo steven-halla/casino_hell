@@ -397,9 +397,7 @@ class CoinFlipScreen(Screen):
         super().__init__("Casino Coin flip  Screen")
         self.result = "tails"
         self.balance = 0
-
-
-
+        self.play_again = True
         self.players_side = "heads"
         self.new_font = pygame.font.Font(None, 36)
 
@@ -408,7 +406,7 @@ class CoinFlipScreen(Screen):
             True, (255, 255, 255))
         self.choose_bet_display = self.new_font.render("T for 100, W for 500, E for 1000", True, (255, 255, 255))
         self.players_coin_side_choice = self.new_font.render(f"You choosed heads", True, (255, 255, 255))
-        self.time_to_choose_heads_or_tails = self.new_font.render(f"You can choose heads or tails press k", True, (255, 255, 255))
+        self.time_to_choose_heads_or_tails = self.new_font.render(f"K for tails, Q for heads", True, (255, 255, 255))
         self.flipping_now = self.new_font.render(f"flipping coin now", True, (255, 255, 255))
 
         self.game_state = "welcome"
@@ -435,6 +433,10 @@ class CoinFlipScreen(Screen):
 
         # Update the game state based on user input
         # print("update, state: " + str(self.game_state))
+
+        # if self.game_state == "play_again_or_quit":
+        #     self.play_again = False
+        #     self.game_state = "welcome"
 
         if self.game_state == "welcome" :
             if controller.isRPressed:
@@ -470,6 +472,11 @@ class CoinFlipScreen(Screen):
                 print("you choosed tails")
                 print(str(self.players_side))
                 self.game_state = "coin_flip_time"
+            elif controller.isQPressed:
+                self.players_side = "heads"
+                print("you choosed heads")
+                print(str(self.players_side))
+                self.game_state = "coin_flip_time"
 
 
         elif self.game_state == "coin_flip_time":
@@ -477,12 +484,12 @@ class CoinFlipScreen(Screen):
             self.flipCoin()
             if self.result == self.players_side:
                 print("you won")
-                self.balance += 50
+                self.balance += self.bet
                 print(self.balance)
                 self.game_state = "you_won_the_toss"
 
             else:
-                self.balance -= 50
+                self.balance -= self.bet
                 print("you lost")
                 print(self.balance)
                 self.game_state = "you_lost_the_toss"
@@ -495,8 +502,11 @@ class CoinFlipScreen(Screen):
             print("in state: play_again_or_quit")
             if controller.isJPressed:
                 print("play again")
+                self.play_again = True
+                self.game_state = "choose_bet"
             elif controller.isLPressed:
                 print("bye")
+                # self.play_again = False
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -517,16 +527,16 @@ class CoinFlipScreen(Screen):
             DISPLAY.blit(self.flipping_now, (10, 10))
 
         elif self.game_state == "you_won_the_toss":
-            DISPLAY.blit(self.new_font.render(f"your choice  {self.players_side} coin landed  {self.result}You won! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "you_lost_the_toss":
-            DISPLAY.blit(self.new_font.render(f"your choice  {self.players_side}coin landed  {self.result}You lost! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} lost! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "play_again_or_quit":
             DISPLAY.blit(self.new_font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
 
 
         # Draw the player and money
         state.player.draw(state)
-        state.money.draw(state)
+        # state.money.draw(state)
 
         # Update the display
         pygame.display.flip()
@@ -580,14 +590,6 @@ class GameState:
         self.coinFlipScreen = CoinFlipScreen()
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
-
-# old code, if q pressed:
-# NO EXTRA LOGIC IN CONTROLLER CLASS
-# state.money.add(20)
-# coinFlipScreen = CoinFlipScreen() # defined in GameState
-# from MainScreen, if we want to enter the coinFlipScreen, then:
-# state.currentScreen = state.coinFlipScreen
-# state.currentScreen.start()
 
 class Game:
     def __init__(self):
