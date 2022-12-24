@@ -112,6 +112,10 @@ class Controller:
         self.isLPressed: bool = False
         self.isKPressed: bool = False
         self.isJPressed: bool = False
+        self.isRPressed: bool = False
+        self.isEPressed: bool = False
+        self.isWPressed: bool = False
+        self.isTPressed: bool = False
         self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
@@ -154,6 +158,14 @@ class Controller:
                     self.isKPressed = True
                 elif event.key == pygame.K_l:
                     self.isLPressed = True
+                elif event.key == pygame.K_r:
+                    self.isRPressed = True
+                elif event.key == pygame.K_e:
+                    self.isEPressed = True
+                elif event.key == pygame.K_t:
+                    self.isTPressed = True
+                elif event.key == pygame.K_w:
+                    self.isWPressed = True
 
 
             elif event.type == pygame.KEYUP:
@@ -178,6 +190,14 @@ class Controller:
                     self.isKPressed = False
                 elif event.key == pygame.K_l:
                     self.isKPressed = False
+                elif event.key == pygame.K_r:
+                    self.isRPressed = False
+                elif event.key == pygame.K_e:
+                    self.isEPressed = False
+                elif event.key == pygame.K_t:
+                    self.isTPressed = False
+                elif event.key == pygame.K_w:
+                    self.isWPressed = False
 
 
 
@@ -384,14 +404,12 @@ class CoinFlipScreen(Screen):
         self.new_font = pygame.font.Font(None, 36)
 
         self.welcome_text = self.new_font.render(
-            f"Welcome to Coin Flip! Press J to continue.",
+            f"Welcome to Coin Flip! Press R to continue.",
             True, (255, 255, 255))
-        self.choose_bet_display = self.new_font.render("Enter your bet amount press j or k or l", True, (255, 255, 255))
+        self.choose_bet_display = self.new_font.render("T for 100, W for 500, E for 1000", True, (255, 255, 255))
         self.players_coin_side_choice = self.new_font.render(f"You choosed heads", True, (255, 255, 255))
         self.time_to_choose_heads_or_tails = self.new_font.render(f"You can choose heads or tails press k", True, (255, 255, 255))
         self.flipping_now = self.new_font.render(f"flipping coin now", True, (255, 255, 255))
-
-
 
         self.game_state = "welcome"
 
@@ -416,26 +434,34 @@ class CoinFlipScreen(Screen):
         controller.update(state)
 
         # Update the game state based on user input
-        print("update, state: " + str(self.game_state))
+        # print("update, state: " + str(self.game_state))
 
         if self.game_state == "welcome" :
-            if controller.isJPressed:
+            if controller.isRPressed:
                 self.game_state = "choose_bet"
         elif self.game_state == "choose_bet":
-            if controller.isJPressed:
+            if controller.isTPressed:
 
-                print("hi j")
-                self.bet = 50
+
+                self.bet = 100
                 print(self.bet)
                 self.game_state = "choose_heads_or_tails_message"
-                if controller.isKPressed:
-                    if controller.isLPressed:
+            elif controller.isWPressed:
+
+                self.bet = 500
+                print(self.bet)
+                self.game_state = "choose_heads_or_tails_message"
+            elif controller.isEPressed:
+
+                self.bet = 1000
+                print(self.bet)
+                self.game_state = "choose_heads_or_tails_message"
         # Update bet amount
 
         # Update the player and money
-                        player = state.player
+            player = state.player
 
-                        player.update(state)
+            player.update(state)
 
         elif self.game_state == "choose_heads_or_tails_message":
             if controller.isKPressed:
@@ -473,13 +499,6 @@ class CoinFlipScreen(Screen):
                 print("bye")
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
-
-
-
-
-
-
-
 
 
 
