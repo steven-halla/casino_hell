@@ -2,43 +2,85 @@ import random
 from typing import *
 
 import pygame
+SCREEN_WIDTH: int = 800
+SCREEN_HEIGHT: int = 600
+WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 
+DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 
-class BunnyTimes:
-    def __init__(self, screen_width: int = 640, screen_height: int = 480):
-        # Initialize Pygame
+class NewController:
+    def __init__(self):
+        self.is1Pressed: bool = False
+        self.isTPressed: bool = False
+
         pygame.init()
 
-        # Set the screen size
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+
+    def keyPress(self, state: "GameState"):
+        for event in pygame.event.get():
+
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_1:
+                    self.is1Pressed = True
+
+                elif event.type == pygame.KEYUP:
+                    if event.key == pygame.K_1:
+                        self.is1Pressed = False
+                    elif event.key == pygame.K_1:
+                        self.is1Pressed = False
+
+
+class BunnyTimes(NewController):
+    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT):
+        # Initialize Pygame
+        super().__init__()
+        pygame.init()
+        self.opposum_font = pygame.font.Font(None, 36)
+        self.screen_width = SCREEN_WIDTH
+        self.screen_height = SCREEN_HEIGHT
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-
-        # Set the title and icon
         pygame.display.set_caption("Russian Roulette")
-        # icon = pygame.image.load("roulette_icon.png")
-        # pygame.display.set_icon(icon)
-
-        # Load the font
         self.font = pygame.font.Font(None, 36)
-
-        # Set the colors
-        self.WHITE: Tuple[int, int, int] = (255, 255, 255)
-
-        # Set the game variables
+        self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["lose", "win", "win"]  # List to store the loaded bullets
 
-
     def start(self):
-        print("hi")
+        running = True
+        while running:
+            self.update()
+            self.draw()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            pygame.display.update()
+
+    def shuffle_opposums(self) -> List[str]:
         """Creates a new list in a random order"""
-        # Create a copy of the original list
-        shuffled_list = self.winner_or_looser.copy()
 
-        # Shuffle the list in place
-        random.shuffle(shuffled_list)
+        random.shuffle(self.winner_or_looser)
 
-        print(str(shuffled_list))
+        print(str(self.winner_or_looser))
+        return self.winner_or_looser
 
-bunbun = BunnyTimes()
-bunbun.start()
+
+    def update(self):
+        if self.game_state == "welcome_opposum":
+            print("yo")
+    def draw(self):
+        DISPLAY.fill((0,0,0))
+
+        if self.game_state == "welcome_opposum":
+            DISPLAY.blit(self.font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
+
+
+
+
+
+
+
+
+
+
+game = BunnyTimes(SCREEN_WIDTH, SCREEN_HEIGHT)
+game.start()
