@@ -77,6 +77,8 @@ class BunnyTimes(NewController):
             print(self.bet)
 
         elif self.result == "lose":
+            self.bet = 0
+            print(self.bet)
             print("you lose")
 
 
