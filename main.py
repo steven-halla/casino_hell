@@ -425,6 +425,13 @@ class OpossumInACanScreen(Screen):
         self.X3 = False
         self.has_opossum_insurance = True
 
+    def refresh(self):
+        self.bet = 10
+        self.has_opossum_insurance = True
+        self.insurance = 300
+        self.winner_or_looser = ["win", "win", "win", "win", "win", "lucky_star", "X3_star", "lose",
+                                            "insurance_eater", "insurance_eater"]
+
     def shuffle_opposums(self) -> List[str]:
         """Creates a new list in a random order"""
 
@@ -493,9 +500,12 @@ class OpossumInACanScreen(Screen):
 
         elif self.game_state == "play_again_or_bail":
             if controller.isPPressed:
-                print("bye")
+                time.sleep(1)
+                self.refresh()
+                self.game_state = "welcome_opposum"
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
+
 
             elif controller.isOPressed:
                 print(str(controller.isTPressed))
@@ -504,6 +514,8 @@ class OpossumInACanScreen(Screen):
 
         elif self.game_state == "loser_screen":
             time.sleep(3)
+            self.refresh()
+            self.game_state = "welcome_opposum"
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
 
