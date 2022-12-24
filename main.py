@@ -115,7 +115,10 @@ class Controller:
         self.isRPressed: bool = False
         self.isEPressed: bool = False
         self.isWPressed: bool = False
+        self.is1Pressed: bool = False
         self.isTPressed: bool = False
+        self.isPPressed: bool = False
+        self.isOPressed: bool = False
         self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
@@ -166,6 +169,12 @@ class Controller:
                     self.isTPressed = True
                 elif event.key == pygame.K_w:
                     self.isWPressed = True
+                elif event.key == pygame.K_1:
+                    self.is1Pressed = True
+                elif event.key == pygame.K_p:
+                    self.isPPressed = True
+                elif event.key == pygame.K_o:
+                    self.isOPressed = True
 
 
             elif event.type == pygame.KEYUP:
@@ -198,6 +207,12 @@ class Controller:
                     self.isTPressed = False
                 elif event.key == pygame.K_w:
                     self.isWPressed = False
+                elif event.key == pygame.K_1:
+                    self.is1Pressed = False
+                elif event.key == pygame.K_p:
+                    self.isPPressed = False
+                elif event.key == pygame.K_o:
+                    self.isOPressed = False
 
 
 
@@ -391,7 +406,7 @@ class MainScreen(Screen):
         state.money.draw(state)
         pygame.display.update()
 
-class opossumInACanScreen(Screen):
+class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.can_one = 1
