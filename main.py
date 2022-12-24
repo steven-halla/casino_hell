@@ -391,6 +391,10 @@ class MainScreen(Screen):
         state.money.draw(state)
         pygame.display.update()
 
+class opossumInACanScreen(Screen):
+    def __init__(self):
+        super().__init__("Opossum in a can screen")
+
 
 class CoinFlipScreen(Screen):
     def __init__(self):
