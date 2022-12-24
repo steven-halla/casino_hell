@@ -189,7 +189,7 @@ class Controller:
                 elif event.key == pygame.K_k:
                     self.isKPressed = False
                 elif event.key == pygame.K_l:
-                    self.isKPressed = False
+                    self.isLPressed = False
                 elif event.key == pygame.K_r:
                     self.isRPressed = False
                 elif event.key == pygame.K_e:
@@ -496,6 +496,7 @@ class CoinFlipScreen(Screen):
 
         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
             time.sleep(3) # don't sleep, use a "state start time" and check current_time() - "state start time" > 3 seconds (3000ms)
+            print("play_agin screen incoming ")
             self.game_state = "play_again_or_quit"
 
         elif self.game_state == "play_again_or_quit":
@@ -507,6 +508,7 @@ class CoinFlipScreen(Screen):
             elif controller.isLPressed:
                 print("bye")
                 # self.play_again = False
+                self.game_state = "welcome"
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
