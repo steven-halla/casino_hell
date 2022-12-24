@@ -8,9 +8,11 @@ class Dice:
     def roll(self) -> int:
         return random.randint(1, self.sides)
 
+
 # Example usage
-dice = Dice(6)
-rolls = [dice.roll() for num in range(1)]
+
+six_sided_dice = Dice(6)
+rolls = [six_sided_dice.roll() for num in range(1)]
 print(rolls)
 
 
