@@ -34,15 +34,15 @@ class NewController:
                 elif event.key == pygame.K_o:
                     self.isOPressed = True
 
-                elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_1:
-                        self.is1Pressed = False
-                    elif event.key == pygame.K_t:
-                        self.isTPressed = False
-                    elif event.key == pygame.K_p:
-                        self.isPPressed = False
-                    elif event.key == pygame.K_o:
-                        self.isOPressed = False
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_1:
+                    self.is1Pressed = False
+                elif event.key == pygame.K_t:
+                    self.isTPressed = False
+                elif event.key == pygame.K_p:
+                    self.isPPressed = False
+                elif event.key == pygame.K_o:
+                    self.isOPressed = False
 
 
 class BunnyTimes(NewController):
@@ -57,9 +57,12 @@ class BunnyTimes(NewController):
         pygame.display.set_caption("Russian Roulette")
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["lose", "win", "win", "win", "win", "win"]
+        self.winner_or_looser: List[str] = ["win", "win", "win", "win", "win", "lucky_star",  "X3_star", "lose",  "insurance_eater", "insurance_eater"]
         self.result = "win"
         self.bet = 10
+        self.insurance = 1000
+        self.X3 = False
+        self.has_opossum_insurance = True
 
 
     def start(self):
@@ -82,16 +85,43 @@ class BunnyTimes(NewController):
 
     def check_results(self):
         print("checking result")
-        if self.result == "win":
-            self.bet = self.bet * 2
-            print("you win")
-            print(self.bet)
+
+        if self.result == "X3_star":
+            self.X3 = True
+            print(self.game_state)
+            self.game_state = "play_again_or_bail"
+
+
+        elif self.result == "win":
+            if self.X3 == False:
+                self.bet = self.bet * 2
+                print("you win")
+                print(self.bet)
+                self.game_state = "play_again_or_bail"
+            else:
+                self.bet = self.bet * 3
+                self.X3 = False
+                self.game_state = "play_again_or_bail"
+
+        elif self.result == "lucky_star":
+            self.insurance = self.insurance * 2
+            self.game_state = "play_again_or_bail"
+
+
+        elif self.result == "insurance_eater":
+            if self.insurance == 0:
+                print("oh no your in trouble")
+                print(self.game_state)
+                self.game_state = "loser_screen"
+            else:
+                self.insurance = 0
+                self.game_state = "play_again_or_bail"
 
         elif self.result == "lose":
             self.bet = 0
             print(self.bet)
             print("you lose")
-
+            self.game_state = "loser_screen"
 
 
     def update(self):
@@ -106,7 +136,6 @@ class BunnyTimes(NewController):
                 self.result = self.winner_or_looser[0]
                 del self.winner_or_looser[0]
                 self.check_results()
-                self.game_state = "play_again_or_bail"
 
         elif self.game_state == "play_again_or_bail":
             if self.isPPressed:
@@ -114,7 +143,13 @@ class BunnyTimes(NewController):
                 sys.exit()
 
             elif self.isOPressed:
+                print(str(self.isTPressed))
                 print("ok here we go")
+                self.game_state = "choose_can"
+
+        elif self.game_state == "loser_screen":
+            time.sleep(3)
+            sys.exit()
 
 
     def draw(self):
@@ -123,9 +158,17 @@ class BunnyTimes(NewController):
         if self.game_state == "welcome_opposum":
             DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "choose_can":
-            DISPLAY.blit(self.font.render(f"Press 1", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (10, 10))
+
         elif self.game_state == "play_again_or_bail":
             DISPLAY.blit(self.font.render(f"Press O to continue, or P to exit", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (110, 110))
+            DISPLAY.blit(self.font.render(f"your toal money is {self.bet}", True, (255, 255, 255)), (210, 210))
+            DISPLAY.blit(self.font.render(f"your opossum insurance is {self.insurance}", True, (255, 255, 255)), (410, 410))
+
+        elif self.game_state == "loser_screen":
+            DISPLAY.blit(self.font.render(f"yyou drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 210))
+
 
 
 
