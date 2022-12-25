@@ -45,22 +45,28 @@ class NewController:
                 elif event.key == pygame.K_o:
                     self.isOPressed = False
 
+
 class Dice:
     def __init__(self, sides: int):
         self.sides = sides
         self.rolls = []
-
-    def roll(self) -> int:
-        roll_result = random.randint(1, self.sides)
-        self.rolls.append(roll_result)
-        return roll_result
+    #rename roll method to roll 2d6 method
+    def roll(self) -> List[int]:
+        roll1 = random.randint(1, self.sides)
+        roll2 = random.randint(1, self.sides)
+        self.rolls = [roll1, roll2]
+        return self.rolls
 
     def add(self):
+        print(str(self.rolls))
         return self.rolls[0] + self.rolls[1]
 
 # Example usage
-
-
+#
+# six_sided_dice = Dice(6)
+# six_sided_dice.roll()
+# six_sided_dice.roll()
+# print(six_sided_dice.rolls)
 
 
 class DiceGame(Dice, NewController):
@@ -91,11 +97,11 @@ class DiceGame(Dice, NewController):
         print("player 1 pile is:" + str(self.player1pile))
         print("your ante is:" + str(self.ante))
         self.roll()
-        if rolls[0] == 1 and rolls[1] == 1:
+        if self.rolls[0] == 1 and self.rolls[1] == 1:
             print("snake eyes")
-        elif rolls[0] == 2 and rolls[1] == 2:
+        elif self.rolls[0] == 2 and self.rolls[1] == 2:
             print("Double twos")
-        elif rolls[0] == 3 and rolls[1] == 3:
+        elif self.rolls[0] == 3 and self.rolls[1] == 3:
             print("double threes")
         elif self.add() == 8:
             print("it adds to 8")
@@ -105,18 +111,18 @@ class DiceGame(Dice, NewController):
             print("no luck this round")
 
     def hot_bet(self):
-        if rolls[0] == 1 and rolls[1] == 1:
+        if self.rolls[0] == 1 and self.rolls[1] == 1:
             print("snake eyes")
-        elif rolls[0] == 2 and rolls[1] == 2:
+        elif self.rolls[0] == 2 and self.rolls[1] == 2:
             print("Double twos")
-        elif rolls[0] == 3 and rolls[1] == 3:
+        elif self.rolls[0] == 3 and self.rolls[1] == 3:
             print("double threes")
 
-        elif rolls[0] == 4 and rolls[1] == 4:
+        elif self.rolls[0] == 4 and self.rolls[1] == 4:
             print("Double twos")
-        elif rolls[0] == 5 and rolls[1] == 5:
+        elif self.rolls[0] == 5 and self.rolls[1] == 5:
             print("double fives")
-        elif rolls[0] == 6 and rolls[1] == 6:
+        elif self.rolls[0] == 6 and self.rolls[1] == 6:
             print("double sixes")
 
         elif self.add() == 3 or self.add() == 5 or self.add() == 7 or self.add() == 9 or self.add() == 11:
