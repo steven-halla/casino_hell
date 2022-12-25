@@ -48,41 +48,49 @@ class NewController:
 class Dice:
     def __init__(self, sides: int):
         self.sides = sides
-
+        self.rolls = []
 
     def roll(self) -> int:
-        return random.randint(1, self.sides)
+        roll_result = random.randint(1, self.sides)
+        self.rolls.append(roll_result)
+        return roll_result
 
     def add(self):
-        return rolls[0] + rolls[1]
-
-
-
+        return self.rolls[0] + self.rolls[1]
 
 # Example usage
 
-six_sided_dice = Dice(6)
-rolls = [six_sided_dice.roll() for num in range(2)]
-print(rolls)
+
+
 
 class DiceGame(Dice, NewController):
     def __init__(self, sides: int):
         super().__init__(sides)
         NewController.__init__(self)
-        self.game_state = "declare_intent_stage"
-
+        self.game_state = "player_1_declare_intent_stage"
+        self.font = pygame.font.Font(None, 36)
+        self.player_1_turn = False
+        self.player_2_turn = False
         self.player1pile = 10
         self.player2pile = 10
         self.ante = 1000
 
     def start(self):
-        self.update()
+        running = True
+        while running:
+            self.update()
+            self.draw()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+            pygame.display.update()
 
 
 
     def cold_bet(self):
         print("player 1 pile is:" + str(self.player1pile))
         print("your ante is:" + str(self.ante))
+        self.roll()
         if rolls[0] == 1 and rolls[1] == 1:
             print("snake eyes")
         elif rolls[0] == 2 and rolls[1] == 2:
@@ -118,20 +126,26 @@ class DiceGame(Dice, NewController):
 
     def update(self):
         self.keyPress(self.game_state)
-        if self.game_state == "declare_intent_stage":
-            if self.isOPressed:
+        if self.game_state == "player_1_declare_intent_stage":
+            if self.isTPressed:
                 self.cold_bet()
-            elif self.isOPressed:
+            elif self.isPPressed:
+                self.hot_bet()
+        elif self.game_state == "player_2_declare_intent_stage":
+            if self.isTPressed:
+                self.cold_bet()
+            elif self.isPPressed:
                 self.hot_bet()
 
 
     def draw(self):
         DISPLAY.fill((0,0,0))
 
-        if self.game_state == "welcome_opposum":
-            DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
+        if self.game_state == "player_1_declare_intent_stage":
+            DISPLAY.blit(self.font.render(f"Player 1: press T forr cold, press P for hot", True, (255, 255, 255)), (10, 10))
 
-
+        elif self.game_state == "player_2_declare_intent_stage":
+            DISPLAY.blit(self.font.render(f"Player 2: press T forr cold, press P for hot", True, (255, 255, 255)), (10, 10))
 
 
 
