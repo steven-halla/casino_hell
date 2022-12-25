@@ -104,7 +104,7 @@ class DiceGame(Dice, NewController):
             pygame.display.update()
 
     def cold_bet(self):
-        print("player 1 pile is:" + str(self.player1pile))
+        print("player  pile is:" + str(self.player1pile))
         print("your ante is:" + str(self.ante))
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1:
@@ -130,8 +130,15 @@ class DiceGame(Dice, NewController):
         if self.game_state == "player_1_declare_intent_stage":
             if self.isTPressed:
                 self.cold_bet()
-                print("thakn god")
+                print("play 1 bet +++++++++++++++++++++++")
                 self.game_state = "player_2_declare_intent_stage"
+        elif self.game_state == "player_2_declare_intent_stage":
+            if self.isOPressed:
+                self.cold_bet()
+                print("player 2 bet ----------")
+                self.game_state = "player_1_declare_intent_stage"
+
+
 
 
 
@@ -139,10 +146,10 @@ class DiceGame(Dice, NewController):
         DISPLAY.fill((0,0,0))
 
         if self.game_state == "player_1_declare_intent_stage":
-            DISPLAY.blit(self.font.render(f"Player 1: press T forr cold, press P for hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1: press T forr cold", True, (255, 255, 255)), (10, 10))
 
         elif self.game_state == "player_2_declare_intent_stage":
-            DISPLAY.blit(self.font.render(f"Player 2: press T forr cold, press P for hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 2: press O forr cold", True, (255, 255, 255)), (10, 10))
 
 
 game = DiceGame(SCREEN_WIDTH, SCREEN_HEIGHT, 6)
