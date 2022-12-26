@@ -58,8 +58,6 @@ class NewController:
                     self.isEPressed = True
                 elif event.key == pygame.K_b:
                     self.isBPressed = True
-                elif event.key == pygame.K_m:
-                    self.isMPressed = True
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_1:
@@ -74,8 +72,6 @@ class NewController:
                     self.isEPressed = False
                 elif event.key == pygame.K_b:
                     self.isBPressed = False
-                elif event.key == pygame.K_m:
-                    self.isMPressed = False
 
 class Dice:
     def __init__(self, sides: int):
@@ -257,6 +253,7 @@ class DiceGame(Dice, NewController):
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
+                self.player1pile += self.rolls[0]
                 self.player2pile -= self.rolls[0]
                 if self.player2pile < 0:
                     self.player2pile = 0
@@ -271,51 +268,47 @@ class DiceGame(Dice, NewController):
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
+                self.player2pile += self.rolls[0]
+
                 self.player1pile -= self.rolls[0]
                 if self.player1pile < 0:
                     self.player1pile = 0
                 self.game_state = "player_1_intent_stage"
 
-
         #
         elif self.add() == 7 or self.add() == 9 or self.add() == 11:
             print("you got a 7, 9, or 11")
             if self.game_state == "player_1_rolls":
-                self.roll_state = "High Even Number, Attack player 2 pile"
+                self.roll_state = "High Even Number, Attack the ante "
 
 
                 print("attacking player 2 pile")
                 print(self.player1pile)
                 print(self.player2pile)
-                self.game_state = "player_1_high_even"
-
-            elif self.game_state == "player_1_high_even":
-                if self.isMPressed:
-                    self.roll_one_d_hundred()
-                    subtracted_amount = min(self.rolls[0], self.ante)
-                    self.ante -= subtracted_amount
-                    self.player1pile += subtracted_amount
-                    if self.ante < 0:
-                        self.ante = 0
-                    self.game_state = "player_1_results"
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player1pile += subtracted_amount
+                if self.ante < 0:
+                    self.ante = 0
+                self.game_state = "player_2_intent_stage"
 
 
 
-            elif self.game_state == "player_2_rolls":
+            elif self.game_state == "player_2_declare_intent_stage":
                 self.roll_state = "High Even Number, Attack player 1 pile"
 
-                self.game_state = "player_2_high_even"
+                print("attacking player 2 pile")
+                print(self.player1pile)
+                print(self.player2pile)
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player2pile += subtracted_amount
 
-            elif self.game_state == "player_2_high_even":
-                if self.isMPressed:
-                    self.roll_one_d_hundred()
-                    subtracted_amount = min(self.rolls[0], self.ante)
-                    self.ante -= subtracted_amount
-                    self.player1pile += subtracted_amount
-                    if self.ante < 0:
-                        self.ante = 0
-                    self.game_state = "player_2_results"
-
+                if self.ante < 0:
+                    self.ante = 0
+                self.game_state = "player_1_intent_stage"
 
         #
         else:
@@ -342,6 +335,7 @@ class DiceGame(Dice, NewController):
             if self.isEPressed:
                 print("pressing T")
                 self.cold_bet()
+
                 self.game_state = "player_1_results"
 
         elif self.game_state == "player_1_going_hot":
@@ -376,6 +370,7 @@ class DiceGame(Dice, NewController):
             if self.isEPressed:
                 print("pressing T")
                 self.cold_bet()
+
                 self.game_state = "player_2_results"
 
         elif self.game_state == "player_2_going_hot":
@@ -463,22 +458,6 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
-                         (155, 255))
-            DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
-
-
-        elif self.game_state == "player_1_high_even":
-            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.font.render(f" HIGH EVEN: Player 1 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)), (155, 255))
-            DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
-
-        elif self.game_state == "player_2_high_even":
-            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.font.render(f"HIGH EVEN: Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
                          (155, 255))
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
