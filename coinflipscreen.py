@@ -74,6 +74,16 @@ class Dice:
         print(self.rolls)
         return self.rolls
 
+    def roll_one_d_hundred(self) -> List[int]:
+        self.sides = 100
+        roll1 = random.randint(1, self.sides)
+
+        self.rolls = [roll1]
+        print("rolling 2d10")
+        print("your dice results" + str(self.rolls))
+        return self.rolls
+
+
     def add(self):
         # print(str(self.rolls))
         return self.rolls[0] + self.rolls[1]
@@ -155,12 +165,19 @@ class DiceGame(Dice, NewController):
                 print("attacking player 2 pile")
                 print(self.player1pile)
                 print(self.player2pile)
+                self.roll_one_d_hundred()
+                if self.player2pile > 0:
+                    self.player2pile  -= self.rolls[0]
+                self.player2pile -= self.rolls[0]
+
 
             elif self.game_state == "player_2_declare_intent_stage":
-                print("attacking player 1 pile")
-
+                print("attacking player 2 pile")
                 print(self.player1pile)
                 print(self.player2pile)
+                self.roll_one_d_hundred()
+                self.player1pile -= self.rolls[0]
+
         #
         elif self.add() == 7 or self.add() == 9 or self.add() == 11:
             print("you got a 7, 9, or 11")
@@ -175,7 +192,6 @@ class DiceGame(Dice, NewController):
             if self.isTPressed:
                 self.cold_bet()
                 print("play 1 bet +++++++++++++++++++++++")
-
                 self.game_state = "player_2_declare_intent_stage"
         elif self.game_state == "player_2_declare_intent_stage":
             if self.isOPressed:
