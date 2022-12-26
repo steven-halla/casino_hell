@@ -1,4 +1,5 @@
 import random
+import sys
 from typing import *
 import time
 
@@ -135,6 +136,8 @@ class DiceGame(Dice, NewController):
                 print(self.player2pile)
                 print("ante is now")
                 print(self.ante)
+                time.sleep(3)
+                sys.exit()
 
 
             elif self.game_state == "player_2_going_hot":
@@ -142,6 +145,8 @@ class DiceGame(Dice, NewController):
                 print(self.player1pile)
                 self.player1pile += self.ante
                 self.ante = 0
+                time.sleep(3)
+                sys.exit()
 
         elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
             if self.game_state == "player_1_going_hot":
@@ -158,6 +163,7 @@ class DiceGame(Dice, NewController):
                     self.player2pile = 0
                     print("if its 0:")
                     print(self.player2pile)
+                self.game_state = "player_2_declare_intent_stage"
             elif self.game_state == "player_2_going_hot":
                 self.roll_one_d_hundred()
                 subtracted_amount = min(self.rolls[0], self.player2pile)
@@ -172,6 +178,14 @@ class DiceGame(Dice, NewController):
                     self.player1pile = 0
                     print("if its 0:")
                     print(self.player1pile)
+                self.game_state = "player_1_declare_intent_stage"
+
+        elif self.game_state == "player_1_going_hot":
+            print("no dice you wasted your chance")
+            self.game_state = "player_2_declare_intent_stage"
+        elif self.game_state == "player_2_going_hot":
+            print("no dice you wasted your chance")
+            self.game_state = "player_1_declare_intent_stage"
 
     def cold_bet(self):
         print("player  1 pile   is:" + str(self.player1pile))
