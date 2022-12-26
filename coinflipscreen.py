@@ -107,6 +107,7 @@ class DiceGame(Dice, NewController):
 
     def cold_bet(self):
         print("player  1 pile   is:" + str(self.player1pile))
+        print("player  2 pile   is:" + str(self.player2pile))
         print("your ante is:" + str(self.ante) + "dollars")
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1:
