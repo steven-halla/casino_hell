@@ -137,13 +137,28 @@ class DiceGame(Dice, NewController):
                 print(self.ante)
 
 
-
-
             elif self.game_state == "player_2_going_hot":
                 self.player2pile = 0
                 print(self.player1pile)
                 self.player1pile += self.ante
                 self.ante = 0
+
+        elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
+            if self.game_state == "player_1_going_hot":
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.rolls[0], self.player2pile)
+                self.player2pile -= subtracted_amount
+                self.player1pile += subtracted_amount
+                print("player2 pile is")
+                print(self.player2pile)
+                print("player1 pile is")
+                print(self.player1pile)
+
+                if self.player2pile < 0:
+                    self.player2pile = 0
+                    print("if its 0:")
+                    print(self.player2pile)
+
 
 
     def cold_bet(self):
