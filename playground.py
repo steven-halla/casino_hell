@@ -346,7 +346,10 @@ class DiceGame(Dice, NewController):
             if self.is1Pressed:
                 print("pressing 1")
                 self.hot_bet()
-                self.game_state = "player_1_results"
+                if self.one_hundred_rolls == 0:
+                    self.game_state = "player_1_results"
+                else:
+                    self.game_state = "player_1_results_one_hundred"
 
         elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
             if self.isBPressed:
@@ -368,7 +371,10 @@ class DiceGame(Dice, NewController):
 
             elif self.isPPressed:
                 print("going in hot")
-                self.game_state = "player_2_going_hot"
+                if self.one_hundred_rolls == 0:
+                    self.game_state = "player_2_results"
+                else:
+                    self.game_state = "player_2_results_one_hundred"
 
 
 
