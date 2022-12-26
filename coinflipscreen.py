@@ -106,15 +106,21 @@ class DiceGame(Dice, NewController):
             pygame.display.update()
 
     def cold_bet(self):
-        print("player pile of  is:" + str(self.player1pile))
-        print("your ante is:" + str(self.ante) + "pieces of poop")
+        print("player  1 pile   is:" + str(self.player1pile))
+        print("your ante is:" + str(self.ante) + "dollars")
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1:
-            self.player_1_bad_roll = True
-            self.player1pile = 0
-            print(self.player1pile)
+            if self.game_state == "player_1_declare_intent_stage":
+                self.player_1_bad_roll = True
+                self.player1pile = 0
+                print(self.player1pile)
+                print("snake eyes with a poop worm going through the eyes")
 
-            print("snake eyes with a poop worm going through the eyes")
+            elif self.game_state == "player_2_declare_intent_stage":
+                self.player_2_bad_roll = True
+                self.player2pile = 0
+                print(self.player2pile)
+                print("snake eyes with a poop worm going through the eyes")
         elif self.rolls[0] == 2 and self.rolls[1] == 2:
             self.player_1_bad_roll = True
             self.player1pile = 0
