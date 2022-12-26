@@ -92,6 +92,8 @@ class DiceGame(Dice, NewController):
         self.ante = 1000
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
+        self.player_1_bad_roll = False
+        self.player_2_bad_roll = False
 
     def start(self):
         running = True
@@ -104,15 +106,26 @@ class DiceGame(Dice, NewController):
             pygame.display.update()
 
     def cold_bet(self):
-        print("player  pile is:" + str(self.player1pile))
-        print("your ante is:" + str(self.ante))
+        print("player pile of  is:" + str(self.player1pile))
+        print("your ante is:" + str(self.ante) + "pieces of poop")
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1:
-            print("snake eyes")
+            self.player_1_bad_roll = True
+            self.player1pile = 0
+            print(self.player1pile)
+
+            print("snake eyes with a poop worm going through the eyes")
         elif self.rolls[0] == 2 and self.rolls[1] == 2:
-            print("Double twos")
+            self.player_1_bad_roll = True
+            self.player1pile = 0
+            print(self.player1pile)
+
+            print("Double twos == two poops")
         #
         elif self.rolls[0] == 3 and self.rolls[1] == 3:
+            self.player_1_bad_roll = True
+            self.player1pile = 0
+            print(self.player1pile)
             print("double threes")
         #
         elif self.add() == 8:
@@ -131,6 +144,7 @@ class DiceGame(Dice, NewController):
             if self.isTPressed:
                 self.cold_bet()
                 print("play 1 bet +++++++++++++++++++++++")
+
                 self.game_state = "player_2_declare_intent_stage"
         elif self.game_state == "player_2_declare_intent_stage":
             if self.isOPressed:
