@@ -99,7 +99,7 @@ class DiceGame(Dice, NewController):
         self.player_2_turn = False
         self.player1pile = 10
         self.player2pile = 10
-        self.ante = 5
+        self.ante =12000
         self.anteXero = 0
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
@@ -158,6 +158,15 @@ class DiceGame(Dice, NewController):
                 self.player2pile = 0
                 print(self.player2pile)
                 print("double threes are bad")
+
+        elif self.rolls[0] == 6 and self.rolls[1] == 6:
+            if self.game_state == "player_1_declare_intent_stage":
+                print("you win =======================================================================")
+                self.player1pile += self.ante
+
+            elif self.game_state == "player_2_declare_intent_stage":
+                print("you win ==================================================================")
+                self.player2pile += self.ante
         #
         elif self.add() == 8:
             print("it adds to 8")
@@ -212,9 +221,6 @@ class DiceGame(Dice, NewController):
                 if self.ante < 0:
                     self.ante = 0
 
-                subtracted_amount = min(self.rolls[0], self.ante)
-                self.ante -= subtracted_amount
-                self.player2pile += subtracted_amount
 
 
         #
