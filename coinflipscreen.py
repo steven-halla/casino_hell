@@ -166,9 +166,9 @@ class DiceGame(Dice, NewController):
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
-                if self.player2pile > 0:
-                    self.player2pile  -= self.rolls[0]
                 self.player2pile -= self.rolls[0]
+                if self.player2pile < 0:
+                    self.player2pile = 0
 
 
             elif self.game_state == "player_2_declare_intent_stage":
@@ -177,6 +177,8 @@ class DiceGame(Dice, NewController):
                 print(self.player2pile)
                 self.roll_one_d_hundred()
                 self.player1pile -= self.rolls[0]
+                if self.player1pile < 0:
+                    self.player1pile = 0
 
         #
         elif self.add() == 7 or self.add() == 9 or self.add() == 11:
