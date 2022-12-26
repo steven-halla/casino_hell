@@ -39,7 +39,7 @@ class NewController:
         return nowMilliseconds() - self.keyReleasedTimes[key]
 
 
-    def keyPress(self, state: "GameState"):
+    def keyPress(self):
         for event in pygame.event.get():
 
             if event.type == pygame.KEYDOWN:
@@ -53,6 +53,8 @@ class NewController:
                     self.isPPressed = True
                 elif event.key == pygame.K_o:
                     self.isOPressed = True
+                elif event.key == pygame.K_e:
+                    self.isEPressed = True
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_1:
@@ -63,6 +65,8 @@ class NewController:
                     self.isPPressed = False
                 elif event.key == pygame.K_o:
                     self.isOPressed = False
+                elif event.key == pygame.K_e:
+                    self.isEPressed = False
 
 class Dice:
     def __init__(self, sides: int):
@@ -195,7 +199,7 @@ class DiceGame(Dice, NewController):
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1 or self.rolls[0] == 2 and self.rolls[1] == 2 or \
                 self.rolls[0] == 3 and self.rolls[1] == 3:
-            if self.game_state == "player_1_declare_intent_stage":
+            if self.game_state == "player_1_rolls":
                 print(self.game_state)
                 self.player1pile = 0
                 print(self.player1pile)
@@ -210,7 +214,7 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_1_wins"
 
         elif self.rolls[0] == 6 and self.rolls[1] == 6:
-            if self.game_state == "player_1_declare_intent_stage":
+            if self.game_state == "player_1_rolls":
                 print("you win =======================================================================")
                 self.player1pile += self.ante
                 self.game_state = "player_1_wins"
@@ -223,7 +227,7 @@ class DiceGame(Dice, NewController):
         #
         elif self.add() == 8:
             print("it adds to 8")
-            if self.game_state == "player_1_declare_intent_stage":
+            if self.game_state == "player_1_rolls":
 
                 print("attacking player 2 pile")
                 print(self.player1pile)
@@ -246,7 +250,7 @@ class DiceGame(Dice, NewController):
         #
         elif self.add() == 7 or self.add() == 9 or self.add() == 11:
             print("you got a 7, 9, or 11")
-            if self.game_state == "player_1_declare_intent_stage":
+            if self.game_state == "player_1_rolls":
 
                 print("attacking player 2 pile")
                 print(self.player1pile)
@@ -276,19 +280,24 @@ class DiceGame(Dice, NewController):
 
 
     def update(self):
-        self.keyPress(self.game_state)
+        self.keyPress()
         if self.game_state == "player_1_declare_intent_stage":
             if self.isTPressed:
+                print("hithere you ")
+                self.game_state = "player_1_rolls"
+                print(self.game_state)
 
-
-                self.cold_bet()
-                print("play 1 bet +++++++++++++++++++++++")
-                self.game_state = "player_2_declare_intent_stage"
             elif self.isPPressed:
                 print("going in hot")
                 self.game_state = "player_1_going_hot"
 
                 self.hot_bet()
+
+        elif self.game_state == "player_1_rolls":
+            if self.isEPressed:
+                print("pressing T")
+                self.cold_bet()
+                self.game_state = "player_1_results"
 
         elif self.game_state == "player_2_declare_intent_stage":
             if self.isOPressed:
@@ -352,23 +361,17 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(self.font.render(f"Player 1 wins", True, (255, 255, 255)), (500, 500))
 
-        elif self.game_state == "player_2_wins":
-            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.font.render(f"Player 2 wins", True, (255, 255, 255)), (500, 500))
 
         elif self.game_state == "player_1_rolls":
-            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.font.render(f"Player 1 rolls a {self.rolls}", True, (255, 255, 255)), (500, 500))
+            DISPLAY.blit(self.font.render(f"PRESS E to roll the dice", True, (255, 255, 255)), (255, 255))
 
-        elif self.game_state == "player_2_rolls":
+
+        elif self.game_state == "player_1_results":
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.font.render(f"Player 2 rolls a {self.rolls}", True, (255, 255, 255)), (500, 500))
+            DISPLAY.blit(self.font.render(f"PRESS E:  Player 1 rolls a {self.rolls}", True, (255, 255, 255)), (255, 255))
+
 
 
 
