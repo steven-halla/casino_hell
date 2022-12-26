@@ -123,20 +123,44 @@ class DiceGame(Dice, NewController):
                 print(self.player2pile)
                 print("snake eyes with a poop worm going through the eyes")
         elif self.rolls[0] == 2 and self.rolls[1] == 2:
-            self.player_1_bad_roll = True
-            self.player1pile = 0
-            print(self.player1pile)
+            if self.game_state == "player_1_declare_intent_stage":
+                self.player_1_bad_roll = True
+                self.player1pile = 0
+                print(self.player1pile)
+                print("4 eyes you die")
 
-            print("Double twos == two poops")
+            elif self.game_state == "player_2_declare_intent_stage":
+                self.player_2_bad_roll = True
+                self.player2pile = 0
+                print(self.player2pile)
+                print("4 eyes you die")
         #
         elif self.rolls[0] == 3 and self.rolls[1] == 3:
-            self.player_1_bad_roll = True
-            self.player1pile = 0
-            print(self.player1pile)
-            print("double threes")
+            if self.game_state == "player_1_declare_intent_stage":
+                self.player_1_bad_roll = True
+                self.player1pile = 0
+                print(self.player1pile)
+                print("double threes are bad")
+
+            elif self.game_state == "player_2_declare_intent_stage":
+                self.player_2_bad_roll = True
+                self.player2pile = 0
+                print(self.player2pile)
+                print("double threes are bad")
         #
         elif self.add() == 8:
             print("it adds to 8")
+            if self.game_state == "player_1_declare_intent_stage":
+
+                print("attacking player 2 pile")
+                print(self.player1pile)
+                print(self.player2pile)
+
+            elif self.game_state == "player_2_declare_intent_stage":
+                print("attacking player 1 pile")
+
+                print(self.player1pile)
+                print(self.player2pile)
         #
         elif self.add() == 7 or self.add() == 9 or self.add() == 11:
             print("you got a 7, 9, or 11")
