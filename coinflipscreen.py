@@ -235,11 +235,15 @@ class DiceGame(Dice, NewController):
                 self.cold_bet()
                 print("play 1 bet +++++++++++++++++++++++")
                 self.game_state = "player_2_declare_intent_stage"
+            elif self.isPPressed:
+                print("going in hot")
         elif self.game_state == "player_2_declare_intent_stage":
             if self.isOPressed:
                 self.cold_bet()
                 print("player 2 bet ----------")
                 self.game_state = "player_1_declare_intent_stage"
+            elif self.is1Pressed:
+                print("going in hot")
 
 
 
@@ -253,6 +257,12 @@ class DiceGame(Dice, NewController):
 
         elif self.game_state == "player_2_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 2: press O forr cold", True, (255, 255, 255)), (10, 10))
+
+        elif self.game_state == "player_1_going_hot":
+            DISPLAY.blit(self.font.render(f"Player 1 is going hot PRESS P", True, (255, 255, 255)), (10, 10))
+
+        elif self.game_state == "player_2_going_hot":
+            DISPLAY.blit(self.font.render(f"Player 2 is going hot PRESS 1", True, (255, 255, 255)), (10, 10))
 
 
 game = DiceGame(SCREEN_WIDTH, SCREEN_HEIGHT, 6)
