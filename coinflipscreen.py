@@ -129,7 +129,6 @@ class DiceGame(Dice, NewController):
                 self.player1pile = 0
                 print("player 1 pile is " + str(self.player1pile))
                 print("player 2 pile is " + str(self.player2pile))
-
                 self.player2pile += self.ante
                 self.ante = 0
                 print("Player 2 pile is")
@@ -192,43 +191,21 @@ class DiceGame(Dice, NewController):
         print("player  2 pile   is:" + str(self.player2pile))
         print("your ante is:" + str(self.ante) + "dollars")
         self.roll_two_d_six()
-        if self.rolls[0] == 1 and self.rolls[1] == 1:
+        if self.rolls[0] == 1 and self.rolls[1] == 1 or self.rolls[0] == 2 and self.rolls[1] == 2 or \
+                self.rolls[0] == 3 and self.rolls[1] == 3:
             if self.game_state == "player_1_declare_intent_stage":
-                self.player_1_bad_roll = True
+                print(self.game_state)
                 self.player1pile = 0
                 print(self.player1pile)
-                print("snake eyes with a poop worm going through the eyes")
+                self.game_state = "player_2_wins"
+
 
             elif self.game_state == "player_2_declare_intent_stage":
-                self.player_2_bad_roll = True
-                self.player2pile = 0
-                print(self.player2pile)
-                print("snake eyes with a poop worm going through the eyes")
-        elif self.rolls[0] == 2 and self.rolls[1] == 2:
-            if self.game_state == "player_1_declare_intent_stage":
-                self.player_1_bad_roll = True
-                self.player1pile = 0
-                print(self.player1pile)
-                print("4 eyes you die")
+                print(self.game_state)
 
-            elif self.game_state == "player_2_declare_intent_stage":
-                self.player_2_bad_roll = True
                 self.player2pile = 0
                 print(self.player2pile)
-                print("4 eyes you die")
-        #
-        elif self.rolls[0] == 3 and self.rolls[1] == 3:
-            if self.game_state == "player_1_declare_intent_stage":
-                self.player_1_bad_roll = True
-                self.player1pile = 0
-                print(self.player1pile)
-                print("double threes are bad")
-
-            elif self.game_state == "player_2_declare_intent_stage":
-                self.player_2_bad_roll = True
-                self.player2pile = 0
-                print(self.player2pile)
-                print("double threes are bad")
+                self.game_state = "player_1_wins"
 
         elif self.rolls[0] == 6 and self.rolls[1] == 6:
             if self.game_state == "player_1_declare_intent_stage":
@@ -291,9 +268,6 @@ class DiceGame(Dice, NewController):
 
                 if self.ante < 0:
                     self.ante = 0
-
-
-
         #
         else:
             print("no luck this round")
@@ -332,15 +306,53 @@ class DiceGame(Dice, NewController):
 
         if self.game_state == "player_1_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 1: press T forr cold P For hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
 
         elif self.game_state == "player_2_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 2: press O forr cold 1 for hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+
+
+        elif self.game_state == "player_1_going_cold":
+            DISPLAY.blit(self.font.render(f"Player 1 is going cold. ", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+        elif self.game_state == "player_2_going_cold":
+            DISPLAY.blit(self.font.render(f"Player 1 is going cold. ", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
 
         elif self.game_state == "player_1_going_hot":
             DISPLAY.blit(self.font.render(f"Player 1 is going hot PRESS P", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
 
         elif self.game_state == "player_2_going_hot":
             DISPLAY.blit(self.font.render(f"Player 2 is going hot PRESS 1", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+        elif self.game_state == "player_1_wins":
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+            DISPLAY.blit(self.font.render(f"Player 1 wins", True, (255, 255, 255)), (500, 500))
+
+        elif self.game_state == "player_2_wins":
+            DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+            DISPLAY.blit(self.font.render(f"Player 2 wins", True, (255, 255, 255)), (500, 500))
 
 
 game = DiceGame(SCREEN_WIDTH, SCREEN_HEIGHT, 6)
