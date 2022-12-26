@@ -97,8 +97,8 @@ class DiceGame(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 10
-        self.player2pile = 10
+        self.player1pile = 1000
+        self.player2pile = 1000
         self.ante =1000
         self.anteXero = 0
         self.screen_width = SCREEN_WIDTH
@@ -147,8 +147,8 @@ class DiceGame(Dice, NewController):
             if self.game_state == "player_1_going_hot":
                 self.roll_one_d_hundred()
                 subtracted_amount = min(self.rolls[0], self.player2pile)
-                self.player2pile -= subtracted_amount
-                self.player1pile += subtracted_amount
+                self.player2pile -= subtracted_amount * 2
+                self.player1pile += subtracted_amount * 2
                 print("player2 pile is")
                 print(self.player2pile)
                 print("player1 pile is")
@@ -158,8 +158,20 @@ class DiceGame(Dice, NewController):
                     self.player2pile = 0
                     print("if its 0:")
                     print(self.player2pile)
+            elif self.game_state == "player_2_going_hot":
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.rolls[0], self.player2pile)
+                self.player2pile -= subtracted_amount * 2
+                self.player1pile += subtracted_amount * 2
+                print("player2 pile is")
+                print(self.player2pile)
+                print("player1 pile is")
+                print(self.player1pile)
 
-
+                if self.player1pile < 0:
+                    self.player1pile = 0
+                    print("if its 0:")
+                    print(self.player1pile)
 
     def cold_bet(self):
         print("player  1 pile   is:" + str(self.player1pile))
