@@ -99,7 +99,8 @@ class DiceGame(Dice, NewController):
         self.player_2_turn = False
         self.player1pile = 10
         self.player2pile = 10
-        self.ante = 1000
+        self.ante = 5
+        self.anteXero = 0
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
         self.player_1_bad_roll = False
@@ -183,6 +184,39 @@ class DiceGame(Dice, NewController):
         #
         elif self.add() == 7 or self.add() == 9 or self.add() == 11:
             print("you got a 7, 9, or 11")
+            if self.game_state == "player_1_declare_intent_stage":
+
+                print("attacking player 2 pile")
+                print(self.player1pile)
+                print(self.player2pile)
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player1pile += subtracted_amount
+                if self.ante < 0:
+                    self.ante = 0
+
+
+
+
+
+            elif self.game_state == "player_2_declare_intent_stage":
+                print("attacking player 2 pile")
+                print(self.player1pile)
+                print(self.player2pile)
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player2pile += subtracted_amount
+
+                if self.ante < 0:
+                    self.ante = 0
+
+                subtracted_amount = min(self.rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player2pile += subtracted_amount
+
+
         #
         else:
             print("no luck this round")
