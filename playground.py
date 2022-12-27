@@ -131,59 +131,49 @@ class DiceGame(Dice, NewController):
             pygame.display.update()
 
     def hot_bet(self):
-        print("player  1 pile   is:" + str(self.player1pile))
-        print("player  2 pile   is:" + str(self.player2pile))
-        print("your ante is:" + str(self.ante) + "dollars")
-        self.roll_two_d_six()
-        if self.rolls[0] == self.rolls[1]:
-            print("Matching double you lose everything")
-            if self.game_state == "player_1_going_hot":
-                self.player_1_bad_roll = True
+
+        if self.game_state == "player_1_going_hot":
+            self.roll_two_d_six()
+            if self.rolls[0] == self.rolls[1]:
                 self.player1pile = 0
-                print("player 1 pile is " + str(self.player1pile))
-                print("player 2 pile is " + str(self.player2pile))
-                self.player2pile += self.ante
+
+                self.player2pile += self.ante + self.player1pile
+                self.player1pile = 0
                 self.ante = 0
-                print("Player 2 pile is")
-                print(self.player2pile)
-                print("ante is now")
-                print(self.ante)
+                print("you rolled a double get ready for trouble")
                 self.game_state = "player_2_wins"
 
-
-            elif self.game_state == "player_2_going_hot":
-                self.player2pile = 0
-                print(self.player1pile)
-                self.player1pile += self.ante
-                self.ante = 0
-                self.game_state = "player_2_wins"
-
-
-        elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
-            if self.game_state == "player_1_going_hot":
+            elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
                 self.roll_one_d_hundred()
-                subtracted_amount = min(self.rolls[0], self.player2pile)
-                self.player2pile -= subtracted_amount * 2
-                self.player1pile += subtracted_amount * 2
-                print("player2 pile is")
-                print(self.player2pile)
-                print("player1 pile is")
-                print(self.player1pile)
+                subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+                self.player2pile -= subtracted_amount * 3
+                self.player1pile += subtracted_amount * 3
 
                 if self.player2pile < 0:
                     self.player2pile = 0
                     print("if its 0:")
                     print(self.player2pile)
                 self.game_state = "player_2_declare_intent_stage"
-            elif self.game_state == "player_2_going_hot":
+
+            else:
+                print("unhandled dice roll in player_1_going_hot")
+
+
+        elif self.game_state == "player_2_going_hot":
+            self.roll_two_d_six()
+            if self.rolls[0] == self.rolls[1]:
+                self.player2pile = 0
+
+                self.player1pile += self.ante + self.player2pile
+                self.ante = 0
+                self.player2pile = 0
+                self.game_state = "player_1_wins"
+
+            elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
                 self.roll_one_d_hundred()
-                subtracted_amount = min(self.rolls[0], self.player2pile)
-                self.player2pile -= subtracted_amount * 2
-                self.player1pile += subtracted_amount * 2
-                print("player2 pile is")
-                print(self.player2pile)
-                print("player1 pile is")
-                print(self.player1pile)
+                subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+                self.player2pile -= subtracted_amount * 3
+                self.player1pile += subtracted_amount * 3
 
                 if self.player1pile < 0:
                     self.player1pile = 0
@@ -191,12 +181,49 @@ class DiceGame(Dice, NewController):
                     print(self.player1pile)
                 self.game_state = "player_1_declare_intent_stage"
 
+            else:
+                print("unhandled dice roll in player_2_going_hot")
+
+        elif self.game_state == "player_1_wins":
+            print("hi")
+        elif self.game_state == "player_2_wins":
+            print("bye")
+
+        #
+        # elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
+        #     if self.game_state == "player_1_going_hot":
+        #         self.roll_one_d_hundred()
+        #         subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+        #         self.player2pile -= subtracted_amount * 3
+        #         self.player1pile += subtracted_amount * 3
+        #
+        #
+        #         if self.player2pile < 0:
+        #             self.player2pile = 0
+        #             print("if its 0:")
+        #             print(self.player2pile)
+        #         self.game_state = "player_2_declare_intent_stage"
+        #     elif self.game_state == "player_2_going_hot":
+        #         self.roll_one_d_hundred()
+        #         subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+        #         self.player2pile -= subtracted_amount * 3
+        #         self.player1pile += subtracted_amount * 3
+        #
+        #
+        #         if self.player1pile < 0:
+        #             self.player1pile = 0
+        #             print("if its 0:")
+        #             print(self.player1pile)
+        #         self.game_state = "player_1_declare_intent_stage"
+
         elif self.game_state == "player_1_going_hot":
             print("no dice you wasted your chance")
             self.game_state = "player_2_declare_intent_stage"
+
         elif self.game_state == "player_2_going_hot":
             print("no dice you wasted your chance")
-            self.game_state = "player_1_declare_intent_stage"
+
+        print("end state: " + self.game_state)
 
     def cold_bet(self):
         print("player  1 pile   is:" + str(self.player1pile))
@@ -320,6 +347,7 @@ class DiceGame(Dice, NewController):
 
     def update(self):
         self.keyPress()
+        print("update: " + str(self.game_state))
         if self.game_state == "player_1_declare_intent_stage":
             self.one_hundred_rolls = 0
             if self.isTPressed:
@@ -371,10 +399,8 @@ class DiceGame(Dice, NewController):
 
             elif self.isPPressed:
                 print("going in hot")
-                if self.one_hundred_rolls == 0:
-                    self.game_state = "player_2_results"
-                else:
-                    self.game_state = "player_2_results_one_hundred"
+                self.game_state = "player_2_going_hot"
+
 
 
 
@@ -393,18 +419,26 @@ class DiceGame(Dice, NewController):
             if self.is1Pressed:
                 print("pressing 1")
                 self.hot_bet()
-                self.game_state = "player_2_results"
+                if self.one_hundred_rolls == 0:
+                    self.game_state = "player_2_results"
+                else:
+                    self.game_state = "player_2_results_one_hundred"
 
         elif self.game_state == "player_2_results" or self.game_state == "player_2_results_one_hundred":
             if self.isBPressed:
                 self.game_state = "player_1_declare_intent_stage"
 
 
-
+        elif self.game_state == "player_1_wins":
+            print("hi")
+        elif self.game_state == "player_2_wins":
+            print("bye")
 
 
     def draw(self):
         DISPLAY.fill((0,0,0))
+
+
 
         if self.game_state == "player_1_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 1: press T forr cold P For hot", True, (255, 255, 255)), (10, 10))
@@ -500,6 +534,9 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             DISPLAY.blit(self.font.render(f"1d100 ROLLED: {self.one_hundred_rolls}", True, (255, 255, 255)),
                          (5, 555))
+
+
+
 
 
 
