@@ -369,7 +369,22 @@ class Npc(Entity):
 class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.message = "Here are the rules of Coin Flip: Flip the coin you baboon."
+        self.message = font.render('Here is the rules to play the game:', True, GREEN, BLUE)
+
+    def update(self, state):
+        super().update(state)
+
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        if self.isSpeaking:
+            pygame.display.get_surface().blit(self.message, (
+                self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
+
+
+
+
+
 
 
 
@@ -758,7 +773,7 @@ class GameState:
         self.player: Player = Player(50, 100)
         self.money: Money = Money(23, 50, 50)
 
-        self.npcs = [Npc(170, 170), Npc(270, 270)]
+        self.npcs = [Npc(170, 170), CoinFlipExplanationGuy(270, 270)]
         self.obstacle: Obstacle = Obstacle(22, 22)
         self.isRunning: bool = True
         self.isPaused: bool = False
