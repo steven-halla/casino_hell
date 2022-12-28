@@ -267,7 +267,12 @@ class Player(Entity):
         controller = state.controller
         controller.update(state)
 
-        canMove = not state.npc.isSpeaking
+        # Define canMove before the for loop
+        canMove = True
+        for npc in state.npcs:
+            if npc.isSpeaking:
+                canMove = False
+                break
 
         if canMove:
             if controller.isLeftPressed:
@@ -303,8 +308,16 @@ class Player(Entity):
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-        if self.isOverlap(state.npc) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
+        # if self.isOverlap(state.npc) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
+        #     self.undoLastMove()
+        if self.isOverlap(state.obstacle) or self.isOutOfBounds():
             self.undoLastMove()
+
+        for npc in state.npcs:
+            if self.collision.isOverlap(npc.collision):
+                self.undoLastMove()
+
+
 
         if controller.isQPressed:
             state.currentScreen = state.coinFlipScreen
@@ -353,6 +366,15 @@ class Npc(Entity):
                 self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
 
 
+class CoinFlipExplanationGuy(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.message = "Here are the rules of Coin Flip: Flip the coin you baboon."
+
+
+
+
+
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 32, 32)
@@ -388,10 +410,13 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
 
+
     def update(self, state: "GameState"):
+
+
         controller = state.controller
         player = state.player
-        npc = state.npc
+        npc = state.npcs
         obstacle = state.obstacle
         money = state.money
         controller.update(state)
@@ -400,14 +425,18 @@ class MainScreen(Screen):
             state.isRunning = False
 
         player.update(state)
-        npc.update(state)
+        # npc.update(state)
+        for npc in state.npcs:
+            npc.update(state)
         obstacle.update(state)
         money.update(state)
 
     def draw(self, state: "GameState"):
         DISPLAY.fill(WHITE)
         state.player.draw(state)
-        state.npc.draw(state)
+        # state.npc.draw(state)
+        for npc in state.npcs:
+            npc.draw(state)
         state.obstacle.draw(state)
         state.money.draw(state)
         pygame.display.update()
@@ -698,7 +727,7 @@ class TestScreen(Screen):
     def update(self, state: "GameState"):
         controller = state.controller
         player = state.player
-        npc = state.npc
+        npc = state.npcs
         obstacle = state.obstacle
         money = state.money
         controller.update(state)
@@ -715,7 +744,7 @@ class TestScreen(Screen):
         DISPLAY.fill(GREEN)
 
         state.player.draw(state)
-        state.npc.draw(state)
+        state.npcs.draw(state)
         state.obstacle.draw(state)
         state.money.draw(state)
 
@@ -724,10 +753,12 @@ class TestScreen(Screen):
 
 class GameState:
     def __init__(self):
+
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
         self.money: Money = Money(23, 50, 50)
-        self.npc: Npc = Npc(170, 170)
+
+        self.npcs = [Npc(170, 170), Npc(270, 270)]
         self.obstacle: Obstacle = Obstacle(22, 22)
         self.isRunning: bool = True
         self.isPaused: bool = False
