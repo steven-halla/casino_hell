@@ -9,6 +9,7 @@ import pygame
 
 
 clock = pygame.time.Clock()
+FPS = 60
 
 pygame.init()
 SCREEN_WIDTH: int = 800
