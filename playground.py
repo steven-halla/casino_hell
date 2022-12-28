@@ -81,8 +81,10 @@ class Dice:
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
-        roll1 = random.randint(1, self.sides)
-        roll2 = random.randint(1, self.sides)
+        # roll1 = random.randint(1, self.sides)
+        # roll2 = random.randint(1, self.sides)
+        roll1 = 1
+        roll2 = 3
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -90,8 +92,9 @@ class Dice:
 
     def roll_one_d_hundred(self) -> List[int]:
         self.sides = 100
+        # roll1 = random.randint(1, self.sides)
         roll1 = random.randint(1, self.sides)
-        self.one_hundred_rolls = [roll1]
+        self.one_hundred_rolls = [50]
         print("rolling 2d10")
         print("your dice results" + str(self.one_hundred_rolls))
         return self.one_hundred_rolls
@@ -154,6 +157,8 @@ class DiceGame(Dice, NewController):
                 subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
                 self.player2pile -= subtracted_amount * 3
                 self.player1pile += subtracted_amount * 3
+                self.roll_state = "attacking enemy player pile"
+
 
                 if self.player2pile < 0:
                     self.player2pile = 0
@@ -162,7 +167,8 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_2_declare_intent_stage"
 
             else:
-                print("unhandled dice roll in player_1_going_hot")
+                self.roll_state = "Your roll was wasted"
+
 
 
         elif self.game_state == "player_2_going_hot":
@@ -180,47 +186,20 @@ class DiceGame(Dice, NewController):
                 subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
                 self.player2pile += subtracted_amount * 3
                 self.player1pile -= subtracted_amount * 3
+                self.roll_state = "attacking enemy player pile"
+
 
                 if self.player1pile < 0:
                     self.player1pile = 0
                     print("if its 0:")
                     print(self.player1pile)
+
                 self.game_state = "player_1_declare_intent_stage"
 
             else:
-                print("unhandled dice roll in player_2_going_hot")
+                self.roll_state = "Your roll was wasted"
 
-        # elif self.game_state == "player_1_wins":
-        #     print("hi")
-        # elif self.game_state == "player_2_wins":
-        #     print("bye")
 
-        #
-        # elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
-        #     if self.game_state == "player_1_going_hot":
-        #         self.roll_one_d_hundred()
-        #         subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
-        #         self.player2pile -= subtracted_amount * 3
-        #         self.player1pile += subtracted_amount * 3
-        #
-        #
-        #         if self.player2pile < 0:
-        #             self.player2pile = 0
-        #             print("if its 0:")
-        #             print(self.player2pile)
-        #         self.game_state = "player_2_declare_intent_stage"
-        #     elif self.game_state == "player_2_going_hot":
-        #         self.roll_one_d_hundred()
-        #         subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
-        #         self.player2pile -= subtracted_amount * 3
-        #         self.player1pile += subtracted_amount * 3
-        #
-        #
-        #         if self.player1pile < 0:
-        #             self.player1pile = 0
-        #             print("if its 0:")
-        #             print(self.player1pile)
-        #         self.game_state = "player_1_declare_intent_stage"
 
         elif self.game_state == "player_1_going_hot":
             print("no dice you wasted your chance")
@@ -345,12 +324,10 @@ class DiceGame(Dice, NewController):
                 if self.ante < 0:
                     self.ante = 0
                 self.game_state = "player_1_intent_stage"
-
-        #
         else:
-            self.roll_state = "Your roll means nothing!"
+            self.roll_state = "wasted roll"
 
-            print("no luck this round")
+
 
 
     def update(self):
