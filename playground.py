@@ -118,6 +118,8 @@ class DiceGame(Dice, NewController):
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
         self.roll_state = ""
+        self.player_1_lost_game = False
+        self.player_2_lost_game = False
 
 
     def start(self):
@@ -141,7 +143,10 @@ class DiceGame(Dice, NewController):
                 self.player1pile = 0
                 self.ante = 0
                 print("you rolled a double get ready for trouble")
-                self.game_state = "player_2_wins"
+                self.game_state = "player_1_game_over"
+                self.player_1_lost_game = True
+
+
 
             elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
                 self.roll_one_d_hundred()
@@ -167,7 +172,8 @@ class DiceGame(Dice, NewController):
                 self.player1pile += self.ante + self.player2pile
                 self.ante = 0
                 self.player2pile = 0
-                self.game_state = "player_1_wins"
+                self.player_2_lost_game = True
+
 
             elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
                 self.roll_one_d_hundred()
@@ -184,10 +190,10 @@ class DiceGame(Dice, NewController):
             else:
                 print("unhandled dice roll in player_2_going_hot")
 
-        elif self.game_state == "player_1_wins":
-            print("hi")
-        elif self.game_state == "player_2_wins":
-            print("bye")
+        # elif self.game_state == "player_1_wins":
+        #     print("hi")
+        # elif self.game_state == "player_2_wins":
+        #     print("bye")
 
         #
         # elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
@@ -239,7 +245,8 @@ class DiceGame(Dice, NewController):
                 self.ante = 0
                 self.roll_state = "You got the wrong kind of double, you lose everything player 1!"
                 print(self.player1pile)
-                self.game_state = "player_2_wins"
+                self.player_1_lost_game = True
+
 
 
             elif self.game_state == "player_2_rolls":
@@ -250,7 +257,8 @@ class DiceGame(Dice, NewController):
                 self.ante = 0
                 self.roll_state = "You got the wrong kind of double, you lose everything player 2!"
                 print(self.player2pile)
-                self.game_state = "player_1_wins"
+                self.player_2_lost_game = True
+
 
         elif self.rolls[0] == 6 and self.rolls[1] == 6:
             if self.game_state == "player_1_rolls":
@@ -388,7 +396,6 @@ class DiceGame(Dice, NewController):
 
 
 
-
         elif self.game_state == "player_2_declare_intent_stage":
             self.one_hundred_rolls = 0
 
@@ -429,10 +436,15 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_1_declare_intent_stage"
 
 
-        elif self.game_state == "player_1_wins":
-            print("hi")
-        elif self.game_state == "player_2_wins":
-            print("bye")
+
+        #
+        # elif self.player_1_lost_game == True:
+        #     self.game_state = "player_1_game_over"
+        #     print("hi")
+        #
+        # elif self.player_2_lost_game == True:
+        #     self.game_state = "player_2_game_over"
+        #     print("hi")
 
 
     def draw(self):
@@ -503,6 +515,11 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(self.font.render(f" Player 1 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)), (155, 255))
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+            if self.player_1_lost_game == True:
+                DISPLAY.blit(
+                    self.font.render(f"Sorry player 1: GAME OVER!!!: {self.player1pile}", True, (255, 255, 255)),
+                    (1, 555))
+
 
         elif self.game_state == "player_2_results":
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
@@ -511,7 +528,10 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
                          (155, 255))
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
-
+            if self.player_2_lost_game == True:
+                DISPLAY.blit(
+                    self.font.render(f"Sorry player 2: GAME OVER!!!: {self.player1pile}", True, (255, 255, 255)),
+                    (1, 555))
 
 
 
@@ -524,6 +544,8 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             DISPLAY.blit(self.font.render(f"1d100 ROLLED: {self.one_hundred_rolls}", True, (255, 255, 255)),
                          (5, 555))
+
+
 
         elif self.game_state == "player_2_results_one_hundred":
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
