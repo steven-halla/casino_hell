@@ -81,10 +81,10 @@ class Dice:
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
-        # roll1 = random.randint(1, self.sides)
-        # roll2 = random.randint(1, self.sides)
-        roll1 = 1
-        roll2 = 3
+        roll1 = random.randint(1, self.sides)
+        roll2 = random.randint(1, self.sides)
+        # roll1 = 6
+        # roll2 = 6
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -92,9 +92,8 @@ class Dice:
 
     def roll_one_d_hundred(self) -> List[int]:
         self.sides = 100
-        # roll1 = random.randint(1, self.sides)
         roll1 = random.randint(1, self.sides)
-        self.one_hundred_rolls = [50]
+        self.one_hundred_rolls = [roll1]
         print("rolling 2d10")
         print("your dice results" + str(self.one_hundred_rolls))
         return self.one_hundred_rolls
@@ -146,6 +145,7 @@ class DiceGame(Dice, NewController):
                 self.player2pile += self.ante + self.player1pile
                 self.player1pile = 0
                 self.ante = 0
+                self.roll_state ="you got a double at the wrong time, you lose"
                 print("you rolled a double get ready for trouble")
                 self.game_state = "player_1_game_over"
                 self.player_1_lost_game = True
@@ -177,6 +177,8 @@ class DiceGame(Dice, NewController):
 
                 self.player1pile += self.ante + self.player2pile
                 self.ante = 0
+                self.roll_state ="you got a double at the wrong time, you lose"
+
                 self.player2pile = 0
                 self.player_2_lost_game = True
 
@@ -342,6 +344,7 @@ class DiceGame(Dice, NewController):
                 self.player_1_lost_game = True
 
             elif self.player1pile == self.player2pile:
+                self.roll_state = "It's a draw,  you both walk away whole"
                 self.its_a_draw = True
                 print("its a draw")
 
@@ -506,7 +509,7 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             if self.player_1_lost_game == True:
                 DISPLAY.blit(
-                    self.font.render(f"Sorry player 1: GAME OVER!!!: {self.player1pile}", True, (255, 255, 255)),
+                    self.font.render(f"Sorry player 1: GAME OVER!!!: ", True, (255, 255, 255)),
                     (1, 555))
             elif self.its_a_draw == True:
                 DISPLAY.blit(
@@ -523,7 +526,7 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             if self.player_2_lost_game == True:
                 DISPLAY.blit(
-                    self.font.render(f"Sorry player 2: GAME OVER!!!: {self.player1pile}", True, (255, 255, 255)),
+                    self.font.render(f"Sorry player 2: GAME OVER!!!: ", True, (255, 255, 255)),
                     (1, 555))
             elif self.its_a_draw == True:
                 DISPLAY.blit(
