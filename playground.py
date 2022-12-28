@@ -2,6 +2,8 @@ import random
 import sys
 from typing import *
 import time
+import pygame.freetype
+from collections import defaultdict
 
 import pygame
 
@@ -9,6 +11,9 @@ SCREEN_WIDTH: int = 800
 SCREEN_HEIGHT: int = 600
 WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
+FPS = 60
+clock = pygame.time.Clock()
+
 
 
 def nowMilliseconds() -> int:
@@ -26,8 +31,12 @@ class NewController:
         self.isBPressed: bool = False
         self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
+        self.t = defaultdict(lambda: 0)
+        self.tPressed = 0
+
 
         pygame.init()
+
 
     def timeSinceKeyPressed(self, key: int):
         if key not in self.keyPressedTimes:
@@ -40,15 +49,24 @@ class NewController:
         return nowMilliseconds() - self.keyReleasedTimes[key]
 
 
-    def keyPress(self):
-        for event in pygame.event.get():
 
+
+
+
+
+
+    def handle_keyboard_input(self):
+        for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 self.keyPressedTimes[event.key] = nowMilliseconds()
                 print(self.keyPressedTimes)
                 if event.key == pygame.K_1:
                     self.is1Pressed = True
                 elif event.key == pygame.K_t:
+                    # pygame.time.wait(3000)
+
+
+
                     self.isTPressed = True
                 elif event.key == pygame.K_p:
                     self.isPPressed = True
@@ -111,6 +129,8 @@ class DiceGame(Dice, NewController):
         super().__init__(sides)
         NewController.__init__(self)
         self.game_state = "player_1_declare_intent_stage"
+        self.game_state_started_at = 0
+
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
@@ -126,10 +146,14 @@ class DiceGame(Dice, NewController):
         self.its_a_draw = False
 
 
+
     def start(self):
         running = True
         while running:
+            clock.tick(FPS)
+
             self.update()
+
             self.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -218,9 +242,7 @@ class DiceGame(Dice, NewController):
         # still some bugs with cold bet
 
     def cold_bet(self):
-        print("player  1 pile   is:" + str(self.player1pile))
-        print("player  2 pile   is:" + str(self.player2pile))
-        print("your ante is:" + str(self.ante) + "dollars")
+
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1 or self.rolls[0] == 2 and self.rolls[1] == 2 or \
                 self.rolls[0] == 3 and self.rolls[1] == 3:
@@ -335,11 +357,16 @@ class DiceGame(Dice, NewController):
             self.roll_state = "wasted roll"
 
 
-
+    def start_state(self, state):
+        self.game_state = state
+        self.game_state_started_at = nowMilliseconds()
 
     def update(self):
-        self.keyPress()
-        # print("update: " + str(self.game_state))
+        # delta between last update time in milliseconds
+        delta = nowMilliseconds() - self.game_state_started_at
+        # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
+
+        self.handle_keyboard_input()
 
         if self.ante == 0:
             if self.player1pile > self.player2pile:
@@ -357,32 +384,45 @@ class DiceGame(Dice, NewController):
 
         elif self.game_state == "player_1_declare_intent_stage":
             self.one_hundred_rolls = 0
-            if self.isTPressed:
-                self.game_state = "player_1_rolls"
-                # print(self.game_state)
+            if delta > 500: # don't read keyboard input for at least 500 ms.
 
-            elif self.isPPressed:
-                self.game_state = "player_1_going_hot"
+                if self.isTPressed:
+
+                    self.start_state("player_1_rolls")
+                    # print(self.game_state)
+
+                elif self.isPPressed:
+                    self.start_state("player_1_going_hot")
+
 
 
 
         elif self.game_state == "player_1_rolls":
-            if self.isEPressed:
-                print("pressing T")
-                self.cold_bet()
-                if self.one_hundred_rolls == 0:
-                    self.game_state = "player_1_results"
-                else:
-                    self.game_state = "player_1_results_one_hundred"
+            if delta > 1500: # don't read keyboard input for at least 500 ms.
+
+                if self.isTPressed:
+
+                    print("pressing T")
+                    self.cold_bet()
+                    if self.one_hundred_rolls == 0:
+                        self.start_state("player_1_results")
+                    else:
+                        self.start_state("player_1_results")
+
 
         elif self.game_state == "player_1_going_hot":
-            if self.is1Pressed:
-                print("pressing 1")
-                self.hot_bet()
-                if self.one_hundred_rolls == 0:
-                    self.game_state = "player_1_results"
-                else:
-                    self.game_state = "player_1_results_one_hundred"
+            if delta > 1500: # don't read keyboard input for at least 500 ms.
+                if self.is1Pressed:
+                    print("pressing 1")
+                    self.hot_bet()
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_1_results"
+                    else:
+                        self.game_state = "player_1_results_one_hundred"
+
+            # else: # demo showing if we are pressing keys within first 500 ms.
+            #     if self.is1Pressed:
+            #         print("pushing button too early ")
 
         elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
             if self.isBPressed:
