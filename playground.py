@@ -87,6 +87,7 @@ class Dice:
         print(self.rolls)
         return self.rolls
 
+
     def roll_one_d_hundred(self) -> List[int]:
         self.sides = 100
         roll1 = random.randint(1, self.sides)
