@@ -114,9 +114,9 @@ class DiceGame(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 1000
-        self.player2pile = 1000
-        self.ante =1000
+        self.player1pile = 0
+        self.player2pile = 0
+        self.ante = 800
         self.anteXero = 0
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
@@ -211,6 +211,11 @@ class DiceGame(Dice, NewController):
             print("no dice you wasted your chance")
 
         print("end state: " + self.game_state)
+
+        #Changes that need to be made:
+        # for cold bets only have lose on snake eyes.
+        # for rolls below 25 make it equal 25
+        # still some bugs with cold bet
 
     def cold_bet(self):
         print("player  1 pile   is:" + str(self.player1pile))
