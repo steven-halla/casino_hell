@@ -120,6 +120,7 @@ class DiceGame(Dice, NewController):
         self.roll_state = ""
         self.player_1_lost_game = False
         self.player_2_lost_game = False
+        self.its_a_draw = False
 
 
     def start(self):
@@ -137,7 +138,6 @@ class DiceGame(Dice, NewController):
         if self.game_state == "player_1_going_hot":
             self.roll_two_d_six()
             if self.rolls[0] == self.rolls[1]:
-                self.player1pile = 0
 
                 self.player2pile += self.ante + self.player1pile
                 self.player1pile = 0
@@ -167,7 +167,6 @@ class DiceGame(Dice, NewController):
         elif self.game_state == "player_2_going_hot":
             self.roll_two_d_six()
             if self.rolls[0] == self.rolls[1]:
-                self.player2pile = 0
 
                 self.player1pile += self.ante + self.player2pile
                 self.ante = 0
@@ -178,8 +177,8 @@ class DiceGame(Dice, NewController):
             elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
                 self.roll_one_d_hundred()
                 subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
-                self.player2pile -= subtracted_amount * 3
-                self.player1pile += subtracted_amount * 3
+                self.player2pile += subtracted_amount * 3
+                self.player1pile -= subtracted_amount * 3
 
                 if self.player1pile < 0:
                     self.player1pile = 0
@@ -355,16 +354,28 @@ class DiceGame(Dice, NewController):
 
     def update(self):
         self.keyPress()
-        print("update: " + str(self.game_state))
-        if self.game_state == "player_1_declare_intent_stage":
+        # print("update: " + str(self.game_state))
+
+        if self.ante == 0:
+            if self.player1pile > self.player2pile:
+                self.player_2_lost_game = True
+
+            elif self.player1pile < self.player2pile:
+                self.player_1_lost_game = True
+
+            elif self.player1pile == self.player2pile:
+                self.its_a_draw = True
+                print("its a draw")
+
+
+
+        elif self.game_state == "player_1_declare_intent_stage":
             self.one_hundred_rolls = 0
             if self.isTPressed:
-                print("hithere you ")
                 self.game_state = "player_1_rolls"
-                print(self.game_state)
+                # print(self.game_state)
 
             elif self.isPPressed:
-                print("going in hot")
                 self.game_state = "player_1_going_hot"
 
 
@@ -519,6 +530,10 @@ class DiceGame(Dice, NewController):
                 DISPLAY.blit(
                     self.font.render(f"Sorry player 1: GAME OVER!!!: {self.player1pile}", True, (255, 255, 255)),
                     (1, 555))
+            elif self.its_a_draw == True:
+                DISPLAY.blit(
+                    self.font.render(f"It's a draw sorry player 1: ", True, (255, 255, 255)),
+                    (1, 555))
 
 
         elif self.game_state == "player_2_results":
@@ -531,6 +546,10 @@ class DiceGame(Dice, NewController):
             if self.player_2_lost_game == True:
                 DISPLAY.blit(
                     self.font.render(f"Sorry player 2: GAME OVER!!!: {self.player1pile}", True, (255, 255, 255)),
+                    (1, 555))
+            elif self.its_a_draw == True:
+                DISPLAY.blit(
+                    self.font.render(f"It's a draw sorry player 2: ", True, (255, 255, 255)),
                     (1, 555))
 
 
