@@ -372,39 +372,37 @@ class Npc(Entity):
 class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.current_message_index = 0
-        self.game_state_started_at = 0
+        self.current_message_index = -1
         self.messages = ["Hi there I'm the coin flip guy. I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Coin flip game could use some small improvements though"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
 
     def update(self, state):
         super().update(state)
-        delta = pygame.time.get_ticks() - self.game_state_started_at
 
+        # Get the current time in milliseconds
+        current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        if self.isSpeaking == True and  state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+            self.input_time = current_time  # update the input time
+
+            # Update the current message
+            self.current_message_index += 1
+            if self.current_message_index >= len(self.messages):
+                self.current_message_index = 0
+            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
+        # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            # Get the current time in milliseconds
-            current_time = pygame.time.get_ticks()
-
-            # Calculate elapsed time
-            elapsed_time = current_time - self.start_time
-
-            if delta > 500:
-            if state.controller.isTPressed:
-            # If 5 seconds have passed and self.isSpeaking is True, update the current message
-                self.current_message_index += 1
-                if self.current_message_index >= len(self.messages):
-                    self.isSpeaking = False
-
-                self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-
-
-            # Display the current message
             message = pygame.display.get_surface().blit(self.message, (10,10))
+
+
 
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
