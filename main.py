@@ -335,7 +335,7 @@ class Npc(Entity):
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
-        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > .40:
+        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > .20:
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # Check if distance is within the sum of the widths and heights of the rectangles
@@ -385,6 +385,7 @@ class CoinFlipExplanationGuy(Npc):
             message = pygame.display.get_surface().blit(self.message, (10,10))
 
 
+
 class CoinFlipFred(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
@@ -417,6 +418,85 @@ class CoinFlipFred(Npc):
             state.coinFlipScreen.start(state)
         elif state.coinFlipScreen.coinFlipFredMoney <= 0:
             print("coin flip freddy is defeated already move on you vulture")
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        # Display the current message if self.isSpeaking is True
+        if self.isSpeaking:
+            message = pygame.display.get_surface().blit(self.message, (10,10))
+
+
+class SalleyOpossum(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.current_message_index = -1
+        self.messages = ["Are you sure you want to play opossum in a can?.","My opossums have Rabies that'll wear down your stamina","Press T to start the game"]
+        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
+
+    def update(self, state):
+        super().update(state)
+
+        # Get the current time in milliseconds
+        current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+
+            self.input_time = current_time  # update the input time
+
+            # Update the current message
+            self.current_message_index += 1
+            if self.current_message_index >= len(self.messages):
+                self.current_message_index = 0
+            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+
+        elif state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
+            state.currentScreen = state.opossumInACanScreen
+            state.opossumInACanScreen.start(state)
+        elif state.opossumInACanScreen.SallyOpossumMoney <= 0:
+            print("coin flip freddy is defeated already move on you vulture")
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        # Display the current message if self.isSpeaking is True
+        if self.isSpeaking:
+            message = pygame.display.get_surface().blit(self.message, (10,10))
+
+
+
+class OposumInACanExplainGirl(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.current_message_index = -1
+        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "which some refer to it as 'devil roulette'." , "There are 5 win cans and  3 opossum cans.", "You'll need to put down 300 ante for your insurance ",
+                         "If you get an X3 star you triple your next bet", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red" , "you lose everything",
+                         "The blue opossums, which also have rabies", " eat your insurance. Get two blues and its gameover","you can leave the match anytime and", " keep your current winnings, or go big for the jackpot.","We load the opossum cans in the can shaker.", "That way they are nice and angry when you are unlucky.","are there any Opossums down here without rabies?", " I don't think so?"]
+        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
+
+    def update(self, state):
+        super().update(state)
+
+        # Get the current time in milliseconds
+        current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+
+            self.input_time = current_time  # update the input time
+
+            # Update the current message
+            self.current_message_index += 1
+            if self.current_message_index >= len(self.messages):
+                self.current_message_index = 0
+            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
@@ -494,6 +574,7 @@ class MainScreen(Screen):
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
+        self.SallyOpossumMoney = 1000
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
@@ -818,7 +899,7 @@ class GameState:
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
 
-        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200)]
+        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
