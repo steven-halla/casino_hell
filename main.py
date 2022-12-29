@@ -18,6 +18,8 @@ WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 pygame.display.set_caption("Casino Man")
 GREEN: Tuple[int, int, int] = (0, 255, 0)
+BLACK: Tuple[int, int, int] = (0,0,0)
+
 WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
 RED: Tuple[int, int, int] = (255, 0, 0)
@@ -33,8 +35,9 @@ textRect = text_surface.get_rect()
 speechRect = speech_bubble.get_rect()
 
 
-def nowMilliseconds() -> int:
-    return round(time.time() * 1000)
+# pygame.time.get_ticks()
+# def nowMilliseconds() -> int:
+#     return round(time.time() * 1000)
 
 
 class Vector:
@@ -129,12 +132,12 @@ class Controller:
     def timeSinceKeyPressed(self, key: int):
         if key not in self.keyPressedTimes:
             return -1
-        return nowMilliseconds() - self.keyPressedTimes[key]
+        return pygame.time.get_ticks() - self.keyPressedTimes[key]
 
     def timeSinceKeyReleased(self, key: int):
         if key not in self.keyReleasedTimes:
             return -1
-        return nowMilliseconds() - self.keyReleasedTimes[key]
+        return pygame.time.get_ticks() - self.keyReleasedTimes[key]
 
     def update(self, state: "GameState"):
         for event in pygame.event.get():
@@ -142,7 +145,7 @@ class Controller:
                 self.isExitPressed = True
 
             if event.type == pygame.KEYDOWN:
-                self.keyPressedTimes[event.key] = nowMilliseconds()
+                self.keyPressedTimes[event.key] = pygame.time.get_ticks()
                 print(self.keyPressedTimes)
 
                 if event.key == pygame.K_LEFT:
@@ -180,7 +183,7 @@ class Controller:
 
 
             elif event.type == pygame.KEYUP:
-                self.keyReleasedTimes[event.key] = nowMilliseconds()
+                self.keyReleasedTimes[event.key] = pygame.time.get_ticks()
                 # print(self.keyReleasedTimes)
 
                 if event.key == pygame.K_LEFT:
@@ -369,25 +372,34 @@ class Npc(Entity):
 class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.message = font.render('Here is the rules to play the game:', True, GREEN, BLUE)
+        self.current_message_index = 0
+        self.messages = ["here is the 1st message", "and now the 2nd", "and the final message"]
+        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
 
     def update(self, state):
         super().update(state)
 
-
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
         if self.isSpeaking:
-            pygame.display.get_surface().blit(self.message, (
+            # Get the current time in milliseconds
+            current_time = pygame.time.get_ticks()
+
+            # Calculate elapsed time
+            elapsed_time = current_time - self.start_time
+
+            # If 5 seconds have passed, update the current message
+            if elapsed_time >= 5000:
+                self.current_message_index += 1
+                if self.current_message_index >= len(self.messages):
+                    self.current_message_index = 0
+                self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+                self.start_time = current_time  # reset the start time
+
+            # Display the current message
+            message = pygame.display.get_surface().blit(self.message, (
                 self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
-
-
-
-
-
-
-
-
 
 
 class Obstacle(Entity):
@@ -405,11 +417,11 @@ class Obstacle(Entity):
 class Screen:
     def __init__(self, screenName: str):
         self.screenName = screenName
-        self.startedAt = nowMilliseconds()
+        self.startedAt = pygame.time.get_ticks()
 
 
     def start(self, state: "GameState"):
-        self.startedAt = nowMilliseconds()
+        self.startedAt = pygame.time.get_ticks()
 
         pygame.display.set_caption(self.screenName)
 
