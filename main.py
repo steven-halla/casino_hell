@@ -222,37 +222,7 @@ class Controller:
 
 
 
-class Money(Entity):
-    def __init__(self, total: int, x: float, y: float):
-        super().__init__(x, y, TILE_SIZE, TILE_SIZE)
-        self.total: int = total
-        self.textSurface: pygame.Surface = font.render(str(total), True, GREEN, PURPLE)
-        self.textRectangle: pygame.Rect = self.textSurface.get_rect()
-        self.color: Tuple[int, int, int] = PURPLE
 
-    def update(self, state: "GameState"):
-        super().update(state)
-
-    def draw(self, state: "GameState"):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
-
-        pygame.display.get_surface().blit(self.textSurface, (self.position.x, self.position.y))
-
-    def add(self, total: int):
-        print("We're adding here")
-        print(str(total))
-
-        self.total += total
-        self.textSurface = font.render(str(self.total), True, GREEN, PURPLE)
-
-    #     # print(str(total))
-
-    # def remove(self, total: int):
-    #     self.total -= total
-
-    def get_total(self) -> int:
-        print(str(self.total))
-        return self.total
 
 
 class Player(Entity):
@@ -365,7 +335,7 @@ class Npc(Entity):
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
-        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > .55:
+        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > .40:
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # Check if distance is within the sum of the widths and heights of the rectangles
@@ -384,7 +354,7 @@ class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.", "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!", "Since you stuck around this long I'll give you a tip:", "Coin flip fred is using a weighted coin, not sure which side he favors", "If you give me a sandwhich It might jar my memory"]
+        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.", "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!", "Since you stuck around this long I'll give you a tip:", "Coin flip fred is using a weighted coin,"," not sure which side he favors", "If you give me a sandwhich It might jar my memory"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -498,7 +468,6 @@ class MainScreen(Screen):
         player = state.player
         npc = state.npcs
         obstacle = state.obstacle
-        money = state.money
         controller.update(state)
 
         if controller.isExitPressed is True:
@@ -509,16 +478,17 @@ class MainScreen(Screen):
         for npc in state.npcs:
             npc.update(state)
         obstacle.update(state)
-        money.update(state)
 
     def draw(self, state: "GameState"):
         DISPLAY.fill(WHITE)
+        DISPLAY.blit(font.render(
+            f" player Money: {state.player.playerMoney}",
+            True, (5, 5, 5)), (10, 10))
         state.player.draw(state)
         # state.npc.draw(state)
         for npc in state.npcs:
             npc.draw(state)
         state.obstacle.draw(state)
-        state.money.draw(state)
         pygame.display.update()
 
 class OpossumInACanScreen(Screen):
@@ -847,9 +817,8 @@ class GameState:
 
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-        self.money: Money = Money(23, 50, 50)
 
-        self.npcs = [Npc(170, 170), CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200)]
+        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
