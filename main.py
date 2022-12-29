@@ -478,6 +478,8 @@ class NuclearAnnilationGeneralExplainGuy(Npc):
 
 
 
+
+
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 32, 32)
@@ -892,40 +894,8 @@ class Game:
 game = Game()
 game.start()
 
-# CoinFlipScreen().start()
 
 
-#+++++++++++++++++++++++++++this could be usefule later +++++++++++++++++++++++++++++++++++++++++++++++++
-# import pygame
-#
-#
-# def display_yes_no_menu(screen, font):
-#     # Create the Yes and No buttons
-#     yes_button = pygame.Rect(100, 100, 50, 50)
-#     no_button = pygame.Rect(200, 100, 50, 50)
-#
-#     # Render the text for the buttons
-#     yes_text = font.render("Yes", True, (0, 0, 0))
-#     no_text = font.render("No", True, (0, 0, 0))
-#
-#     # Blit the buttons and text to the screen
-#     screen.blit(yes_text, (100, 100))
-#     screen.blit(no_text, (200, 100))
-#     pygame.display.update()
-#
-#     # Wait for the user to click one of the buttons
-#     waiting = True
-#     while waiting:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-#
-#             # Check if the user clicked the Yes button
-#             if event.type == pygame.MOUSEBUTTONDOWN and yes_button.collidepoint(event.pos):
-#                 return True
-#
-#             # Check if the user clicked the No button
-#             if event.type == pygame.MOUSEBUTTONDOWN and no_button.collidepoint(event.pos):
-#                 return False
+
+
 
