@@ -373,7 +373,7 @@ class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Coin flip game could use some small improvements"]
+        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.", "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -408,9 +408,9 @@ class OposumInACanExplainGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "There are 5 win cans and opossum cans.", "You'll need to put down 300 ante for your oppsum insurance ",
-                         "If you get an X3 star you triple your next win", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red,you lose everything",
-                         "The blue opossums, which also have rabies, eat your insurance. Get two and its gameover","you can leave the match anytime and keep your current winnings, or go big for the jackpot.","We load the opossum cans in the can shaker, so that way they are nice and angry when you are unlucky.","are there any Opossums down here without rabies? I don't think so."]
+        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "There are 5 win cans and  3 opossum cans.", "You'll need to put down 300 ante for your insurance ",
+                         "If you get an X3 star you triple your next bet", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red" , "you lose everything",
+                         "The blue opossums, which also have rabies", " eat your insurance. Get two and its gameover","you can leave the match anytime and", " keep your current winnings, or go big for the jackpot.","We load the opossum cans in the can shaker.", "That way they are nice and angry when you are unlucky.","are there any Opossums down here without rabies?", " I don't think so?"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -827,7 +827,7 @@ class GameState:
         self.money: Money = Money(23, 50, 50)
 
         self.npcs = [Npc(170, 170), CoinFlipExplanationGuy(270, 270), OposumInACanExplainGuy(570, 129)]
-        self.obstacle: Obstacle = Obstacle(22, 22)
+        self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
 
@@ -835,7 +835,7 @@ class GameState:
         self.testScreen = TestScreen()
         self.coinFlipScreen = CoinFlipScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
-        self.currentScreen = self.opossumInACanScreen  # assign a value to currentScreen here
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 
 class Game:
