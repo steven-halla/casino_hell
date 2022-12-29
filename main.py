@@ -28,7 +28,7 @@ TILE_SIZE: int = 32
 
 # nextScreen = false
 
-font = pygame.font.Font('freesansbold.ttf', 28)
+font = pygame.font.Font('freesansbold.ttf', 24)
 text_surface = font.render('Casino', True, GREEN, BLUE)
 speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
@@ -260,6 +260,12 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walkSpeed = 3.5
+        self.playerMoney = 1000
+
+
+
+
+
         # self.getMoney: bool = False
 
     # def speaking(self, player, npc):
@@ -269,6 +275,7 @@ class Player(Entity):
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update(state)
+
 
         # Define canMove before the for loop
         canMove = True
@@ -330,6 +337,7 @@ class Player(Entity):
             state.currentScreen = state.opossumInACanScreen
             state.opossumInACanScreen.start(state)
 
+
         elif controller.isAPressed:
 
             state.currentScreen = state.mainScreen
@@ -349,12 +357,15 @@ class Npc(Entity):
         self.speakStartTime: int = 0
         self.isSpeaking: bool = False
 
+
+
     def update(self, state):
         super().update(state)
 
+
         player = state.player
         # print(time.process_time() - self.speakStartTime)
-        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > 0.05:
+        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > .55:
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # Check if distance is within the sum of the widths and heights of the rectangles
@@ -373,7 +384,7 @@ class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.", "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!"]
+        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.", "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!", "Since you stuck around this long I'll give you a tip:", "Coin flip fred is using a weighted coin, not sure which side he favors", "If you give me a sandwhich It might jar my memory"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -423,7 +434,7 @@ class OposumInACanExplainGuy(Npc):
         current_time = pygame.time.get_ticks()
 
         # If the T key is pressed and the input delay has passed
-        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+        if self.isSpeaking and state.controller.isTPressed and current_time - self.input_time >= self.input_delay:
 
             self.input_time = current_time  # update the input time
 
@@ -683,8 +694,10 @@ class OpossumInACanScreen(Screen):
 class CoinFlipScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
+        self.lowBet = 50
+        self.medBet = 150
+        self.highBet = 300
         self.result = "tails"
-        self.balance = 0
         self.play_again = True
         self.players_side = "heads"
         self.new_font = pygame.font.Font(None, 36)
@@ -692,7 +705,7 @@ class CoinFlipScreen(Screen):
         self.welcome_text = self.new_font.render(
             f"Welcome to Coin Flip! Press R to continue.",
             True, (255, 255, 255))
-        self.choose_bet_display = self.new_font.render("T for 100, W for 500, E for 1000", True, (255, 255, 255))
+        self.choose_bet_display = self.new_font.render(f"T for {self.lowBet}, W for {self.medBet}, E for {self.highBet}", True, (255, 255, 255))
         self.players_coin_side_choice = self.new_font.render(f"You choosed heads", True, (255, 255, 255))
         self.time_to_choose_heads_or_tails = self.new_font.render(f"K for tails, Q for heads", True, (255, 255, 255))
         self.flipping_now = self.new_font.render(f"flipping coin now", True, (255, 255, 255))
@@ -700,12 +713,14 @@ class CoinFlipScreen(Screen):
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
+        self.coinFlipFredMoney = 1000
+
 
 
     def flipCoin(self):
         # Generate a random number between 0 and 1 to simulate the coin flip
         coin = random.random()
-        if coin < 0.5:
+        if coin < 0.6:
             print("coin landed on heads")
             self.result = "heads"
         else:
@@ -722,31 +737,21 @@ class CoinFlipScreen(Screen):
                 self.game_state = "choose_bet"
         elif self.game_state == "choose_bet":
             if controller.isTPressed:
-
-
-                self.bet = 100
+                self.bet = self.lowBet
                 print(self.bet)
                 self.game_state = "choose_heads_or_tails_message"
             elif controller.isWPressed:
-
-                self.bet = 500
+                self.bet = self.medBet
                 print(self.bet)
                 self.game_state = "choose_heads_or_tails_message"
             elif controller.isEPressed:
-
-                self.bet = 1000
+                self.bet = self.highBet
                 print(self.bet)
                 self.game_state = "choose_heads_or_tails_message"
-        # Update bet amount
 
-        # Update the player and money
-            player = state.player
-
-            player.update(state)
 
         elif self.game_state == "choose_heads_or_tails_message":
             if controller.isKPressed:
-
                 self.players_side = "tails"
                 print("you choosed tails")
                 print(str(self.players_side))
@@ -763,14 +768,13 @@ class CoinFlipScreen(Screen):
             self.flipCoin()
             if self.result == self.players_side:
                 print("you won")
-                self.balance += self.bet
-                print(self.balance)
+                state.player.playerMoney += self.bet
+                self.coinFlipFredMoney -= self.bet
                 self.game_state = "you_won_the_toss"
 
             else:
-                self.balance -= self.bet
-                print("you lost")
-                print(self.balance)
+                state.player.playerMoney -= self.bet
+                self.coinFlipFredMoney -= self.bet
                 self.game_state = "you_lost_the_toss"
 
         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
@@ -779,6 +783,11 @@ class CoinFlipScreen(Screen):
             self.game_state = "play_again_or_quit"
 
         elif self.game_state == "play_again_or_quit":
+            if self.coinFlipFredMoney <= 0 or state.player.playerMoney <= 0:
+                print("At 0 ending match")
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
             print("in state: play_again_or_quit")
             if controller.isJPressed:
                 print("play again")
@@ -797,6 +806,13 @@ class CoinFlipScreen(Screen):
         # Fill the screen with a solid color
         DISPLAY.fill((0, 0, 0))
 
+        DISPLAY.blit(self.new_font.render(
+            f" CoinFlipFredsMoney: {self.coinFlipFredMoney}",
+            True, (255, 255, 255)), (10, 90))
+        DISPLAY.blit(self.new_font.render(
+            f" player Money: {state.player.playerMoney}",
+            True, (255, 255, 255)), (10, 190))
+
         # Draw the welcome message or choose bet message based on the game state
         if self.game_state == "welcome":
             DISPLAY.blit(self.welcome_text, (10, 10))
@@ -808,15 +824,15 @@ class CoinFlipScreen(Screen):
             DISPLAY.blit(self.flipping_now, (10, 10))
 
         elif self.game_state == "you_won_the_toss":
-            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "you_lost_the_toss":
-            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} lost! YOUR BALANCE is {self.balance}", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} lost! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "play_again_or_quit":
             DISPLAY.blit(self.new_font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
 
 
         # Draw the player and money
-        state.player.draw(state)
+        # state.player.draw(state)
         # state.money.draw(state)
 
         # Update the display
@@ -875,6 +891,7 @@ class GameState:
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 
+
 class Game:
     def __init__(self):
         self.state = GameState()  # create a new GameState()
@@ -883,6 +900,9 @@ class Game:
         self.state.currentScreen.start(self.state)
 
         while self.state.isRunning:
+            if self.state.player.playerMoney <= 0:
+                print("game over ")
+
             # will need to move this to Screen class
 
             self.state.currentScreen.update(self.state)
