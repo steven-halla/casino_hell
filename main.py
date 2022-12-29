@@ -28,7 +28,7 @@ TILE_SIZE: int = 32
 
 # nextScreen = false
 
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('freesansbold.ttf', 28)
 text_surface = font.render('Casino', True, GREEN, BLUE)
 speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
@@ -373,15 +373,19 @@ class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = 0
-        self.messages = ["here is the 1st message", "and now the 2nd", "and the final message"]
+        self.game_state_started_at = 0
+        self.messages = ["Hi there I'm the coin flip guy. I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Coin flip game could use some small improvements though"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
 
     def update(self, state):
         super().update(state)
+        delta = pygame.time.get_ticks() - self.game_state_started_at
+
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
         if self.isSpeaking:
             # Get the current time in milliseconds
             current_time = pygame.time.get_ticks()
@@ -389,18 +393,18 @@ class CoinFlipExplanationGuy(Npc):
             # Calculate elapsed time
             elapsed_time = current_time - self.start_time
 
-            # If 5 seconds have passed, update the current message
-            if elapsed_time >= 5000:
+            if delta > 500:
+            if state.controller.isTPressed:
+            # If 5 seconds have passed and self.isSpeaking is True, update the current message
                 self.current_message_index += 1
                 if self.current_message_index >= len(self.messages):
-                    self.current_message_index = 0
+                    self.isSpeaking = False
+
                 self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-                self.start_time = current_time  # reset the start time
+
 
             # Display the current message
-            message = pygame.display.get_surface().blit(self.message, (
-                self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
-
+            message = pygame.display.get_surface().blit(self.message, (10,10))
 
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
