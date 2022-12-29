@@ -442,9 +442,11 @@ class CoinFlipFred(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif state.controller.isTPressed and current_time - self.input_time >= self.input_delay:
+        elif state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
             state.currentScreen = state.coinFlipScreen
             state.coinFlipScreen.start(state)
+        elif state.coinFlipScreen.coinFlipFredMoney <= 0:
+            print("coin flip freddy is defeated already move on you vulture")
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
@@ -658,7 +660,7 @@ class CoinFlipScreen(Screen):
         super().__init__("Casino Coin flip  Screen")
         self.lowBet = 50
         self.medBet = 150
-        self.highBet = 300
+        self.highBet = 800
         self.result = "tails"
         self.play_again = True
         self.players_side = "heads"
@@ -700,15 +702,19 @@ class CoinFlipScreen(Screen):
         elif self.game_state == "choose_bet":
             if controller.isTPressed:
                 self.bet = self.lowBet
-                print(self.bet)
+                if self.bet < self.coinFlipFredMoney:
+                    self.bet = self.coinFlipFredMoney
                 self.game_state = "choose_heads_or_tails_message"
             elif controller.isWPressed:
                 self.bet = self.medBet
-                print(self.bet)
+                if self.bet < self.coinFlipFredMoney:
+                    self.bet = self.coinFlipFredMoney
                 self.game_state = "choose_heads_or_tails_message"
             elif controller.isEPressed:
                 self.bet = self.highBet
                 print(self.bet)
+                if self.bet > self.coinFlipFredMoney:
+                    self.bet = self.coinFlipFredMoney
                 self.game_state = "choose_heads_or_tails_message"
 
 
@@ -737,6 +743,8 @@ class CoinFlipScreen(Screen):
             else:
                 state.player.playerMoney -= self.bet
                 self.coinFlipFredMoney += self.bet
+                if self.coinFlipFredMoney < 0:
+                    self.coinFlipFredMoney = 0
                 self.game_state = "you_lost_the_toss"
 
         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
