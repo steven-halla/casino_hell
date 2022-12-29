@@ -331,9 +331,9 @@ class Player(Entity):
             state.opossumInACanScreen.start(state)
 
         elif controller.isAPressed:
+
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
-            state.money.add(100)
 
     def isOutOfBounds(self) -> bool:
         return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
@@ -386,7 +386,7 @@ class CoinFlipExplanationGuy(Npc):
         current_time = pygame.time.get_ticks()
 
         # If the T key is pressed and the input delay has passed
-        if self.isSpeaking == True and  state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
 
             self.input_time = current_time  # update the input time
 
