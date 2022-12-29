@@ -404,6 +404,44 @@ class CoinFlipExplanationGuy(Npc):
             message = pygame.display.get_surface().blit(self.message, (10,10))
 
 
+class OposumInACanExplainGuy(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.current_message_index = -1
+        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "There are 5 win cans and opossum cans.", "You'll need to put down 300 ante for your oppsum insurance ",
+                         "If you get an X3 star you triple your next win", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red,you lose everything",
+                         "The blue opossums, which also have rabies, eat your insurance. Get two and its gameover","you can leave the match anytime and keep your current winnings, or go big for the jackpot.","We load the opossum cans in the can shaker, so that way they are nice and angry when you are unlucky.","are there any Opossums down here without rabies? I don't think so."]
+        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
+
+    def update(self, state):
+        super().update(state)
+
+        # Get the current time in milliseconds
+        current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+
+            self.input_time = current_time  # update the input time
+
+            # Update the current message
+            self.current_message_index += 1
+            if self.current_message_index >= len(self.messages):
+                self.current_message_index = 0
+            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        # Display the current message if self.isSpeaking is True
+        if self.isSpeaking:
+            message = pygame.display.get_surface().blit(self.message, (10,10))
+
+
+
 
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
@@ -480,13 +518,13 @@ class OpossumInACanScreen(Screen):
         self.winner_or_looser: List[str] = ["win", "win", "win", "win", "win", "lucky_star", "X3_star", "lose",
                                             "insurance_eater", "insurance_eater"]
         self.result = "win"
-        self.bet = 10
+        self.bet = 20
         self.insurance = 300
         self.X3 = False
         self.has_opossum_insurance = True
 
     def refresh(self):
-        self.bet = 10
+        self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 300
         self.winner_or_looser = ["win", "win", "win", "win", "win", "lucky_star", "X3_star", "lose",
@@ -788,7 +826,7 @@ class GameState:
         self.player: Player = Player(50, 100)
         self.money: Money = Money(23, 50, 50)
 
-        self.npcs = [Npc(170, 170), CoinFlipExplanationGuy(270, 270)]
+        self.npcs = [Npc(170, 170), CoinFlipExplanationGuy(270, 270), OposumInACanExplainGuy(570, 129)]
         self.obstacle: Obstacle = Obstacle(22, 22)
         self.isRunning: bool = True
         self.isPaused: bool = False
@@ -797,7 +835,7 @@ class GameState:
         self.testScreen = TestScreen()
         self.coinFlipScreen = CoinFlipScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
-        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
+        self.currentScreen = self.opossumInACanScreen  # assign a value to currentScreen here
 
 
 class Game:
