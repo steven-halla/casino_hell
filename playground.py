@@ -123,6 +123,7 @@ class DiceGame(Dice, NewController):
         self.isPlayer2 = False
         self.isAI = False
         self.game_state_started_at = 0
+        start_time = pygame.time.get_ticks()
 
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
@@ -137,6 +138,9 @@ class DiceGame(Dice, NewController):
         self.player_1_lost_game = False
         self.player_2_lost_game = False
         self.its_a_draw = False
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
 
 
 
@@ -445,6 +449,7 @@ class DiceGame(Dice, NewController):
                     self.game_state = "player_2_going_hot"
 
             elif self.isAI == True:
+                time.sleep(2)
                 if self.player1pile < 300 :
                     self.game_state = "player_2_rolls"
 
@@ -462,13 +467,29 @@ class DiceGame(Dice, NewController):
 
 
         elif self.game_state == "player_2_rolls":
-            if self.isEPressed:
-                print("pressing T")
-                self.cold_bet()
-                if self.one_hundred_rolls == 0:
-                    self.game_state = "player_2_results"
-                else:
-                    self.game_state = "player_2_results_one_hundred"
+            if self.isPlayer2 == True:
+                if self.isEPressed:
+                    print("pressing T")
+                    self.cold_bet()
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_2_results"
+                    else:
+                        self.game_state = "player_2_results_one_hundred"
+
+            elif self.isAI == True:
+                time.sleep(2)
+
+                self.isEPressed = True
+                if self.isEPressed:
+                    self.isEPressed = False
+                    print("pressing T")
+                    self.cold_bet()
+                    time.sleep(2)
+
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_2_results"
+                    else:
+                        self.game_state = "player_2_results_one_hundred"
 
 
 
