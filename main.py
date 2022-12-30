@@ -353,11 +353,8 @@ class Npc(Entity):
         self.speakStartTime: int = 0
         self.isSpeaking: bool = False
 
-
-
     def update(self, state):
         super().update(state)
-
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
@@ -605,6 +602,7 @@ class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.desperate = False
+        #we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 800
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
@@ -804,8 +802,6 @@ class CoinFlipScreen(Screen):
         self.font = pygame.font.Font(None, 36)
         self.coinFlipFredMoney = 1000
 
-
-
     def flipCoin(self):
         # currently at .6 because heads is favored
         # in the future will have states to handle coin flip percentages
@@ -897,8 +893,6 @@ class CoinFlipScreen(Screen):
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
-
-
     def draw(self, state: "GameState"):
         # Fill the screen with a solid color
         DISPLAY.fill((0, 0, 0))
@@ -927,67 +921,138 @@ class CoinFlipScreen(Screen):
         elif self.game_state == "play_again_or_quit":
             DISPLAY.blit(self.new_font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
 
-
-        # Draw the player and money
-        # state.player.draw(state)
-        # state.money.draw(state)
-
-        # Update the display
         pygame.display.flip()
 
 
+class DiceGameScreen(Screen, Dice):
+    def __init__(self, sides, screenName: str):
+        super().__init__("Dice game")
+        self.game_state = "choose_player_2_or_ai"
+        self.isPlayer2 = False
+        self.isAI = False
+        self.game_state_started_at = 0
+        start_time = pygame.time.get_ticks()
+
+        self.font = pygame.font.Font(None, 36)
+        self.player_1_turn = False
+        self.player_2_turn = False
+        self.player1pile = 0
+        self.player2pile = 0
+        self.ante = 800
+        self.anteXero = 0
+        self.screen_width = SCREEN_WIDTH
+        self.screen_height = SCREEN_HEIGHT
+        self.roll_state = ""
+        self.player_1_lost_game = False
+        self.player_2_lost_game = False
+        self.its_a_draw = False
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
 
 
-class TestScreen(Screen):
-    def __init__(self):
-        super().__init__("Casino Test Screen")
+    # def start(self):
+    #     running = True
+    #     while running:
+    #         clock.tick(FPS)
+    #
+    #         self.update()
+    #
+    #         self.draw()
+    #         for event in pygame.event.get():
+    #             if event.type == pygame.QUIT:
+    #                 running = False
+    #         pygame.display.update()
 
-    def update(self, state: "GameState"):
-        controller = state.controller
-        player = state.player
-        npc = state.npcs
-        obstacle = state.obstacle
-        money = state.money
-        controller.update(state)
+        def hot_bet(self):
 
-        if controller.isExitPressed is True:
-            state.isRunning = False
+            if self.game_state == "player_1_going_hot":
+                self.roll_two_d_six()
+                if self.rolls[0] == self.rolls[1]:
 
-        player.update(state)
-        npc.update(state)
-        obstacle.update(state)
-        money.update(state)
+                    self.player2pile += self.ante + self.player1pile
+                    self.player1pile = 0
+                    self.ante = 0
+                    self.roll_state = "you got a double at the wrong time, you lose"
+                    print("you rolled a double get ready for trouble")
+                    self.game_state = "player_1_game_over"
+                    self.player_1_lost_game = True
 
-    def draw(self, state: "GameState"):
-        DISPLAY.fill(GREEN)
 
-        state.player.draw(state)
-        state.npcs.draw(state)
-        state.obstacle.draw(state)
-        state.money.draw(state)
 
-        pygame.display.update()
+
+                elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
+                    self.roll_one_d_hundred()
+                    subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+                    self.player2pile -= subtracted_amount * 3
+                    self.player1pile += subtracted_amount * 3
+                    self.roll_state = "attacking enemy player pile"
+
+                    if self.player2pile < 0:
+                        self.player2pile = 0
+                        print("if its 0:")
+                        print(self.player2pile)
+                    self.game_state = "player_2_declare_intent_stage"
+
+                else:
+                    self.roll_state = "Your roll was wasted"
+
+            ########player 2 below
+
+            if self.game_state == "player_2_going_hot":
+                self.roll_two_d_six()
+                if self.rolls[0] == self.rolls[1]:
+
+                    self.player1pile += self.ante + self.player2pile
+                    self.ante = 0
+                    self.roll_state = "you got a double at the wrong time, you lose"
+
+                    self.player2pile = 0
+                    self.player_2_lost_game = True
+
+                elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
+
+                    self.roll_one_d_hundred()
+                    print("you rolled the dice as an AI")
+                    subtracted_amount = min(self.one_hundred_rolls[0], self.player1pile)
+                    self.player2pile += subtracted_amount * 3
+                    self.player1pile -= subtracted_amount * 3
+                    self.roll_state = "attacking enemy player pile"
+
+                    if self.player1pile < 0:
+                        self.player1pile = 0
+
+                    self.game_state = "player_1_declare_intent_stage"
+
+                else:
+                    self.roll_state = "Your roll was wasted"
+
+
+
+            elif self.game_state == "player_1_going_hot":
+                print("no dice you wasted your chance")
+                self.game_state = "player_2_declare_intent_stage"
+
+            elif self.game_state == "player_2_going_hot":
+                print("no dice you wasted your chance")
+
+            print("end state: " + self.game_state)
+
 
 
 class GameState:
     def __init__(self):
-
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-
         self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0
-
         self.mainScreen = MainScreen()
-        self.testScreen = TestScreen()
         self.coinFlipScreen = CoinFlipScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
-
-
 
 class Game:
     def __init__(self):
