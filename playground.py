@@ -587,12 +587,5 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f"1d100 ROLLED: {self.one_hundred_rolls}", True, (255, 255, 255)),
                          (5, 555))
 
-
-
-
-
-
-
-
 game = DiceGame(SCREEN_WIDTH, SCREEN_HEIGHT, 6)
 game.start()
