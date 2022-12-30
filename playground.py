@@ -93,8 +93,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        # roll1 = 6
-        # roll2 = 5
+        roll1 = 6
+        roll2 = 1
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -128,7 +128,7 @@ class DiceGame(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 0
+        self.player1pile = 440
         self.player2pile = 0
         self.ante = 800
         self.anteXero = 0
@@ -213,7 +213,7 @@ class DiceGame(Dice, NewController):
                 elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
 
                     self.roll_one_d_hundred()
-                    subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+                    subtracted_amount = min(self.one_hundred_rolls[0], self.player1pile)
                     self.player2pile += subtracted_amount * 3
                     self.player1pile -= subtracted_amount * 3
                     self.roll_state = "attacking enemy player pile"
