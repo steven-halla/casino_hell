@@ -189,46 +189,52 @@ class DiceGame(Dice, NewController):
 
 
 
-        elif self.game_state == "player_2_going_hot":
-            self.roll_two_d_six()
-            if self.rolls[0] == self.rolls[1]:
 
-                self.player1pile += self.ante + self.player2pile
-                self.ante = 0
-                self.roll_state ="you got a double at the wrong time, you lose"
+########player 2 below
 
-                self.player2pile = 0
-                self.player_2_lost_game = True
-
-            elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
-
-                self.roll_one_d_hundred()
-                subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
-                self.player2pile += subtracted_amount * 3
-                self.player1pile -= subtracted_amount * 3
-                self.roll_state = "attacking enemy player pile"
+        elif self.isPlayer2:
 
 
-                if self.player1pile < 0:
-                    self.player1pile = 0
-                    print("if its 0:")
-                    print(self.player1pile)
+            if self.game_state == "player_2_going_hot":
+                self.roll_two_d_six()
+                if self.rolls[0] == self.rolls[1]:
 
-                self.game_state = "player_1_declare_intent_stage"
+                    self.player1pile += self.ante + self.player2pile
+                    self.ante = 0
+                    self.roll_state ="you got a double at the wrong time, you lose"
 
-            else:
-                self.roll_state = "Your roll was wasted"
+                    self.player2pile = 0
+                    self.player_2_lost_game = True
+
+                elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
+
+                    self.roll_one_d_hundred()
+                    subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
+                    self.player2pile += subtracted_amount * 3
+                    self.player1pile -= subtracted_amount * 3
+                    self.roll_state = "attacking enemy player pile"
+
+
+                    if self.player1pile < 0:
+                        self.player1pile = 0
+                        print("if its 0:")
+                        print(self.player1pile)
+
+                    self.game_state = "player_1_declare_intent_stage"
+
+                else:
+                    self.roll_state = "Your roll was wasted"
 
 
 
-        elif self.game_state == "player_1_going_hot":
-            print("no dice you wasted your chance")
-            self.game_state = "player_2_declare_intent_stage"
+            elif self.game_state == "player_1_going_hot":
+                print("no dice you wasted your chance")
+                self.game_state = "player_2_declare_intent_stage"
 
-        elif self.game_state == "player_2_going_hot":
-            print("no dice you wasted your chance")
+            elif self.game_state == "player_2_going_hot":
+                print("no dice you wasted your chance")
 
-        print("end state: " + self.game_state)
+            print("end state: " + self.game_state)
 
     def cold_bet(self):
 
@@ -366,7 +372,7 @@ class DiceGame(Dice, NewController):
                 print("player 2")
 
             else:
-                if self.isPPressed:
+                if self.isOPressed:
                     self.isAI = True
                     self.game_state = "player_1_declare_intent_stage"
 
@@ -471,13 +477,13 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Press 1 key for human or P key for AI", True, (255, 255, 255)), (10, 10))
 
         if self.game_state == "player_1_declare_intent_stage":
-            DISPLAY.blit(self.font.render(f"Player 1: press T forr cold P For hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1: press T for cold P For hot", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
 
         elif self.game_state == "player_2_declare_intent_stage":
-            DISPLAY.blit(self.font.render(f"Player 2: press T forr cold P for hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 2: press T for cold P for hot", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
