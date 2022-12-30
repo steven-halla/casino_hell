@@ -15,7 +15,7 @@ FPS = 60
 clock = pygame.time.Clock()
 
 
-
+# pygame.time.get_ticks()
 def nowMilliseconds() -> int:
     return round(time.time() * 1000)
 
@@ -41,31 +41,23 @@ class NewController:
     def timeSinceKeyPressed(self, key: int):
         if key not in self.keyPressedTimes:
             return -1
-        return nowMilliseconds() - self.keyPressedTimes[key]
+        return pygame.time.get_ticks() - self.keyPressedTimes[key]
 
     def timeSinceKeyReleased(self, key: int):
         if key not in self.keyReleasedTimes:
             return -1
-        return nowMilliseconds() - self.keyReleasedTimes[key]
-
-
-
-
-
+        return pygame.time.get_ticks() - self.keyReleasedTimes[key]
 
 
 
     def handle_keyboard_input(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                self.keyPressedTimes[event.key] = nowMilliseconds()
+                self.keyPressedTimes[event.key] = pygame.time.get_ticks()
                 print(self.keyPressedTimes)
                 if event.key == pygame.K_1:
                     self.is1Pressed = True
                 elif event.key == pygame.K_t:
-                    # pygame.time.wait(3000)
-
-
 
                     self.isTPressed = True
                 elif event.key == pygame.K_p:
@@ -99,10 +91,10 @@ class Dice:
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
-        roll1 = random.randint(1, self.sides)
-        roll2 = random.randint(1, self.sides)
-        # roll1 = 6
-        # roll2 = 6
+        # roll1 = random.randint(1, self.sides)
+        # roll2 = random.randint(1, self.sides)
+        roll1 = 4
+        roll2 = 4
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -112,8 +104,6 @@ class Dice:
         self.sides = 100
         roll1 = random.randint(1, self.sides)
         self.one_hundred_rolls = [roll1]
-        print("rolling 2d10")
-        print("your dice results" + str(self.one_hundred_rolls))
         return self.one_hundred_rolls
 
 
@@ -245,7 +235,7 @@ class DiceGame(Dice, NewController):
 
         self.roll_two_d_six()
         if self.rolls[0] == 1 and self.rolls[1] == 1 or self.rolls[0] == 2 and self.rolls[1] == 2 or \
-                self.rolls[0] == 3 and self.rolls[1] == 3:
+                self.rolls[0] == 3:
             if self.game_state == "player_1_rolls":
                 print(self.game_state)
                 self.player2pile = self.player2pile + self.player1pile + self.ante
@@ -289,13 +279,10 @@ class DiceGame(Dice, NewController):
 
         #
         elif self.add() == 8:
-            print("it adds to 8")
             if self.game_state == "player_1_rolls":
-                self.roll_state = "THe result is an 8, attack player pile"
+                self.roll_state = "The result is an 8, attack player pile"
 
-                print("attacking player 2 pile")
-                print(self.player1pile)
-                print(self.player2pile)
+
                 self.roll_one_d_hundred()
                 self.player1pile += self.one_hundred_rolls[0]
                 self.player2pile -= self.one_hundred_rolls[0]
@@ -306,11 +293,9 @@ class DiceGame(Dice, NewController):
 
 
             elif self.game_state == "player_2_rolls":
-                self.roll_state = "THe result is an 8, attack player pile"
+                self.roll_state = "The result is an 8, attack player pile"
 
-                print("attacking player 2 pile")
-                print(self.player1pile)
-                print(self.player2pile)
+
                 self.roll_one_d_hundred()
                 self.player2pile += self.one_hundred_rolls[0]
 
@@ -359,11 +344,11 @@ class DiceGame(Dice, NewController):
 
     def start_state(self, state):
         self.game_state = state
-        self.game_state_started_at = nowMilliseconds()
+        self.game_state_started_at = pygame.time.get_ticks()
 
     def update(self):
         # delta between last update time in milliseconds
-        delta = nowMilliseconds() - self.game_state_started_at
+        delta = pygame.time.get_ticks() - self.game_state_started_at
         # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
 
         self.handle_keyboard_input()
@@ -400,14 +385,14 @@ class DiceGame(Dice, NewController):
         elif self.game_state == "player_1_rolls":
             if delta > 1500: # don't read keyboard input for at least 500 ms.
 
-                if self.isTPressed:
+                if self.isEPressed:
 
                     print("pressing T")
                     self.cold_bet()
                     if self.one_hundred_rolls == 0:
                         self.start_state("player_1_results")
                     else:
-                        self.start_state("player_1_results")
+                        self.start_state("player_1_results_one_hundred")
 
 
         elif self.game_state == "player_1_going_hot":
