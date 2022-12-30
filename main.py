@@ -124,6 +124,8 @@ class Controller:
         self.isTPressed: bool = False
         self.isPPressed: bool = False
         self.isOPressed: bool = False
+        self.is1Pressed: bool = False
+        self.isBPressed: bool = False
         self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
@@ -180,6 +182,10 @@ class Controller:
                     self.isPPressed = True
                 elif event.key == pygame.K_o:
                     self.isOPressed = True
+                elif event.key == pygame.K_1:
+                    self.is1Pressed = True
+                elif event.key == pygame.K_b:
+                    self.isBPressed = True
 
 
             elif event.type == pygame.KEYUP:
@@ -218,6 +224,40 @@ class Controller:
                     self.isPPressed = False
                 elif event.key == pygame.K_o:
                     self.isOPressed = False
+                elif event.key == pygame.K_1:
+                    self.is1Pressed = False
+                elif event.key == pygame.K_b:
+                    self.isBPressed = False
+
+class Dice:
+    def __init__(self, sides: int):
+        self.sides = sides
+        self.rolls = []
+        self.one_hundred_rolls = [0]
+    #rename roll method to roll 2d6 method
+    def roll_two_d_six(self) -> List[int]:
+        self.sides = 6
+        roll1 = random.randint(1, self.sides)
+        roll2 = random.randint(1, self.sides)
+        # roll1 = 5
+        # roll2 = 1
+        self.rolls = [roll1, roll2]
+        print(self.rolls)
+        return self.rolls
+
+
+    def roll_one_d_hundred(self) -> List[int]:
+        self.sides = 76
+
+        roll1 = random.randint(1, self.sides)
+        self.one_hundred_rolls = [roll1 + 24]
+        return self.one_hundred_rolls
+
+
+    def add(self):
+        # print(str(self.rolls))
+        return self.rolls[0] + self.rolls[1]
+
 
 
 class Player(Entity):
