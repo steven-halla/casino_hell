@@ -376,7 +376,7 @@ class CoinFlipFred(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Did you hear I use a weighted coin? It's a lie. ", "Press the T key in order to start a battle with me."]
+        self.messages = ["You need at least 50 Hell coins to play","Did you hear I use a weighted coin? It's a lie. ", "Press the T key in order to start a battle with me."]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -384,6 +384,8 @@ class CoinFlipFred(Npc):
 
     def update(self, state):
         super().update(state)
+        distance = math.sqrt(
+            (state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
 
         # Get the current time in milliseconds
         current_time = pygame.time.get_ticks()
@@ -399,7 +401,7 @@ class CoinFlipFred(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
             state.currentScreen = state.coinFlipScreen
             state.coinFlipScreen.start(state)
         elif state.coinFlipScreen.coinFlipFredMoney <= 0:
@@ -422,9 +424,12 @@ class SalleyOpossum(Npc):
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
         self.input_time = 0  # time when input was last read
+        self.sallyOpossumMoney = 1000
 
     def update(self, state):
         super().update(state)
+        distance = math.sqrt(
+            (state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
 
         # Get the current time in milliseconds
         current_time = pygame.time.get_ticks()
@@ -440,12 +445,12 @@ class SalleyOpossum(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 319:
             state.player.playerMoney -= 320
             state.currentScreen = state.opossumInACanScreen
             state.opossumInACanScreen.start(state)
-        elif state.opossumInACanScreen.SallyOpossumMoney <= 0:
-            print("coin flip freddy is defeated already move on you vulture")
+        elif state.opossumInACanScreen.sallyOpossumMoney <= 0:
+            print("Sally Opossum is defeated already move on you vulture")
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
@@ -561,7 +566,7 @@ class MainScreen(Screen):
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
-        self.SallyOpossumMoney = 1000
+        self.sallyOpossumMoney = 1000
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
@@ -607,23 +612,28 @@ class OpossumInACanScreen(Screen):
                 self.game_state = "play_again_or_bail"
 
         elif self.result == "lucky_star":
-            self.insurance = self.insurance * 2
+            self.insurance = self.insurance + 300
+            self.sallyOpossumMoney -= 300
             self.game_state = "play_again_or_bail"
 
 
         elif self.result == "insurance_eater":
             if self.insurance == 0:
+
                 print("oh no your in trouble")
                 print(self.game_state)
                 self.game_state = "loser_screen"
             else:
+                self.sallyOpossumMoney += self.insurance
                 self.insurance = 0
                 self.game_state = "play_again_or_bail"
 
         elif self.result == "lose":
+            print("This is the lossing screen")
+            self.sallyOpossumMoney += self.bet
+            self.sallyOpossumMoney += self.insurance
             self.bet = 0
-            print(self.bet)
-            print("you lose")
+
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
@@ -648,6 +658,8 @@ class OpossumInACanScreen(Screen):
 
         elif self.game_state == "play_again_or_bail":
             if controller.isPPressed:
+                print("IS THIS WHERE THE RROR IS AT???")
+                self.sallyOpossumMoney -= self.bet
                 state.player.playerMoney += self.bet
                 state.player.playerMoney += self.insurance
                 time.sleep(1)
@@ -674,19 +686,36 @@ class OpossumInACanScreen(Screen):
     def draw(self, state: "GameState"):
         DISPLAY.fill((0,0,0))
 
+        DISPLAY.blit(self.font.render(
+            f" SallyOpossum Money: {self.sallyOpossumMoney}",
+            True, (255, 255, 255)), (10, 190))
+        DISPLAY.blit(self.font.render(
+            f" player Money: {state.player.playerMoney}",
+            True, (255, 255, 255)), (10, 290))
+
+        DISPLAY.blit(self.font.render(
+            f" Players Bet: {self.bet}",
+            True, (255, 255, 255)), (10, 390))
+        DISPLAY.blit(self.font.render(
+            f" player Insurance: {self.insurance}",
+            True, (255, 255, 255)), (10, 490))
+
+
+
+
         if self.game_state == "welcome_opposum":
             DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "choose_can":
-            DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (100, 10))
+
+
 
         elif self.game_state == "play_again_or_bail":
-            DISPLAY.blit(self.font.render(f"Press O to continue, or P to exit", True, (255, 255, 255)), (10, 10))
-            DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (110, 110))
-            DISPLAY.blit(self.font.render(f"your toal money is {self.bet}", True, (255, 255, 255)), (210, 210))
-            DISPLAY.blit(self.font.render(f"your opossum insurance is {self.insurance}", True, (255, 255, 255)), (410, 410))
+            DISPLAY.blit(self.font.render(f"Press O to continue, or P to exit", True, (255, 255, 255)), (250, 10))
+            DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
 
         elif self.game_state == "loser_screen":
-            DISPLAY.blit(self.font.render(f"yyou drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 210))
+            DISPLAY.blit(self.font.render(f"yyou drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
 
 
         pygame.display.flip()
