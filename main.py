@@ -567,24 +567,26 @@ class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.desperate = False
-        self.sallyOpossumMoney = 1000
+        self.sallyOpossumMoney = 800
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win", "win", "win", "win", "lucky_star", "X3_star", "lose",
-                                            "insurance_eater", "insurance_eater"]
+        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
+
+                                            "win", "insurance_eater"]
         self.result = "win"
         self.bet = 20
-        self.insurance = 300
+        self.insurance = 200
         self.X3 = False
         self.has_opossum_insurance = True
 
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
-        self.insurance = 300
-        self.winner_or_looser = ["win", "win", "win", "win", "win","win", "lucky_star", "X3_star", "lose",
-                                            "insurance_eater", "insurance_eater"]
+        self.insurance = 200
+        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
+
+                                            "win", "insurance_eater"]
 
     def shuffle_opposums(self) -> List[str]:
         """Creates a new list in a random order"""
@@ -615,15 +617,14 @@ class OpossumInACanScreen(Screen):
                 self.game_state = "play_again_or_bail"
 
         elif self.result == "lucky_star":
-            self.insurance = self.insurance + 300
-            self.sallyOpossumMoney -= 300
+            self.insurance = self.insurance + 200
+            self.sallyOpossumMoney -= 200
             self.game_state = "play_again_or_bail"
 
 
         elif self.result == "insurance_eater":
-            if self.insurance == 0:
+            if self.insurance <= 0:
                 self.sallyOpossumMoney += self.bet
-                state.player.playerMoney -= self.bet
 
                 print("oh no your in trouble")
                 print(self.game_state)
@@ -631,7 +632,7 @@ class OpossumInACanScreen(Screen):
             else:
                 print("what are you doing here?")
                 self.sallyOpossumMoney += self.insurance
-                self.insurance -= 300
+                self.insurance -= 200
                 self.game_state = "play_again_or_bail"
 
         elif self.result == "lose":
