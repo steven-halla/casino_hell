@@ -445,7 +445,7 @@ class SalleyOpossum(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 319:
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 319 and state.opossumInACanScreen.sallyOpossumMoney > 0:
             state.player.playerMoney -= 220
             state.currentScreen = state.opossumInACanScreen
             state.opossumInACanScreen.start(state)
