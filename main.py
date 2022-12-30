@@ -593,7 +593,7 @@ class OpossumInACanScreen(Screen):
         print(str(self.winner_or_looser))
         return self.winner_or_looser
 
-    def check_results(self):
+    def check_results(self, state: "GameState"):
         if self.result == "X3_star":
             self.X3 = True
             print(self.game_state)
@@ -603,11 +603,13 @@ class OpossumInACanScreen(Screen):
         elif self.result == "win":
             if self.X3 == False:
                 self.bet = self.bet * 2
+                self.sallyOpossumMoney -= self.bet // 2
                 print("you win")
                 print(self.bet)
                 self.game_state = "play_again_or_bail"
             else:
                 self.bet = self.bet * 3
+                self.sallyOpossumMoney -= self.bet // 3 * 2
                 self.X3 = False
                 self.game_state = "play_again_or_bail"
 
@@ -619,13 +621,15 @@ class OpossumInACanScreen(Screen):
 
         elif self.result == "insurance_eater":
             if self.insurance == 0:
+                self.sallyOpossumMoney += self.bet
+                state.player.playerMoney -= self.bet
 
                 print("oh no your in trouble")
                 print(self.game_state)
                 self.game_state = "loser_screen"
             else:
                 self.sallyOpossumMoney += self.insurance
-                self.insurance = 0
+                self.insurance -= 300
                 self.game_state = "play_again_or_bail"
 
         elif self.result == "lose":
@@ -649,7 +653,7 @@ class OpossumInACanScreen(Screen):
                 self.shuffle_opposums()
                 self.result = self.winner_or_looser[0]
                 del self.winner_or_looser[0]
-                self.check_results()
+                self.check_results(state)
 
             #this code is not reachable perhaps
             player = state.player
