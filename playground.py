@@ -93,7 +93,7 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        # roll1 = 2
+        # roll1 = 5
         # roll2 = 1
         self.rolls = [roll1, roll2]
         print(self.rolls)
@@ -128,7 +128,7 @@ class DiceGame(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 440
+        self.player1pile = 0
         self.player2pile = 0
         self.ante = 800
         self.anteXero = 0
@@ -257,7 +257,7 @@ class DiceGame(Dice, NewController):
             elif self.game_state == "player_2_rolls":
                 print(self.game_state)
 
-                self.player2pile = self.player2pile + self.player1pile + self.ante
+                self.player1pile = self.player2pile + self.player1pile + self.ante
                 self.player1pile = 0
                 self.ante = 0
                 self.roll_state = "You got the wrong kind of double, you lose everything player 2!"
