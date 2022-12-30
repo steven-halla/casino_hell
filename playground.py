@@ -362,11 +362,14 @@ class DiceGame(Dice, NewController):
         elif self.game_state == "choose_player_2_or_ai":
             if self.is1Pressed:
                 self.isPlayer2 = True
+                self.game_state = "player_1_declare_intent_stage"
                 print("player 2")
 
             else:
                 if self.isPPressed:
                     self.isAI = True
+                    self.game_state = "player_1_declare_intent_stage"
+
                     print("Ai")
 
 
