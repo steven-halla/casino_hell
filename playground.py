@@ -93,7 +93,7 @@ class Dice:
         self.sides = 6
         # roll1 = random.randint(1, self.sides)
         # roll2 = random.randint(1, self.sides)
-        roll1 = 4
+        roll1 = 5
         roll2 = 4
         self.rolls = [roll1, roll2]
         print(self.rolls)
@@ -101,9 +101,10 @@ class Dice:
 
 
     def roll_one_d_hundred(self) -> List[int]:
-        self.sides = 100
+        self.sides = 75
+
         roll1 = random.randint(1, self.sides)
-        self.one_hundred_rolls = [roll1]
+        self.one_hundred_rolls = [roll1 + 25]
         return self.one_hundred_rolls
 
 
@@ -234,8 +235,7 @@ class DiceGame(Dice, NewController):
     def cold_bet(self):
 
         self.roll_two_d_six()
-        if self.rolls[0] == 1 and self.rolls[1] == 1 or self.rolls[0] == 2 and self.rolls[1] == 2 or \
-                self.rolls[0] == 3:
+        if self.rolls[0] == 1 and self.rolls[1] == 1:
             if self.game_state == "player_1_rolls":
                 print(self.game_state)
                 self.player2pile = self.player2pile + self.player1pile + self.ante
@@ -258,13 +258,13 @@ class DiceGame(Dice, NewController):
                 self.player_2_lost_game = True
 
 
-        elif self.rolls[0] == 6 and self.rolls[1] == 6:
+        elif self.rolls[0] == 3 and self.rolls[1] == 3:
             if self.game_state == "player_1_rolls":
                 print("you win =======================================================================")
                 self.player1pile = self.player2pile + self.player1pile + self.ante
                 self.player2pile = 0
                 self.ante = 0
-                self.roll_state = "lucky double sixes, player 1 wins!"
+                self.roll_state = "lucky double 3, player 1 wins!"
 
                 self.game_state = "player_1_wins"
 
@@ -273,17 +273,19 @@ class DiceGame(Dice, NewController):
                 self.player2pile = self.player2pile + self.player1pile + self.ante
                 self.player1pile = 0
                 self.ante = 0
-                self.roll_state = "lucky double sixes, player 2 wins!"
+                self.roll_state = "lucky double 3, player 2 wins!"
 
                 self.game_state = "player_2_wins"
 
         #
-        elif self.add() == 8:
+        elif self.add() == 9:
             if self.game_state == "player_1_rolls":
-                self.roll_state = "The result is an 8, attack player pile"
+                self.roll_state = "The result is an 9, attack player pile"
 
 
                 self.roll_one_d_hundred()
+                if self.one_hundred_rolls[0] > self.player2pile:
+                    self.one_hundred_rolls[0] = self.player2pile
                 self.player1pile += self.one_hundred_rolls[0]
                 self.player2pile -= self.one_hundred_rolls[0]
                 if self.player2pile < 0:
@@ -297,6 +299,8 @@ class DiceGame(Dice, NewController):
 
 
                 self.roll_one_d_hundred()
+                if self.one_hundred_rolls[0] > self.player2pile:
+                    self.one_hundred_rolls[0] = self.player2pile
                 self.player2pile += self.one_hundred_rolls[0]
 
                 self.player1pile -= self.one_hundred_rolls[0]
@@ -305,7 +309,7 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_1_intent_stage"
 
         #
-        elif self.add() == 7 or self.add() == 9 or self.add() == 11:
+        elif self.add() == 8 or self.add() == 9 or self.add() == 10 or self.add() == 11 or self.add() == 12:
             print("you got a 7, 9, or 11")
             if self.game_state == "player_1_rolls":
                 self.roll_state = "High Even Number, Attack the ante "
@@ -458,21 +462,8 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_1_declare_intent_stage"
 
 
-
-        #
-        # elif self.player_1_lost_game == True:
-        #     self.game_state = "player_1_game_over"
-        #     print("hi")
-        #
-        # elif self.player_2_lost_game == True:
-        #     self.game_state = "player_2_game_over"
-        #     print("hi")
-
-
     def draw(self):
         DISPLAY.fill((0,0,0))
-
-
 
         if self.game_state == "player_1_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 1: press T forr cold P For hot", True, (255, 255, 255)), (10, 10))
