@@ -91,10 +91,10 @@ class Dice:
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
-        # roll1 = random.randint(1, self.sides)
-        # roll2 = random.randint(1, self.sides)
-        roll1 = 2
-        roll2 = 5
+        roll1 = random.randint(1, self.sides)
+        roll2 = random.randint(1, self.sides)
+        # roll1 = 6
+        # roll2 = 5
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -128,7 +128,7 @@ class DiceGame(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 450
+        self.player1pile = 0
         self.player2pile = 0
         self.ante = 800
         self.anteXero = 0
@@ -453,9 +453,8 @@ class DiceGame(Dice, NewController):
                 time.sleep(2)
                 if self.player1pile < 300 :
                     self.isTPressed = True
-                    if self.isTPressed:
-                        self.game_state = "player_2_rolls"
-                        self.isTPressed = False
+                    self.game_state = "player_2_rolls"
+                    self.isTPressed = False
                 else:
                     self.isPPressed = True
                     self.game_state = "player_2_going_hot"
@@ -513,16 +512,6 @@ class DiceGame(Dice, NewController):
                     else:
                         self.game_state = "player_2_results_one_hundred"
 
-            elif self.isAI == True:
-                time.sleep(2)
-                self.is1Pressed = True
-                if self.is1Pressed:
-                    self.hot_bet()
-                    self.is1Pressed = False
-                    if self.one_hundred_rolls == 0:
-                        self.game_state = "player_2_results"
-                    else:
-                        self.game_state = "player_2_results_one_hundred"
 
 
 
