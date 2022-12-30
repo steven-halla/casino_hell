@@ -120,6 +120,8 @@ class DiceGame(Dice, NewController):
         super().__init__(sides)
         NewController.__init__(self)
         self.game_state = "choose_player_2_or_ai"
+        self.isPlayer2 = False
+        self.isAI = False
         self.game_state_started_at = 0
 
         self.font = pygame.font.Font(None, 36)
@@ -359,10 +361,12 @@ class DiceGame(Dice, NewController):
 
         elif self.game_state == "choose_player_2_or_ai":
             if self.is1Pressed:
+                self.isPlayer2 = True
                 print("player 2")
 
             else:
                 if self.isPPressed:
+                    self.isAI = True
                     print("Ai")
 
 
