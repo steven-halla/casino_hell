@@ -91,10 +91,10 @@ class Dice:
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
-        roll1 = random.randint(1, self.sides)
-        roll2 = random.randint(1, self.sides)
-        # roll1 = 6
-        # roll2 = 5
+        # roll1 = random.randint(1, self.sides)
+        # roll2 = random.randint(1, self.sides)
+        roll1 = 2
+        roll2 = 5
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -128,7 +128,7 @@ class DiceGame(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 0
+        self.player1pile = 450
         self.player2pile = 0
         self.ante = 800
         self.anteXero = 0
@@ -427,6 +427,7 @@ class DiceGame(Dice, NewController):
 
         elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
             if self.isBPressed:
+                print("DO YOU SEE THIS????")
                 self.game_state = "player_2_declare_intent_stage"
 
 
@@ -451,17 +452,14 @@ class DiceGame(Dice, NewController):
             elif self.isAI == True:
                 time.sleep(2)
                 if self.player1pile < 300 :
-                    self.game_state = "player_2_rolls"
-
-                elif self.player1pile - self.player2pile >= 300:
-                    self.game_state = "player_2_going_hot"
-
-                elif self.ante < 200 and self.player1pile > self.player2pile:
-                    self.game_state = "player_2_going_hot"
-
+                    self.isTPressed = True
+                    if self.isTPressed:
+                        self.game_state = "player_2_rolls"
+                        self.isTPressed = False
                 else:
-                    self.game_state = "player_2_rolls"
-
+                    self.isPPressed = True
+                    self.game_state = "player_2_going_hot"
+                    self.isPPressed = False
 
 
 
@@ -478,14 +476,49 @@ class DiceGame(Dice, NewController):
 
             elif self.isAI == True:
                 time.sleep(2)
-
                 self.isEPressed = True
-                if self.isEPressed:
-                    self.isEPressed = False
-                    print("pressing T")
-                    self.cold_bet()
-                    time.sleep(2)
+                print("pressing T")
+                self.cold_bet()
+                self.isEPressed = False
+                if self.one_hundred_rolls == 0:
+                    self.game_state = "player_2_results"
+                else:
+                    self.game_state = "player_2_results_one_hundred"
 
+
+            # elif self.isAI == True:
+            #     time.sleep(2)
+            #
+            #     self.isEPressed = True
+            #     if self.isEPressed:
+            #         self.isEPressed = False
+            #         print("pressing T")
+            #         self.cold_bet()
+            #         time.sleep(2)
+            #
+            #         if self.one_hundred_rolls == 0:
+            #             self.game_state = "player_2_results"
+            #         else:
+            #             self.game_state = "player_2_results_one_hundred"
+
+
+
+        elif self.game_state == "player_2_going_hot":
+            if self.isPlayer2 == True:
+                if self.is1Pressed:
+                    print("pressing 1")
+                    self.hot_bet()
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_2_results"
+                    else:
+                        self.game_state = "player_2_results_one_hundred"
+
+            elif self.isAI == True:
+                time.sleep(2)
+                self.is1Pressed = True
+                if self.is1Pressed:
+                    self.hot_bet()
+                    self.is1Pressed = False
                     if self.one_hundred_rolls == 0:
                         self.game_state = "player_2_results"
                     else:
@@ -493,18 +526,19 @@ class DiceGame(Dice, NewController):
 
 
 
-        elif self.game_state == "player_2_going_hot":
-            if self.is1Pressed:
-                print("pressing 1")
-                self.hot_bet()
-                if self.one_hundred_rolls == 0:
-                    self.game_state = "player_2_results"
-                else:
-                    self.game_state = "player_2_results_one_hundred"
 
         elif self.game_state == "player_2_results" or self.game_state == "player_2_results_one_hundred":
-            if self.isBPressed:
+            if self.isPlayer2 == True:
+                if self.isBPressed:
+                    self.game_state = "player_1_declare_intent_stage"
+
+            elif self.isAI == True:
+                time.sleep(2)
+                self.isBPressed = True
                 self.game_state = "player_1_declare_intent_stage"
+                self.isBPressed = False
+
+
 
 
     def draw(self):
