@@ -446,7 +446,7 @@ class SalleyOpossum(Npc):
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
         elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 319:
-            state.player.playerMoney -= 320
+            state.player.playerMoney -= 220
             state.currentScreen = state.opossumInACanScreen
             state.opossumInACanScreen.start(state)
         elif state.opossumInACanScreen.sallyOpossumMoney <= 0:
@@ -534,8 +534,6 @@ class MainScreen(Screen):
 
 
     def update(self, state: "GameState"):
-
-
         controller = state.controller
         player = state.player
         npc = state.npcs
@@ -636,7 +634,7 @@ class OpossumInACanScreen(Screen):
                 self.game_state = "play_again_or_bail"
 
         elif self.result == "lose":
-            print("This is the lossing screen")
+            print("This is the losing screen")
             self.sallyOpossumMoney += self.bet
             self.sallyOpossumMoney += self.insurance
             self.bet = 0
@@ -662,7 +660,7 @@ class OpossumInACanScreen(Screen):
                 del self.winner_or_looser[0]
                 self.check_results(state)
 
-            #this code is not reachable perhaps
+            # this code is not reachable perhaps
             player = state.player
 
             player.update(state)
@@ -698,7 +696,7 @@ class OpossumInACanScreen(Screen):
 
         if self.desperate == True:
             DISPLAY.blit(self.font.render(
-                f" I Take care of the orphanage here Please think of the children:",
+                f" I Take care of the orphanage here Please think of the children!",
                 True, (255, 255, 255)), (10, 530))
 
 
@@ -941,6 +939,7 @@ class GameState:
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
+        self.delta: float = 0.0
 
         self.mainScreen = MainScreen()
         self.testScreen = TestScreen()
@@ -956,13 +955,14 @@ class Game:
 
     def start(self):
         self.state.currentScreen.start(self.state)
-
         while self.state.isRunning:
+            self.state.delta = clock.tick(60)
+
             if self.state.player.playerMoney <= 0:
                 print("game over ")
 
             # will need to move this to Screen class
-
+            # TODO maintain framerate pygame.
             self.state.currentScreen.update(self.state)
             self.state.currentScreen.draw(self.state)
 
