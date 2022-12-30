@@ -91,10 +91,10 @@ class Dice:
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
-        # roll1 = random.randint(1, self.sides)
-        # roll2 = random.randint(1, self.sides)
-        roll1 = 6
-        roll2 = 5
+        roll1 = random.randint(1, self.sides)
+        roll2 = random.randint(1, self.sides)
+        # roll1 = 6
+        # roll2 = 5
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -365,41 +365,40 @@ class DiceGame(Dice, NewController):
 
         elif self.game_state == "player_1_declare_intent_stage":
             self.one_hundred_rolls = 0
-            if delta > 500: # don't read keyboard input for at least 500 ms.
+            # if delta > 500: # don't read keyboard input for at least 500 ms.
 
-                if self.isTPressed:
+            if self.isTPressed:
 
-                    self.start_state("player_1_rolls")
-                    # print(self.game_state)
+                self.start_state("player_1_rolls")
+                # print(self.game_state)
 
-                elif self.isPPressed:
-                    self.start_state("player_1_going_hot")
+            elif self.isPPressed:
+                self.start_state("player_1_going_hot")
 
 
 
 
         elif self.game_state == "player_1_rolls":
-            if delta > 1500: # don't read keyboard input for at least 500 ms.
+            # if delta > 1500: # don't read keyboard input for at least 500 ms.
 
-                if self.isEPressed:
+            if self.isEPressed:
 
-                    print("pressing T")
-                    self.cold_bet()
-                    if self.one_hundred_rolls == 0:
-                        self.start_state("player_1_results")
-                    else:
-                        self.start_state("player_1_results_one_hundred")
+                print("pressing T")
+                self.cold_bet()
+                if self.one_hundred_rolls == 0:
+                    self.start_state("player_1_results")
+                else:
+                    self.start_state("player_1_results_one_hundred")
 
 
         elif self.game_state == "player_1_going_hot":
-            if delta > 1500: # don't read keyboard input for at least 500 ms.
-                if self.is1Pressed:
-                    print("pressing 1")
-                    self.hot_bet()
-                    if self.one_hundred_rolls == 0:
-                        self.game_state = "player_1_results"
-                    else:
-                        self.game_state = "player_1_results_one_hundred"
+            if self.is1Pressed:
+                print("pressing 1")
+                self.hot_bet()
+                if self.one_hundred_rolls == 0:
+                    self.game_state = "player_1_results"
+                else:
+                    self.game_state = "player_1_results_one_hundred"
 
             # else: # demo showing if we are pressing keys within first 500 ms.
             #     if self.is1Pressed:
