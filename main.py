@@ -583,7 +583,7 @@ class OpossumInACanScreen(Screen):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 300
-        self.winner_or_looser = ["win", "win", "win", "win", "win", "lucky_star", "X3_star", "lose",
+        self.winner_or_looser = ["win", "win", "win", "win", "win","win", "lucky_star", "X3_star", "lose",
                                             "insurance_eater", "insurance_eater"]
 
     def shuffle_opposums(self) -> List[str]:
@@ -629,6 +629,7 @@ class OpossumInACanScreen(Screen):
                 print(self.game_state)
                 self.game_state = "loser_screen"
             else:
+                print("what are you doing here?")
                 self.sallyOpossumMoney += self.insurance
                 self.insurance -= 300
                 self.game_state = "play_again_or_bail"
@@ -729,7 +730,7 @@ class OpossumInACanScreen(Screen):
             DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
 
         elif self.game_state == "loser_screen":
-            DISPLAY.blit(self.font.render(f"yyou drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
+            DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
 
 
         pygame.display.flip()
