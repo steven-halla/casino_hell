@@ -167,7 +167,8 @@ class DiceGame(Dice, NewController):
 
 
 
-            elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
+
+            elif self.add() == 5 or self.add() == 6 or  self.add() == 7 or self.add() == 8 or self.add() == 9 :
                 self.roll_one_d_hundred()
                 subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
                 self.player2pile -= subtracted_amount * 3
@@ -197,8 +198,8 @@ class DiceGame(Dice, NewController):
                 self.player2pile = 0
                 self.player_2_lost_game = True
 
+            elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
 
-            elif self.add() == 2 or self.add() == 4 or self.add() == 6 or self.add() == 8 or self.add() == 10 or self.add() == 12:
                 self.roll_one_d_hundred()
                 subtracted_amount = min(self.one_hundred_rolls[0], self.player2pile)
                 self.player2pile += subtracted_amount * 3
@@ -226,11 +227,6 @@ class DiceGame(Dice, NewController):
             print("no dice you wasted your chance")
 
         print("end state: " + self.game_state)
-
-        #Changes that need to be made:
-        # for cold bets only have lose on snake eyes.
-        # for rolls below 25 make it equal 25
-        # still some bugs with cold bet
 
     def cold_bet(self):
 
