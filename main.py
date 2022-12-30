@@ -419,7 +419,7 @@ class SalleyOpossum(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Are you sure you want to play opossum in a can?.","My opossums have Rabies that'll wear down your stamina","Press T to start the game"]
+        self.messages = ["Are you sure you want to play opossum in a can?.","My opossums have Rabies that'll wear down your stamina","Press T to start the game", "Unlike Coinflip Freddy , I work for the boss", "so If I go below 0, he will cover the winnings"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -566,6 +566,7 @@ class MainScreen(Screen):
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
+        self.desperate = False
         self.sallyOpossumMoney = 1000
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
@@ -643,6 +644,10 @@ class OpossumInACanScreen(Screen):
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update(state)
+        if self.sallyOpossumMoney <= 300:
+            self.desperate = True
+        elif self.sallyOpossumMoney > 300:
+            self.desperate = False
 
         if self.game_state == "welcome_opposum":
             if controller.isTPressed:
@@ -663,7 +668,6 @@ class OpossumInACanScreen(Screen):
         elif self.game_state == "play_again_or_bail":
             if controller.isPPressed:
                 print("IS THIS WHERE THE RROR IS AT???")
-                self.sallyOpossumMoney -= self.bet
                 state.player.playerMoney += self.bet
                 state.player.playerMoney += self.insurance
                 time.sleep(1)
@@ -689,6 +693,12 @@ class OpossumInACanScreen(Screen):
 
     def draw(self, state: "GameState"):
         DISPLAY.fill((0,0,0))
+
+        if self.desperate == True:
+            DISPLAY.blit(self.font.render(
+                f" I Take care of the orphanage here Please think of the children:",
+                True, (255, 255, 255)), (10, 530))
+
 
         DISPLAY.blit(self.font.render(
             f" SallyOpossum Money: {self.sallyOpossumMoney}",
