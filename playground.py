@@ -119,7 +119,7 @@ class DiceGame(Dice, NewController):
     def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT, sides):
         super().__init__(sides)
         NewController.__init__(self)
-        self.game_state = "player_1_declare_intent_stage"
+        self.game_state = "choose_player_2_or_ai"
         self.game_state_started_at = 0
 
         self.font = pygame.font.Font(None, 36)
@@ -357,6 +357,14 @@ class DiceGame(Dice, NewController):
                 self.its_a_draw = True
                 print("its a draw")
 
+        elif self.game_state == "choose_player_2_or_ai":
+            if self.is1Pressed:
+                print("player 2")
+
+            else:
+                if self.isPPressed:
+                    print("Ai")
+
 
 
         elif self.game_state == "player_1_declare_intent_stage":
@@ -451,6 +459,9 @@ class DiceGame(Dice, NewController):
 
     def draw(self):
         DISPLAY.fill((0,0,0))
+
+        if self.game_state == "choose_player_2_or_ai":
+            DISPLAY.blit(self.font.render(f"Press 1 key for human or P key for AI", True, (255, 255, 255)), (10, 10))
 
         if self.game_state == "player_1_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 1: press T forr cold P For hot", True, (255, 255, 255)), (10, 10))
