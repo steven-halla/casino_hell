@@ -426,21 +426,37 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_2_declare_intent_stage"
 
 
-
+######player 2 stuff down here
 
 
 
         elif self.game_state == "player_2_declare_intent_stage":
             self.one_hundred_rolls = 0
 
-            if self.isTPressed:
-                print("hithere you ")
-                self.game_state = "player_2_rolls"
-                print(self.game_state)
+            if self.isPlayer2 == True:
 
-            elif self.isPPressed:
-                print("going in hot")
-                self.game_state = "player_2_going_hot"
+                if self.isTPressed:
+                    print("hithere you ")
+                    self.game_state = "player_2_rolls"
+                    print(self.game_state)
+
+                elif self.isPPressed:
+                    print("going in hot")
+                    self.game_state = "player_2_going_hot"
+
+            elif self.isAI == True:
+                if self.player1pile < 300 :
+                    self.game_state = "player_2_rolls"
+
+                elif self.player1pile - self.player2pile >= 300:
+                    self.game_state = "player_2_going_hot"
+
+                elif self.ante < 200 and self.player1pile > self.player2pile:
+                    self.game_state = "player_2_going_hot"
+
+                else:
+                    self.game_state = "player_2_rolls"
+
 
 
 
@@ -474,7 +490,7 @@ class DiceGame(Dice, NewController):
         DISPLAY.fill((0,0,0))
 
         if self.game_state == "choose_player_2_or_ai":
-            DISPLAY.blit(self.font.render(f"Press 1 key for human or P key for AI", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Press 1 key for human or O key for AI", True, (255, 255, 255)), (10, 10))
 
         if self.game_state == "player_1_declare_intent_stage":
             DISPLAY.blit(self.font.render(f"Player 1: press T for cold P For hot", True, (255, 255, 255)), (10, 10))
