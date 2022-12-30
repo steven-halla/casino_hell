@@ -220,11 +220,6 @@ class Controller:
                     self.isOPressed = False
 
 
-
-
-
-
-
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
@@ -232,15 +227,6 @@ class Player(Entity):
         self.walkSpeed = 3.5
         self.playerMoney = 1000
 
-
-
-
-
-        # self.getMoney: bool = False
-
-    # def speaking(self, player, npc):
-    #     if npc.collision.x < player.collision.x:
-    #         print("Nice")
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -455,6 +441,7 @@ class SalleyOpossum(Npc):
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
         elif state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
+            state.player.playerMoney -= 320
             state.currentScreen = state.opossumInACanScreen
             state.opossumInACanScreen.start(state)
         elif state.opossumInACanScreen.SallyOpossumMoney <= 0:
@@ -661,9 +648,13 @@ class OpossumInACanScreen(Screen):
 
         elif self.game_state == "play_again_or_bail":
             if controller.isPPressed:
+                state.player.playerMoney += self.bet
+                state.player.playerMoney += self.insurance
                 time.sleep(1)
                 self.refresh()
                 self.game_state = "welcome_opposum"
+                print("ok its betting time")
+
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -733,7 +724,9 @@ class CoinFlipScreen(Screen):
 
 
     def flipCoin(self):
-        # Generate a random number between 0 and 1 to simulate the coin flip
+        # currently at .6 because heads is favored
+        # in the future will have states to handle coin flip percentages
+        # an item can add .1 to your rolls for heads, or -.1 for tails
         coin = random.random()
         if coin < 0.6:
             print("coin landed on heads")
