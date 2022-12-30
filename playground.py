@@ -93,8 +93,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        roll1 = 6
-        roll2 = 1
+        # roll1 = 2
+        # roll2 = 1
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -196,49 +196,48 @@ class DiceGame(Dice, NewController):
 
 ########player 2 below
 
-        elif self.isPlayer2:
 
 
-            if self.game_state == "player_2_going_hot":
-                self.roll_two_d_six()
-                if self.rolls[0] == self.rolls[1]:
+        if self.game_state == "player_2_going_hot":
+            self.roll_two_d_six()
+            if self.rolls[0] == self.rolls[1]:
 
-                    self.player1pile += self.ante + self.player2pile
-                    self.ante = 0
-                    self.roll_state ="you got a double at the wrong time, you lose"
+                self.player1pile += self.ante + self.player2pile
+                self.ante = 0
+                self.roll_state ="you got a double at the wrong time, you lose"
 
-                    self.player2pile = 0
-                    self.player_2_lost_game = True
+                self.player2pile = 0
+                self.player_2_lost_game = True
 
-                elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
+            elif self.add() == 5 or self.add() == 6 or self.add() == 7 or self.add() == 8 or self.add() == 9:
 
-                    self.roll_one_d_hundred()
-                    subtracted_amount = min(self.one_hundred_rolls[0], self.player1pile)
-                    self.player2pile += subtracted_amount * 3
-                    self.player1pile -= subtracted_amount * 3
-                    self.roll_state = "attacking enemy player pile"
-
-
-                    if self.player1pile < 0:
-                        self.player1pile = 0
-                        print("if its 0:")
-                        print(self.player1pile)
-
-                    self.game_state = "player_1_declare_intent_stage"
-
-                else:
-                    self.roll_state = "Your roll was wasted"
+                self.roll_one_d_hundred()
+                print("you rolled the dice as an AI")
+                subtracted_amount = min(self.one_hundred_rolls[0], self.player1pile)
+                self.player2pile += subtracted_amount * 3
+                self.player1pile -= subtracted_amount * 3
+                self.roll_state = "attacking enemy player pile"
 
 
+                if self.player1pile < 0:
+                    self.player1pile = 0
 
-            elif self.game_state == "player_1_going_hot":
-                print("no dice you wasted your chance")
-                self.game_state = "player_2_declare_intent_stage"
 
-            elif self.game_state == "player_2_going_hot":
-                print("no dice you wasted your chance")
+                self.game_state = "player_1_declare_intent_stage"
 
-            print("end state: " + self.game_state)
+            else:
+                self.roll_state = "Your roll was wasted"
+
+
+
+        elif self.game_state == "player_1_going_hot":
+            print("no dice you wasted your chance")
+            self.game_state = "player_2_declare_intent_stage"
+
+        elif self.game_state == "player_2_going_hot":
+            print("no dice you wasted your chance")
+
+        print("end state: " + self.game_state)
 
     def cold_bet(self):
 
@@ -485,20 +484,7 @@ class DiceGame(Dice, NewController):
                     self.game_state = "player_2_results_one_hundred"
 
 
-            # elif self.isAI == True:
-            #     time.sleep(2)
-            #
-            #     self.isEPressed = True
-            #     if self.isEPressed:
-            #         self.isEPressed = False
-            #         print("pressing T")
-            #         self.cold_bet()
-            #         time.sleep(2)
-            #
-            #         if self.one_hundred_rolls == 0:
-            #             self.game_state = "player_2_results"
-            #         else:
-            #             self.game_state = "player_2_results_one_hundred"
+           ####PLAYER 2 HOT PHASE DOWN HERE!!!!!!!
 
 
 
@@ -511,6 +497,19 @@ class DiceGame(Dice, NewController):
                         self.game_state = "player_2_results"
                     else:
                         self.game_state = "player_2_results_one_hundred"
+
+            elif self.isAI == True:
+                time.sleep(2)
+                self.is1Pressed = True
+
+
+                self.hot_bet()
+                self.is1Pressed = False
+                if self.one_hundred_rolls == 0:
+                    self.game_state = "player_2_results"
+                else:
+                    self.game_state = "player_2_results_one_hundred"
+
 
 
 
