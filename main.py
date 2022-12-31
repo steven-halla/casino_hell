@@ -239,8 +239,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        roll1 = 2
-        roll2 = 5
+        roll1 = 3
+        roll2 = 1
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -1015,7 +1015,7 @@ class DiceGameScreen(Screen, Dice):
         self.diceFont = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 550
+        self.player1pile = 222
         self.player2pile = 550
         self.ante = 98
         self.anteXero = 0
@@ -1419,10 +1419,13 @@ class DiceGameScreen(Screen, Dice):
                 controller.isBPressed = False
 
         if self.ante == 0:
+            print("THE ANTIE IS AT 00000000000000000000o0-o0o00o0o0o0o0o0o")
             if self.player1pile > self.player2pile:
+                self.game_state = "player_1_wins"
                 self.player_2_lost_game = True
 
             elif self.player1pile < self.player2pile:
+                self.game_state = "player_2_wins"
                 self.player_1_lost_game = True
 
             elif self.player1pile == self.player2pile:
@@ -1485,12 +1488,12 @@ class DiceGameScreen(Screen, Dice):
 
 
         elif self.game_state == "player_2_wins":
-            DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.diceFont.render(f"Player 1 Money: {state.player.playerMoney}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.diceFont.render(f"Player 2 Money: {self.chiliWilleyMoney}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.diceFont.render(f"Player 2 wins", True, (255, 255, 255)), (500, 500))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (155, 10))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 Money: {state.player.playerMoney}", True, (255, 255, 255)), (155, 100))
+            DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (155, 200))
+            DISPLAY.blit(self.diceFont.render(f"Player 2 Money: {self.chiliWilleyMoney}", True, (255, 255, 255)), (155, 300))
+            DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (155, 400))
+            DISPLAY.blit(self.diceFont.render(f"Player 2 wins", True, (255, 255, 255)), (155, 500))
 
 
         elif self.game_state == "player_1_rolls":
