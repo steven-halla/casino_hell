@@ -1046,8 +1046,8 @@ class DiceGameScreen(Screen, Dice):
                 self.ante = 0
                 self.roll_state = "you got a double at the wrong time, you lose"
                 print("you rolled a double get ready for trouble")
-                self.game_state = "player_2_wins"
                 self.player_1_lost_game = True
+
 
 
 
@@ -1121,7 +1121,7 @@ class DiceGameScreen(Screen, Dice):
                 self.ante = 0
                 self.roll_state = "You got the wrong kind of double, you lose everything player 1!"
                 print(self.player1pile)
-                self.player_1_lost_game = True
+                self.player_2_won_game = True
 
 
 
@@ -1133,7 +1133,7 @@ class DiceGameScreen(Screen, Dice):
                 self.ante = 0
                 self.roll_state = "You got the wrong kind of double, you lose everything player 2!"
                 print(self.player2pile)
-                self.player_2_lost_game = True
+                self.player_1_won_game = True
 
 
         elif self.rolls[0] == 6 and self.rolls[1] == 6:
@@ -1291,6 +1291,8 @@ class DiceGameScreen(Screen, Dice):
                         self.start_state("player_1_wins")
                         pygame.time.delay(2000)
 
+
+
                 else:
                     self.start_state("player_1_results_one_hundred")
 
@@ -1307,8 +1309,10 @@ class DiceGameScreen(Screen, Dice):
 
 
 
-        elif self.game_state == "player_1_results" \
-                or self.game_state == "player_1_results_one_hundred":
+        elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
+            if self.player_1_lost_game == True:
+                pygame.time.delay(5000)
+
             if controller.isBPressed:
                 self.game_state = "player_2_declare_intent_stage"
 
