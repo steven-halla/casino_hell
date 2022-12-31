@@ -239,8 +239,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        # roll1 = 6
-        # roll2 = 6
+        # roll1 = 1
+        # roll2 = 1
 
         self.rolls = [roll1, roll2]
         print(self.rolls)
@@ -567,6 +567,7 @@ class ChiliWilley(Npc):
         elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney >= 500 and state.diceGameScreen.chiliWilleyMoney > 0:
             state.currentScreen = state.diceGameScreen
             state.diceGameScreen.start(state)
+
         elif state.diceGameScreen.chiliWilleyMoney <= 0:
             print("Chilli Willey is defeated already move on you vulture")
 
@@ -1016,9 +1017,9 @@ class DiceGameScreen(Screen, Dice):
         self.diceFont = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 555
+        self.player1pile = 0
         self.player2pile = 0
-        self.ante = 55
+        self.ante = 1000
         self.anteXero = 0
         self.player_1_won_game = False
         self.player_2_won_game = False
@@ -1031,6 +1032,12 @@ class DiceGameScreen(Screen, Dice):
         self.input_delay = 500  # input delay in milliseconds
         self.input_time = 0  # time when input was last read
         self.chiliWilleyMoney = 1000
+
+    def refresh(self):
+        self.player1pile = 0
+        self.player2pile = 0
+        self.ante = 1000
+        self.game_state = "choose_player_2_or_ai"
 
 
 
@@ -1219,15 +1226,17 @@ class DiceGameScreen(Screen, Dice):
     def update(self, state: "GameState"):
         # delta between last update time in milliseconds
         delta = pygame.time.get_ticks() - self.game_state_started_at
-        print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
+        # this is to track what state we currently in DO NOT DELTE THIS
+        # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
 
         controller = state.controller
         controller.update(state)
+        print("HERE WE GOO OOOOOO")
 
         if self.game_state == "player_1_wins":
-            print("Im here with the player1wins")
-            print("Hi there")
+
             pygame.time.delay(5000)
+            self.refresh()
 
             state.player.playerMoney += 500
             self.chiliWilleyMoney -= 500
@@ -1235,9 +1244,9 @@ class DiceGameScreen(Screen, Dice):
             state.mainScreen.start(state)
 
         elif self.game_state == "player_2_wins":
-            print("Im here with the player1wins")
-            print("Hi there")
+
             pygame.time.delay(5000)
+            self.refresh()
 
             state.player.playerMoney -= 500
             self.chiliWilleyMoney += 500
@@ -1255,10 +1264,6 @@ class DiceGameScreen(Screen, Dice):
                 if controller.isOPressed:
                     self.isAI = True
                     self.game_state = "player_1_declare_intent_stage"
-
-                    print("Ai")
-
-
 
         elif self.game_state == "player_1_declare_intent_stage":
             self.one_hundred_rolls = 0
