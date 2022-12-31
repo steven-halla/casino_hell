@@ -239,8 +239,9 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        roll1 = 3
-        roll2 = 1
+        # roll1 = 6
+        # roll2 = 6
+
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -1017,7 +1018,7 @@ class DiceGameScreen(Screen, Dice):
         self.player_2_turn = False
         self.player1pile = 222
         self.player2pile = 550
-        self.ante = 98
+        self.ante = 158
         self.anteXero = 0
         self.player_1_won_game = False
         self.player_2_won_game = False
