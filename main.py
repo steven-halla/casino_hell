@@ -239,8 +239,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        roll1 = 6
-        roll2 = 6
+        roll1 = 1
+        roll2 = 2
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -1213,6 +1213,7 @@ class DiceGameScreen(Screen, Dice):
                     self.ante = 0
                 self.game_state = "player_1_intent_stage"
         else:
+            print("ldjfdsjfsjfldksajfljsfjsdajfslfjlsajfdskfajdslfjdsljflsjfjsflkjdsfj;sdl")
             self.roll_state = "wasted roll"
 
     def start_state(self, gamestate):
@@ -1288,7 +1289,8 @@ class DiceGameScreen(Screen, Dice):
                 print("pressing T")
                 self.cold_bet()
                 if self.one_hundred_rolls == 0:
-                    self.start_state("player_1_results")
+                    self.game_state = "player_1_results"
+                    print("fdsjfsdlfjs")
 
                     if self.player_1_won_game == True:
 
@@ -1324,6 +1326,7 @@ class DiceGameScreen(Screen, Dice):
 
         elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
             print("hi there you land lubber")
+            print("this is the state of player_1   " + str(self.player_1_lost_game))
             if self.player_1_lost_game == True:
                 print("Good bye")
                 pygame.time.delay(3000)
@@ -1334,11 +1337,12 @@ class DiceGameScreen(Screen, Dice):
                 state.mainScreen.start(state)
 
 
-            if controller.isBPressed:
-                print("how did we get here)")
-                pygame.time.delay(5000)
+            elif self.player_1_lost_game == False:
+                if controller.isBPressed:
+                    print("how did we get here fdsfdasfsfdsafsfsafdsfsdfsdfsfsfsferewreereree")
+                    pygame.time.delay(5000)
 
-                self.game_state = "player_2_declare_intent_stage"
+                    self.game_state = "player_2_declare_intent_stage"
 
 
         ######player 2 stuff down here
