@@ -239,8 +239,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        # roll1 = 5
-        # roll2 = 1
+        roll1 = 6
+        roll2 = 6
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -563,8 +563,8 @@ class ChiliWilley(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 1000 and state.diceGameScreen.chiliWilleyMoney > 0:
-            state.player.playerMoney -= 1000
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 500 and state.diceGameScreen.chiliWilleyMoney > 0:
+            state.player.playerMoney -= 500
             state.currentScreen = state.diceGameScreen
             state.diceGameScreen.start(state)
         elif state.diceGameScreen.chiliWilleyMoney <= 0:
@@ -1020,6 +1020,7 @@ class DiceGameScreen(Screen, Dice):
         self.player2pile = 0
         self.ante = 1000
         self.anteXero = 0
+        self.player_1_won_game = False
 
         self.roll_state = ""
         self.player_1_lost_game = False
@@ -1141,8 +1142,10 @@ class DiceGameScreen(Screen, Dice):
                 self.player2pile = 0
                 self.ante = 0
                 self.roll_state = "lucky double 6, player 1 wins!"
-
                 self.game_state = "player_1_wins"
+                self.player_1_won_game = True
+
+
 
             elif self.game_state == "player_2_rolls":
                 print("you win ==================================================================")
@@ -1216,21 +1219,21 @@ class DiceGameScreen(Screen, Dice):
     def update(self, state: "GameState"):
         # delta between last update time in milliseconds
         delta = pygame.time.get_ticks() - self.game_state_started_at
-        # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
+        print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
 
         controller = state.controller
         controller.update(state)
-        if self.ante == 0:
-            if self.player1pile > self.player2pile:
-                self.player_2_lost_game = True
 
-            elif self.player1pile < self.player2pile:
-                self.player_1_lost_game = True
+        if self.game_state == "player_1_wins":
+            print("Im here with the player1wins")
+            print("Hi there")
+            pygame.time.delay(5000)
 
-            elif self.player1pile == self.player2pile:
-                self.roll_state = "It's a draw,  you both walk away whole"
-                self.its_a_draw = True
-                print("its a draw")
+            state.player.playerMoney += 1000
+            self.chiliWilleyMoney -= 1000
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
+
 
         elif self.game_state == "choose_player_2_or_ai":
             if controller.is1Pressed:
@@ -1271,8 +1274,15 @@ class DiceGameScreen(Screen, Dice):
                 self.cold_bet()
                 if self.one_hundred_rolls == 0:
                     self.start_state("player_1_results")
+
+                    if self.player_1_won_game == True:
+
+                        self.start_state("player_1_wins")
+                        pygame.time.delay(2000)
+
                 else:
                     self.start_state("player_1_results_one_hundred")
+
 
 
         elif self.game_state == "player_1_going_hot":
@@ -1284,11 +1294,10 @@ class DiceGameScreen(Screen, Dice):
                 else:
                     self.game_state = "player_1_results_one_hundred"
 
-            # else: # demo showing if we are pressing keys within first 500 ms.
-            #     if self.is1Pressed:
-            #         print("pushing button too early ")
 
-        elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
+
+        elif self.game_state == "player_1_results" \
+                or self.game_state == "player_1_results_one_hundred":
             if controller.isBPressed:
                 self.game_state = "player_2_declare_intent_stage"
 
@@ -1370,7 +1379,8 @@ class DiceGameScreen(Screen, Dice):
 
 
 
-        elif self.game_state == "player_2_results" or self.game_state == "player_2_results_one_hundred":
+        elif self.game_state == "player_2_results" \
+                or self.game_state == "player_2_results_one_hundred":
             if self.isPlayer2 == True:
                 if controller.isBPressed:
                     self.game_state = "player_1_declare_intent_stage"
@@ -1380,6 +1390,18 @@ class DiceGameScreen(Screen, Dice):
                 controller.isBPressed = True
                 self.game_state = "player_1_declare_intent_stage"
                 controller.isBPressed = False
+
+        # if self.ante == 0:
+        #     if self.player1pile > self.player2pile:
+        #         self.player_2_lost_game = True
+        #
+        #     elif self.player1pile < self.player2pile:
+        #         self.player_1_lost_game = True
+        #
+        #     elif self.player1pile == self.player2pile:
+        #         self.roll_state = "It's a draw,  you both walk away whole"
+        #         self.its_a_draw = True
+        #         print("its a draw")
 
     def draw(self, state: "GameState"):
         DISPLAY.fill((0, 0, 0))
@@ -1393,6 +1415,7 @@ class DiceGameScreen(Screen, Dice):
             DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
         elif self.game_state == "player_2_declare_intent_stage":
             DISPLAY.blit(self.diceFont.render(f"Player 2: press T for cold P for hot", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
@@ -1426,16 +1449,27 @@ class DiceGameScreen(Screen, Dice):
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
 
         elif self.game_state == "player_1_wins":
-            DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
-            DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
-            DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
-            DISPLAY.blit(self.diceFont.render(f"Player 1 wins", True, (255, 255, 255)), (500, 500))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 10))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 MONEY: {state.player.playerMoney}", True, (255, 255, 255)), (200, 100))
+            DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.diceFont.render(f"Player 2 MONEY: {self.chiliWilleyMoney}", True, (255, 255, 255)), (200, 300))
+            DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (200, 400))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 wins", True, (255, 255, 255)), (200, 500))
+
 
         elif self.game_state == "player_2_wins":
             DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 Money: {state.player.playerMoney}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+            DISPLAY.blit(self.diceFont.render(f"Player 2 Money: {self.chiliWilleyMoney}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(self.diceFont.render(f"Player 2 wins", True, (255, 255, 255)), (500, 500))
+            pygame.time.delay(5000)
+
+            state.player.playerMoney -= 1000
+            self.chiliWilleyMoney += 1000
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
 
         elif self.game_state == "player_1_rolls":
             DISPLAY.blit(self.diceFont.render(f"PLAYER 1 PRESS E to roll the dice", True, (255, 255, 255)), (255, 255))
@@ -1456,10 +1490,21 @@ class DiceGameScreen(Screen, Dice):
                 DISPLAY.blit(
                     self.diceFont.render(f"Sorry player 1: GAME OVER!!!: ", True, (255, 255, 255)),
                     (1, 555))
+                pygame.time.delay(5000)
+
+                state.player.playerMoney -= 1000
+                self.chiliWilleyMoney += 1000
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
             elif self.its_a_draw == True:
                 DISPLAY.blit(
                     self.diceFont.render(f"It's a draw sorry player 1: ", True, (255, 255, 255)),
                     (1, 555))
+                pygame.time.delay(5000)
+
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
 
 
         elif self.game_state == "player_2_results":
@@ -1474,10 +1519,20 @@ class DiceGameScreen(Screen, Dice):
                 DISPLAY.blit(
                     self.diceFont.render(f"Sorry player 2: GAME OVER!!!: ", True, (255, 255, 255)),
                     (1, 555))
+                pygame.time.delay(5000)
+
+                state.player.playerMoney += 1000
+                self.chiliWilleyMoney -= 1000
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
             elif self.its_a_draw == True:
                 DISPLAY.blit(
                     self.diceFont.render(f"It's a draw sorry player 2: ", True, (255, 255, 255)),
                     (1, 555))
+                pygame.time.delay(5000)
+
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
 
 
 
@@ -1514,7 +1569,7 @@ class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488), NuclearAnnilationGeneralExplainGuy(10,555)]
+        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488), NuclearAnnilationGeneralExplainGuy(10,555), ChiliWilley(100, 555)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
