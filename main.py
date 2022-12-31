@@ -239,8 +239,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        roll1 = 6
-        roll2 = 1
+        roll1 = 2
+        roll2 = 5
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -1015,9 +1015,9 @@ class DiceGameScreen(Screen, Dice):
         self.diceFont = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 0
-        self.player2pile = 0
-        self.ante = 1000
+        self.player1pile = 550
+        self.player2pile = 550
+        self.ante = 98
         self.anteXero = 0
         self.player_1_won_game = False
         self.player_2_won_game = False
@@ -1529,7 +1529,7 @@ class DiceGameScreen(Screen, Dice):
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(
-                self.diceFont.render(f" Player 2 rolls a {self.rolls} PRESS L when ready", True, (255, 255, 255)),
+                self.diceFont.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
                 (155, 255))
             DISPLAY.blit(self.diceFont.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             if self.player_2_lost_game == True:
