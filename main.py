@@ -534,6 +534,89 @@ class OposumInACanExplainGirl(Npc):
         if self.isSpeaking:
             message = pygame.display.get_surface().blit(self.message, (10,10))
 
+class ChiliWilley(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.current_message_index = -1
+        self.messages = ["It's a 1000 coin bet I hope your ready to lose.","I wont take it easy on you.","You'll end up just like the others.", "I'm the boss of this level you better run away", "I'm the boss for a reason, you better get ready for a fight!"]
+        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
+
+    def update(self, state):
+        super().update(state)
+        distance = math.sqrt(
+            (state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
+
+        # Get the current time in milliseconds
+        current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+
+            self.input_time = current_time  # update the input time
+
+            # Update the current message
+            self.current_message_index += 1
+            if self.current_message_index >= len(self.messages):
+                self.current_message_index = 0
+            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 1000 and state.diceGameScreen.chiliWilleyMoney > 0:
+            state.player.playerMoney -= 1000
+            state.currentScreen = state.diceGameScreen
+            state.diceGameScreen.start(state)
+        elif state.diceGameScreen.chiliWilleyMoney <= 0:
+            print("Chilli Willey is defeated already move on you vulture")
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        # Display the current message if self.isSpeaking is True
+        if self.isSpeaking:
+            message = pygame.display.get_surface().blit(self.message, (10,10))
+
+
+
+class NuclearAnnilationGeneralExplainGuy(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.current_message_index = -1
+        self.messages = ["I'm the general, so show me some respect. ", "I'm here to tell you all about my favorite game: Nuke em.", "Wait what, you want me to actually explain the rules?" , "I'm the general I'm too busy for that, read the Docs.", "In the future we'll have a tear sheet for you to look at.",
+                         "The game is currently in medical.", "Once it's all patched up it'll be released."]
+        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
+
+    def update(self, state):
+        super().update(state)
+
+        # Get the current time in milliseconds
+        current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+
+            self.input_time = current_time  # update the input time
+
+            # Update the current message
+            self.current_message_index += 1
+            if self.current_message_index >= len(self.messages):
+                self.current_message_index = 0
+            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        # Display the current message if self.isSpeaking is True
+        if self.isSpeaking:
+            message = pygame.display.get_surface().blit(self.message, (10,10))
+
+
+
+
 class Obstacle(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 32, 32)
@@ -921,12 +1004,6 @@ class OpossumInACanScreen(Screen):
 
 
 
-
-
-
-
-
-
 class DiceGameScreen(Screen, Dice):
     def __init__(self):
         super().__init__("Dice game")
@@ -941,7 +1018,7 @@ class DiceGameScreen(Screen, Dice):
         self.player_2_turn = False
         self.player1pile = 0
         self.player2pile = 0
-        self.ante = 800
+        self.ante = 1000
         self.anteXero = 0
 
         self.roll_state = ""
@@ -951,7 +1028,8 @@ class DiceGameScreen(Screen, Dice):
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
         self.input_time = 0  # time when input was last read
-        print("yo")
+        self.chiliWilleyMoney = 1000
+
 
 
 
@@ -1139,7 +1217,6 @@ class DiceGameScreen(Screen, Dice):
         # delta between last update time in milliseconds
         delta = pygame.time.get_ticks() - self.game_state_started_at
         # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
-        print("im the update")
 
         controller = state.controller
         controller.update(state)
@@ -1213,7 +1290,6 @@ class DiceGameScreen(Screen, Dice):
 
         elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
             if controller.isBPressed:
-                print("DO YOU SEE THIS????")
                 self.game_state = "player_2_declare_intent_stage"
 
 
@@ -1225,12 +1301,9 @@ class DiceGameScreen(Screen, Dice):
             if self.isPlayer2 == True:
 
                 if controller.isTPressed:
-                    print("hithere you ")
                     self.game_state = "player_2_rolls"
-                    print(self.game_state)
 
                 elif controller.isPPressed:
-                    print("going in hot")
                     self.game_state = "player_2_going_hot"
 
             elif self.isAI == True:
@@ -1394,7 +1467,7 @@ class DiceGameScreen(Screen, Dice):
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(
-                self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
+                self.diceFont.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
                 (155, 255))
             DISPLAY.blit(self.diceFont.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             if self.player_2_lost_game == True:
@@ -1441,7 +1514,7 @@ class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488)]
+        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488), NuclearAnnilationGeneralExplainGuy(10,555)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
@@ -1450,7 +1523,7 @@ class GameState:
         self.coinFlipScreen = CoinFlipScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.diceGameScreen = DiceGameScreen()
-        self.currentScreen = self.diceGameScreen  # assign a value to currentScreen here
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 class Game:
     def __init__(self):
