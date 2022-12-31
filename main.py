@@ -1318,7 +1318,8 @@ class DiceGameScreen(Screen, Dice):
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
-        if controller.isBPressed:
+            elif controller.isBPressed:
+                print("Houstan we got a problem here")
                 self.game_state = "player_2_declare_intent_stage"
 
 
@@ -1406,15 +1407,16 @@ class DiceGameScreen(Screen, Dice):
             print(str(self.isPlayer2))
             # if self.isPlayer2 == True:
             print("We're sitting here")
-            if controller.isBPressed:
-                print("HEY THER YOU U YO UYOU YOU YOU YO U ;sdfakl;sfd")
-                self.game_state = "player_1_declare_intent_stage"
+            if self.isPlayer2 == True:
+                if controller.isBPressed:
+                    print("HEY THER YOU U YO UYOU YOU YOU YO U ;sdfakl;sfd")
+                    self.game_state = "player_1_declare_intent_stage"
 
-            # elif self.isAI == True:
-            #     time.sleep(2)
-            #     controller.isBPressed = True
-            #     self.game_state = "player_1_declare_intent_stage"
-            #     controller.isBPressed = False
+            elif self.isAI == True:
+                time.sleep(2)
+                controller.isBPressed = True
+                self.game_state = "player_1_declare_intent_stage"
+                controller.isBPressed = False
 
         if self.ante == 0:
             if self.player1pile > self.player2pile:
@@ -1527,7 +1529,7 @@ class DiceGameScreen(Screen, Dice):
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(
-                self.diceFont.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
+                self.diceFont.render(f" Player 2 rolls a {self.rolls} PRESS L when ready", True, (255, 255, 255)),
                 (155, 255))
             DISPLAY.blit(self.diceFont.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
             if self.player_2_lost_game == True:
