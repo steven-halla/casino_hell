@@ -1038,6 +1038,408 @@ class DiceGameScreen(Screen, Dice):
 
             print("end state: " + self.game_state)
 
+    def cold_bet(self):
+
+        self.roll_two_d_six()
+        if self.rolls[0] == 1 and self.rolls[1] == 1:
+            if self.game_state == "player_1_rolls":
+                print(self.game_state)
+                self.player2pile = self.player2pile + self.player1pile + self.ante
+                self.player1pile = 0
+                self.ante = 0
+                self.roll_state = "You got the wrong kind of double, you lose everything player 1!"
+                print(self.player1pile)
+                self.player_1_lost_game = True
+
+
+
+            elif self.game_state == "player_2_rolls":
+                print(self.game_state)
+
+                self.player1pile = self.player2pile + self.player1pile + self.ante
+                self.player1pile = 0
+                self.ante = 0
+                self.roll_state = "You got the wrong kind of double, you lose everything player 2!"
+                print(self.player2pile)
+                self.player_2_lost_game = True
+
+
+        elif self.rolls[0] == 6 and self.rolls[1] == 6:
+            if self.game_state == "player_1_rolls":
+                print("you win =======================================================================")
+                self.player1pile = self.player2pile + self.player1pile + self.ante
+                self.player2pile = 0
+                self.ante = 0
+                self.roll_state = "lucky double 6, player 1 wins!"
+
+                self.game_state = "player_1_wins"
+
+            elif self.game_state == "player_2_rolls":
+                print("you win ==================================================================")
+                self.player2pile = self.player2pile + self.player1pile + self.ante
+                self.player1pile = 0
+                self.ante = 0
+                self.roll_state = "lucky double 6, player 2 wins!"
+
+                self.game_state = "player_2_wins"
+
+
+        #
+        elif self.add() == 6:
+            if self.game_state == "player_1_rolls":
+                self.roll_state = "Devil's 6 go after enemy pile."
+
+                self.roll_one_d_hundred()
+                if self.one_hundred_rolls[0] > self.player2pile:
+                    self.one_hundred_rolls[0] = self.player2pile
+                self.player1pile += self.one_hundred_rolls[0]
+                self.player2pile -= self.one_hundred_rolls[0]
+                if self.player2pile < 0:
+                    self.player2pile = 0
+                self.game_state = "player_2_intent_stage"
+            elif self.game_state == "player_2_rolls":
+                self.roll_state = "Devil's 6 go after enemy pile"
+                self.roll_one_d_hundred()
+                if self.one_hundred_rolls[0] > self.player2pile:
+                    self.one_hundred_rolls[0] = self.player2pile
+                self.player2pile += self.one_hundred_rolls[0]
+
+                self.player1pile -= self.one_hundred_rolls[0]
+                if self.player1pile < 0:
+                    self.player1pile = 0
+                self.game_state = "player_1_intent_stage"
+
+        #
+        elif self.add() == 7 or self.add() == 8 or self.add() == 9 or self.add() == 10 or self.add() == 11:
+            if self.game_state == "player_1_rolls":
+                self.roll_state = "Go after the ante"
+
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.one_hundred_rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player1pile += subtracted_amount
+
+                if self.ante < 0:
+                    self.ante = 0
+                self.game_state = "player_2_intent_stage"
+
+
+
+            elif self.game_state == "player_2_rolls":
+                self.roll_state = "Go after the ante"
+
+                self.roll_one_d_hundred()
+                subtracted_amount = min(self.one_hundred_rolls[0], self.ante)
+                self.ante -= subtracted_amount
+                self.player2pile += subtracted_amount
+
+                if self.ante < 0:
+                    self.ante = 0
+                self.game_state = "player_1_intent_stage"
+        else:
+            self.roll_state = "wasted roll"
+
+    def start_state(self, state):
+        self.game_state = state
+        self.game_state_started_at = pygame.time.get_ticks()
+
+        def update(self):
+            # delta between last update time in milliseconds
+            delta = pygame.time.get_ticks() - self.game_state_started_at
+            # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
+
+            self.handle_keyboard_input()
+
+            if self.ante == 0:
+                if self.player1pile > self.player2pile:
+                    self.player_2_lost_game = True
+
+                elif self.player1pile < self.player2pile:
+                    self.player_1_lost_game = True
+
+                elif self.player1pile == self.player2pile:
+                    self.roll_state = "It's a draw,  you both walk away whole"
+                    self.its_a_draw = True
+                    print("its a draw")
+
+            elif self.game_state == "choose_player_2_or_ai":
+                if self.is1Pressed:
+                    self.isPlayer2 = True
+                    self.game_state = "player_1_declare_intent_stage"
+                    print("player 2")
+
+                else:
+                    if self.isOPressed:
+                        self.isAI = True
+                        self.game_state = "player_1_declare_intent_stage"
+
+                        print("Ai")
+
+
+
+            elif self.game_state == "player_1_declare_intent_stage":
+                self.one_hundred_rolls = 0
+                # if delta > 500: # don't read keyboard input for at least 500 ms.
+
+                if self.isTPressed:
+
+                    self.start_state("player_1_rolls")
+                    # print(self.game_state)
+
+                elif self.isPPressed:
+                    self.start_state("player_1_going_hot")
+
+
+
+
+            elif self.game_state == "player_1_rolls":
+                # if delta > 1500: # don't read keyboard input for at least 500 ms.
+
+                if self.isEPressed:
+
+                    print("pressing T")
+                    self.cold_bet()
+                    if self.one_hundred_rolls == 0:
+                        self.start_state("player_1_results")
+                    else:
+                        self.start_state("player_1_results_one_hundred")
+
+
+            elif self.game_state == "player_1_going_hot":
+                if self.is1Pressed:
+                    print("pressing 1")
+                    self.hot_bet()
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_1_results"
+                    else:
+                        self.game_state = "player_1_results_one_hundred"
+
+                # else: # demo showing if we are pressing keys within first 500 ms.
+                #     if self.is1Pressed:
+                #         print("pushing button too early ")
+
+            elif self.game_state == "player_1_results" or self.game_state == "player_1_results_one_hundred":
+                if self.isBPressed:
+                    print("DO YOU SEE THIS????")
+                    self.game_state = "player_2_declare_intent_stage"
+
+
+            ######player 2 stuff down here
+
+            elif self.game_state == "player_2_declare_intent_stage":
+                self.one_hundred_rolls = 0
+
+                if self.isPlayer2 == True:
+
+                    if self.isTPressed:
+                        print("hithere you ")
+                        self.game_state = "player_2_rolls"
+                        print(self.game_state)
+
+                    elif self.isPPressed:
+                        print("going in hot")
+                        self.game_state = "player_2_going_hot"
+
+                elif self.isAI == True:
+                    time.sleep(2)
+                    if self.player1pile < 300:
+                        self.isTPressed = True
+                        self.game_state = "player_2_rolls"
+                        self.isTPressed = False
+                    else:
+                        self.isPPressed = True
+                        self.game_state = "player_2_going_hot"
+                        self.isPPressed = False
+
+
+
+
+            elif self.game_state == "player_2_rolls":
+                if self.isPlayer2 == True:
+                    if self.isEPressed:
+                        print("pressing T")
+                        self.cold_bet()
+                        if self.one_hundred_rolls == 0:
+                            self.game_state = "player_2_results"
+                        else:
+                            self.game_state = "player_2_results_one_hundred"
+
+                elif self.isAI == True:
+                    time.sleep(2)
+                    self.isEPressed = True
+                    print("pressing T")
+                    self.cold_bet()
+                    self.isEPressed = False
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_2_results"
+                    else:
+                        self.game_state = "player_2_results_one_hundred"
+
+
+            ####PLAYER 2 HOT PHASE DOWN HERE!!!!!!!
+
+            elif self.game_state == "player_2_going_hot":
+                if self.isPlayer2 == True:
+                    if self.is1Pressed:
+                        print("pressing 1")
+                        self.hot_bet()
+                        if self.one_hundred_rolls == 0:
+                            self.game_state = "player_2_results"
+                        else:
+                            self.game_state = "player_2_results_one_hundred"
+
+                elif self.isAI == True:
+                    time.sleep(2)
+                    self.is1Pressed = True
+
+                    self.hot_bet()
+                    self.is1Pressed = False
+                    if self.one_hundred_rolls == 0:
+                        self.game_state = "player_2_results"
+                    else:
+                        self.game_state = "player_2_results_one_hundred"
+
+
+
+
+
+
+            elif self.game_state == "player_2_results" or self.game_state == "player_2_results_one_hundred":
+                if self.isPlayer2 == True:
+                    if self.isBPressed:
+                        self.game_state = "player_1_declare_intent_stage"
+
+                elif self.isAI == True:
+                    time.sleep(2)
+                    self.isBPressed = True
+                    self.game_state = "player_1_declare_intent_stage"
+                    self.isBPressed = False
+
+        def draw(self):
+            DISPLAY.fill((0, 0, 0))
+
+            if self.game_state == "choose_player_2_or_ai":
+                DISPLAY.blit(self.font.render(f"Press 1 key for human or O key for AI", True, (255, 255, 255)),
+                             (10, 10))
+
+            if self.game_state == "player_1_declare_intent_stage":
+                DISPLAY.blit(self.font.render(f"Player 1: press T for cold P For hot", True, (255, 255, 255)), (10, 10))
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+            elif self.game_state == "player_2_declare_intent_stage":
+                DISPLAY.blit(self.font.render(f"Player 2: press T for cold P for hot", True, (255, 255, 255)), (10, 10))
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+
+
+            elif self.game_state == "player_1_going_cold":
+                DISPLAY.blit(self.font.render(f"Player 1 is going cold. ", True, (255, 255, 255)), (10, 10))
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+            elif self.game_state == "player_2_going_cold":
+                DISPLAY.blit(self.font.render(f"Player 1 is going cold. ", True, (255, 255, 255)), (10, 10))
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+            elif self.game_state == "player_1_going_hot":
+                DISPLAY.blit(self.font.render(f"Player 1 is going hot PRESS 1", True, (255, 255, 255)), (10, 10))
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+            elif self.game_state == "player_2_going_hot":
+                DISPLAY.blit(self.font.render(f"Player 2 is going hot PRESS 1", True, (255, 255, 255)), (10, 10))
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+
+            elif self.game_state == "player_1_wins":
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+                DISPLAY.blit(self.font.render(f"Player 1 wins", True, (255, 255, 255)), (500, 500))
+
+            elif self.game_state == "player_2_wins":
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+                DISPLAY.blit(self.font.render(f"Player 2 wins", True, (255, 255, 255)), (500, 500))
+
+            elif self.game_state == "player_1_rolls":
+                DISPLAY.blit(self.font.render(f"PLAYER 1 PRESS E to roll the dice", True, (255, 255, 255)), (255, 255))
+
+            elif self.game_state == "player_2_rolls":
+                DISPLAY.blit(self.font.render(f"PLAYER 2 PRESS E to roll the dice", True, (255, 255, 255)), (255, 255))
+
+
+            elif self.game_state == "player_1_results":
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+                DISPLAY.blit(
+                    self.font.render(f" Player 1 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
+                    (155, 255))
+                DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+                if self.player_1_lost_game == True:
+                    DISPLAY.blit(
+                        self.font.render(f"Sorry player 1: GAME OVER!!!: ", True, (255, 255, 255)),
+                        (1, 555))
+                elif self.its_a_draw == True:
+                    DISPLAY.blit(
+                        self.font.render(f"It's a draw sorry player 1: ", True, (255, 255, 255)),
+                        (1, 555))
+
+
+            elif self.game_state == "player_2_results":
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+                DISPLAY.blit(
+                    self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
+                    (155, 255))
+                DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+                if self.player_2_lost_game == True:
+                    DISPLAY.blit(
+                        self.font.render(f"Sorry player 2: GAME OVER!!!: ", True, (255, 255, 255)),
+                        (1, 555))
+                elif self.its_a_draw == True:
+                    DISPLAY.blit(
+                        self.font.render(f"It's a draw sorry player 2: ", True, (255, 255, 255)),
+                        (1, 555))
+
+
+
+            elif self.game_state == "player_1_results_one_hundred":
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+                DISPLAY.blit(
+                    self.font.render(f" Player 1 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
+                    (155, 255))
+                DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+                DISPLAY.blit(self.font.render(f"1d100 ROLLED: {self.one_hundred_rolls}", True, (255, 255, 255)),
+                             (5, 555))
+
+
+
+            elif self.game_state == "player_2_results_one_hundred":
+                DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
+                DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
+                DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
+                DISPLAY.blit(
+                    self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
+                    (155, 255))
+                DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+                DISPLAY.blit(self.font.render(f"1d100 ROLLED: {self.one_hundred_rolls}", True, (255, 255, 255)),
+                             (5, 555))
+
 
 
 class GameState:
@@ -1052,6 +1454,7 @@ class GameState:
         self.mainScreen = MainScreen()
         self.coinFlipScreen = CoinFlipScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
+        self.diceGameScreen = DiceGameScreen()
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 class Game:
