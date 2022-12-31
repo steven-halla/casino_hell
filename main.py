@@ -564,7 +564,7 @@ class ChiliWilley(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 500 and state.diceGameScreen.chiliWilleyMoney > 0:
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney >= 500 and state.diceGameScreen.chiliWilleyMoney > 0:
             state.currentScreen = state.diceGameScreen
             state.diceGameScreen.start(state)
         elif state.diceGameScreen.chiliWilleyMoney <= 0:
@@ -1016,9 +1016,9 @@ class DiceGameScreen(Screen, Dice):
         self.diceFont = pygame.font.Font(None, 36)
         self.player_1_turn = False
         self.player_2_turn = False
-        self.player1pile = 222
-        self.player2pile = 550
-        self.ante = 158
+        self.player1pile = 555
+        self.player2pile = 0
+        self.ante = 55
         self.anteXero = 0
         self.player_1_won_game = False
         self.player_2_won_game = False
@@ -1591,7 +1591,7 @@ class GameState:
         self.coinFlipScreen = CoinFlipScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.diceGameScreen = DiceGameScreen()
-        self.currentScreen = self.diceGameScreen  # assign a value to currentScreen here
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 class Game:
     def __init__(self):
