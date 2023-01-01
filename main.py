@@ -351,16 +351,26 @@ class Player(Entity):
         return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
 
     def draw(self, state):
-        image_width, image_height = self.image.get_size()
-        image_center_x = image_width // 2
-        image_center_y = image_height // 2
+        # Get the current dimensions of the image
+        original_width, original_height = self.image.get_size()
+
+        # Calculate the new dimensions of the image
+        new_width = original_width * 1.7
+        new_height = original_height * 1.7
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(self.image, (new_width, new_height))
+
+        # Calculate the center of the image
+        image_center_x = new_width // 2
+        image_center_y = new_height // 2
 
         # Define an offset that will be used to draw the image at the center of the player
         offset_x = self.collision.x + self.collision.width // 2 - image_center_x
         offset_y = self.collision.y + self.collision.height // 2 - image_center_y
 
         # Draw the image on the display surface
-        DISPLAY.blit(self.image, (offset_x, offset_y))
+        DISPLAY.blit(scaled_image, (offset_x, offset_y))
 
 
 class Npc(Entity):
@@ -714,13 +724,16 @@ class MainScreen(Screen):
                 pos_x = x * tile_width
                 pos_y = y * tile_height
 
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
                 # Blit the tile image to the screen at the correct position
-                DISPLAY.blit(image, (pos_x, pos_y))
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
             for x, y, image in self.tiled_map.layers[1].tiles():
                 # Calculate the position of the tile in pixels
                 pos_x = x * tile_width
                 pos_y = y * tile_height
+                scaled_image = pygame.transform.scale(scaled_image, (tile_width * 1.3, tile_height * 1.3))
 
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
 
