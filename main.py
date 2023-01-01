@@ -738,7 +738,6 @@ class MainScreen(Screen):
         # Update the display
         pygame.display.update()
 
-
 class CoinFlipScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
@@ -786,12 +785,12 @@ class CoinFlipScreen(Screen):
         elif self.game_state == "choose_bet":
             if controller.isTPressed:
                 self.bet = self.lowBet
-                if self.bet < self.coinFlipFredMoney:
+                if self.bet > self.coinFlipFredMoney:
                     self.bet = self.coinFlipFredMoney
                 self.game_state = "choose_heads_or_tails_message"
             elif controller.isWPressed:
                 self.bet = self.medBet
-                if self.bet < self.coinFlipFredMoney:
+                if self.bet > self.coinFlipFredMoney:
                     self.bet = self.coinFlipFredMoney
                 self.game_state = "choose_heads_or_tails_message"
             elif controller.isEPressed:
@@ -1643,7 +1642,7 @@ class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(50, 100)
-        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,200), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488), NuclearAnnilationGeneralExplainGuy(10,555), ChiliWilley(100, 555)]
+        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,77), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488), NuclearAnnilationGeneralExplainGuy(10,555), ChiliWilley(100, 555)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
