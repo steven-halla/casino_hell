@@ -272,6 +272,7 @@ class Player(Entity):
         self.color: Tuple[int, int, int] = RED
         self.walkSpeed = 3.5
         self.playerMoney = 1000
+        self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
 
 
     def update(self, state: "GameState"):
@@ -349,12 +350,21 @@ class Player(Entity):
         return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        image_width, image_height = self.image.get_size()
+        image_center_x = image_width // 2
+        image_center_y = image_height // 2
+
+        # Define an offset that will be used to draw the image at the center of the player
+        offset_x = self.collision.x + self.collision.width // 2 - image_center_x
+        offset_y = self.collision.y + self.collision.height // 2 - image_center_y
+
+        # Draw the image on the display surface
+        DISPLAY.blit(self.image, (offset_x, offset_y))
 
 
 class Npc(Entity):
     def __init__(self, x: int, y: int):
-        super(Npc, self).__init__(x, y, 32, 32)
+        super(Npc, self).__init__(x, y, 16, 16)
         self.color: Tuple[int, int, int] = BLUE
         self.speakStartTime: int = 0
         self.isSpeaking: bool = False
@@ -637,20 +647,7 @@ class Obstacle(Entity):
 
 
 
-class Water(Obstacle):
-    def __init__(self, tiled_map, layer_index, tile_id, x: int, y: int):
 
-        # Get the image and coordinates for the tile from the Tiled map
-        super().__init__(x, y)
-        image = tiled_map.get_tile_image(layer_index, tile_id)
-        x, y = tiled_map.get_tile_position(layer_index, tile_id)
-        # Set the image and rectangular area for the sprite
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.midtop = (x + TILE_SIZE // 2, y + (TILE_SIZE - self.image.get_height()))
-
-    def update(self):
-        pass
 
 
 class Screen:
@@ -675,7 +672,7 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/45by38_beta_hope_this_works.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/beta_floor1_casino.tmx")
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -700,6 +697,9 @@ class MainScreen(Screen):
         DISPLAY.blit(font.render(
             f" player Money: {state.player.playerMoney}",
             True, (5, 5, 5)), (10, 10))
+
+        for npc in state.npcs:
+            npc.draw(state)
 
         # Check if the Tiled map has any layers
         if self.tiled_map.layers:
@@ -732,8 +732,7 @@ class MainScreen(Screen):
         # Draw the player, NPCs, and obstacles
         state.player.draw(state)
         # state.npc.draw(state)
-        for npc in state.npcs:
-            npc.draw(state)
+
         state.obstacle.draw(state)
         # Update the display
         pygame.display.update()
@@ -1641,8 +1640,8 @@ class DiceGameScreen(Screen, Dice):
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
-        self.player: Player = Player(50, 100)
-        self.npcs = [ CoinFlipExplanationGuy(270, 270), CoinFlipFred(450,77), OposumInACanExplainGirl(244,433), SalleyOpossum(444,488), NuclearAnnilationGeneralExplainGuy(10,555), ChiliWilley(100, 555)]
+        self.player: Player = Player(222, 111)
+        self.npcs = [  CoinFlipFred(175,138), SalleyOpossum(65,28),  ChiliWilley(311, 28)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
