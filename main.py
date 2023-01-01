@@ -4,6 +4,11 @@ import time
 import random
 from typing import *
 
+import pytmx
+from pytmx.util_pygame import load_pygame
+
+
+
 import pygame
 
 
@@ -24,7 +29,7 @@ WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
 RED: Tuple[int, int, int] = (255, 0, 0)
 PURPLE: Tuple[int, int, int] = (200, 0, 125)
-TILE_SIZE: int = 32
+TILE_SIZE: int = 16
 
 # nextScreen = false
 
@@ -648,11 +653,11 @@ class Screen:
     def draw(self, state: "GameState"):
         pass
 
-
 class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
-
+        # Load the Tiled map file
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_map_1_beta.tmx")
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -671,15 +676,35 @@ class MainScreen(Screen):
         obstacle.update(state)
 
     def draw(self, state: "GameState"):
+        # Clear the screen
         DISPLAY.fill(WHITE)
+        # Draw the player money
         DISPLAY.blit(font.render(
             f" player Money: {state.player.playerMoney}",
             True, (5, 5, 5)), (10, 10))
+
+        # Check if the Tiled map has any layers
+        if self.tiled_map.layers:
+            # Get the size of a single tile in pixels
+            tile_width = self.tiled_map.tilewidth
+            tile_height = self.tiled_map.tileheight
+
+            # Iterate over the tiles in the first layer
+            for x, y, image in self.tiled_map.layers[0].tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width
+                pos_y = y * tile_height
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(image, (pos_x, pos_y))
+
+        # Draw the player, NPCs, and obstacles
         state.player.draw(state)
         # state.npc.draw(state)
         for npc in state.npcs:
             npc.draw(state)
         state.obstacle.draw(state)
+        # Update the display
         pygame.display.update()
 
 
