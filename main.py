@@ -657,7 +657,7 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_map_1_beta.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/40_40_betastyle_use_this.tmx")
 
     def update(self, state: "GameState"):
         controller = state.controller
