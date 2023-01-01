@@ -635,6 +635,24 @@ class Obstacle(Entity):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
 
+
+
+class Water(Obstacle):
+    def __init__(self, tiled_map, layer_index, tile_id, x: int, y: int):
+
+        # Get the image and coordinates for the tile from the Tiled map
+        super().__init__(x, y)
+        image = tiled_map.get_tile_image(layer_index, tile_id)
+        x, y = tiled_map.get_tile_position(layer_index, tile_id)
+        # Set the image and rectangular area for the sprite
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.midtop = (x + TILE_SIZE // 2, y + (TILE_SIZE - self.image.get_height()))
+
+    def update(self):
+        pass
+
+
 class Screen:
     def __init__(self, screenName: str):
         self.screenName = screenName
@@ -657,7 +675,7 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/40_40_betastyle_use_this.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/45by38_beta_hope_this_works.tmx")
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -691,6 +709,14 @@ class MainScreen(Screen):
 
             # Iterate over the tiles in the first layer
             for x, y, image in self.tiled_map.layers[0].tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width
+                pos_y = y * tile_height
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(image, (pos_x, pos_y))
+
+            for x, y, image in self.tiled_map.layers[1].tiles():
                 # Calculate the position of the tile in pixels
                 pos_x = x * tile_width
                 pos_y = y * tile_height
