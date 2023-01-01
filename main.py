@@ -332,6 +332,7 @@ class Player(Entity):
 
 
 
+
         if controller.isQPressed:
             state.currentScreen = state.coinFlipScreen
             state.coinFlipScreen.start(state)
