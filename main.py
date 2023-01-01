@@ -724,7 +724,7 @@ class MainScreen(Screen):
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
 
                 if state.player.collision.isOverlap(tile_rect):
-                    print("hi")
+                    state.player.undoLastMove()
 
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(image, (pos_x, pos_y))
