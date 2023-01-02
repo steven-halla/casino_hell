@@ -144,6 +144,8 @@ class DiceGameTwo(Dice, NewController):
         self.game_state = "welcome_screen"
         self.roll_state_display = False
         self.choices = ["choice 1", "choice 2", "choice 3"]
+        self.current_index = 0
+
 
 
         self.pd1Total = 0
@@ -195,8 +197,8 @@ class DiceGameTwo(Dice, NewController):
 
         elif self.game_state == "results":
 
-            if self.isUpPressed:
 
+            if self.isUpPressed:
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
                 else:
@@ -205,10 +207,11 @@ class DiceGameTwo(Dice, NewController):
                 print(self.choices[self.current_index])
                 self.isUpPressed = False
 
-
-
-
-
+            elif self.isPPressed:
+                for i, choice in enumerate(self.choices):
+                    if self.current_index == i:
+                        print(f"You pressed E and got {choice}")
+                self.isPPressed = False
 
     def draw(self):
         DISPLAY.fill((0,0,0))
