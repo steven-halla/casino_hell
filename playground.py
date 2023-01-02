@@ -169,10 +169,15 @@ class DiceGameTwo(Dice, NewController):
 
         elif self.game_state == "roll_screen":
             self.roll_two_d_six()
-            pygame.time.delay(1000)
+            pygame.time.delay(3000)
             print("count")
             self.pd1Total = self.rolls
             print(self.pd1Total)
+            self.roll_state_display = True
+
+        # self.game_state = "choice_screen"
+
+
 
 
     def draw(self):
@@ -183,7 +188,7 @@ class DiceGameTwo(Dice, NewController):
 
         elif self.game_state == "roll_screen":
             DISPLAY.blit(self.font.render(f"Time to roll the bones:", True, (255, 255, 255)), (10, 10))
-            if self.roll_state_display == False:
+            if self.roll_state_display == True:
                 DISPLAY.blit(self.font.render(f"Your roll is a {self.pd1Total}:", True, (255, 255, 255)), (10, 150))
 
 
