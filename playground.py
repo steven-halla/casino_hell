@@ -120,8 +120,25 @@ class DiceGameTwo(Dice, NewController):
         self.font = pygame.font.Font(None, 36)
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
-        self.roll_state = ""
-        self.game_state = "choose_player_2_or_ai"
+        self.message_display = ""
+        self.game_state = "welcome_screen"
+        self.roll_state_display = False
+
+
+        self.pd1Total = 0
+        self.pd2Total = 0
+        self.pd3Total = 0
+        self.pd4Total = 0
+        self.pd5Total = 0
+        self.pd6Total = 0
+
+        self.ed1Total = 0
+        self.ed2Total = 0
+        self.ed3Total = 0
+        self.ed4Total = 0
+        self.ed5Total = 0
+        self.ed6Total = 0
+
 
 
 
@@ -141,28 +158,34 @@ class DiceGameTwo(Dice, NewController):
             pygame.display.update()
 
 
-
-
-
-
-
-
     def update(self):
         # delta between last update time in milliseconds
         # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
 
         self.handle_keyboard_input()
+        if self.game_state == "welcome_screen":
+            if self.is1Pressed:
+                self.game_state = "roll_screen"
 
-
-
-
+        elif self.game_state == "roll_screen":
+            self.roll_two_d_six()
+            pygame.time.delay(1000)
+            print("count")
+            self.pd1Total = self.rolls
+            print(self.pd1Total)
 
 
     def draw(self):
         DISPLAY.fill((0,0,0))
 
-        if self.game_state == "welcome":
-            DISPLAY.blit(self.font.render(f"Press 1 key for human or O key for AI", True, (255, 255, 255)), (10, 10))
+        if self.game_state == "welcome_screen":
+            DISPLAY.blit(self.font.render(f"welcome to game name: press 1", True, (255, 255, 255)), (10, 10))
+
+        elif self.game_state == "roll_screen":
+            DISPLAY.blit(self.font.render(f"Time to roll the bones:", True, (255, 255, 255)), (10, 10))
+            if self.roll_state_display == False:
+                DISPLAY.blit(self.font.render(f"Your roll is a {self.pd1Total}:", True, (255, 255, 255)), (10, 150))
+
 
 
 
