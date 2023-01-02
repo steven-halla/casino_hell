@@ -25,6 +25,7 @@ class NewController:
     def __init__(self):
         self.is1Pressed: bool = False
         self.isUpPressed: bool = False
+        self.isDownPressed: bool = False
         self.isTPressed: bool = False
         self.isPPressed: bool = False
         self.isOPressed: bool = False
@@ -72,6 +73,8 @@ class NewController:
                     self.isBPressed = True
                 elif event.key == pygame.K_UP:
                     self.isUpPressed = True
+                elif event.key == pygame.K_DOWN:
+                    self.isDownPressed = True
 
             elif event.type == pygame.KEYUP:
                 self.keyReleasedTimes[event.key] = pygame.time.get_ticks()
@@ -90,6 +93,8 @@ class NewController:
                     self.isBPressed = False
                 elif event.key == pygame.K_UP:
                     self.isUpPressed = False
+                elif event.key == pygame.K_DOWN:
+                    self.isDownPressed = False
 
 
 
@@ -207,11 +212,23 @@ class DiceGameTwo(Dice, NewController):
                 print(self.choices[self.current_index])
                 self.isUpPressed = False
 
+            if self.isDownPressed:
+                if not hasattr(self, "current_index"):
+                    self.current_index = len(self.choices) + 1
+                else:
+                    self.current_index += 1
+                self.current_index %= len(self.choices)
+                print(self.choices[self.current_index])
+                self.isDownPressed = False
+
+
+
             elif self.isPPressed:
                 for i, choice in enumerate(self.choices):
                     if self.current_index == i:
                         print(f"You pressed E and got {choice}")
                 self.isPPressed = False
+
 
     def draw(self):
         DISPLAY.fill((0,0,0))
@@ -224,11 +241,48 @@ class DiceGameTwo(Dice, NewController):
 
         elif self.game_state == "results":
             DISPLAY.blit(
-                self.font.render(f"Your roll is a {self.pd1Total}: Press E to cointinue", True, (255, 255, 255)),
-                (10, 10))
+                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+                (50, 10))
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                (50, 60))
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+                (50, 110))
+
+            if self.current_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (10, 10))
+                if self.isTPressed:
+                    print("mr t 1")
+                    self.isTPressed = False
+
+
+            elif self.current_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (10, 60))
+                if self.isTPressed:
+                    print("mr t 2")
+                    self.isTPressed = False
+
+
+            elif self.current_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (10, 110))
+                if self.isTPressed:
+                    print("mr t 3")
+                    self.isTPressed = False
+
 
         elif self.game_state == "choice_screen":
-            pass
+            DISPLAY.blit(
+                self.font.render(f"{self.choices}", True, (255, 255, 255)),
+                (10, 10))
+
+
 
 
 
