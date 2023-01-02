@@ -18,9 +18,15 @@ def nowMilliseconds() -> int:
     return round(time.time() * 1000)
 
 
+
+
+
+
+
 class NewController:
     def __init__(self):
         self.is1Pressed: bool = False
+        self.isUpPressed: bool = False
         self.isTPressed: bool = False
         self.isPPressed: bool = False
         self.isOPressed: bool = False
@@ -66,6 +72,8 @@ class NewController:
                     self.isEPressed = True
                 elif event.key == pygame.K_b:
                     self.isBPressed = True
+                elif event.key == pygame.K_UP:
+                    self.isUpPressed = True
 
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_1:
@@ -80,6 +88,10 @@ class NewController:
                     self.isEPressed = False
                 elif event.key == pygame.K_b:
                     self.isBPressed = False
+                elif event.key == pygame.K_UP:
+                    self.isUpPressed = False
+
+
 
 class Dice:
     def __init__(self, sides: int):
@@ -111,6 +123,14 @@ class Dice:
         return self.rolls[0] + self.rolls[1]
 
 
+# class ComponentScreen():
+#     def __init__(self):
+#         super().__init__()
+#         self.choices: list = ["Choice 1", "Choice 2", "Choice 3"]
+#
+#     def update(self):
+
+
 
 
 class DiceGameTwo(Dice, NewController):
@@ -123,25 +143,17 @@ class DiceGameTwo(Dice, NewController):
         self.message_display = ""
         self.game_state = "welcome_screen"
         self.roll_state_display = False
+        self.choices = ["choice 1", "choice 2", "choice 3"]
 
 
         self.pd1Total = 0
         self.pd2Total = 0
         self.pd3Total = 0
-        self.pd4Total = 0
-        self.pd5Total = 0
-        self.pd6Total = 0
+
 
         self.ed1Total = 0
         self.ed2Total = 0
         self.ed3Total = 0
-        self.ed4Total = 0
-        self.ed5Total = 0
-        self.ed6Total = 0
-
-
-
-
 
 
     def start(self):
@@ -158,9 +170,10 @@ class DiceGameTwo(Dice, NewController):
             pygame.display.update()
 
 
+
     def update(self):
         # delta between last update time in milliseconds
-        # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
+        # print("update() - state: " + str(self.game_state) + ", start at: " )
 
         self.handle_keyboard_input()
         if self.game_state == "welcome_screen":
@@ -169,13 +182,27 @@ class DiceGameTwo(Dice, NewController):
 
         elif self.game_state == "roll_screen":
             self.roll_two_d_six()
-            pygame.time.delay(3000)
+
             print("count")
             self.pd1Total = self.rolls
             print(self.pd1Total)
             self.roll_state_display = True
+            pygame.time.delay(3000)
 
-        # self.game_state = "choice_screen"
+            self.game_state = "results"
+
+
+        elif self.game_state == "results":
+
+            if self.isUpPressed:
+                if not hasattr(self, "current_index"):
+                    self.current_index = len(self.choices) - 1
+                else:
+                    self.current_index -= 1
+                self.current_index %= len(self.choices)
+                print(self.choices[self.current_index])
+
+
 
 
 
@@ -188,9 +215,14 @@ class DiceGameTwo(Dice, NewController):
 
         elif self.game_state == "roll_screen":
             DISPLAY.blit(self.font.render(f"Time to roll the bones:", True, (255, 255, 255)), (10, 10))
-            if self.roll_state_display == True:
-                DISPLAY.blit(self.font.render(f"Your roll is a {self.pd1Total}:", True, (255, 255, 255)), (10, 150))
 
+        elif self.game_state == "results":
+            DISPLAY.blit(
+                self.font.render(f"Your roll is a {self.pd1Total}: Press E to cointinue", True, (255, 255, 255)),
+                (10, 10))
+
+        elif self.game_state == "choice_screen":
+            pass
 
 
 
