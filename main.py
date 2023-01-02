@@ -33,6 +33,7 @@ TILE_SIZE: int = 16
 
 # nextScreen = false
 
+
 font = pygame.font.Font('freesansbold.ttf', 24)
 text_surface = font.render('Casino', True, GREEN, BLUE)
 speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
@@ -271,7 +272,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walkSpeed = 3.5
-        self.playerMoney = 1000
+        self.playerMoney = 5000
         self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
 
 
@@ -445,6 +446,7 @@ class CoinFlipFred(Npc):
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
         self.input_time = 0  # time when input was last read
+
 
     def update(self, state):
         super().update(state)
@@ -773,14 +775,15 @@ class CoinFlipScreen(Screen):
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 1000
+        self.coinFlipFredMoney = 100
+        self.coinFlipFreddyDefeated = False
 
     def flipCoin(self):
         # currently at .6 because heads is favored
         # in the future will have states to handle coin flip percentages
         # an item can add .1 to your rolls for heads, or -.1 for tails
         coin = random.random()
-        if coin < 0.6:
+        if coin < 0.9:
             print("coin landed on heads")
             self.result = "heads"
         else:
@@ -788,6 +791,8 @@ class CoinFlipScreen(Screen):
             self.result = "tails"
 
     def update(self, state: "GameState"):
+        if self.coinFlipFredMoney <= 0:
+            self.coinFlipFreddyDefeated = True
         # Update the controller
         controller = state.controller
         controller.update(state)
@@ -902,7 +907,8 @@ class OpossumInACanScreen(Screen):
         super().__init__("Opossum in a can screen")
         self.desperate = False
         #we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 800
+        self.sallyOpossumMoney = 100
+        self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
@@ -979,6 +985,8 @@ class OpossumInACanScreen(Screen):
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
+        if self.sallyOpossumMoney <= 0:
+            self.sallyOpossumIsDefeated = True
         controller = state.controller
         controller.update(state)
         if self.sallyOpossumMoney <= 300:
@@ -1099,7 +1107,8 @@ class DiceGameScreen(Screen, Dice):
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
         self.input_time = 0  # time when input was last read
-        self.chiliWilleyMoney = 1000
+        self.chiliWilleyMoney = 500
+        self.chiliWilleyIsDefeated = False
 
     def refresh(self):
         self.player1pile = 0
@@ -1292,6 +1301,8 @@ class DiceGameScreen(Screen, Dice):
         self.game_state_started_at = pygame.time.get_ticks()
 
     def update(self, state: "GameState"):
+        if self.chiliWilleyMoney <= 0:
+            self.chiliWilleyIsDefeated = True
         # delta between last update time in milliseconds
         delta = pygame.time.get_ticks() - self.game_state_started_at
         # this is to track what state we currently in DO NOT DELTE THIS
@@ -1674,9 +1685,6 @@ class Game:
         self.state.currentScreen.start(self.state)
         while self.state.isRunning:
             self.state.delta = clock.tick(60)
-
-            if self.state.player.playerMoney <= 0:
-                print("game over ")
 
             # will need to move this to Screen class
             # TODO maintain framerate pygame.
