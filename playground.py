@@ -14,13 +14,11 @@ DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 FPS = 60
 clock = pygame.time.Clock()
 # pygame.time.get_ticks()
+
+
+
 def nowMilliseconds() -> int:
     return round(time.time() * 1000)
-
-
-
-
-
 
 
 class NewController:
@@ -76,6 +74,8 @@ class NewController:
                     self.isUpPressed = True
 
             elif event.type == pygame.KEYUP:
+                self.keyReleasedTimes[event.key] = pygame.time.get_ticks()
+
                 if event.key == pygame.K_1:
                     self.is1Pressed = False
                 elif event.key == pygame.K_t:
@@ -161,6 +161,7 @@ class DiceGameTwo(Dice, NewController):
         while running:
             clock.tick(FPS)
 
+
             self.update()
 
             self.draw()
@@ -195,12 +196,14 @@ class DiceGameTwo(Dice, NewController):
         elif self.game_state == "results":
 
             if self.isUpPressed:
+
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
                 else:
                     self.current_index -= 1
                 self.current_index %= len(self.choices)
                 print(self.choices[self.current_index])
+                self.isUpPressed = False
 
 
 
