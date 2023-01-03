@@ -152,13 +152,16 @@ class DiceGameTwo(Dice, NewController):
         self.round1 = True
         self.round2 = False
         self.round3 = False
+        self.reveal = False
+
 
         self.current_index = 0
 
         self.betPhase = False
 
 
-        self.bet = 50
+        self.bet = 0
+        self.aiBet = 0
 
 
 
@@ -234,17 +237,21 @@ class DiceGameTwo(Dice, NewController):
                 self.ed3Total = self.rolls
                 self.roll_state_display = True
                 pygame.time.delay(3000)
-                self.round2 = True
                 self.game_state = "results"
+                self.reveal = True
 
 
 
 
         elif self.game_state == "results":
-            if self.isEPressed:
+            if self.isEPressed and self.reveal == False:
                 print("Hi")
                 self.game_state = "choice_screen"
                 self.isEPressed = False
+
+            elif self.reveal == True:
+                pygame.time.delay(2000)
+                self.game_state = "reveal"
 
 
 
@@ -278,6 +285,7 @@ class DiceGameTwo(Dice, NewController):
 
 
         elif self.game_state == "bet_phase":
+            self.aiBet += 50
             print("bet phase")
             if self.isUpPressed:
 
@@ -329,6 +337,7 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Your 1st roll made: {self.pd1Total}: Press E to continue", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"Your 2nd roll made: {self.pd2Total}: Press E to continue", True, (255, 255, 255)), (10, 60))
             DISPLAY.blit(self.font.render(f"Your 3rd roll made: {self.pd3Total}: Press E to continue", True, (255, 255, 255)), (10, 110))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.bet}: Player 2 Bet: {self.aiBet}", True, (255, 255, 255)), (10, 160))
 
         elif self.game_state == "choice_screen":
             DISPLAY.blit(
@@ -382,6 +391,13 @@ class DiceGameTwo(Dice, NewController):
         elif self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"Up and down to increase bet. Press B when ready {self.bet}", True,
                                           (255, 255, 255)), (10, 10))
+
+
+        elif self.game_state == "reveal":
+            DISPLAY.blit(self.font.render(f"HI THERE: Player 1 Roll 1: {self.pd1Total} Player 2 Roll 1: {self.ed1Total} ", True, (255, 255, 255)), (55,60))
+            DISPLAY.blit(self.font.render(f"Player 1 Roll 2: {self.pd2Total} Player 2 Roll 2: {self.ed2Total} ", True, (255, 255, 255)), (55,110))
+            DISPLAY.blit(self.font.render(f"Player 1 Roll 3: {self.pd3Total} Player 2 Roll 3: {self.ed3Total} ", True, (255, 255, 255)), (55,160))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.bet}: Player 2 Bet: {self.aiBet}", True, (255, 255, 255)), (10, 210))
 
 
 
