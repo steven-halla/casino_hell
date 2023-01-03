@@ -110,8 +110,8 @@ class Dice:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
         roll2 = random.randint(1, self.sides)
-        # roll1 = 5
-        # roll2 = 1
+        # roll1 = 6
+        # roll2 = 5
         self.rolls = [roll1, roll2]
         print(self.rolls)
         return self.rolls
@@ -175,6 +175,14 @@ class Craps(Dice, NewController):
 
 
 
+    def resultsComeOutRoll(self):
+        if self.add() == 2 or self.add() == 7 or self.add() == 11:
+            print("sorry mate you lose")
+        else:
+            print("your lucky")
+
+
+
 
     def place_bet(self):
         self.message_display = "Make your  bet Press UP or DOWN on Dpad to change bet"
@@ -216,6 +224,7 @@ class Craps(Dice, NewController):
             elif self.comingOutRoll is False and self.roll_phase == True:
                 self.message_display = "time to roll the dice"
                 self.roll_two_d_six()
+                self.resultsComeOutRoll()
                 pygame.time.delay(500)
                 self.roll_phase = False
 
