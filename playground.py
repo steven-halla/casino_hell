@@ -173,6 +173,9 @@ class Craps(Dice, NewController):
                     running = False
             pygame.display.update()
 
+
+
+
     def place_bet(self):
         self.message_display = "Make your  bet Press UP or DOWN on Dpad to change bet"
 
@@ -229,6 +232,7 @@ class Craps(Dice, NewController):
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
             DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
             DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
+            DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
 
 
 
