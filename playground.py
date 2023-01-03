@@ -293,7 +293,6 @@ class DiceGameTwo(Dice, NewController):
 
 
         elif self.game_state == "bet_phase":
-            print("bet phase")
             if self.isUpPressed:
 
                 self.bet += 10
