@@ -172,9 +172,10 @@ class Craps(Dice, NewController):
                     running = False
             pygame.display.update()
 
-    def bet(self):
-        if self.isUpPressed:
+    def place_bet(self):
+        self.message_display = "Make your  bet Press UP or DOWN on Dpad to change bet"
 
+        if self.isUpPressed:
             self.bet += 10
             pygame.time.delay(100)
             self.isUpPressed = False
@@ -190,10 +191,9 @@ class Craps(Dice, NewController):
         if self.bet > 100:
             self.bet = 100
 
-        return self.bet_total
-
-
-
+        if self.isBPressed:
+            self.bet_total += self.bet
+            self.comingOutRoll = False
 
     def update(self):
         # delta between last update time in milliseconds
@@ -206,32 +206,11 @@ class Craps(Dice, NewController):
 
         elif self.game_state == "craps_screen":
             if self.comingOutRoll is True:
-                self.message_display = "Make your first bet Press UP or DOWN on Dpad to change bet"
+                self.place_bet()
 
-                if self.isUpPressed:
-
-                    self.bet += 10
-                    pygame.time.delay(100)
-                    self.isUpPressed = False
-
-                elif self.isDownPressed:
-                    self.bet -= 10
-                    pygame.time.delay(100)
-                    self.isDownPressed = False
-
-                if self.bet < 10:
-                    self.bet = 10
-
-                if self.bet > 100:
-                    self.bet = 100
-
-                if self.isBPressed:
-                    self.bet_total += self.bet
-
-                    self.comingOutRoll = False
-
-
-
+            elif self.comingOutRoll is False:
+                self.message_display = "time to roll the dice"
+                self.roll_two_d_six()
 
 
     def draw(self):
