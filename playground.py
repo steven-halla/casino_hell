@@ -285,7 +285,6 @@ class DiceGameTwo(Dice, NewController):
 
 
         elif self.game_state == "bet_phase":
-            self.aiBet += 50
             print("bet phase")
             if self.isUpPressed:
 
@@ -298,13 +297,15 @@ class DiceGameTwo(Dice, NewController):
                 pygame.time.delay(100)
                 self.isDownPressed = False
 
-            if self.bet < 0:
-                self.bet = 0
+            if self.bet < 10:
+                self.bet = 10
 
             if self.bet > 100:
                 self.bet = 100
 
             if self.isBPressed and self.pd3Total == 0 :
+                self.aiBet += 50
+
                 print("going back to welcome screen")
                 self.game_state = "welcome_screen"
 
