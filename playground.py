@@ -396,7 +396,6 @@ class DiceGameTwo(Dice, NewController):
                     self.isTPressed = False
 
 
-
             elif self.current_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
