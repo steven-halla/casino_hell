@@ -128,14 +128,6 @@ class Dice:
         return self.rolls[0] + self.rolls[1]
 
 
-# class ComponentScreen():
-#     def __init__(self):
-#         super().__init__()
-#         self.choices: list = ["Choice 1", "Choice 2", "Choice 3"]
-#
-#     def update(self):
-
-
 
 
 class DiceGameTwo(Dice, NewController):
@@ -169,10 +161,16 @@ class DiceGameTwo(Dice, NewController):
         self.pd2Total = 0
         self.pd3Total = 0
 
+        self.p1diceTotal = 0
+
+
 
         self.ed1Total = 0
         self.ed2Total = 0
         self.ed3Total = 0
+
+        self.e1diceTotal = 0
+
 
 
     def start(self):
@@ -202,14 +200,18 @@ class DiceGameTwo(Dice, NewController):
                 self.is1Pressed = False
 
         elif self.game_state == "roll_screen":
+            # we can have AI at this state have a bet state self.betLow self.betMed self.betHigh based on its rolls
 
             print("count")
             if self.round1 == True:
                 self.roll_two_d_six()
                 self.pd1Total = self.rolls
+                self.p1diceTotal = self.add()
                 print(self.pd1Total)
                 self.roll_two_d_six()
                 self.ed1Total = self.rolls
+                self.e1diceTotal = self.add()
+
                 self.roll_state_display = True
                 pygame.time.delay(3000)
                 self.game_state = "results"
@@ -219,9 +221,12 @@ class DiceGameTwo(Dice, NewController):
             elif self.round2 == True:
                 self.roll_two_d_six()
                 self.pd2Total = self.rolls
+                self.p1diceTotal = self.add()
                 print(self.pd2Total)
                 self.roll_two_d_six()
                 self.ed2Total = self.rolls
+                self.ed1Total = self.rolls
+
                 self.roll_state_display = True
                 pygame.time.delay(3000)
                 self.game_state = "results"
@@ -232,9 +237,12 @@ class DiceGameTwo(Dice, NewController):
                 print("round 3")
                 self.roll_two_d_six()
                 self.pd3Total = self.rolls
+                self.p1diceTotal = self.add()
                 print(self.pd2Total)
                 self.roll_two_d_six()
-                self.ed3Total = self.rolls
+                self.ed1Total = self.rolls
+                self.e3diceTotal = self.add()
+
                 self.roll_state_display = True
                 pygame.time.delay(3000)
                 self.game_state = "results"
@@ -314,17 +322,6 @@ class DiceGameTwo(Dice, NewController):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     def draw(self):
         DISPLAY.fill((0,0,0))
 
@@ -355,9 +352,11 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (50, 160))
-            DISPLAY.blit(self.font.render(f"Player 1 Roll 1: {self.pd1Total} Player 2 Roll 1: {self.ed1Total} ", True, (255, 255, 255)), (288,60))
-            DISPLAY.blit(self.font.render(f"Player 1 Roll 2: {self.pd2Total} Player 2 Roll 2: {self.ed2Total} ", True, (255, 255, 255)), (288,110))
-            DISPLAY.blit(self.font.render(f"Player 1 Roll 3: {self.pd3Total} Player 2 Roll 3: {self.ed3Total} ", True, (255, 255, 255)), (288,160))
+            DISPLAY.blit(self.font.render(f"P1 Roll 1: {self.pd1Total}Player 2 Roll 1: {self.ed1Total} ", True, (255, 255, 255)), (222,60))
+            DISPLAY.blit(self.font.render(f"P1 Roll 1: {self.pd2Total} Player 2 Roll 1: {self.ed2Total}", True, (255, 255, 255)), (222,110))
+            DISPLAY.blit(self.font.render(f"P1 Roll 1: {self.pd3Total} Player 2 Roll 1: {self.ed3Total}  ", True, (255, 255, 255)), (222,160))
+            DISPLAY.blit(self.font.render(f"P1 Total {self.p1diceTotal}======== Enemy Total: {self.e1diceTotal}  ", True, (255, 255, 255)), (222,210))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.bet}: Player 2 Bet: {self.aiBet}", True, (255, 255, 255)), (222, 260))
 
 
 
