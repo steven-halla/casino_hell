@@ -148,8 +148,14 @@ class DiceGameTwo(Dice, NewController):
         self.message_display = ""
         self.game_state = "welcome_screen"
         self.roll_state_display = False
-        self.choices = ["choice 1", "choice 2", "choice 3"]
+        self.choices = ["Bet", "Quit", "Magic"]
+
         self.current_index = 0
+
+        self.betPhase = False
+
+
+        self.bet = 50
 
 
 
@@ -181,7 +187,7 @@ class DiceGameTwo(Dice, NewController):
 
     def update(self):
         # delta between last update time in milliseconds
-        # print("update() - state: " + str(self.game_state) + ", start at: " )
+        print("update() - state: " + str(self.game_state) + ", start at: " )
 
         self.handle_keyboard_input()
         if self.game_state == "welcome_screen":
@@ -201,8 +207,13 @@ class DiceGameTwo(Dice, NewController):
 
 
         elif self.game_state == "results":
+            if self.isEPressed:
+                print("Hi")
+                self.game_state = "choice_screen"
 
 
+
+        elif self.game_state == "choice_screen":
             if self.isUpPressed:
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
@@ -230,6 +241,32 @@ class DiceGameTwo(Dice, NewController):
                 self.isPPressed = False
 
 
+
+        elif self.game_state == "bet_phase":
+            print("bet phase")
+            if self.isUpPressed:
+
+                self.bet += 10
+                pygame.time.delay(100)
+                self.isUpPressed = False
+
+            elif self.isDownPressed:
+                self.bet -= 10
+                pygame.time.delay(100)
+                self.isDownPressed = False
+
+            if self.bet < 0:
+                self.bet = 0
+
+            if self.bet > 100:
+                self.bet = 100
+
+
+
+
+
+
+
     def draw(self):
         DISPLAY.fill((0,0,0))
 
@@ -240,47 +277,61 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Time to roll the bones:", True, (255, 255, 255)), (10, 10))
 
         elif self.game_state == "results":
+            DISPLAY.blit(self.font.render(f"You ended up rolling a {self.pd1Total}: Press E to continue", True, (255, 255, 255)), (10, 10))
+
+        elif self.game_state == "choice_screen":
             DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+                self.font.render(f"Press the T key", True, (255, 255, 255)),
                 (50, 10))
             DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (50, 60))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                (50, 110))
+
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (50, 110))
+                (50, 160))
+            DISPLAY.blit(self.font.render(f"1st roll is a : {self.pd1Total}: ", True, (255, 255, 255)), (288,10))
+
+
 
             if self.current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (10, 10))
+                    (10, 60))
                 if self.isTPressed:
-                    print("mr t 1")
-                    self.isTPressed = False
+                    print("time to bet")
+                    self.betPhase = True
+                    self.game_state = "bet_phase"
 
 
             elif self.current_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (10, 60))
+                    (10, 110))
                 if self.isTPressed:
-                    print("mr t 2")
+                    print("This will exit our game")
                     self.isTPressed = False
+
 
 
             elif self.current_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (10, 110))
+                    (10, 160))
                 if self.isTPressed:
-                    print("mr t 3")
+                    print("In the future you can cast magic here")
                     self.isTPressed = False
 
+        elif self.game_state == "bet_phase":
+            DISPLAY.blit(self.font.render(f"Use the up and down arrorws on keypad to change bet: {self.bet}", True,
+                                          (255, 255, 255)), (10, 10))
 
-        elif self.game_state == "choice_screen":
-            DISPLAY.blit(
-                self.font.render(f"{self.choices}", True, (255, 255, 255)),
-                (10, 10))
+
+
 
 
 
