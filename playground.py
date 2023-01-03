@@ -149,6 +149,9 @@ class DiceGameTwo(Dice, NewController):
         self.game_state = "welcome_screen"
         self.roll_state_display = False
         self.choices = ["Bet", "Quit", "Magic"]
+        self.round1 = True
+        self.round2 = False
+        self.round3 = False
 
         self.current_index = 0
 
@@ -187,29 +190,61 @@ class DiceGameTwo(Dice, NewController):
 
     def update(self):
         # delta between last update time in milliseconds
-        print("update() - state: " + str(self.game_state) + ", start at: " )
+        # print("update() - state: " + str(self.game_state) + ", start at: " )
 
         self.handle_keyboard_input()
         if self.game_state == "welcome_screen":
             if self.is1Pressed:
                 self.game_state = "roll_screen"
+                self.is1Pressed = False
 
         elif self.game_state == "roll_screen":
-            self.roll_two_d_six()
 
             print("count")
-            self.pd1Total = self.rolls
-            print(self.pd1Total)
-            self.roll_state_display = True
-            pygame.time.delay(3000)
+            if self.round1 == True:
+                self.roll_two_d_six()
+                self.pd1Total = self.rolls
+                print(self.pd1Total)
+                self.roll_two_d_six()
+                self.ed1Total = self.rolls
+                self.roll_state_display = True
+                pygame.time.delay(3000)
+                self.game_state = "results"
+                self.round1 = False
+                self.round2 = True
 
-            self.game_state = "results"
+            elif self.round2 == True:
+                self.roll_two_d_six()
+                self.pd2Total = self.rolls
+                print(self.pd2Total)
+                self.roll_two_d_six()
+                self.ed2Total = self.rolls
+                self.roll_state_display = True
+                pygame.time.delay(3000)
+                self.game_state = "results"
+                self.round2 = False
+                self.round3 = True
+
+            elif self.round3 == True:
+                print("round 3")
+                self.roll_two_d_six()
+                self.pd3Total = self.rolls
+                print(self.pd2Total)
+                self.roll_two_d_six()
+                self.ed3Total = self.rolls
+                self.roll_state_display = True
+                pygame.time.delay(3000)
+                self.round2 = True
+                self.game_state = "results"
+
+
 
 
         elif self.game_state == "results":
             if self.isEPressed:
                 print("Hi")
                 self.game_state = "choice_screen"
+                self.isEPressed = False
 
 
 
@@ -261,6 +296,20 @@ class DiceGameTwo(Dice, NewController):
             if self.bet > 100:
                 self.bet = 100
 
+            if self.isBPressed and self.pd3Total == 0 :
+                print("going back to welcome screen")
+                self.game_state = "welcome_screen"
+
+            # elif self.is1Pressed and self.pd3Total > 0:
+            #     print("Ok its time to show high or low")
+
+
+
+
+
+
+
+
 
 
 
@@ -277,7 +326,9 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Time to roll the bones:", True, (255, 255, 255)), (10, 10))
 
         elif self.game_state == "results":
-            DISPLAY.blit(self.font.render(f"You ended up rolling a {self.pd1Total}: Press E to continue", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Your 1st roll made: {self.pd1Total}: Press E to continue", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Your 2nd roll made: {self.pd2Total}: Press E to continue", True, (255, 255, 255)), (10, 60))
+            DISPLAY.blit(self.font.render(f"Your 3rd roll made: {self.pd3Total}: Press E to continue", True, (255, 255, 255)), (10, 110))
 
         elif self.game_state == "choice_screen":
             DISPLAY.blit(
@@ -294,7 +345,9 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (50, 160))
-            DISPLAY.blit(self.font.render(f"1st roll is a : {self.pd1Total}: ", True, (255, 255, 255)), (288,10))
+            DISPLAY.blit(self.font.render(f"Player 1 Roll 1: {self.pd1Total} Player 2 Roll 1: {self.ed1Total} ", True, (255, 255, 255)), (288,60))
+            DISPLAY.blit(self.font.render(f"Player 1 Roll 2: {self.pd2Total} Player 2 Roll 2: {self.ed2Total} ", True, (255, 255, 255)), (288,110))
+            DISPLAY.blit(self.font.render(f"Player 1 Roll 3: {self.pd3Total} Player 2 Roll 3: {self.ed3Total} ", True, (255, 255, 255)), (288,160))
 
 
 
@@ -327,7 +380,7 @@ class DiceGameTwo(Dice, NewController):
                     self.isTPressed = False
 
         elif self.game_state == "bet_phase":
-            DISPLAY.blit(self.font.render(f"Use the up and down arrorws on keypad to change bet: {self.bet}", True,
+            DISPLAY.blit(self.font.render(f"Up and down to increase bet. Press B when ready {self.bet}", True,
                                           (255, 255, 255)), (10, 10))
 
 
