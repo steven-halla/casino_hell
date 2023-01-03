@@ -153,7 +153,9 @@ class DiceGameTwo(Dice, NewController):
 
 
         self.bet = 0
+        self.playerTotalBet = 0
         self.aiBet = 0
+        self.aiTotalBet = 0
 
 
 
@@ -206,11 +208,11 @@ class DiceGameTwo(Dice, NewController):
             if self.round1 == True:
                 self.roll_two_d_six()
                 self.pd1Total = self.rolls
-                self.p1diceTotal = self.add()
+                self.p1diceTotal += self.add()
                 print(self.pd1Total)
                 self.roll_two_d_six()
                 self.ed1Total = self.rolls
-                self.e1diceTotal = self.add()
+                self.e1diceTotal += self.add()
 
                 self.roll_state_display = True
                 pygame.time.delay(3000)
@@ -221,11 +223,11 @@ class DiceGameTwo(Dice, NewController):
             elif self.round2 == True:
                 self.roll_two_d_six()
                 self.pd2Total = self.rolls
-                self.p1diceTotal = self.add()
+                self.p1diceTotal += self.add()
                 print(self.pd2Total)
                 self.roll_two_d_six()
                 self.ed2Total = self.rolls
-                self.ed1Total = self.rolls
+                self.e1diceTotal += self.add()
 
                 self.roll_state_display = True
                 pygame.time.delay(3000)
@@ -237,16 +239,15 @@ class DiceGameTwo(Dice, NewController):
                 print("round 3")
                 self.roll_two_d_six()
                 self.pd3Total = self.rolls
-                self.p1diceTotal = self.add()
+                self.p1diceTotal += self.add()
                 print(self.pd2Total)
                 self.roll_two_d_six()
                 self.ed1Total = self.rolls
-                self.e3diceTotal = self.add()
+                self.e1diceTotal += self.add()
 
                 self.roll_state_display = True
                 pygame.time.delay(3000)
                 self.game_state = "results"
-                self.reveal = True
 
 
 
@@ -257,9 +258,7 @@ class DiceGameTwo(Dice, NewController):
                 self.game_state = "choice_screen"
                 self.isEPressed = False
 
-            elif self.reveal == True:
-                pygame.time.delay(2000)
-                self.game_state = "reveal"
+
 
 
 
@@ -290,7 +289,7 @@ class DiceGameTwo(Dice, NewController):
                         print(f"You pressed E and got {choice}")
                 self.isPPressed = False
 
-
+        # I need to figure out bets its broke
 
         elif self.game_state == "bet_phase":
             if self.isUpPressed:
@@ -311,13 +310,32 @@ class DiceGameTwo(Dice, NewController):
                 self.bet = 100
 
             if self.isBPressed and self.pd3Total == 0 :
-                self.aiBet += 50
+                self.playerTotalBet += self.bet
+                print("Player 1 bet total" + str(self.playerTotalBet))
+                self.aiTotalBet += 50
+                print("Player 2 bet total" + str(self.aiTotalBet))
+
 
                 print("going back to welcome screen")
                 self.game_state = "welcome_screen"
 
-            # elif self.is1Pressed and self.pd3Total > 0:
-            #     print("Ok its time to show high or low")
+
+
+            elif self.isBPressed and self.pd3Total != 0:
+                self.playerTotalBet += self.bet
+                self.aiTotalBet += 50
+                self.game_state = "reveal"
+                print("Ok its time to show high or low")
+
+        elif self.game_state == "reveal":
+            if self.p1diceTotal > self.e1diceTotal:
+                self.message_display = "Player 1 wins"
+
+            elif self.p1diceTotal < self.e1diceTotal:
+                self.message_display = "player 2 wins"
+
+            elif self.p1diceTotal == self.e1diceTotal:
+                self.message_display = "it's a draw too bad for the two of you"
 
 
 
@@ -334,7 +352,7 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Your 1st roll made: {self.pd1Total}: Press E to continue", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"Your 2nd roll made: {self.pd2Total}: Press E to continue", True, (255, 255, 255)), (10, 60))
             DISPLAY.blit(self.font.render(f"Your 3rd roll made: {self.pd3Total}: Press E to continue", True, (255, 255, 255)), (10, 110))
-            DISPLAY.blit(self.font.render(f"Player Current Bet {self.bet}: Player 2 Bet: {self.aiBet}", True, (255, 255, 255)), (10, 160))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.playerTotalBet}: Player 2 Bet: {self.aiTotalBet}", True, (255, 255, 255)), (10, 160))
 
         elif self.game_state == "choice_screen":
             DISPLAY.blit(
@@ -355,7 +373,7 @@ class DiceGameTwo(Dice, NewController):
             DISPLAY.blit(self.font.render(f"P1 Roll 1: {self.pd2Total} Player 2 Roll 1: {self.ed2Total}", True, (255, 255, 255)), (222,110))
             DISPLAY.blit(self.font.render(f"P1 Roll 1: {self.pd3Total} Player 2 Roll 1: {self.ed3Total}  ", True, (255, 255, 255)), (222,160))
             DISPLAY.blit(self.font.render(f"P1 Total {self.p1diceTotal}======== Enemy Total: {self.e1diceTotal}  ", True, (255, 255, 255)), (222,210))
-            DISPLAY.blit(self.font.render(f"Player Current Bet {self.bet}: Player 2 Bet: {self.aiBet}", True, (255, 255, 255)), (222, 260))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.playerTotalBet}: Player 2 Bet: {self.aiTotalBet}", True, (255, 255, 255)), (222, 260))
 
 
 
@@ -393,10 +411,13 @@ class DiceGameTwo(Dice, NewController):
 
 
         elif self.game_state == "reveal":
-            DISPLAY.blit(self.font.render(f"HI THERE: Player 1 Roll 1: {self.pd1Total} Player 2 Roll 1: {self.ed1Total} ", True, (255, 255, 255)), (55,60))
+            DISPLAY.blit(self.font.render(f" Player 1 Roll 1: {self.pd1Total} Player 2 Roll 1: {self.ed1Total} ", True, (255, 255, 255)), (55,60))
             DISPLAY.blit(self.font.render(f"Player 1 Roll 2: {self.pd2Total} Player 2 Roll 2: {self.ed2Total} ", True, (255, 255, 255)), (55,110))
             DISPLAY.blit(self.font.render(f"Player 1 Roll 3: {self.pd3Total} Player 2 Roll 3: {self.ed3Total} ", True, (255, 255, 255)), (55,160))
-            DISPLAY.blit(self.font.render(f"Player Current Bet {self.bet}: Player 2 Bet: {self.aiBet}", True, (255, 255, 255)), (10, 210))
+            DISPLAY.blit(self.font.render(f"Player 1 dice total: {self.p1diceTotal} Player 2 dice: {self.e1diceTotal} ", True, (255, 255, 255)), (55,210))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.playerTotalBet}: Player 2 Bet: {self.aiTotalBet}", True, (255, 255, 255)), (10, 260))
+            DISPLAY.blit(self.font.render(f"Player Current Bet {self.playerTotalBet}: Player 2 Bet: {self.aiTotalBet}", True, (255, 255, 255)), (10, 310))
+            DISPLAY.blit(self.font.render(f"The result: {self.message_display}", True, (255, 255, 255)), (10, 360))
 
 
 
