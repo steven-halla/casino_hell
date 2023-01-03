@@ -154,6 +154,7 @@ class Craps(Dice, NewController):
         self.round1 = True
 
         self.comingOutRoll = True
+        self.roll_phase = False
 
 
 
@@ -207,10 +208,15 @@ class Craps(Dice, NewController):
         elif self.game_state == "craps_screen":
             if self.comingOutRoll is True:
                 self.place_bet()
+                self.roll_phase = True
 
-            elif self.comingOutRoll is False:
+            elif self.comingOutRoll is False and self.roll_phase == True:
                 self.message_display = "time to roll the dice"
                 self.roll_two_d_six()
+                pygame.time.delay(500)
+                self.roll_phase = False
+
+
 
 
     def draw(self):
