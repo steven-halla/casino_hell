@@ -147,6 +147,7 @@ class Craps(Dice, NewController):
 
         self.bet = 0
         self.bet_total = 0
+        self.bet_counter = 0
 
 
         self.rollState = True
@@ -193,6 +194,14 @@ class Craps(Dice, NewController):
             self.message_display = f"Your point roll is now an {self.point_roll} Match it to win!"
 
 
+    def resultsPointRoll(self):
+        if self.add() == self.point_roll:
+            self.message_display = "you win"
+
+        elif self.add() == 7:
+            self.message_display = "you lose"
+
+
 
 
 
@@ -223,6 +232,8 @@ class Craps(Dice, NewController):
             self.isBPressed = False
             if self.game_state == "point_roll_screen":
                 self.game_state = "point_rolling"
+
+
 
 
 
@@ -281,6 +292,7 @@ class Craps(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
             DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
             DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
+            DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
 
 
 
