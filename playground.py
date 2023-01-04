@@ -145,6 +145,7 @@ class Craps(Dice, NewController):
         self.game_state = "welcome_screen"
         self.exit_point_rolling_loop = False
         self.forced_min_bet = False
+        self.player_wins = True
 
         self.choices = ["Bet", "Quit", "Magic"]
 
@@ -250,6 +251,9 @@ class Craps(Dice, NewController):
                 print('hi')
                 self.game_state = "point_rolling"
 
+            elif self.game_state == "point_bet_phase":
+                self.game_state = "point_final"
+
             # need to do logic for if player is out of money
 
 
@@ -285,6 +289,8 @@ class Craps(Dice, NewController):
             self.message_display = "Time to place your 2nd bet"
             self.place_bet()
 
+
+
         elif self.game_state == "point_rolling" :
             self.message_display = "press 1 to start rolling again"
             if self.exit_point_rolling_loop == True:
@@ -304,6 +310,18 @@ class Craps(Dice, NewController):
             self.forced_min_bet = True
             self.message_display = "push up and down to bet. Mimum of 50"
             self.place_bet()
+            # self.game_state = "point_final"
+
+        elif self.game_state == "point_final":
+            self.message_display = "press 1 to start rolling the dice"
+            if self.is1Pressed:
+                self.message_display = "time to roll the dice"
+                self.roll_two_d_six()
+                self.resultsPointRoll()
+                self.message_display = f"your result is :{self.rolls}"
+                self.is1Pressed = False
+
+
 
 
 
@@ -327,7 +345,7 @@ class Craps(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
             DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
 
-        elif self.game_state == "point_bet_phase":
+        elif self.game_state == "point_bet_phase" or self.game_state == "point_final":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
             DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
             DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
