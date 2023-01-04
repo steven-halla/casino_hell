@@ -279,16 +279,25 @@ class Craps(Dice, NewController):
             self.message_display = "Time to place your 2nd bet"
             self.place_bet()
 
-        if self.game_state == "point_rolling" :
-            if self.exit_point_rolling_loop == True:
-                print("Hi")
+        elif self.game_state == "point_rolling" :
             self.message_display = "press 1 to start rolling again"
-            if self.is1Pressed:
+            if self.exit_point_rolling_loop == True:
+                self.game_state = "point_bet_phase"
+                print(self.game_state)
+            elif self.is1Pressed == True and self.exit_point_rolling_loop == False:
                 self.message_display = "time to roll the dice"
                 self.roll_two_d_six()
                 self.resultsPointRoll()
                 self.message_display = f"your result is :{self.rolls}"
                 self.is1Pressed = False
+                self.bet_counter += 1
+                if self.bet_counter > 4:
+                    self.exit_point_rolling_loop = True
+
+        elif self.game_state == "point_bet_phase":
+            if self.isBPressed:
+
+                print("hi there")
 
 
 
@@ -313,7 +322,7 @@ class Craps(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
 
 
-        elif self.game_state == "point_roll_screen" or "point_rolling":
+        elif self.game_state == "point_roll_screen" or self.game_state == "point_rolling":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
             DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
             DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
@@ -321,23 +330,8 @@ class Craps(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
 
         elif self.game_state == "point_bet_phase":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
+            DISPLAY.blit(self.font.render(f"OK YOU LAND LUBB LUBB{self.message_display}", True, (255, 255, 255)), (33, 500))
             DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
-            DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
-            DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
-            DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
