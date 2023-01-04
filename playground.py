@@ -197,9 +197,18 @@ class Craps(Dice, NewController):
     def resultsPointRoll(self):
         if self.add() == self.point_roll:
             self.message_display = "you win"
+            print("you win")
 
         elif self.add() == 7:
             self.message_display = "you lose"
+            print("you lose")
+
+        else:
+            self.message_display = "roll again"
+            print("roll agian")
+            self.bet_counter += 1
+            print(self.bet_counter)
+
 
 
 
@@ -239,7 +248,7 @@ class Craps(Dice, NewController):
 
     def update(self):
         # delta between last update time in milliseconds
-        print("update() - state: " + str(self.game_state) + ", start at: " )
+        # print("update() - state: " + str(self.game_state) + ", start at: " )
 
         self.handle_keyboard_input()
         if self.game_state == "welcome_screen":
@@ -267,7 +276,14 @@ class Craps(Dice, NewController):
             self.place_bet()
 
         if self.game_state == "point_rolling" :
-            print("hi")
+            self.message_display = "press 1 to start rolling again"
+            if self.is1Pressed:
+                self.message_display = "time to roll the dice"
+                self.roll_two_d_six()
+                self.resultsPointRoll()
+                self.message_display = f"your result is :{self.rolls}"
+                self.is1Pressed = False
+
 
 
 
