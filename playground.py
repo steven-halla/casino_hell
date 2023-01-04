@@ -157,6 +157,8 @@ class Craps(Dice, NewController):
         self.roll_phase = False
 
 
+        self.phase_two_bet = False
+
 
 
     def start(self):
@@ -176,8 +178,9 @@ class Craps(Dice, NewController):
 
 
     def resultsComeOutRoll(self):
-        if self.add() == 2 or self.add() == 7 or self.add() == 11:
-            print("sorry mate you lose")
+        if self.add() == 2 or self.add() == 3 or self.add() == 12:
+            self.message_display = f"You rolled an {self.rolls}"
+
         else:
             print("your lucky")
 
@@ -222,13 +225,17 @@ class Craps(Dice, NewController):
                 self.roll_phase = True
 
             elif self.comingOutRoll is False and self.roll_phase == True:
+
                 self.message_display = "time to roll the dice"
+
                 self.roll_two_d_six()
                 self.resultsComeOutRoll()
-                pygame.time.delay(500)
                 self.roll_phase = False
+                self.phase_two_bet = True
+                pygame.time.delay(3000)
 
-
+            elif self.phase_two_bet == True:
+                self.message_display = "Time to place your 2nd bet"
 
 
     def draw(self):
