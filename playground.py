@@ -144,6 +144,7 @@ class Craps(Dice, NewController):
         self.message_display = ""
         self.game_state = "welcome_screen"
         self.exit_point_rolling_loop = False
+        self.forced_min_bet = False
 
         self.choices = ["Bet", "Quit", "Magic"]
 
@@ -233,6 +234,10 @@ class Craps(Dice, NewController):
         if self.bet < 10:
             self.bet = 10
 
+        if self.forced_min_bet == True:
+            if self.bet < 50:
+                self.bet = 50
+
         if self.bet > 100:
             self.bet = 100
 
@@ -242,9 +247,10 @@ class Craps(Dice, NewController):
             self.roll_phase = True
             self.isBPressed = False
             if self.game_state == "point_roll_screen":
-                if self.bet < 50:
-                    self.bet = 50
+                print('hi')
                 self.game_state = "point_rolling"
+
+            # need to do logic for if player is out of money
 
 
 
@@ -294,18 +300,10 @@ class Craps(Dice, NewController):
                 if self.bet_counter > 4:
                     self.exit_point_rolling_loop = True
 
-        elif self.game_state == "point_bet_phase":
-            if self.isBPressed:
-
-                print("hi there")
-
-
-
-
-
-
-
-
+        if self.game_state == "point_bet_phase":
+            self.forced_min_bet = True
+            self.message_display = "push up and down to bet. Mimum of 50"
+            self.place_bet()
 
 
 
@@ -330,8 +328,11 @@ class Craps(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
 
         elif self.game_state == "point_bet_phase":
-            DISPLAY.blit(self.font.render(f"OK YOU LAND LUBB LUBB{self.message_display}", True, (255, 255, 255)), (33, 500))
+            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
             DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
+            DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
+            DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
+            DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
 
 
 
