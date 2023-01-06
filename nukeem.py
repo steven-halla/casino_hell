@@ -162,6 +162,8 @@ class DiceGame(Dice, NewController):
         if self.game_state == "player_1_going_hot":
             self.roll_two_d_six()
             if self.rolls[0] == self.rolls[1]:
+                self.player_1_lost_game = True
+
 
                 self.player2pile += self.ante + self.player1pile
                 self.player1pile = 0
@@ -169,7 +171,6 @@ class DiceGame(Dice, NewController):
                 self.roll_state ="you got a double at the wrong time, you lose"
                 print("you rolled a double get ready for trouble")
                 self.game_state = "player_1_game_over"
-                self.player_1_lost_game = True
 
 
 
@@ -232,6 +233,8 @@ class DiceGame(Dice, NewController):
 
         elif self.game_state == "player_1_going_hot":
             print("no dice you wasted your chance")
+            if self.player_1_lost_game == True:
+                print("ITS TRUE")
             self.game_state = "player_2_declare_intent_stage"
 
         elif self.game_state == "player_2_going_hot":
