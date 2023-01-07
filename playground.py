@@ -109,6 +109,7 @@ class NewController:
 ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
 suits = ['spades', 'diamonds', 'clubs', 'hearts']
 
+
 class Deck:
     def __init__(self, ranks, suits):
         self.ranks = ranks
@@ -116,12 +117,24 @@ class Deck:
         self.rank_strings = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight",
                              9: "Nine", 10: "Ten", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
         self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
-        self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits for rank in
-                      self.ranks]
-        self.cards.append(('Joker', 'red'))
-        self.cards.append(('Joker', 'black'))
+        self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
+                            "King": 10, "Ace": 11}
+        self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
+                      for rank in self.ranks]
+        # self.cards.append(('Joker', 'red', 0))
+        # self.cards.append(('Joker', 'black', 0))
 
 
+
+    def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
+        # Initialize the point value of the hand to 0
+        hand_value = 0
+        # Iterate through the cards in the hand
+        for card in hand:
+            # Add the point value of the card to the hand value
+            hand_value += card[2]
+        # Return the final hand value
+        return hand_value
 
     def __len__(self):
         return len(self.cards)
@@ -167,7 +180,10 @@ class Blackjack(Deck, NewController):
         self.bet = 10
         self.player_money = 100
         self.enemy_money = 100
-
+        self.player_score = 0
+        self.enemy_score = 0
+        self.player_hand = []
+        self.enemy_hand = []
 
 
     def start(self):
@@ -207,13 +223,32 @@ class Blackjack(Deck, NewController):
         self.handle_keyboard_input()
 
         if self.game_state == "welcome_screen":
-            # self.shuffle()
+            self.shuffle()
             self.message_display = "Press the 1 key to start game"
             if self.is1Pressed:
                 self.game_state = "bet_phase"
 
         elif self.game_state == "bet_phase":
             self.message_display = "Place your bet 10 coin max. Press up and down "
+            self.place_bet()
+            if self.isTPressed:
+                self.game_state = "draw_phase"
+
+        elif self.game_state == "draw_phase":
+
+            self.message_display = "dealing the cards"
+            self.player_hand = self.draw_hand(2)
+            print("Player hand is" + str(self.player_hand))
+            self.player_score = self.compute_hand_value(self.player_hand)
+            print("Player score is: " + str(self.player_score))
+
+            self.enemy_hand = self.draw_hand(2)
+            print("Player hand is" + str(self.enemy_hand))
+            self.enemy_score = self.compute_hand_value(self.enemy_hand)
+            print("enemy score is: " + str(self.enemy_score))
+
+
+
 
 
 
