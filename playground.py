@@ -246,6 +246,10 @@ class Blackjack(Deck, NewController):
             print("Player hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
+            self.game_state = "menu_screen"
+
+        elif self.game_state == "menu_screen":
+            print("menu time")
 
 
 
