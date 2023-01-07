@@ -184,6 +184,9 @@ class Blackjack(Deck, NewController):
         self.enemy_score = 0
         self.player_hand = []
         self.enemy_hand = []
+        self.choices = ["Ready", "Draw", "Magic"]
+        self.current_index = 0
+
 
 
     def start(self):
@@ -233,6 +236,7 @@ class Blackjack(Deck, NewController):
             self.place_bet()
             if self.isTPressed:
                 self.game_state = "draw_phase"
+                self.isTPressed = False
 
         elif self.game_state == "draw_phase":
 
@@ -248,8 +252,31 @@ class Blackjack(Deck, NewController):
             print("enemy score is: " + str(self.enemy_score))
             self.game_state = "menu_screen"
 
+        elif self.game_state == "player_draw_one_card":
+            self.player_hand += self.draw_hand(1)
+            self.compute_hand_value(self.player_hand)
+            print("Player hand is now" + str(self.player_hand))
+
+
         elif self.game_state == "menu_screen":
-            print("menu time")
+            self.message_display = "from here you can go to different screens"
+            if self.isUpPressed:
+                if not hasattr(self, "current_index"):
+                    self.current_index = len(self.choices) - 1
+                else:
+                    self.current_index -= 1
+                self.current_index %= len(self.choices)
+                print(self.choices[self.current_index])
+                self.isUpPressed = False
+
+            if self.isDownPressed:
+                if not hasattr(self, "current_index"):
+                    self.current_index = len(self.choices) + 1
+                else:
+                    self.current_index += 1
+                self.current_index %= len(self.choices)
+                print(self.choices[self.current_index])
+                self.isDownPressed = False
 
 
 
@@ -265,6 +292,55 @@ class Blackjack(Deck, NewController):
 
         elif self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+
+        elif self.game_state == "menu_screen":
+            DISPLAY.blit(
+                self.font.render(f"Press the T key", True, (255, 255, 255)),
+                (50, 10))
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+                (50, 60))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                (50, 110))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+                (50, 160))
+
+            if self.current_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (10, 60))
+                if self.isTPressed:
+                    print("time to bet")
+                    self.isTPressed = False
+                    # self.betPhase = True
+                    # self.game_state = "bet_phase"
+
+
+            elif self.current_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (10, 110))
+                if self.isTPressed:
+                    print("This will exit our game")
+                    self.isTPressed = False
+
+
+
+            elif self.current_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (10, 160))
+                if self.isTPressed:
+                    print("In the future you can cast magic here")
+                    self.isTPressed = False
+            # DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+            # DISPLAY.blit(self.font.render(f"{self.player_hand}", True, (255, 255, 255)), (10, 50))
+            # DISPLAY.blit(self.font.render(f"{self.player_score}", True, (255, 255, 255)), (10, 100))
+
 
 
 
