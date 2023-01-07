@@ -339,11 +339,11 @@ class Blackjack(Deck, NewController):
                 if self.isTPressed:
                     print("In the future you can cast magic here")
                     self.isTPressed = False
-            # DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
-            # DISPLAY.blit(self.font.render(f"{self.player_hand}", True, (255, 255, 255)), (10, 50))
-            # DISPLAY.blit(self.font.render(f"{self.player_score}", True, (255, 255, 255)), (10, 100))
+            DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (10, 350))
+            DISPLAY.blit(self.font.render(f"Player score:{self.player_score}", True, (255, 255, 255)), (10, 400))
 
-
+            DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (10, 450))
+            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
 
 
 
