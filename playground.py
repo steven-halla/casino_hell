@@ -259,7 +259,7 @@ class Blackjack(Deck, NewController):
 
 
         elif self.game_state == "menu_screen":
-            self.message_display = "from here you can go to different screens"
+            self.message_display = "Menu screen press T to select"
             if self.isUpPressed:
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
@@ -290,29 +290,31 @@ class Blackjack(Deck, NewController):
         if self.game_state == "welcome_screen":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
 
+
         elif self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
 
+
         elif self.game_state == "menu_screen":
             DISPLAY.blit(
-                self.font.render(f"Press the T key", True, (255, 255, 255)),
-                (50, 10))
+                self.font.render(f"{self.message_display}", True, (255, 255, 255)),
+                (200, 10))
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (50, 60))
+                (700, 160))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (50, 110))
+                (700, 210))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (50, 160))
+                (700, 260))
 
             if self.current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (10, 60))
+                    (650, 155))
                 if self.isTPressed:
                     print("time to bet")
                     self.isTPressed = False
@@ -323,7 +325,7 @@ class Blackjack(Deck, NewController):
             elif self.current_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (10, 110))
+                    (650, 205))
                 if self.isTPressed:
                     print("This will exit our game")
                     self.isTPressed = False
@@ -333,7 +335,7 @@ class Blackjack(Deck, NewController):
             elif self.current_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (10, 160))
+                    (650, 255))
                 if self.isTPressed:
                     print("In the future you can cast magic here")
                     self.isTPressed = False
