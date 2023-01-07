@@ -77,6 +77,7 @@ class Dice:
     def __init__(self, sides: int):
         self.sides = sides
         self.rolls = []
+        self.one_hundred_rolls = [0]
     #rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
@@ -89,10 +90,10 @@ class Dice:
     def roll_one_d_hundred(self) -> List[int]:
         self.sides = 100
         roll1 = random.randint(1, self.sides)
-        self.rolls = [roll1]
+        self.one_hundred_rolls = [roll1]
         print("rolling 2d10")
-        print("your dice results" + str(self.rolls))
-        return self.rolls
+        print("your dice results" + str(self.one_hundred_rolls))
+        return self.one_hundred_rolls
 
 
     def add(self):
@@ -191,10 +192,11 @@ class DiceGame(Dice, NewController):
                 self.game_state = "player_1_declare_intent_stage"
 
         elif self.game_state == "player_1_going_hot":
-            print("no dice you wasted your chance")
+            self.roll_state = "Your roll was wasted"
             self.game_state = "player_2_declare_intent_stage"
         elif self.game_state == "player_2_going_hot":
-            print("no dice you wasted your chance")
+            self.roll_state = "Your roll was wasted"
+
             self.game_state = "player_1_declare_intent_stage"
 
     def cold_bet(self):
@@ -253,8 +255,8 @@ class DiceGame(Dice, NewController):
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
-                self.player1pile += self.rolls[0]
-                self.player2pile -= self.rolls[0]
+                self.player1pile += self.one_hundred_rolls[0]
+                self.player2pile -= self.one_hundred_rolls[0]
                 if self.player2pile < 0:
                     self.player2pile = 0
                 self.game_state = "player_2_intent_stage"
@@ -268,9 +270,9 @@ class DiceGame(Dice, NewController):
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
-                self.player2pile += self.rolls[0]
+                self.player2pile += self.one_hundred_rolls[0]
 
-                self.player1pile -= self.rolls[0]
+                self.player1pile -= self.one_hundred_rolls[0]
                 if self.player1pile < 0:
                     self.player1pile = 0
                 self.game_state = "player_1_intent_stage"
@@ -282,27 +284,27 @@ class DiceGame(Dice, NewController):
                 self.roll_state = "High Even Number, Attack the ante "
 
 
-                print("attacking player 2 pile")
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
-                subtracted_amount = min(self.rolls[0], self.ante)
+                subtracted_amount = min(self.one_hundred_rolls[0], self.ante)
                 self.ante -= subtracted_amount
                 self.player1pile += subtracted_amount
+
+
                 if self.ante < 0:
                     self.ante = 0
                 self.game_state = "player_2_intent_stage"
 
 
 
-            elif self.game_state == "player_2_declare_intent_stage":
-                self.roll_state = "High Even Number, Attack player 1 pile"
+            elif self.game_state == "player_2_rolls":
+                self.roll_state = "High Even Number, Attack the ante"
 
-                print("attacking player 2 pile")
                 print(self.player1pile)
                 print(self.player2pile)
                 self.roll_one_d_hundred()
-                subtracted_amount = min(self.rolls[0], self.ante)
+                subtracted_amount = min(self.one_hundred_rolls[0], self.ante)
                 self.ante -= subtracted_amount
                 self.player2pile += subtracted_amount
 
@@ -320,6 +322,7 @@ class DiceGame(Dice, NewController):
     def update(self):
         self.keyPress()
         if self.game_state == "player_1_declare_intent_stage":
+            self.one_hundred_rolls = 0
             if self.isTPressed:
                 print("hithere you ")
                 self.game_state = "player_1_rolls"
@@ -355,6 +358,8 @@ class DiceGame(Dice, NewController):
 
 
         elif self.game_state == "player_2_declare_intent_stage":
+            self.one_hundred_rolls = 0
+
             if self.isTPressed:
                 print("hithere you ")
                 self.game_state = "player_2_rolls"
@@ -391,13 +396,13 @@ class DiceGame(Dice, NewController):
         DISPLAY.fill((0,0,0))
 
         if self.game_state == "player_1_declare_intent_stage":
-            DISPLAY.blit(self.font.render(f"Player 1: press T forr cold P For hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 1: press T for cold P For hot", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
 
         elif self.game_state == "player_2_declare_intent_stage":
-            DISPLAY.blit(self.font.render(f"Player 2: press T forr cold P for hot", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"Player 2: press T for cold P for hot", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.font.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (300, 300))
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
@@ -453,6 +458,7 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f"Ante: {self.ante}", True, (255, 255, 255)), (400, 400))
             DISPLAY.blit(self.font.render(f" Player 1 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)), (155, 255))
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+            DISPLAY.blit(self.font.render(f"1d100 SItting on: {self.one_hundred_rolls}", True, (255, 255, 255)), (5, 555))
 
         elif self.game_state == "player_2_results":
             DISPLAY.blit(self.font.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 200))
@@ -461,6 +467,7 @@ class DiceGame(Dice, NewController):
             DISPLAY.blit(self.font.render(f" Player 2 rolls a {self.rolls} PRESS B when ready", True, (255, 255, 255)),
                          (155, 255))
             DISPLAY.blit(self.font.render(f" {self.roll_state}", True, (255, 255, 255)), (5, 355))
+            DISPLAY.blit(self.font.render(f"1d100 sitting on: {self.one_hundred_rolls}", True, (255, 255, 255)), (5, 555))
 
 
 
