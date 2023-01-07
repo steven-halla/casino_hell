@@ -4,6 +4,8 @@ from typing import *
 import time
 import pygame.freetype
 from collections import defaultdict
+import random
+
 
 import pygame
 
@@ -100,72 +102,71 @@ class NewController:
 
 
 
-class Dice:
-    def __init__(self, sides: int):
-        self.sides = sides
-        self.rolls = []
-        self.one_hundred_rolls = [0]
-    #rename roll method to roll 2d6 method
-    def roll_two_d_six(self) -> List[int]:
-        self.sides = 6
-        roll1 = random.randint(1, self.sides)
-        roll2 = random.randint(1, self.sides)
-        # roll1 = 6
-        # roll2 = 5
-        self.rolls = [roll1, roll2]
-        print(self.rolls)
-        return self.rolls
-
-
-    def roll_one_d_hundred(self) -> List[int]:
-        self.sides = 76
-
-        roll1 = random.randint(1, self.sides)
-        self.one_hundred_rolls = [roll1 + 24]
-        return self.one_hundred_rolls
-
-
-    def add(self):
-        # print(str(self.rolls))
-        return self.rolls[0] + self.rolls[1]
 
 
 
 
+ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+suits = ['spades', 'diamonds', 'clubs', 'hearts']
+
+class Deck:
+    def __init__(self, ranks, suits):
+        self.ranks = ranks
+        self.suits = suits
+        self.rank_strings = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight",
+                             9: "Nine", 10: "Ten", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
+        self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
+        self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits for rank in
+                      self.ranks]
+        self.cards.append(('Joker', 'red'))
+        self.cards.append(('Joker', 'black'))
 
 
-class Craps(Dice, NewController):
-    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT, sides):
-        super().__init__(sides)
+
+    def __len__(self):
+        return len(self.cards)
+
+    def __getitem__(self, position):
+        return self.cards[position]
+
+    def draw_card(self):
+
+        card = self.cards.pop()
+        return card
+
+    def shuffle(self):
+        random.shuffle(self.cards)
+
+    def draw_hand(self, num_cards):
+        hand = []
+        for i in range(num_cards):
+            hand.append(self.draw_card())
+        return hand
+
+    def add_rank(self, rank):
+        self.ranks.append(rank)
+        self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits for rank in self.ranks]
+
+    def add_suit(self, suit):
+        self.suits.append(suit)
+        self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
+                      for rank in self.ranks]
+
+
+
+
+class Blackjack(Deck, NewController):
+    def __init__(self, SCREEN_WIDTH, SCREEN_HEIGHT, ranks, suits):
+        super().__init__(ranks, suits)
         NewController.__init__(self)
         self.font = pygame.font.Font(None, 36)
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
         self.message_display = ""
         self.game_state = "welcome_screen"
-        self.exit_point_rolling_loop = False
-        self.forced_min_bet = False
-        self.player_wins = True
-
-        self.choices = ["Bet", "Quit", "Magic"]
-
-        self.bet = 0
-        self.bet_total = 0
-        self.bet_counter = 0
-
-
-        self.rollState = True
-        self.betState = True
-        self.round1 = True
-        self.point_roll_phase = False
-
-        self.comingOutRoll = True
-        self.roll_phase = False
-
-
-        self.phase_two_bet = False
-
-        self.point_roll = 0
+        self.bet = 10
+        self.player_money = 100
+        self.enemy_money = 100
 
 
 
@@ -183,45 +184,7 @@ class Craps(Dice, NewController):
                     running = False
             pygame.display.update()
 
-
-
-    def resultsComeOutRoll(self):
-        if self.add() == 2 or self.add() == 3 or self.add() == 12:
-            self.message_display = f"You rolled an {self.rolls}"
-
-        elif self.add() == 7:
-            print("You win the game congrats")
-
-        else:
-            self.point_roll = self.add()
-            print("Your point roll is now an:" + str(self.point_roll))
-            self.message_display = f"Your point roll is now an {self.point_roll} Match it to win!"
-
-
-    def resultsPointRoll(self):
-        if self.add() == self.point_roll:
-            self.message_display = "you win"
-            print("you win")
-
-        elif self.add() == 7:
-            self.message_display = "you lose"
-            print("you lose")
-
-        else:
-            self.message_display = "roll again"
-            print("roll agian")
-            self.bet_counter += 1
-            print(self.bet_counter)
-
-
-
-
-
-
-
     def place_bet(self):
-        self.message_display = "Make your  bet Press UP or DOWN on Dpad to change bet"
-
         if self.isUpPressed:
             self.bet += 10
             pygame.time.delay(100)
@@ -235,92 +198,22 @@ class Craps(Dice, NewController):
         if self.bet < 10:
             self.bet = 10
 
-        if self.forced_min_bet == True:
-            if self.bet < 50:
-                self.bet = 50
-
         if self.bet > 100:
             self.bet = 100
 
-        if self.isBPressed:
-            self.bet_total += self.bet
-            self.comingOutRoll = False
-            self.roll_phase = True
-            self.isBPressed = False
-            if self.game_state == "point_roll_screen":
-                print('hi')
-                self.game_state = "point_rolling"
-
-            elif self.game_state == "point_bet_phase":
-                self.game_state = "point_final"
-
-            # need to do logic for if player is out of money
-
-
-
-
-
     def update(self):
-        # delta between last update time in milliseconds
         # print("update() - state: " + str(self.game_state) + ", start at: " )
 
         self.handle_keyboard_input()
+
         if self.game_state == "welcome_screen":
-           if self.is1Pressed:
-               self.game_state = "craps_screen"
-
-        elif self.game_state == "craps_screen":
-            if self.comingOutRoll is True:
-                self.place_bet()
-
-            elif self.comingOutRoll is False and self.roll_phase == True:
-
-                self.message_display = "time to roll the dice"
-
-                self.roll_two_d_six()
-                self.resultsComeOutRoll()
-                self.roll_phase = False
-                self.phase_two_bet = True
-                self.roll_phase = False
-                self.game_state = "point_roll_screen"
-
-        elif self.game_state == "point_roll_screen":
-
-            self.message_display = "Time to place your 2nd bet"
-            self.place_bet()
-
-
-
-        elif self.game_state == "point_rolling" :
-            self.message_display = "press 1 to start rolling again"
-            if self.exit_point_rolling_loop == True:
-                self.game_state = "point_bet_phase"
-                print(self.game_state)
-            elif self.is1Pressed == True and self.exit_point_rolling_loop == False:
-                self.message_display = "time to roll the dice"
-                self.roll_two_d_six()
-                self.resultsPointRoll()
-                self.message_display = f"your result is :{self.rolls}"
-                self.is1Pressed = False
-                self.bet_counter += 1
-                if self.bet_counter > 4:
-                    self.exit_point_rolling_loop = True
-
-        if self.game_state == "point_bet_phase":
-            self.forced_min_bet = True
-            self.message_display = "push up and down to bet. Mimum of 50"
-            self.place_bet()
-            # self.game_state = "point_final"
-
-        elif self.game_state == "point_final":
-            self.message_display = "press 1 to start rolling the dice"
+            # self.shuffle()
+            self.message_display = "Press the 1 key to start game"
             if self.is1Pressed:
-                self.message_display = "time to roll the dice"
-                self.roll_two_d_six()
-                self.resultsPointRoll()
-                self.message_display = f"your result is :{self.rolls}"
-                self.is1Pressed = False
+                self.game_state = "bet_phase"
 
+        elif self.game_state == "bet_phase":
+            self.message_display = "Place your bet 10 coin max. Press up and down "
 
 
 
@@ -329,33 +222,16 @@ class Craps(Dice, NewController):
         DISPLAY.fill((0,0,0))
 
         if self.game_state == "welcome_screen":
-            DISPLAY.blit(self.font.render(f"welcome to craps: press 1", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
 
-        elif self.game_state == "craps_screen":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
-            DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
-            DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
-            DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
-
-
-        elif self.game_state == "point_roll_screen" or self.game_state == "point_rolling":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
-            DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
-            DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
-            DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
-            DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
-
-        elif self.game_state == "point_bet_phase" or self.game_state == "point_final":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (33, 500))
-            DISPLAY.blit(self.font.render(f"Player total bet:{self.bet_total}", True, (255, 255, 255)), (425, 222))
-            DISPLAY.blit(self.font.render(f"Your betting: {self.bet} this round", True, (255, 255, 255)), (425, 255))
-            DISPLAY.blit(self.font.render(f"Dice landed on: {self.rolls} ", True, (255, 255, 255)), (11, 255))
-            DISPLAY.blit(self.font.render(f"Point Roll: {self.point_roll} ", True, (255, 255, 255)), (11, 205))
+        elif self.game_state == "bet_phase":
+            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
 
 
 
 
 
 
-game = Craps(SCREEN_WIDTH, SCREEN_HEIGHT, 6)
+
+game = Blackjack(SCREEN_WIDTH, SCREEN_HEIGHT, ranks, suits)
 game.start()
