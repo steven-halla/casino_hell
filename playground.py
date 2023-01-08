@@ -218,7 +218,7 @@ class Blackjack(Deck, NewController):
         self.player_score = 0
         self.enemy_score = 0
         self.player_hand = [('Ace', 'Diamonds', 11), ('King', 'Diamonds', 10)]
-        self.enemy_hand = []
+        self.enemy_hand = [('King', 'Hearts', 11), ('Ace', 'Hearts', 10)]
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
         self.ace_value = 1
@@ -307,7 +307,7 @@ class Blackjack(Deck, NewController):
             # If the player has an ACE, check which value is better for the player
 
 
-            self.enemy_hand = self.draw_hand(2)
+            # self.enemy_hand = self.draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
