@@ -176,6 +176,7 @@ class Blackjack(Deck, NewController):
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
         self.message_display = ""
+        self.second_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
         self.player_money = 100
@@ -186,6 +187,8 @@ class Blackjack(Deck, NewController):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
+
+
 
 
 
@@ -227,12 +230,14 @@ class Blackjack(Deck, NewController):
 
         if self.game_state == "welcome_screen":
             self.shuffle()
-            self.message_display = "Press the 1 key to start game"
+            self.message_display = "Press the 1 key to start game or O to quit"
             if self.is1Pressed:
                 self.game_state = "bet_phase"
+            elif self.isOPressed:
+                print("quiting game")
 
         elif self.game_state == "bet_phase":
-            self.message_display = "Place your bet 10 coin max. Press up and down "
+            self.message_display = "Place your bet 10 coin max. Press up and down. Press T when ready "
             self.place_bet()
             if self.isTPressed:
                 self.game_state = "draw_phase"
@@ -252,14 +257,51 @@ class Blackjack(Deck, NewController):
             print("enemy score is: " + str(self.enemy_score))
             self.game_state = "menu_screen"
 
+
+
         elif self.game_state == "player_draw_one_card":
             self.player_hand += self.draw_hand(1)
             self.compute_hand_value(self.player_hand)
+            self.player_score = self.compute_hand_value(self.player_hand)
             print("Player hand is now" + str(self.player_hand))
+            print("Player score is now" + str(self.player_score))
+            if self.player_score > 21:
+                self.player_money -= self.bet
+                self.enemy_money += self.bet
+                self.game_state = "results_screen"
+
+
+            self.game_state = "menu_screen"
+
+        elif self.game_state == "enemy_draw_one_card":
+            while self.enemy_score < 17:
+
+
+                self.enemy_hand += self.draw_hand(1)
+                self.compute_hand_value(self.enemy_hand)
+                self.enemy_score = self.compute_hand_value(self.enemy_hand)
+                print("enemy hand is now" + str(self.enemy_hand))
+                print("enemy score is now" + str(self.enemy_score))
+
+                if self.enemy_score > 21:
+                    self.player_money += self.bet
+                    self.enemy_money -= self.bet
+                    print("enemy bust")
+                    self.game_state = "results_screen"
+
+                elif self.enemy_score > 16 and self.enemy_score < 22:
+                    print("stay here")
+                    self.game_state = "results_screen"
+
+
 
 
         elif self.game_state == "menu_screen":
             self.message_display = "Menu screen press T to select"
+            if self.player_score > 21:
+                self.message_display = "You bust and lose."
+                self.game_state = "results_screen"
+
             if self.isUpPressed:
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
@@ -279,6 +321,26 @@ class Blackjack(Deck, NewController):
                 self.isDownPressed = False
 
 
+        elif self.game_state == "results_screen":
+            if self.player_score > self.enemy_score:
+                self.second_message_display = "You win player"
+            elif self.player_score < self.enemy_score:
+                self.second_message_display = "You lose player "
+
+            elif self.player_score == self.enemy_score:
+                self.second_message_display = "It's a draw nobody wins"
+
+            self.message_display = "Press B to play again or O to quit"
+
+            if self.isBPressed:
+                self.game_state = "welcome_screen"
+                self.isBPressed = False
+
+            elif self.isOPressed:
+                print("Exit")
+                self.isOPressed = False
+
+
 
 
 
@@ -293,6 +355,7 @@ class Blackjack(Deck, NewController):
 
         elif self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"{self.bet}", True, (255, 255, 255)), (10, 105))
 
 
         elif self.game_state == "menu_screen":
@@ -316,7 +379,8 @@ class Blackjack(Deck, NewController):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 155))
                 if self.isTPressed:
-                    print("time to bet")
+                    print("we are going to the next phase")
+                    self.game_state = "enemy_draw_one_card"
                     self.isTPressed = False
                     # self.betPhase = True
                     # self.game_state = "bet_phase"
@@ -327,7 +391,8 @@ class Blackjack(Deck, NewController):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 205))
                 if self.isTPressed:
-                    print("This will exit our game")
+                    print("Time to draw a card")
+                    self.game_state = "player_draw_one_card"
                     self.isTPressed = False
 
 
@@ -339,6 +404,10 @@ class Blackjack(Deck, NewController):
                 if self.isTPressed:
                     print("In the future you can cast magic here")
                     self.isTPressed = False
+
+            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 100))
+
+
             DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (10, 300))
             DISPLAY.blit(self.font.render(f"Player score:{self.player_score}", True, (255, 255, 255)), (10, 350))
             DISPLAY.blit(self.font.render(f"Player money:{self.player_money}", True, (255, 255, 255)), (10, 400))
@@ -347,6 +416,21 @@ class Blackjack(Deck, NewController):
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
             DISPLAY.blit(self.font.render(f"Enemy money:{self.enemy_money}", True, (255, 255, 255)), (10, 550))
 
+        elif self.game_state == "results_screen":
+            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+            DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 45))
+
+
+            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 100))
+
+
+            DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (10, 300))
+            DISPLAY.blit(self.font.render(f"Player score:{self.player_score}", True, (255, 255, 255)), (10, 350))
+            DISPLAY.blit(self.font.render(f"Player money:{self.player_money}", True, (255, 255, 255)), (10, 400))
+
+            DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (10, 450))
+            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
+            DISPLAY.blit(self.font.render(f"Enemy money:{self.enemy_money}", True, (255, 255, 255)), (10, 550))
 
 
 
