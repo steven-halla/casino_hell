@@ -262,6 +262,11 @@ class Blackjack(Deck, NewController):
             self.player_score = self.compute_hand_value(self.player_hand)
             print("Player score is: " + str(self.player_score))
             # Check if the player has an ACE in their hand
+
+
+
+
+            #################################need to test aces if a player gets multiple aces
             if self.player_score > 21:
                 print("hi greater than 10")
                 self.rank_values["Ace"] = 1
