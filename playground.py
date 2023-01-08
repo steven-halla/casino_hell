@@ -118,7 +118,7 @@ class Deck:
                              9: "Nine", 10: "Ten", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
         self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
         self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
-                            "King": 10, "Ace": (1,11)}
+                            "King": 10, "Ace": 11}
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
 
@@ -130,6 +130,8 @@ class Deck:
         # self.cards.append(('Joker', 'red', 0))
         # self.cards.append(('Joker', 'black', 0))
 
+
+
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
         # Initialize the point value of the hand to 0
         hand_value = 0
@@ -137,10 +139,6 @@ class Deck:
         for card in hand:
             # Add the point value of the card to the hand value
             hand_value += card[2]
-            # If the hand value is above 21 and the hand contains an ace, set the value of the ace to 1
-            if hand_value > 21 and "Ace" in [card[0] for card in hand]:
-                self.rank_values["Ace"] = 1
-                hand_value -= 10
         # Return the final hand value
         return hand_value
 
@@ -195,7 +193,7 @@ class Blackjack(Deck, NewController):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
-        self.ace_value = 0
+        self.ace_value = 1
 
 
 
@@ -214,6 +212,8 @@ class Blackjack(Deck, NewController):
                 if event.type == pygame.QUIT:
                     running = False
             pygame.display.update()
+
+
 
     def place_bet(self):
         if self.isUpPressed:
@@ -262,6 +262,9 @@ class Blackjack(Deck, NewController):
             self.player_score = self.compute_hand_value(self.player_hand)
             print("Player score is: " + str(self.player_score))
             # Check if the player has an ACE in their hand
+            if self.player_score > 21:
+                print("hi greater than 10")
+                self.rank_values["Ace"] = 1
 
 
 
@@ -280,7 +283,9 @@ class Blackjack(Deck, NewController):
             self.player_hand += self.draw_hand(1)
             self.compute_hand_value(self.player_hand)
             self.player_score = self.compute_hand_value(self.player_hand)
-
+            if self.player_score > 10:
+                print("hi greater than 10")
+                self.rank_values["Ace"] = 1
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
