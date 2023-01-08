@@ -153,10 +153,10 @@ class Deck:
         # print(f"final hand_value: {hand_value}")
 
         if len(hand) == 2 and (
-                (hand[0][0] in self.rank_values and self.rank_values[hand[0][0]] in (10, 11)) or
-                (hand[1][0] in self.rank_values and self.rank_values[hand[1][0]] in (10, 11))
+                (hand[0][0] == "Ace" and hand[1][0] in (10, "Jack", "Queen", "King")) or
+                (hand[1][0] == "Ace" and hand[0][0] in (10, "Jack", "Queen", "King"))
         ):
-            self.isBlackJack = True
+            print("you got the black jack")
 
         # if len(hand) == 2 and (self.rank_values[hand[0][0]] == 10 or self.rank_values[hand[1][0]] == 10):
         #     print("Player has a 10-point value card")
@@ -217,8 +217,8 @@ class Blackjack(Deck, NewController):
         self.enemy_money = 100
         self.player_score = 0
         self.enemy_score = 0
-        self.player_hand = [('Ace', 'Diamonds', 11), ('King', 'Diamonds', 10)]
-        self.enemy_hand = [('King', 'Hearts', 11), ('Ace', 'Hearts', 10)]
+        self.player_hand = [(10, 'Diamonds', 10), ('Ace', 'Spades', 11)]
+        self.enemy_hand = [(10, 'Hearts', 10), (2, 'Spades', 2)]
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
         self.ace_value = 1
