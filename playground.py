@@ -118,9 +118,15 @@ class Deck:
                              9: "Nine", 10: "Ten", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
         self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
         self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
-                            "King": 10, "Ace": 11}
+                            "King": 10, "Ace": (1,11)}
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
+
+
+        for suit in self.suits:
+            if "Ace" in self.ranks:
+                self.cards.append(("Ace", suit, 1))
+                self.cards.append(("Ace", suit, 11))
         # self.cards.append(('Joker', 'red', 0))
         # self.cards.append(('Joker', 'black', 0))
 
@@ -187,6 +193,7 @@ class Blackjack(Deck, NewController):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
+        self.ace_value = 1
 
 
 
@@ -223,6 +230,8 @@ class Blackjack(Deck, NewController):
         if self.bet > 100:
             self.bet = 100
 
+
+
     def update(self):
         # print("update() - state: " + str(self.game_state) + ", start at: " )
 
@@ -250,9 +259,15 @@ class Blackjack(Deck, NewController):
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
             print("Player score is: " + str(self.player_score))
+            # Check if the player has an ACE in their hand
+
+
+
+            # If the player has an ACE, check which value is better for the player
+
 
             self.enemy_hand = self.draw_hand(2)
-            print("Player hand is" + str(self.enemy_hand))
+            print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
             self.game_state = "menu_screen"
@@ -263,6 +278,7 @@ class Blackjack(Deck, NewController):
             self.player_hand += self.draw_hand(1)
             self.compute_hand_value(self.player_hand)
             self.player_score = self.compute_hand_value(self.player_hand)
+
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21:
@@ -289,9 +305,9 @@ class Blackjack(Deck, NewController):
                     print("enemy bust")
                     self.game_state = "results_screen"
 
-                elif self.enemy_score > 16 and self.enemy_score < 22:
-                    print("stay here")
-                    self.game_state = "results_screen"
+            if self.enemy_score > 16 and self.enemy_score < 22:
+                print("stay here")
+                self.game_state = "results_screen"
 
 
 
