@@ -130,15 +130,26 @@ class Deck:
         # self.cards.append(('Joker', 'red', 0))
         # self.cards.append(('Joker', 'black', 0))
 
-
-
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
         # Initialize the point value of the hand to 0
         hand_value = 0
+        # Initialize a counter to track the number of aces in the hand
+        num_aces = 0
         # Iterate through the cards in the hand
         for card in hand:
+            # If the card is an ace, increment the counter
+            if card[0] == "Ace":
+                num_aces += 1
             # Add the point value of the card to the hand value
             hand_value += card[2]
+        print(f"num_aces: {num_aces}")
+        print(f"initial hand_value: {hand_value}")
+        # While there is at least one ace in the hand and the hand value is more than 21,
+        # subtract 10 from the hand value to give the ace a value of 1 instead of 11
+        while num_aces > 0 and hand_value > 21:
+            hand_value -= 10
+            num_aces -= 1
+        print(f"final hand_value: {hand_value}")
         # Return the final hand value
         return hand_value
 
@@ -257,9 +268,10 @@ class Blackjack(Deck, NewController):
         elif self.game_state == "draw_phase":
 
             self.message_display = "dealing the cards"
-            self.player_hand = self.draw_hand(2)
+            # self.player_hand = self.draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
+
             print("Player score is: " + str(self.player_score))
             # Check if the player has an ACE in their hand
 
