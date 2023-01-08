@@ -113,6 +113,7 @@ suits = ['spades', 'diamonds', 'clubs', 'hearts']
 class Deck:
     def __init__(self, ranks, suits):
         self.ranks = ranks
+        self.isBlackJack =  False
         self.suits = suits
         self.rank_strings = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight",
                              9: "Nine", 10: "Ten", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
@@ -142,15 +143,30 @@ class Deck:
                 num_aces += 1
             # Add the point value of the card to the hand value
             hand_value += card[2]
-        print(f"num_aces: {num_aces}")
-        print(f"initial hand_value: {hand_value}")
+        # print(f"num_aces: {num_aces}")
+        # print(f"initial hand_value: {hand_value}")
         # While there is at least one ace in the hand and the hand value is more than 21,
         # subtract 10 from the hand value to give the ace a value of 1 instead of 11
         while num_aces > 0 and hand_value > 21:
             hand_value -= 10
             num_aces -= 1
-        print(f"final hand_value: {hand_value}")
+        # print(f"final hand_value: {hand_value}")
+
+        if len(hand) == 2 and (
+                (hand[0][0] in self.rank_values and self.rank_values[hand[0][0]] in (10, 11)) or
+                (hand[1][0] in self.rank_values and self.rank_values[hand[1][0]] in (10, 11))
+        ):
+            self.isBlackJack = True
+
+        # if len(hand) == 2 and (self.rank_values[hand[0][0]] == 10 or self.rank_values[hand[1][0]] == 10):
+        #     print("Player has a 10-point value card")
+        #
+        #     print("The player has 1 ace and 1 10-point card in their hand, and there are only 2 cards in the hand.")
         # Return the final hand value
+
+        # if len(hand) == 2 and hand[0][1] == 11 and hand[1][1] == 10:
+        #     print("Player has a Blackjack")
+
         return hand_value
 
     def __len__(self):
@@ -194,21 +210,18 @@ class Blackjack(Deck, NewController):
         self.screen_height = SCREEN_HEIGHT
         self.message_display = ""
         self.second_message_display = ""
+        self.thrid_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
         self.player_money = 100
         self.enemy_money = 100
         self.player_score = 0
         self.enemy_score = 0
-        self.player_hand = []
+        self.player_hand = [('Ace', 'Diamonds', 11), ('King', 'Diamonds', 10)]
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
         self.ace_value = 1
-
-
-
-
 
     def start(self):
         running = True
@@ -268,9 +281,18 @@ class Blackjack(Deck, NewController):
         elif self.game_state == "draw_phase":
 
             self.message_display = "dealing the cards"
+            self.second_message_display = ""
+            self.thrid_message_display = ""
             # self.player_hand = self.draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
+
+
+            # print("i'm a blackjack")
+            # self.thrid_message_display = "player got a black jack auto win, now you get X3 of your bet11"
+            # self.game_state = "results_screen"
+
+
 
             print("Player score is: " + str(self.player_score))
             # Check if the player has an ACE in their hand
@@ -279,9 +301,6 @@ class Blackjack(Deck, NewController):
 
 
             #################################need to test aces if a player gets multiple aces
-            if self.player_score > 21:
-                print("hi greater than 10")
-                self.rank_values["Ace"] = 1
 
 
 
@@ -309,13 +328,14 @@ class Blackjack(Deck, NewController):
             if self.player_score > 21:
                 self.player_money -= self.bet
                 self.enemy_money += self.bet
+                self.second_message_display = "player bust you lose"
                 self.game_state = "results_screen"
 
 
             self.game_state = "menu_screen"
 
         elif self.game_state == "enemy_draw_one_card":
-            while self.enemy_score < 17:
+            while self.enemy_score < 17 and self.enemy_score <= self.player_score:
 
 
                 self.enemy_hand += self.draw_hand(1)
@@ -324,10 +344,13 @@ class Blackjack(Deck, NewController):
                 print("enemy hand is now" + str(self.enemy_hand))
                 print("enemy score is now" + str(self.enemy_score))
 
+
+
                 if self.enemy_score > 21:
                     self.player_money += self.bet
                     self.enemy_money -= self.bet
                     print("enemy bust")
+                    self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
             if self.enemy_score > 16 and self.enemy_score < 22:
@@ -363,9 +386,9 @@ class Blackjack(Deck, NewController):
 
 
         elif self.game_state == "results_screen":
-            if self.player_score > self.enemy_score:
+            if self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player"
-            elif self.player_score < self.enemy_score:
+            elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player "
 
             elif self.player_score == self.enemy_score:
@@ -460,9 +483,10 @@ class Blackjack(Deck, NewController):
         elif self.game_state == "results_screen":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
             DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 45))
+            DISPLAY.blit(self.font.render(f"{self.thrid_message_display}", True, (255, 255, 255)), (10, 100))
 
 
-            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 100))
+            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
 
 
             DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (10, 300))
