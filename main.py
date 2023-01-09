@@ -924,6 +924,7 @@ class CoinFlipSandyScreen(Screen):
         self.third_message_display = ""
         self.choices = ["Heads", "Tails", "Magic"]
         self.yes_or_no_menu = ["Yes", "No"]
+        self.magic_menu_selector = ["Bluff", "Reveal", "Avatar_of_luck"]
         self.game_state = "welcome_screen"
         self.choice_sequence = True
         self.bet = 0
@@ -932,6 +933,7 @@ class CoinFlipSandyScreen(Screen):
         self.coinFlipSandyDefeated = False
         self.current_index = 0
         self.yes_no_current_index = 0
+        self.magic_menu_index = 0
 
 
 
@@ -1055,6 +1057,41 @@ class CoinFlipSandyScreen(Screen):
             elif self.current_index == 2:
                 if controller.isTPressed:
                     print("This is how you pick magic")
+                    self.game_state = "magic_menu"
+
+        elif self.game_state == "magic_menu":
+            self.message_display = "Pick a magic spell and wreck havic"
+
+            if controller.isUpPressed:
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) - 1
+                else:
+                    self.magic_menu_index -= 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) + 1
+                else:
+                    self.magic_menu_index += 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isDownPressed = False
+
+
+            if self.magic_menu_index == 0:
+                if controller.isTPressed:
+                    print("You cast bluff")
+
+            elif self.magic_menu_index == 1:
+                if controller.isTPressed:
+                    print("You cast reveal")
+
+            elif self.magic_menu_index == 2:
+                if controller.isTPressed:
+                    print("you cast avatar of luck")
+
+
 
         elif self.game_state == "results_screen":
             self.second_message_display = " "
@@ -1208,7 +1245,40 @@ class CoinFlipSandyScreen(Screen):
         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
 
-        if self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
+        if self.game_state == "magic_menu" :
+            if self.magic_menu_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
+
+
+
+            elif self.magic_menu_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
+
+
+
+
+            elif self.magic_menu_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 255))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+                (700, 210))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+                (700, 260))
+
+        elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (700, 160))
