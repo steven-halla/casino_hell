@@ -923,6 +923,8 @@ class CoinFlipSandyScreen(Screen):
 
 
         self.message_display = ""
+        self.second_message_display = ""
+        self.third_message_display = ""
 
 
         self.game_state = "welcome_screen"
@@ -938,6 +940,26 @@ class CoinFlipSandyScreen(Screen):
             print("you got 1 exp")
         else:
             print("your level is too high no exp for you")
+
+    def place_bet(self, state: "GameState"):
+        controller = state.controller
+        controller.update(state)
+
+        if controller.isUpPressed:
+            self.bet += 10
+            pygame.time.delay(200)
+            self.isUpPressed = False
+
+        elif controller.isDownPressed:
+            self.bet -= 10
+            pygame.time.delay(200)
+            self.isDownPressed = False
+
+        if self.bet < 10:
+            self.bet = 10
+
+        if self.bet > 100:
+            self.bet = 100
 
 
     def flipCoin(self):
@@ -963,11 +985,22 @@ class CoinFlipSandyScreen(Screen):
             self.message_display = "This is the welcome screen. Press R to continue"
 
             if controller.isRPressed:
+                self.game_state = "bet_screen"
+
+        elif self.game_state == "bet_screen":
+            self.message_display = "This is the bet scree. Press up and down to change your bet."
+            self.second_message_display = "When you are ready press T to continue."
+            controller = state.controller
+            self.place_bet(state)
+            if controller.isTPressed:
                 self.game_state = "choose_heads_or_tails_message"
 
 
 
+
+
         elif self.game_state == "choose_heads_or_tails_message":
+            self.message_display = "Now Choose heads or tails. K for tails. Q for heads"
             if controller.isKPressed:
                 self.players_side = "tails"
                 print("you choosed tails")
@@ -1025,18 +1058,23 @@ class CoinFlipSandyScreen(Screen):
 
         DISPLAY.blit(self.new_font.render(
             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
-            True, (255, 255, 255)), (10, 90))
+            True, (255, 255, 255)), (10, 150))
         DISPLAY.blit(self.new_font.render(
             f" player Money: {state.player.playerMoney}",
             True, (255, 255, 255)), (10, 190))
 
         # Draw the welcome message or choose bet message based on the game state
-        if self.game_state == "welcome_screen":
-            DISPLAY.blit(self.font.render(f"fsdf{self.message_display}", True, (255, 255, 255)), (10, 10))
+
+        DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+        DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
+        DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
+        DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
 
 
 
-        elif self.game_state == "you_won_the_toss":
+
+
+        if self.game_state == "you_won_the_toss":
             DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "you_lost_the_toss":
             DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} lost! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
