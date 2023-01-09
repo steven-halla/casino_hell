@@ -1061,7 +1061,7 @@ class CoinFlipSandyScreen(Screen):
                 # self.third_message_display = "You won"
                 state.player.playerMoney += self.bet
                 self.coinFlipSandyMoney -= self.bet
-                pygame.time.delay(3000)
+                pygame.time.delay(1000)
 
                 self.game_state = "you_won_the_toss"
 
@@ -1194,17 +1194,17 @@ class CoinFlipSandyScreen(Screen):
                     (650, 255))
 
         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
-                if self.yes_or_no_menu == 0:
-                    DISPLAY.blit(
-                        self.font.render(f"->", True, (255, 255, 255)),
-                        (650, 155))
+            if self.yes_or_no_menu == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
 
 
 
-                elif self.yes_or_no_menu == 1:
-                    DISPLAY.blit(
-                        self.font.render(f"->", True, (255, 255, 255)),
-                        (650, 205))
+            elif self.yes_or_no_menu == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
 
 
 
