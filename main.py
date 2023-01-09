@@ -1109,6 +1109,23 @@ class CoinFlipSandyScreen(Screen):
                 state.mainScreen.start(state)
 
 
+            elif controller.isUpPressed:
+                if not hasattr(self, "yes_no_current_index"):
+                    self.yes_no_current_index = len(self.yes_or_no_menu) - 1
+                else:
+                    self.yes_no_current_index -= 1
+                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "yes_no_current_index"):
+                    self.yes_no_current_index = len(self.yes_or_no_menu) + 1
+                else:
+                    self.yes_no_current_index += 1
+                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                controller.isDownPressed = False
+
+
         elif self.game_state == "you_lost_the_toss" :
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
             self.second_message_display = f"Press J to play again or Q to exit"
@@ -1125,6 +1142,23 @@ class CoinFlipSandyScreen(Screen):
                 print("quiting")
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
+
+
+            elif controller.isUpPressed:
+                if not hasattr(self, "yes_no_current_index"):
+                    self.yes_no_current_index = len(self.yes_or_no_menu) - 1
+                else:
+                    self.yes_no_current_index -= 1
+                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "yes_no_current_index"):
+                    self.yes_no_current_index = len(self.yes_or_no_menu) + 1
+                else:
+                    self.yes_no_current_index += 1
+                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                controller.isDownPressed = False
 
 
 
@@ -1152,17 +1186,18 @@ class CoinFlipSandyScreen(Screen):
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
         DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
 
-        DISPLAY.blit(
-            self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-            (700, 160))
+        if self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+                (700, 160))
 
-        DISPLAY.blit(
-            self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-            (700, 210))
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                (700, 210))
 
-        DISPLAY.blit(
-            self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-            (700, 260))
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+                (700, 260))
 
 
         if self.game_state == "bet_screen":
@@ -1194,6 +1229,15 @@ class CoinFlipSandyScreen(Screen):
                     (650, 255))
 
         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+            DISPLAY.blit(
+                self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
+                (700, 210))
+
+
             if self.yes_no_current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
