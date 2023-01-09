@@ -926,6 +926,7 @@ class CoinFlipSandyScreen(Screen):
         self.second_message_display = ""
         self.third_message_display = ""
         self.choices = ["Heads", "Tails", "Magic"]
+        self.yes_or_no_menu = ["Yes", "No"]
 
 
 
@@ -936,6 +937,7 @@ class CoinFlipSandyScreen(Screen):
         self.coinFlipSandyMoney = 700
         self.coinFlipSandyDefeated = False
         self.current_index = 0
+        self.yes_no_current_index = 0
 
 
 
@@ -944,6 +946,8 @@ class CoinFlipSandyScreen(Screen):
             print("you got 1 exp")
         else:
             print("your level is too high no exp for you")
+
+
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -971,7 +975,7 @@ class CoinFlipSandyScreen(Screen):
         # in the future will have states to handle coin flip percentages
         # an item can add .1 to your rolls for heads, or -.1 for tails
         coin = random.random()
-        if coin < 0.9:
+        if coin < 0.3:
             print("coin landed on heads")
             self.result = "heads"
         else:
@@ -1107,9 +1111,18 @@ class CoinFlipSandyScreen(Screen):
 
         elif self.game_state == "you_lost_the_toss" :
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
-
+            self.second_message_display = f"Press J to play again or Q to exit"
             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
                 print("At 0 ending match")
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+            if controller.isJPressed:
+                print("playing again")
+                self.game_state = "welcome_screen"
+
+            elif controller.isQPressed:
+                print("quiting")
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -1158,7 +1171,7 @@ class CoinFlipSandyScreen(Screen):
             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
 
 
-        if self.game_state == "choose_heads_or_tails_message":
+        elif self.game_state == "choose_heads_or_tails_message":
 
             if self.current_index == 0:
                 DISPLAY.blit(
@@ -1179,6 +1192,19 @@ class CoinFlipSandyScreen(Screen):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 255))
+
+        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+                if self.yes_or_no_menu == 0:
+                    DISPLAY.blit(
+                        self.font.render(f"->", True, (255, 255, 255)),
+                        (650, 155))
+
+
+
+                elif self.yes_or_no_menu == 1:
+                    DISPLAY.blit(
+                        self.font.render(f"->", True, (255, 255, 255)),
+                        (650, 205))
 
 
 
