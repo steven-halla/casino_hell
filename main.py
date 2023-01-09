@@ -925,6 +925,8 @@ class CoinFlipSandyScreen(Screen):
         self.message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
+        self.choices = ["Heads", "Tails", "Magic"]
+
 
 
         self.game_state = "welcome_screen"
@@ -933,6 +935,8 @@ class CoinFlipSandyScreen(Screen):
         self.font = pygame.font.Font(None, 36)
         self.coinFlipSandyMoney = 700
         self.coinFlipSandyDefeated = False
+        self.current_index = 0
+
 
 
     def giveExp(self, state: "GameState"):
@@ -988,11 +992,12 @@ class CoinFlipSandyScreen(Screen):
                 self.game_state = "bet_screen"
 
         elif self.game_state == "bet_screen":
-            self.message_display = "This is the bet scree. Press up and down to change your bet."
+            self.message_display = "This is the bet screen. Press up and down to change your bet."
             self.second_message_display = "When you are ready press T to continue."
             controller = state.controller
             self.place_bet(state)
             if controller.isTPressed:
+                print("t pressed")
                 self.game_state = "choose_heads_or_tails_message"
 
 
@@ -1001,7 +1006,25 @@ class CoinFlipSandyScreen(Screen):
 
         elif self.game_state == "choose_heads_or_tails_message":
             self.message_display = "Now Choose heads or tails. K for tails. Q for heads"
-            if controller.isKPressed:
+            if controller.isUpPressed:
+                if not hasattr(self, "current_index"):
+                    self.current_index = len(self.choices) - 1
+                else:
+                    self.current_index -= 1
+                self.current_index %= len(self.choices)
+                print(self.choices[self.current_index])
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "current_index"):
+                    self.current_index = len(self.choices) + 1
+                else:
+                    self.current_index += 1
+                self.current_index %= len(self.choices)
+                print(self.choices[self.current_index])
+                controller.isDownPressed = False
+
+            elif controller.isKPressed:
                 self.players_side = "tails"
                 print("you choosed tails")
                 print(str(self.players_side))
@@ -1035,7 +1058,7 @@ class CoinFlipSandyScreen(Screen):
             self.game_state = "play_again_or_quit"
 
         elif self.game_state == "play_again_or_quit":
-            if self.coinFlipFredMoney <= 0 or state.player.playerMoney <= 0:
+            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
                 print("At 0 ending match")
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
@@ -1069,6 +1092,39 @@ class CoinFlipSandyScreen(Screen):
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
         DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
+
+        DISPLAY.blit(
+            self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+            (700, 160))
+
+        DISPLAY.blit(
+            self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+            (700, 210))
+
+        DISPLAY.blit(
+            self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+            (700, 260))
+
+        if self.current_index == 0:
+            DISPLAY.blit(
+                self.font.render(f"->", True, (255, 255, 255)),
+                (650, 155))
+
+
+
+        elif self.current_index == 1:
+            DISPLAY.blit(
+                self.font.render(f"->", True, (255, 255, 255)),
+                (650, 205))
+
+
+
+
+        elif self.current_index == 2:
+            DISPLAY.blit(
+                self.font.render(f"->", True, (255, 255, 255)),
+                (650, 255))
+
 
 
 
