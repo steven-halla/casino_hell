@@ -1091,7 +1091,7 @@ class CoinFlipSandyScreen(Screen):
 
         elif self.game_state == "you_won_the_toss" :
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
-            self.second_message_display = f"Press J to play again or Q to exit"
+            self.second_message_display = f"Play again? Press T on your choice"
 
             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
                 print("At 0 ending match")
@@ -1124,11 +1124,21 @@ class CoinFlipSandyScreen(Screen):
                     self.yes_no_current_index += 1
                 self.yes_no_current_index %= len(self.yes_or_no_menu)
                 controller.isDownPressed = False
+
+            if self.current_index == 0:
+                if controller.isTPressed:
+                    self.game_state = "welcome_screen"
+
+            elif self.current_index == 1:
+                if controller.isTPressed:
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
+
 
 
         elif self.game_state == "you_lost_the_toss" :
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
-            self.second_message_display = f"Play again?Yes to continue and No to exit"
+            self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
                 print("At 0 ending match")
                 state.currentScreen = state.mainScreen
@@ -1159,6 +1169,15 @@ class CoinFlipSandyScreen(Screen):
                     self.yes_no_current_index += 1
                 self.yes_no_current_index %= len(self.yes_or_no_menu)
                 controller.isDownPressed = False
+
+            if self.current_index == 0:
+                if controller.isTPressed:
+                    self.game_state = "welcome_screen"
+
+            elif self.current_index == 1:
+                if controller.isTPressed:
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
 
 
 
