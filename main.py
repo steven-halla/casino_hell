@@ -922,9 +922,11 @@ class CoinFlipSandyScreen(Screen):
         self.message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
+        self.magic_player_message_display = ""
+        self.magic_enemy_message_display = ""
         self.choices = ["Heads", "Tails", "Magic"]
         self.yes_or_no_menu = ["Yes", "No"]
-        self.magic_menu_selector = ["Bluff", "Reveal", "Avatar_of_luck"]
+        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.game_state = "welcome_screen"
         self.choice_sequence = True
         self.bet = 0
@@ -934,6 +936,7 @@ class CoinFlipSandyScreen(Screen):
         self.current_index = 0
         self.yes_no_current_index = 0
         self.magic_menu_index = 0
+
 
 
 
@@ -1059,8 +1062,9 @@ class CoinFlipSandyScreen(Screen):
                     print("This is how you pick magic")
                     self.game_state = "magic_menu"
 
+
         elif self.game_state == "magic_menu":
-            self.message_display = "Pick a magic spell and wreck havic"
+            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
                 if not hasattr(self, "magic_menu_index"):
@@ -1080,8 +1084,9 @@ class CoinFlipSandyScreen(Screen):
 
 
             if self.magic_menu_index == 0:
-                if controller.isTPressed:
+                if controller.isKPressed:
                     print("You cast bluff")
+                    self.game_state = "bluff_state"
 
             elif self.magic_menu_index == 1:
                 if controller.isTPressed:
@@ -1092,6 +1097,13 @@ class CoinFlipSandyScreen(Screen):
                     print("you cast avatar of luck")
 
 
+            elif self.magic_menu_index == 3:
+                if controller.isKPressed:
+                    print("going back")
+                    self.game_state = "choose_heads_or_tails_message"
+
+        elif self.game_state == "bluff_state":
+            self.magic_message_display = ""
 
         elif self.game_state == "results_screen":
             self.second_message_display = " "
@@ -1266,6 +1278,11 @@ class CoinFlipSandyScreen(Screen):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 255))
 
+            elif self.magic_menu_index == 3:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 305))
+
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
                 (700, 160))
@@ -1277,6 +1294,10 @@ class CoinFlipSandyScreen(Screen):
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
                 (700, 260))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+                (700, 310))
 
         elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
             DISPLAY.blit(
