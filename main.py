@@ -936,11 +936,10 @@ class CoinFlipSandyScreen(Screen):
         self.current_index = 0
         self.yes_no_current_index = 0
         self.magic_menu_index = 0
+        self.leave_or_replay_index = 0
 
         self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row","Hehehe, your on sucker"]
-
-
-
+        self.luck_activated = 0
 
     def giveExp(self, state: "GameState"):
         if state.player.level == 1:
@@ -976,7 +975,7 @@ class CoinFlipSandyScreen(Screen):
         # in the future will have states to handle coin flip percentages
         # an item can add .1 to your rolls for heads, or -.1 for tails
         coin = random.random()
-        if coin < 0.3:
+        if coin < 0.5:
             print("coin landed on heads")
             self.result = "heads"
         else:
@@ -1025,7 +1024,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-
+#############fix bug with current index below and our yes and no menu to leave or replay a game
 
         elif self.game_state == "choose_heads_or_tails_message":
             self.message_display = "Now Choose heads or tails. Make your choice"
@@ -1113,8 +1112,11 @@ class CoinFlipSandyScreen(Screen):
                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
 
             elif self.magic_menu_index == 2:
-                if controller.isTPressed:
+                if controller.isKPressed:
                     print("you cast avatar of luck")
+                    self.third_message_display = "Your luck is now increased for 5 losses"
+                    self.luck_activated = 5
+                    self.game_state = "choose_heads_or_tails_message"
 
 
             elif self.magic_menu_index == 3:
@@ -1172,13 +1174,30 @@ class CoinFlipSandyScreen(Screen):
 
 
             else:
-                self.third_message_display = ""
+                if self.luck_activated > 0:
+                    lucky_draw = random.random()
+                    if lucky_draw < 0.3:
+                        self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
 
-                state.player.playerMoney -= self.bet
-                self.coinFlipSandyMoney += self.bet
-                pygame.time.delay(3000)
+                        if controller.isAPressed:
+                            self.luck_activated -= 1
+                            state.player.playerMoney += self.bet
+                            self.coinFlipSandyMoney -= self.bet
 
-                self.game_state = "you_lost_the_toss"
+                            self.game_state = "you_won_the_toss"
+                    else:
+                        # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
+                        if controller.isAPressed:
+                            self.luck_activated -= 1
+
+                            state.player.playerMoney -= self.bet
+                            self.coinFlipSandyMoney += self.bet
+                            pygame.time.delay(3000)
+
+                            self.game_state = "you_lost_the_toss"
+
+
+
 
 
 
@@ -1207,19 +1226,19 @@ class CoinFlipSandyScreen(Screen):
 
 
             elif controller.isUpPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.yes_no_current_index = len(self.yes_or_no_menu) - 1
+                if not hasattr(self, "leave_or_replay_index"):
+                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
                 else:
-                    self.yes_no_current_index -= 1
-                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                    self.leave_or_replay_index -= 1
+                self.leave_or_replay_index %= len(self.yes_or_no_menu)
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
                 if not hasattr(self, "yes_no_current_index"):
-                    self.yes_no_current_index = len(self.yes_or_no_menu) + 1
+                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
                 else:
-                    self.yes_no_current_index += 1
-                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                    self.leave_or_replay_index += 1
+                self.leave_or_replay_index %= len(self.yes_or_no_menu)
                 controller.isDownPressed = False
 
             if self.current_index == 0:
@@ -1241,37 +1260,30 @@ class CoinFlipSandyScreen(Screen):
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
-            if controller.isJPressed:
-                print("playing again")
-                self.game_state = "welcome_screen"
 
-            elif controller.isQPressed:
-                print("quiting")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
 
 
             elif controller.isUpPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.yes_no_current_index = len(self.yes_or_no_menu) - 1
+                if not hasattr(self, "leave_or_replay_index"):
+                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
                 else:
-                    self.yes_no_current_index -= 1
-                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                    self.leave_or_replay_index -= 1
+                self.leave_or_replay_index %= len(self.yes_or_no_menu)
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
                 if not hasattr(self, "yes_no_current_index"):
-                    self.yes_no_current_index = len(self.yes_or_no_menu) + 1
+                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
                 else:
-                    self.yes_no_current_index += 1
-                self.yes_no_current_index %= len(self.yes_or_no_menu)
+                    self.leave_or_replay_index += 1
+                self.leave_or_replay_index %= len(self.yes_or_no_menu)
                 controller.isDownPressed = False
 
-            if self.current_index == 0:
+            if self.leave_or_replay_index == 0:
                 if controller.isTPressed:
                     self.game_state = "welcome_screen"
 
-            elif self.current_index == 1:
+            elif self.leave_or_replay_index == 1:
                 if controller.isTPressed:
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
