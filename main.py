@@ -1128,7 +1128,7 @@ class CoinFlipSandyScreen(Screen):
 
         elif self.game_state == "you_lost_the_toss" :
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
-            self.second_message_display = f"Press J to play again or Q to exit"
+            self.second_message_display = f"Play again?Yes to continue and No to exit"
             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
                 print("At 0 ending match")
                 state.currentScreen = state.mainScreen
