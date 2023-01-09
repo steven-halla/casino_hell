@@ -1173,6 +1173,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
+
             elif self.result != self.players_side:
                 if self.luck_activated > 0:
                     lucky_draw = random.random()
