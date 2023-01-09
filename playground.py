@@ -221,8 +221,8 @@ class Blackjack(Deck, NewController):
         self.enemy_money = 100
         self.player_score = 0
         self.enemy_score = 0
-        self.player_hand = [(10, 'Diamonds', 10), ("Ace", 'Spades', 11)]
-        self.enemy_hand = [(10, 'Hearts', 10), ("Ace", 'Hearts', 11)]
+        self.player_hand = [(5, 'Diamonds', 5), (5, 'Spades', 5)]
+        self.enemy_hand = [(10, 'Hearts', 10), (6, 'Hearts', 6)]
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
         self.ace_value = 1
@@ -340,10 +340,24 @@ class Blackjack(Deck, NewController):
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.black_jack_draw = True
+                self.thrid_message_display = "Its a draw"
                 print("Its a draw")
+                self.game_state = "results_screen"
+            elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
+
+                self.thrid_message_display = "player got  a black jack X 3 winnings"
+                self.game_state = "results_screen"
+            elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
+                self.thrid_message_display ="enemy got a black jack now you lose X 3 winnings"
+                self.game_state = "results_screen"
+
+            else:
+                self.game_state = "menu_screen"
 
 
-            self.game_state = "menu_screen"
+
+
+
 
 
 
