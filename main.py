@@ -917,7 +917,7 @@ class CoinFlipSandyScreen(Screen):
 
         self.result = ""
         self.play_again = True
-        self.players_side = "heads"
+        self.players_side = ""
         self.new_font = pygame.font.Font(None, 36)
 
 
@@ -987,6 +987,8 @@ class CoinFlipSandyScreen(Screen):
 
         if self.game_state == "welcome_screen" :
             self.message_display = "This is the welcome screen. Press R to continue"
+            self.second_message_display = ""
+            self.third_message_display = ""
 
             if controller.isRPressed:
                 self.game_state = "bet_screen"
@@ -998,7 +1000,16 @@ class CoinFlipSandyScreen(Screen):
             self.place_bet(state)
             if controller.isTPressed:
                 print("t pressed")
-                self.game_state = "choose_heads_or_tails_message"
+                self.game_state = "coin_flip_time"
+
+
+        elif self.game_state == "coin_flip_time":
+            self.message_display = "I'm flipping the coin now."
+            pygame.time.delay(500)
+            self.flipCoin()
+            self.game_state = "choose_heads_or_tails_message"
+
+
 
 
 
@@ -1027,57 +1038,83 @@ class CoinFlipSandyScreen(Screen):
 
             if self.current_index == 0:
                 if controller.isTPressed:
-                    print("This is how you pick heads")
+                    self.players_side = "heads"
+                    self.game_state = "results_screen"
 
             elif self.current_index == 1:
                 if controller.isTPressed:
-                    print("This is how you pick tails")
+                    self.players_side = "tails"
+                    self.game_state = "results_screen"
+
 
             elif self.current_index == 2:
                 if controller.isTPressed:
                     print("This is how you pick magic")
 
-
-
-
-        elif self.game_state == "coin_flip_time":
-            time.sleep(2)
-            self.flipCoin()
+        elif self.game_state == "results_screen":
+            self.second_message_display = " "
             if self.result == self.players_side:
-                print("you won")
+                # self.third_message_display = "You won"
                 state.player.playerMoney += self.bet
                 self.coinFlipSandyMoney -= self.bet
+                pygame.time.delay(3000)
+
                 self.game_state = "you_won_the_toss"
 
+                if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+                    print("At 0 ending match")
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
+
+
+
+
+
             else:
+                self.third_message_display = ""
+
                 state.player.playerMoney -= self.bet
-                self.coinFlipSandyMoney+= self.bet
-                if self.coinFlipSandyMoney < 0:
-                    self.coinFlipSandyMoney = 0
+                self.coinFlipSandyMoney += self.bet
+                pygame.time.delay(3000)
+
                 self.game_state = "you_lost_the_toss"
 
-        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
-            time.sleep(3) # don't sleep, use a "state start time" and check current_time() - "state start time" > 3 seconds (3000ms)
-            print("play_agin screen incoming ")
-            self.game_state = "play_again_or_quit"
 
-        elif self.game_state == "play_again_or_quit":
+
+
+
+
+
+        elif self.game_state == "you_won_the_toss" :
+            self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
+            self.second_message_display = f"Press J to play again or Q to exit"
+
             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
                 print("At 0 ending match")
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
-            print("in state: play_again_or_quit")
+
             if controller.isJPressed:
-                print("play again")
-                self.play_again = True
-                self.game_state = "choose_bet"
-            elif controller.isLPressed:
-                print("bye")
-                # self.play_again = False
-                self.game_state = "welcome"
+                print("playing again")
+                self.game_state = "welcome_screen"
+
+            elif controller.isQPressed:
+                print("quiting")
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
+
+
+        elif self.game_state == "you_lost_the_toss" :
+            self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
+
+            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+                print("At 0 ending match")
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+
+
 
 
 
@@ -1148,12 +1185,6 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-        if self.game_state == "you_won_the_toss":
-            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
-        elif self.game_state == "you_lost_the_toss":
-            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} lost! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
-        elif self.game_state == "play_again_or_quit":
-            DISPLAY.blit(self.new_font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
 
         pygame.display.flip()
 
