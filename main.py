@@ -5,7 +5,7 @@ import random
 from typing import *
 
 import pytmx
-from pytmx.util_pygame import load_pygame
+# from pytmx.util_pygame import load_pygame
 
 
 
@@ -274,6 +274,15 @@ class Player(Entity):
         self.walkSpeed = 3.5
         self.playerMoney = 5000
         self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
+        self.stamina_points = 50
+        self.focus_points = 50
+        self.exp = 0
+        self.level = 1
+        self.health = 0
+        self.intelligence = 0
+        self.charisma = 0
+        self.luck = 0
+        self.perception = 0
 
 
     def update(self, state: "GameState"):
@@ -891,6 +900,132 @@ class CoinFlipScreen(Screen):
             DISPLAY.blit(self.time_to_choose_heads_or_tails, (10, 10))
         elif self.game_state == "coin_flip_time":
             DISPLAY.blit(self.flipping_now, (10, 10))
+
+        elif self.game_state == "you_won_the_toss":
+            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
+        elif self.game_state == "you_lost_the_toss":
+            DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} lost! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
+        elif self.game_state == "play_again_or_quit":
+            DISPLAY.blit(self.new_font.render(f"Press J to play again or L to quit", True, (255, 255, 255)), (10, 10))
+
+        pygame.display.flip()
+
+
+class CoinFlipSandyScreen(Screen):
+    def __init__(self):
+        super().__init__("Casino Coin flip  Screen")
+
+        self.result = ""
+        self.play_again = True
+        self.players_side = "heads"
+        self.new_font = pygame.font.Font(None, 36)
+
+
+
+        self.message_display = ""
+
+
+        self.game_state = "welcome"
+        self.choice_sequence = True
+        self.bet = 0
+        self.font = pygame.font.Font(None, 36)
+        self.coinFlipSandyMoney = 700
+        self.coinFlipSandyDefeated = False
+
+    def flipCoin(self):
+        # currently at .6 because heads is favored
+        # in the future will have states to handle coin flip percentages
+        # an item can add .1 to your rolls for heads, or -.1 for tails
+        coin = random.random()
+        if coin < 0.9:
+            print("coin landed on heads")
+            self.result = "heads"
+        else:
+            print("coin landed on tails")
+            self.result = "tails"
+
+    def update(self, state: "GameState"):
+        if self.coinFlipSandyMoney <= 0:
+            self.coinFlipSandyDefeated = True
+        # Update the controller
+        controller = state.controller
+        controller.update(state)
+
+        if self.game_state == "welcome" :
+            if controller.isRPressed:
+                self.message_display = "This is the welcome screen. Press R to continue"
+                self.game_state = "choose_bet"
+
+
+
+        elif self.game_state == "choose_heads_or_tails_message":
+            if controller.isKPressed:
+                self.players_side = "tails"
+                print("you choosed tails")
+                print(str(self.players_side))
+                self.game_state = "coin_flip_time"
+            elif controller.isQPressed:
+                self.players_side = "heads"
+                print("you choosed heads")
+                print(str(self.players_side))
+                self.game_state = "coin_flip_time"
+
+
+        elif self.game_state == "coin_flip_time":
+            time.sleep(2)
+            self.flipCoin()
+            if self.result == self.players_side:
+                print("you won")
+                state.player.playerMoney += self.bet
+                self.coinFlipFredMoney -= self.bet
+                self.game_state = "you_won_the_toss"
+
+            else:
+                state.player.playerMoney -= self.bet
+                self.coinFlipSandyMoney+= self.bet
+                if self.coinFlipSandyMoney < 0:
+                    self.coinFlipSandyMoney = 0
+                self.game_state = "you_lost_the_toss"
+
+        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+            time.sleep(3) # don't sleep, use a "state start time" and check current_time() - "state start time" > 3 seconds (3000ms)
+            print("play_agin screen incoming ")
+            self.game_state = "play_again_or_quit"
+
+        elif self.game_state == "play_again_or_quit":
+            if self.coinFlipFredMoney <= 0 or state.player.playerMoney <= 0:
+                print("At 0 ending match")
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+            print("in state: play_again_or_quit")
+            if controller.isJPressed:
+                print("play again")
+                self.play_again = True
+                self.game_state = "choose_bet"
+            elif controller.isLPressed:
+                print("bye")
+                # self.play_again = False
+                self.game_state = "welcome"
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+    def draw(self, state: "GameState"):
+        # Fill the screen with a solid color
+        DISPLAY.fill((0, 0, 0))
+
+        DISPLAY.blit(self.new_font.render(
+            f" CoinFlipFredsMoney: {self.coinFlipSandyMoney}",
+            True, (255, 255, 255)), (10, 90))
+        DISPLAY.blit(self.new_font.render(
+            f" player Money: {state.player.playerMoney}",
+            True, (255, 255, 255)), (10, 190))
+
+        # Draw the welcome message or choose bet message based on the game state
+        if self.game_state == "welcome":
+            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+
+
 
         elif self.game_state == "you_won_the_toss":
             DISPLAY.blit(self.new_font.render(f" choice  {self.players_side} coin landed  {self.result} won! YOUR BALANCE is {state.player.playerMoney}", True, (255, 255, 255)), (10, 10))
@@ -1673,9 +1808,10 @@ class GameState:
         self.delta: float = 0.0
         self.mainScreen = MainScreen()
         self.coinFlipScreen = CoinFlipScreen()
+        self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.diceGameScreen = DiceGameScreen()
-        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
+        self.currentScreen = self.coinFlipSandyScreen  # assign a value to currentScreen here
 
 class Game:
     def __init__(self):
