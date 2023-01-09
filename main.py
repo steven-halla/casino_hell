@@ -1194,14 +1194,14 @@ class CoinFlipSandyScreen(Screen):
                     (650, 255))
 
         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
-            if self.yes_or_no_menu == 0:
+            if self.yes_no_current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 155))
 
 
 
-            elif self.yes_or_no_menu == 1:
+            elif self.yes_no_current_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 205))
