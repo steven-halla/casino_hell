@@ -937,6 +937,8 @@ class CoinFlipSandyScreen(Screen):
         self.yes_no_current_index = 0
         self.magic_menu_index = 0
 
+        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row","Hehehe, your on sucker"]
+
 
 
 
@@ -1063,6 +1065,9 @@ class CoinFlipSandyScreen(Screen):
                     self.game_state = "magic_menu"
 
 
+
+
+
         elif self.game_state == "magic_menu":
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
@@ -1085,8 +1090,14 @@ class CoinFlipSandyScreen(Screen):
 
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
-                    print("You cast bluff")
-                    self.game_state = "bluff_state"
+                    if state.player.focus_points >= 10:
+                        state.player.focus_points -= 10
+
+                        print("You cast bluff")
+                        self.game_state = "bluff_state"
+
+                    else:
+                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
 
             elif self.magic_menu_index == 1:
                 if controller.isTPressed:
@@ -1102,8 +1113,28 @@ class CoinFlipSandyScreen(Screen):
                     print("going back")
                     self.game_state = "choose_heads_or_tails_message"
 
+
+
+
         elif self.game_state == "bluff_state":
-            self.magic_message_display = ""
+            self.message_display = "Triple my bet that tails will land 3 times in a  row."
+            bluffalo = random.random()
+
+            if bluffalo < 0.7:
+                print("you win tripple bet")
+                state.player.playerMoney += self.bet * 3
+                self.game_state = "welcome_screen"
+
+
+            else:
+                print("your bet lost")
+                state.player.playerMoney -= self.bet
+                self.game_state = "welcome_screen"
+
+
+
+
+
 
         elif self.game_state == "results_screen":
             self.second_message_display = " "
