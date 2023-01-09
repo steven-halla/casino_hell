@@ -122,6 +122,7 @@ class Deck:
                             "King": 10, "Ace": 11}
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
+        self.black_jack_counter = 0
 
 
         for suit in self.suits:
@@ -157,6 +158,9 @@ class Deck:
                 (hand[1][0] == "Ace" and hand[0][0] in (10, "Jack", "Queen", "King"))
         ):
             print("you got the black jack")
+            self.black_jack_counter += 1
+
+            print("black jack counter at:" + str(self.black_jack_counter))
 
         # if len(hand) == 2 and (self.rank_values[hand[0][0]] == 10 or self.rank_values[hand[1][0]] == 10):
         #     print("Player has a 10-point value card")
@@ -217,11 +221,15 @@ class Blackjack(Deck, NewController):
         self.enemy_money = 100
         self.player_score = 0
         self.enemy_score = 0
-        self.player_hand = [(10, 'Diamonds', 10), ('Ace', 'Spades', 11)]
-        self.enemy_hand = [(10, 'Hearts', 10), (2, 'Spades', 2)]
+        self.player_hand = [(10, 'Diamonds', 10), ("Ace", 'Spades', 11)]
+        self.enemy_hand = [(10, 'Hearts', 10), ("Ace", 'Hearts', 11)]
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
         self.ace_value = 1
+
+        self.player_black_jack_win = False
+        self.enemy_black_jack_win = False
+        self.black_jack_draw = False
 
     def start(self):
         running = True
@@ -279,10 +287,16 @@ class Blackjack(Deck, NewController):
                 self.isTPressed = False
 
         elif self.game_state == "draw_phase":
-
+            # need to reformat have a reset function
             self.message_display = "dealing the cards"
             self.second_message_display = ""
             self.thrid_message_display = ""
+            self.black_jack_counter = 0
+            self.player_black_jack_win = False
+            self.enemy_black_jack_win = False
+            self.black_jack_draw = False
+
+
             # self.player_hand = self.draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
@@ -296,9 +310,11 @@ class Blackjack(Deck, NewController):
 
             print("Player score is: " + str(self.player_score))
             # Check if the player has an ACE in their hand
-
-
-
+            if self.black_jack_counter > 0:
+                print("Player black jack win set to true")
+                self.player_black_jack_win = True
+            else:
+                self.player_black_jack_win = False
 
             #################################need to test aces if a player gets multiple aces
 
@@ -306,11 +322,27 @@ class Blackjack(Deck, NewController):
 
             # If the player has an ACE, check which value is better for the player
 
+            self.black_jack_counter = 0
+
 
             # self.enemy_hand = self.draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
+            if self.black_jack_counter > 0:
+                print("Enemy black jack win set to true")
+
+                self.enemy_black_jack_win = True
+            elif self.black_jack_counter == 0:
+                self.enemy_black_jack_win = False
+
+            print(self.player_black_jack_win)
+
+            if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
+                self.black_jack_draw = True
+                print("Its a draw")
+
+
             self.game_state = "menu_screen"
 
 
