@@ -919,17 +919,11 @@ class CoinFlipSandyScreen(Screen):
         self.play_again = True
         self.players_side = ""
         self.new_font = pygame.font.Font(None, 36)
-
-
-
         self.message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
         self.choices = ["Heads", "Tails", "Magic"]
         self.yes_or_no_menu = ["Yes", "No"]
-
-
-
         self.game_state = "welcome_screen"
         self.choice_sequence = True
         self.bet = 0
@@ -989,12 +983,19 @@ class CoinFlipSandyScreen(Screen):
         controller = state.controller
         controller.update(state)
 
+        if state.player.stamina_points < 3:
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
+
         if self.game_state == "welcome_screen" :
+
             self.message_display = "This is the welcome screen. Press R to continue"
             self.second_message_display = ""
             self.third_message_display = ""
 
             if controller.isRPressed:
+                state.player.stamina_points -= 3
+
                 self.game_state = "bet_screen"
 
         elif self.game_state == "bet_screen":
@@ -1204,6 +1205,8 @@ class CoinFlipSandyScreen(Screen):
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
         DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
+        DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
+        DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
 
         if self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
             DISPLAY.blit(
