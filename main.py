@@ -975,7 +975,7 @@ class CoinFlipSandyScreen(Screen):
         # in the future will have states to handle coin flip percentages
         # an item can add .1 to your rolls for heads, or -.1 for tails
         coin = random.random()
-        if coin < 0.5:
+        if coin < 0.9:
             print("coin landed on heads")
             self.result = "heads"
         else:
@@ -1176,7 +1176,7 @@ class CoinFlipSandyScreen(Screen):
             else:
                 if self.luck_activated > 0:
                     lucky_draw = random.random()
-                    if lucky_draw < 0.3:
+                    if lucky_draw < 0.9:
                         self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
 
                         if controller.isAPressed:
@@ -1192,9 +1192,16 @@ class CoinFlipSandyScreen(Screen):
 
                             state.player.playerMoney -= self.bet
                             self.coinFlipSandyMoney += self.bet
-                            pygame.time.delay(3000)
 
                             self.game_state = "you_lost_the_toss"
+
+                elif self.luck_activated == 0:
+                    pygame.time.delay(500)
+                    state.player.playerMoney -= self.bet
+                    self.coinFlipSandyMoney += self.bet
+
+                    self.game_state = "you_lost_the_toss"
+
 
 
 
@@ -1215,14 +1222,7 @@ class CoinFlipSandyScreen(Screen):
                 state.mainScreen.start(state)
 
 
-            if controller.isJPressed:
-                print("playing again")
-                self.game_state = "welcome_screen"
 
-            elif controller.isQPressed:
-                print("quiting")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
 
 
             elif controller.isUpPressed:
