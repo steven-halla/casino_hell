@@ -937,15 +937,30 @@ class CoinFlipSandyScreen(Screen):
         self.yes_no_current_index = 0
         self.magic_menu_index = 0
         self.leave_or_replay_index = 0
+        self.high_exp = False
+        self.low_exp = False
 
         self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row","Hehehe, your on sucker"]
         self.luck_activated = 0
+        self.sandy_focus_points = 30
+        self.reveal_hand = False
+        self.cheating_alert = False
 
     def giveExp(self, state: "GameState"):
         if state.player.level == 1:
-            print("you got 1 exp")
+            if self.high_exp == True:
+                state.player.exp += 15
+            elif self.low_exp == True:
+                state.player.exp += 50
+        elif state.player.level == 2:
+            if self.high_exp == True:
+                state.player.exp += 5
+            elif self.low_exp == True:
+                state.player.exp += 15
         else:
             print("your level is too high no exp for you")
+
+
 
 
 
@@ -975,7 +990,7 @@ class CoinFlipSandyScreen(Screen):
         # in the future will have states to handle coin flip percentages
         # an item can add .1 to your rolls for heads, or -.1 for tails
         coin = random.random()
-        if coin < 0.9:
+        if coin < 0.1:
             print("coin landed on heads")
             self.result = "heads"
         else:
@@ -998,6 +1013,7 @@ class CoinFlipSandyScreen(Screen):
             self.message_display = "This is the welcome screen. Press R to continue"
             self.second_message_display = ""
             self.third_message_display = ""
+            self.reveal_hand = False
 
             if controller.isRPressed:
                 state.player.stamina_points -= 3
@@ -1089,33 +1105,49 @@ class CoinFlipSandyScreen(Screen):
 
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
-                    if state.player.focus_points >= 10:
-                        state.player.focus_points -= 10
-
-                        print("You cast bluff")
-                        self.game_state = "bluff_state"
-
-                    else:
-                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
-
-            elif self.magic_menu_index == 1:
-                if controller.isKPressed:
-                    print("You cast reveal")
-                    if controller.isKPressed:
+                    if self.luck_activated < 1 and self.reveal_hand == False:
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
                             print("You cast bluff")
-                            self.game_state = "reveal_state"
+                            self.game_state = "bluff_state"
 
                         else:
                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif self.luck_activated > 0 or self.reveal_hand == True:
+                        self.third_message_display = "sorry but you can't stack magic spells"
 
+
+            elif self.magic_menu_index == 1:
+                if controller.isKPressed:
+                    if self.luck_activated < 1:
+                        print("You cast reveal")
+                        if controller.isKPressed:
+                            if state.player.focus_points >= 10:
+                                state.player.focus_points -= 10
+                                self.reveal_hand = True
+
+                                print("You cast bluff")
+                                self.game_state = "reveal_state"
+
+                            elif state.player.focus_points < 10:
+                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif self.luck_activated > 0:
+                        self.third_message_display = "sorry but you can't stack magic spells"
+
+
+
+
+
+##########################have a message state reserved for buff states
+
+            ##### boss enemies will use magic under more strict conditions
             elif self.magic_menu_index == 2:
                 if controller.isKPressed:
                     print("you cast avatar of luck")
                     self.third_message_display = "Your luck is now increased for 5 losses"
-                    self.luck_activated = 5
+                    self.luck_activated = 3
+                    state.player.focus_points -= 20
                     self.game_state = "choose_heads_or_tails_message"
 
 
@@ -1214,6 +1246,15 @@ class CoinFlipSandyScreen(Screen):
 
 
         elif self.game_state == "you_won_the_toss" :
+            if self.players_side == "tails" and self.sandy_focus_points > 0 and self.luck_activated < 1 and self.cheating_alert == False:
+                self.players_side = "heads"
+                print("I could have sworn I picked tails. Did they switch my bet?")
+                if self.reveal_hand == True:
+                    print("The other person is cheating. I'll hold up my hands to signafy which side I'll guess")
+                    self.cheating_alert = True
+
+                self.game_state = "you_lost_the_toss"
+
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
             self.second_message_display = f"Play again? Press T on your choice"
 
