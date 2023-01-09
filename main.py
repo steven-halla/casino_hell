@@ -1173,7 +1173,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-            else:
+            elif self.result != self.players_side:
                 if self.luck_activated > 0:
                     lucky_draw = random.random()
                     if lucky_draw < 0.9:
@@ -1183,6 +1183,7 @@ class CoinFlipSandyScreen(Screen):
                             self.luck_activated -= 1
                             state.player.playerMoney += self.bet
                             self.coinFlipSandyMoney -= self.bet
+                            self.result = self.players_side
 
                             self.game_state = "you_won_the_toss"
                     else:
@@ -1241,11 +1242,11 @@ class CoinFlipSandyScreen(Screen):
                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
                 controller.isDownPressed = False
 
-            if self.current_index == 0:
+            if self.leave_or_replay_index == 0:
                 if controller.isTPressed:
                     self.game_state = "welcome_screen"
 
-            elif self.current_index == 1:
+            elif self.leave_or_replay_index == 1:
                 if controller.isTPressed:
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
