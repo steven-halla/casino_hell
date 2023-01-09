@@ -1100,8 +1100,17 @@ class CoinFlipSandyScreen(Screen):
                         self.third_message_display = "Sorry but you dont have enough focus points to cast"
 
             elif self.magic_menu_index == 1:
-                if controller.isTPressed:
+                if controller.isKPressed:
                     print("You cast reveal")
+                    if controller.isKPressed:
+                        if state.player.focus_points >= 10:
+                            state.player.focus_points -= 10
+
+                            print("You cast bluff")
+                            self.game_state = "reveal_state"
+
+                        else:
+                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
 
             elif self.magic_menu_index == 2:
                 if controller.isTPressed:
@@ -1112,6 +1121,13 @@ class CoinFlipSandyScreen(Screen):
                 if controller.isKPressed:
                     print("going back")
                     self.game_state = "choose_heads_or_tails_message"
+
+        elif self.game_state == "reveal_state":
+            self.message_display = "time to reveal your coin"
+            self.third_message_display = f"The coin will be on the {self.result}"
+            if state.controller.isAPressed:
+                self.game_state = "choose_heads_or_tails_message"
+                state.controller.isAPressed = False
 
 
 
