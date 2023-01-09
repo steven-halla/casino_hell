@@ -1005,7 +1005,7 @@ class CoinFlipSandyScreen(Screen):
 
 
         elif self.game_state == "choose_heads_or_tails_message":
-            self.message_display = "Now Choose heads or tails. K for tails. Q for heads"
+            self.message_display = "Now Choose heads or tails. Make your choice"
             if controller.isUpPressed:
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
@@ -1024,16 +1024,20 @@ class CoinFlipSandyScreen(Screen):
                 print(self.choices[self.current_index])
                 controller.isDownPressed = False
 
-            elif controller.isKPressed:
-                self.players_side = "tails"
-                print("you choosed tails")
-                print(str(self.players_side))
-                self.game_state = "coin_flip_time"
-            elif controller.isQPressed:
-                self.players_side = "heads"
-                print("you choosed heads")
-                print(str(self.players_side))
-                self.game_state = "coin_flip_time"
+
+            if self.current_index == 0:
+                if controller.isTPressed:
+                    print("This is how you pick heads")
+
+            elif self.current_index == 1:
+                if controller.isTPressed:
+                    print("This is how you pick tails")
+
+            elif self.current_index == 2:
+                if controller.isTPressed:
+                    print("This is how you pick magic")
+
+
 
 
         elif self.game_state == "coin_flip_time":
@@ -1075,6 +1079,11 @@ class CoinFlipSandyScreen(Screen):
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
+
+
+
+    ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
+
     def draw(self, state: "GameState"):
         # Fill the screen with a solid color
         DISPLAY.fill((0, 0, 0))
@@ -1105,25 +1114,34 @@ class CoinFlipSandyScreen(Screen):
             self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
             (700, 260))
 
-        if self.current_index == 0:
-            DISPLAY.blit(
-                self.font.render(f"->", True, (255, 255, 255)),
-                (650, 155))
+
+        if self.game_state == "bet_screen":
+
+            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
+            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
+
+
+        if self.game_state == "choose_heads_or_tails_message":
+
+            if self.current_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
 
 
 
-        elif self.current_index == 1:
-            DISPLAY.blit(
-                self.font.render(f"->", True, (255, 255, 255)),
-                (650, 205))
+            elif self.current_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
 
 
 
 
-        elif self.current_index == 2:
-            DISPLAY.blit(
-                self.font.render(f"->", True, (255, 255, 255)),
-                (650, 255))
+            elif self.current_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 255))
 
 
 
