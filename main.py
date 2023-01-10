@@ -3112,7 +3112,7 @@ class OpossumInACanNellyScreen(Screen):
                     if self.opossum_rader == True:
                         print("HEY THERE YOU GUY ITS POSSUM TIIIIIIME")
                         self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
-                        if self.winner_or_looser == "lose":
+                        if self.result == "lose":
                             print("you notice this dealer is cheating")
                             state.player.playerMoney += self.sallyOpossumMoney
                             self.sallyOpossumMoney = 0
@@ -4059,8 +4059,9 @@ class GameState:
         self.mainScreen = MainScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
+        self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.diceGameScreen = DiceGameScreen()
-        self.currentScreen = self.opossumInACanScreen  # assign a value to currentScreen here
+        self.currentScreen = self.OpossumInACanNellyScreen  # assign a value to currentScreen here
 
 class Game:
     def __init__(self):
