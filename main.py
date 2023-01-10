@@ -2607,15 +2607,17 @@ class OpossumInACanScreen(Screen):
                 if controller.isTPressed:
                     self.shuffle_opposums()
                     self.result = self.winner_or_looser[0]
-                    while self.opossum_rader == True:
-                        self.message_display = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
+                    if self.opossum_rader == True:
+                        print("HEY THERE YOU GUY ITS POSSUM TIIIIIIME")
+                        self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
                         if controller.isTPressed:
                             self.game_state = "choose_or_flee"
                             self.opossum_rader = False
 
-                    del self.winner_or_looser[0]
-                    self.check_results(state)
-                    print("Get that opossum")
+                    else:
+                        del self.winner_or_looser[0]
+                        self.check_results(state)
+                        print("Get that opossum")
 
             elif self.choices_index == 1:
                 if controller.isTPressed:
@@ -2704,7 +2706,6 @@ class OpossumInACanScreen(Screen):
                         state.player.focus_points -= 10
                         self.opossum_rader = True
 
-                        print("You cast bluff")
                         self.game_state = "choose_can"
 
                     elif state.player.focus_points < 10:
@@ -2786,6 +2787,10 @@ class OpossumInACanScreen(Screen):
         DISPLAY.blit(self.font.render(
             f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
             True, (255, 255, 255)), (10, 490))
+
+        DISPLAY.blit(self.font.render(
+            f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
+            True, (255, 255, 255)), (10, 33))
 
 
         if self.game_state == "choose_can":
