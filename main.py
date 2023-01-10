@@ -2455,7 +2455,11 @@ class CoinFlipSandyScreen(Screen):
 
         pygame.display.flip()
 
+        ########have deals notice if player is low on stamina and magic and thus react to it
+        #### have a dealer make a comment to player on this a few times.
 
+#### no need to "defeat"people, but in doing so with some people you can complete quest
+####or have it to where you only need to defeat 1 of each type as a quest.hmmmmm not sure
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
@@ -2474,11 +2478,22 @@ class OpossumInACanScreen(Screen):
         self.insurance = 200
         self.X3 = False
         self.has_opossum_insurance = True
+        self.choices = ["Grab", "Magic", "Quit"]
+        self.choices_index = 0
+        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+        self.magic_menu_index = 0
+
+        self.luck_activated = 0
+        self.bottom_message = ""
+
+
+
 
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 200
+
         self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
 
                                             "win", "insurance_eater"]
@@ -2549,10 +2564,41 @@ class OpossumInACanScreen(Screen):
             self.desperate = False
 
         if self.game_state == "welcome_opposum":
+
+
             if controller.isTPressed:
                 self.game_state = "choose_can"
 
         elif self.game_state == "choose_can":
+            if controller.isUpPressed:
+                if not hasattr(self, "choices_index"):
+                    self.choices_index = len(self.choices) - 1
+                else:
+                    self.choices_index -= 1
+                self.choices_index %= len(self.choices)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "choices_index"):
+                    self.choices_index = len(self.choices) + 1
+                else:
+                    self.choices_index += 1
+                self.choices_index %= len(self.choices)
+                controller.isDownPressed = False
+
+            elif self.choices_index == 0:
+                if controller.isTPressed:
+                    print("Get that opossum")
+
+            elif self.choices_index == 1:
+                if controller.isTPressed:
+                    print("cast magic")
+
+
+            elif self.choices_index == 2:
+                if controller.isTPressed:
+                    print("Quitting")
+
             if controller.is1Pressed:
                 self.shuffle_opposums()
                 self.result = self.winner_or_looser[0]
@@ -2563,6 +2609,81 @@ class OpossumInACanScreen(Screen):
             player = state.player
 
             player.update(state)
+
+
+
+        elif self.game_state == "magic_menu":
+            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+
+            if controller.isUpPressed:
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) - 1
+                else:
+                    self.magic_menu_index -= 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) + 1
+                else:
+                    self.magic_menu_index += 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isDownPressed = False
+
+            if self.magic_menu_index == 0:
+                if controller.isKPressed:
+                    if self.luck_activated < 1 and self.reveal_hand == False:
+                        if state.player.focus_points >= 10:
+                            state.player.focus_points -= 10
+
+                            print("You cast bluff")
+                            self.game_state = "bluff_state"
+
+                        else:
+                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif self.luck_activated > 0 or self.reveal_hand == True:
+                        self.third_message_display = "sorry but you can't stack magic spells"
+
+
+            elif self.magic_menu_index == 1:
+                if controller.isKPressed:
+                    if self.luck_activated < 1:
+                        print("You cast reveal")
+                        if controller.isKPressed:
+                            if state.player.focus_points >= 10:
+                                state.player.focus_points -= 10
+                                self.reveal_hand = True
+
+                                print("You cast bluff")
+                                self.game_state = "reveal_state"
+
+                            elif state.player.focus_points < 10:
+                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif self.luck_activated > 0:
+                        self.third_message_display = "sorry but you can't stack magic spells"
+
+
+
+
+
+            ##########################have a message state reserved for buff states
+
+            ##### boss enemies will use magic under more strict conditions
+            elif self.magic_menu_index == 2:
+                if controller.isKPressed:
+                    print("you cast avatar of luck")
+                    self.third_message_display = "Your luck is now increased for 5 losses"
+                    self.luck_activated = 3
+                    state.player.focus_points -= 20
+                    self.game_state = "choose_heads_or_tails_message"
+
+
+            elif self.magic_menu_index == 3:
+                if controller.isKPressed:
+                    print("going back")
+                    self.game_state = "choose_heads_or_tails_message"
+
 
         elif self.game_state == "play_again_or_bail":
             if controller.isPPressed:
@@ -2598,6 +2719,7 @@ class OpossumInACanScreen(Screen):
                 f" I Take care of the orphanage here Please think of the children!",
                 True, (255, 255, 255)), (10, 530))
 
+        DISPLAY.blit(self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)), (1, 333))
 
         DISPLAY.blit(self.font.render(
             f" SallyOpossum Money: {self.sallyOpossumMoney}",
@@ -2614,9 +2736,87 @@ class OpossumInACanScreen(Screen):
             True, (255, 255, 255)), (10, 490))
 
 
+        if self.game_state == "choose_can":
+
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                (700, 210))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+                (700, 260))
 
 
-        if self.game_state == "welcome_opposum":
+            if self.choices_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
+
+
+
+            elif self.choices_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
+
+
+
+
+            elif self.choices_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 255))
+
+
+        elif self.game_state == "magic_menu" :
+            if self.magic_menu_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
+
+
+
+            elif self.magic_menu_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
+
+
+
+
+            elif self.magic_menu_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 255))
+
+            elif self.magic_menu_index == 3:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 305))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+                (700, 210))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+                (700, 260))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+                (700, 310))
+
+
+
+        elif self.game_state == "welcome_opposum":
             DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
         elif self.game_state == "choose_can":
             DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (100, 10))
@@ -3226,11 +3426,10 @@ class GameState:
         self.isPaused: bool = False
         self.delta: float = 0.0
         self.mainScreen = MainScreen()
-        self.coinFlipScreen = CoinFlipScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.diceGameScreen = DiceGameScreen()
-        self.currentScreen = self.coinFlipSandyScreen  # assign a value to currentScreen here
+        self.currentScreen = self.opossumInACanScreen  # assign a value to currentScreen here
 
 class Game:
     def __init__(self):
