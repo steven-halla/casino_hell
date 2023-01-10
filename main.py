@@ -4141,13 +4141,12 @@ class Deck:
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
                       for rank in self.ranks]
 
-class BlackjackScreen(Screen, Deck):
+class BlackJackScreen(Screen, Deck):
     def __init__(self, ranks, suits):
         Screen.__init__(self, " Black Jack Game")
         Deck.__init__(self, ranks, suits)
         self.font = pygame.font.Font(None, 36)
-        self.screen_width = SCREEN_WIDTH
-        self.screen_height = SCREEN_HEIGHT
+
         self.message_display = ""
         self.second_message_display = ""
         self.thrid_message_display = ""
@@ -4165,6 +4164,8 @@ class BlackjackScreen(Screen, Deck):
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
+
+    print("HI there partner")
 
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
@@ -4462,6 +4463,7 @@ class BlackjackScreen(Screen, Deck):
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
             DISPLAY.blit(self.font.render(f"Enemy money:{self.enemy_money}", True, (255, 255, 255)), (10, 550))
 
+        pygame.display.flip()
 
 
 class GameState:
@@ -4477,9 +4479,9 @@ class GameState:
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
-        self.BlackjackScreen = BlackjackScreen(ranks, suits)
+        self.BlackJackScreen = BlackJackScreen(ranks, suits)
         self.diceGameScreen = DiceGameScreen()
-        self.currentScreen = self.BlackjackScreen  # assign a value to currentScreen here
+        self.currentScreen = self.BlackJackScreen  # assign a value to currentScreen here
 
 class Game:
     def __init__(self):
