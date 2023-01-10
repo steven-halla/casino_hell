@@ -2583,7 +2583,7 @@ class OpossumInACanScreen(Screen):
 
 
             if controller.isTPressed:
-                pygame.time.delay(100)
+                pygame.time.delay(150)
                 self.game_state = "choose_can"
 
         elif self.game_state == "choose_can":
@@ -2724,6 +2724,8 @@ class OpossumInACanScreen(Screen):
                     print("you cast avatar of luck")
                     self.third_message_display = "The god of luck shines on you, looks like another trash can was hiding behind one of the others"
                     state.player.focus_points -= 20
+                    self.winner_or_looser.append("win")
+
                     self.game_state = "choose_can"
                     self.luck_activated = 5
 
