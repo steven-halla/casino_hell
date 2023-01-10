@@ -2652,6 +2652,7 @@ class OpossumInACanScreen(Screen):
             elif self.bet_or_flee_index == 0:
                 if controller.isTPressed:
                     print("lets go with it")
+                    self.game_state = "choose_can"
 
             elif self.bet_or_flee_index == 1:
                 if controller.isTPressed:
