@@ -41,6 +41,10 @@ textRect = text_surface.get_rect()
 speechRect = speech_bubble.get_rect()
 
 
+wrap_width = 200
+
+
+
 # pygame.time.get_ticks()
 # def nowMilliseconds() -> int:
 #     return round(time.time() * 1000)
@@ -2088,7 +2092,7 @@ class CoinFlipSandyScreen(Screen):
 
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
-                    if self.luck_activated < 1 and self.reveal_hand == False:
+                    if self.luck_activated < 1:
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
@@ -2463,6 +2467,7 @@ class CoinFlipSandyScreen(Screen):
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
+        self.third_message_display = ""
         self.desperate = False
         #we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 100
@@ -2478,13 +2483,21 @@ class OpossumInACanScreen(Screen):
         self.insurance = 200
         self.X3 = False
         self.has_opossum_insurance = True
+
         self.choices = ["Grab", "Magic", "Quit"]
         self.choices_index = 0
+
+        self.bet_or_flee = ["bet", "flee"]
+        self.bet_or_flee_index = 0
+
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
 
-        self.luck_activated = 0
+        self.bluff_activated = 0
         self.bottom_message = ""
+        self.opossum_rader = False
+
+        self.luck_activated = 0
 
 
 
@@ -2502,6 +2515,8 @@ class OpossumInACanScreen(Screen):
         """Creates a new list in a random order"""
 
         random.shuffle(self.winner_or_looser)
+        if self.luck_activated > 0:
+            self.luck_activated -= 1
 
         print(str(self.winner_or_looser))
         return self.winner_or_looser
@@ -2533,6 +2548,7 @@ class OpossumInACanScreen(Screen):
 
 
         elif self.result == "insurance_eater":
+
             if self.insurance <= 0:
                 self.sallyOpossumMoney += self.bet
 
@@ -2567,6 +2583,7 @@ class OpossumInACanScreen(Screen):
 
 
             if controller.isTPressed:
+                pygame.time.delay(100)
                 self.game_state = "choose_can"
 
         elif self.game_state == "choose_can":
@@ -2588,10 +2605,21 @@ class OpossumInACanScreen(Screen):
 
             elif self.choices_index == 0:
                 if controller.isTPressed:
+                    self.shuffle_opposums()
+                    self.result = self.winner_or_looser[0]
+                    while self.opossum_rader == True:
+                        self.message_display = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
+                        if controller.isTPressed:
+                            self.game_state = "choose_or_flee"
+                            self.opossum_rader = False
+
+                    del self.winner_or_looser[0]
+                    self.check_results(state)
                     print("Get that opossum")
 
             elif self.choices_index == 1:
                 if controller.isTPressed:
+                    self.game_state = "magic_menu"
                     print("cast magic")
 
 
@@ -2599,16 +2627,35 @@ class OpossumInACanScreen(Screen):
                 if controller.isTPressed:
                     print("Quitting")
 
-            if controller.is1Pressed:
-                self.shuffle_opposums()
-                self.result = self.winner_or_looser[0]
-                del self.winner_or_looser[0]
-                self.check_results(state)
 
-            # this code is not reachable perhaps
-            player = state.player
 
-            player.update(state)
+        elif self.game_state == "choose_or_flee":
+            self.message_display = f"Will you go forward or retreat?"
+            if controller.isUpPressed:
+                if not hasattr(self, "bet_or_flee_index"):
+                    self.bet_or_flee_index = len(self.bet_or_flee) - 1
+                else:
+                    self.bet_or_flee_index -= 1
+                self.bet_or_flee_index %= len(self.bet_or_flee)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "bet_or_flee_index"):
+                    self.bet_or_flee_index = len(self.bet_or_flee) + 1
+                else:
+                    self.bet_or_flee_index += 1
+                self.bet_or_flee_index %= len(self.bet_or_flee)
+                controller.isDownPressed = False
+
+            elif self.bet_or_flee_index == 0:
+                if controller.isTPressed:
+                    print("lets go with it")
+
+            elif self.bet_or_flee_index == 1:
+                if controller.isTPressed:
+
+                    print("lets get out")
+
 
 
 
@@ -2632,36 +2679,38 @@ class OpossumInACanScreen(Screen):
                 controller.isDownPressed = False
 
             if self.magic_menu_index == 0:
-                if controller.isKPressed:
-                    if self.luck_activated < 1 and self.reveal_hand == False:
+                if controller.isKPressed and state.player.focus_points > 9:
+                    if len(self.winner_or_looser) < 4:
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
                             print("You cast bluff")
-                            self.game_state = "bluff_state"
+                            print("I'll bet you I'll get the rst of the wins")
+                            state.player.playerMoney += self.sallyOpossumMoney
+                            self.sallyOpossumIsDefeated = True
+                            self.sallyOpossumMoney = 0
+                            print("exiting now")
 
                         else:
                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0 or self.reveal_hand == True:
-                        self.third_message_display = "sorry but you can't stack magic spells"
+                    else:
+                        self.third_message_display = "sorry but you can't stack magic spells.Wait till 3 wins left to cast."
 
 
             elif self.magic_menu_index == 1:
-                if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        print("You cast reveal")
-                        if controller.isKPressed:
-                            if state.player.focus_points >= 10:
-                                state.player.focus_points -= 10
-                                self.reveal_hand = True
+                if controller.isKPressed and self.luck_activated == 0:
+                    print("You cast reveal")
+                    if state.player.focus_points >= 10:
+                        state.player.focus_points -= 10
+                        self.opossum_rader = True
 
-                                print("You cast bluff")
-                                self.game_state = "reveal_state"
+                        print("You cast bluff")
+                        self.game_state = "choose_can"
 
-                            elif state.player.focus_points < 10:
-                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0:
-                        self.third_message_display = "sorry but you can't stack magic spells"
+                    elif state.player.focus_points < 10:
+                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                else:
+                    self.third_message_display = "sorry but you can't stack magic spells"
 
 
 
@@ -2671,18 +2720,19 @@ class OpossumInACanScreen(Screen):
 
             ##### boss enemies will use magic under more strict conditions
             elif self.magic_menu_index == 2:
-                if controller.isKPressed:
+                if controller.isKPressed and self.luck_activated == 0:
                     print("you cast avatar of luck")
-                    self.third_message_display = "Your luck is now increased for 5 losses"
-                    self.luck_activated = 3
+                    self.third_message_display = "The god of luck shines on you, looks like another trash can was hiding behind one of the others"
                     state.player.focus_points -= 20
-                    self.game_state = "choose_heads_or_tails_message"
+                    self.game_state = "choose_can"
+                    self.luck_activated = 5
+
 
 
             elif self.magic_menu_index == 3:
                 if controller.isKPressed:
                     print("going back")
-                    self.game_state = "choose_heads_or_tails_message"
+                    self.game_state = "choose_can"
 
 
         elif self.game_state == "play_again_or_bail":
@@ -2732,7 +2782,7 @@ class OpossumInACanScreen(Screen):
             f" Players Bet: {self.bet}",
             True, (255, 255, 255)), (10, 390))
         DISPLAY.blit(self.font.render(
-            f" player Insurance: {self.insurance}",
+            f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
             True, (255, 255, 255)), (10, 490))
 
 
@@ -2770,6 +2820,28 @@ class OpossumInACanScreen(Screen):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 255))
+
+        elif self.game_state == "choose_or_flee":
+            if self.bet_or_flee_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
+
+
+
+            elif self.bet_or_flee_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.bet_or_flee[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.bet_or_flee[1]}", True, (255, 255, 255)),
+                (700, 210))
+
 
 
         elif self.game_state == "magic_menu" :
