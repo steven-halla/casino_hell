@@ -2507,7 +2507,7 @@ class OpossumInACanScreen(Screen):
         self.has_opossum_insurance = True
         self.insurance = 200
 
-        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
+        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star","win",
 
                                             "win", "insurance_eater"]
 
@@ -2682,7 +2682,7 @@ class OpossumInACanScreen(Screen):
 
             if self.magic_menu_index == 0:
                 if controller.isKPressed and state.player.focus_points > 9:
-                    if len(self.winner_or_looser) < 4:
+                    if len(self.winner_or_looser) < 6:
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
