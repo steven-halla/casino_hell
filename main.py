@@ -2493,6 +2493,10 @@ class OpossumInACanScreen(Screen):
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
 
+        self.play_again_or_quit = ["Play Again", "Quit"]
+
+        self.play_again_or_quit_index = 0
+
         self.bluff_activated = 0
         self.bottom_message = ""
         self.opossum_rader = False
@@ -2605,6 +2609,7 @@ class OpossumInACanScreen(Screen):
 
             elif self.choices_index == 0:
                 if controller.isTPressed:
+                    pygame.time.delay(150)
                     self.shuffle_opposums()
                     self.result = self.winner_or_looser[0]
                     if self.opossum_rader == True:
@@ -2739,24 +2744,49 @@ class OpossumInACanScreen(Screen):
                     self.game_state = "choose_can"
 
 
+
+
+
+
+
+                    #########################################################################
+
+
         elif self.game_state == "play_again_or_bail":
-            if controller.isPPressed:
-                print("IS THIS WHERE THE RROR IS AT???")
-                state.player.playerMoney += self.bet
-                state.player.playerMoney += self.insurance
-                time.sleep(1)
-                self.refresh()
-                self.game_state = "welcome_opposum"
-                print("ok its betting time")
+            if controller.isUpPressed:
+                if not hasattr(self, "play_again_or_quit_index"):
+                    self.play_again_or_quit_index = len(self.play_again_or_quit) - 1
+                else:
+                    self.play_again_or_quit_index -= 1
+                self.play_again_or_quit_index %= len(self.play_again_or_quit)
+                controller.isUpPressed = False
 
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+            elif controller.isDownPressed:
+                if not hasattr(self, "play_again_or_quit_index"):
+                    self.play_again_or_quit_index = len(self.play_again_or_quit) + 1
+                else:
+                    self.play_again_or_quit_index += 1
+                self.play_again_or_quit_index %= len(self.play_again_or_quit)
+                controller.isDownPressed = False
+
+            elif self.play_again_or_quit_index == 0:
+                if controller.isTPressed:
+                    print("lets go with it")
+                    pygame.time.delay(150)
+                    self.game_state = "choose_can"
+
+            elif self.play_again_or_quit_index == 1:
+                if controller.isTPressed:
+                    print("lets get out")
 
 
-            elif controller.isOPressed:
-                print(str(controller.isTPressed))
-                print("ok here we go")
-                self.game_state = "choose_can"
+
+
+
+
+
+
+
 
         elif self.game_state == "loser_screen":
             time.sleep(3)
@@ -2904,8 +2934,26 @@ class OpossumInACanScreen(Screen):
 
 
         elif self.game_state == "play_again_or_bail":
-            DISPLAY.blit(self.font.render(f"Press O to continue, or P to exit", True, (255, 255, 255)), (250, 10))
             DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
+            if self.play_again_or_quit_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
+
+
+
+            elif self.play_again_or_quit_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.play_again_or_quit[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.play_again_or_quit[1]}", True, (255, 255, 255)),
+                (700, 210))
 
         elif self.game_state == "loser_screen":
             DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
