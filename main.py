@@ -4408,17 +4408,16 @@ class BlackJackScreen(Screen, Deck):
                 (200, 10))
 
             # Create the black square box
-            black_box = pygame.Surface((200, 200))
+            black_box = pygame.Surface((230, 215))
             black_box.fill((0, 0, 0))
             # Create the white border
             border_width = 5
             white_border = pygame.Surface(
                 (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
             white_border.fill((255, 255, 255))
-
             # Draw the white border on top of the black box
-            DISPLAY.blit(white_border, (700 - border_width - 10, 160 - border_width - 10))
-            DISPLAY.blit(black_box, (700 - 10, 160 - 10))
+            DISPLAY.blit(white_border, (670 - border_width, 145 - border_width))
+            DISPLAY.blit(black_box, (670, 145))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
