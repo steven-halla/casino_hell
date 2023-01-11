@@ -4379,6 +4379,19 @@ class BlackJackScreen(Screen, Deck):
     def draw(self, state: "GameState"):
         DISPLAY.fill((0, 0, 51))
 
+        black_box = pygame.Surface((700, 200))
+        black_box.fill((0, 0, 0))
+
+        # Draw the black box at the bottom of the screen
+        border_width = 5
+        white_border = pygame.Surface(
+            (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
+        white_border.fill((255, 255, 255))
+
+        # Draw the white border on top of the black box
+        DISPLAY.blit(white_border, (50 - border_width, 380 - border_width))
+        DISPLAY.blit(black_box, (50, 380))
+
 
         if self.game_state == "welcome_screen":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
@@ -4394,6 +4407,18 @@ class BlackJackScreen(Screen, Deck):
                 self.font.render(f"{self.message_display}", True, (255, 255, 255)),
                 (200, 10))
 
+            # Create the black square box
+            black_box = pygame.Surface((200, 200))
+            black_box.fill((0, 0, 0))
+            # Create the white border
+            border_width = 5
+            white_border = pygame.Surface(
+                (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
+            white_border.fill((255, 255, 255))
+
+            # Draw the white border on top of the black box
+            DISPLAY.blit(white_border, (700 - border_width - 10, 160 - border_width - 10))
+            DISPLAY.blit(black_box, (700 - 10, 160 - 10))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
