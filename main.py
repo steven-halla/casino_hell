@@ -4379,7 +4379,7 @@ class BlackJackScreen(Screen, Deck):
     def draw(self, state: "GameState"):
         DISPLAY.fill((0, 0, 51))
 
-        black_box = pygame.Surface((700, 200))
+        black_box = pygame.Surface((725, 200))
         black_box.fill((0, 0, 0))
 
         # Draw the black box at the bottom of the screen
@@ -4412,29 +4412,29 @@ class BlackJackScreen(Screen, Deck):
             black_box.fill((0, 0, 0))
             # Create the white border
             border_width = 5
-            white_border = pygame.Surface(
-                (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
+            white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
             white_border.fill((255, 255, 255))
-            # Draw the white border on top of the black box
-            DISPLAY.blit(white_border, (640 - border_width, 145 - border_width))
-            DISPLAY.blit(black_box, (640, 145))
+            black_box = pygame.Surface((170, 215))
+            black_box.fill((0, 0, 0))
+            white_border.blit(black_box, (border_width, border_width))
+            DISPLAY.blit(white_border, (620 - 20, 145))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
+                (680, 160))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
+                (680, 210))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
+                (680, 260))
 
             if self.current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
+                    (630, 155))
                 if state.controller.isTPressed:
                     print("we are going to the next phase")
                     self.game_state = "enemy_draw_one_card"
@@ -4446,7 +4446,7 @@ class BlackJackScreen(Screen, Deck):
             elif self.current_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
+                    (630, 205))
                 if state.controller.isTPressed:
                     print("Time to draw a card")
                     self.game_state = "player_draw_one_card"
@@ -4457,7 +4457,7 @@ class BlackJackScreen(Screen, Deck):
             elif self.current_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
+                    (630, 255))
                 if state.controller.isTPressed:
                     print("In the future you can cast magic here")
                     state.controller.isTPressed = False
