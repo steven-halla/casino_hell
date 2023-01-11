@@ -4377,7 +4377,8 @@ class BlackJackScreen(Screen, Deck):
 
 
     def draw(self, state: "GameState"):
-        DISPLAY.fill((0,0,0))
+        DISPLAY.fill((0, 0, 51))
+
 
         if self.game_state == "welcome_screen":
             DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
@@ -4392,6 +4393,8 @@ class BlackJackScreen(Screen, Deck):
             DISPLAY.blit(
                 self.font.render(f"{self.message_display}", True, (255, 255, 255)),
                 (200, 10))
+
+
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (700, 160))
@@ -4408,10 +4411,10 @@ class BlackJackScreen(Screen, Deck):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 155))
-                if self.isTPressed:
+                if state.controller.isTPressed:
                     print("we are going to the next phase")
                     self.game_state = "enemy_draw_one_card"
-                    self.isTPressed = False
+                    state.controller.isTPressed = False
                     # self.betPhase = True
                     # self.game_state = "bet_phase"
 
@@ -4420,7 +4423,7 @@ class BlackJackScreen(Screen, Deck):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 205))
-                if self.isTPressed:
+                if state.controller.isTPressed:
                     print("Time to draw a card")
                     self.game_state = "player_draw_one_card"
                     self.isTPressed = False
@@ -4431,9 +4434,9 @@ class BlackJackScreen(Screen, Deck):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 255))
-                if self.isTPressed:
+                if state.controller.isTPressed:
                     print("In the future you can cast magic here")
-                    self.isTPressed = False
+                    state.controller.isTPressed = False
 
             DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 100))
 
