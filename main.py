@@ -4149,8 +4149,8 @@ class BlackJackScreen(Screen, Deck):
 
         self.first_message_display = ""
         self.second_message_display = ""
-        self.thrid_message_display = ""
-        self.game_state = "welcome_screen"
+        self.third_message_display = ""
+        self.game_state = "menu_screen"
         self.bet = 10
         self.player_money = 100
         self.enemy_money = 100
@@ -4197,7 +4197,7 @@ class BlackJackScreen(Screen, Deck):
             self.shuffle()
             self.first_message_display = "welcome to black jack. Max bet is 10"
             self.second_message_display = "Press the T key, which is our action key"
-            self.thrid_message_display = "To go forward with the game"
+            self.third_message_display = "To go forward with the game"
             if controller.isTPressed:
                 pygame.time.wait(300)
                 self.game_state = "bet_phase"
@@ -4205,7 +4205,9 @@ class BlackJackScreen(Screen, Deck):
                 print("quiting game")
 
         elif self.game_state == "bet_phase":
-            self.message_display = "Place your bet 10 coin max. Press up and down. Press T when ready "
+            self.first_message_display = "Place your bet 10 coin max. Press up and down. "
+            self.second_message_display = "Press T when you are ready"
+            self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
                 pygame.time.wait(300)
@@ -4214,7 +4216,7 @@ class BlackJackScreen(Screen, Deck):
 
         elif self.game_state == "draw_phase":
             # need to reformat have a reset function
-            self.message_display = "dealing the cards"
+            self.first_message_display = ""
             self.second_message_display = ""
             self.thrid_message_display = ""
             self.black_jack_counter = 0
@@ -4328,7 +4330,6 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "menu_screen":
-            self.message_display = "Menu screen press T to select munuuuuuu"
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
                 self.game_state = "results_screen"
@@ -4397,7 +4398,7 @@ class BlackJackScreen(Screen, Deck):
 
         DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 390))
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
-        DISPLAY.blit(self.font.render(f"{self.thrid_message_display}", True, (255, 255, 255)), (45, 510))
+        DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
 
 
@@ -4466,30 +4467,22 @@ class BlackJackScreen(Screen, Deck):
                     print("In the future you can cast magic here")
                     state.controller.isTPressed = False
 
-            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 100))
+            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
 
 
-            DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (10, 300))
-            DISPLAY.blit(self.font.render(f"Player score:{self.player_score}", True, (255, 255, 255)), (10, 350))
-            DISPLAY.blit(self.font.render(f"Player money:{self.player_money}", True, (255, 255, 255)), (10, 400))
+            DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (40, 420))
+            DISPLAY.blit(self.font.render(f"Player score:{self.player_score} Player Money: {self.player_money}", True, (255, 255, 255)), (40, 450))
 
-            DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (10, 450))
-            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
-            DISPLAY.blit(self.font.render(f"Enemy money:{self.enemy_money}", True, (255, 255, 255)), (10, 550))
+            DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (40, 480))
+            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
 
 
 
 
-            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
+            # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
 
 
-            DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (10, 300))
-            DISPLAY.blit(self.font.render(f"Player score:{self.player_score}", True, (255, 255, 255)), (10, 350))
-            DISPLAY.blit(self.font.render(f"Player money:{self.player_money}", True, (255, 255, 255)), (10, 400))
 
-            DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (10, 450))
-            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
-            DISPLAY.blit(self.font.render(f"Enemy money:{self.enemy_money}", True, (255, 255, 255)), (10, 550))
 
         pygame.display.flip()
 
