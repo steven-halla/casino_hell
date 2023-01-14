@@ -4147,7 +4147,7 @@ class BlackJackScreen(Screen, Deck):
         Deck.__init__(self, ranks, suits)
         self.font = pygame.font.Font(None, 36)
 
-        self.message_display = ""
+        self.first_message_display = ""
         self.second_message_display = ""
         self.thrid_message_display = ""
         self.game_state = "welcome_screen"
@@ -4188,14 +4188,18 @@ class BlackJackScreen(Screen, Deck):
 
     def update(self,state: "GameState"):
         # print("update() - state: " + str(self.game_state) + ", start at: " )
+        # pygame.time.wait(100)
 
         controller = state.controller
         controller.update(state)
 
         if self.game_state == "welcome_screen":
             self.shuffle()
-            self.message_display = "Press the 1 key to start game or O to quit"
-            if controller.isOPressed:
+            self.first_message_display = "welcome to black jack. Max bet is 10"
+            self.second_message_display = "Press the T key, which is our action key"
+            self.thrid_message_display = "To go forward with the game"
+            if controller.isTPressed:
+                pygame.time.wait(300)
                 self.game_state = "bet_phase"
             elif controller.isOPressed:
                 print("quiting game")
@@ -4204,6 +4208,7 @@ class BlackJackScreen(Screen, Deck):
             self.message_display = "Place your bet 10 coin max. Press up and down. Press T when ready "
             self.place_bet(state)
             if controller.isTPressed:
+                pygame.time.wait(300)
                 self.game_state = "draw_phase"
                 controller.isTPressed = False
 
@@ -4218,12 +4223,9 @@ class BlackJackScreen(Screen, Deck):
             self.black_jack_draw = False
 
 
-            # self.player_hand = self.draw_hand(2)
+            self.player_hand = self.draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
-
-
-
 
 
 
@@ -4244,7 +4246,7 @@ class BlackJackScreen(Screen, Deck):
             self.black_jack_counter = 0
 
 
-            # self.enemy_hand = self.draw_hand(2)
+            self.enemy_hand = self.draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
@@ -4326,7 +4328,7 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "menu_screen":
-            self.message_display = "Menu screen press T to select"
+            self.message_display = "Menu screen press T to select munuuuuuu"
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
                 self.game_state = "results_screen"
@@ -4361,7 +4363,8 @@ class BlackJackScreen(Screen, Deck):
 
             self.message_display = "Press B to play again or O to quit"
 
-            if controller.isBPressed:
+            if controller.isTPressed:
+                pygame.time.wait(300)
                 self.game_state = "welcome_screen"
                 controller.isB = False
 
@@ -4389,23 +4392,24 @@ class BlackJackScreen(Screen, Deck):
         white_border.fill((255, 255, 255))
 
         # Draw the white border on top of the black box
-        DISPLAY.blit(white_border, (50 - border_width, 380 - border_width))
-        DISPLAY.blit(black_box, (50, 380))
+        DISPLAY.blit(white_border, (30 - border_width, 380 - border_width))
+        DISPLAY.blit(black_box, (30, 380))
+
+        DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 390))
+        DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
+        DISPLAY.blit(self.font.render(f"{self.thrid_message_display}", True, (255, 255, 255)), (45, 510))
 
 
-        if self.game_state == "welcome_screen":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
 
 
-        elif self.game_state == "bet_phase":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+
+
+        if self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"{self.bet}", True, (255, 255, 255)), (10, 105))
 
 
         elif self.game_state == "menu_screen":
-            DISPLAY.blit(
-                self.font.render(f"{self.message_display}", True, (255, 255, 255)),
-                (200, 10))
+
 
             # Create the black square box
             black_box = pygame.Surface((255, 215))
@@ -4473,10 +4477,7 @@ class BlackJackScreen(Screen, Deck):
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}", True, (255, 255, 255)), (10, 500))
             DISPLAY.blit(self.font.render(f"Enemy money:{self.enemy_money}", True, (255, 255, 255)), (10, 550))
 
-        elif self.game_state == "results_screen":
-            DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
-            DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 45))
-            DISPLAY.blit(self.font.render(f"{self.thrid_message_display}", True, (255, 255, 255)), (10, 100))
+
 
 
             DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
