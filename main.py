@@ -4150,7 +4150,7 @@ class BlackJackScreen(Screen, Deck):
         self.first_message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
-        self.game_state = "menu_screen"
+        self.game_state = "welcome_screen"
         self.bet = 10
         self.player_money = 100
         self.enemy_money = 100
@@ -4406,7 +4406,7 @@ class BlackJackScreen(Screen, Deck):
 
 
         if self.game_state == "bet_phase":
-            DISPLAY.blit(self.font.render(f"{self.bet}", True, (255, 255, 255)), (10, 105))
+            DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
 
 
         elif self.game_state == "menu_screen":
@@ -4471,10 +4471,10 @@ class BlackJackScreen(Screen, Deck):
 
 
             DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (40, 420))
-            DISPLAY.blit(self.font.render(f"Player score:{self.player_score} Player Money: {self.player_money}", True, (255, 255, 255)), (40, 450))
+            DISPLAY.blit(self.font.render(f"Player score:{self.player_score}         Player Money: {self.player_money}", True, (255, 255, 255)), (40, 450))
 
             DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (40, 480))
-            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
+            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}        Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
 
 
 
