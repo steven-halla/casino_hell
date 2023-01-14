@@ -4356,11 +4356,17 @@ class BlackJackScreen(Screen, Deck):
         elif self.game_state == "results_screen":
             if self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player"
+                self.first_message_display = f"Your hand is a {self.player_hand}"
+                self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player "
+                self.first_message_display = f"Your hand is a {self.player_hand}"
+                self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
 
             elif self.player_score == self.enemy_score:
                 self.second_message_display = "It's a draw nobody wins"
+                self.first_message_display = f"Your hand is a {self.player_hand}"
+                self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
 
             self.message_display = "Press B to play again or O to quit"
 
@@ -4453,6 +4459,7 @@ class BlackJackScreen(Screen, Deck):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 205))
                 if state.controller.isTPressed:
+                    pygame.time.wait(300)
                     print("Time to draw a card")
                     self.game_state = "player_draw_one_card"
                     self.isTPressed = False
