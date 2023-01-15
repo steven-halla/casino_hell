@@ -4219,7 +4219,7 @@ class BlackJackScreen(Screen, Deck):
                 controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
-            self.first_message_display = "Place your bet 10 coin max. Press up and down. "
+            self.first_message_display = "Place your bet 100 coin max. Press up and down. "
             self.second_message_display = "Press T when you are ready"
             self.third_message_display = " "
             self.place_bet(state)
@@ -4490,6 +4490,8 @@ class BlackJackScreen(Screen, Deck):
 
         elif self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
+            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (250, 520))
+            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (247, 480))
 
 
         elif self.game_state == "menu_screen":
