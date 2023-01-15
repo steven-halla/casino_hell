@@ -1913,7 +1913,6 @@ class CoinFlipSandyScreen(Screen):
         self.magic_enemy_message_display = ""
         self.choices = ["Heads", "Tails", "Magic"]
         self.yes_or_no_menu = ["Yes", "No"]
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.game_state = "welcome_screen"
         self.choice_sequence = True
         self.bet = 0
@@ -1922,6 +1921,7 @@ class CoinFlipSandyScreen(Screen):
         self.coinFlipSandyDefeated = False
         self.current_index = 0
         self.yes_no_current_index = 0
+        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
         self.leave_or_replay_index = 0
         self.high_exp = False
@@ -4046,7 +4046,7 @@ class DiceGameScreen(Screen, Dice):
 
 
 ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
-suits = ['spades', 'diamonds', 'clubs', 'hearts']
+suits = ['spades', 'diamonds', 'clubs', 'hearts'] # TODO use enum
 
 
 class Deck:
@@ -4054,8 +4054,8 @@ class Deck:
         self.ranks = ranks
         self.isBlackJack =  False
         self.suits = suits
-        self.rank_strings = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight",
-                             9: "Nine", 10: "Ten", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
+        self.rank_strings = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8",
+                             9: "9", 10: "10", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
         self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
         self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
                             "King": 10, "Ace": 11}
@@ -4163,6 +4163,8 @@ class BlackJackScreen(Screen, Deck):
         self.current_index = 0
         self.welcome_screen_choices = ["Play", "Magic", "Quit"]
         self.welcome_screen_index = 0
+        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+        self.magic_menu_index = 0
         self.ace_value = 1
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -4189,12 +4191,15 @@ class BlackJackScreen(Screen, Deck):
 
 
 
-    def update(self,state: "GameState"):
+    def update(self, state: "GameState"):
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
 
         controller = state.controller
         controller.update(state)
+        #
+        # print("p: " + self.hand_to_str(self.player_hand))
+        # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
             print("You home slice")
@@ -4377,17 +4382,17 @@ class BlackJackScreen(Screen, Deck):
         elif self.game_state == "results_screen":
             if self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
-                self.first_message_display = f"Your hand is a {self.player_hand}"
-                self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
+                self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
+                self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player press T when ready"
-                self.first_message_display = f"Your hand is a {self.player_hand}"
-                self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
+                self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
+                self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
 
             elif self.player_score == self.enemy_score:
                 self.second_message_display = "It's a draw nobody wins press T when Ready"
-                self.first_message_display = f"Your hand is a {self.player_hand}"
-                self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
+                self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
+                self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
 
 
             if controller.isTPressed:
@@ -4399,7 +4404,15 @@ class BlackJackScreen(Screen, Deck):
 
 
 
-
+    def hand_to_str(self, hand) -> str:
+        msg = ""
+        i = 0
+        for card in hand:
+            if i > 0:
+                msg += ", "
+            msg += card[0] + " " + card[1]
+            i += 1
+        return msg
 
 
 
@@ -4558,10 +4571,10 @@ class BlackJackScreen(Screen, Deck):
             DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
 
 
-            DISPLAY.blit(self.font.render(f"Player Hand{self.player_hand}", True, (255, 255, 255)), (40, 420))
+            DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
             DISPLAY.blit(self.font.render(f"Player score:{self.player_score}         Player Money: {self.player_money}", True, (255, 255, 255)), (40, 450))
 
-            DISPLAY.blit(self.font.render(f"Enemy Hand{self.enemy_hand}", True, (255, 255, 255)), (40, 480))
+            DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}        Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
 
 
