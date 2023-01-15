@@ -4160,6 +4160,8 @@ class BlackJackScreen(Screen, Deck):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
+        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
+        self.welcome_screen_index = 0
         self.ace_value = 1
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -4198,11 +4200,22 @@ class BlackJackScreen(Screen, Deck):
             self.first_message_display = "welcome to black jack. Max bet is 10"
             self.second_message_display = "Press the T key, which is our action key"
             self.third_message_display = "To go forward with the game"
-            if controller.isTPressed:
-                pygame.time.wait(300)
-                self.game_state = "bet_phase"
-            elif controller.isOPressed:
-                print("quiting game")
+
+            if controller.isUpPressed:
+                if not hasattr(self, "welcome_screen_index"):
+                    self.welcome_screen_index = len(self.welcome_screen_choices) - 1
+                else:
+                    self.welcome_screen_index -= 1
+                self.welcome_screen_index %= len(self.welcome_screen_choices)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "welcome_screen_index"):
+                    self.welcome_screen_index = len(self.welcome_screen_choices) + 1
+                else:
+                    self.welcome_screen_index += 1
+                self.welcome_screen_index %= len(self.welcome_screen_choices)
+                controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
             self.first_message_display = "Place your bet 10 coin max. Press up and down. "
@@ -4406,12 +4419,67 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
+        if self.game_state == "welcome_screen":
+            black_box = pygame.Surface((255, 215))
+            black_box.fill((0, 0, 0))
+            # Create the white border
+            border_width = 5
+            white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            black_box = pygame.Surface((170, 215))
+            black_box.fill((0, 0, 0))
+            white_border.blit(black_box, (border_width, border_width))
+            DISPLAY.blit(white_border, (620 - 20, 145))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
+                (680, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.welcome_screen_choices[1]}", True, (255, 255, 255)),
+                (680, 210))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.welcome_screen_choices[2]}", True, (255, 255, 255)),
+                (680, 260))
+
+            if self.welcome_screen_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (630, 155))
+                if state.controller.isTPressed:
+                    print("we are going to the next phase")
+                    self.game_state = "bet_phase"
+                    state.controller.isTPressed = False
+                    # self.betPhase = True
+                    # self.game_state = "bet_phase"
+
+
+            elif self.welcome_screen_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (630, 205))
+                if state.controller.isTPressed:
+                    pygame.time.wait(300)
+                    # self.game_state = "magic_menu"
+                    self.isTPressed = False
+
+
+
+            elif self.welcome_screen_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (630, 255))
+                if state.controller.isTPressed:
+                    print("Quit")
+                    state.controller.isTPressed = False
 
 
 
 
 
-        if self.game_state == "bet_phase":
+
+        elif self.game_state == "bet_phase":
             DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
 
 
