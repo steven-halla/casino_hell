@@ -4125,6 +4125,7 @@ class Deck:
 
     def shuffle(self):
         random.shuffle(self.cards)
+        return self.cards
 
     def draw_hand(self, num_cards):
         hand = []
@@ -4196,7 +4197,7 @@ class BlackJackScreen(Screen, Deck):
         controller.update(state)
 
         if self.game_state == "welcome_screen":
-            self.shuffle()
+            print("You home slice")
             self.first_message_display = "welcome to black jack. Max bet is 10"
             self.second_message_display = "Press the T key, which is our action key"
             self.third_message_display = "To go forward with the game"
@@ -4317,7 +4318,9 @@ class BlackJackScreen(Screen, Deck):
             self.game_state = "menu_screen"
 
         elif self.game_state == "enemy_draw_one_card":
-            while self.enemy_score < 17 and self.enemy_score <= self.player_score:
+            print("this is the start of enemy draw one card")
+            while self.enemy_score < 17:
+                print("thi sis our while loop")
 
 
                 self.enemy_hand += self.draw_hand(1)
@@ -4325,10 +4328,12 @@ class BlackJackScreen(Screen, Deck):
                 self.enemy_score = self.compute_hand_value(self.enemy_hand)
                 print("enemy hand is now" + str(self.enemy_hand))
                 print("enemy score is now" + str(self.enemy_score))
+                self.game_state = "results_screen"
 
 
 
                 if self.enemy_score > 21:
+                    print("if the enemy is going to bust")
                     self.player_money += self.bet
                     self.enemy_money -= self.bet
                     print("enemy bust")
@@ -4366,31 +4371,32 @@ class BlackJackScreen(Screen, Deck):
                 controller.isDownPressed = False
 
 
+
+
+
         elif self.game_state == "results_screen":
             if self.player_score > self.enemy_score and self.player_score < 22:
-                self.second_message_display = "You win player"
+                self.second_message_display = "You win player press T when ready"
                 self.first_message_display = f"Your hand is a {self.player_hand}"
                 self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
-                self.second_message_display = "You lose player "
+                self.second_message_display = "You lose player press T when ready"
                 self.first_message_display = f"Your hand is a {self.player_hand}"
                 self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
 
             elif self.player_score == self.enemy_score:
-                self.second_message_display = "It's a draw nobody wins"
+                self.second_message_display = "It's a draw nobody wins press T when Ready"
                 self.first_message_display = f"Your hand is a {self.player_hand}"
                 self.third_message_display = f"Your  enemy hand is a {self.enemy_hand}"
 
-            self.message_display = "Press B to play again or O to quit"
 
             if controller.isTPressed:
                 pygame.time.wait(300)
+                print("Hey there going to the welcome_screen")
                 self.game_state = "welcome_screen"
-                controller.isB = False
+                controller.isTPressed = False
 
-            elif controller.isOPressed:
-                print("Exit")
-                controller.isOPressed = False
+
 
 
 
@@ -4448,6 +4454,9 @@ class BlackJackScreen(Screen, Deck):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 155))
                 if state.controller.isTPressed:
+                    self.shuffle()
+
+
                     print("we are going to the next phase")
                     self.game_state = "bet_phase"
                     state.controller.isTPressed = False
@@ -4515,7 +4524,9 @@ class BlackJackScreen(Screen, Deck):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 155))
                 if state.controller.isTPressed:
-                    print("we are going to the next phase")
+                    pygame.time.wait(300)
+
+                    print("code is broke right here")
                     self.game_state = "enemy_draw_one_card"
                     state.controller.isTPressed = False
                     # self.betPhase = True
