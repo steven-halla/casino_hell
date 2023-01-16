@@ -4419,12 +4419,16 @@ class BlackJackScreen(Screen, Deck):
 
 
     def draw(self, state: "GameState"):
+        character_image = pygame.image.load("images/128by128.png")
+
         DISPLAY.fill((0, 0, 51))
 
         black_box = pygame.Surface((725, 200))
         black_box.fill((0, 0, 0))
 
         # Draw the black box at the bottom of the screen
+
+        # thisis how we raw a box for our message displays
         border_width = 5
         white_border = pygame.Surface(
             (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
@@ -4439,6 +4443,10 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
         if self.game_state == "welcome_screen":
+            DISPLAY.blit(character_image, (23, 245))
+
+
+
             black_box = pygame.Surface((255, 215))
             black_box.fill((0, 0, 0))
             # Create the white border
