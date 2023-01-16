@@ -4169,6 +4169,8 @@ class BlackJackScreen(Screen, Deck):
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
+        self.dealer_name = ""
+        self.hero_name = ""
 
     print("HI there partner")
 
@@ -4419,7 +4421,9 @@ class BlackJackScreen(Screen, Deck):
 
 
     def draw(self, state: "GameState"):
+        #change to dealer image
         character_image = pygame.image.load("images/128by128.png")
+        hero_image = pygame.image.load("images/hero.png")
 
         DISPLAY.fill((0, 0, 51))
 
@@ -4510,12 +4514,16 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "bet_phase":
+            DISPLAY.blit(character_image, (23, 245))
+
             DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (250, 520))
             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (247, 480))
 
 
         elif self.game_state == "menu_screen":
+            DISPLAY.blit(hero_image, (23, 245))
+
 
 
             # Create the black square box
