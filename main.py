@@ -4170,6 +4170,7 @@ class BlackJackScreen(Screen, Deck):
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
         self.current_speaker = ""
+        self.black_jack_bluff_counter = 0
 
     print("HI there partner")
 
@@ -4203,7 +4204,6 @@ class BlackJackScreen(Screen, Deck):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            print("You home slice")
             self.first_message_display = "welcome to black jack. Max bet is 10"
             self.second_message_display = "Press the T key, which is our action key"
             self.third_message_display = "To go forward with the game"
@@ -4256,6 +4256,7 @@ class BlackJackScreen(Screen, Deck):
             if self.black_jack_counter > 0:
                 print("Player black jack win set to true")
                 self.player_black_jack_win = True
+                self.black_jack_bluff_counter += 1
             else:
                 self.player_black_jack_win = False
 
@@ -4397,19 +4398,25 @@ class BlackJackScreen(Screen, Deck):
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
 
+
+
+#we need to make this work right after a black jack
+            # set a counter to minus 1 this is the counter is above 0
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
-                    if self.luck_activated < 1 and self.reveal_hand == False:
+                    if self.black_jack_bluff_counter > 0:
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
-                            print("You cast bluff")
+                            self.first_message_display = "Time to bluff"
                             self.game_state = "bluff_state"
 
                         else:
                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0 or self.reveal_hand == True:
-                        self.third_message_display = "sorry but you can't stack magic spells"
+                    elif self.black_jack_bluff_counter < 3:
+                        print("you need to wait till you get 3 black jacks jack")
+                        self.game_state = "welcome_screen"
+
 
 
             elif self.magic_menu_index == 1:
@@ -4448,7 +4455,24 @@ class BlackJackScreen(Screen, Deck):
             elif self.magic_menu_index == 3:
                 if controller.isKPressed:
                     print("going back")
-                    self.game_state = "choose_heads_or_tails_message"
+                    self.game_state = "welcome_screen"
+
+        elif self.game_state == "bluff_state":
+            self.first_message_display = "I bet I'll get two black jacks in a row"
+            self.second_message_display = "Your on pal bring it on"
+            bluffalo = random.random()
+
+            if bluffalo < 0.7:
+                print("you win tripple bet")
+                state.player.playerMoney += self.bet * 3
+                self.game_state = "welcome_screen"
+
+
+            else:
+                print("your bet lost")
+                state.player.playerMoney -= self.bet
+                self.game_state = "welcome_screen"
+
 
 
 
@@ -4518,6 +4542,7 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 390))
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
+        DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
 
         if self.game_state == "welcome_screen":
             self.current_speaker = "cheater bob"
@@ -4568,7 +4593,7 @@ class BlackJackScreen(Screen, Deck):
                     (630, 205))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
-                    # self.game_state = "magic_menu"
+                    self.game_state = "magic_menu"
                     self.isTPressed = False
 
 
@@ -4662,6 +4687,7 @@ class BlackJackScreen(Screen, Deck):
                     (630, 255))
                 if state.controller.isTPressed:
                     print("In the future you can cast magic here")
+                    self.game_state = "magic_menu"
                     state.controller.isTPressed = False
 
             DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
@@ -4671,7 +4697,52 @@ class BlackJackScreen(Screen, Deck):
             DISPLAY.blit(self.font.render(f"Player score:{self.player_score}         Player Money: {self.player_money}", True, (255, 255, 255)), (40, 450))
 
             DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
+
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}        Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
+
+
+
+        elif self.game_state == "magic_menu" :
+            if self.magic_menu_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 155))
+
+
+
+            elif self.magic_menu_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 205))
+
+
+
+
+            elif self.magic_menu_index == 2:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 255))
+
+            elif self.magic_menu_index == 3:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (650, 305))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                (700, 160))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+                (700, 210))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+                (700, 260))
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+                (700, 310))
 
         elif self.game_state == "results_screen":
             self.current_speaker = "cheater bob"
