@@ -4599,7 +4599,11 @@ class BlackJackScreen(Screen, Deck):
             DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}        Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
 
+        elif self.game_state == "results_screen":
+            self.current_speaker = "cheater bob"
 
+            DISPLAY.blit(character_image, (23, 245))
+            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
             # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
