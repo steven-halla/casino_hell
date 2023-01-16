@@ -948,7 +948,7 @@ class CoinFlipTedScreen(Screen):
 
 
 
-
+#534534543535353525532535353354
 
         elif self.game_state == "magic_menu":
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
@@ -4376,7 +4376,79 @@ class BlackJackScreen(Screen, Deck):
                 print(self.choices[self.current_index])
                 controller.isDownPressed = False
 
+                # 534534543535353525532535353354
 
+        elif self.game_state == "magic_menu":
+            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+
+            if controller.isUpPressed:
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) - 1
+                else:
+                    self.magic_menu_index -= 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) + 1
+                else:
+                    self.magic_menu_index += 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isDownPressed = False
+
+            if self.magic_menu_index == 0:
+                if controller.isKPressed:
+                    if self.luck_activated < 1 and self.reveal_hand == False:
+                        if state.player.focus_points >= 10:
+                            state.player.focus_points -= 10
+
+                            print("You cast bluff")
+                            self.game_state = "bluff_state"
+
+                        else:
+                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif self.luck_activated > 0 or self.reveal_hand == True:
+                        self.third_message_display = "sorry but you can't stack magic spells"
+
+
+            elif self.magic_menu_index == 1:
+                if controller.isKPressed:
+                    if self.luck_activated < 1:
+                        print("You cast reveal")
+                        if controller.isKPressed:
+                            if state.player.focus_points >= 10:
+                                state.player.focus_points -= 10
+                                self.reveal_hand = True
+
+                                print("You cast bluff")
+                                self.game_state = "reveal_state"
+
+                            elif state.player.focus_points < 10:
+                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif self.luck_activated > 0:
+                        self.third_message_display = "sorry but you can't stack magic spells"
+
+
+
+
+
+            ##########################have a message state reserved for buff states
+
+            ##### boss enemies will use magic under more strict conditions
+            elif self.magic_menu_index == 2:
+                if controller.isKPressed:
+                    print("you cast avatar of luck")
+                    self.third_message_display = "Your luck is now increased for 3 losses"
+                    self.luck_activated = 3
+                    state.player.focus_points -= 20
+                    self.game_state = "choose_heads_or_tails_message"
+
+
+            elif self.magic_menu_index == 3:
+                if controller.isKPressed:
+                    print("going back")
+                    self.game_state = "choose_heads_or_tails_message"
 
 
 
@@ -4414,6 +4486,8 @@ class BlackJackScreen(Screen, Deck):
             msg += card[0] + " " + card[1]
             i += 1
         return msg
+
+
 
 
 
