@@ -4169,8 +4169,7 @@ class BlackJackScreen(Screen, Deck):
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
-        self.dealer_name = ""
-        self.hero_name = ""
+        self.current_speaker = ""
 
     print("HI there partner")
 
@@ -4447,9 +4446,9 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
         if self.game_state == "welcome_screen":
+            self.current_speaker = "cheater bob"
             DISPLAY.blit(character_image, (23, 245))
-
-
+            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
             black_box = pygame.Surface((255, 215))
             black_box.fill((0, 0, 0))
@@ -4514,7 +4513,11 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "bet_phase":
+            self.current_speaker = "cheater bob"
+
             DISPLAY.blit(character_image, (23, 245))
+            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+
 
             DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (250, 520))
@@ -4522,7 +4525,10 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "menu_screen":
+            self.current_speaker = "hero"
+
             DISPLAY.blit(hero_image, (23, 245))
+            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
 
