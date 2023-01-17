@@ -4161,7 +4161,7 @@ class BlackJackScreen(Screen, Deck):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
-        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
+        self.welcome_screen_choices = ["Play", "Magic", "Quit", "Locked"]
         self.welcome_screen_index = 0
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
@@ -4588,9 +4588,16 @@ class BlackJackScreen(Screen, Deck):
                 self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
                 (680, 160))
 
-            DISPLAY.blit(
-                self.font.render(f"{self.welcome_screen_choices[1]}", True, (255, 255, 255)),
-                (680, 210))
+            if self.magic_lock == False:
+
+                DISPLAY.blit(
+                    self.font.render(f"{self.welcome_screen_choices[1]}", True, (255, 255, 255)),
+                    (680, 210))
+            elif self.magic_lock == True:
+                DISPLAY.blit(
+                    self.font.render(f"{self.welcome_screen_choices[3]}", True, (255, 255, 255)),
+                    (680, 210))
+
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[2]}", True, (255, 255, 255)),
