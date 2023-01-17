@@ -4161,7 +4161,7 @@ class BlackJackScreen(Screen, Deck):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Magic"]
         self.current_index = 0
-        self.welcome_screen_choices = ["Play", "Magic", "Quit", "Locked"]
+        self.welcome_screen_choices = ["Play", "Magic", "Quit", "Locked", "Redraw"]
         self.welcome_screen_index = 0
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
@@ -4174,6 +4174,7 @@ class BlackJackScreen(Screen, Deck):
         self.reveal_hand = 11
         self.magic_lock = False
         self.luck_of_jack = 7
+        self.avatar_of_luck = False
 
     print("HI there partner")
 
@@ -4259,6 +4260,8 @@ class BlackJackScreen(Screen, Deck):
 
 
             print("Player score is: " + str(self.player_score))
+
+
             # Check if the player has an ACE in their hand
             if self.black_jack_counter > 0:
                 print("Player black jack win set to true")
@@ -4364,6 +4367,8 @@ class BlackJackScreen(Screen, Deck):
         elif self.game_state == "menu_screen":
 
 
+
+
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
                 self.game_state = "results_screen"
@@ -4460,6 +4465,7 @@ class BlackJackScreen(Screen, Deck):
                     self.third_message_display = "Your luck is now increased for 3 losses"
                     self.luck_of_jack = 6
                     self.magic_lock = True
+                    self.avatar_of_luck = True
                     state.player.focus_points -= 20
                     self.game_state = "welcome_screen"
 
@@ -4689,13 +4695,16 @@ class BlackJackScreen(Screen, Deck):
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (680, 160))
 
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (680, 210))
+
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (680, 260))
+
+            if self.avatar_of_luck == True:
+                DISPLAY.blit(
+                    self.font.render(f"{self.choices[4]}", True, (255, 255, 255)),
+                    (680, 210))
 
             if self.current_index == 0:
                 DISPLAY.blit(
@@ -4741,6 +4750,7 @@ class BlackJackScreen(Screen, Deck):
             DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
 
             DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}        Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
+
 
 
 
