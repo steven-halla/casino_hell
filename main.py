@@ -4173,6 +4173,7 @@ class BlackJackScreen(Screen, Deck):
         self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
         self.magic_lock = False
+        self.luck_of_jack = 7
 
     print("HI there partner")
 
@@ -4457,9 +4458,10 @@ class BlackJackScreen(Screen, Deck):
                 if controller.isKPressed:
                     print("you cast avatar of luck")
                     self.third_message_display = "Your luck is now increased for 3 losses"
-                    self.luck_activated = 3
+                    self.luck_of_jack = 6
+                    self.magic_lock = True
                     state.player.focus_points -= 20
-                    self.game_state = "choose_heads_or_tails_message"
+                    self.game_state = "welcome_screen"
 
 
             elif self.magic_menu_index == 3:
@@ -4511,6 +4513,14 @@ class BlackJackScreen(Screen, Deck):
                 if self.reveal_hand == 0:
                     print("Magic time")
                     self.reveal_hand = 11
+                    self.magic_lock = False
+
+                if self.luck_of_jack < 7:
+                    self.luck_of_jack -= 1
+
+                if self.luck_of_jack == 0:
+                    print("Magic time")
+                    self.luck_of_jack = 6
                     self.magic_lock = False
 
 
@@ -4566,6 +4576,7 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
         DISPLAY.blit(self.font.render(f"reveal hand:{self.reveal_hand}", True, (255, 255, 255)), (515, 550))
         DISPLAY.blit(self.font.render(f"magic lock:{self.magic_lock}", True, (255, 255, 255)), (515, 455))
+        DISPLAY.blit(self.font.render(f"magic lock:{self.luck_of_jack}", True, (255, 255, 255)), (515, 400))
 
 
         if self.game_state == "welcome_screen":
