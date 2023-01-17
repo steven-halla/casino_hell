@@ -1538,7 +1538,7 @@ class CoinFlipFredScreen(Screen):
 
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
-                    if self.luck_activated < 1 and self.reveal_hand == False:
+                    if self.luck_activated < 1 :
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
@@ -4171,6 +4171,8 @@ class BlackJackScreen(Screen, Deck):
         self.black_jack_draw = False
         self.current_speaker = ""
         self.black_jack_bluff_counter = 0
+        self.reveal_hand = 11
+        self.magic_lock = False
 
     print("HI there partner")
 
@@ -4208,6 +4210,7 @@ class BlackJackScreen(Screen, Deck):
             self.second_message_display = "Press the T key, which is our action key"
             self.third_message_display = "To go forward with the game"
 
+
             if controller.isUpPressed:
                 if not hasattr(self, "welcome_screen_index"):
                     self.welcome_screen_index = len(self.welcome_screen_choices) - 1
@@ -4243,6 +4246,9 @@ class BlackJackScreen(Screen, Deck):
             self.player_black_jack_win = False
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
+
+            if self.reveal_hand < 11:
+                self.reveal_hand -= 1
 
 
             self.player_hand = self.draw_hand(2)
@@ -4355,6 +4361,8 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "menu_screen":
+
+
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
                 self.game_state = "results_screen"
@@ -4413,28 +4421,30 @@ class BlackJackScreen(Screen, Deck):
 
                         else:
                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.black_jack_bluff_counter < 3:
-                        print("you need to wait till you get 3 black jacks jack")
-                        self.game_state = "welcome_screen"
+                    # elif self.black_jack_bluff_counter < 3:
+                    #     print("you need to wait till you get 3 black jacks jack")
+                    #     self.game_state = "welcome_screen"
 
 
 
             elif self.magic_menu_index == 1:
                 if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        print("You cast reveal")
-                        if controller.isKPressed:
-                            if state.player.focus_points >= 10:
-                                state.player.focus_points -= 10
-                                self.reveal_hand = True
+                    print("You cast reveal")
+                    if controller.isKPressed:
+                        if state.player.focus_points >= 10:
+                            state.player.focus_points -= 10
+                            self.reveal_hand = 10
+                            self.magic_lock = True
 
-                                print("You cast bluff")
-                                self.game_state = "reveal_state"
 
-                            elif state.player.focus_points < 10:
-                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0:
-                        self.third_message_display = "sorry but you can't stack magic spells"
+                            print("You cast reveal")
+                            self.game_state = "welcome_screen"
+
+
+                        elif state.player.focus_points < 10:
+                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                # elif self.luck_activated > 0:
+                #     self.third_message_display = "sorry but you can't stack magic spells"
 
 
 
@@ -4458,7 +4468,7 @@ class BlackJackScreen(Screen, Deck):
                     self.game_state = "welcome_screen"
 
         elif self.game_state == "bluff_state":
-            self.first_message_display = "I bet I'll get two black jacks in a row"
+            self.first_message_display = "Based on your shuffle, I'll get another black jack."
             self.second_message_display = "Your on pal bring it on"
             bluffalo = random.random()
 
@@ -4477,6 +4487,7 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "results_screen":
+
             if self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
                 self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
@@ -4493,6 +4504,16 @@ class BlackJackScreen(Screen, Deck):
 
 
             if controller.isTPressed:
+
+                if self.reveal_hand < 11 :
+                    self.reveal_hand -= 1
+
+                if self.reveal_hand == 0:
+                    print("Magic time")
+                    self.reveal_hand = 11
+                    self.magic_lock = False
+
+
                 pygame.time.wait(300)
                 print("Hey there going to the welcome_screen")
                 self.game_state = "welcome_screen"
@@ -4543,6 +4564,9 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
         DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
+        DISPLAY.blit(self.font.render(f"reveal hand:{self.reveal_hand}", True, (255, 255, 255)), (515, 550))
+        DISPLAY.blit(self.font.render(f"magic lock:{self.magic_lock}", True, (255, 255, 255)), (515, 455))
+
 
         if self.game_state == "welcome_screen":
             self.current_speaker = "cheater bob"
@@ -4591,7 +4615,7 @@ class BlackJackScreen(Screen, Deck):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 205))
-                if state.controller.isTPressed:
+                if state.controller.isTPressed and self.magic_lock == False:
                     pygame.time.wait(300)
                     self.game_state = "magic_menu"
                     self.isTPressed = False
