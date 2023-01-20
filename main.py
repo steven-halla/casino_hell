@@ -4159,9 +4159,9 @@ class BlackJackScreen(Screen, Deck):
         self.enemy_score = 0
         self.player_hand = []
         self.enemy_hand = []
-        self.choices = ["Ready", "Draw", "Magic"]
+        self.choices = ["Ready", "Draw", "Redraw"]
         self.current_index = 0
-        self.welcome_screen_choices = ["Play", "Magic", "Quit", "Locked", "Redraw"]
+        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
         self.welcome_screen_index = 0
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
@@ -4611,9 +4611,7 @@ class BlackJackScreen(Screen, Deck):
                     self.font.render(f"{self.welcome_screen_choices[1]}", True, (255, 255, 255)),
                     (680, 210))
             elif self.magic_lock == True:
-                DISPLAY.blit(
-                    self.font.render(f"{self.welcome_screen_choices[3]}", True, (255, 255, 255)),
-                    (680, 210))
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 210))
 
 
             DISPLAY.blit(
@@ -4695,16 +4693,21 @@ class BlackJackScreen(Screen, Deck):
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (680, 160))
 
+            if self.avatar_of_luck == False:
+                DISPLAY.blit(
+                    self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                    (680, 210))
 
 
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (680, 260))
+
+
 
             if self.avatar_of_luck == True:
-                DISPLAY.blit(
-                    self.font.render(f"{self.choices[4]}", True, (255, 255, 255)),
-                    (680, 210))
+                DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (680, 260))
+
+            elif self.avatar_of_luck == False:
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 260))
+
 
             if self.current_index == 0:
                 DISPLAY.blit(
