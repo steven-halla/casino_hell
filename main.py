@@ -4176,6 +4176,8 @@ class BlackJackScreen(Screen, Deck):
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
+        #maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
+        # incldue a double bet spell that is CHR based that player gets for free maybe
 
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
@@ -4675,10 +4677,10 @@ class BlackJackScreen(Screen, Deck):
             if self.reveal_hand < 11:
                 if self.enemy_score < 8:
                     DISPLAY.blit(self.font.render(f"enemy info: LOW", True, (255, 255, 255)), (515, 500))
-                elif self.enemy_score > 8 and self.enemy_score < 15:
+                elif self.enemy_score > 8 and self.enemy_score < 17:
                     DISPLAY.blit(self.font.render(f"enemy info: Medum", True, (255, 255, 255)), (515, 500))
 
-                elif self.enemy_score > 15:
+                elif self.enemy_score > 17:
                     DISPLAY.blit(self.font.render(f"enemy info: High", True, (255, 255, 255)), (515, 500))
 
 
@@ -4777,17 +4779,27 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "magic_menu" :
+            black_box = pygame.Surface((255, 215))
+            black_box.fill((0, 0, 0))
+            # Create the white border
+            border_width = 5
+            white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            black_box = pygame.Surface((170, 215))
+            black_box.fill((0, 0, 0))
+            white_border.blit(black_box, (border_width, border_width))
+            DISPLAY.blit(white_border, (620 - 20, 145))
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
+                    (640, 155))
 
 
 
             elif self.magic_menu_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
+                    (640, 205))
 
 
 
@@ -4795,28 +4807,28 @@ class BlackJackScreen(Screen, Deck):
             elif self.magic_menu_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
+                    (640, 255))
 
             elif self.magic_menu_index == 3:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
+                    (630, 305))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (700, 160))
+                (680, 160))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (700, 210))
+                (680, 210))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (700, 260))
+                (680, 260))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (700, 310))
+                (680, 310))
 
         elif self.game_state == "results_screen":
             self.current_speaker = "cheater bob"
