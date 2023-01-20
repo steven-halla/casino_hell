@@ -4147,7 +4147,9 @@ class BlackJackScreen(Screen, Deck):
         Screen.__init__(self, " Black Jack Game")
         Deck.__init__(self, ranks, suits)
         self.font = pygame.font.Font(None, 36)
-
+        self.black_ace = False # this is our boss level when talk to NPC set to true set false if game is set to quit
+        self.ace_up_sleeve_jack = False
+        self.ace_up_sleeve_jack_cheat_mode = False
         self.first_message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
@@ -4166,6 +4168,7 @@ class BlackJackScreen(Screen, Deck):
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
         self.ace_value = 1
+
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
@@ -4217,6 +4220,7 @@ class BlackJackScreen(Screen, Deck):
             self.second_message_display = "Press the T key, which is our action key"
             self.third_message_display = "To go forward with the game"
             self.redraw_lock = False
+            self.ace_up_sleeve_jack_cheat_mode = False
 
             if controller.isUpPressed:
                 if not hasattr(self, "welcome_screen_index"):
@@ -4235,6 +4239,14 @@ class BlackJackScreen(Screen, Deck):
                 controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
+            if self.ace_up_sleeve_jack == True:
+                coin = random.random()
+                if coin < 0.3:
+                    print("coin landed on heads")
+                    self.result = "heads"
+                else:
+                    print("coin landed on tails")
+                    self.result = "tails"
             self.first_message_display = "Place your bet 100 coin max. Press up and down. "
             self.second_message_display = "Press T when you are ready"
             self.third_message_display = " "
@@ -4294,6 +4306,23 @@ class BlackJackScreen(Screen, Deck):
                 self.enemy_black_jack_win = False
 
             print(self.player_black_jack_win)
+
+            if self.black_ace == True:
+                if self.enemy_score < 7:
+                    self.enemy_hand = self.draw_hand(2)
+                    print("Enemy hand is" + str(self.enemy_hand))
+                    print("You get the sense the enemy is somewhat lucky")
+                    self.enemy_score = self.compute_hand_value(self.enemy_hand)
+                    print("enemy score is: " + str(self.enemy_score))
+                    if self.black_jack_counter > 0:
+                        print("Enemy black jack win set to true")
+
+                        self.enemy_black_jack_win = True
+                    elif self.black_jack_counter == 0:
+                        self.enemy_black_jack_win = False
+
+                    print(self.player_black_jack_win)
+
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.black_jack_draw = True
