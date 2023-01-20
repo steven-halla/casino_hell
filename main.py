@@ -4176,6 +4176,7 @@ class BlackJackScreen(Screen, Deck):
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
+
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
     print("HI there partner")
@@ -4213,7 +4214,7 @@ class BlackJackScreen(Screen, Deck):
             self.first_message_display = "welcome to black jack. Max bet is 10"
             self.second_message_display = "Press the T key, which is our action key"
             self.third_message_display = "To go forward with the game"
-
+            self.redraw_lock = False
 
             if controller.isUpPressed:
                 if not hasattr(self, "welcome_screen_index"):
@@ -4251,8 +4252,7 @@ class BlackJackScreen(Screen, Deck):
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
 
-            if self.reveal_hand < 11:
-                self.reveal_hand -= 1
+
 
 
             self.player_hand = self.draw_hand(2)
@@ -4278,7 +4278,6 @@ class BlackJackScreen(Screen, Deck):
 
             # If the player has an ACE, check which value is better for the player
 
-            self.black_jack_counter = 0
 
 
             self.enemy_hand = self.draw_hand(2)
@@ -4480,6 +4479,7 @@ class BlackJackScreen(Screen, Deck):
         elif self.game_state == "bluff_state":
             self.first_message_display = "Based on your shuffle, I'll get another black jack."
             self.second_message_display = "Your on pal bring it on"
+            self.black_jack_bluff_counter = 0
             bluffalo = random.random()
 
             if bluffalo < 0.7:
@@ -4672,6 +4672,17 @@ class BlackJackScreen(Screen, Deck):
 
 
         elif self.game_state == "menu_screen":
+            if self.reveal_hand < 11:
+                if self.enemy_score < 8:
+                    DISPLAY.blit(self.font.render(f"enemy info: LOW", True, (255, 255, 255)), (515, 500))
+                elif self.enemy_score > 8 and self.enemy_score < 15:
+                    DISPLAY.blit(self.font.render(f"enemy info: Medum", True, (255, 255, 255)), (515, 500))
+
+                elif self.enemy_score > 15:
+                    DISPLAY.blit(self.font.render(f"enemy info: High", True, (255, 255, 255)), (515, 500))
+
+
+
             self.current_speaker = "hero"
 
             DISPLAY.blit(hero_image, (23, 245))
