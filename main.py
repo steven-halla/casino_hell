@@ -4175,6 +4175,7 @@ class BlackJackScreen(Screen, Deck):
         self.magic_lock = False
         self.luck_of_jack = 7
         self.avatar_of_luck = False
+        self.redraw_lock = False
 
     print("HI there partner")
 
@@ -4693,21 +4694,15 @@ class BlackJackScreen(Screen, Deck):
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (680, 160))
 
-            if self.avatar_of_luck == False:
-                DISPLAY.blit(
-                    self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                    (680, 210))
 
-
-
-
+            DISPLAY.blit(
+                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                (680, 210))
 
             if self.avatar_of_luck == True:
                 DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (680, 260))
-
-            elif self.avatar_of_luck == False:
+            elif self.avatar_of_luck == False or self.redraw_lock == True:
                 DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 260))
-
 
             if self.current_index == 0:
                 DISPLAY.blit(
@@ -4739,9 +4734,14 @@ class BlackJackScreen(Screen, Deck):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 255))
-                if state.controller.isTPressed:
-                    print("In the future you can cast magic here")
-                    self.game_state = "magic_menu"
+                if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
+                    print("Redrawing your hand")
+                    self.redraw_lock = True
+
+
+                    self.player_hand = self.draw_hand(2)
+                    print("Player hand is" + str(self.player_hand))
+                    self.player_score = self.compute_hand_value(self.player_hand)
                     state.controller.isTPressed = False
 
             DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
