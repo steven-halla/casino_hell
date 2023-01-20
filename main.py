@@ -4176,6 +4176,7 @@ class BlackJackScreen(Screen, Deck):
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
+        self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
     print("HI there partner")
 
@@ -4699,9 +4700,12 @@ class BlackJackScreen(Screen, Deck):
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
                 (680, 210))
 
-            if self.avatar_of_luck == True:
+            if self.avatar_of_luck == True and self.redraw_lock == False:
                 DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (680, 260))
+
             elif self.avatar_of_luck == False or self.redraw_lock == True:
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 260))
+            else:
                 DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 260))
 
             if self.current_index == 0:
@@ -4742,7 +4746,11 @@ class BlackJackScreen(Screen, Deck):
                     self.player_hand = self.draw_hand(2)
                     print("Player hand is" + str(self.player_hand))
                     self.player_score = self.compute_hand_value(self.player_hand)
+
                     state.controller.isTPressed = False
+                    self.game_state = "menu_screen"
+
+
 
             DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
 
