@@ -1,59 +1,77 @@
 import pygame
-import random
 
-# Initialize Pygame
+
+class TextBox:
+    def __init__(self, text, font_size, delay):
+        self.text = text
+        self.font_size = font_size
+        self.delay = delay
+        self.index = 0
+
+    def display(self, screen, position):
+        font = pygame.font.Font(None, self.font_size)
+        if self.index < len(self.text):
+            sub_text = self.text[:self.index + 1]
+            text_surface = font.render(sub_text, True, (255, 255, 255))
+            screen.blit(text_surface, position)
+            self.index += 1
+            pygame.display.update()
+            clock.tick(self.delay)
+        else:
+            text_surface = font.render(self.text, True, (255, 255, 255))
+            screen.blit(text_surface, position)
+            pygame.display.update()
+
+
+class Screen(TextBox):
+    def __init__(self, font_size, delay):
+        super().__init__("This is a unique message for the Screen class", font_size, delay)
+
+    def update(self):
+        self.index += 1
+
+    def draw(self, screen, position):
+        font = pygame.font.Font(None, self.font_size)
+        if self.index < len(self.text):
+            sub_text = self.text[:self.index + 1]
+            text_surface = font.render(sub_text, True, (255, 255, 255))
+            screen.blit(text_surface, position)
+            pygame.display.update()
+        else:
+            text_surface = font.render(self.text, True, (255, 255, 255))
+            screen.blit(text_surface, position)
+            pygame.display.update()
+
+
+# Initialize pygame
 pygame.init()
 
-# Set the size of the window
+# Set the window size
 size = (700, 500)
 screen = pygame.display.set_mode(size)
 
 # Set the title of the window
-pygame.display.set_caption("Green rectangles")
+pygame.display.set_caption("Text Box Example")
 
-# Set the color of the rectangles
-green = (0, 255, 0)
+# Create a text box object
+text_box = Screen(30, 7.5)
 
-# Create an empty list to store the rectangles
-rects = []
-
-# Create a variable to store the size of the rectangles
-rect_size = (16, 16)
-
-# Create a function to check for overlaps
-def check_overlap(x, y):
-    for rect in rects:
-        if rect.collidepoint(x, y):
-            return True
-    return False
-
-# Create a function to draw the rectangles
-def draw_rects():
-    for rect in rects:
-        pygame.draw.rect(screen, green, rect)
-
-# Create a loop to randomly generate the rectangles' starting positions
-while len(rects) < 10:
-    x = random.randint(250, 450 - rect_size[0])
-    y = random.randint(200, 300 - rect_size[1])
-    if not check_overlap(x, y):
-        rects.append(pygame.Rect(x, y, rect_size[0], rect_size[1]))
+# Set the initial position of the text
+text_rect = pygame.Rect(size[0] // 2, size[1] // 2, 0, 0)
 
 # Main game loop
 running = True
+clock = pygame.time.Clock()
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Clear the screen
-    screen.fill((255, 255, 255))
+    # Fill the background with black
+    screen.fill((0, 0, 0))
 
-    # Draw the rectangles on the screen
-    draw_rects()
-
-    # Update the display
+    for i in range(1):
+        text_box.update()
+    text_box.draw(screen, text_rect)
     pygame.display.flip()
 
-# Exit Pygame
-pygame.quit()
