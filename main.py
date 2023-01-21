@@ -4153,7 +4153,7 @@ class TextBox:
         self.index = 0
         self.time = pygame.time.get_ticks()
 
-    def update(self):
+    def update(self, state: "GameState"):
         if pygame.time.get_ticks() - self.time > self.delay:
             self.index += 1
             self.time = pygame.time.get_ticks()
@@ -4179,7 +4179,7 @@ class TextBox:
             screen.blit(text_surface, position)
             pygame.display.update()
 
-class BlackJackScreen(Screen, Deck):
+class BlackJackScreen(Screen, Deck, TextBox):
     def __init__(self, ranks, suits):
         Screen.__init__(self, " Black Jack Game")
         Deck.__init__(self, ranks, suits)
@@ -4221,6 +4221,11 @@ class BlackJackScreen(Screen, Deck):
 
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
+        self.messages = {
+    "list1": ["This is message 1", "This is message 2", "This is message 3"],
+    "list2": ["This is message 4", "This is message 5", "This is message 6"]
+}
+
     print("HI there partner")
 
     def place_bet(self, state: "GameState"):
@@ -4253,9 +4258,10 @@ class BlackJackScreen(Screen, Deck):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            self.first_message_display = "welcome to black jack. Max bet is 10"
-            self.second_message_display = "Press the T key, which is our action key"
-            self.third_message_display = "To go forward with the game"
+            self.text_box = TextBox(self.messages["list1"], 30, 88)
+            #
+            # self.second_message_display = "Press the T key, which is our action key"
+            # self.third_message_display = "To go forward with the game"
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
 
@@ -4646,7 +4652,7 @@ class BlackJackScreen(Screen, Deck):
         DISPLAY.blit(white_border, (30 - border_width, 380 - border_width))
         DISPLAY.blit(black_box, (30, 380))
 
-        DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 390))
+        DISPLAY.blit(self.font.render(f"{self.text_box.text}", True, (255, 255, 255)), (45, 390))
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
         DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
