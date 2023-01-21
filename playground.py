@@ -22,16 +22,27 @@ class TextBox:
             screen.blit(text_surface, position)
             pygame.display.update()
 
-
 class Screen(TextBox):
     def __init__(self, font_size, delay):
-        super().__init__("This is a unique message for the Screen class", font_size, delay)
+        self.messages = ["This is message 1", "This is message 2", "This is message 3"]
+        self.message_index = 0
+        super().__init__(self.messages[self.message_index], font_size, delay)
         self.time = pygame.time.get_ticks()
-        self.delay = 80
+        self.delay = delay
+
     def update(self):
         if pygame.time.get_ticks() - self.time > self.delay:
             self.index += 1
             self.time = pygame.time.get_ticks()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            if self.index >= len(self.text):
+                self.index = 0
+                self.message_index += 1
+                if self.message_index >= len(self.messages):
+                    self.message_index = 0
+                self.text = self.messages[self.message_index]
+                self.time = pygame.time.get_ticks()
     def draw(self, screen, position):
         font = pygame.font.Font(None, self.font_size)
         if self.index < len(self.text):
@@ -43,6 +54,7 @@ class Screen(TextBox):
             text_surface = font.render(self.text, True, (255, 255, 255))
             screen.blit(text_surface, position)
             pygame.display.update()
+
 
 
 
