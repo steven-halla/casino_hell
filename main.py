@@ -4142,6 +4142,43 @@ class Deck:
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
                       for rank in self.ranks]
 
+
+class TextBox:
+    def __init__(self, messages, font_size, delay):
+        self.messages = messages
+        self.message_index = 0
+        self.text = self.messages[self.message_index]
+        self.font_size = font_size
+        self.delay = 88
+        self.index = 0
+        self.time = pygame.time.get_ticks()
+
+    def update(self):
+        if pygame.time.get_ticks() - self.time > self.delay:
+            self.index += 1
+            self.time = pygame.time.get_ticks()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            if self.index >= len(self.text):
+                self.index = 0
+                self.message_index += 1
+                if self.message_index >= len(self.messages):
+                    self.message_index = 0
+                self.text = self.messages[self.message_index]
+                self.time = pygame.time.get_ticks()
+
+    def display(self, screen, position):
+        font = pygame.font.Font(None, self.font_size)
+        if self.index < len(self.text):
+            sub_text = self.text[:self.index + 1]
+            text_surface = font.render(sub_text, True, (255, 255, 255))
+            screen.blit(text_surface, position)
+            pygame.display.update()
+        else:
+            text_surface = font.render(self.text, True, (255, 255, 255))
+            screen.blit(text_surface, position)
+            pygame.display.update()
+
 class BlackJackScreen(Screen, Deck):
     def __init__(self, ranks, suits):
         Screen.__init__(self, " Black Jack Game")
