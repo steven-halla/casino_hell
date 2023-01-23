@@ -10,8 +10,7 @@ import pytmx
 
 
 import pygame
-
-
+from pygame.surface import Surface
 
 clock = pygame.time.Clock()
 FPS = 60
@@ -4143,46 +4142,96 @@ class Deck:
                       for rank in self.ranks]
 
 
-class TextBox:
-    def __init__(self, messages, font_size, delay):
+
+class TextBox(Entity):
+    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
+        super().__init__(rect[0], rect[1], rect[2], rect[3])
         self.messages = messages
         self.message_index = 0
         self.text = self.messages[self.message_index]
+        self.characters_to_display = 0
         self.font_size = font_size
-        self.delay = 88
-        self.index = 0
+        self.delay = delay
         self.time = pygame.time.get_ticks()
+        self.font = pygame.font.Font(None, 36)
+
 
     def update(self, state: "GameState"):
-        if pygame.time.get_ticks() - self.time > self.delay:
-            self.index += 1
-            self.time = pygame.time.get_ticks()
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_a]:
-            if self.index >= len(self.text):
-                self.index = 0
-                self.message_index += 1
-                if self.message_index >= len(self.messages):
-                    self.message_index = 0
-                self.text = self.messages[self.message_index]
-                self.time = pygame.time.get_ticks()
+        controller = state.controller
 
-    def display(self, screen, position):
-        font = pygame.font.Font(None, self.font_size)
-        if self.index < len(self.text):
-            sub_text = self.text[:self.index + 1]
-            text_surface = font.render(sub_text, True, (255, 255, 255))
-            screen.blit(text_surface, position)
-            pygame.display.update()
-        else:
-            text_surface = font.render(self.text, True, (255, 255, 255))
-            screen.blit(text_surface, position)
-            pygame.display.update()
+        # show characters of text one at a time, not whole message.
+        if self.characters_to_display < len(self.text):
+            self.characters_to_display += 1
+
+        # handle button press to see next message
+        if controller.isAPressed and \
+                pygame.time.get_ticks() - self.time > self.delay and \
+                self.message_index < len(self.messages) - 1:
+
+            self.time = pygame.time.get_ticks()
+            self.message_index += 1
+            self.text = self.messages[self.message_index]
+            self.characters_to_display = 0
+
+
+        # print("is finished? " + str(self.is_finished()))
+
+    def draw(self, state: "GameState"):
+        text_to_display = self.text[:self.characters_to_display]
+        text_surface = font.render(text_to_display, True, (255, 255, 255))
+        DISPLAY.blit(text_surface, (self.position.x, self.position.y))
+
+    def is_finished(self) -> bool:
+        return self.message_index == len(self.messages) - 1 and \
+            pygame.time.get_ticks() - self.time > self.delay
+
+
+class BorderedBox(Entity):
+    def __init__(self, rect: tuple[int, int, int, int], border_width: int = 5):
+        super().__init__(rect[0], rect[1], rect[2], rect[3])
+        self.border_width = border_width
+
+    def update(self, state: "GameState"):
+        pass
+
+    def draw(self, state: "GameState"):
+        # draw text box border
+        black_box = pygame.Surface((self.collision.width, self.collision.height))
+        black_box.fill((0, 0, 0))
+        # Create the white border
+        white_border = pygame.Surface((self.collision.width + 2 * self.border_width, self.collision.height + 2 * self.border_width))
+        white_border.fill((255, 255, 255))
+        black_box = pygame.Surface((self.collision.width, self.collision.height))
+        black_box.fill((0, 0, 0))
+        white_border.blit(black_box, (self.border_width, self.border_width))
+        DISPLAY.blit(white_border, (self.position.x, self.position.y))
+
+# demonstrating encapsulation
+class BorderedTextBox(Entity):
+    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
+        super().__init__(rect[0], rect[1], rect[2], rect[3])
+        self.border_box = BorderedBox(rect)
+        padding = self.border_box.border_width + 10
+        text_box_rect = (rect[0] + padding, rect[1] + padding, rect[2] - padding * 2, rect[3] - padding * 2)
+        self.text_box = TextBox(messages, text_box_rect, font_size, delay)
+
+    def update(self, state: "GameState"):
+        self.border_box.update(state)
+        self.text_box.update(state)
+
+    def draw(self, state: "GameState"):
+        self.border_box.draw(state)
+        self.text_box.draw(state)
+
+    def is_finished(self) -> bool:
+        return self.text_box.is_finished()
+
 
 class BlackJackScreen(Screen, Deck, TextBox):
     def __init__(self, ranks, suits):
         Screen.__init__(self, " Black Jack Game")
         Deck.__init__(self, ranks, suits)
+
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False # this is our boss level when talk to NPC set to true set false if game is set to quit
         self.ace_up_sleeve_jack = False
@@ -4217,16 +4266,19 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.avatar_of_luck = False
         self.redraw_lock = False
         #maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
-        # incldue a double bet spell that is CHR based that player gets for free maybe
+        # incldue a double bet spell that is CHR based that player gets for free maybe4
 
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-    "list1": ["This is message 1", "This is message 2", "This is message 3"],
-    "list2": ["This is message 4", "This is message 5", "This is message 6"]
-}
+            "welcome_screen": ["This is message 1", "This is message 2", "This is message 3"],
+            "list2": ["This is message 4", "This is message 5", "This is message 6"]
+        }
+        self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (30, 30, 250, 45), 30, 500)
+        self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
+        self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
-    print("HI there partner")
+
 
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
@@ -4253,33 +4305,36 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         controller = state.controller
         controller.update(state)
+
         #
         # print("p: " + self.hand_to_str(self.player_hand))
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            self.text_box = TextBox(self.messages["list1"], 30, 88)
-            #
+            self.welcome_screen_text_box.update(state)
+            self.bordered_text_box.update(state)
+
             # self.second_message_display = "Press the T key, which is our action key"
             # self.third_message_display = "To go forward with the game"
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
 
-            if controller.isUpPressed:
-                if not hasattr(self, "welcome_screen_index"):
-                    self.welcome_screen_index = len(self.welcome_screen_choices) - 1
-                else:
-                    self.welcome_screen_index -= 1
-                self.welcome_screen_index %= len(self.welcome_screen_choices)
-                controller.isUpPressed = False
+            if self.bordered_text_box.is_finished():
+                if controller.isUpPressed:
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(self.welcome_screen_choices) - 1
+                    else:
+                        self.welcome_screen_index -= 1
+                    self.welcome_screen_index %= len(self.welcome_screen_choices)
+                    controller.isUpPressed = False
 
-            elif controller.isDownPressed:
-                if not hasattr(self, "welcome_screen_index"):
-                    self.welcome_screen_index = len(self.welcome_screen_choices) + 1
-                else:
-                    self.welcome_screen_index += 1
-                self.welcome_screen_index %= len(self.welcome_screen_choices)
-                controller.isDownPressed = False
+                elif controller.isDownPressed:
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(self.welcome_screen_choices) + 1
+                    else:
+                        self.welcome_screen_index += 1
+                    self.welcome_screen_index %= len(self.welcome_screen_choices)
+                    controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
             if self.ace_up_sleeve_jack == True:
@@ -4489,7 +4544,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-#we need to make this work right after a black jack
+            # we need to make this work right after a black jack
             # set a counter to minus 1 this is the counter is above 0
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
@@ -4631,34 +4686,40 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
     def draw(self, state: "GameState"):
-        #change to dealer image
+        # change to dealer image
         character_image = pygame.image.load("images/128by128.png")
         hero_image = pygame.image.load("images/hero.png")
 
         DISPLAY.fill((0, 0, 51))
 
-        black_box = pygame.Surface((725, 200))
-        black_box.fill((0, 0, 0))
+        # black_box = pygame.Surface((725, 200))
+        # black_box.fill((0, 0, 0))
+        #
+        # # Draw the black box at the bottom of the screen
+        #
+        # # thisis how we raw a box for our message displays
+        # border_width = 5
+        # white_border = pygame.Surface(
+        #     (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
+        # white_border.fill((255, 255, 255))
+        #
+        # # Draw the white border on top of the black box
+        # DISPLAY.blit(white_border, (30 - border_width, 380 - border_width))
+        # DISPLAY.blit(black_box, (30, 380))
+        self.main_bordered_box.draw(state)
 
-        # Draw the black box at the bottom of the screen
-
-        # thisis how we raw a box for our message displays
-        border_width = 5
-        white_border = pygame.Surface(
-            (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
-        white_border.fill((255, 255, 255))
-
-        # Draw the white border on top of the black box
-        DISPLAY.blit(white_border, (30 - border_width, 380 - border_width))
-        DISPLAY.blit(black_box, (30, 380))
-
-        DISPLAY.blit(self.font.render(f"{self.text_box.text}", True, (255, 255, 255)), (45, 390))
+        # DISPLAY.blit(self.font.render(f"{self.text_box.text}", True, (255, 255, 255)), (45, 390))
         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
         DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
         DISPLAY.blit(self.font.render(f"reveal hand:{self.reveal_hand}", True, (255, 255, 255)), (515, 550))
         DISPLAY.blit(self.font.render(f"magic lock:{self.magic_lock}", True, (255, 255, 255)), (515, 455))
         DISPLAY.blit(self.font.render(f"magic lock:{self.luck_of_jack}", True, (255, 255, 255)), (515, 400))
+
+
+
+
+
 
 
         if self.game_state == "welcome_screen":
@@ -4727,6 +4788,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 if state.controller.isTPressed:
                     print("Quit")
                     state.controller.isTPressed = False
+
+
+            self.welcome_screen_text_box.draw(state)
+            self.bordered_text_box.draw(state)
 
 
 
@@ -4932,6 +4997,7 @@ class GameState:
         self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.BlackJackScreen = BlackJackScreen(ranks, suits)
         self.diceGameScreen = DiceGameScreen()
+        # self.textBox = TextBox("", any, any)
         self.currentScreen = self.BlackJackScreen  # assign a value to currentScreen here
 
 class Game:
@@ -4947,6 +5013,9 @@ class Game:
             # TODO maintain framerate pygame.
             self.state.currentScreen.update(self.state)
             self.state.currentScreen.draw(self.state)
+            # self.textBox.update(self.state)
+            # self.textBox.display()
+
 
         pygame.quit()
 
