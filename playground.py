@@ -65,7 +65,8 @@ draw_top_card((0, 0))
 
 i = 0
 for card in cards:
-    draw_card(card[0], card[1], ((card_width - 30) * i, 100))
+    draw_card(card[0], card[1], ((card_width ) * i, 100))
+    # draw_card(card[0], card[1], ((card_width - 30) * i, 100)) this is good for poker hands and such
     i += 1
 # draw_card("spades", "ace", (100, 100))
 
