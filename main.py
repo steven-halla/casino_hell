@@ -5017,6 +5017,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             DISPLAY.blit(character_image, (23, 245))
             DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+            # DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 390))
+
+            DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
+            # DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
 
             # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
