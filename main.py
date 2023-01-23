@@ -4271,10 +4271,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["This is message 1", "This is message 2", "This is message 3"],
+            "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.", "This is message 2", "This is message 3"],
             "list2": ["This is message 4", "This is message 5", "This is message 6"]
         }
-        self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (30, 30, 250, 45), 30, 500)
+        self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 400, 50, 45), 30, 500)
         self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
@@ -4312,14 +4312,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         if self.game_state == "welcome_screen":
             self.welcome_screen_text_box.update(state)
-            self.bordered_text_box.update(state)
+            # self.bordered_text_box.update(state)
 
             # self.second_message_display = "Press the T key, which is our action key"
             # self.third_message_display = "To go forward with the game"
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
 
-            if self.bordered_text_box.is_finished():
+            if self.welcome_screen_text_box.is_finished():
                 if controller.isUpPressed:
                     if not hasattr(self, "welcome_screen_index"):
                         self.welcome_screen_index = len(self.welcome_screen_choices) - 1
@@ -4709,12 +4709,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.main_bordered_box.draw(state)
 
         # DISPLAY.blit(self.font.render(f"{self.text_box.text}", True, (255, 255, 255)), (45, 390))
-        DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
-        DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
-        DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
-        DISPLAY.blit(self.font.render(f"reveal hand:{self.reveal_hand}", True, (255, 255, 255)), (515, 550))
-        DISPLAY.blit(self.font.render(f"magic lock:{self.magic_lock}", True, (255, 255, 255)), (515, 455))
-        DISPLAY.blit(self.font.render(f"magic lock:{self.luck_of_jack}", True, (255, 255, 255)), (515, 400))
+        # DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
+        # DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
+        # DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
+        # DISPLAY.blit(self.font.render(f"reveal hand:{self.reveal_hand}", True, (255, 255, 255)), (515, 550))
+        # DISPLAY.blit(self.font.render(f"magic lock:{self.magic_lock}", True, (255, 255, 255)), (515, 455))
+        # DISPLAY.blit(self.font.render(f"magic lock:{self.luck_of_jack}", True, (255, 255, 255)), (515, 400))
 
 
 
@@ -4791,7 +4791,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             self.welcome_screen_text_box.draw(state)
-            self.bordered_text_box.draw(state)
+            # self.bordered_text_box.draw(state)
 
 
 
