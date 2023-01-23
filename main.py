@@ -4268,6 +4268,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.hero_speaking = False
 
 
+
         self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
         self.magic_lock = False
@@ -4280,11 +4281,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.dsjfdsjf;sjfjdsjlk;fsdjksdjklfjklsdfjkfsdkjsjskfdlsjdfdsfjkl;sdfjkldsjkl;sdfjkl;dsjklfsjkdesjksldfjkl;fjsklsjlkfsjlk;sjlk;fsjlksfjlklkfs", "This is message 2", "This is message 3",""],
-            "hero_intro_text": ["sorry cheater bob I'm here for your coins. ", "This is message 5", "This is message 6"]
+            "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.", "I dont' cheat, and even if I did you woulnd't catch me", "If you want all my coins then good luck",""],
+            "hero_intro_text": ["sorry cheater bob I'm here for your coins. ", "I better take it easy till I get the hang of things", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+            "bet_intro_text": ["You can bet in units of 10. Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
         }
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 400, 50, 45), 30, 500)
         self.welcome_screen_text_box_hero = TextBox(self.messages["hero_intro_text"], (50, 400, 50, 45), 30, 500)
+        self.bet_screen_text = TextBox(self.messages["bet_intro_text"], (50, 400, 50, 45), 30, 500)
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
@@ -4359,6 +4362,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
+            self.bet_screen_text.update(state)
+
+            self.npc_speaking = True
+            self.hero_speaking = False
+
+
             if self.ace_up_sleeve_jack == True:
                 coin = random.random()
                 if coin < 0.3:
@@ -4546,6 +4555,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 # 534534543535353525532535353354
 
         elif self.game_state == "magic_menu":
+
+
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
@@ -4649,6 +4660,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "results_screen":
 
+
             if self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
                 self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
@@ -4714,6 +4726,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         DISPLAY.fill((0, 0, 51))
 
+        if self.npc_speaking == True:
+            DISPLAY.blit(character_image, (23, 245))
+
+            self.current_speaker = "cheater bob"
+        elif self.hero_speaking == True:
+            DISPLAY.blit(hero_image, (23, 245))
+
+            self.current_speaker = "hero"
+            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+
         # black_box = pygame.Surface((725, 200))
         # black_box.fill((0, 0, 0))
         #
@@ -4745,15 +4767,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         if self.game_state == "welcome_screen":
-            if self.npc_speaking == True:
-                DISPLAY.blit(character_image, (23, 245))
 
-                self.current_speaker = "cheater bob"
-            elif self.hero_speaking == True:
-                DISPLAY.blit(hero_image, (23, 245))
-
-                self.current_speaker = "hero"
-            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
             black_box = pygame.Surface((255, 215))
             black_box.fill((0, 0, 0))
@@ -4828,10 +4842,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "bet_phase":
-            self.current_speaker = "cheater bob"
+            self.bet_screen_text.draw(state)
 
-            DISPLAY.blit(character_image, (23, 245))
-            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+            # self.current_speaker = "cheater bob"
+
+            # DISPLAY.blit(character_image, (23, 245))
+            # DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
             DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
