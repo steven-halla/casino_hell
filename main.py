@@ -4143,6 +4143,7 @@ class Deck:
 
 
 
+
 class TextBox(Entity):
     def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
