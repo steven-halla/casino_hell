@@ -3,6 +3,7 @@ import sys
 import time
 import random
 from typing import *
+import textwrap
 
 import pytmx
 # from pytmx.util_pygame import load_pygame
@@ -4145,7 +4146,7 @@ class Deck:
 
 
 class TextBox(Entity):
-    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
+    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int,):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
         self.messages = messages
         self.message_index = 0
@@ -4179,8 +4180,10 @@ class TextBox(Entity):
 
     def draw(self, state: "GameState"):
         text_to_display = self.text[:self.characters_to_display]
-        text_surface = font.render(text_to_display, True, (255, 255, 255))
-        DISPLAY.blit(text_surface, (self.position.x, self.position.y))
+        wrapped_text = textwrap.wrap(text_to_display, 60)
+        for i, line in enumerate(wrapped_text):
+            text_surface = self.font.render(line, True, (255, 255, 255))
+            DISPLAY.blit(text_surface, (self.position.x, self.position.y + (i * 40)))
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \
@@ -4259,7 +4262,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
+
         self.current_speaker = ""
+        self.npc_speaking = False
+        self.hero_speaking = False
+
+
         self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
         self.magic_lock = False
@@ -4272,11 +4280,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.", "This is message 2", "This is message 3"],
-            "list2": ["This is message 4", "This is message 5", "This is message 6"]
+            "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.dsjfdsjf;sjfjdsjlk;fsdjksdjklfjklsdfjkfsdkjsjskfdlsjdfdsfjkl;sdfjkldsjkl;sdfjkl;dsjklfsjkdesjksldfjkl;fjsklsjlkfsjlk;sjlk;fsjlksfjlklkfs", "This is message 2", "This is message 3",""],
+            "hero_intro_text": ["sorry cheater bob I'm here for your coins. ", "This is message 5", "This is message 6"]
         }
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 400, 50, 45), 30, 500)
-        self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
+        self.welcome_screen_text_box_hero = TextBox(self.messages["hero_intro_text"], (50, 400, 50, 45), 30, 500)
+        # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
 
@@ -4313,7 +4322,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         if self.game_state == "welcome_screen":
             self.welcome_screen_text_box.update(state)
-            # self.bordered_text_box.update(state)
+
+            self.npc_speaking = True
+            self.hero_speaking = False
+
+
 
             # self.second_message_display = "Press the T key, which is our action key"
             # self.third_message_display = "To go forward with the game"
@@ -4321,21 +4334,29 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.ace_up_sleeve_jack_cheat_mode = False
 
             if self.welcome_screen_text_box.is_finished():
-                if controller.isUpPressed:
-                    if not hasattr(self, "welcome_screen_index"):
-                        self.welcome_screen_index = len(self.welcome_screen_choices) - 1
-                    else:
-                        self.welcome_screen_index -= 1
-                    self.welcome_screen_index %= len(self.welcome_screen_choices)
-                    controller.isUpPressed = False
+                self.npc_speaking = False
+                self.hero_speaking = True
+                self.welcome_screen_text_box_hero.update(state)
 
-                elif controller.isDownPressed:
-                    if not hasattr(self, "welcome_screen_index"):
-                        self.welcome_screen_index = len(self.welcome_screen_choices) + 1
-                    else:
-                        self.welcome_screen_index += 1
-                    self.welcome_screen_index %= len(self.welcome_screen_choices)
-                    controller.isDownPressed = False
+
+
+                if self.welcome_screen_text_box_hero.is_finished():
+
+                    if controller.isUpPressed:
+                        if not hasattr(self, "welcome_screen_index"):
+                            self.welcome_screen_index = len(self.welcome_screen_choices) - 1
+                        else:
+                            self.welcome_screen_index -= 1
+                        self.welcome_screen_index %= len(self.welcome_screen_choices)
+                        controller.isUpPressed = False
+
+                    elif controller.isDownPressed:
+                        if not hasattr(self, "welcome_screen_index"):
+                            self.welcome_screen_index = len(self.welcome_screen_choices) + 1
+                        else:
+                            self.welcome_screen_index += 1
+                        self.welcome_screen_index %= len(self.welcome_screen_choices)
+                        controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
             if self.ace_up_sleeve_jack == True:
@@ -4724,8 +4745,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         if self.game_state == "welcome_screen":
-            self.current_speaker = "cheater bob"
-            DISPLAY.blit(character_image, (23, 245))
+            if self.npc_speaking == True:
+                DISPLAY.blit(character_image, (23, 245))
+
+                self.current_speaker = "cheater bob"
+            elif self.hero_speaking == True:
+                DISPLAY.blit(hero_image, (23, 245))
+
+                self.current_speaker = "hero"
             DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
             black_box = pygame.Surface((255, 215))
@@ -4792,6 +4819,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             self.welcome_screen_text_box.draw(state)
+            self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
 
 
