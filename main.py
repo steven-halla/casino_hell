@@ -5023,6 +5023,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
 
+
             # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
 
 
