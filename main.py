@@ -16,7 +16,8 @@ from pygame.surface import Surface
 clock = pygame.time.Clock()
 FPS = 60
 # might need to put this back in later to Deck class
-cards_list = []
+player_cards_list = []
+enemy_cards_list = []
 pygame.init()
 SCREEN_WIDTH: int = 800
 SCREEN_HEIGHT: int = 600
@@ -4172,13 +4173,27 @@ class Deck:
 
 
     #maybe make two functions, a player draw_card and enemy draw_card
-    def draw_card(self):
+    def player_draw_card(self):
         pygame.display.update()
 
         card = self.cards.pop()
-        cards_list.append((card[1], card[0]))
+        player_cards_list.append((card[1], card[0]))
         print("hidey hoe")
-        print(cards_list)
+        print(player_cards_list)
+
+        # self.show_card(card[1], card[0], (self.card_width, self.card_height))
+        # pygame.time.delay(500)
+
+
+        return card
+
+    def enemy_draw_card(self):
+        pygame.display.update()
+
+        card = self.cards.pop()
+        enemy_cards_list.append((card[1], card[0]))
+        print("hidey hoe")
+        print(enemy_cards_list)
 
         # self.show_card(card[1], card[0], (self.card_width, self.card_height))
         # pygame.time.delay(500)
@@ -4190,10 +4205,16 @@ class Deck:
         random.shuffle(self.cards)
         return self.cards
 
-    def draw_hand(self, num_cards):
+    def player_draw_hand(self, num_cards):
         hand = []
         for i in range(num_cards):
-            hand.append(self.draw_card())
+            hand.append(self.player_draw_card())
+        return hand
+
+    def enemy_draw_hand(self, num_cards):
+        hand = []
+        for i in range(num_cards):
+            hand.append(self.enemy_draw_card())
         return hand
 
     def add_rank(self, rank):
@@ -4463,7 +4484,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-            self.player_hand = self.draw_hand(2)
+            self.player_hand = self.player_draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
 
@@ -4489,7 +4510,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-            self.enemy_hand = self.draw_hand(2)
+            self.enemy_hand = self.enemy_draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
@@ -4504,7 +4525,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.black_ace == True:
                 if self.enemy_score < 7:
-                    self.enemy_hand = self.draw_hand(2)
+                    self.enemy_hand = self.enemy_draw_hand(2)
                     print("Enemy hand is" + str(self.enemy_hand))
                     print("You get the sense the enemy is somewhat lucky")
                     self.enemy_score = self.compute_hand_value(self.enemy_hand)
@@ -4543,7 +4564,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "player_draw_one_card":
-            self.player_hand += self.draw_hand(1)
+            self.player_hand += self.player_draw_hand(1)
             self.compute_hand_value(self.player_hand)
             self.player_score = self.compute_hand_value(self.player_hand)
             if self.player_score > 10:
@@ -4567,7 +4588,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 print("thi sis our while loop")
 
 
-                self.enemy_hand += self.draw_hand(1)
+                self.enemy_hand += self.enemy_draw_hand(1)
                 self.compute_hand_value(self.enemy_hand)
                 self.enemy_score = self.compute_hand_value(self.enemy_hand)
                 print("enemy hand is now" + str(self.enemy_hand))
@@ -4903,14 +4924,19 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "menu_screen":
             deck = Deck(ranks, suits)
-            card_x = 0
-            card_y = 0
-            for card in cards_list:
-                deck.show_card(card[0], card[1], (card_x, card_y))
-                card_x += 100
+            player_card_x = 300
+            player_card_y = 275
+            enemy_card_x = 300
+            enemy_card_y = 25
+            for card in player_cards_list:
+                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                player_card_x += 100
                 # pygame.display.update()
 
             # pygame.display.update()
+            for card in enemy_cards_list:
+                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+                enemy_card_x += 100
 
             if self.reveal_hand < 11:
                 if self.enemy_score < 8:
