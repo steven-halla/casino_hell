@@ -4925,7 +4925,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         elif self.game_state == "menu_screen":
             deck = Deck(ranks, suits)
             player_card_x = 300
-            player_card_y = 275
+            player_card_y = 250
             enemy_card_x = 300
             enemy_card_y = 25
             for card in player_cards_list:
@@ -4934,8 +4934,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 # pygame.display.update()
 
             # pygame.display.update()
-            for card in enemy_cards_list:
-                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+
+            for index, card in enumerate(enemy_cards_list):
+                if index == 0:
+                    deck.face_down_card((enemy_card_x, enemy_card_y))
+                else:
+                    deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
                 enemy_card_x += 100
 
             if self.reveal_hand < 11:
