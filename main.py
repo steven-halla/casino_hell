@@ -4045,73 +4045,145 @@ class DiceGameScreen(Screen, Dice):
         pygame.display.flip()
 
 
-ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
-suits = ['spades', 'diamonds', 'clubs', 'hearts'] # TODO use enum
+# ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+# suits = ['spades', 'diamonds', 'clubs', 'hearts'] # TODO use enum
+#
+#
+# class Deck:
+#     def __init__(self, ranks, suits):
+#         self.ranks = ranks
+#         self.isBlackJack =  False
+#         self.suits = suits
+#         self.rank_strings = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8",
+#                              9: "9", 10: "10", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
+#         self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
+#         self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
+#                             "King": 10, "Ace": 11}
+#         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
+#                       for rank in self.ranks]
+#         self.black_jack_counter = 0
+#
+#
+#         for suit in self.suits:
+#             if "Ace" in self.ranks:
+#                 self.cards.append(("Ace", suit, 1))
+#                 self.cards.append(("Ace", suit, 11))
+#         # self.cards.append(('Joker', 'red', 0))
+#         # self.cards.append(('Joker', 'black', 0))
+#
+#     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
+#         # Initialize the point value of the hand to 0
+#         hand_value = 0
+#         # Initialize a counter to track the number of aces in the hand
+#         num_aces = 0
+#         # Iterate through the cards in the hand
+#         for card in hand:
+#             # If the card is an ace, increment the counter
+#             if card[0] == "Ace":
+#                 num_aces += 1
+#             # Add the point value of the card to the hand value
+#             hand_value += card[2]
+#         # print(f"num_aces: {num_aces}")
+#         # print(f"initial hand_value: {hand_value}")
+#         # While there is at least one ace in the hand and the hand value is more than 21,
+#         # subtract 10 from the hand value to give the ace a value of 1 instead of 11
+#         while num_aces > 0 and hand_value > 21:
+#             hand_value -= 10
+#             num_aces -= 1
+#         # print(f"final hand_value: {hand_value}")
+#
+#         if len(hand) == 2 and (
+#                 (hand[0][0] == "Ace" and hand[1][0] in (10, "Jack", "Queen", "King")) or
+#                 (hand[1][0] == "Ace" and hand[0][0] in (10, "Jack", "Queen", "King"))
+#         ):
+#             print("you got the black jack")
+#             self.black_jack_counter += 1
+#
+#             print("black jack counter at:" + str(self.black_jack_counter))
+#
+#
+#         return hand_value
+#
+#     def __len__(self):
+#         return len(self.cards)
+#
+#     def __getitem__(self, position):
+#         return self.cards[position]
+#
+#     def draw_card(self):
+#
+#         card = self.cards.pop()
+#         return card
+#
+#     def shuffle(self):
+#         random.shuffle(self.cards)
+#         return self.cards
+#
+#     def draw_hand(self, num_cards):
+#         hand = []
+#         for i in range(num_cards):
+#             hand.append(self.draw_card())
+#         return hand
+#
+#     def add_rank(self, rank):
+#         self.ranks.append(rank)
+#         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits for rank in self.ranks]
+#
+#     def add_suit(self, suit):
+#         self.suits.append(suit)
+#         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
+#                       for rank in self.ranks]
+#
 
 
 class Deck:
-    def __init__(self, ranks, suits):
-        self.ranks = ranks
-        self.isBlackJack =  False
-        self.suits = suits
-        self.rank_strings = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8",
-                             9: "9", 10: "10", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
-        self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
-        self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
-                            "King": 10, "Ace": 11}
-        self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
-                      for rank in self.ranks]
+    def __init__(self):
+        self.isBlackJack = False
+        self.suit_index = {
+            "clubs": 0,
+            "diamonds": 1,
+            "hearts": 2,
+            "spades": 3
+        }
+
+        self.value_index = {
+            "2": 0,
+            "3": 1,
+            "4": 2,
+            "5": 3,
+            "6": 4,
+            "7": 5,
+            "8": 6,
+            "9": 7,
+            "10": 8,
+            "jack": 9,
+            "queen": 10,
+            "king": 11,
+            "ace": 12
+        }
+        self.cards = [(value, suit, self.value_index[value]) for suit, suit_idx in self.suit_index.items()
+                      for value, value_idx in self.value_index.items()]
         self.black_jack_counter = 0
-
-
-        for suit in self.suits:
-            if "Ace" in self.ranks:
-                self.cards.append(("Ace", suit, 1))
-                self.cards.append(("Ace", suit, 11))
-        # self.cards.append(('Joker', 'red', 0))
-        # self.cards.append(('Joker', 'black', 0))
+        self.cards.append(("Ace", "spades", 1))
+        self.cards.append(("Ace", "spades", 11))
 
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
-        # Initialize the point value of the hand to 0
         hand_value = 0
-        # Initialize a counter to track the number of aces in the hand
         num_aces = 0
-        # Iterate through the cards in the hand
         for card in hand:
-            # If the card is an ace, increment the counter
             if card[0] == "Ace":
                 num_aces += 1
-            # Add the point value of the card to the hand value
             hand_value += card[2]
-        # print(f"num_aces: {num_aces}")
-        # print(f"initial hand_value: {hand_value}")
-        # While there is at least one ace in the hand and the hand value is more than 21,
-        # subtract 10 from the hand value to give the ace a value of 1 instead of 11
         while num_aces > 0 and hand_value > 21:
             hand_value -= 10
             num_aces -= 1
-        # print(f"final hand_value: {hand_value}")
-
         if len(hand) == 2 and (
-                (hand[0][0] == "Ace" and hand[1][0] in (10, "Jack", "Queen", "King")) or
-                (hand[1][0] == "Ace" and hand[0][0] in (10, "Jack", "Queen", "King"))
+                (hand[0][0] == "Ace" and hand[1][0] in (10, "jack", "queen", "king")) or
+                (hand[1][0] == "Ace" and hand[0][0] in (10, "jack", "queen", "king"))
         ):
-            print("you got the black jack")
+            self.isBlackJack = True
             self.black_jack_counter += 1
-
-            print("black jack counter at:" + str(self.black_jack_counter))
-
-        # if len(hand) == 2 and (self.rank_values[hand[0][0]] == 10 or self.rank_values[hand[1][0]] == 10):
-        #     print("Player has a 10-point value card")
-        #
-        #     print("The player has 1 ace and 1 10-point card in their hand, and there are only 2 cards in the hand.")
-        # Return the final hand value
-
-        # if len(hand) == 2 and hand[0][1] == 11 and hand[1][1] == 10:
-        #     print("Player has a Blackjack")
-
         return hand_value
-
     def __len__(self):
         return len(self.cards)
 
@@ -4119,7 +4191,6 @@ class Deck:
         return self.cards[position]
 
     def draw_card(self):
-
         card = self.cards.pop()
         return card
 
@@ -4132,15 +4203,6 @@ class Deck:
         for i in range(num_cards):
             hand.append(self.draw_card())
         return hand
-
-    def add_rank(self, rank):
-        self.ranks.append(rank)
-        self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits for rank in self.ranks]
-
-    def add_suit(self, suit):
-        self.suits.append(suit)
-        self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
-                      for rank in self.ranks]
 
 
 
@@ -4232,9 +4294,9 @@ class BorderedTextBox(Entity):
 
 
 class BlackJackScreen(Screen, Deck, TextBox):
-    def __init__(self, ranks, suits):
+    def __init__(self):
         Screen.__init__(self, " Black Jack Game")
-        Deck.__init__(self, ranks, suits)
+        Deck.__init__(self)
 
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False # this is our boss level when talk to NPC set to true set false if game is set to quit
@@ -5045,7 +5107,7 @@ class GameState:
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
-        self.BlackJackScreen = BlackJackScreen(ranks, suits)
+        self.BlackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
         self.currentScreen = self.BlackJackScreen  # assign a value to currentScreen here
