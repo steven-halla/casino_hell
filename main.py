@@ -11,6 +11,10 @@ import pytmx
 
 
 import pygame
+from pygame import mixer
+
+#Instantiate mixer
+
 from pygame.surface import Surface
 
 clock = pygame.time.Clock()
@@ -4352,6 +4356,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.current_speaker = ""
         self.npc_speaking = False
         self.hero_speaking = False
+        self.music_loop = True
 
 
 
@@ -4378,6 +4383,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
 
+        mixer.init()
+
+        # Load audio file
+        mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
+
+        print("music started playing....")
+
+        # Set preferred volume
+        mixer.music.set_volume(0.2)
+
+        # Play the music
+        pygame.mixer.music.play(-1, 0.0, 5000)
+
+        pygame.init()
+
+
+
+
+    pygame.init()
 
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
@@ -4399,6 +4423,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
     def update(self, state: "GameState"):
+
+
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
 
@@ -5118,6 +5144,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         pygame.display.flip()
 
 
+
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
@@ -5143,6 +5170,7 @@ class Game:
     def start(self):
         self.state.currentScreen.start(self.state)
         while self.state.isRunning:
+
             self.state.delta = clock.tick(60)
 
             # will need to move this to Screen class
