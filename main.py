@@ -4065,7 +4065,10 @@ class Deck:
         self.sprite_size = (67, 95)
         self.card_width = 68
         self.card_height = 98
+
         self.sprite_sheet = pygame.image.load("images/playingcards.png")
+
+        self.cards_list = []
 
         self.suit_index = {
             "clubs": 0,
@@ -4073,6 +4076,22 @@ class Deck:
             "hearts": 2,
             "spades": 3
         }
+        self.value_index = {
+            "2": 0,
+            "3": 1,
+            "4": 2,
+            "5": 3,
+            "6": 4,
+            "7": 5,
+            "8": 6,
+            "9": 7,
+            "10": 8,
+            "jack": 9,
+            "queen": 10,
+            "king": 11,
+            "ace": 12
+        }
+
 
         self.card_value = {
             "2": 2,
@@ -4112,10 +4131,7 @@ class Deck:
                 num_aces += 1
             # Add the point value of the card to the hand value
             hand_value += card[2]
-        # print(f"num_aces: {num_aces}")
-        # print(f"initial hand_value: {hand_value}")
-        # While there is at least one ace in the hand and the hand value is more than 21,
-        # subtract 10 from the hand value to give the ace a value of 1 instead of 11
+
         while num_aces > 0 and hand_value > 21:
             hand_value -= 10
             num_aces -= 1
@@ -4130,14 +4146,7 @@ class Deck:
 
             print("black jack counter at:" + str(self.black_jack_counter))
 
-        # if len(hand) == 2 and (self.rank_values[hand[0][0]] == 10 or self.rank_values[hand[1][0]] == 10):
-        #     print("Player has a 10-point value card")
-        #
-        #     print("The player has 1 ace and 1 10-point card in their hand, and there are only 2 cards in the hand.")
-        # Return the final hand value
 
-        # if len(hand) == 2 and hand[0][1] == 11 and hand[1][1] == 10:
-        #     print("Player has a Blackjack")
 
         return hand_value
 
@@ -4171,19 +4180,19 @@ class Deck:
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
                       for rank in self.ranks]
 
-    def draw_top_card(self, position: tuple[int, int]):
+    def face_down_card(self, position: tuple[int, int]):
         top_card_position = (self.card_width * 13, 0)
         sprite = self.sprite_sheet.subsurface(pygame.Rect(top_card_position, (self.card_width, self.card_height)))
         sprite.set_colorkey((0, 190, 0))
         DISPLAY.blit(sprite, position)
 
-    def draw_card(self, suit: str, value: str, position: tuple[int, int]):
+    def show_card(self, suit: str, value: str, position: tuple[int, int]):
         x_offset = self.value_index[value]
         y_offset = self.suit_index[suit]
         card_position = (x_offset * self.card_width, y_offset * self.card_height)
         sprite = self.sprite_sheet.subsurface(pygame.Rect(card_position, (self.card_width, self.card_height)))
         sprite.set_colorkey((0, 190, 0))
-        screen.blit(sprite, position)
+        DISPLAY.blit(sprite, position)
 
 
 
@@ -4794,7 +4803,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # DISPLAY.blit(white_border, (30 - border_width, 380 - border_width))
         # DISPLAY.blit(black_box, (30, 380))
         self.main_bordered_box.draw(state)
-        self.draw_top_card((0,0))
+        self.face_down_card((0,0))
 
         # DISPLAY.blit(self.font.render(f"{self.text_box.text}", True, (255, 255, 255)), (45, 390))
         # DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
