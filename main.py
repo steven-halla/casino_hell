@@ -4169,6 +4169,8 @@ class Deck:
         sprite = self.sprite_sheet.subsurface(pygame.Rect(card_position, (self.card_width, self.card_height)))
         sprite.set_colorkey((0, 190, 0))
         DISPLAY.blit(sprite, position)
+        pygame.display.update()
+
 
     #maybe make two functions, a player draw_card and enemy draw_card
     def draw_card(self):
@@ -4177,6 +4179,7 @@ class Deck:
         print("hidey hoe")
         print(self.cards_list)
         self.show_card(card[1], card[0], (self.card_width, self.card_height))
+        pygame.display.update()
 
 
         return card
