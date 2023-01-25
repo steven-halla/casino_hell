@@ -4046,7 +4046,7 @@ class DiceGameScreen(Screen, Dice):
 
 
 ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
-suits = ['spades', 'diamonds', 'clubs', 'hearts'] # TODO use enum
+suits = ['Spades', 'Diamonds', 'Clubs', 'Hearts'] # TODO use enum
 
 
 class Deck:
@@ -4056,7 +4056,7 @@ class Deck:
         self.suits = suits
         self.rank_strings = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8",
                              9: "9", 10: "10", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
-        self.suit_strings = {"spades": "Spades", "diamonds": "Diamonds", "clubs": "Clubs", "hearts": "Hearts"}
+        self.suit_strings = {"Spades": "Spades", "Diamonds": "Diamonds", "Clubs": "Clubs", "Hearts": "Hearts"}
         self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10, "Queen": 10,
                             "King": 10, "Ace": 11}
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
@@ -4071,10 +4071,10 @@ class Deck:
         self.cards_list = []
 
         self.suit_index = {
-            "clubs": 0,
-            "diamonds": 1,
-            "hearts": 2,
-            "spades": 3
+            "Clubs": 0,
+            "Diamonds": 1,
+            "Hearts": 2,
+            "Spades": 3
         }
         self.value_index = {
             "2": 0,
@@ -4086,10 +4086,10 @@ class Deck:
             "8": 6,
             "9": 7,
             "10": 8,
-            "jack": 9,
-            "queen": 10,
-            "king": 11,
-            "ace": 12
+            "Jack": 9,
+            "Queen": 10,
+            "King": 11,
+            "Ace": 12
         }
 
 
@@ -4156,9 +4156,29 @@ class Deck:
     def __getitem__(self, position):
         return self.cards[position]
 
-    def draw_card(self):
+    def face_down_card(self, position: tuple[int, int]):
+        top_card_position = (self.card_width * 13, 0)
+        sprite = self.sprite_sheet.subsurface(pygame.Rect(top_card_position, (self.card_width, self.card_height)))
+        sprite.set_colorkey((0, 190, 0))
+        DISPLAY.blit(sprite, position)
 
+    def show_card(self, suit: str, value: str, position: tuple[int, int]):
+        x_offset = self.value_index[value]
+        y_offset = self.suit_index[suit]
+        card_position = (x_offset * self.card_width, y_offset * self.card_height)
+        sprite = self.sprite_sheet.subsurface(pygame.Rect(card_position, (self.card_width, self.card_height)))
+        sprite.set_colorkey((0, 190, 0))
+        DISPLAY.blit(sprite, position)
+
+    #maybe make two functions, a player draw_card and enemy draw_card
+    def draw_card(self):
         card = self.cards.pop()
+        self.cards_list.append((card[1], card[0]))
+        print("hidey hoe")
+        print(self.cards_list)
+        self.show_card(card[1], card[0], (self.card_width, self.card_height))
+
+
         return card
 
     def shuffle(self):
@@ -4180,19 +4200,7 @@ class Deck:
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for suit in self.suits
                       for rank in self.ranks]
 
-    def face_down_card(self, position: tuple[int, int]):
-        top_card_position = (self.card_width * 13, 0)
-        sprite = self.sprite_sheet.subsurface(pygame.Rect(top_card_position, (self.card_width, self.card_height)))
-        sprite.set_colorkey((0, 190, 0))
-        DISPLAY.blit(sprite, position)
 
-    def show_card(self, suit: str, value: str, position: tuple[int, int]):
-        x_offset = self.value_index[value]
-        y_offset = self.suit_index[suit]
-        card_position = (x_offset * self.card_width, y_offset * self.card_height)
-        sprite = self.sprite_sheet.subsurface(pygame.Rect(card_position, (self.card_width, self.card_height)))
-        sprite.set_colorkey((0, 190, 0))
-        DISPLAY.blit(sprite, position)
 
 
 
