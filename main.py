@@ -4169,17 +4169,18 @@ class Deck:
         sprite = self.sprite_sheet.subsurface(pygame.Rect(card_position, (self.card_width, self.card_height)))
         sprite.set_colorkey((0, 190, 0))
         DISPLAY.blit(sprite, position)
-        pygame.display.update()
-
 
     #maybe make two functions, a player draw_card and enemy draw_card
     def draw_card(self):
+        pygame.display.update()
+
         card = self.cards.pop()
         self.cards_list.append((card[1], card[0]))
         print("hidey hoe")
         print(self.cards_list)
-        self.show_card(card[1], card[0], (self.card_width, self.card_height))
-        pygame.display.update()
+
+        # self.show_card(card[1], card[0], (self.card_width, self.card_height))
+        # pygame.time.delay(500)
 
 
         return card
@@ -4296,8 +4297,11 @@ class BorderedTextBox(Entity):
 
 class BlackJackScreen(Screen, Deck, TextBox):
     def __init__(self, ranks, suits):
+
         Screen.__init__(self, " Black Jack Game")
         Deck.__init__(self, ranks, suits)
+        super().__init__()
+
 
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False # this is our boss level when talk to NPC set to true set false if game is set to quit
@@ -4464,6 +4468,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.player_hand = self.draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
+
 
 
 
@@ -4780,8 +4785,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-
-
     def draw(self, state: "GameState"):
         # change to dealer image
         character_image = pygame.image.load("images/128by128.png")
@@ -4799,30 +4802,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.current_speaker = "hero"
             DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
-        # black_box = pygame.Surface((725, 200))
-        # black_box.fill((0, 0, 0))
-        #
-        # # Draw the black box at the bottom of the screen
-        #
-        # # thisis how we raw a box for our message displays
-        # border_width = 5
-        # white_border = pygame.Surface(
-        #     (black_box.get_width() + border_width * 2, black_box.get_height() + border_width * 2))
-        # white_border.fill((255, 255, 255))
-        #
-        # # Draw the white border on top of the black box
-        # DISPLAY.blit(white_border, (30 - border_width, 380 - border_width))
-        # DISPLAY.blit(black_box, (30, 380))
+
         self.main_bordered_box.draw(state)
         self.face_down_card((0,0))
 
-        # DISPLAY.blit(self.font.render(f"{self.text_box.text}", True, (255, 255, 255)), (45, 390))
-        # DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (45, 450))
-        # DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
-        # DISPLAY.blit(self.font.render(f"bluff counter:{self.black_jack_bluff_counter}", True, (255, 255, 255)), (45, 550))
-        # DISPLAY.blit(self.font.render(f"reveal hand:{self.reveal_hand}", True, (255, 255, 255)), (515, 550))
-        # DISPLAY.blit(self.font.render(f"magic lock:{self.magic_lock}", True, (255, 255, 255)), (515, 455))
-        # DISPLAY.blit(self.font.render(f"magic lock:{self.luck_of_jack}", True, (255, 255, 255)), (515, 400))
+
 
 
 
@@ -4920,6 +4904,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "menu_screen":
+
+
+            self.show_card()
+
+
+
+
             if self.reveal_hand < 11:
                 if self.enemy_score < 8:
                     DISPLAY.blit(self.font.render(f"enemy info: LOW", True, (255, 255, 255)), (515, 500))
