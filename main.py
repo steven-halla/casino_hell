@@ -4903,10 +4903,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "menu_screen":
             deck = Deck(ranks, suits)
-            while True:
-                for card in cards_list:
-                    deck.show_card(card[0], card[1], (deck.card_width, deck.card_height))
-                pygame.display.update()
+            card_x = 0
+            card_y = 0
+            for card in cards_list:
+                deck.show_card(card[0], card[1], (card_x, card_y))
+                card_x += 100
+                # pygame.display.update()
+
+            # pygame.display.update()
 
             if self.reveal_hand < 11:
                 if self.enemy_score < 8:
