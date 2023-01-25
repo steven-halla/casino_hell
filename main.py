@@ -15,7 +15,8 @@ from pygame.surface import Surface
 
 clock = pygame.time.Clock()
 FPS = 60
-
+# might need to put this back in later to Deck class
+cards_list = []
 pygame.init()
 SCREEN_WIDTH: int = 800
 SCREEN_HEIGHT: int = 600
@@ -4068,7 +4069,6 @@ class Deck:
 
         self.sprite_sheet = pygame.image.load("images/playingcards.png")
 
-        self.cards_list = []
 
         self.suit_index = {
             "Clubs": 0,
@@ -4170,14 +4170,15 @@ class Deck:
         sprite.set_colorkey((0, 190, 0))
         DISPLAY.blit(sprite, position)
 
+
     #maybe make two functions, a player draw_card and enemy draw_card
     def draw_card(self):
         pygame.display.update()
 
         card = self.cards.pop()
-        self.cards_list.append((card[1], card[0]))
+        cards_list.append((card[1], card[0]))
         print("hidey hoe")
-        print(self.cards_list)
+        print(cards_list)
 
         # self.show_card(card[1], card[0], (self.card_width, self.card_height))
         # pygame.time.delay(500)
@@ -4297,11 +4298,8 @@ class BorderedTextBox(Entity):
 
 class BlackJackScreen(Screen, Deck, TextBox):
     def __init__(self, ranks, suits):
-
         Screen.__init__(self, " Black Jack Game")
         Deck.__init__(self, ranks, suits)
-        super().__init__()
-
 
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False # this is our boss level when talk to NPC set to true set false if game is set to quit
@@ -4904,12 +4902,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "menu_screen":
-
-
-            self.show_card()
-
-
-
+            deck = Deck(ranks, suits)
+            while True:
+                for card in cards_list:
+                    deck.show_card(card[0], card[1], (deck.card_width, deck.card_height))
+                pygame.display.update()
 
             if self.reveal_hand < 11:
                 if self.enemy_score < 8:
