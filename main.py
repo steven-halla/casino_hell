@@ -4122,8 +4122,6 @@ class Deck:
         # self.cards.append(('Joker', 'red', 0))
         # self.cards.append(('Joker', 'black', 0))
 
-
-
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
         # Initialize the point value of the hand to 0
         hand_value = 0
@@ -4131,11 +4129,15 @@ class Deck:
         num_aces = 0
         # Iterate through the cards in the hand
         for card in hand:
-            # If the card is an ace, increment the counter
             if card[0] == "Ace":
                 num_aces += 1
-            # Add the point value of the card to the hand value
-            hand_value += card[2]
+                if len(hand) == 2:
+                    new_card = [card[0], card[1], 11]
+                else:
+                    new_card = [card[0], card[1], 1]
+                hand_value += new_card[2]
+            else:
+                hand_value += card[2]
 
         while num_aces > 0 and hand_value > 21:
             hand_value -= 10
@@ -4150,8 +4152,6 @@ class Deck:
             self.black_jack_counter += 1
 
             print("black jack counter at:" + str(self.black_jack_counter))
-
-
 
         return hand_value
 
@@ -4878,7 +4878,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
         DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
         DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
-        DISPLAY.blit(self.font.render(f"cheater bobs scare:{self.enemy_score}", True, (255, 255, 255)), (200, 255))
+        DISPLAY.blit(self.font.render(f"cheater bobs scare:{self.enemy_score}", True, (255, 255, 255)), (200, 155))
 
         if self.npc_speaking == True:
             DISPLAY.blit(character_image, (23, 245))
