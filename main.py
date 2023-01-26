@@ -4361,6 +4361,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.npc_speaking = False
         self.hero_speaking = False
         self.music_loop = True
+        self.despair = False
 
 
 
@@ -4440,6 +4441,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
+            if state.player.stamina_points < 1:
+                print("time to leave")
 
             self.welcome_screen_text_box.update(state)
 
@@ -4487,6 +4490,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.hero_speaking = False
 
 
+
             if self.ace_up_sleeve_jack == True:
                 coin = random.random()
                 if coin < 0.3:
@@ -4500,6 +4504,21 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
+                if self.bet > 70:
+                    state.player.stamina_points -= 3
+                    print("-3")
+                elif (self.bet < 30):
+
+                    state.player.stamina_points -= 1
+
+                    print("-1")
+                elif (self.bet < 70) or (self.bet > 20):
+                    state.player.stamina_points -= 2
+                    print("-2")
+
+
+
+
                 pygame.time.wait(300)
                 self.game_state = "draw_phase"
                 controller.isTPressed = False
@@ -4879,8 +4898,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
         DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
         DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
-        DISPLAY.blit(self.font.render(f"avatar luck:{self.avatar_of_luck}", True, (255, 255, 255)), (200, 250))
-        DISPLAY.blit(self.font.render(f"avatar luck of jack:{self.luck_of_jack}", True, (255, 255, 255)), (200, 100))
+        DISPLAY.blit(self.font.render(f"Stamina Points:{state.player.stamina_points}", True, (255, 255, 255)), (200, 250))
+        DISPLAY.blit(self.font.render(f"Focus Points:{state.player.focus_points}", True, (255, 255, 255)), (200, 100))
 
         if self.npc_speaking == True:
             DISPLAY.blit(character_image, (23, 245))
