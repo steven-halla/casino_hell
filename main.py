@@ -4843,6 +4843,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 if self.luck_of_jack == 0:
                     print("Magic time")
                     self.luck_of_jack = 6
+                    self.avatar_of_luck = False
                     self.magic_lock = False
 
 
@@ -4878,6 +4879,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
         DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
         DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
+        DISPLAY.blit(self.font.render(f"avatar luck:{self.avatar_of_luck}", True, (255, 255, 255)), (200, 250))
+        DISPLAY.blit(self.font.render(f"avatar luck of jack:{self.luck_of_jack}", True, (255, 255, 255)), (200, 100))
 
         if self.npc_speaking == True:
             DISPLAY.blit(character_image, (23, 245))
