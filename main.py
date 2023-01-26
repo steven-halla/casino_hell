@@ -4359,6 +4359,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
         self.ace_value = 1
+        self.bust_protection = False
 
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -4463,6 +4464,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # self.third_message_display = "To go forward with the game"
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
+            self.bust_protection = False
 
             if self.welcome_screen_text_box.is_finished():
                 self.npc_speaking = False
@@ -4662,12 +4664,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 print("you almost busted")
                 print(self.player_hand)
                 self.player_hand.pop()
+                self.compute_hand_value(self.player_hand)
+                self.player_score = self.compute_hand_value(self.player_hand)
                 print("here is your new hand")
                 print(self.player_hand)
+                self.bust_protection = True
+
+
+
+            if self.bust_protection == True:
                 self.game_state = "results_screen"
-
-
-            self.game_state = "menu_screen"
+            else:
+                self.game_state = "menu_screen"
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
