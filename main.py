@@ -4360,6 +4360,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.magic_menu_index = 0
         self.ace_value = 1
         self.bust_protection = False
+        self.avatar_of_luck_card_redraw_counter = 3
 
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -4465,6 +4466,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
             self.bust_protection = False
+            self.avatar_of_luck_card_redraw_counter = 3
 
             if self.welcome_screen_text_box.is_finished():
                 self.npc_speaking = False
@@ -4668,6 +4670,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.player_score = self.compute_hand_value(self.player_hand)
                 print("here is your new hand")
                 print(self.player_hand)
+                self.reveal_hand -= 2
                 self.bust_protection = True
 
 
@@ -5153,12 +5156,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     (630, 255))
                 if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                     print("Redrawing your hand")
-                    self.redraw_lock = True
+
 
 
                     self.player_hand = self.player_draw_hand(2)
                     print("Player hand is" + str(self.player_hand))
                     self.player_score = self.compute_hand_value(self.player_hand)
+                    self.avatar_of_luck_card_redraw_counter -= 1
+                    if self.avatar_of_luck_card_redraw_counter < 1:
+                        self.redraw_lock = True
 
                     state.controller.isTPressed = False
                     self.game_state = "menu_screen"
