@@ -4335,8 +4335,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.player_money = 100
-        self.enemy_money = 100
+        self.cheater_bob_money = 1000
         self.player_score = 0
         self.enemy_score = 0
         self.player_hand = []
@@ -4383,18 +4382,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
 
-        mixer.init()
-
-        # Load audio file
-        mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-
-        print("music started playing....")
-
-        # Set preferred volume
-        mixer.music.set_volume(0.2)
-
-        # Play the music
-        pygame.mixer.music.play(-1, 0.0, 5000)
+        # mixer.init()
+        #
+        # # Load audio file
+        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
+        #
+        # print("music started playing....")
+        #
+        # # Set preferred volume
+        # mixer.music.set_volume(0.2)
+        #
+        # # Play the music
+        # pygame.mixer.music.play(-1, 0.0, 5000)
 
         pygame.init()
 
@@ -4436,6 +4435,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
+
             self.welcome_screen_text_box.update(state)
 
             self.npc_speaking = True
@@ -4474,6 +4474,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         controller.isDownPressed = False
 
         elif self.game_state == "bet_phase":
+            player_cards_list.clear()
+            enemy_cards_list.clear()
             self.bet_screen_text.update(state)
 
             self.npc_speaking = True
@@ -4573,10 +4575,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
 
-                self.thrid_message_display = "player got  a black jack X 3 winnings"
+                self.thrid_message_display = "player got  a black jack X 2 winnings"
+                state.player.playerMoney += self.bet * 2
+                self.cheater_bob_money -= self.bet * 2
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.thrid_message_display ="enemy got a black jack now you lose X 3 winnings"
+                state.player.playerMoney -= self.bet * 2
+                self.cheater_bob_money += self.bet * 2
+
                 self.game_state = "results_screen"
 
             else:
@@ -4600,8 +4607,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21:
-                self.player_money -= self.bet
-                self.enemy_money += self.bet
+                state.player.playerMoney -= self.bet
+                self.cheater_bob_money += self.bet
                 self.second_message_display = "player bust you lose"
                 self.game_state = "results_screen"
 
@@ -4625,8 +4632,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
-                    self.player_money += self.bet
-                    self.enemy_money -= self.bet
+                    state.player.playerMoney += self.bet
+                    self.cheater_bob_money -= self.bet
                     print("enemy bust")
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
@@ -4645,6 +4652,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
+                self.player.playerMoney -= self.bet
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
@@ -4776,10 +4784,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
+
+
                 self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
                 self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player press T when ready"
+
+
+
                 self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
                 self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
 
@@ -4790,6 +4803,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             if controller.isTPressed:
+                if self.player_score > self.enemy_score and self.player_score < 22:
+                    self.second_message_display = "You win player press T when ready"
+                    state.player.playerMoney += self.bet
+                    self.cheater_bob_money -= self.bet
+
+                    self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
+                    self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
+                elif self.player_score < self.enemy_score and self.enemy_score < 22:
+                    self.second_message_display = "You lose player press T when ready"
+                    state.player.playerMoney -= self.bet
+                    self.cheater_bob_money += self.bet
+
+                    self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
+                    self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
+
+                elif self.player_score == self.enemy_score:
+                    self.second_message_display = "It's a draw nobody wins press T when Ready"
+                    self.first_message_display = f"Your hand is a {self.hand_to_str(self.player_hand)}"
+                    self.third_message_display = f"Your  enemy hand is a {self.hand_to_str(self.enemy_hand)}"
 
                 if self.reveal_hand < 11 :
                     self.reveal_hand -= 1
@@ -4835,7 +4867,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
         character_image = pygame.image.load("images/128by128.png")
         hero_image = pygame.image.load("images/hero.png")
 
+
         DISPLAY.fill((0, 0, 51))
+        DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
+        DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
 
         if self.npc_speaking == True:
             DISPLAY.blit(character_image, (23, 245))
@@ -4846,6 +4881,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             self.current_speaker = "hero"
             DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+
 
 
         self.main_bordered_box.draw(state)
@@ -5063,11 +5099,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
-            DISPLAY.blit(self.font.render(f"Player score:{self.player_score}         Player Money: {self.player_money}", True, (255, 255, 255)), (40, 450))
 
             DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
 
-            DISPLAY.blit(self.font.render(f"Enemy score:{self.enemy_score}        Enemy Money: {self.enemy_money}", True, (255, 255, 255)), (40, 510))
 
 
 
