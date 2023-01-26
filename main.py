@@ -4054,7 +4054,14 @@ class DiceGameScreen(Screen, Dice):
 ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
 suits = ['Spades', 'Diamonds', 'Clubs', 'Hearts'] # TODO use enum
 
+#dsf;dsaf;dsfjdajfdsafjsa;fjldsjjsdafjds;ajf;dj;sjfldsjafldsjaf;ldsjfldsajf
+# if a player has 3 cards, then an ace value is equal to one
+# ace should be set that if a value is less than 10, then at least one of them should be
+#set to 11
+#need to set up test cases for many up to having 4 aces in hand
 
+
+#betting is also broken, a black jack should net X 2 winnings
 class Deck:
     def __init__(self, ranks, suits):
         self.ranks = ranks
@@ -4182,8 +4189,8 @@ class Deck:
 
         card = self.cards.pop()
         player_cards_list.append((card[1], card[0]))
-        print("hidey hoe")
-        print(player_cards_list)
+        # print("hidey hoe")
+        # print(player_cards_list)
 
         # self.show_card(card[1], card[0], (self.card_width, self.card_height))
         # pygame.time.delay(500)
@@ -4196,8 +4203,8 @@ class Deck:
 
         card = self.cards.pop()
         enemy_cards_list.append((card[1], card[0]))
-        print("hidey hoe")
-        print(enemy_cards_list)
+        # print("hidey hoe")
+        # print(enemy_cards_list)
 
         # self.show_card(card[1], card[0], (self.card_width, self.card_height))
         # pygame.time.delay(500)
@@ -4551,12 +4558,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
+
             print("Player score is: " + str(self.player_score))
 
 
             # Check if the player has an ACE in their hand
             if self.black_jack_counter > 0:
-                print("Player black jack win set to true")
+                print("Player black jack win set to true and it might be true?")
                 self.player_black_jack_win = True
                 self.black_jack_bluff_counter += 1
             else:
@@ -4574,8 +4582,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
+
             if self.black_jack_counter > 0:
-                print("Enemy black jack win set to true")
+                print("Enemy black jack win set to true and the code is right here")
 
                 self.enemy_black_jack_win = True
             elif self.black_jack_counter == 0:
@@ -4607,14 +4616,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
 
-                self.thrid_message_display = "player got  a black jack X 2 winnings"
-                state.player.playerMoney += self.bet * 2
-                self.cheater_bob_money -= self.bet * 2
+                print("its time for you to have double winnings")
+                # state.player.playerMoney += self.bet
+                # state.player.playerMoney += self.bet
+                # self.cheater_bob_money -= self.bet
+                # self.cheater_bob_money -= self.bet
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                self.thrid_message_display ="enemy got a black jack now you lose X 3 winnings"
-                state.player.playerMoney -= self.bet * 2
-                self.cheater_bob_money += self.bet * 2
+                print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
+                # state.player.playerMoney -= self.bet
+                # state.player.playerMoney -= self.bet
+                # self.cheater_bob_money += self.bet
+                # self.cheater_bob_money += self.bet
 
                 self.game_state = "results_screen"
 
@@ -4632,16 +4645,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.player_hand += self.player_draw_hand(1)
             self.compute_hand_value(self.player_hand)
             self.player_score = self.compute_hand_value(self.player_hand)
+
             if self.player_score > 10:
                 print("hi greater than 10")
                 self.rank_values["Ace"] = 1
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
-            if self.player_score > 21:
+            if self.player_score > 21 and self.reveal_hand > 10:
                 state.player.playerMoney -= self.bet
                 self.cheater_bob_money += self.bet
                 self.second_message_display = "player bust you lose"
+                self.game_state = "results_screen"
+
+            elif self.player_score > 21 and self.reveal_hand < 11:
+                print("you almost busted")
+                print(self.player_hand)
+                self.player_hand.pop()
+                print("here is your new hand")
+                print(self.player_hand)
                 self.game_state = "results_screen"
 
 
@@ -4831,7 +4853,22 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             if controller.isTPressed:
-                if self.player_score > self.enemy_score and self.player_score < 22:
+
+                if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
+                    print("You got the black jack")
+                    state.player.playerMoney += self.bet * 2
+                    self.cheater_bob_money -= self.bet * 2
+
+                elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
+                    print("You both got the  the black jack")
+
+                elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
+                    print("You got the black jack")
+                    state.player.playerMoney -= self.bet * 2
+                    self.cheater_bob_money += self.bet * 2
+
+
+                elif self.player_score > self.enemy_score and self.player_score < 22:
                     self.second_message_display = "You win player press T when ready"
                     state.player.playerMoney += self.bet
                     self.cheater_bob_money -= self.bet
