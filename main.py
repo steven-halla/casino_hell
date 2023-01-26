@@ -4370,6 +4370,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.npc_speaking = False
         self.hero_speaking = False
         self.music_loop = True
+
         self.despair = False
 
 
@@ -4694,6 +4695,30 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.game_state = "results_screen"
 
 
+
+                if self.enemy_score > 21:
+                    print("if the enemy is going to bust")
+                    state.player.playerMoney += self.bet
+                    self.cheater_bob_money -= self.bet
+                    print("enemy bust")
+                    self.second_message_display = "enemy bust player wins"
+                    self.game_state = "results_screen"
+
+            if self.enemy_score > 14 and self.enemy_score < 22:
+                print("stay here")
+                self.game_state = "results_screen"
+
+        elif self.game_state == "enemy_despair_draw_one_card":
+            print("enemy is in despair")
+            while self.enemy_score < 14:  # this is 15 in order to make game a little easier
+                print("this is our despair loop")
+
+                self.enemy_hand += self.enemy_draw_hand(1)
+                self.compute_hand_value(self.enemy_hand)
+                self.enemy_score = self.compute_hand_value(self.enemy_hand)
+                print("enemy hand is now" + str(self.enemy_hand))
+                print("enemy score is now" + str(self.enemy_score))
+                self.game_state = "results_screen"
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
@@ -5132,7 +5157,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     pygame.time.wait(300)
 
                     print("code is broke right here")
-                    self.game_state = "enemy_draw_one_card"
+                    if self.despair == False:
+                        self.game_state = "enemy_draw_one_card"
+                    elif self.despair == True:
+                        self.game_state = "enemy_despair_draw_one_card"
                     state.controller.isTPressed = False
                     # self.betPhase = True
                     # self.game_state = "bet_phase"
