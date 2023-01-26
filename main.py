@@ -4622,7 +4622,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
-            while self.enemy_score < 17:
+            while self.enemy_score < 15:# this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
 
@@ -4643,7 +4643,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
-            if self.enemy_score > 16 and self.enemy_score < 22:
+            if self.enemy_score > 14 and self.enemy_score < 22:
                 print("stay here")
                 self.game_state = "results_screen"
 
@@ -4878,7 +4878,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
         DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
         DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
-        DISPLAY.blit(self.font.render(f"cheater bobs scare:{self.enemy_score}", True, (255, 255, 255)), (200, 155))
 
         if self.npc_speaking == True:
             DISPLAY.blit(character_image, (23, 245))
@@ -5013,15 +5012,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 enemy_card_x += 100
 
             if self.reveal_hand < 11:
-                if self.enemy_score < 8:
-                    DISPLAY.blit(self.font.render(f"enemy info: LOW", True, (255, 255, 255)), (515, 500))
-                elif self.enemy_score > 8 and self.enemy_score < 17:
-                    DISPLAY.blit(self.font.render(f"enemy info: Medum", True, (255, 255, 255)), (515, 500))
-
-                elif self.enemy_score > 17:
-                    DISPLAY.blit(self.font.render(f"enemy info: High", True, (255, 255, 255)), (515, 500))
-
-
+                DISPLAY.blit(self.font.render(f"cheater bobs score:{self.enemy_score}", True, (255, 255, 255)),
+                             (200, 155))
 
             self.current_speaker = "hero"
 
