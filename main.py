@@ -5190,6 +5190,22 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 (680, 310))
 
         elif self.game_state == "results_screen":
+            deck = Deck(ranks, suits)
+            player_card_x = 300
+            player_card_y = 250
+            enemy_card_x = 300
+            enemy_card_y = 25
+            for card in player_cards_list:
+                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                player_card_x += 100
+                # pygame.display.update()
+
+            # pygame.display.update()
+
+            for index, card in enumerate(enemy_cards_list):
+                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+                enemy_card_x += 100
+
             self.current_speaker = "cheater bob"
 
             DISPLAY.blit(character_image, (23, 245))
