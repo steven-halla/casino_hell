@@ -4441,6 +4441,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
+
             if state.player.stamina_points < 1:
                 print("time to leave")
 
@@ -4489,8 +4490,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.npc_speaking = True
             self.hero_speaking = False
 
+            #NOTE NOTE NOTE we want the player to have to wait, so lets put this 900 down lower than threshold to cast
+            # keep in mind player magic will be locked after casting this is all a maybe not fully sure on how to balance
+            if self.despair == True and self.cheater_bob_money <= 900:
+                print("time to fleece him for the rest of his money")
+                self.cheater_bob_money -= 900
+                state.player.playerMoney += 900
 
 
+            #this looks like code to handle a random event not sure if I'll keep it
             if self.ace_up_sleeve_jack == True:
                 coin = random.random()
                 if coin < 0.3:
@@ -4641,7 +4649,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
-            while self.enemy_score < 15:# this is 15 in order to make game a little easier
+            while self.enemy_score < 15:    # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
 
@@ -4726,19 +4734,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # we need to make this work right after a black jack
             # set a counter to minus 1 this is the counter is above 0
             if self.magic_menu_index == 0:
-                if controller.isKPressed:
-                    if self.black_jack_bluff_counter > 0:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
+                if controller.isKPressed and self.cheater_bob_money <= 900 and state.player.focus_points > 24:
+                    state.player.focus_points -= 25
+                    self.despair = True
+                    self.magic_lock = True
+                    self.game_state = "welcome_screen"
 
-                            self.first_message_display = "Time to bluff"
-                            self.game_state = "bluff_state"
 
-                        else:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    # elif self.black_jack_bluff_counter < 3:
-                    #     print("you need to wait till you get 3 black jacks jack")
-                    #     self.game_state = "welcome_screen"
+
 
 
 
@@ -5164,9 +5167,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 305))
 
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (680, 160))
+            if self.cheater_bob_money <= 900:
+
+                DISPLAY.blit(
+                    self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                    (680, 160))
+            else:
+                DISPLAY.blit(
+                    self.font.render("Locked", True, (255, 255, 255)),
+                    (680, 160))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
