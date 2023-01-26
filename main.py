@@ -4206,6 +4206,11 @@ class Deck:
         return card
 
     def shuffle(self):
+        self.cards.clear()
+        self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
+                      for rank in self.ranks]
+
+
         random.shuffle(self.cards)
         return self.cards
 
@@ -4652,7 +4657,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
-                self.player.playerMoney -= self.bet
+                # state.player.playerMoney -= self.bet
+                # self.cheater_bob_money += self.bet
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
@@ -4871,6 +4877,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.fill((0, 0, 51))
         DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
         DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
+        DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
+        DISPLAY.blit(self.font.render(f"cheater bobs scare:{self.enemy_score}", True, (255, 255, 255)), (200, 255))
 
         if self.npc_speaking == True:
             DISPLAY.blit(character_image, (23, 245))
@@ -5086,7 +5094,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.redraw_lock = True
 
 
-                    self.player_hand = self.draw_hand(2)
+                    self.player_hand = self.player_draw_hand(2)
                     print("Player hand is" + str(self.player_hand))
                     self.player_score = self.compute_hand_value(self.player_hand)
 
