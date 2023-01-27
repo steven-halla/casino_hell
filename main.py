@@ -4441,33 +4441,33 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         }
 
-        self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 400, 50, 45), 30, 500)
+        self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 450, 50, 45), 30, 500)
         self.welcome_screen_text_box_hero = TextBox(self.messages["hero_intro_text"], (50, 400, 50, 45), 30, 500)
 
-        self.bet_screen_text = TextBox(self.messages["bet_intro_text"], (50, 400, 50, 45), 30, 500)
-        self.hero_losing_money_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
-        self.enemy_losing_money_text = TextBox(self.messages["enemy_losing_text"], (50, 400, 50, 45), 30, 500)
+        self.bet_screen_text = TextBox(self.messages["bet_intro_text"], (50, 450, 50, 45), 30, 500)
+        self.hero_losing_money_text = TextBox(self.messages["hero_losing_text"], (50, 450, 50, 45), 30, 500)
+        self.enemy_losing_money_text = TextBox(self.messages["enemy_losing_text"], (50, 450, 50, 45), 30, 500)
 
-        self.enemy_winning_money_text = TextBox(self.messages["enemy_winning_text"], (50, 400, 50, 45), 30, 500)
-        self.hero_winning_money_text = TextBox(self.messages["hero_winning_text"], (50, 400, 50, 45), 30, 500)
+        self.enemy_winning_money_text = TextBox(self.messages["enemy_winning_text"], (50, 450, 50, 45), 30, 500)
+        self.hero_winning_money_text = TextBox(self.messages["hero_winning_text"], (50, 450, 50, 45), 30, 500)
 
-        self.hero_losing_confused_money_text = TextBox(self.messages["hero_losing_confused_text"], (50, 400, 50, 45), 30, 500)
-        self.enemy_losing_confused_money_text = TextBox(self.messages["enemy_losing_confused_text"], (50, 400, 50, 45), 30, 500)
+        self.hero_losing_confused_money_text = TextBox(self.messages["hero_losing_confused_text"], (50, 450, 50, 45), 30, 500)
+        self.enemy_losing_confused_money_text = TextBox(self.messages["enemy_losing_confused_text"], (50, 450, 50, 45), 30, 500)
 
-        self.final_strike_text_component = TextBox(self.messages["final_strike_text"], (50, 400, 50, 45), 30, 500)
-        self.enemy_bluffed_text_component = TextBox(self.messages["enemy_bluffed_text"], (50, 400, 50, 45), 30, 500)
+        self.final_strike_text_component = TextBox(self.messages["final_strike_text"], (50, 450, 50, 45), 30, 500)
+        self.enemy_bluffed_text_component = TextBox(self.messages["enemy_bluffed_text"], (50, 450, 50, 45), 30, 500)
 
-        self.hero_bluffing_text_component = TextBox(self.messages["hero_bluffing_text"], (50, 400, 50, 45), 30, 500)
-        self.enemy_falling_for_bluff_text_component = TextBox(self.messages["enemy_falling_for_bluff_text"], (50, 400, 50, 45), 30, 500)
+        self.hero_bluffing_text_component = TextBox(self.messages["hero_bluffing_text"], (50, 450, 50, 45), 30, 500)
+        self.enemy_falling_for_bluff_text_component = TextBox(self.messages["enemy_falling_for_bluff_text"], (50, 450, 50, 45), 30, 500)
 
-        self.enemy_crying_text_component = TextBox(self.messages["enemy_crying_text"], (50, 400, 50, 45), 30, 500)
-        self.hero_reveal_text_component = TextBox(self.messages["hero_reveal_text"], (50, 400, 50, 45), 30, 500)
+        self.enemy_crying_text_component = TextBox(self.messages["enemy_crying_text"], (50, 450, 50, 45), 30, 500)
+        self.hero_reveal_text_component = TextBox(self.messages["hero_reveal_text"], (50, 450, 50, 45), 30, 500)
 
 
 
 
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
-        self.main_bordered_box = BorderedBox((25, 375, 745, 200))
+        self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
         #DO NOT DELETE THIS CODE
         # mixer.init()
