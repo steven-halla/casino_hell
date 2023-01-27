@@ -5006,6 +5006,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                             state.player.focus_points -= 10
                             self.reveal_hand = 10
                             self.magic_lock = True
+                            self.player_status = "Focus"
+                            self.enemy_status = "Telegraph"
+
 
 
                             print("You cast reveal")
@@ -5035,6 +5038,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.avatar_of_luck = True
                     state.player.focus_points -= 20
                     self.game_state = "welcome_screen"
+                    self.player_status = "Lucky"
 
 
             elif self.magic_menu_index == 3:
@@ -5550,11 +5554,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
             black_box = pygame.Surface((170, 215))
             black_box.fill((0, 0, 0))
             white_border.blit(black_box, (border_width, border_width))
-            DISPLAY.blit(white_border, (620 - 20, 145))
+            DISPLAY.blit(white_border, (620 - 20, 190))
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 155))
+                    (640, 200))
                 # DISPLAY.blit(
                 #     self.font.render("Bluff status. When enemy ", True, (255, 255, 255)),
                 #     (40, 445))
@@ -5569,7 +5573,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.magic_menu_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 205))
+                    (640, 250))
                 self.reveal_magic_explain_component.draw(state)
 
 
@@ -5579,14 +5583,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.magic_menu_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 255))
+                    (640, 300))
                 self.avatar_magic_explain_component.draw(state)
 
 
             elif self.magic_menu_index == 3:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 305))
+                    (630, 350))
                 self.back_magic_explain_component.draw(state)
 
 
@@ -5594,23 +5598,23 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
                 DISPLAY.blit(
                     self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                    (680, 160))
+                    (680, 205))
             else:
                 DISPLAY.blit(
                     self.font.render("Locked", True, (255, 255, 255)),
-                    (680, 160))
+                    (680, 205))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (680, 210))
+                (680, 255))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (680, 260))
+                (680, 305))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (680, 310))
+                (680, 355))
 
         elif self.game_state == "final_strike_screen":
             self.final_strike_text_component.draw(state)
