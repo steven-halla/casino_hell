@@ -4213,6 +4213,7 @@ class Deck:
         return card
 
     def shuffle(self):
+
         self.cards.clear()
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
@@ -4621,15 +4622,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.hero_speaking = False
                         self.enemy_falling_for_bluff_text_component.update(state)
                         if self.enemy_falling_for_bluff_text_component.is_finished():
-                            while self.player_score < 21:
+                            #this is how we hard code
+                            # self.player_hand = [('10', 'Diamonds', 10), ('Ace', 'Spades', 11)]
+                            # player_cards_list = [ ('Diamonds', '10'), ('Spades', 'Ace')]
+                            while self.player_score <= 20:
+
+
 
                                 self.shuffle()
                                 self.player_hand = self.player_draw_hand(2)
                                 print("Player hand is" + str(self.player_hand))
                                 self.player_score = self.compute_hand_value(self.player_hand)
-                                print(self.player_score)
+                                # print(self.player_score)
                                 if self.player_score > 20:
-                                    print("lets get out of here")
+                                    # print("lets get out of here")
+
+                                    player_cards_list[:-2] = []
+                                    print(player_cards_list)
+
+
                                     self.game_state = "welcome_screen"
 
 
@@ -5434,24 +5445,26 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.enemy_falling_for_bluff_text_component.draw(state)
 
 
-            if self.player_score > 20:
-                deck = Deck(ranks, suits)
-                player_card_x = 300
-                player_card_y = 250
-                enemy_card_x = 300
-                enemy_card_y = 25
 
 
-                for card in player_cards_list:
-                    deck.show_card(card[0], card[1], (player_card_x, player_card_y))
-                    player_card_x += 100
-                    # pygame.display.update()
 
+            deck = Deck(ranks, suits)
+            player_card_x = 300
+            player_card_y = 250
+            enemy_card_x = 300
+            enemy_card_y = 25
+
+
+            for card in player_cards_list:
+                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                player_card_x += 100
                 # pygame.display.update()
 
-                for index, card in enumerate(enemy_cards_list):
-                    deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
-                    enemy_card_x += 100
+            # pygame.display.update()
+
+            for index, card in enumerate(enemy_cards_list):
+                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+                enemy_card_x += 100
 
 
         elif self.game_state == "results_screen":
