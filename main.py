@@ -4405,7 +4405,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             "welcome_screen": ["Cheater Bob: My name's Cheater Bob. I promise it's the name my parents gave me.", "I dont' cheat, and even if I did you woulnd't catch me", "If you want all my coins then good luck",""],
             "hero_intro_text": ["Hero: sorry cheater bob I'm here for your coins. ", "I better take it easy till I get the hang of things", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
-            "bet_intro_text": ["Cheater Bob: You can bet in units of 10. Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
+            "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
 
             "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy", ""],
             "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","You might as well just give me all your coins.", ""],
@@ -4446,9 +4446,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                "However, I never bet against myself, and because of that lady luck is always on my side",
                                "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair", ""],
 
-            "bluff_magic_explain": ["Casts Bluff on the enemy. When the enemy seems desperate this will be unlocked. Enemy less likely to hit due to fear of a bust.25MP"],
-            "reveal_magic_explain": ["Based on muscle twitches of enemy plus the way they shuffle cards, you can tell what score they have.Protects you from busts. 25MP"],
-            "avatar_magic_explain": ["Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned. 25MP"],
+            "bluff_magic_explain": ["Casts Bluff on the enemy. When the enemy seems desperate this will be unlocked. Enemy less likely to hit due to fear of a bust. Magic Lock Permanent .25MP"],
+            "reveal_magic_explain": ["Based on muscle twitches of enemy plus the way they shuffle cards, you can tell what score they have.Protects you from busts. Magic lock 10 turns.25MP"],
+            "avatar_magic_explain": ["Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned.Magic lock 5 turns 25MP"],
             "back_magic_explain": ["Back to previous menu"],
 
         }
@@ -4541,6 +4541,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
+            # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+            # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
             if self.cheater_bob_money >= 1300 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
 
@@ -4571,6 +4573,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.bust_protection = False
             self.avatar_of_luck_card_redraw_counter = 3
             self.current_index = 0
+            self.enemy_score = 0
             global player_cards_list
             global enemy_cards_list
 
@@ -4641,6 +4644,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.game_state = "welcome_screen"
 
         elif self.game_state == "final_strike_screen":
+            #NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+            # if enemy hits 1000 coins, desperate lock needs to go away for future ref
             self.npc_speaking = False
             self.hero_speaking = True
             self.final_strike_text_component.update(state)
@@ -4715,8 +4720,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
-                state.player.exp += 2000
-                print("Player level is " + str(state.player.level))
                 if self.bet > 70:
                     state.player.stamina_points -= 3
                     print("-3")
@@ -5272,7 +5275,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 80))
         DISPLAY.blit(self.font.render(f"Status:{self.enemy_status}", True, (255, 255, 255)), (37, 110))
+        if self.reveal_hand < 11:
+            DISPLAY.blit(self.font.render(f"Score:{self.enemy_score}", True, (255, 255, 255)),
+                         (37, 140))
         DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (37, 30))
+
+
 
 
 
@@ -5405,9 +5413,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
-            DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (50, 520))
-            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (260, 540))
-            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (257, 500))
+            DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (50, 530))
+            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (260, 550))
+            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (257, 510))
 
 
         elif self.game_state == "menu_screen":
@@ -5435,9 +5443,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
                 enemy_card_x += 75
 
-            if self.reveal_hand < 11:
-                DISPLAY.blit(self.font.render(f"cheater bobs score:{self.enemy_score}", True, (255, 255, 255)),
-                             (200, 155))
+
 
             # self.current_speaker = "hero"
 
@@ -5522,12 +5528,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-            DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
-
-
-            DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
-
-            DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
+            # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
+            #
+            #
+            # DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
+            #
+            # DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
 
 
 
