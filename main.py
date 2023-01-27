@@ -4404,10 +4404,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.messages = {
             "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.", "I dont' cheat, and even if I did you woulnd't catch me", "If you want all my coins then good luck",""],
             "hero_intro_text": ["sorry cheater bob I'm here for your coins. ", "I better take it easy till I get the hang of things", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+
             "bet_intro_text": ["You can bet in units of 10. Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
+
             "hero_losing_text": ["This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy", ""],
             "enemy_winning_text": ["HA HA HA HA! Do you know what happens to people that lose all their coins?","I hope you like the smell of chilli, because your going to be swimming in it if you lose all your coins", ""],
             "hero_losing_confused_text": ["........Either he's good at bluffing or he's serious,or just flat out crazy","This casino keeps getting stranger....I need to put it out of my mind ,focus, and regain my composure.", "You know what Cheater Bob, This entire place is strange, I believe you! ", "....BRING IT ON!!!",""],
+
+
+
             "enemy_losing_text": ["How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
                                  "Your Cheating! There is no way I'd lose to an amateur like you", ""],
             "hero_winning_text": ["I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
@@ -4536,7 +4541,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            if self.cheater_bob_money >= 1200 and self.hero_losing_text_state == False:
+            if self.cheater_bob_money >= 1000 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
 
             elif self.cheater_bob_money <= 300 and self.despair == True:
@@ -4601,7 +4606,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.hero_speaking = True
             self.hero_losing_money_text.update(state)
 
-            self.hero_winning_text_state = True
+            self.hero_losing_text_state = True
 
             if self.hero_losing_money_text.is_finished():
                 self.npc_speaking = True
@@ -5382,6 +5387,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.hero_losing_money_text.draw(state)
             self.enemy_winning_money_text.draw(state)
             self.hero_losing_confused_money_text.draw(state)
+
+
 
         elif self.game_state == "enemy_is_desperate_state":
             self.enemy_losing_money_text.draw(state)
