@@ -4408,7 +4408,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             "bet_intro_text": ["Cheater Bob: You can bet in units of 10. Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
 
             "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy", ""],
-            "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","I hope you like the smell of chilli, because your going to be swimming in it if you lose all your coins", ""],
+            "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","You might as well just give me all your coins.", ""],
             "hero_losing_confused_text": ["Hero: ........Either he's good at bluffing or he's serious,or just flat out crazy","This casino keeps getting stranger....I need to put it out of my mind ,focus, and regain my composure.", "You know what Cheater Bob, This entire place is strange, I believe you! ", "....BRING IT ON!!!",""],
 
 
@@ -5225,9 +5225,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         DISPLAY.fill((0, 0, 51))
-        # DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
-        # DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
-        # DISPLAY.blit(self.font.render(f"Focus Points:{state.player.focus_points}", True, (255, 255, 255)), (200, 100))
+
 
         black_box = pygame.Surface((200 - 10, 180 - 10))
         black_box.fill((0, 0, 0))
@@ -5298,6 +5296,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         self.main_bordered_box.draw(state)
+        DISPLAY.blit(character_image, (650, 15))
+        DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (650, 145))
+
+
         # self.face_down_card((0,0))
 
 
@@ -5394,8 +5396,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-
-
         elif self.game_state == "bet_phase":
             self.bet_screen_text.draw(state)
 
@@ -5439,46 +5439,42 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 DISPLAY.blit(self.font.render(f"cheater bobs score:{self.enemy_score}", True, (255, 255, 255)),
                              (200, 155))
 
-            self.current_speaker = "hero"
+            # self.current_speaker = "hero"
 
-            DISPLAY.blit(hero_image, (23, 245))
-            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+            # DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
 
             # Create the black square box
-            black_box = pygame.Surface((255, 215))
+            black_box = pygame.Surface((160 - 10, 180 - 10))
             black_box.fill((0, 0, 0))
-            # Create the white border
             border_width = 5
-            white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
+            white_border = pygame.Surface((160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
             white_border.fill((255, 255, 255))
-            black_box = pygame.Surface((170, 215))
-            black_box.fill((0, 0, 0))
             white_border.blit(black_box, (border_width, border_width))
-            DISPLAY.blit(white_border, (620 - 20, 190))
+            DISPLAY.blit(white_border, (620, 235))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (680, 300))
+                (687, 260))
 
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (680, 340))
+                (687, 310))
 
             if self.avatar_of_luck == True and self.redraw_lock == False:
-                DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (680, 380))
+                DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (687, 360))
 
             elif self.avatar_of_luck == False or self.redraw_lock == True:
-                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 380))
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (687, 360))
             else:
-                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 380))
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (687, 360))
 
             if self.current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 300))
+                    (637, 255))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
 
@@ -5495,7 +5491,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.current_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 340))
+                    (637, 305))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
                     print("Time to draw a card")
@@ -5507,7 +5503,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.current_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 380))
+                    (637, 355))
                 if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                     print("Redrawing your hand")
 
@@ -5645,20 +5641,26 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "results_screen":
             deck = Deck(ranks, suits)
-            player_card_x = 300
-            player_card_y = 250
-            enemy_card_x = 300
-            enemy_card_y = 25
-            for card in player_cards_list:
+            player_card_x = 235
+            player_card_y = 195
+            enemy_card_x = 235
+            enemy_card_y = 15
+
+            for i, card in enumerate(player_cards_list):
+                if i > 3:
+                    player_card_y = 305
+                    player_card_x = 235
                 deck.show_card(card[0], card[1], (player_card_x, player_card_y))
-                player_card_x += 100
+                player_card_x += 75
+
                 # pygame.display.update()
 
             # pygame.display.update()
 
             for index, card in enumerate(enemy_cards_list):
+
                 deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
-                enemy_card_x += 100
+                enemy_card_x += 75
 
             self.current_speaker = "cheater bob"
 
