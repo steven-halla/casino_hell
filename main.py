@@ -14,6 +14,8 @@ import pygame
 from pygame import mixer
 
 #Instantiate mixer
+#this is where we get our music:
+# https://soundimage.org/chiptunes-2/
 
 from pygame.surface import Surface
 
@@ -4487,18 +4489,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
         #DO NOT DELETE THIS CODE
-        # mixer.init()
-        #
-        # # Load audio file
-        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-        #
-        # print("music started playing....")
-        #
-        # # Set preferred volume
-        # mixer.music.set_volume(0.2)
-        #
-        # # Play the music
-        # pygame.mixer.music.play(-1, 0.0, 5000)
+        mixer.init()
+
+        # Load audio file
+        mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
+
+        print("music started playing....")
+
+        # Set preferred volume
+        mixer.music.set_volume(0.2)
+
+        # Play the music
+        pygame.mixer.music.play(-1, 0.0, 5000)
 
         pygame.init()
 
@@ -5092,6 +5094,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             if controller.isTPressed:
+
+                # Load audio file
+                channel2 = pygame.mixer.Channel(1)
+                sound2 = pygame.mixer.Sound("audio/Coins1.mp3")
+                channel2.play(sound2)
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                     state.player.playerMoney += self.bet * 2
