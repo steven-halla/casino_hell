@@ -4631,6 +4631,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
                                 self.shuffle()
                                 self.player_hand = self.player_draw_hand(2)
+                                self.enemy_hand = self.enemy_draw_hand(2)
                                 print("Player hand is" + str(self.player_hand))
                                 self.player_score = self.compute_hand_value(self.player_hand)
                                 # print(self.player_score)
@@ -4638,6 +4639,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                     # print("lets get out of here")
 
                                     player_cards_list[:-2] = []
+                                    enemy_cards_list[:-2] = []
                                     print(player_cards_list)
 
 
