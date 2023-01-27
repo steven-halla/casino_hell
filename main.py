@@ -4482,6 +4482,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             elif self.cheater_bob_money == 1000 and self.hero_winning_text_state == False:
                 self.game_state = "enemy_is_desperate_state"
+
+            elif self.cheater_bob_money <= 300 and self.despair == True:
+                self.game_state = "final_strike_screen"
             # if self.cheater_bob_money == 1000 and self.hero_losing_text == False:
             #     self.bet_screen_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
             #     self.hero_losing_text = True
@@ -4564,6 +4567,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.enemy_losing_confused_money_text.update(state)
                     if self.enemy_losing_confused_money_text.is_finished():
                         self.game_state = "welcome_screen"
+
+        elif self.game_state == "final_strike_screen":
+            self.npc_speaking = False
+            self.hero_speaking = True
+            # self.enemy_losing_money_text.update(state)
+
+            self.hero_winning_text_state = True
+
+            if self.enemy_losing_money_text.is_finished():
+                self.npc_speaking = False
+                self.hero_speaking = True
+                self.hero_winning_money_text.update(state)
+                if self.hero_winning_money_text.is_finished():
+                    self.npc_speaking = True
+                    self.hero_speaking = False
+                    self.enemy_losing_confused_money_text.update(state)
+                    if self.enemy_losing_confused_money_text.is_finished():
+                        self.game_state = "welcome_screen"
+
 
 
 
@@ -5355,6 +5377,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
                 (680, 310))
+
+        elif self.game_state == "final_strike_screen":
+
 
         elif self.game_state == "results_screen":
             deck = Deck(ranks, suits)
