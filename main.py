@@ -4607,30 +4607,31 @@ class BlackJackScreen(Screen, Deck, TextBox):
         elif self.game_state == "final_strike_screen":
             self.npc_speaking = False
             self.hero_speaking = True
-            print("time to finsih him off")
             self.final_strike_text_component.update(state)
-
-
-
             if self.final_strike_text_component.is_finished():
                 self.npc_speaking = True
                 self.hero_speaking = False
                 self.enemy_bluffed_text_component.update(state)
                 if self.enemy_bluffed_text_component.is_finished():
-                    print("good so far")
                     self.npc_speaking = False
                     self.hero_speaking = True
-                    print("time to finsih him off")
                     self.hero_bluffing_text_component.update(state)
                     if self.hero_bluffing_text_component.is_finished():
-                        print("yep")
                         self.npc_speaking = True
                         self.hero_speaking = False
                         self.enemy_falling_for_bluff_text_component.update(state)
                         if self.enemy_falling_for_bluff_text_component.is_finished():
-                            self.player_hand = [('King', 'King', 10), ('Ace', 'Hearts', 11)]
-                            self.enemy_hand = [('Jack', 'Hearts', 10), ('2', 'Hearts', 2)]
-                            print(self.player_hand)
+                            while self.player_score < 21:
+
+                                self.shuffle()
+                                self.player_hand = self.player_draw_hand(2)
+                                print("Player hand is" + str(self.player_hand))
+                                self.player_score = self.compute_hand_value(self.player_hand)
+                                print(self.player_score)
+                                if self.player_score > 20:
+                                    print("lets get out of here")
+                                    self.game_state = "welcome_screen"
+
 
 
 
@@ -5432,21 +5433,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.hero_bluffing_text_component.draw(state)
             self.enemy_falling_for_bluff_text_component.draw(state)
 
-            deck = Deck(ranks, suits)
-            player_card_x = 300
-            player_card_y = 250
-            enemy_card_x = 300
-            enemy_card_y = 25
-            for card in player_cards_list:
-                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
-                player_card_x += 100
+
+            if self.player_score > 20:
+                deck = Deck(ranks, suits)
+                player_card_x = 300
+                player_card_y = 250
+                enemy_card_x = 300
+                enemy_card_y = 25
+
+
+                for card in player_cards_list:
+                    deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                    player_card_x += 100
+                    # pygame.display.update()
+
                 # pygame.display.update()
 
-            # pygame.display.update()
-
-            for index, card in enumerate(enemy_cards_list):
-                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
-                enemy_card_x += 100
+                for index, card in enumerate(enemy_cards_list):
+                    deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+                    enemy_card_x += 100
 
 
         elif self.game_state == "results_screen":
