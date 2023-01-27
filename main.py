@@ -284,7 +284,7 @@ class Player(Entity):
         self.walkSpeed = 3.5
         self.playerMoney = 5000
         self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
-        self.stamina_points = 50
+        self.stamina_points = 100
         self.focus_points = 50
         self.exp = 0
         self.level = 1
@@ -300,7 +300,12 @@ class Player(Entity):
         controller.update(state)
         if self.exp > 1000:
             self.level = 2
+
+        if self.exp >= 3000:
+            self.level = 3
             print(self.exp)
+            if self.exp > 3000:
+                self.exp = 3000
 
 
         # Define canMove before the for loop
@@ -4465,18 +4470,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
         #DO NOT DELETE THIS CODE
-        # mixer.init()
-        #
-        # # Load audio file
-        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-        #
-        # print("music started playing....")
-        #
-        # # Set preferred volume
-        # mixer.music.set_volume(0.2)
-        #
-        # # Play the music
-        # pygame.mixer.music.play(-1, 0.0, 5000)
+        mixer.init()
+
+        # Load audio file
+        mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
+
+        print("music started playing....")
+
+        # Set preferred volume
+        mixer.music.set_volume(0.2)
+
+        # Play the music
+        pygame.mixer.music.play(-1, 0.0, 5000)
 
         pygame.init()
 
@@ -4512,7 +4517,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         controller = state.controller
         controller.update(state)
-        state.player.update(state)
+        # state.player.update(state)
 
         #
         # print("p: " + self.hand_to_str(self.player_hand))
@@ -4706,9 +4711,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     state.player.stamina_points -= 2
                     print("-2")
 
-
-
-
                 pygame.time.wait(300)
                 self.game_state = "draw_phase"
                 controller.isTPressed = False
@@ -4722,10 +4724,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.player_black_jack_win = False
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
-
-
-
-
             self.player_hand = self.player_draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.compute_hand_value(self.player_hand)
