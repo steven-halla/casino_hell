@@ -4347,7 +4347,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 1000
+        self.cheater_bob_money = 300
         self.player_score = 0
         self.enemy_score = 0
         self.player_hand = []
@@ -4371,7 +4371,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.hero_speaking = False
         self.music_loop = True
 
-        self.despair = False
+        # self.despair = False
+        self.despair = True
 
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
@@ -4406,6 +4407,29 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                           "If you take all my coins, and if the boss doesn't give me replacement coins..........",
                                           "NO!!! I won't end up like the others....I won't have you make a fool out of me.....",""],
 
+
+            "final_strike_text": ["You don't have a lot of coins left.I'll bet you the rest that my next hand will be a black jack.",
+                               "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?","",
+                              ],
+            "enemy_bluffed_text": ["Do you Realize the odds of that happening? Why would you take such a bet for?",
+                               "It doesn't make any sense",
+                              ""],
+
+
+
+            "hero_bluffing_text": ["Well it's simple really, based on the card positions, and the way you shuffled ",
+                               "I can pretty easily tell where each card landed in the deck",
+                               "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception", ""],
+            "enemy_falling_for_bluff_text": ["That's bull crap, there's no way you have that much perception  ",
+                               "I'll take your bet, and then I'll tell everyone how much of a fool you are",
+                               "I'll teach you to underestimate me", ""],
+
+            "enemy_crying_text": ["Impossible...how did you????",
+                             ""],
+            "hero_reveal_text": ["To be honest, it was all a bluff, you were right all along.",
+                               "However, I never bet against myself, and because of that lady luck is always on my side",
+                               "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair", ""],
+
         }
 
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 400, 50, 45), 30, 500)
@@ -4420,6 +4444,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         self.hero_losing_confused_money_text = TextBox(self.messages["hero_losing_confused_text"], (50, 400, 50, 45), 30, 500)
         self.enemy_losing_confused_money_text = TextBox(self.messages["enemy_losing_confused_text"], (50, 400, 50, 45), 30, 500)
+
+        self.final_strike_text_component = TextBox(self.messages["final_strike_text"], (50, 400, 50, 45), 30, 500)
+        self.enemy_bluffed_text_component = TextBox(self.messages["enemy_bluffed_text"], (50, 400, 50, 45), 30, 500)
+
+        self.hero_bluffing_text_component = TextBox(self.messages["hero_bluffing_text"], (50, 400, 50, 45), 30, 500)
+        self.enemy_falling_for_bluff_text_component = TextBox(self.messages["enemy_falling_for_bluff_text"], (50, 400, 50, 45), 30, 500)
+
+
+
+
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
@@ -4477,14 +4511,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
+            if self.cheater_bob_money >= 1200 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
-
-            elif self.cheater_bob_money == 1000 and self.hero_winning_text_state == False:
-                self.game_state = "enemy_is_desperate_state"
 
             elif self.cheater_bob_money <= 300 and self.despair == True:
                 self.game_state = "final_strike_screen"
+
+            elif self.cheater_bob_money <= 500 and self.hero_winning_text_state == False:
+                self.game_state = "enemy_is_desperate_state"
+
+
             # if self.cheater_bob_money == 1000 and self.hero_losing_text == False:
             #     self.bet_screen_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
             #     self.hero_losing_text = True
@@ -4571,20 +4607,32 @@ class BlackJackScreen(Screen, Deck, TextBox):
         elif self.game_state == "final_strike_screen":
             self.npc_speaking = False
             self.hero_speaking = True
-            # self.enemy_losing_money_text.update(state)
+            print("time to finsih him off")
+            self.final_strike_text_component.update(state)
 
-            self.hero_winning_text_state = True
 
-            if self.enemy_losing_money_text.is_finished():
-                self.npc_speaking = False
-                self.hero_speaking = True
-                self.hero_winning_money_text.update(state)
-                if self.hero_winning_money_text.is_finished():
-                    self.npc_speaking = True
-                    self.hero_speaking = False
-                    self.enemy_losing_confused_money_text.update(state)
-                    if self.enemy_losing_confused_money_text.is_finished():
-                        self.game_state = "welcome_screen"
+
+            if self.final_strike_text_component.is_finished():
+                self.npc_speaking = True
+                self.hero_speaking = False
+                self.enemy_bluffed_text_component.update(state)
+                if self.enemy_bluffed_text_component.is_finished():
+                    print("good so far")
+                    self.npc_speaking = False
+                    self.hero_speaking = True
+                    print("time to finsih him off")
+                    self.hero_bluffing_text_component.update(state)
+                    if self.hero_bluffing_text_component.is_finished():
+                        print("yep")
+                        self.npc_speaking = True
+                        self.hero_speaking = False
+                        self.enemy_falling_for_bluff_text_component.update(state)
+                        if self.enemy_falling_for_bluff_text_component.is_finished():
+                            self.player_hand = [('King', 'King', 10), ('Ace', 'Hearts', 11)]
+                            self.enemy_hand = [('Jack', 'Hearts', 10), ('2', 'Hearts', 2)]
+                            print(self.player_hand)
+
+
 
 
 
@@ -5379,6 +5427,26 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 (680, 310))
 
         elif self.game_state == "final_strike_screen":
+            self.final_strike_text_component.draw(state)
+            self.enemy_bluffed_text_component.draw(state)
+            self.hero_bluffing_text_component.draw(state)
+            self.enemy_falling_for_bluff_text_component.draw(state)
+
+            deck = Deck(ranks, suits)
+            player_card_x = 300
+            player_card_y = 250
+            enemy_card_x = 300
+            enemy_card_y = 25
+            for card in player_cards_list:
+                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                player_card_x += 100
+                # pygame.display.update()
+
+            # pygame.display.update()
+
+            for index, card in enumerate(enemy_cards_list):
+                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+                enemy_card_x += 100
 
 
         elif self.game_state == "results_screen":
