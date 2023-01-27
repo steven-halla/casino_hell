@@ -5228,13 +5228,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         if self.game_state == "welcome_screen":
             #
-            black_box = pygame.Surface((160 - 10, 215 - 10))
+            black_box = pygame.Surface((160 - 10, 180 - 10))
             black_box.fill((0, 0, 0))
             border_width = 5
-            white_border = pygame.Surface((160 - 10 + 2 * border_width, 215 - 10 + 2 * border_width))
+            white_border = pygame.Surface((160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
             white_border.fill((255, 255, 255))
             white_border.blit(black_box, (border_width, border_width))
-            DISPLAY.blit(white_border, (620 - 2, 145))
+            DISPLAY.blit(white_border, (620 , 185))
 
             # black_box = pygame.Surface((160 - 10 + 20, 215 - 10))
             # black_box.fill((0, 0, 0))
@@ -5246,25 +5246,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
-                (687, 160))
+                (687, 210))
 
             if self.magic_lock == False:
 
                 DISPLAY.blit(
                     self.font.render(f"{self.welcome_screen_choices[1]}", True, (255, 255, 255)),
-                    (687, 210))
+                    (687, 260))
             elif self.magic_lock == True:
-                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 210))
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 265))
 
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[2]}", True, (255, 255, 255)),
-                (687, 260))
+                (687, 310))
 
             if self.welcome_screen_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 155))
+                    (637, 205))
                 if state.controller.isTPressed:
                     self.shuffle()
 
@@ -5277,7 +5277,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.welcome_screen_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 205))
+                    (637, 255))
                 if state.controller.isTPressed and self.magic_lock == False:
                     pygame.time.wait(300)
                     self.game_state = "magic_menu"
@@ -5288,7 +5288,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.welcome_screen_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 255))
+                    (637, 305))
                 if state.controller.isTPressed:
                     print("Quit")
                     state.controller.isTPressed = False
