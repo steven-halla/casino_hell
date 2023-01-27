@@ -4592,6 +4592,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 if self.welcome_screen_text_box_hero.is_finished():
 
                     if controller.isUpPressed:
+                        channel3 = pygame.mixer.Channel(3)
+                        sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                        channel3.play(sound3)
                         if not hasattr(self, "welcome_screen_index"):
                             self.welcome_screen_index = len(self.welcome_screen_choices) - 1
                         else:
@@ -4600,6 +4603,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         controller.isUpPressed = False
 
                     elif controller.isDownPressed:
+                        channel3 = pygame.mixer.Channel(3)
+                        sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                        channel3.play(sound3)
                         if not hasattr(self, "welcome_screen_index"):
                             self.welcome_screen_index = len(self.welcome_screen_choices) + 1
                         else:
@@ -4938,6 +4944,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
+                channel3 = pygame.mixer.Channel(3)
+                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                channel3.play(sound3)
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
                 else:
@@ -4947,6 +4956,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
+                channel3 = pygame.mixer.Channel(3)
+                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                channel3.play(sound3)
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) + 1
                 else:
@@ -4963,6 +4975,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
+                channel3 = pygame.mixer.Channel(3)
+                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                channel3.play(sound3)
                 if not hasattr(self, "magic_menu_index"):
                     self.magic_menu_index = len(self.magic_menu_selector) - 1
                 else:
@@ -4971,6 +4986,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
+                channel3 = pygame.mixer.Channel(3)
+                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                channel3.play(sound3)
                 if not hasattr(self, "magic_menu_index"):
                     self.magic_menu_index = len(self.magic_menu_selector) + 1
                 else:
