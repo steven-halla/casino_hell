@@ -4441,6 +4441,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                "However, I never bet against myself, and because of that lady luck is always on my side",
                                "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair", ""],
 
+            "bluff_magic_explain": ["Casts Bluff on the enemy. When the enemy seems desperate this will be unlocked. Enemy less likely to hit due to fear of a bust.25MP"],
+            "reveal_magic_explain": ["Based on muscle twitches of enemy plus the way they shuffle cards, you can tell what score they have.Protects you from busts. 25MP"],
+            "avatar_magic_explain": ["Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned. 25MP"],
+            "back_magic_explain": ["Back to previous menu"],
+
         }
 
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"], (50, 450, 50, 45), 30, 500)
@@ -4464,6 +4469,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         self.enemy_crying_text_component = TextBox(self.messages["enemy_crying_text"], (50, 450, 50, 45), 30, 500)
         self.hero_reveal_text_component = TextBox(self.messages["hero_reveal_text"], (50, 450, 50, 45), 30, 500)
+
+        self.bluff_magic_explain_component = TextBox(self.messages["bluff_magic_explain"], (50, 450, 50, 45), 30, 500)
+        self.reveal_magic_explain_component = TextBox(self.messages["reveal_magic_explain"], (50, 450, 50, 45), 30, 500)
+        self.avatar_magic_explain_component = TextBox(self.messages["avatar_magic_explain"], (50, 450, 50, 45), 30, 500)
+        self.back_magic_explain_component = TextBox(self.messages["back_magic_explain"], (50, 450, 50, 45), 30, 500)
 
 
 
@@ -4962,6 +4972,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # we need to make this work right after a black jack
             # set a counter to minus 1 this is the counter is above 0
             if self.magic_menu_index == 0:
+                self.bluff_magic_explain_component.update(state)
+
                 if controller.isKPressed and self.cheater_bob_money <= 900 and state.player.focus_points > 24:
                     state.player.focus_points -= 25
                     self.despair = True
@@ -4976,6 +4988,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             elif self.magic_menu_index == 1:
+                self.reveal_magic_explain_component.update(state)
+
                 if controller.isKPressed:
                     print("You cast reveal")
                     if controller.isKPressed:
@@ -5002,6 +5016,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             ##### boss enemies will use magic under more strict conditions
             elif self.magic_menu_index == 2:
+                self.avatar_magic_explain_component.update(state)
+
                 if controller.isKPressed:
                     print("you cast avatar of luck")
                     self.third_message_display = "Your luck is now increased for 3 losses"
@@ -5013,6 +5029,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
             elif self.magic_menu_index == 3:
+                self.back_magic_explain_component.update(state)
+
                 if controller.isKPressed:
                     print("going back")
                     self.game_state = "welcome_screen"
@@ -5223,10 +5241,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-        DISPLAY.blit(self.font.render(f"Money:{state.player.playerMoney}", True, (255, 255, 255)), (37, 255))
-        DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 295))
-        DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 335))
-        DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 375))
+        DISPLAY.blit(self.font.render(f"Money:{state.player.playerMoney}", True, (255, 255, 255)), (37, 240))
+        DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 275))
+        DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 315))
+        DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 355))
+        DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 385))
         DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
 
 
@@ -5304,6 +5323,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
                 (687, 260))
+
+
+
+
 
             if self.magic_lock == False:
 
@@ -5513,6 +5536,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "magic_menu" :
+
             black_box = pygame.Surface((255, 215))
             black_box.fill((0, 0, 0))
             # Create the white border
@@ -5527,6 +5551,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (640, 155))
+                # DISPLAY.blit(
+                #     self.font.render("Bluff status. When enemy ", True, (255, 255, 255)),
+                #     (40, 445))
+                self.bluff_magic_explain_component.draw(state)
+
+
+
+
 
 
 
@@ -5534,6 +5566,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (640, 205))
+                self.reveal_magic_explain_component.draw(state)
+
 
 
 
@@ -5542,11 +5576,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (640, 255))
+                self.avatar_magic_explain_component.draw(state)
+
 
             elif self.magic_menu_index == 3:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (630, 305))
+                self.back_magic_explain_component.draw(state)
+
 
             if self.cheater_bob_money <= 900:
 
