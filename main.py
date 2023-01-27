@@ -4652,6 +4652,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                 self.npc_speaking = False
                                 self.hero_speaking = True
                                 self.hero_reveal_text_component.update(state)
+                                state.player.playerMoney += self.cheater_bob_money
+                                self.cheater_bob_money = 0
+                                if self.hero_reveal_text_component.is_finished():
+                                    pygame.quit()
 
 
 
@@ -5482,6 +5486,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             self.enemy_crying_text_component.draw(state)
             self.hero_reveal_text_component.draw(state)
+            pygame.display.update()
 
 
         elif self.game_state == "results_screen":
