@@ -4402,47 +4402,47 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["My name's Cheater Bob. I promise it's the name my parents gave me.", "I dont' cheat, and even if I did you woulnd't catch me", "If you want all my coins then good luck",""],
-            "hero_intro_text": ["sorry cheater bob I'm here for your coins. ", "I better take it easy till I get the hang of things", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+            "welcome_screen": ["Cheater Bob: My name's Cheater Bob. I promise it's the name my parents gave me.", "I dont' cheat, and even if I did you woulnd't catch me", "If you want all my coins then good luck",""],
+            "hero_intro_text": ["Hero: sorry cheater bob I'm here for your coins. ", "I better take it easy till I get the hang of things", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
-            "bet_intro_text": ["You can bet in units of 10. Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
+            "bet_intro_text": ["Cheater Bob: You can bet in units of 10. Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
 
-            "hero_losing_text": ["This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy", ""],
-            "enemy_winning_text": ["HA HA HA HA! Do you know what happens to people that lose all their coins?","I hope you like the smell of chilli, because your going to be swimming in it if you lose all your coins", ""],
-            "hero_losing_confused_text": ["........Either he's good at bluffing or he's serious,or just flat out crazy","This casino keeps getting stranger....I need to put it out of my mind ,focus, and regain my composure.", "You know what Cheater Bob, This entire place is strange, I believe you! ", "....BRING IT ON!!!",""],
+            "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy", ""],
+            "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","I hope you like the smell of chilli, because your going to be swimming in it if you lose all your coins", ""],
+            "hero_losing_confused_text": ["Hero: ........Either he's good at bluffing or he's serious,or just flat out crazy","This casino keeps getting stranger....I need to put it out of my mind ,focus, and regain my composure.", "You know what Cheater Bob, This entire place is strange, I believe you! ", "....BRING IT ON!!!",""],
 
 
 
-            "enemy_losing_text": ["How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
+            "enemy_losing_text": ["Cheater Bob: How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
                                  "Your Cheating! There is no way I'd lose to an amateur like you", ""],
-            "hero_winning_text": ["I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
+            "hero_winning_text": ["Hero: I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
                                    "Care to tell me why your so worried? Is it that stupid chilli swimming lie I keep hearing about? I mean come on, the joke's already getting old with me",
                                    ""],
-            "enemy_losing_confused_text": ["It's not a lie you fool!",
+            "enemy_losing_confused_text": ["Cheater Bob: It's not a lie you fool!",
                                           ".......",
                                           "If you take all my coins, and if the boss doesn't give me replacement coins..........",
                                           "NO!!! I won't end up like the others....I won't have you make a fool out of me.....",""],
 
 
-            "final_strike_text": ["You don't have a lot of coins left.I'll bet you the rest that my next hand will be a black jack.",
+            "final_strike_text": ["Hero: You don't have a lot of coins left.I'll bet you the rest that my next hand will be a black jack.",
                                "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?","",
                               ],
-            "enemy_bluffed_text": ["Do you Realize the odds of that happening? Why would you take such a bet for?",
+            "enemy_bluffed_text": ["Cheater Bob: Do you Realize the odds of that happening? Why would you take such a bet for?",
                                "It doesn't make any sense",
                               ""],
 
 
 
-            "hero_bluffing_text": ["Well it's simple really, based on the card positions, and the way you shuffled ",
+            "hero_bluffing_text": ["Hero: Well it's simple really, based on the card positions, and the way you shuffled ",
                                "I can pretty easily tell where each card landed in the deck",
                                "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception", ""],
-            "enemy_falling_for_bluff_text": ["That's bull crap, there's no way you have that much perception  ",
+            "enemy_falling_for_bluff_text": ["Cheater Bob: That's bull crap, there's no way you have that much perception  ",
                                "I'll take your bet, and then I'll tell everyone how much of a fool you are",
                                "I'll teach you to underestimate me", ""],
 
-            "enemy_crying_text": ["Impossible...how did you????",
+            "enemy_crying_text": ["Cheater Bob: Impossible...how did you????",
                              ""],
-            "hero_reveal_text": ["To be honest, it was all a bluff, you were right all along.",
+            "hero_reveal_text": ["Hero: To be honest, it was all a bluff, you were right all along.",
                                "However, I never bet against myself, and because of that lady luck is always on my side",
                                "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair", ""],
 
@@ -4541,7 +4541,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            if self.cheater_bob_money >= 1000 and self.hero_losing_text_state == False:
+            if self.cheater_bob_money >= 1300 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
 
             elif self.cheater_bob_money <= 300 and self.despair == True:
@@ -5317,13 +5317,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             white_border.blit(black_box, (border_width, border_width))
             DISPLAY.blit(white_border, (620 , 235))
 
-            # black_box = pygame.Surface((160 - 10 + 20, 215 - 10))
-            # black_box.fill((0, 0, 0))
-            # border_width = 5
-            # white_border = pygame.Surface((160 - 10 + 2 * border_width + 20, 215 - 10 + 2 * border_width))
-            # white_border.fill((255, 255, 255))
-            # white_border.blit(black_box, (border_width, border_width))
-            # DISPLAY.blit(white_border, (600 - 2, 145))
+
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
@@ -5461,29 +5455,29 @@ class BlackJackScreen(Screen, Deck, TextBox):
             black_box = pygame.Surface((170, 215))
             black_box.fill((0, 0, 0))
             white_border.blit(black_box, (border_width, border_width))
-            DISPLAY.blit(white_border, (620 - 20, 145))
+            DISPLAY.blit(white_border, (620 - 20, 190))
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (680, 160))
+                (680, 300))
 
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (680, 210))
+                (680, 340))
 
             if self.avatar_of_luck == True and self.redraw_lock == False:
-                DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (680, 260))
+                DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)), (680, 380))
 
             elif self.avatar_of_luck == False or self.redraw_lock == True:
-                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 260))
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 380))
             else:
-                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 260))
+                DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 380))
 
             if self.current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 155))
+                    (630, 300))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
 
@@ -5500,7 +5494,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.current_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 205))
+                    (630, 340))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
                     print("Time to draw a card")
@@ -5512,7 +5506,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.current_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 255))
+                    (630, 380))
                 if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                     print("Redrawing your hand")
 
