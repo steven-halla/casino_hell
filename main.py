@@ -4385,6 +4385,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
+        self.player_status = ""
+        self.enemy_status = ""
 
 
 
@@ -4964,6 +4966,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     state.player.focus_points -= 25
                     self.despair = True
                     self.magic_lock = True
+                    self.player_status = "Bluffalo"
+                    self.enemy_status = "Despair"
                     self.game_state = "welcome_screen"
 
 
@@ -5197,26 +5201,79 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         DISPLAY.fill((0, 0, 51))
-        DISPLAY.blit(self.font.render(f"player Mney:{state.player.playerMoney}", True, (255, 255, 255)), (200, 350))
-        DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
-        DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
-        DISPLAY.blit(self.font.render(f"Stamina Points:{state.player.stamina_points}", True, (255, 255, 255)), (200, 250))
-        DISPLAY.blit(self.font.render(f"Focus Points:{state.player.focus_points}", True, (255, 255, 255)), (200, 100))
+        # DISPLAY.blit(self.font.render(f"bobs Mney:{self.cheater_bob_money}", True, (255, 255, 255)), (200, 300))
+        # DISPLAY.blit(self.font.render(f"players scare:{self.player_score}", True, (255, 255, 255)), (200, 200))
+        # DISPLAY.blit(self.font.render(f"Focus Points:{state.player.focus_points}", True, (255, 255, 255)), (200, 100))
 
-        if self.npc_speaking == True:
-            DISPLAY.blit(character_image, (23, 245))
+        black_box = pygame.Surface((200 - 10, 180 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        DISPLAY.blit(white_border, (25, 235))
 
-            self.current_speaker = "cheater bob"
-        elif self.hero_speaking == True:
-            DISPLAY.blit(hero_image, (23, 245))
+        black_box = pygame.Surface((200 - 10, 45 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        DISPLAY.blit(white_border, (25, 195))
 
-            self.current_speaker = "hero"
-            DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+
+
+        DISPLAY.blit(self.font.render(f"Money:{state.player.playerMoney}", True, (255, 255, 255)), (37, 255))
+        DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 295))
+        DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 335))
+        DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 375))
+        DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
+
+
+        black_box = pygame.Surface((200 - 10, 110 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        DISPLAY.blit(white_border, (25, 20))
+
+        black_box = pygame.Surface((200 - 10, 110 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        DISPLAY.blit(white_border, (25, 60))
+
+
+        DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 80))
+        DISPLAY.blit(self.font.render(f"Status:{self.enemy_status}", True, (255, 255, 255)), (37, 110))
+        DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (37, 30))
+
+
+
+
+
+        #
+        # DISPLAY.blit(
+        #     self.font.render(f"Hero Money:{state.player.playerMoney}", True, (255, 255, 255)),
+        #     (55, 260))
+
+        # if self.npc_speaking == True:
+        #     DISPLAY.blit(character_image, (23, 245))
+        #
+        #     self.current_speaker = "cheater bob"
+        # elif self.hero_speaking == True:
+        #     DISPLAY.blit(hero_image, (23, 245))
+        #
+        #     self.current_speaker = "hero"
+        #     DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
 
         self.main_bordered_box.draw(state)
-        self.face_down_card((0,0))
+        # self.face_down_card((0,0))
 
 
 
@@ -5323,20 +5380,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
 
-            DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (40, 500))
-            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (250, 520))
-            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (247, 480))
+            DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (50, 520))
+            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (260, 540))
+            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (257, 500))
 
 
         elif self.game_state == "menu_screen":
             deck = Deck(ranks, suits)
-            player_card_x = 300
-            player_card_y = 250
-            enemy_card_x = 300
-            enemy_card_y = 25
-            for card in player_cards_list:
+            player_card_x = 235
+            player_card_y = 195
+            enemy_card_x = 235
+            enemy_card_y = 15
+
+            for i, card in enumerate(player_cards_list):
+                if i > 3:
+                    player_card_y = 305
+                    player_card_x = 235
                 deck.show_card(card[0], card[1], (player_card_x, player_card_y))
-                player_card_x += 100
+                player_card_x += 75
+
                 # pygame.display.update()
 
             # pygame.display.update()
@@ -5346,7 +5408,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     deck.face_down_card((enemy_card_x, enemy_card_y))
                 else:
                     deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
-                enemy_card_x += 100
+                enemy_card_x += 75
 
             if self.reveal_hand < 11:
                 DISPLAY.blit(self.font.render(f"cheater bobs score:{self.enemy_score}", True, (255, 255, 255)),
