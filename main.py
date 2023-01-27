@@ -4470,18 +4470,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.main_bordered_box = BorderedBox((25, 375, 745, 200))
 
         #DO NOT DELETE THIS CODE
-        mixer.init()
-
-        # Load audio file
-        mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-
-        print("music started playing....")
-
-        # Set preferred volume
-        mixer.music.set_volume(0.2)
-
-        # Play the music
-        pygame.mixer.music.play(-1, 0.0, 5000)
+        # mixer.init()
+        #
+        # # Load audio file
+        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
+        #
+        # print("music started playing....")
+        #
+        # # Set preferred volume
+        # mixer.music.set_volume(0.2)
+        #
+        # # Play the music
+        # pygame.mixer.music.play(-1, 0.0, 5000)
 
         pygame.init()
 
@@ -5227,43 +5227,44 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         if self.game_state == "welcome_screen":
-
-
-
-            black_box = pygame.Surface((255, 215))
+            #
+            black_box = pygame.Surface((160 - 10, 215 - 10))
             black_box.fill((0, 0, 0))
-            # Create the white border
             border_width = 5
-            white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
+            white_border = pygame.Surface((160 - 10 + 2 * border_width, 215 - 10 + 2 * border_width))
             white_border.fill((255, 255, 255))
-            black_box = pygame.Surface((170, 215))
-            black_box.fill((0, 0, 0))
             white_border.blit(black_box, (border_width, border_width))
-            DISPLAY.blit(white_border, (620 - 20, 145))
+            DISPLAY.blit(white_border, (620 - 2, 145))
 
-
+            # black_box = pygame.Surface((160 - 10 + 20, 215 - 10))
+            # black_box.fill((0, 0, 0))
+            # border_width = 5
+            # white_border = pygame.Surface((160 - 10 + 2 * border_width + 20, 215 - 10 + 2 * border_width))
+            # white_border.fill((255, 255, 255))
+            # white_border.blit(black_box, (border_width, border_width))
+            # DISPLAY.blit(white_border, (600 - 2, 145))
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
-                (680, 160))
+                (687, 160))
 
             if self.magic_lock == False:
 
                 DISPLAY.blit(
                     self.font.render(f"{self.welcome_screen_choices[1]}", True, (255, 255, 255)),
-                    (680, 210))
+                    (687, 210))
             elif self.magic_lock == True:
                 DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 210))
 
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[2]}", True, (255, 255, 255)),
-                (680, 260))
+                (687, 260))
 
             if self.welcome_screen_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 155))
+                    (637, 155))
                 if state.controller.isTPressed:
                     self.shuffle()
 
@@ -5276,7 +5277,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.welcome_screen_index == 1:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 205))
+                    (637, 205))
                 if state.controller.isTPressed and self.magic_lock == False:
                     pygame.time.wait(300)
                     self.game_state = "magic_menu"
@@ -5287,7 +5288,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.welcome_screen_index == 2:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 255))
+                    (637, 255))
                 if state.controller.isTPressed:
                     print("Quit")
                     state.controller.isTPressed = False
