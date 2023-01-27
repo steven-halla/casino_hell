@@ -4570,6 +4570,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.ace_up_sleeve_jack_cheat_mode = False
             self.bust_protection = False
             self.avatar_of_luck_card_redraw_counter = 3
+            self.current_index = 0
             global player_cards_list
             global enemy_cards_list
 
