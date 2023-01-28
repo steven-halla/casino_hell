@@ -9,12 +9,11 @@ import pytmx
 # from pytmx.util_pygame import load_pygame
 
 
-
 import pygame
 from pygame import mixer
 
-#Instantiate mixer
-#this is where we get our music:
+# Instantiate mixer
+# this is where we get our music:
 # https://soundimage.org/chiptunes-2/
 
 from pygame.surface import Surface
@@ -22,8 +21,6 @@ from pygame.surface import Surface
 clock = pygame.time.Clock()
 FPS = 60
 # might need to put this back in later to Deck class
-player_cards_list = []
-enemy_cards_list = []
 pygame.init()
 SCREEN_WIDTH: int = 800
 SCREEN_HEIGHT: int = 600
@@ -31,7 +28,7 @@ WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 pygame.display.set_caption("Casino Man")
 GREEN: Tuple[int, int, int] = (0, 255, 0)
-BLACK: Tuple[int, int, int] = (0,0,0)
+BLACK: Tuple[int, int, int] = (0, 0, 0)
 
 WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
@@ -48,9 +45,7 @@ speech_bubble = font.render('We"re adding here', True, GREEN, BLUE)
 textRect = text_surface.get_rect()
 speechRect = speech_bubble.get_rect()
 
-
 wrap_width = 200
-
 
 
 # pygame.time.get_ticks()
@@ -92,7 +87,7 @@ class Rectangle:
         # print("hi")
 
         return self.x < r.x + r.width and self.x + self.width > r.x \
-               and self.y < r.y + r.height and self.y + self.height > r.y
+            and self.y < r.y + r.height and self.y + self.height > r.y
 
 
 class Entity:
@@ -247,12 +242,14 @@ class Controller:
                 elif event.key == pygame.K_b:
                     self.isBPressed = False
 
+
 class Dice:
     def __init__(self, sides: int):
         self.sides = sides
         self.rolls = []
         self.one_hundred_rolls = [0]
-    #rename roll method to roll 2d6 method
+
+    # rename roll method to roll 2d6 method
     def roll_two_d_six(self) -> List[int]:
         self.sides = 6
         roll1 = random.randint(1, self.sides)
@@ -264,7 +261,6 @@ class Dice:
         print(self.rolls)
         return self.rolls
 
-
     def roll_one_d_hundred(self) -> List[int]:
         self.sides = 76
 
@@ -272,11 +268,9 @@ class Dice:
         self.one_hundred_rolls = [roll1 + 24]
         return self.one_hundred_rolls
 
-
     def add(self):
         # print(str(self.rolls))
         return self.rolls[0] + self.rolls[1]
-
 
 
 class Player(Entity):
@@ -296,7 +290,6 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
 
-
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update(state)
@@ -308,7 +301,6 @@ class Player(Entity):
             print(self.exp)
             if self.exp > 3000:
                 self.exp = 3000
-
 
         # Define canMove before the for loop
         canMove = True
@@ -359,9 +351,6 @@ class Player(Entity):
         for npc in state.npcs:
             if self.collision.isOverlap(npc.collision):
                 self.undoLastMove()
-
-
-
 
         if controller.isQPressed:
             state.currentScreen = state.coinFlipScreen
@@ -434,7 +423,9 @@ class CoinFlipExplanationGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.", "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!", "Since you stuck around this long I'll give you a tip:", "Coin flip fred is using a weighted coin,"," not sure which side he favors", "If you give me a sandwhich It might jar my memory"]
+        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.",
+                         "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!", "Since you stuck around this long I'll give you a tip:", "Coin flip fred is using a weighted coin,",
+                         " not sure which side he favors", "If you give me a sandwhich It might jar my memory"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -462,20 +453,18 @@ class CoinFlipExplanationGuy(Npc):
 
         # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10,10))
-
+            message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
 class CoinFlipFred(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["You need at least 50 Hell coins to play","Did you hear I use a weighted coin? It's a lie. ", "Press the T key in order to start a battle with me."]
+        self.messages = ["You need at least 50 Hell coins to play", "Did you hear I use a weighted coin? It's a lie. ", "Press the T key in order to start a battle with me."]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
         self.input_time = 0  # time when input was last read
-
 
     def update(self, state):
         super().update(state)
@@ -507,14 +496,15 @@ class CoinFlipFred(Npc):
 
         # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10,10))
+            message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
 class SalleyOpossum(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Are you sure you want to play opossum in a can?.","My opossums have Rabies that'll wear down your stamina","Press T to start the game", "Unlike Coinflip Freddy , I work for the boss", "so If I go below 0, he will cover the winnings"]
+        self.messages = ["Are you sure you want to play opossum in a can?.", "My opossums have Rabies that'll wear down your stamina", "Press T to start the game", "Unlike Coinflip Freddy , I work for the boss",
+                         "so If I go below 0, he will cover the winnings"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -552,17 +542,18 @@ class SalleyOpossum(Npc):
 
         # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10,10))
-
+            message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
 class OposumInACanExplainGirl(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "which some refer to it as 'devil roulette'." , "There are 5 win cans and  3 opossum cans.", "You'll need to put down 300 ante for your insurance ",
-                         "If you get an X3 star you triple your next bet", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red" , "you lose everything",
-                         "The blue opossums, which also have rabies", " eat your insurance. Get two blues and its gameover","you can leave the match anytime and", " keep your current winnings, or go big for the jackpot.","We load the opossum cans in the can shaker.", "That way they are nice and angry when you are unlucky.","are there any Opossums down here without rabies?", " I don't think so?"]
+        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "which some refer to it as 'devil roulette'.", "There are 5 win cans and  3 opossum cans.",
+                         "You'll need to put down 300 ante for your insurance ",
+                         "If you get an X3 star you triple your next bet", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red", "you lose everything",
+                         "The blue opossums, which also have rabies", " eat your insurance. Get two blues and its gameover", "you can leave the match anytime and", " keep your current winnings, or go big for the jackpot.",
+                         "We load the opossum cans in the can shaker.", "That way they are nice and angry when you are unlucky.", "are there any Opossums down here without rabies?", " I don't think so?"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -590,13 +581,15 @@ class OposumInACanExplainGirl(Npc):
 
         # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10,10))
+            message = pygame.display.get_surface().blit(self.message, (10, 10))
+
 
 class ChiliWilley(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["It's a 1000 coin bet I hope your ready to lose.","I wont take it easy on you.","You'll end up just like the others.", "I'm the boss of this level you better run away", "I'm the boss for a reason, you better get ready for a fight!"]
+        self.messages = ["It's a 1000 coin bet I hope your ready to lose.", "I wont take it easy on you.", "You'll end up just like the others.", "I'm the boss of this level you better run away",
+                         "I'm the boss for a reason, you better get ready for a fight!"]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_delay = 500  # input delay in milliseconds
@@ -633,15 +626,15 @@ class ChiliWilley(Npc):
 
         # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10,10))
-
+            message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
 class NuclearAnnilationGeneralExplainGuy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
-        self.messages = ["I'm the general, so show me some respect. ", "I'm here to tell you all about my favorite game: Nuke em.", "Wait what, you want me to actually explain the rules?" , "I'm the general I'm too busy for that, read the Docs.", "In the future we'll have a tear sheet for you to look at.",
+        self.messages = ["I'm the general, so show me some respect. ", "I'm here to tell you all about my favorite game: Nuke em.", "Wait what, you want me to actually explain the rules?",
+                         "I'm the general I'm too busy for that, read the Docs.", "In the future we'll have a tear sheet for you to look at.",
                          "The game is currently in medical.", "Once it's all patched up it'll be released."]
         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
@@ -670,9 +663,7 @@ class NuclearAnnilationGeneralExplainGuy(Npc):
 
         # Display the current message if self.isSpeaking is True
         if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10,10))
-
-
+            message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
 class Obstacle(Entity):
@@ -687,28 +678,22 @@ class Obstacle(Entity):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
 
 
-
-
-
-
-
 class Screen:
     def __init__(self, screenName: str):
         self.screenName = screenName
         self.startedAt = pygame.time.get_ticks()
-
 
     def start(self, state: "GameState"):
         self.startedAt = pygame.time.get_ticks()
 
         pygame.display.set_caption(self.screenName)
 
-
     def update(self, state: "GameState"):
         pass
 
     def draw(self, state: "GameState"):
         pass
+
 
 class MainScreen(Screen):
     def __init__(self):
@@ -782,6 +767,7 @@ class MainScreen(Screen):
         # Update the display
         pygame.display.update()
 
+
 class CoinFlipTedScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
@@ -811,7 +797,7 @@ class CoinFlipTedScreen(Screen):
         self.high_exp = False
         self.low_exp = False
 
-        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row","Hehehe, your on sucker"]
+        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
         self.luck_activated = 0
         self.sandy_focus_points = 30
         self.reveal_hand = False
@@ -830,10 +816,6 @@ class CoinFlipTedScreen(Screen):
                 state.player.exp += 15
         else:
             print("your level is too high no exp for you")
-
-
-
-
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -855,7 +837,6 @@ class CoinFlipTedScreen(Screen):
         if self.bet > 100:
             self.bet = 100
 
-
     def flipCoin(self):
         # currently at .6 because heads is favored
         # in the future will have states to handle coin flip percentages
@@ -869,7 +850,7 @@ class CoinFlipTedScreen(Screen):
             self.result = "tails"
 
     def cheatCoin(self):
-        coin=random.random()
+        coin = random.random()
         if coin < 0.3:
             print("coin landed on heads")
             self.result = "heads"
@@ -888,7 +869,7 @@ class CoinFlipTedScreen(Screen):
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
 
-        if self.game_state == "welcome_screen" :
+        if self.game_state == "welcome_screen":
 
             self.message_display = "This is the welcome screen. Press R to continue"
             self.second_message_display = ""
@@ -945,7 +926,6 @@ class CoinFlipTedScreen(Screen):
                 print(self.choices[self.current_index])
                 controller.isDownPressed = False
 
-
             if self.current_index == 0:
                 if controller.isTPressed:
                     self.players_side = "heads"
@@ -964,7 +944,7 @@ class CoinFlipTedScreen(Screen):
 
 
 
-#534534543535353525532535353354
+        # 534534543535353525532535353354
 
         elif self.game_state == "magic_menu":
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
@@ -984,7 +964,6 @@ class CoinFlipTedScreen(Screen):
                     self.magic_menu_index += 1
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
-
 
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
@@ -1022,7 +1001,7 @@ class CoinFlipTedScreen(Screen):
 
 
 
-##########################have a message state reserved for buff states
+            ##########################have a message state reserved for buff states
 
             ##### boss enemies will use magic under more strict conditions
             elif self.magic_menu_index == 2:
@@ -1128,7 +1107,7 @@ class CoinFlipTedScreen(Screen):
 
 
 
-        elif self.game_state == "you_won_the_toss" :
+        elif self.game_state == "you_won_the_toss":
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
             self.second_message_display = f"Play again? Press T on your choice"
 
@@ -1168,7 +1147,7 @@ class CoinFlipTedScreen(Screen):
 
 
 
-        elif self.game_state == "you_lost_the_toss" :
+        elif self.game_state == "you_lost_the_toss":
 
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
@@ -1205,12 +1184,6 @@ class CoinFlipTedScreen(Screen):
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 
-
-
-
-
-
-
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
 
     def draw(self, state: "GameState"):
@@ -1233,7 +1206,7 @@ class CoinFlipTedScreen(Screen):
         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
 
-        if self.game_state == "magic_menu" :
+        if self.game_state == "magic_menu":
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -1288,7 +1261,6 @@ class CoinFlipTedScreen(Screen):
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (700, 260))
 
-
         if self.game_state == "bet_screen":
 
             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
@@ -1326,7 +1298,6 @@ class CoinFlipTedScreen(Screen):
                 self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
                 (700, 210))
 
-
             if self.yes_no_current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -1338,12 +1309,6 @@ class CoinFlipTedScreen(Screen):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 205))
-
-
-
-
-
-
 
         pygame.display.flip()
 
@@ -1377,7 +1342,7 @@ class CoinFlipFredScreen(Screen):
         self.high_exp = False
         self.low_exp = False
 
-        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row","Hehehe, your on sucker"]
+        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
         self.luck_activated = 0
         self.sandy_focus_points = 30
         self.reveal_hand = False
@@ -1396,10 +1361,6 @@ class CoinFlipFredScreen(Screen):
                 state.player.exp += 15
         else:
             print("your level is too high no exp for you")
-
-
-
-
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -1421,7 +1382,6 @@ class CoinFlipFredScreen(Screen):
         if self.bet > 100:
             self.bet = 100
 
-
     def flipCoin(self):
         # currently at .6 because heads is favored
         # in the future will have states to handle coin flip percentages
@@ -1435,7 +1395,7 @@ class CoinFlipFredScreen(Screen):
             self.result = "tails"
 
     def cheatCoin(self):
-        coin=random.random()
+        coin = random.random()
         if coin < 0.3:
             print("coin landed on heads")
             self.result = "heads"
@@ -1454,7 +1414,7 @@ class CoinFlipFredScreen(Screen):
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
 
-        if self.game_state == "welcome_screen" :
+        if self.game_state == "welcome_screen":
 
             self.message_display = "This is the welcome screen. Press R to continue"
             self.second_message_display = ""
@@ -1511,7 +1471,6 @@ class CoinFlipFredScreen(Screen):
                 print(self.choices[self.current_index])
                 controller.isDownPressed = False
 
-
             if self.current_index == 0:
                 if controller.isTPressed:
                     self.players_side = "heads"
@@ -1551,10 +1510,9 @@ class CoinFlipFredScreen(Screen):
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
 
-
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
-                    if self.luck_activated < 1 :
+                    if self.luck_activated < 1:
                         if state.player.focus_points >= 10:
                             state.player.focus_points -= 10
 
@@ -1588,7 +1546,7 @@ class CoinFlipFredScreen(Screen):
 
 
 
-##########################have a message state reserved for buff states
+            ##########################have a message state reserved for buff states
 
             ##### boss enemies will use magic under more strict conditions
             elif self.magic_menu_index == 2:
@@ -1694,7 +1652,7 @@ class CoinFlipFredScreen(Screen):
 
 
 
-        elif self.game_state == "you_won_the_toss" :
+        elif self.game_state == "you_won_the_toss":
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
             self.second_message_display = f"Play again? Press T on your choice"
 
@@ -1734,7 +1692,7 @@ class CoinFlipFredScreen(Screen):
 
 
 
-        elif self.game_state == "you_lost_the_toss" :
+        elif self.game_state == "you_lost_the_toss":
 
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
@@ -1771,12 +1729,6 @@ class CoinFlipFredScreen(Screen):
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 
-
-
-
-
-
-
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
 
     def draw(self, state: "GameState"):
@@ -1799,7 +1751,7 @@ class CoinFlipFredScreen(Screen):
         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
 
-        if self.game_state == "magic_menu" :
+        if self.game_state == "magic_menu":
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -1854,7 +1806,6 @@ class CoinFlipFredScreen(Screen):
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (700, 260))
 
-
         if self.game_state == "bet_screen":
 
             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
@@ -1892,7 +1843,6 @@ class CoinFlipFredScreen(Screen):
                 self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
                 (700, 210))
 
-
             if self.yes_no_current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -1904,12 +1854,6 @@ class CoinFlipFredScreen(Screen):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 205))
-
-
-
-
-
-
 
         pygame.display.flip()
 
@@ -1943,7 +1887,7 @@ class CoinFlipSandyScreen(Screen):
         self.high_exp = False
         self.low_exp = False
 
-        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row","Hehehe, your on sucker"]
+        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
         self.luck_activated = 0
         self.sandy_focus_points = 30
         self.reveal_hand = False
@@ -1962,10 +1906,6 @@ class CoinFlipSandyScreen(Screen):
                 state.player.exp += 15
         else:
             print("your level is too high no exp for you")
-
-
-
-
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -1986,7 +1926,6 @@ class CoinFlipSandyScreen(Screen):
 
         if self.bet > 100:
             self.bet = 100
-
 
     def flipCoin(self):
         # currently at .6 because heads is favored
@@ -2011,7 +1950,7 @@ class CoinFlipSandyScreen(Screen):
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
 
-        if self.game_state == "welcome_screen" :
+        if self.game_state == "welcome_screen":
 
             self.message_display = "This is the welcome screen. Press R to continue"
             self.second_message_display = ""
@@ -2043,7 +1982,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-#############fix bug with current index below and our yes and no menu to leave or replay a game
+        #############fix bug with current index below and our yes and no menu to leave or replay a game
 
         elif self.game_state == "choose_heads_or_tails_message":
             self.message_display = "Now Choose heads or tails. Make your choice"
@@ -2064,7 +2003,6 @@ class CoinFlipSandyScreen(Screen):
                 self.current_index %= len(self.choices)
                 print(self.choices[self.current_index])
                 controller.isDownPressed = False
-
 
             if self.current_index == 0:
                 if controller.isTPressed:
@@ -2105,7 +2043,6 @@ class CoinFlipSandyScreen(Screen):
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
 
-
             if self.magic_menu_index == 0:
                 if controller.isKPressed:
                     if self.luck_activated < 1:
@@ -2142,7 +2079,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-##########################have a message state reserved for buff states
+            ##########################have a message state reserved for buff states
 
             ##### boss enemies will use magic under more strict conditions
             elif self.magic_menu_index == 2:
@@ -2248,7 +2185,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-        elif self.game_state == "you_won_the_toss" :
+        elif self.game_state == "you_won_the_toss":
             if self.players_side == "tails" and self.sandy_focus_points > 0 and self.luck_activated < 1 and self.cheating_alert == False:
                 self.players_side = "heads"
                 print("I could have sworn I picked tails. Did they switch my bet?")
@@ -2297,7 +2234,7 @@ class CoinFlipSandyScreen(Screen):
 
 
 
-        elif self.game_state == "you_lost_the_toss" :
+        elif self.game_state == "you_lost_the_toss":
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
@@ -2333,12 +2270,6 @@ class CoinFlipSandyScreen(Screen):
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 
-
-
-
-
-
-
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
 
     def draw(self, state: "GameState"):
@@ -2361,7 +2292,7 @@ class CoinFlipSandyScreen(Screen):
         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
 
-        if self.game_state == "magic_menu" :
+        if self.game_state == "magic_menu":
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -2416,7 +2347,6 @@ class CoinFlipSandyScreen(Screen):
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (700, 260))
 
-
         if self.game_state == "bet_screen":
 
             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
@@ -2454,7 +2384,6 @@ class CoinFlipSandyScreen(Screen):
                 self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
                 (700, 210))
 
-
             if self.yes_no_current_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -2467,16 +2396,11 @@ class CoinFlipSandyScreen(Screen):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (650, 205))
 
-
-
-
-
-
-
         pygame.display.flip()
 
         ########have deals notice if player is low on stamina and magic and thus react to it
         #### have a dealer make a comment to player on this a few times.
+
 
 #### no need to "defeat"people, but in doing so with some people you can complete quest
 ####or have it to where you only need to defeat 1 of each type as a quest.hmmmmm not sure
@@ -2485,13 +2409,13 @@ class OpossumInACanScreen(Screen):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
         self.desperate = False
-        #we can set this as a variable that can get toggled on and off depending on who you are playing aginst
+        # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 100
         self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
+        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
 
                                             "win", "insurance_eater"]
         self.result = "win"
@@ -2519,17 +2443,14 @@ class OpossumInACanScreen(Screen):
 
         self.luck_activated = 0
 
-
-
-
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 200
 
-        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star","win",
+        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "win",
 
-                                            "win", "insurance_eater"]
+                                 "win", "insurance_eater"]
 
     def shuffle_opposums(self) -> List[str]:
         """Creates a new list in a random order"""
@@ -2600,7 +2521,6 @@ class OpossumInACanScreen(Screen):
             self.desperate = False
 
         if self.game_state == "welcome_opposum":
-
 
             if controller.isTPressed:
                 pygame.time.delay(150)
@@ -2677,7 +2597,6 @@ class OpossumInACanScreen(Screen):
 
             elif self.bet_or_flee_index == 1:
                 if controller.isTPressed:
-
                     print("lets get out")
 
 
@@ -2759,12 +2678,6 @@ class OpossumInACanScreen(Screen):
                     print("going back")
                     self.game_state = "choose_can"
 
-
-
-
-
-
-
                     #########################################################################
 
 
@@ -2812,7 +2725,7 @@ class OpossumInACanScreen(Screen):
             state.mainScreen.start(state)
 
     def draw(self, state: "GameState"):
-        DISPLAY.fill((0,0,0))
+        DISPLAY.fill((0, 0, 0))
 
         if self.desperate == True:
             DISPLAY.blit(self.font.render(
@@ -2839,7 +2752,6 @@ class OpossumInACanScreen(Screen):
             f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
             True, (255, 255, 255)), (10, 33))
 
-
         if self.game_state == "choose_can":
 
             DISPLAY.blit(
@@ -2853,7 +2765,6 @@ class OpossumInACanScreen(Screen):
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (700, 260))
-
 
             if self.choices_index == 0:
                 DISPLAY.blit(
@@ -2898,7 +2809,7 @@ class OpossumInACanScreen(Screen):
 
 
 
-        elif self.game_state == "magic_menu" :
+        elif self.game_state == "magic_menu":
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -2974,21 +2885,21 @@ class OpossumInACanScreen(Screen):
         elif self.game_state == "loser_screen":
             DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
 
-
         pygame.display.flip()
+
 
 class OpossumInACanNellyScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
         self.desperate = False
-        #we can set this as a variable that can get toggled on and off depending on who you are playing aginst
+        # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 100
         self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
+        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
 
                                             "win", "insurance_eater", "lose"]
         self.result = "win"
@@ -3016,17 +2927,14 @@ class OpossumInACanNellyScreen(Screen):
 
         self.luck_activated = 0
 
-
-
-
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 200
 
-        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win","win","win","lucky_star", "lucky_star", "X3_star", "lose","win",
+        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
 
-                                            "win", "insurance_eater", "lose"]
+                                 "win", "insurance_eater", "lose"]
 
     def shuffle_opposums(self) -> List[str]:
         """Creates a new list in a random order"""
@@ -3097,7 +3005,6 @@ class OpossumInACanNellyScreen(Screen):
             self.desperate = False
 
         if self.game_state == "welcome_opposum":
-
 
             if controller.isTPressed:
                 pygame.time.delay(150)
@@ -3179,7 +3086,6 @@ class OpossumInACanNellyScreen(Screen):
 
             elif self.bet_or_flee_index == 1:
                 if controller.isTPressed:
-
                     print("lets get out")
 
 
@@ -3261,12 +3167,6 @@ class OpossumInACanNellyScreen(Screen):
                     print("going back")
                     self.game_state = "choose_can"
 
-
-
-
-
-
-
                     #########################################################################
 
 
@@ -3314,7 +3214,7 @@ class OpossumInACanNellyScreen(Screen):
             state.mainScreen.start(state)
 
     def draw(self, state: "GameState"):
-        DISPLAY.fill((0,0,0))
+        DISPLAY.fill((0, 0, 0))
 
         if self.desperate == True:
             DISPLAY.blit(self.font.render(
@@ -3341,7 +3241,6 @@ class OpossumInACanNellyScreen(Screen):
             f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
             True, (255, 255, 255)), (10, 33))
 
-
         if self.game_state == "choose_can":
 
             DISPLAY.blit(
@@ -3355,7 +3254,6 @@ class OpossumInACanNellyScreen(Screen):
             DISPLAY.blit(
                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
                 (700, 260))
-
 
             if self.choices_index == 0:
                 DISPLAY.blit(
@@ -3400,7 +3298,7 @@ class OpossumInACanNellyScreen(Screen):
 
 
 
-        elif self.game_state == "magic_menu" :
+        elif self.game_state == "magic_menu":
             if self.magic_menu_index == 0:
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -3476,10 +3374,7 @@ class OpossumInACanNellyScreen(Screen):
         elif self.game_state == "loser_screen":
             DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
 
-
         pygame.display.flip()
-
-
 
 
 class DiceGameScreen(Screen, Dice):
@@ -3516,10 +3411,6 @@ class DiceGameScreen(Screen, Dice):
         self.player2pile = 0
         self.ante = 1000
         self.game_state = "choose_player_2_or_ai"
-
-
-
-
 
     def hot_bet(self):
 
@@ -3771,7 +3662,6 @@ class DiceGameScreen(Screen, Dice):
                     self.start_state("player_1_results")
 
                     if self.player_1_won_game == True:
-
                         self.start_state("player_1_wins")
                         pygame.time.delay(2000)
 
@@ -4062,20 +3952,20 @@ class DiceGameScreen(Screen, Dice):
 
 
 ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
-suits = ['Spades', 'Diamonds', 'Clubs', 'Hearts'] # TODO use enum
+suits = ['Spades', 'Diamonds', 'Clubs', 'Hearts']  # TODO use enum
 
-#dsf;dsaf;dsfjdajfdsafjsa;fjldsjjsdafjds;ajf;dj;sjfldsjafldsjaf;ldsjfldsajf
+
+# dsf;dsaf;dsfjdajfdsafjsa;fjldsjjsdafjds;ajf;dj;sjfldsjafldsjaf;ldsjfldsajf
 # if a player has 3 cards, then an ace value is equal to one
 # ace should be set that if a value is less than 10, then at least one of them should be
-#set to 11
-#need to set up test cases for many up to having 4 aces in hand
+# set to 11
+# need to set up test cases for many up to having 4 aces in hand
 
-
-#betting is also broken, a black jack should net X 2 winnings
+# betting is also broken, a black jack should net X 2 winnings
 class Deck:
-    def __init__(self, ranks, suits):
+    def __init__(self):
         self.ranks = ranks
-        self.isBlackJack =  False
+        self.isBlackJack = False
         self.suits = suits
         self.rank_strings = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8",
                              9: "9", 10: "10", "Jack": "Jack", "Queen": "Queen", "King": "King", "Ace": "Ace"}
@@ -4090,7 +3980,6 @@ class Deck:
         self.card_height = 98
 
         self.sprite_sheet = pygame.image.load("images/playingcards.png")
-
 
         self.suit_index = {
             "Clubs": 0,
@@ -4114,7 +4003,6 @@ class Deck:
             "Ace": 12
         }
 
-
         self.card_value = {
             "2": 2,
             "3": 3,
@@ -4130,7 +4018,6 @@ class Deck:
             "king": 10,
             "ace": 11
         }
-
 
         for suit in self.suits:
             if "Ace" in self.ranks:
@@ -4178,35 +4065,39 @@ class Deck:
         sprite.set_colorkey((0, 190, 0))
         DISPLAY.blit(sprite, position)
 
-
-    #maybe make two functions, a player draw_card and enemy draw_card
-    def player_draw_card(self):
-        pygame.display.update()
-
+    def draw_card(self):
         card = self.cards.pop()
-        player_cards_list.append((card[1], card[0]))
-        # print("hidey hoe")
-        # print(player_cards_list)
-
-        # self.show_card(card[1], card[0], (self.card_width, self.card_height))
-        # pygame.time.delay(500)
-
-
+        print("draw card: " + str(card))
         return card
 
-    def enemy_draw_card(self):
-        pygame.display.update()
-
-        card = self.cards.pop()
-        enemy_cards_list.append((card[1], card[0]))
-        # print("hidey hoe")
-        # print(enemy_cards_list)
-
-        # self.show_card(card[1], card[0], (self.card_width, self.card_height))
-        # pygame.time.delay(500)
-
-
-        return card
+    # #maybe make two functions, a player draw_card and enemy draw_card
+    # def player_draw_card(self):
+    #     # pygame.display.update()
+    #
+    #     card = self.cards.pop()
+    #     player_cards_list.append((card[1], card[0]))
+    #     # print("hidey hoe")
+    #     # print(player_cards_list)
+    #
+    #     # self.show_card(card[1], card[0], (self.card_width, self.card_height))
+    #     # pygame.time.delay(500)
+    #
+    #
+    #     return card
+    #
+    # def enemy_draw_card(self):
+    #     # pygame.display.update()
+    #
+    #     card = self.cards.pop()
+    #     enemy_cards_list.append((card[1], card[0]))
+    #     # print("hidey hoe")
+    #     # print(self.enemy_cards_list)
+    #
+    #     # self.show_card(card[1], card[0], (self.card_width, self.card_height))
+    #     # pygame.time.delay(500)
+    #
+    #
+    #     return card
 
     def shuffle(self):
 
@@ -4214,20 +4105,19 @@ class Deck:
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit], self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
 
-
         random.shuffle(self.cards)
         return self.cards
 
     def player_draw_hand(self, num_cards):
         hand = []
         for i in range(num_cards):
-            hand.append(self.player_draw_card())
+            hand.append(self.draw_card())
         return hand
 
     def enemy_draw_hand(self, num_cards):
         hand = []
         for i in range(num_cards):
-            hand.append(self.enemy_draw_card())
+            hand.append(self.draw_card())
         return hand
 
     def add_rank(self, rank):
@@ -4240,12 +4130,8 @@ class Deck:
                       for rank in self.ranks]
 
 
-
-
-
-
 class TextBox(Entity):
-    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int,):
+    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int, ):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
         self.messages = messages
         self.message_index = 0
@@ -4255,7 +4141,6 @@ class TextBox(Entity):
         self.delay = delay
         self.time = pygame.time.get_ticks()
         self.font = pygame.font.Font(None, 36)
-
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -4270,13 +4155,11 @@ class TextBox(Entity):
                 self.message_index < len(self.messages) - 1:
             pygame.time.delay(700)
 
-
             self.time = pygame.time.get_ticks()
             self.message_index += 1
             self.text = self.messages[self.message_index]
             self.characters_to_display = 0
             state.controller.isTPressed = False
-
 
         # print("is finished? " + str(self.is_finished()))
 
@@ -4312,6 +4195,7 @@ class BorderedBox(Entity):
         white_border.blit(black_box, (self.border_width, self.border_width))
         DISPLAY.blit(white_border, (self.position.x, self.position.y))
 
+
 # demonstrating encapsulation
 class BorderedTextBox(Entity):
     def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
@@ -4333,13 +4217,13 @@ class BorderedTextBox(Entity):
         return self.text_box.is_finished()
 
 
-class BlackJackScreen(Screen, Deck, TextBox):
-    def __init__(self, ranks, suits):
+class BlackJackScreen(Screen, TextBox):
+    def __init__(self):
         Screen.__init__(self, " Black Jack Game")
-        Deck.__init__(self, ranks, suits)
 
+        self.deck = Deck()
         self.font = pygame.font.Font(None, 36)
-        self.black_ace = False # this is our boss level when talk to NPC set to true set false if game is set to quit
+        self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
         self.ace_up_sleeve_jack = False
         self.ace_up_sleeve_jack_cheat_mode = False
         self.first_message_display = ""
@@ -4350,6 +4234,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.cheater_bob_money = 1000
         self.player_score = 0
         self.enemy_score = 0
+        # self.player_cards_list = []
+        # self.enemy_cards_list = []
         self.player_hand = []
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Redraw"]
@@ -4379,64 +4265,58 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.player_status = ""
         self.enemy_status = ""
 
-
-
         self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
         self.magic_lock = False
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
-        #maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
+        # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
         # incldue a double bet spell that is CHR based that player gets for free maybe4
 
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Cheater Bob: Press T key for all commands." , " My name's Cheater Bob. I promise it's the name my parents gave me.", "I'm what you would call a 'newb stomper'.", "You look pretty fresh to me.", ""],
-            "hero_intro_text": ["Thanks for holding on to those coins for me.", "I'll be sure to take every last one of them from you.", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+            "welcome_screen": ["Cheater Bob: Press T key for all commands.", " My name's Cheater Bob. I promise it's the name my parents gave me.", "I'm what you would call a 'newb stomper'.", "You look pretty fresh to me.", ""],
+            "hero_intro_text": ["Hero: Thanks for holding on to those coins for me.", "I'll be sure to take every last one of them from you.", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
 
-            "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy.", ""],
-            "enemy_winning_text": ["Cheater Bob: HA HA HA! You really stepped in it now!", "Do you know what happens when people lose all of their coins?","I bet you have no idea what this place really is.", ""],
-            "hero_losing_confused_text": ["Hero: Doesn't matter to me much what kind of place this is. I always go where there is gambling.","This guy really means business....I need to focus, and regain my composure.","Why doesn't he hit on 16??? It's like he's afraid to bust for some reason.", ""],
-
-
+            "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.", "Maybe I should lower my bet until I get the hang of my enemy.", ""],
+            "enemy_winning_text": ["Cheater Bob: HA HA HA! You really stepped in it now!", "Do you know what happens when people lose all of their coins?", "I bet you have no idea what this place really is.", ""],
+            "hero_losing_confused_text": ["Hero: Doesn't matter to me much what kind of place this is. I always go where there is gambling.", "This guy really means business....I need to focus, and regain my composure.",
+                                          "Why doesn't he hit on 16??? It's like he's afraid to bust for some reason.", ""],
 
             "enemy_losing_text": ["Cheater Bob: How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
-                                 "Your Cheating! There is no way I'd lose to an amateur like you!", ""],
+                                  "Your Cheating! There is no way I'd lose to an amateur like you!", ""],
             "hero_winning_text": ["Hero: I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
-                                   "Care to tell me why your so worried? It's not like their going to kill you or anything.","I can now use my bluff attack.",
-                                  "If I use it I won't be able to use any other magic till this match is over.","Should I use it now or wait a little bit till I'm closer to dealing a final blow?",
-                                   ""],
+                                  "Care to tell me why your so worried? It's not like their going to kill you or anything.", "I can now use my bluff attack.",
+                                  "If I use it I won't be able to use any other magic till this match is over.", "Should I use it now or wait a little bit till I'm closer to dealing a final blow?",
+                                  ""],
             "enemy_losing_confused_text": ["Cheater Bob: There are some fates worse than death, 'hero'.",
-                                          ".......",
-                                          "If you take all my coins, and if the boss doesn't give me replacement coins..........",
-                                          "NO!!! I won't end up like the others....I won't have you make a fool out of me.....",""],
-
+                                           ".......",
+                                           "If you take all my coins, and if the boss doesn't give me replacement coins..........",
+                                           "NO!!! I won't end up like the others....I won't have you make a fool out of me.....", ""],
 
             "final_strike_text": ["Hero: You don't have a lot of coins left. I'll bet you the rest that my next hand will be a black jack.",
-                               "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?","",
-                              ],
+                                  "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?", "",
+                                  ],
             "enemy_bluffed_text": ["Cheater Bob: Do you Realize the odds of that happening?", " Why would you take such a bet for?",
-                               "It doesn't make any sense.",
-                              ""],
-
-
+                                   "It doesn't make any sense.",
+                                   ""],
 
             "hero_bluffing_text": ["Hero: Well it's simple really, based on the card positions, and the way you shuffled. ",
-                               "I can pretty easily tell where each card landed in the deck.",
-                               "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception.", ""],
+                                   "I can pretty easily tell where each card landed in the deck.",
+                                   "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception.", ""],
             "enemy_falling_for_bluff_text": ["Cheater Bob: That's bull crap, there's no way you have that much perception.  ",
-                               "I'll take your bet, and then I'll tell everyone how much of a fool you are.",
-                               "I'll teach you to underestimate me!", ""],
+                                             "I'll take your bet, and then I'll tell everyone how much of a fool you are.",
+                                             "I'll teach you to underestimate me!", ""],
 
             "enemy_crying_text": ["Cheater Bob: Impossible...how did you????",
-                             ""],
+                                  ""],
             "hero_reveal_text": ["Hero: To be honest, it was all a bluff, you were right all along.",
-                               "However, I never bet against myself, and because of that lady luck is always on my side.",
-                               "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair.", ""],
+                                 "However, I never bet against myself, and because of that lady luck is always on my side.",
+                                 "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair.", ""],
 
             "bluff_magic_explain": ["Casts Bluff on the enemy. When the enemy seems desperate this will be unlocked. Enemy less likely to hit due to fear of a bust. Magic Lock Permanent .25MP"],
             "reveal_magic_explain": ["Based on muscle twitches of enemy plus the way they shuffle cards, you can tell what score they have.Protects you from busts. Magic lock 10 turns.25MP"],
@@ -4472,13 +4352,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.avatar_magic_explain_component = TextBox(self.messages["avatar_magic_explain"], (50, 450, 50, 45), 30, 500)
         self.back_magic_explain_component = TextBox(self.messages["back_magic_explain"], (50, 450, 50, 45), 30, 500)
 
-
-
-
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
-        #DO NOT DELETE THIS CODE
+        # DO NOT DELETE THIS CODE
         mixer.init()
 
         # Load audio file
@@ -4493,9 +4370,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
         pygame.mixer.music.play(-1, 0.0, 5000)
 
         pygame.init()
-
-
-
 
     pygame.init()
 
@@ -4516,10 +4390,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         if self.bet > 100:
             self.bet = 100
 
-
-
     def update(self, state: "GameState"):
-
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
@@ -4535,15 +4406,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
         if self.game_state == "welcome_screen":
             # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
             # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
-            if self.cheater_bob_money >= 1200 and self.hero_losing_text_state == False:
+            if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
 
-            elif self.cheater_bob_money <= 700 and self.despair == True:
+            elif self.cheater_bob_money <= 300 and self.despair == True:
                 self.game_state = "final_strike_screen"
 
-            elif self.cheater_bob_money <= 300 and self.hero_winning_text_state == False:
+            elif self.cheater_bob_money <= 700 and self.hero_winning_text_state == False:
                 self.game_state = "enemy_is_desperate_state"
-
 
             # if self.cheater_bob_money == 1000 and self.hero_losing_text == False:
             #     self.bet_screen_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
@@ -4556,8 +4426,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.npc_speaking = True
             self.hero_speaking = False
 
-
-
             # self.second_message_display = "Press the T key, which is our action key"
             # self.third_message_display = "To go forward with the game"
             self.redraw_lock = False
@@ -4566,18 +4434,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.avatar_of_luck_card_redraw_counter = 3
             self.current_index = 0
             self.enemy_score = 0
-            global player_cards_list
-            global enemy_cards_list
 
-            player_cards_list.clear()
-            enemy_cards_list.clear()
+            # self.player_cards_list.clear()
+            # self.enemy_cards_list.clear()
+            # self.player_hand.clear() # todo shouldn't need to do because we override the self.player_hand/enemy_hand when we call: self.xyz_hand = self.deck.draw_hand()
+            # self.enemy_hand.clear()
 
             if self.welcome_screen_text_box.is_finished():
                 self.npc_speaking = False
                 self.hero_speaking = True
                 self.welcome_screen_text_box_hero.update(state)
-
-
 
                 if self.welcome_screen_text_box_hero.is_finished():
 
@@ -4603,7 +4469,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.welcome_screen_index %= len(self.welcome_screen_choices)
                         controller.isDownPressed = False
 
-        elif self.game_state ==  "hero_is_desperate_state":
+        elif self.game_state == "hero_is_desperate_state":
             self.npc_speaking = False
             self.hero_speaking = True
             self.hero_losing_money_text.update(state)
@@ -4642,7 +4508,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.game_state = "welcome_screen"
 
         elif self.game_state == "final_strike_screen":
-            #NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+            # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
             # if enemy hits 1000 coins, desperate lock needs to go away for future ref
             self.npc_speaking = False
             self.hero_speaking = True
@@ -4660,21 +4526,20 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.hero_speaking = False
                         self.enemy_falling_for_bluff_text_component.update(state)
                         if self.enemy_falling_for_bluff_text_component.is_finished():
-                            #this is how we hard code
+                            # this is how we hard code
                             # self.player_hand = [('10', 'Diamonds', 10), ('Ace', 'Spades', 11)]
-                            # player_cards_list = [ ('Diamonds', '10'), ('Spades', 'Ace')]
+                            # self.player_cards_list = [ ('Diamonds', '10'), ('Spades', 'Ace')]
                             while self.player_score <= 20:
-                                self.shuffle()
-                                self.player_hand = self.player_draw_hand(2)
-                                self.enemy_hand = self.enemy_draw_hand(2)
+                                self.deck.shuffle()
+                                self.player_hand = self.deck.player_draw_hand(2)
+                                self.enemy_hand = self.deck.enemy_draw_hand(2)
                                 print("Player hand is" + str(self.player_hand))
-                                self.player_score = self.compute_hand_value(self.player_hand)
+                                self.player_score = self.deck.compute_hand_value(self.player_hand)
                                 # print(self.player_score)
                                 if self.player_score > 20:
-                                    player_cards_list[:-2] = []
-                                    enemy_cards_list[:-2] = []
-                                    print(player_cards_list)
-
+                                    self.player_hand[:-2] = []
+                                    self.enemy_hand[:-2] = []
+                                    print(self.player_hand)
 
                             print("out of the loop")
                             self.npc_speaking = True
@@ -4687,8 +4552,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                 state.player.playerMoney += self.cheater_bob_money
                                 self.cheater_bob_money = 0
                                 if self.hero_reveal_text_component.is_finished():
-                                    player_cards_list = []
-                                    enemy_cards_list = []
+                                    self.player_hand = []
+                                    self.enemy_hand = []
                                     pygame.quit()
 
 
@@ -4711,20 +4576,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.npc_speaking = True
             self.hero_speaking = False
 
-
-
             self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
                 if self.bet > 70:
                     state.player.stamina_points -= 3
                     print("-3")
-                elif (self.bet < 30):
+                elif self.bet < 30:
 
                     state.player.stamina_points -= 1
 
                     print("-1")
-                elif (self.bet < 70) or (self.bet > 20):
+                elif self.bet < 70 or self.bet > 20:
                     state.player.stamina_points -= 2
                     print("-2")
 
@@ -4741,16 +4604,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.player_black_jack_win = False
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
-            self.player_hand = self.player_draw_hand(2)
+            self.player_hand = self.deck.player_draw_hand(2)
             print("Player hand is" + str(self.player_hand))
-            self.player_score = self.compute_hand_value(self.player_hand)
-
-
-
-
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
 
             print("Player score is: " + str(self.player_score))
-
 
             # Check if the player has an ACE in their hand
             if self.black_jack_counter > 0:
@@ -4762,20 +4620,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             #################################need to test aces if a player gets multiple aces
 
-
-
             # If the player has an ACE, check which value is better for the player
 
-
-
-            self.enemy_hand = self.enemy_draw_hand(2)
+            self.enemy_hand = self.deck.enemy_draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
-            self.enemy_score = self.compute_hand_value(self.enemy_hand)
+            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
 
             if self.black_jack_counter > 0:
                 print("Enemy black jack win set to true and the code is right here")
-
                 self.enemy_black_jack_win = True
             elif self.black_jack_counter == 0:
                 self.enemy_black_jack_win = False
@@ -4784,10 +4637,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.black_ace == True:
                 if self.enemy_score < 7:
-                    self.enemy_hand = self.enemy_draw_hand(2)
+                    self.enemy_hand = self.deck.enemy_draw_hand(2)
                     print("Enemy hand is" + str(self.enemy_hand))
                     print("You get the sense the enemy is somewhat lucky")
-                    self.enemy_score = self.compute_hand_value(self.enemy_hand)
+                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                     print("enemy score is: " + str(self.enemy_score))
                     if self.black_jack_counter > 0:
                         print("Enemy black jack win set to true")
@@ -4797,7 +4650,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.enemy_black_jack_win = False
 
                     print(self.player_black_jack_win)
-
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.black_jack_draw = True
@@ -4832,13 +4684,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "player_draw_one_card":
-            self.player_hand += self.player_draw_hand(1)
-            self.compute_hand_value(self.player_hand)
-            self.player_score = self.compute_hand_value(self.player_hand)
+            self.player_hand += self.deck.player_draw_hand(1)
+            self.deck.compute_hand_value(self.player_hand)
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
 
             if self.player_score > 10:
                 print("hi greater than 10")
-                self.rank_values["Ace"] = 1
+                self.deck.rank_values["Ace"] = 1
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
@@ -4852,14 +4704,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 print("you almost busted")
                 print(self.player_hand)
                 self.player_hand.pop()
-                self.compute_hand_value(self.player_hand)
-                self.player_score = self.compute_hand_value(self.player_hand)
+                self.deck.compute_hand_value(self.player_hand)
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
                 print("here is your new hand")
                 print(self.player_hand)
                 self.reveal_hand -= 2
                 self.bust_protection = True
-
-
 
             if self.bust_protection == True:
                 self.game_state = "results_screen"
@@ -4868,18 +4718,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
-            while self.enemy_score < 15:    # this is 15 in order to make game a little easier
+            while self.enemy_score < 15:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
-
-                self.enemy_hand += self.enemy_draw_hand(1)
-                self.compute_hand_value(self.enemy_hand)
-                self.enemy_score = self.compute_hand_value(self.enemy_hand)
+                self.enemy_hand += self.deck.enemy_draw_hand(1)
+                self.deck.compute_hand_value(self.enemy_hand)
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                 print("enemy hand is now" + str(self.enemy_hand))
                 print("enemy score is now" + str(self.enemy_score))
                 self.game_state = "results_screen"
-
-
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
@@ -4898,9 +4745,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
             while self.enemy_score < 14:  # this is 15 in order to make game a little easier
                 print("this is our despair loop")
 
-                self.enemy_hand += self.enemy_draw_hand(1)
-                self.compute_hand_value(self.enemy_hand)
-                self.enemy_score = self.compute_hand_value(self.enemy_hand)
+                self.enemy_hand += self.deck.enemy_draw_hand(1)
+                self.deck.compute_hand_value(self.enemy_hand)
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                 print("enemy hand is now" + str(self.enemy_hand))
                 print("enemy score is now" + str(self.enemy_score))
                 self.game_state = "results_screen"
@@ -4921,9 +4768,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "menu_screen":
-
-
-
 
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
@@ -4957,17 +4801,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.current_index == 2 and state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                 print("Redrawing your hand")
-                player_cards_list.clear()
-                # enemy_cards_list.clear()
-
-                self.player_hand = self.player_draw_hand(2)
+                self.player_hand = self.deck.player_draw_hand(2) # no need to call self.player_hand.clear() befoe this, as we are already overriding it here
                 print("Player hand is" + str(self.player_hand))
                 print("Enemy hand is" + str(self.enemy_hand))
-                print("player card list is " + str(player_cards_list))
-                print("enemy card list is " + str(enemy_cards_list))
-                self.player_score = self.compute_hand_value(self.player_hand)
+                print("player card list is " + str(self.player_hand))
+                print("enemy card list is " + str(self.enemy_hand))
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
                 self.avatar_of_luck_card_redraw_counter -= 1
-
 
                 if self.avatar_of_luck_card_redraw_counter < 1:
                     self.redraw_lock = True
@@ -4978,7 +4818,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 # enemy_card_x = 235
                 # enemy_card_y = 15
                 #
-                # for i, card in enumerate(player_cards_list):
+                # for i, card in enumerate(self.player_hand):
                 #     if i > 3:
                 #         player_card_y = 305
                 #         player_card_x = 235
@@ -4988,12 +4828,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.game_state = "menu_screen"
                 state.controller.isTPressed = False
 
-
-
                 # 534534543535353525532535353354
 
         elif self.game_state == "magic_menu":
-
 
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
@@ -5019,14 +4856,15 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
 
-
-
             # we need to make this work right after a black jack
             # set a counter to minus 1 this is the counter is above 0
             if self.magic_menu_index == 0:
                 self.bluff_magic_explain_component.update(state)
 
-                if controller.isTPressed and self.cheater_bob_money <= 900 and state.player.focus_points > 24:
+                if controller.isTPressed and self.cheater_bob_money <= 700 and state.player.focus_points > 24:
+                    channel3 = pygame.mixer.Channel(3)
+                    sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
+                    channel3.play(sound3)
                     pygame.time.delay(300)
                     state.player.focus_points -= 25
                     self.despair = True
@@ -5045,8 +4883,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.magic_menu_index == 1:
                 self.reveal_magic_explain_component.update(state)
 
-
                 if controller.isTPressed:
+                    channel3 = pygame.mixer.Channel(3)
+                    sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
+                    channel3.play(sound3)
                     pygame.time.delay(300)
                     if state.player.focus_points >= 10:
                         state.player.focus_points -= 10
@@ -5055,8 +4895,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         self.player_status = "Focus"
                         self.enemy_status = "Reveal"
                         self.isTPressed = False
-
-
 
                         print("You cast reveal")
                         self.game_state = "welcome_screen"
@@ -5078,6 +4916,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 self.avatar_magic_explain_component.update(state)
 
                 if controller.isTPressed:
+                    channel3 = pygame.mixer.Channel(3)
+                    sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
+                    channel3.play(sound3)
                     pygame.time.delay(300)
                     print("you cast avatar of luck")
                     self.luck_of_jack = 6
@@ -5105,9 +4946,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "results_screen":
-
-
-
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
@@ -5163,7 +5001,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 elif state.player.level == 2:
                     self.first_message_display = f"You gain 12 exp and 0 gold "
 
-
             if controller.isTPressed:
 
                 # Load audio file
@@ -5201,7 +5038,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                         state.player.exp += 100
 
                     elif state.player.level == 2:
-                            state.player.exp += 50
+                        state.player.exp += 50
 
 
 
@@ -5249,8 +5086,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
                         state.player.exp += 12
 
-
-                if self.reveal_hand < 11 :
+                if self.reveal_hand < 11:
                     self.reveal_hand -= 1
 
                 if self.reveal_hand == 0:
@@ -5267,15 +5103,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.avatar_of_luck = False
                     self.magic_lock = False
 
-
                 pygame.time.wait(300)
                 print("Hey there going to the welcome_screen")
 
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
-
-
-
 
     def hand_to_str(self, hand) -> str:
         msg = ""
@@ -5287,18 +5119,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
             i += 1
         return msg
 
-
-
-
-
     def draw(self, state: "GameState"):
         # change to dealer image
         character_image = pygame.image.load("images/128by128.png")
         hero_image = pygame.image.load("images/hero.png")
 
-
         DISPLAY.fill((0, 0, 51))
-
 
         black_box = pygame.Surface((200 - 10, 180 - 10))
         black_box.fill((0, 0, 0))
@@ -5316,8 +5142,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 195))
 
-
-
         DISPLAY.blit(self.font.render(f"Money:{state.player.playerMoney}", True, (255, 255, 255)), (37, 240))
         DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 275))
         DISPLAY.blit(self.font.render(f"Exp:{state.player.exp}", True, (255, 255, 255)), (111, 315))
@@ -5327,7 +5151,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 385))
         DISPLAY.blit(self.font.render(f"score:{self.player_score}", True, (255, 255, 255)), (111, 385))
         DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
-
 
         black_box = pygame.Surface((200 - 10, 110 - 10))
         black_box.fill((0, 0, 0))
@@ -5345,15 +5168,12 @@ class BlackJackScreen(Screen, Deck, TextBox):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 60))
 
-
         DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 80))
         DISPLAY.blit(self.font.render(f"Status:{self.enemy_status}", True, (255, 255, 255)), (37, 110))
         if self.reveal_hand < 11:
             DISPLAY.blit(self.font.render(f"Score:{self.enemy_score}", True, (255, 255, 255)),
                          (37, 140))
         DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (37, 30))
-
-
 
         #
         # DISPLAY.blit(
@@ -5370,22 +5190,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
         #     self.current_speaker = "hero"
         #     DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
-
-
         self.main_bordered_box.draw(state)
         DISPLAY.blit(character_image, (650, 15))
         DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (650, 145))
 
-
         # self.face_down_card((0,0))
-
-
-
-
-
-
-
-
 
         if self.game_state == "welcome_screen":
             #
@@ -5395,17 +5204,11 @@ class BlackJackScreen(Screen, Deck, TextBox):
             white_border = pygame.Surface((160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
             white_border.fill((255, 255, 255))
             white_border.blit(black_box, (border_width, border_width))
-            DISPLAY.blit(white_border, (620 , 235))
-
-
+            DISPLAY.blit(white_border, (620, 235))
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[0]}", True, (255, 255, 255)),
                 (687, 260))
-
-
-
-
 
             if self.magic_lock == False:
 
@@ -5414,7 +5217,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     (687, 310))
             elif self.magic_lock == True:
                 DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (680, 315))
-
 
             DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[2]}", True, (255, 255, 255)),
@@ -5425,8 +5227,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 255))
                 if state.controller.isTPressed:
-                    self.shuffle()
-
+                    self.deck.shuffle()
 
                     self.game_state = "bet_phase"
                     state.controller.isTPressed = False
@@ -5451,7 +5252,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 if state.controller.isTPressed:
                     print("Quit")
                     state.controller.isTPressed = False
-
 
             self.welcome_screen_text_box.draw(state)
             self.welcome_screen_text_box_hero.draw(state)
@@ -5481,44 +5281,38 @@ class BlackJackScreen(Screen, Deck, TextBox):
             # DISPLAY.blit(character_image, (23, 245))
             # DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
-
             DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True, (255, 255, 255)), (50, 530))
             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (260, 550))
             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (257, 510))
 
 
         elif self.game_state == "menu_screen":
-            deck = Deck(ranks, suits)
             player_card_x = 235
             player_card_y = 195
             enemy_card_x = 235
             enemy_card_y = 15
 
-            for i, card in enumerate(player_cards_list):
+            for i, card in enumerate(self.player_hand):
                 if i > 3:
                     player_card_y = 305
                     player_card_x = 235
-                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                self.deck.show_card(card[1], card[0], (player_card_x, player_card_y))
                 player_card_x += 75
 
                 # pygame.display.update()
 
             # pygame.display.update()
 
-            for index, card in enumerate(enemy_cards_list):
+            for index, card in enumerate(self.enemy_hand):
                 if index == 0:
-                    deck.face_down_card((enemy_card_x, enemy_card_y))
+                    self.deck.face_down_card((enemy_card_x, enemy_card_y))
                 else:
-                    deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+                    self.deck.show_card(card[1], card[0], (enemy_card_x, enemy_card_y))
                 enemy_card_x += 75
-
-
 
             # self.current_speaker = "hero"
 
             # DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
-
-
 
             # Create the black square box
             black_box = pygame.Surface((160 - 10, 180 - 10))
@@ -5532,7 +5326,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
             DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (687, 260))
-
 
             DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
@@ -5590,23 +5383,14 @@ class BlackJackScreen(Screen, Deck, TextBox):
         #     print("going back to menu screen")
         #     self.game_state = "menu_screen"
 
+        # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
+        #
+        #
+        # DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
+        #
+        # DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
 
-
-
-
-
-            # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
-            #
-            #
-            # DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
-            #
-            # DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
-
-
-
-
-
-        elif self.game_state == "magic_menu" :
+        elif self.game_state == "magic_menu":
 
             black_box = pygame.Surface((255, 215))
             black_box.fill((0, 0, 0))
@@ -5656,7 +5440,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     (630, 350))
                 self.back_magic_explain_component.draw(state)
 
-
             if self.cheater_bob_money <= 900:
 
                 DISPLAY.blit(
@@ -5685,26 +5468,20 @@ class BlackJackScreen(Screen, Deck, TextBox):
             self.hero_bluffing_text_component.draw(state)
             self.enemy_falling_for_bluff_text_component.draw(state)
 
-
-
-
-
-            deck = Deck(ranks, suits)
             player_card_x = 300
             player_card_y = 250
             enemy_card_x = 300
             enemy_card_y = 25
 
-
-            for card in player_cards_list:
-                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+            for card in self.player_hand:
+                self.deck.show_card(card[1], card[0], (player_card_x, player_card_y))
                 player_card_x += 100
                 # pygame.display.update()
 
             # pygame.display.update()
 
-            for index, card in enumerate(enemy_cards_list):
-                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+            for index, card in enumerate(self.enemy_hand):
+                self.deck.show_card(card[1], card[0], (enemy_card_x, enemy_card_y))
                 enemy_card_x += 100
 
             self.enemy_crying_text_component.draw(state)
@@ -5713,26 +5490,24 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
         elif self.game_state == "results_screen":
-            deck = Deck(ranks, suits)
             player_card_x = 235
             player_card_y = 195
             enemy_card_x = 235
             enemy_card_y = 15
 
-            for i, card in enumerate(player_cards_list):
+            for i, card in enumerate(self.player_hand):
                 if i > 3:
                     player_card_y = 305
                     player_card_x = 235
-                deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                self.deck.show_card(card[1], card[0], (player_card_x, player_card_y))
                 player_card_x += 75
 
                 # pygame.display.update()
 
             # pygame.display.update()
 
-            for index, card in enumerate(enemy_cards_list):
-
-                deck.show_card(card[0], card[1], (enemy_card_x, enemy_card_y))
+            for index, card in enumerate(self.enemy_hand):
+                self.deck.show_card(card[1], card[0], (enemy_card_x, enemy_card_y))
                 enemy_card_x += 75
 
             # self.current_speaker = "cheater bob"
@@ -5745,22 +5520,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
             DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 500))
             # DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
-
-
             # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
 
-
-
-
         pygame.display.flip()
-
 
 
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(222, 111)
-        self.npcs = [  CoinFlipFred(175,138), SalleyOpossum(65,28),  ChiliWilley(311, 28)]
+        self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
@@ -5769,10 +5538,11 @@ class GameState:
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
-        self.BlackJackScreen = BlackJackScreen(ranks, suits)
+        self.BlackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
         self.currentScreen = self.BlackJackScreen  # assign a value to currentScreen here
+
 
 class Game:
     def __init__(self):
@@ -5781,7 +5551,6 @@ class Game:
     def start(self):
         self.state.currentScreen.start(self.state)
         while self.state.isRunning:
-
             self.state.delta = clock.tick(60)
 
             # will need to move this to Screen class
@@ -5790,7 +5559,6 @@ class Game:
             self.state.currentScreen.draw(self.state)
             # self.textBox.update(self.state)
             # self.textBox.display()
-
 
         pygame.quit()
 
