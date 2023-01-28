@@ -4407,8 +4407,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Cheater Bob: My name's Cheater Bob. I promise it's the name my parents gave me.", "I dont' cheat, and even if I did you woulnd't catch me", "If you want all my coins then good luck",""],
-            "hero_intro_text": ["Hero: sorry cheater bob I'm here for your coins. ", "I better take it easy till I get the hang of things", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+            "welcome_screen": ["Cheater Bob: My name's Cheater Bob. I promise it's the name my parents gave me.", ""],
+            "hero_intro_text": ["I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
 
@@ -4968,6 +4968,41 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 print(self.choices[self.current_index])
                 controller.isDownPressed = False
 
+            if self.current_index == 2 and state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
+                print("Redrawing your hand")
+                # player_cards_list.clear()
+                # enemy_cards_list.clear()
+
+                self.player_hand = self.player_draw_hand(2)
+                print("Player hand is" + str(self.player_hand))
+                print("Enemy hand is" + str(self.enemy_hand))
+                print("player card list is " + str(player_cards_list))
+                print("enemy card list is " + str(enemy_cards_list))
+                self.player_score = self.compute_hand_value(self.player_hand)
+                self.avatar_of_luck_card_redraw_counter -= 1
+
+
+                if self.avatar_of_luck_card_redraw_counter < 1:
+                    self.redraw_lock = True
+
+                # deck = Deck(ranks, suits)
+                # player_card_x = 235
+                # player_card_y = 195
+                # enemy_card_x = 235
+                # enemy_card_y = 15
+                #
+                # for i, card in enumerate(player_cards_list):
+                #     if i > 3:
+                #         player_card_y = 305
+                #         player_card_x = 235
+                #     deck.show_card(card[0], card[1], (player_card_x, player_card_y))
+                #     player_card_x += 75
+
+                self.game_state = "menu_screen"
+                state.controller.isTPressed = False
+
+
+
                 # 534534543535353525532535353354
 
         elif self.game_state == "magic_menu":
@@ -5058,7 +5093,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 if controller.isTPressed:
                     pygame.time.delay(300)
                     print("you cast avatar of luck")
-                    self.third_message_display = "Your luck is now increased for 3 losses"
                     self.luck_of_jack = 6
                     self.magic_lock = True
                     self.avatar_of_luck = True
@@ -5078,22 +5112,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.isTPressed = False
 
 
-        elif self.game_state == "bluff_state":
-            self.first_message_display = "Based on your shuffle, I'll get another black jack."
-            self.second_message_display = "Your on pal bring it on"
-            self.black_jack_bluff_counter = 0
-            bluffalo = random.random()
 
-            if bluffalo < 0.7:
-                print("you win tripple bet")
-                state.player.playerMoney += self.bet * 3
-                self.game_state = "welcome_screen"
-
-
-            else:
-                print("your bet lost")
-                state.player.playerMoney -= self.bet
-                self.game_state = "welcome_screen"
 
 
 
@@ -5348,10 +5367,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-
-
-
-
         #
         # DISPLAY.blit(
         #     self.font.render(f"Hero Money:{state.player.playerMoney}", True, (255, 255, 255)),
@@ -5576,21 +5591,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 355))
-                if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
-                    print("Redrawing your hand")
+
+            if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
+                self.game_state = "bet_screen"
 
 
 
-                    self.player_hand = self.player_draw_hand(2)
-                    print("Player hand is" + str(self.player_hand))
-                    self.player_score = self.compute_hand_value(self.player_hand)
-                    self.avatar_of_luck_card_redraw_counter -= 1
+        # elif self.game_state == "refresh":
+        #     print("going back to menu screen")
+        #     self.game_state = "menu_screen"
 
-                    if self.avatar_of_luck_card_redraw_counter < 1:
-                        self.redraw_lock = True
 
-                    state.controller.isTPressed = False
-                    self.game_state = "menu_screen"
+
 
 
 
