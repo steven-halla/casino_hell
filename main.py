@@ -4399,15 +4399,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
             "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
 
             "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy.", ""],
-            "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","I bet you have no idea what this place really is.", ""],
-            "hero_losing_confused_text": ["Hero: Doesn't matter to me much what kind of place this is. I always go where there is gambling.","This guy really means business....I need to focus, and regain my composure.","Why doesn't he hit on 16?? It's like he's afraid to bust", ""],
+            "enemy_winning_text": ["Cheater Bob: HA HA HA! You really stepped in it now!", "Do you know what happens when people lose all of their coins?","I bet you have no idea what this place really is.", ""],
+            "hero_losing_confused_text": ["Hero: Doesn't matter to me much what kind of place this is. I always go where there is gambling.","This guy really means business....I need to focus, and regain my composure.","Why doesn't he hit on 16??? It's like he's afraid to bust for some reason.", ""],
 
 
 
             "enemy_losing_text": ["Cheater Bob: How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
                                  "Your Cheating! There is no way I'd lose to an amateur like you!", ""],
             "hero_winning_text": ["Hero: I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
-                                   "Care to tell me why your so worried? It's not like their going to kill you or anything.",
+                                   "Care to tell me why your so worried? It's not like their going to kill you or anything.","I can now use my bluff attack.",
+                                  "If I use it I won't be able to use any other magic till this match is over.","Should I use it now or wait a little bit till I'm closer to dealing a final blow?",
                                    ""],
             "enemy_losing_confused_text": ["Cheater Bob: There are some fates worse than death, 'hero'.",
                                           ".......",
@@ -4415,10 +4416,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                           "NO!!! I won't end up like the others....I won't have you make a fool out of me.....",""],
 
 
-            "final_strike_text": ["Hero: You don't have a lot of coins left.I'll bet you the rest that my next hand will be a black jack.",
+            "final_strike_text": ["Hero: You don't have a lot of coins left. I'll bet you the rest that my next hand will be a black jack.",
                                "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?","",
                               ],
-            "enemy_bluffed_text": ["Cheater Bob: Do you Realize the odds of that happening? Why would you take such a bet for?",
+            "enemy_bluffed_text": ["Cheater Bob: Do you Realize the odds of that happening?", " Why would you take such a bet for?",
                                "It doesn't make any sense.",
                               ""],
 
@@ -4426,16 +4427,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             "hero_bluffing_text": ["Hero: Well it's simple really, based on the card positions, and the way you shuffled. ",
                                "I can pretty easily tell where each card landed in the deck.",
-                               "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception", ""],
-            "enemy_falling_for_bluff_text": ["Cheater Bob: That's bull crap, there's no way you have that much perception  ",
-                               "I'll take your bet, and then I'll tell everyone how much of a fool you are",
-                               "I'll teach you to underestimate me", ""],
+                               "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception.", ""],
+            "enemy_falling_for_bluff_text": ["Cheater Bob: That's bull crap, there's no way you have that much perception.  ",
+                               "I'll take your bet, and then I'll tell everyone how much of a fool you are.",
+                               "I'll teach you to underestimate me!", ""],
 
             "enemy_crying_text": ["Cheater Bob: Impossible...how did you????",
                              ""],
             "hero_reveal_text": ["Hero: To be honest, it was all a bluff, you were right all along.",
-                               "However, I never bet against myself, and because of that lady luck is always on my side",
-                               "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair", ""],
+                               "However, I never bet against myself, and because of that lady luck is always on my side.",
+                               "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair.", ""],
 
             "bluff_magic_explain": ["Casts Bluff on the enemy. When the enemy seems desperate this will be unlocked. Enemy less likely to hit due to fear of a bust. Magic Lock Permanent .25MP"],
             "reveal_magic_explain": ["Based on muscle twitches of enemy plus the way they shuffle cards, you can tell what score they have.Protects you from busts. Magic lock 10 turns.25MP"],
@@ -4537,10 +4538,10 @@ class BlackJackScreen(Screen, Deck, TextBox):
             if self.cheater_bob_money >= 1200 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
 
-            elif self.cheater_bob_money <= 300 and self.despair == True:
+            elif self.cheater_bob_money <= 700 and self.despair == True:
                 self.game_state = "final_strike_screen"
 
-            elif self.cheater_bob_money <= 600 and self.hero_winning_text_state == False:
+            elif self.cheater_bob_money <= 300 and self.hero_winning_text_state == False:
                 self.game_state = "enemy_is_desperate_state"
 
 
