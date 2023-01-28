@@ -4697,6 +4697,13 @@ class BlackJackScreen(Screen, TextBox):
             if self.player_score > 21 and self.reveal_hand > 10:
                 state.player.playerMoney -= self.bet
                 self.cheater_bob_money += self.bet
+
+                if state.player.level == 1:
+                    state.player.exp += 25
+                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+                elif state.player.level == 2:
+                    state.player.exp += 12
+                    self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
                 self.second_message_display = "player bust you lose"
                 self.game_state = "results_screen"
 
@@ -4733,6 +4740,12 @@ class BlackJackScreen(Screen, TextBox):
                     state.player.playerMoney += self.bet
                     self.cheater_bob_money -= self.bet
                     print("enemy bust")
+                    if state.player.level == 1:
+                        state.player.exp += 12
+                        self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
+                    elif state.player.level == 2:
+                        state.player.exp += 6
+                        self.first_message_display = f"You gain 6 exp and lose {self.bet} gold "
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
@@ -5149,7 +5162,7 @@ class BlackJackScreen(Screen, TextBox):
         DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 315))
         DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 355))
         DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 385))
-        DISPLAY.blit(self.font.render(f"score:{self.player_score}", True, (255, 255, 255)), (111, 385))
+        DISPLAY.blit(self.font.render(f"score:{self.player_score}", True, (255, 255, 255)), (126, 385))
         DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
 
         black_box = pygame.Surface((200 - 10, 110 - 10))
