@@ -4268,7 +4268,7 @@ class TextBox(Entity):
         if controller.isTPressed and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
-            pygame.time.delay(650)
+            pygame.time.delay(700)
 
 
             self.time = pygame.time.get_ticks()
@@ -4393,23 +4393,23 @@ class BlackJackScreen(Screen, Deck, TextBox):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Cheater Bob: My name's Cheater Bob. I promise it's the name my parents gave me.", ""],
-            "hero_intro_text": ["I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+            "welcome_screen": ["Cheater Bob: Press T key for all commands." , " My name's Cheater Bob. I promise it's the name my parents gave me.", "I'm what you would call a 'newb stomper'.", "You look pretty fresh to me.", ""],
+            "hero_intro_text": ["Thanks for holding on to those coins for me.", "I'll be sure to take every last one of them from you.", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
-            "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained "],
+            "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
 
-            "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy", ""],
-            "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","You might as well just give me all your coins.", ""],
-            "hero_losing_confused_text": ["Hero: ........Either he's good at bluffing or he's serious,or just flat out crazy","This casino keeps getting stranger....I need to put it out of my mind ,focus, and regain my composure.", "You know what Cheater Bob, This entire place is strange, I believe you! ", "....BRING IT ON!!!",""],
+            "hero_losing_text": ["Hero: This isn't good, I'll need to get serious if I want to make a comeback.","Maybe I should lower my bet until I get the hang of my enemy.", ""],
+            "enemy_winning_text": ["Cheater Bob: HA HA HA HA! Do you know what happens to people that lose all their coins?","I bet you have no idea what this place really is.", ""],
+            "hero_losing_confused_text": ["Hero: Doesn't matter to me much what kind of place this is. I always go where there is gambling.","This guy really means business....I need to focus, and regain my composure.","Why doesn't he hit on 16?? It's like he's afraid to bust", ""],
 
 
 
             "enemy_losing_text": ["Cheater Bob: How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
-                                 "Your Cheating! There is no way I'd lose to an amateur like you", ""],
+                                 "Your Cheating! There is no way I'd lose to an amateur like you!", ""],
             "hero_winning_text": ["Hero: I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
-                                   "Care to tell me why your so worried? Is it that stupid chilli swimming lie I keep hearing about? I mean come on, the joke's already getting old with me",
+                                   "Care to tell me why your so worried? It's not like their going to kill you or anything.",
                                    ""],
-            "enemy_losing_confused_text": ["Cheater Bob: It's not a lie you fool!",
+            "enemy_losing_confused_text": ["Cheater Bob: There are some fates worse than death, 'hero'.",
                                           ".......",
                                           "If you take all my coins, and if the boss doesn't give me replacement coins..........",
                                           "NO!!! I won't end up like the others....I won't have you make a fool out of me.....",""],
@@ -4419,13 +4419,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
                                "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?","",
                               ],
             "enemy_bluffed_text": ["Cheater Bob: Do you Realize the odds of that happening? Why would you take such a bet for?",
-                               "It doesn't make any sense",
+                               "It doesn't make any sense.",
                               ""],
 
 
 
-            "hero_bluffing_text": ["Hero: Well it's simple really, based on the card positions, and the way you shuffled ",
-                               "I can pretty easily tell where each card landed in the deck",
+            "hero_bluffing_text": ["Hero: Well it's simple really, based on the card positions, and the way you shuffled. ",
+                               "I can pretty easily tell where each card landed in the deck.",
                                "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception", ""],
             "enemy_falling_for_bluff_text": ["Cheater Bob: That's bull crap, there's no way you have that much perception  ",
                                "I'll take your bet, and then I'll tell everyone how much of a fool you are",
@@ -4534,13 +4534,13 @@ class BlackJackScreen(Screen, Deck, TextBox):
         if self.game_state == "welcome_screen":
             # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
             # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
-            if self.cheater_bob_money >= 1300 and self.hero_losing_text_state == False:
+            if self.cheater_bob_money >= 1200 and self.hero_losing_text_state == False:
                 self.game_state = "hero_is_desperate_state"
 
             elif self.cheater_bob_money <= 300 and self.despair == True:
                 self.game_state = "final_strike_screen"
 
-            elif self.cheater_bob_money <= 500 and self.hero_winning_text_state == False:
+            elif self.cheater_bob_money <= 600 and self.hero_winning_text_state == False:
                 self.game_state = "enemy_is_desperate_state"
 
 
