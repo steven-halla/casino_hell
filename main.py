@@ -4148,27 +4148,13 @@ class Deck:
         for card in hand:
             if card[0] == "Ace":
                 num_aces += 1
-                if len(hand) == 2:
-                    new_card = [card[0], card[1], 11]
-                else:
-                    new_card = [card[0], card[1], 1]
-                hand_value += new_card[2]
+                hand_value += 11
             else:
                 hand_value += card[2]
 
         while num_aces > 0 and hand_value > 21:
             hand_value -= 10
             num_aces -= 1
-        # print(f"final hand_value: {hand_value}")
-
-        if len(hand) == 2 and (
-                (hand[0][0] == "Ace" and hand[1][0] in (10, "Jack", "Queen", "King")) or
-                (hand[1][0] == "Ace" and hand[0][0] in (10, "Jack", "Queen", "King"))
-        ):
-            print("you got the black jack")
-            self.black_jack_counter += 1
-
-            print("black jack counter at:" + str(self.black_jack_counter))
 
         return hand_value
 
@@ -5338,6 +5324,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
         DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 315))
         DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 355))
         DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 385))
+        DISPLAY.blit(self.font.render(f"score:{self.player_score}", True, (255, 255, 255)), (111, 385))
         DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
 
 
