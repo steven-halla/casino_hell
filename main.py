@@ -4970,7 +4970,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
             if self.current_index == 2 and state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                 print("Redrawing your hand")
-                # player_cards_list.clear()
+                player_cards_list.clear()
                 # enemy_cards_list.clear()
 
                 self.player_hand = self.player_draw_hand(2)
@@ -5592,8 +5592,9 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 355))
 
-            if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
-                self.game_state = "bet_screen"
+                if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
+                    pygame.display.update()
+                    self.game_state = "menu_screen"
 
 
 
