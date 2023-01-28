@@ -4279,14 +4279,17 @@ class TextBox(Entity):
             self.characters_to_display += 1
 
         # handle button press to see next message
-        if controller.isAPressed and \
+        if controller.isTPressed and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
+            pygame.time.delay(500)
+
 
             self.time = pygame.time.get_ticks()
             self.message_index += 1
             self.text = self.messages[self.message_index]
             self.characters_to_display = 0
+            state.controller.isTPressed = False
 
 
         # print("is finished? " + str(self.is_finished()))
@@ -5003,13 +5006,16 @@ class BlackJackScreen(Screen, Deck, TextBox):
             if self.magic_menu_index == 0:
                 self.bluff_magic_explain_component.update(state)
 
-                if controller.isKPressed and self.cheater_bob_money <= 900 and state.player.focus_points > 24:
+                if controller.isTPressed and self.cheater_bob_money <= 900 and state.player.focus_points > 24:
+                    pygame.time.delay(300)
                     state.player.focus_points -= 25
                     self.despair = True
                     self.magic_lock = True
                     self.player_status = "Bluffalo"
                     self.enemy_status = "Despair"
                     self.game_state = "welcome_screen"
+                    state.controller.isTPressed = False
+
 
 
 
@@ -5019,24 +5025,25 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.magic_menu_index == 1:
                 self.reveal_magic_explain_component.update(state)
 
-                if controller.isKPressed:
-                    print("You cast reveal")
-                    if controller.isKPressed:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
-                            self.reveal_hand = 10
-                            self.magic_lock = True
-                            self.player_status = "Focus"
-                            self.enemy_status = "Telegraph"
+
+                if controller.isTPressed:
+                    pygame.time.delay(300)
+                    if state.player.focus_points >= 10:
+                        state.player.focus_points -= 10
+                        self.reveal_hand = 10
+                        self.magic_lock = True
+                        self.player_status = "Focus"
+                        self.enemy_status = "Reveal"
+                        self.isTPressed = False
 
 
 
-                            print("You cast reveal")
-                            self.game_state = "welcome_screen"
+                        print("You cast reveal")
+                        self.game_state = "welcome_screen"
 
 
-                        elif state.player.focus_points < 10:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
+                    elif state.player.focus_points < 10:
+                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
                 # elif self.luck_activated > 0:
                 #     self.third_message_display = "sorry but you can't stack magic spells"
 
@@ -5050,7 +5057,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
             elif self.magic_menu_index == 2:
                 self.avatar_magic_explain_component.update(state)
 
-                if controller.isKPressed:
+                if controller.isTPressed:
+                    pygame.time.delay(300)
                     print("you cast avatar of luck")
                     self.third_message_display = "Your luck is now increased for 3 losses"
                     self.luck_of_jack = 6
@@ -5059,14 +5067,18 @@ class BlackJackScreen(Screen, Deck, TextBox):
                     state.player.focus_points -= 20
                     self.game_state = "welcome_screen"
                     self.player_status = "Lucky"
+                    state.controller.isTPressed = False
 
 
             elif self.magic_menu_index == 3:
                 self.back_magic_explain_component.update(state)
 
-                if controller.isKPressed:
-                    print("going back")
+                if controller.isTPressed:
+                    pygame.time.delay(300)
+
                     self.game_state = "welcome_screen"
+                    self.isTPressed = False
+
 
         elif self.game_state == "bluff_state":
             self.first_message_display = "Based on your shuffle, I'll get another black jack."
