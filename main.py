@@ -4282,7 +4282,7 @@ class TextBox(Entity):
         if controller.isTPressed and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
-            pygame.time.delay(500)
+            pygame.time.delay(650)
 
 
             self.time = pygame.time.get_ticks()
@@ -4539,7 +4539,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         controller = state.controller
         controller.update(state)
-        # state.player.update(state)
+        state.player.update(state)
 
         #
         # print("p: " + self.hand_to_str(self.player_hand))
@@ -4726,8 +4726,6 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
 
 
-            self.first_message_display = "Place your bet 100 coin max. Press up and down. "
-            self.second_message_display = "Press T when you are ready"
             self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
@@ -5103,19 +5101,61 @@ class BlackJackScreen(Screen, Deck, TextBox):
         elif self.game_state == "results_screen":
 
 
-            if self.player_score > self.enemy_score and self.player_score < 22:
+
+
+            if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
+                self.second_message_display = "You win with a black jack press T when ready"
+                if state.player.level == 1:
+                    self.first_message_display = f"You gain 50 exp and {self.bet * 2} gold "
+                elif state.player.level == 2:
+                    self.first_message_display = f"You gain 25 exp and {self.bet * 2} gold "
+
+
+
+
+            elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
+                self.second_message_display = "It's a draw press T when ready"
+                if state.player.level == 1:
+                    self.first_message_display = f"You gain 50 exp and 0 gold "
+                elif state.player.level == 2:
+                    self.first_message_display = f"You gain 25 exp and 0 gold "
+
+
+            elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
+                self.second_message_display = "Enemy gets blackjack you lose "
+                if state.player.level == 1:
+                    self.first_message_display = f"You gain 100 exp and 0 gold "
+                elif state.player.level == 2:
+                    self.first_message_display = f"You gain 50 exp and 0 gold "
+
+
+
+            elif self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
+                if state.player.level == 1:
+                    self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+                elif state.player.level == 2:
+                    self.first_message_display = f"You gain 12 exp and {self.bet} gold "
+
 
 
 
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player press T when ready"
+                if state.player.level == 1:
+                    self.first_message_display = f"You gain 50 exp and lose {self.bet} gold "
+                elif state.player.level == 2:
+                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
 
 
 
 
             elif self.player_score == self.enemy_score:
                 self.second_message_display = "It's a draw nobody wins press T when Ready"
+                if state.player.level == 1:
+                    self.first_message_display = f"You gain 25 exp and 0 gold "
+                elif state.player.level == 2:
+                    self.first_message_display = f"You gain 12 exp and 0 gold "
 
 
             if controller.isTPressed:
@@ -5126,42 +5166,37 @@ class BlackJackScreen(Screen, Deck, TextBox):
                 channel2.play(sound2)
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-                    self.first_message_display = f"You gain 25 exp and {self.bet * 2} gold "
                     state.player.playerMoney += self.bet * 2
                     self.cheater_bob_money -= self.bet * 2
                     if state.player.level == 1:
-                        state.player.exp += 25
+                        state.player.exp += 50
 
                     elif state.player.level == 2:
                         self.first_message_display = f"You gain 12 exp and {self.bet * 2} gold "
 
-                        state.player.exp += 12
+                        state.player.exp += 25
 
 
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                     if state.player.level == 1:
                         self.first_message_display = f"You gain 50 exp and 0 gold "
 
-                        state.player.exp += 50
+                        state.player.exp += 75
                     elif state.player.level == 2:
                         self.first_message_display = f"You gain 25 exp and 0 gold "
 
-                        state.player.exp += 25
+                        state.player.exp += 33
 
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                     state.player.playerMoney -= self.bet * 2
                     self.cheater_bob_money += self.bet * 2
                     if state.player.level == 1:
-                        if self.bet >= 60:
-                            state.player.exp += 75
-                        elif self.bet < 60:
-                            state.player.exp += 33
+                        state.player.exp += 100
+
                     elif state.player.level == 2:
-                        if self.bet >= 60:
-                            state.player.exp += 17
-                        elif self.bet < 60:
-                            state.player.exp += 8
+                            state.player.exp += 50
+
 
 
                 elif self.player_score > self.enemy_score and self.player_score < 22:
@@ -5229,6 +5264,7 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
                 pygame.time.wait(300)
                 print("Hey there going to the welcome_screen")
+
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
@@ -5278,6 +5314,8 @@ class BlackJackScreen(Screen, Deck, TextBox):
 
         DISPLAY.blit(self.font.render(f"Money:{state.player.playerMoney}", True, (255, 255, 255)), (37, 240))
         DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 275))
+        DISPLAY.blit(self.font.render(f"Exp:{state.player.exp}", True, (255, 255, 255)), (111, 315))
+
         DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 315))
         DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 355))
         DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 385))
