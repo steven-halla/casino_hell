@@ -361,10 +361,9 @@ class Player(Entity):
         #     state.opossumInACanScreen.start(state)
 
 
-        elif controller.isAPressed:
 
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
+
+
 
     def isOutOfBounds(self) -> bool:
         return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
@@ -700,6 +699,104 @@ class MainScreen(Screen):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/beta_floor1_casino.tmx")
+
+    def update(self, state: "GameState"):
+        controller = state.controller
+        player = state.player
+        # npc = state.npcs
+        obstacle = state.obstacle
+        controller.update(state)
+
+        if controller.isExitPressed is True:
+            state.isRunning = False
+
+        player.update(state)
+        # npc.update(state)
+        # for npc in state.npcs:
+        #     npc.update(state)
+        # obstacle.update(state)
+
+    def draw(self, state: "GameState"):
+        # Clear the screen
+        DISPLAY.fill(WHITE)
+        # Draw the player money
+        DISPLAY.blit(font.render(
+            f" player Money: {state.player.playerMoney}",
+            True, (5, 5, 5)), (10, 10))
+
+        # Check if the Tiled map has any layers
+        if self.tiled_map.layers:
+            # Get the size of a single tile in pixels
+            tile_width = self.tiled_map.tilewidth
+            tile_height = self.tiled_map.tileheight
+
+            # Get the background layer
+            bg_layer = self.tiled_map.get_layer_by_name("bg")
+            # Iterate over the tiles in the background layer
+            for x, y, image in bg_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width
+                pos_y = y * tile_height
+
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
+
+            # Get the collision layer
+            collision_layer = self.tiled_map.get_layer_by_name("collision")
+            for x, y, image in collision_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width
+                pos_y = y * tile_height
+                scaled_image = pygame.transform.scale(scaled_image, (tile_width * 1.3, tile_height * 1.3))
+
+                tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
+
+                if state.player.collision.isOverlap(tile_rect):
+                    state.player.undoLastMove()
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(image, (pos_x, pos_y))
+
+            # Get the collision layer
+            objects_layer = self.tiled_map.get_layer_by_name("door")
+            for x, y, image in objects_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width
+                pos_y = y * tile_height
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
+
+                if state.player.collision.isOverlap(tile_rect):
+                    state.currentScreen = state.restScreen
+                    state.restScreen.start(state)
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(image, (pos_x, pos_y))
+
+            # Draw the player, NPCs, and obstacles
+            state.player.draw(state)
+            # state.npc.draw(state)
+
+            state.obstacle.draw(state)
+            # Update the display
+            pygame.display.update()
+
+        # Draw the player, NPCs, and obstacles
+        state.player.draw(state)
+        # state.npc.draw(state)
+
+        state.obstacle.draw(state)
+        # Update the display
+        pygame.display.update()
+
+class RestScreen(Screen):
+    def __init__(self):
+        super().__init__("Casino Rest Screen")
+        # Load the Tiled map file
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -5562,6 +5659,7 @@ class GameState:
         self.isPaused: bool = False
         self.delta: float = 0.0
         self.mainScreen = MainScreen()
+        self.restScreen = RestScreen()
         # self.coinFlipFredScreen = CoinFlipFredScreen()
         # self.opossumInACanScreen = OpossumInACanScreen()
         # self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
