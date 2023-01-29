@@ -304,10 +304,10 @@ class Player(Entity):
 
         # Define canMove before the for loop
         canMove = True
-        for npc in state.npcs:
-            if npc.isSpeaking:
-                canMove = False
-                break
+        # for npc in state.npcs:
+        #     if npc.isSpeaking:
+        #         canMove = False
+        #         break
 
         if canMove:
             if controller.isLeftPressed:
@@ -348,17 +348,17 @@ class Player(Entity):
         if self.isOverlap(state.obstacle) or self.isOutOfBounds():
             self.undoLastMove()
 
-        for npc in state.npcs:
-            if self.collision.isOverlap(npc.collision):
-                self.undoLastMove()
-
-        if controller.isQPressed:
-            state.currentScreen = state.coinFlipScreen
-            state.coinFlipScreen.start(state)
-
-        elif controller.isPPressed:
-            state.currentScreen = state.opossumInACanScreen
-            state.opossumInACanScreen.start(state)
+        # for npc in state.npcs:
+        #     if self.collision.isOverlap(npc.collision):
+        #         self.undoLastMove()
+        #
+        # if controller.isQPressed:
+        #     state.currentScreen = state.coinFlipScreen
+        #     state.coinFlipScreen.start(state)
+        #
+        # elif controller.isPPressed:
+        #     state.currentScreen = state.opossumInACanScreen
+        #     state.opossumInACanScreen.start(state)
 
 
         elif controller.isAPressed:
@@ -455,48 +455,48 @@ class CoinFlipExplanationGuy(Npc):
         if self.isSpeaking:
             message = pygame.display.get_surface().blit(self.message, (10, 10))
 
-
-class CoinFlipFred(Npc):
-    def __init__(self, x: int, y: int):
-        super().__init__(x, y)
-        self.current_message_index = -1
-        self.messages = ["You need at least 50 Hell coins to play", "Did you hear I use a weighted coin? It's a lie. ", "Press the T key in order to start a battle with me."]
-        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.input_delay = 500  # input delay in milliseconds
-        self.input_time = 0  # time when input was last read
-
-    def update(self, state):
-        super().update(state)
-        distance = math.sqrt(
-            (state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
-
-        # Get the current time in milliseconds
-        current_time = pygame.time.get_ticks()
-
-        # If the T key is pressed and the input delay has passed
-        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
-
-            self.input_time = current_time  # update the input time
-
-            # Update the current message
-            self.current_message_index += 1
-            if self.current_message_index >= len(self.messages):
-                self.current_message_index = 0
-            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
-            state.currentScreen = state.coinFlipScreen
-            state.coinFlipScreen.start(state)
-        elif state.coinFlipScreen.coinFlipFredMoney <= 0:
-            print("coin flip freddy is defeated already move on you vulture")
-
-    def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
-
-        # Display the current message if self.isSpeaking is True
-        if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10, 10))
+#
+# class CoinFlipFred(Npc):
+#     def __init__(self, x: int, y: int):
+#         super().__init__(x, y)
+#         self.current_message_index = -1
+#         self.messages = ["You need at least 50 Hell coins to play", "Did you hear I use a weighted coin? It's a lie. ", "Press the T key in order to start a battle with me."]
+#         self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+#         self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+#         self.input_delay = 500  # input delay in milliseconds
+#         self.input_time = 0  # time when input was last read
+#
+#     def update(self, state):
+#         super().update(state)
+#         distance = math.sqrt(
+#             (state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
+#
+#         # Get the current time in milliseconds
+#         current_time = pygame.time.get_ticks()
+#
+#         # If the T key is pressed and the input delay has passed
+#         if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+#
+#             self.input_time = current_time  # update the input time
+#
+#             # Update the current message
+#             self.current_message_index += 1
+#             if self.current_message_index >= len(self.messages):
+#                 self.current_message_index = 0
+#             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+#
+#         elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.coinFlipScreen.coinFlipFredMoney > 0:
+#             state.currentScreen = state.coinFlipFredScreen
+#             state.coinFlipScreenFred.start(state)
+#         elif state.coinFlipScreenFred.coinFlipFredMoney <= 0:
+#             print("coin flip freddy is defeated already move on you vulture")
+#
+#     def draw(self, state):
+#         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+#
+#         # Display the current message if self.isSpeaking is True
+#         if self.isSpeaking:
+#             message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
 class SalleyOpossum(Npc):
@@ -704,7 +704,7 @@ class MainScreen(Screen):
     def update(self, state: "GameState"):
         controller = state.controller
         player = state.player
-        npc = state.npcs
+        # npc = state.npcs
         obstacle = state.obstacle
         controller.update(state)
 
@@ -713,9 +713,9 @@ class MainScreen(Screen):
 
         player.update(state)
         # npc.update(state)
-        for npc in state.npcs:
-            npc.update(state)
-        obstacle.update(state)
+        # for npc in state.npcs:
+        #     npc.update(state)
+        # obstacle.update(state)
 
     def draw(self, state: "GameState"):
         # Clear the screen
@@ -725,8 +725,8 @@ class MainScreen(Screen):
             f" player Money: {state.player.playerMoney}",
             True, (5, 5, 5)), (10, 10))
 
-        for npc in state.npcs:
-            npc.draw(state)
+        # for npc in state.npcs:
+        #     npc.draw(state)
 
         # Check if the Tiled map has any layers
         if self.tiled_map.layers:
@@ -767,2614 +767,2614 @@ class MainScreen(Screen):
         # Update the display
         pygame.display.update()
 
-
-class CoinFlipTedScreen(Screen):
-    def __init__(self):
-        super().__init__("Casino Coin flip  Screen")
-
-        self.result = ""
-        self.play_again = True
-        self.players_side = ""
-        self.new_font = pygame.font.Font(None, 36)
-        self.message_display = ""
-        self.second_message_display = ""
-        self.third_message_display = ""
-        self.magic_player_message_display = ""
-        self.magic_enemy_message_display = ""
-        self.choices = ["Heads", "Tails", "Magic"]
-        self.yes_or_no_menu = ["Yes", "No"]
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
-        self.game_state = "welcome_screen"
-        self.choice_sequence = True
-        self.bet = 0
-        self.font = pygame.font.Font(None, 36)
-        self.coinFlipSandyMoney = 700
-        self.coinFlipSandyDefeated = False
-        self.current_index = 0
-        self.yes_no_current_index = 0
-        self.magic_menu_index = 0
-        self.leave_or_replay_index = 0
-        self.high_exp = False
-        self.low_exp = False
-
-        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
-        self.luck_activated = 0
-        self.sandy_focus_points = 30
-        self.reveal_hand = False
-        self.cheating_alert = False
-
-    def giveExp(self, state: "GameState"):
-        if state.player.level == 1:
-            if self.high_exp == True:
-                state.player.exp += 15
-            elif self.low_exp == True:
-                state.player.exp += 50
-        elif state.player.level == 2:
-            if self.high_exp == True:
-                state.player.exp += 5
-            elif self.low_exp == True:
-                state.player.exp += 15
-        else:
-            print("your level is too high no exp for you")
-
-    def place_bet(self, state: "GameState"):
-        controller = state.controller
-        controller.update(state)
-
-        if controller.isUpPressed:
-            self.bet += 10
-            pygame.time.delay(200)
-            self.isUpPressed = False
-
-        elif controller.isDownPressed:
-            self.bet -= 10
-            pygame.time.delay(200)
-            self.isDownPressed = False
-
-        if self.bet < 10:
-            self.bet = 10
-
-        if self.bet > 100:
-            self.bet = 100
-
-    def flipCoin(self):
-        # currently at .6 because heads is favored
-        # in the future will have states to handle coin flip percentages
-        # an item can add .1 to your rolls for heads, or -.1 for tails
-        coin = random.random()
-        if coin < 0.5:
-            print("coin landed on heads")
-            self.result = "heads"
-        else:
-            print("coin landed on tails")
-            self.result = "tails"
-
-    def cheatCoin(self):
-        coin = random.random()
-        if coin < 0.3:
-            print("coin landed on heads")
-            self.result = "heads"
-        else:
-            print("coin landed on tails")
-            self.result = "tails"
-
-    def update(self, state: "GameState"):
-        if self.coinFlipSandyMoney <= 0:
-            self.coinFlipSandyDefeated = True
-        # Update the controller
-        controller = state.controller
-        controller.update(state)
-
-        if state.player.stamina_points < 3:
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-
-        if self.game_state == "welcome_screen":
-
-            self.message_display = "This is the welcome screen. Press R to continue"
-            self.second_message_display = ""
-            self.third_message_display = ""
-            self.reveal_hand = False
-
-            if controller.isRPressed:
-                state.player.stamina_points -= 3
-
-                self.game_state = "bet_screen"
-
-        elif self.game_state == "bet_screen":
-            self.message_display = "This is the bet screen. Press up and down to change your bet."
-            self.second_message_display = "When you are ready press T to continue."
-            controller = state.controller
-            self.place_bet(state)
-            if controller.isTPressed:
-                print("t pressed")
-                self.game_state = "coin_flip_time"
-
-
-        elif self.game_state == "coin_flip_time":
-            self.message_display = "I'm flipping the coin now."
-            pygame.time.delay(500)
-            if self.bet < 80:
-                self.flipCoin()
-                self.game_state = "choose_heads_or_tails_message"
-            elif self.bet > 70:
-                self.cheatCoin()
-                self.game_state = "choose_heads_or_tails_message"
-
-
-
-
-
-
-        elif self.game_state == "choose_heads_or_tails_message":
-            self.message_display = "Now Choose heads or tails. Make your choice"
-            if controller.isUpPressed:
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) - 1
-                else:
-                    self.current_index -= 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) + 1
-                else:
-                    self.current_index += 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isDownPressed = False
-
-            if self.current_index == 0:
-                if controller.isTPressed:
-                    self.players_side = "heads"
-                    self.game_state = "results_screen"
-
-            elif self.current_index == 1:
-                if controller.isTPressed:
-                    self.players_side = "tails"
-                    self.game_state = "results_screen"
-
-
-            elif self.current_index == 2:
-                if controller.isTPressed:
-                    print("This is how you pick magic")
-                    self.game_state = "magic_menu"
-
-
-
-        # 534534543535353525532535353354
-
-        elif self.game_state == "magic_menu":
-            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
-            if controller.isUpPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
-                else:
-                    self.magic_menu_index -= 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
-                else:
-                    self.magic_menu_index += 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isDownPressed = False
-
-            if self.magic_menu_index == 0:
-                if controller.isKPressed:
-                    if self.luck_activated < 1 and self.reveal_hand == False:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
-
-                            print("You cast bluff")
-                            self.game_state = "bluff_state"
-
-                        else:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0 or self.reveal_hand == True:
-                        self.third_message_display = "sorry but you can't stack magic spells"
-
-
-            elif self.magic_menu_index == 1:
-                if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        print("You cast reveal")
-                        if controller.isKPressed:
-                            if state.player.focus_points >= 10:
-                                state.player.focus_points -= 10
-                                self.reveal_hand = True
-
-                                print("You cast bluff")
-                                self.game_state = "reveal_state"
-
-                            elif state.player.focus_points < 10:
-                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0:
-                        self.third_message_display = "sorry but you can't stack magic spells"
-
-
-
-
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
-            elif self.magic_menu_index == 2:
-                if controller.isKPressed:
-                    print("you cast avatar of luck")
-                    self.third_message_display = "Your luck is now increased for 3 losses"
-                    self.luck_activated = 3
-                    state.player.focus_points -= 20
-                    self.game_state = "choose_heads_or_tails_message"
-
-
-            elif self.magic_menu_index == 3:
-                if controller.isKPressed:
-                    print("going back")
-                    self.game_state = "choose_heads_or_tails_message"
-
-        elif self.game_state == "reveal_state":
-            self.message_display = "time to reveal your coin"
-            self.third_message_display = f"The coin will be on the {self.result}"
-            if state.controller.isAPressed:
-                self.game_state = "choose_heads_or_tails_message"
-                state.controller.isAPressed = False
-
-
-
-
-        elif self.game_state == "bluff_state":
-            self.message_display = "Triple my bet that tails will land 3 times in a  row."
-            bluffalo = random.random()
-
-            if bluffalo < 0.7:
-                print("you win tripple bet")
-                state.player.playerMoney += self.bet * 3
-                self.game_state = "welcome_screen"
-
-
-            else:
-                print("your bet lost")
-                state.player.playerMoney -= self.bet
-                self.game_state = "welcome_screen"
-
-
-
-
-
-
-        elif self.game_state == "results_screen":
-            self.second_message_display = " "
-            if self.result == self.players_side:
-                # self.third_message_display = "You won"
-                state.player.playerMoney += self.bet
-                self.coinFlipSandyMoney -= self.bet
-                pygame.time.delay(1000)
-
-                self.game_state = "you_won_the_toss"
-
-                if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                    print("At 0 ending match")
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-
-
-
-
-            elif self.result != self.players_side:
-                if self.luck_activated > 0:
-                    lucky_draw = random.random()
-                    if lucky_draw < 0.9:
-                        self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
-
-                        if controller.isAPressed:
-                            self.luck_activated -= 1
-                            state.player.playerMoney += self.bet
-                            self.coinFlipSandyMoney -= self.bet
-                            self.result = self.players_side
-
-                            self.game_state = "you_won_the_toss"
-                    else:
-                        # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
-                        if controller.isAPressed:
-                            self.luck_activated -= 1
-
-                            state.player.playerMoney -= self.bet
-                            self.coinFlipSandyMoney += self.bet
-
-                            self.game_state = "you_lost_the_toss"
-
-                elif self.luck_activated == 0:
-                    pygame.time.delay(500)
-                    state.player.playerMoney -= self.bet
-                    self.coinFlipSandyMoney += self.bet
-
-                    self.game_state = "you_lost_the_toss"
-
-
-
-
-
-
-
-
-
-
-
-        elif self.game_state == "you_won_the_toss":
-            self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
-            self.second_message_display = f"Play again? Press T on your choice"
-
-            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                print("At 0 ending match")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
-
-
-
-
-
-            elif controller.isUpPressed:
-                if not hasattr(self, "leave_or_replay_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
-                else:
-                    self.leave_or_replay_index -= 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
-                else:
-                    self.leave_or_replay_index += 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isDownPressed = False
-
-            if self.leave_or_replay_index == 0:
-                if controller.isTPressed:
-                    self.game_state = "welcome_screen"
-
-            elif self.leave_or_replay_index == 1:
-                if controller.isTPressed:
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-
-
-        elif self.game_state == "you_lost_the_toss":
-
-            self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
-            self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
-            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                print("At 0 ending match")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
-
-
-
-
-            elif controller.isUpPressed:
-                if not hasattr(self, "leave_or_replay_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
-                else:
-                    self.leave_or_replay_index -= 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
-                else:
-                    self.leave_or_replay_index += 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isDownPressed = False
-
-            if self.leave_or_replay_index == 0:
-                if controller.isTPressed:
-                    self.game_state = "welcome_screen"
-
-            elif self.leave_or_replay_index == 1:
-                if controller.isTPressed:
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-    ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
-
-    def draw(self, state: "GameState"):
-        # Fill the screen with a solid color
-        DISPLAY.fill((0, 0, 0))
-
-        DISPLAY.blit(self.new_font.render(
-            f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
-            True, (255, 255, 255)), (10, 150))
-        DISPLAY.blit(self.new_font.render(
-            f" player Money: {state.player.playerMoney}",
-            True, (255, 255, 255)), (10, 190))
-
-        # Draw the welcome message or choose bet message based on the game state
-
-        DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
-        DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
-        DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
-        DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
-        DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
-        DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
-
-        if self.game_state == "magic_menu":
-            if self.magic_menu_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.magic_menu_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.magic_menu_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-            elif self.magic_menu_index == 3:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (700, 310))
-
-        elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-        if self.game_state == "bet_screen":
-
-            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
-            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
-
-
-        elif self.game_state == "choose_heads_or_tails_message":
-
-            if self.current_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.current_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.current_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
-            DISPLAY.blit(
-                self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            if self.yes_no_current_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.yes_no_current_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-        pygame.display.flip()
-
-
-class CoinFlipFredScreen(Screen):
-    def __init__(self):
-        super().__init__("Casino Coin flip  Screen")
-
-        self.result = ""
-        self.play_again = True
-        self.players_side = ""
-        self.new_font = pygame.font.Font(None, 36)
-        self.message_display = ""
-        self.second_message_display = ""
-        self.third_message_display = ""
-        self.magic_player_message_display = ""
-        self.magic_enemy_message_display = ""
-        self.choices = ["Heads", "Tails", "Magic"]
-        self.yes_or_no_menu = ["Yes", "No"]
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
-        self.game_state = "welcome_screen"
-        self.choice_sequence = True
-        self.bet = 0
-        self.font = pygame.font.Font(None, 36)
-        self.coinFlipSandyMoney = 700
-        self.coinFlipSandyDefeated = False
-        self.current_index = 0
-        self.yes_no_current_index = 0
-        self.magic_menu_index = 0
-        self.leave_or_replay_index = 0
-        self.high_exp = False
-        self.low_exp = False
-
-        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
-        self.luck_activated = 0
-        self.sandy_focus_points = 30
-        self.reveal_hand = False
-        self.cheating_alert = False
-
-    def giveExp(self, state: "GameState"):
-        if state.player.level == 1:
-            if self.high_exp == True:
-                state.player.exp += 15
-            elif self.low_exp == True:
-                state.player.exp += 50
-        elif state.player.level == 2:
-            if self.high_exp == True:
-                state.player.exp += 5
-            elif self.low_exp == True:
-                state.player.exp += 15
-        else:
-            print("your level is too high no exp for you")
-
-    def place_bet(self, state: "GameState"):
-        controller = state.controller
-        controller.update(state)
-
-        if controller.isUpPressed:
-            self.bet += 10
-            pygame.time.delay(200)
-            self.isUpPressed = False
-
-        elif controller.isDownPressed:
-            self.bet -= 10
-            pygame.time.delay(200)
-            self.isDownPressed = False
-
-        if self.bet < 10:
-            self.bet = 10
-
-        if self.bet > 100:
-            self.bet = 100
-
-    def flipCoin(self):
-        # currently at .6 because heads is favored
-        # in the future will have states to handle coin flip percentages
-        # an item can add .1 to your rolls for heads, or -.1 for tails
-        coin = random.random()
-        if coin < 0.5:
-            print("coin landed on heads")
-            self.result = "heads"
-        else:
-            print("coin landed on tails")
-            self.result = "tails"
-
-    def cheatCoin(self):
-        coin = random.random()
-        if coin < 0.3:
-            print("coin landed on heads")
-            self.result = "heads"
-        else:
-            print("coin landed on tails")
-            self.result = "tails"
-
-    def update(self, state: "GameState"):
-        if self.coinFlipSandyMoney <= 0:
-            self.coinFlipSandyDefeated = True
-        # Update the controller
-        controller = state.controller
-        controller.update(state)
-
-        if state.player.stamina_points < 3:
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-
-        if self.game_state == "welcome_screen":
-
-            self.message_display = "This is the welcome screen. Press R to continue"
-            self.second_message_display = ""
-            self.third_message_display = ""
-            self.reveal_hand = False
-
-            if controller.isRPressed:
-                state.player.stamina_points -= 3
-
-                self.game_state = "bet_screen"
-
-        elif self.game_state == "bet_screen":
-            self.message_display = "This is the bet screen. Press up and down to change your bet."
-            self.second_message_display = "When you are ready press T to continue."
-            controller = state.controller
-            self.place_bet(state)
-            if controller.isTPressed:
-                print("t pressed")
-                self.game_state = "coin_flip_time"
-
-
-        elif self.game_state == "coin_flip_time":
-            self.message_display = "I'm flipping the coin now."
-            pygame.time.delay(500)
-            if self.bet < 80:
-                self.flipCoin()
-                self.game_state = "choose_heads_or_tails_message"
-            elif self.bet > 70:
-                self.cheatCoin()
-                self.game_state = "choose_heads_or_tails_message"
-
-
-
-
-
-
-        elif self.game_state == "choose_heads_or_tails_message":
-            self.message_display = "Now Choose heads or tails. Make your choice"
-            if controller.isUpPressed:
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) - 1
-                else:
-                    self.current_index -= 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) + 1
-                else:
-                    self.current_index += 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isDownPressed = False
-
-            if self.current_index == 0:
-                if controller.isTPressed:
-                    self.players_side = "heads"
-                    self.game_state = "results_screen"
-
-            elif self.current_index == 1:
-                if controller.isTPressed:
-                    self.players_side = "tails"
-                    self.game_state = "results_screen"
-
-
-            elif self.current_index == 2:
-                if controller.isTPressed:
-                    print("This is how you pick magic")
-                    self.game_state = "magic_menu"
-
-
-
-
-
-        elif self.game_state == "magic_menu":
-            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
-            if controller.isUpPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
-                else:
-                    self.magic_menu_index -= 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
-                else:
-                    self.magic_menu_index += 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isDownPressed = False
-
-            if self.magic_menu_index == 0:
-                if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
-
-                            print("You cast bluff")
-                            self.game_state = "bluff_state"
-
-                        else:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0 or self.reveal_hand == True:
-                        self.third_message_display = "sorry but you can't stack magic spells"
-
-
-            elif self.magic_menu_index == 1:
-                if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        print("You cast reveal")
-                        if controller.isKPressed:
-                            if state.player.focus_points >= 10:
-                                state.player.focus_points -= 10
-                                self.reveal_hand = True
-
-                                print("You cast bluff")
-                                self.game_state = "reveal_state"
-
-                            elif state.player.focus_points < 10:
-                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0:
-                        self.third_message_display = "sorry but you can't stack magic spells"
-
-
-
-
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
-            elif self.magic_menu_index == 2:
-                if controller.isKPressed:
-                    print("you cast avatar of luck")
-                    self.third_message_display = "Your luck is now increased for 3 losses"
-                    self.luck_activated = 3
-                    state.player.focus_points -= 20
-                    self.game_state = "choose_heads_or_tails_message"
-
-
-            elif self.magic_menu_index == 3:
-                if controller.isKPressed:
-                    print("going back")
-                    self.game_state = "choose_heads_or_tails_message"
-
-        elif self.game_state == "reveal_state":
-            self.message_display = "time to reveal your coin"
-            self.third_message_display = f"The coin will be on the {self.result}"
-            if state.controller.isAPressed:
-                self.game_state = "choose_heads_or_tails_message"
-                state.controller.isAPressed = False
-
-
-
-
-        elif self.game_state == "bluff_state":
-            self.message_display = "Triple my bet that tails will land 3 times in a  row."
-            bluffalo = random.random()
-
-            if bluffalo < 0.7:
-                print("you win tripple bet")
-                state.player.playerMoney += self.bet * 3
-                self.game_state = "welcome_screen"
-
-
-            else:
-                print("your bet lost")
-                state.player.playerMoney -= self.bet
-                self.game_state = "welcome_screen"
-
-
-
-
-
-
-        elif self.game_state == "results_screen":
-            self.second_message_display = " "
-            if self.result == self.players_side:
-                # self.third_message_display = "You won"
-                state.player.playerMoney += self.bet
-                self.coinFlipSandyMoney -= self.bet
-                pygame.time.delay(1000)
-
-                self.game_state = "you_won_the_toss"
-
-                if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                    print("At 0 ending match")
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-
-
-
-
-            elif self.result != self.players_side:
-                if self.luck_activated > 0:
-                    lucky_draw = random.random()
-                    if lucky_draw < 0.9:
-                        self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
-
-                        if controller.isAPressed:
-                            self.luck_activated -= 1
-                            state.player.playerMoney += self.bet
-                            self.coinFlipSandyMoney -= self.bet
-                            self.result = self.players_side
-
-                            self.game_state = "you_won_the_toss"
-                    else:
-                        # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
-                        if controller.isAPressed:
-                            self.luck_activated -= 1
-
-                            state.player.playerMoney -= self.bet
-                            self.coinFlipSandyMoney += self.bet
-
-                            self.game_state = "you_lost_the_toss"
-
-                elif self.luck_activated == 0:
-                    pygame.time.delay(500)
-                    state.player.playerMoney -= self.bet
-                    self.coinFlipSandyMoney += self.bet
-
-                    self.game_state = "you_lost_the_toss"
-
-
-
-
-
-
-
-
-
-
-
-        elif self.game_state == "you_won_the_toss":
-            self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
-            self.second_message_display = f"Play again? Press T on your choice"
-
-            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                print("At 0 ending match")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
-
-
-
-
-
-            elif controller.isUpPressed:
-                if not hasattr(self, "leave_or_replay_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
-                else:
-                    self.leave_or_replay_index -= 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
-                else:
-                    self.leave_or_replay_index += 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isDownPressed = False
-
-            if self.leave_or_replay_index == 0:
-                if controller.isTPressed:
-                    self.game_state = "welcome_screen"
-
-            elif self.leave_or_replay_index == 1:
-                if controller.isTPressed:
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-
-
-        elif self.game_state == "you_lost_the_toss":
-
-            self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
-            self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
-            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                print("At 0 ending match")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
-
-
-
-
-            elif controller.isUpPressed:
-                if not hasattr(self, "leave_or_replay_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
-                else:
-                    self.leave_or_replay_index -= 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
-                else:
-                    self.leave_or_replay_index += 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isDownPressed = False
-
-            if self.leave_or_replay_index == 0:
-                if controller.isTPressed:
-                    self.game_state = "welcome_screen"
-
-            elif self.leave_or_replay_index == 1:
-                if controller.isTPressed:
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-    ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
-
-    def draw(self, state: "GameState"):
-        # Fill the screen with a solid color
-        DISPLAY.fill((0, 0, 0))
-
-        DISPLAY.blit(self.new_font.render(
-            f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
-            True, (255, 255, 255)), (10, 150))
-        DISPLAY.blit(self.new_font.render(
-            f" player Money: {state.player.playerMoney}",
-            True, (255, 255, 255)), (10, 190))
-
-        # Draw the welcome message or choose bet message based on the game state
-
-        DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
-        DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
-        DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
-        DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
-        DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
-        DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
-
-        if self.game_state == "magic_menu":
-            if self.magic_menu_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.magic_menu_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.magic_menu_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-            elif self.magic_menu_index == 3:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (700, 310))
-
-        elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-        if self.game_state == "bet_screen":
-
-            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
-            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
-
-
-        elif self.game_state == "choose_heads_or_tails_message":
-
-            if self.current_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.current_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.current_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
-            DISPLAY.blit(
-                self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            if self.yes_no_current_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.yes_no_current_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-        pygame.display.flip()
-
-
-class CoinFlipSandyScreen(Screen):
-    def __init__(self):
-        super().__init__("Casino Coin flip  Screen")
-
-        self.result = ""
-        self.play_again = True
-        self.players_side = ""
-        self.new_font = pygame.font.Font(None, 36)
-        self.message_display = ""
-        self.second_message_display = ""
-        self.third_message_display = ""
-        self.magic_player_message_display = ""
-        self.magic_enemy_message_display = ""
-        self.choices = ["Heads", "Tails", "Magic"]
-        self.yes_or_no_menu = ["Yes", "No"]
-        self.game_state = "welcome_screen"
-        self.choice_sequence = True
-        self.bet = 0
-        self.font = pygame.font.Font(None, 36)
-        self.coinFlipSandyMoney = 700
-        self.coinFlipSandyDefeated = False
-        self.current_index = 0
-        self.yes_no_current_index = 0
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
-        self.magic_menu_index = 0
-        self.leave_or_replay_index = 0
-        self.high_exp = False
-        self.low_exp = False
-
-        self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
-        self.luck_activated = 0
-        self.sandy_focus_points = 30
-        self.reveal_hand = False
-        self.cheating_alert = False
-
-    def giveExp(self, state: "GameState"):
-        if state.player.level == 1:
-            if self.high_exp == True:
-                state.player.exp += 15
-            elif self.low_exp == True:
-                state.player.exp += 50
-        elif state.player.level == 2:
-            if self.high_exp == True:
-                state.player.exp += 5
-            elif self.low_exp == True:
-                state.player.exp += 15
-        else:
-            print("your level is too high no exp for you")
-
-    def place_bet(self, state: "GameState"):
-        controller = state.controller
-        controller.update(state)
-
-        if controller.isUpPressed:
-            self.bet += 10
-            pygame.time.delay(200)
-            self.isUpPressed = False
-
-        elif controller.isDownPressed:
-            self.bet -= 10
-            pygame.time.delay(200)
-            self.isDownPressed = False
-
-        if self.bet < 10:
-            self.bet = 10
-
-        if self.bet > 100:
-            self.bet = 100
-
-    def flipCoin(self):
-        # currently at .6 because heads is favored
-        # in the future will have states to handle coin flip percentages
-        # an item can add .1 to your rolls for heads, or -.1 for tails
-        coin = random.random()
-        if coin < 0.1:
-            print("coin landed on heads")
-            self.result = "heads"
-        else:
-            print("coin landed on tails")
-            self.result = "tails"
-
-    def update(self, state: "GameState"):
-        if self.coinFlipSandyMoney <= 0:
-            self.coinFlipSandyDefeated = True
-        # Update the controller
-        controller = state.controller
-        controller.update(state)
-
-        if state.player.stamina_points < 3:
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-
-        if self.game_state == "welcome_screen":
-
-            self.message_display = "This is the welcome screen. Press R to continue"
-            self.second_message_display = ""
-            self.third_message_display = ""
-            self.reveal_hand = False
-
-            if controller.isRPressed:
-                state.player.stamina_points -= 3
-
-                self.game_state = "bet_screen"
-
-        elif self.game_state == "bet_screen":
-            self.message_display = "This is the bet screen. Press up and down to change your bet."
-            self.second_message_display = "When you are ready press T to continue."
-            controller = state.controller
-            self.place_bet(state)
-            if controller.isTPressed:
-                print("t pressed")
-                self.game_state = "coin_flip_time"
-
-
-        elif self.game_state == "coin_flip_time":
-            self.message_display = "I'm flipping the coin now."
-            pygame.time.delay(500)
-            self.flipCoin()
-            self.game_state = "choose_heads_or_tails_message"
-
-
-
-
-
-        #############fix bug with current index below and our yes and no menu to leave or replay a game
-
-        elif self.game_state == "choose_heads_or_tails_message":
-            self.message_display = "Now Choose heads or tails. Make your choice"
-            if controller.isUpPressed:
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) - 1
-                else:
-                    self.current_index -= 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) + 1
-                else:
-                    self.current_index += 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isDownPressed = False
-
-            if self.current_index == 0:
-                if controller.isTPressed:
-                    self.players_side = "heads"
-                    self.game_state = "results_screen"
-
-            elif self.current_index == 1:
-                if controller.isTPressed:
-                    self.players_side = "tails"
-                    self.game_state = "results_screen"
-
-
-            elif self.current_index == 2:
-                if controller.isTPressed:
-                    print("This is how you pick magic")
-                    self.game_state = "magic_menu"
-
-
-
-
-
-        elif self.game_state == "magic_menu":
-            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
-            if controller.isUpPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
-                else:
-                    self.magic_menu_index -= 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
-                else:
-                    self.magic_menu_index += 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isDownPressed = False
-
-            if self.magic_menu_index == 0:
-                if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
-
-                            print("You cast bluff")
-                            self.game_state = "bluff_state"
-
-                        else:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0 or self.reveal_hand == True:
-                        self.third_message_display = "sorry but you can't stack magic spells"
-
-
-            elif self.magic_menu_index == 1:
-                if controller.isKPressed:
-                    if self.luck_activated < 1:
-                        print("You cast reveal")
-                        if controller.isKPressed:
-                            if state.player.focus_points >= 10:
-                                state.player.focus_points -= 10
-                                self.reveal_hand = True
-
-                                print("You cast bluff")
-                                self.game_state = "reveal_state"
-
-                            elif state.player.focus_points < 10:
-                                self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    elif self.luck_activated > 0:
-                        self.third_message_display = "sorry but you can't stack magic spells"
-
-
-
-
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
-            elif self.magic_menu_index == 2:
-                if controller.isKPressed:
-                    print("you cast avatar of luck")
-                    self.third_message_display = "Your luck is now increased for 5 losses"
-                    self.luck_activated = 3
-                    state.player.focus_points -= 20
-                    self.game_state = "choose_heads_or_tails_message"
-
-
-            elif self.magic_menu_index == 3:
-                if controller.isKPressed:
-                    print("going back")
-                    self.game_state = "choose_heads_or_tails_message"
-
-        elif self.game_state == "reveal_state":
-            self.message_display = "time to reveal your coin"
-            self.third_message_display = f"The coin will be on the {self.result}"
-            if state.controller.isAPressed:
-                self.game_state = "choose_heads_or_tails_message"
-                state.controller.isAPressed = False
-
-
-
-
-        elif self.game_state == "bluff_state":
-            self.message_display = "Triple my bet that tails will land 3 times in a  row."
-            bluffalo = random.random()
-
-            if bluffalo < 0.7:
-                print("you win tripple bet")
-                state.player.playerMoney += self.bet * 3
-                self.game_state = "welcome_screen"
-
-
-            else:
-                print("your bet lost")
-                state.player.playerMoney -= self.bet
-                self.game_state = "welcome_screen"
-
-
-
-
-
-
-        elif self.game_state == "results_screen":
-            self.second_message_display = " "
-            if self.result == self.players_side:
-                # self.third_message_display = "You won"
-                state.player.playerMoney += self.bet
-                self.coinFlipSandyMoney -= self.bet
-                pygame.time.delay(1000)
-
-                self.game_state = "you_won_the_toss"
-
-                if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                    print("At 0 ending match")
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-
-
-
-
-            elif self.result != self.players_side:
-                if self.luck_activated > 0:
-                    lucky_draw = random.random()
-                    if lucky_draw < 0.9:
-                        self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
-
-                        if controller.isAPressed:
-                            self.luck_activated -= 1
-                            state.player.playerMoney += self.bet
-                            self.coinFlipSandyMoney -= self.bet
-                            self.result = self.players_side
-
-                            self.game_state = "you_won_the_toss"
-                    else:
-                        # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
-                        if controller.isAPressed:
-                            self.luck_activated -= 1
-
-                            state.player.playerMoney -= self.bet
-                            self.coinFlipSandyMoney += self.bet
-
-                            self.game_state = "you_lost_the_toss"
-
-                elif self.luck_activated == 0:
-                    pygame.time.delay(500)
-                    state.player.playerMoney -= self.bet
-                    self.coinFlipSandyMoney += self.bet
-
-                    self.game_state = "you_lost_the_toss"
-
-
-
-
-
-
-
-
-
-
-
-        elif self.game_state == "you_won_the_toss":
-            if self.players_side == "tails" and self.sandy_focus_points > 0 and self.luck_activated < 1 and self.cheating_alert == False:
-                self.players_side = "heads"
-                print("I could have sworn I picked tails. Did they switch my bet?")
-                if self.reveal_hand == True:
-                    print("The other person is cheating. I'll hold up my hands to signafy which side I'll guess")
-                    self.cheating_alert = True
-
-                self.game_state = "you_lost_the_toss"
-
-            self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
-            self.second_message_display = f"Play again? Press T on your choice"
-
-            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                print("At 0 ending match")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
-
-
-
-
-
-            elif controller.isUpPressed:
-                if not hasattr(self, "leave_or_replay_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
-                else:
-                    self.leave_or_replay_index -= 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
-                else:
-                    self.leave_or_replay_index += 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isDownPressed = False
-
-            if self.leave_or_replay_index == 0:
-                if controller.isTPressed:
-                    self.game_state = "welcome_screen"
-
-            elif self.leave_or_replay_index == 1:
-                if controller.isTPressed:
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-
-
-        elif self.game_state == "you_lost_the_toss":
-            self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
-            self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
-            if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
-                print("At 0 ending match")
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
-
-
-
-
-            elif controller.isUpPressed:
-                if not hasattr(self, "leave_or_replay_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
-                else:
-                    self.leave_or_replay_index -= 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "yes_no_current_index"):
-                    self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
-                else:
-                    self.leave_or_replay_index += 1
-                self.leave_or_replay_index %= len(self.yes_or_no_menu)
-                controller.isDownPressed = False
-
-            if self.leave_or_replay_index == 0:
-                if controller.isTPressed:
-                    self.game_state = "welcome_screen"
-
-            elif self.leave_or_replay_index == 1:
-                if controller.isTPressed:
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
-
-    ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
-
-    def draw(self, state: "GameState"):
-        # Fill the screen with a solid color
-        DISPLAY.fill((0, 0, 0))
-
-        DISPLAY.blit(self.new_font.render(
-            f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
-            True, (255, 255, 255)), (10, 150))
-        DISPLAY.blit(self.new_font.render(
-            f" player Money: {state.player.playerMoney}",
-            True, (255, 255, 255)), (10, 190))
-
-        # Draw the welcome message or choose bet message based on the game state
-
-        DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
-        DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
-        DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
-        DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
-        DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
-        DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
-
-        if self.game_state == "magic_menu":
-            if self.magic_menu_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.magic_menu_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.magic_menu_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-            elif self.magic_menu_index == 3:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (700, 310))
-
-        elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-        if self.game_state == "bet_screen":
-
-            DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
-            DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
-
-
-        elif self.game_state == "choose_heads_or_tails_message":
-
-            if self.current_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.current_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.current_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-        elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
-            DISPLAY.blit(
-                self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            if self.yes_no_current_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.yes_no_current_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-        pygame.display.flip()
-
-        ########have deals notice if player is low on stamina and magic and thus react to it
-        #### have a dealer make a comment to player on this a few times.
-
-
-#### no need to "defeat"people, but in doing so with some people you can complete quest
-####or have it to where you only need to defeat 1 of each type as a quest.hmmmmm not sure
-class OpossumInACanScreen(Screen):
-    def __init__(self):
-        super().__init__("Opossum in a can screen")
-        self.third_message_display = ""
-        self.desperate = False
-        # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 100
-        self.sallyOpossumIsDefeated = False
-        self.opossum_font = pygame.font.Font(None, 36)
-        self.font = pygame.font.Font(None, 36)
-        self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
-
-                                            "win", "insurance_eater"]
-        self.result = "win"
-        self.bet = 20
-        self.insurance = 200
-        self.X3 = False
-        self.has_opossum_insurance = True
-
-        self.choices = ["Grab", "Magic", "Quit"]
-        self.choices_index = 0
-
-        self.bet_or_flee = ["bet", "flee"]
-        self.bet_or_flee_index = 0
-
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
-        self.magic_menu_index = 0
-
-        self.play_again_or_quit = ["Play Again", "Quit"]
-
-        self.play_again_or_quit_index = 0
-
-        self.bluff_activated = 0
-        self.bottom_message = ""
-        self.opossum_rader = False
-
-        self.luck_activated = 0
-
-    def refresh(self):
-        self.bet = 20
-        self.has_opossum_insurance = True
-        self.insurance = 200
-
-        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "win",
-
-                                 "win", "insurance_eater"]
-
-    def shuffle_opposums(self) -> List[str]:
-        """Creates a new list in a random order"""
-
-        random.shuffle(self.winner_or_looser)
-        if self.luck_activated > 0:
-            self.luck_activated -= 1
-
-        print(str(self.winner_or_looser))
-        return self.winner_or_looser
-
-    def check_results(self, state: "GameState"):
-        if self.result == "X3_star":
-            self.X3 = True
-            print(self.game_state)
-            self.game_state = "play_again_or_bail"
-
-
-        elif self.result == "win":
-            if self.X3 == False:
-                self.bet = self.bet * 2
-                self.sallyOpossumMoney -= self.bet // 2
-                print("you win")
-                print(self.bet)
-                self.game_state = "play_again_or_bail"
-            else:
-                self.bet = self.bet * 3
-                self.sallyOpossumMoney -= self.bet // 3 * 2
-                self.X3 = False
-                self.game_state = "play_again_or_bail"
-
-        elif self.result == "lucky_star":
-            self.insurance = self.insurance + 200
-            self.sallyOpossumMoney -= 200
-            self.game_state = "play_again_or_bail"
-
-
-        elif self.result == "insurance_eater":
-
-            if self.insurance <= 0:
-                self.sallyOpossumMoney += self.bet
-
-                print("oh no your in trouble")
-                print(self.game_state)
-                self.game_state = "loser_screen"
-            else:
-                print("what are you doing here?")
-                self.sallyOpossumMoney += self.insurance
-                self.insurance -= 200
-                self.game_state = "play_again_or_bail"
-
-        elif self.result == "lose":
-            print("This is the losing screen")
-            self.sallyOpossumMoney += self.bet
-            self.sallyOpossumMoney += self.insurance
-            self.bet = 0
-
-            self.game_state = "loser_screen"
-
-    def update(self, state: "GameState"):
-        if self.sallyOpossumMoney <= 0:
-            self.sallyOpossumIsDefeated = True
-        controller = state.controller
-        controller.update(state)
-        if self.sallyOpossumMoney <= 300:
-            self.desperate = True
-        elif self.sallyOpossumMoney > 300:
-            self.desperate = False
-
-        if self.game_state == "welcome_opposum":
-
-            if controller.isTPressed:
-                pygame.time.delay(150)
-                self.game_state = "choose_can"
-
-        elif self.game_state == "choose_can":
-            if controller.isUpPressed:
-                if not hasattr(self, "choices_index"):
-                    self.choices_index = len(self.choices) - 1
-                else:
-                    self.choices_index -= 1
-                self.choices_index %= len(self.choices)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "choices_index"):
-                    self.choices_index = len(self.choices) + 1
-                else:
-                    self.choices_index += 1
-                self.choices_index %= len(self.choices)
-                controller.isDownPressed = False
-
-            elif self.choices_index == 0:
-                if controller.isTPressed:
-                    pygame.time.delay(150)
-                    self.shuffle_opposums()
-                    self.result = self.winner_or_looser[0]
-                    if self.opossum_rader == True:
-                        print("HEY THERE YOU GUY ITS POSSUM TIIIIIIME")
-                        self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
-                        if controller.isTPressed:
-                            self.game_state = "choose_or_flee"
-                            self.opossum_rader = False
-
-                    else:
-                        del self.winner_or_looser[0]
-                        self.check_results(state)
-                        print("Get that opossum")
-
-            elif self.choices_index == 1:
-                if controller.isTPressed:
-                    self.game_state = "magic_menu"
-                    print("cast magic")
-
-
-            elif self.choices_index == 2:
-                if controller.isTPressed:
-                    print("Quitting")
-
-
-
-        elif self.game_state == "choose_or_flee":
-            self.message_display = f"Will you go forward or retreat?"
-            if controller.isUpPressed:
-                if not hasattr(self, "bet_or_flee_index"):
-                    self.bet_or_flee_index = len(self.bet_or_flee) - 1
-                else:
-                    self.bet_or_flee_index -= 1
-                self.bet_or_flee_index %= len(self.bet_or_flee)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "bet_or_flee_index"):
-                    self.bet_or_flee_index = len(self.bet_or_flee) + 1
-                else:
-                    self.bet_or_flee_index += 1
-                self.bet_or_flee_index %= len(self.bet_or_flee)
-                controller.isDownPressed = False
-
-            elif self.bet_or_flee_index == 0:
-                if controller.isTPressed:
-                    print("lets go with it")
-                    self.game_state = "choose_can"
-
-            elif self.bet_or_flee_index == 1:
-                if controller.isTPressed:
-                    print("lets get out")
-
-
-
-
-        elif self.game_state == "magic_menu":
-            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
-            if controller.isUpPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
-                else:
-                    self.magic_menu_index -= 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
-                else:
-                    self.magic_menu_index += 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isDownPressed = False
-
-            if self.magic_menu_index == 0:
-                if controller.isKPressed and state.player.focus_points > 9:
-                    if len(self.winner_or_looser) < 6:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
-
-                            print("You cast bluff")
-                            print("I'll bet you I'll get the rst of the wins")
-                            state.player.playerMoney += self.sallyOpossumMoney
-                            self.sallyOpossumIsDefeated = True
-                            self.sallyOpossumMoney = 0
-                            print("exiting now")
-
-                        else:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    else:
-                        self.third_message_display = "sorry but you can't stack magic spells.Wait till 3 wins left to cast."
-
-
-            elif self.magic_menu_index == 1:
-                if controller.isKPressed and self.luck_activated == 0:
-                    print("You cast reveal")
-                    if state.player.focus_points >= 10:
-                        state.player.focus_points -= 10
-                        self.opossum_rader = True
-
-                        self.game_state = "choose_can"
-
-                    elif state.player.focus_points < 10:
-                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                else:
-                    self.third_message_display = "sorry but you can't stack magic spells"
-
-
-
-
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
-            elif self.magic_menu_index == 2:
-                if controller.isKPressed and self.luck_activated == 0:
-                    print("you cast avatar of luck")
-                    self.third_message_display = "The god of luck shines on you, looks like another trash can was hiding behind one of the others"
-                    state.player.focus_points -= 20
-                    self.winner_or_looser.append("win")
-
-                    self.game_state = "choose_can"
-                    self.luck_activated = 5
-
-
-
-            elif self.magic_menu_index == 3:
-                if controller.isKPressed:
-                    print("going back")
-                    self.game_state = "choose_can"
-
-                    #########################################################################
-
-
-        elif self.game_state == "play_again_or_bail":
-            if controller.isUpPressed:
-                if not hasattr(self, "play_again_or_quit_index"):
-                    self.play_again_or_quit_index = len(self.play_again_or_quit) - 1
-                else:
-                    self.play_again_or_quit_index -= 1
-                self.play_again_or_quit_index %= len(self.play_again_or_quit)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "play_again_or_quit_index"):
-                    self.play_again_or_quit_index = len(self.play_again_or_quit) + 1
-                else:
-                    self.play_again_or_quit_index += 1
-                self.play_again_or_quit_index %= len(self.play_again_or_quit)
-                controller.isDownPressed = False
-
-            elif self.play_again_or_quit_index == 0:
-                if controller.isTPressed:
-                    print("lets go with it")
-                    pygame.time.delay(150)
-                    self.game_state = "choose_can"
-
-            elif self.play_again_or_quit_index == 1:
-                if controller.isTPressed:
-                    print("lets get out")
-
-
-
-
-
-
-
-
-
-
-        elif self.game_state == "loser_screen":
-            time.sleep(3)
-            self.refresh()
-            self.game_state = "welcome_opposum"
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-
-    def draw(self, state: "GameState"):
-        DISPLAY.fill((0, 0, 0))
-
-        if self.desperate == True:
-            DISPLAY.blit(self.font.render(
-                f" I Take care of the orphanage here Please think of the children!",
-                True, (255, 255, 255)), (10, 530))
-
-        DISPLAY.blit(self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)), (1, 333))
-
-        DISPLAY.blit(self.font.render(
-            f" SallyOpossum Money: {self.sallyOpossumMoney}",
-            True, (255, 255, 255)), (10, 190))
-        DISPLAY.blit(self.font.render(
-            f" player Money: {state.player.playerMoney}",
-            True, (255, 255, 255)), (10, 290))
-
-        DISPLAY.blit(self.font.render(
-            f" Players Bet: {self.bet}",
-            True, (255, 255, 255)), (10, 390))
-        DISPLAY.blit(self.font.render(
-            f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
-            True, (255, 255, 255)), (10, 490))
-
-        DISPLAY.blit(self.font.render(
-            f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
-            True, (255, 255, 255)), (10, 33))
-
-        if self.game_state == "choose_can":
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            if self.choices_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.choices_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.choices_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-        elif self.game_state == "choose_or_flee":
-            if self.bet_or_flee_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.bet_or_flee_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.bet_or_flee[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.bet_or_flee[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-
-
-        elif self.game_state == "magic_menu":
-            if self.magic_menu_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.magic_menu_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.magic_menu_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-            elif self.magic_menu_index == 3:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (700, 310))
-
-
-
-        elif self.game_state == "welcome_opposum":
-            DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
-        elif self.game_state == "choose_can":
-            DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (100, 10))
-
-
-
-        elif self.game_state == "play_again_or_bail":
-            DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
-            if self.play_again_or_quit_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.play_again_or_quit_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.play_again_or_quit[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.play_again_or_quit[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-        elif self.game_state == "loser_screen":
-            DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
-
-        pygame.display.flip()
-
-
-class OpossumInACanNellyScreen(Screen):
-    def __init__(self):
-        super().__init__("Opossum in a can screen")
-        self.third_message_display = ""
-        self.desperate = False
-        # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 100
-        self.sallyOpossumIsDefeated = False
-        self.opossum_font = pygame.font.Font(None, 36)
-        self.font = pygame.font.Font(None, 36)
-        self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
-
-                                            "win", "insurance_eater", "lose"]
-        self.result = "win"
-        self.bet = 20
-        self.insurance = 200
-        self.X3 = False
-        self.has_opossum_insurance = True
-
-        self.choices = ["Grab", "Magic", "Quit"]
-        self.choices_index = 0
-
-        self.bet_or_flee = ["bet", "flee"]
-        self.bet_or_flee_index = 0
-
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
-        self.magic_menu_index = 0
-
-        self.play_again_or_quit = ["Play Again", "Quit"]
-
-        self.play_again_or_quit_index = 0
-
-        self.bluff_activated = 0
-        self.bottom_message = ""
-        self.opossum_rader = False
-
-        self.luck_activated = 0
-
-    def refresh(self):
-        self.bet = 20
-        self.has_opossum_insurance = True
-        self.insurance = 200
-
-        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
-
-                                 "win", "insurance_eater", "lose"]
-
-    def shuffle_opposums(self) -> List[str]:
-        """Creates a new list in a random order"""
-
-        random.shuffle(self.winner_or_looser)
-        if self.luck_activated > 0:
-            self.luck_activated -= 1
-
-        print(str(self.winner_or_looser))
-        return self.winner_or_looser
-
-    def check_results(self, state: "GameState"):
-        if self.result == "X3_star":
-            self.X3 = True
-            print(self.game_state)
-            self.game_state = "play_again_or_bail"
-
-
-        elif self.result == "win":
-            if self.X3 == False:
-                self.bet = self.bet * 2
-                self.sallyOpossumMoney -= self.bet // 2
-                print("you win")
-                print(self.bet)
-                self.game_state = "play_again_or_bail"
-            else:
-                self.bet = self.bet * 3
-                self.sallyOpossumMoney -= self.bet // 3 * 2
-                self.X3 = False
-                self.game_state = "play_again_or_bail"
-
-        elif self.result == "lucky_star":
-            self.insurance = self.insurance + 200
-            self.sallyOpossumMoney -= 200
-            self.game_state = "play_again_or_bail"
-
-
-        elif self.result == "insurance_eater":
-
-            if self.insurance <= 0:
-                self.sallyOpossumMoney += self.bet
-
-                print("oh no your in trouble")
-                print(self.game_state)
-                self.game_state = "loser_screen"
-            else:
-                print("what are you doing here?")
-                self.sallyOpossumMoney += self.insurance
-                self.insurance -= 200
-                self.game_state = "play_again_or_bail"
-
-        elif self.result == "lose":
-            print("This is the losing screen")
-            self.sallyOpossumMoney += self.bet
-            self.sallyOpossumMoney += self.insurance
-            self.bet = 0
-
-            self.game_state = "loser_screen"
-
-    def update(self, state: "GameState"):
-        if self.sallyOpossumMoney <= 0:
-            self.sallyOpossumIsDefeated = True
-        controller = state.controller
-        controller.update(state)
-        if self.sallyOpossumMoney <= 300:
-            self.desperate = True
-        elif self.sallyOpossumMoney > 300:
-            self.desperate = False
-
-        if self.game_state == "welcome_opposum":
-
-            if controller.isTPressed:
-                pygame.time.delay(150)
-                self.game_state = "choose_can"
-
-        elif self.game_state == "choose_can":
-            if controller.isUpPressed:
-                if not hasattr(self, "choices_index"):
-                    self.choices_index = len(self.choices) - 1
-                else:
-                    self.choices_index -= 1
-                self.choices_index %= len(self.choices)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "choices_index"):
-                    self.choices_index = len(self.choices) + 1
-                else:
-                    self.choices_index += 1
-                self.choices_index %= len(self.choices)
-                controller.isDownPressed = False
-
-            elif self.choices_index == 0:
-                if controller.isTPressed:
-                    pygame.time.delay(150)
-                    self.shuffle_opposums()
-                    self.result = self.winner_or_looser[0]
-                    if self.opossum_rader == True:
-                        print("HEY THERE YOU GUY ITS POSSUM TIIIIIIME")
-                        self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
-                        if self.result == "lose":
-                            print("you notice this dealer is cheating")
-                            state.player.playerMoney += self.sallyOpossumMoney
-                            self.sallyOpossumMoney = 0
-                            print("time to leave we got the  cheater")
-                        if controller.isTPressed:
-                            self.game_state = "choose_or_flee"
-                            self.opossum_rader = False
-
-                    else:
-                        del self.winner_or_looser[0]
-                        self.check_results(state)
-                        print("Get that opossum")
-
-            elif self.choices_index == 1:
-                if controller.isTPressed:
-                    self.game_state = "magic_menu"
-                    print("cast magic")
-
-
-            elif self.choices_index == 2:
-                if controller.isTPressed:
-                    print("Quitting")
-
-
-
-        elif self.game_state == "choose_or_flee":
-            self.message_display = f"Will you go forward or retreat?"
-            if controller.isUpPressed:
-                if not hasattr(self, "bet_or_flee_index"):
-                    self.bet_or_flee_index = len(self.bet_or_flee) - 1
-                else:
-                    self.bet_or_flee_index -= 1
-                self.bet_or_flee_index %= len(self.bet_or_flee)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "bet_or_flee_index"):
-                    self.bet_or_flee_index = len(self.bet_or_flee) + 1
-                else:
-                    self.bet_or_flee_index += 1
-                self.bet_or_flee_index %= len(self.bet_or_flee)
-                controller.isDownPressed = False
-
-            elif self.bet_or_flee_index == 0:
-                if controller.isTPressed:
-                    print("lets go with it")
-                    self.game_state = "choose_can"
-
-            elif self.bet_or_flee_index == 1:
-                if controller.isTPressed:
-                    print("lets get out")
-
-
-
-
-        elif self.game_state == "magic_menu":
-            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
-            if controller.isUpPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
-                else:
-                    self.magic_menu_index -= 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
-                else:
-                    self.magic_menu_index += 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isDownPressed = False
-
-            if self.magic_menu_index == 0:
-                if controller.isKPressed and state.player.focus_points > 9:
-                    if len(self.winner_or_looser) < 6:
-                        if state.player.focus_points >= 10:
-                            state.player.focus_points -= 10
-
-                            print("You cast bluff")
-                            print("I'll bet you I'll get the rst of the wins")
-                            state.player.playerMoney += self.sallyOpossumMoney
-                            self.sallyOpossumIsDefeated = True
-                            self.sallyOpossumMoney = 0
-                            print("exiting now")
-
-                        else:
-                            self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                    else:
-                        self.third_message_display = "sorry but you can't stack magic spells.Wait till 3 wins left to cast."
-
-
-            elif self.magic_menu_index == 1:
-                if controller.isKPressed and self.luck_activated == 0:
-                    print("You cast reveal")
-                    if state.player.focus_points >= 10:
-                        state.player.focus_points -= 10
-                        self.opossum_rader = True
-
-                        self.game_state = "choose_can"
-
-                    elif state.player.focus_points < 10:
-                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                else:
-                    self.third_message_display = "sorry but you can't stack magic spells"
-
-
-
-
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
-            elif self.magic_menu_index == 2:
-                if controller.isKPressed and self.luck_activated == 0:
-                    print("you cast avatar of luck")
-                    self.third_message_display = "The god of luck shines on you, looks like another trash can was hiding behind one of the others"
-                    state.player.focus_points -= 20
-                    self.winner_or_looser.append("win")
-
-                    self.game_state = "choose_can"
-                    self.luck_activated = 5
-
-
-
-            elif self.magic_menu_index == 3:
-                if controller.isKPressed:
-                    print("going back")
-                    self.game_state = "choose_can"
-
-                    #########################################################################
-
-
-        elif self.game_state == "play_again_or_bail":
-            if controller.isUpPressed:
-                if not hasattr(self, "play_again_or_quit_index"):
-                    self.play_again_or_quit_index = len(self.play_again_or_quit) - 1
-                else:
-                    self.play_again_or_quit_index -= 1
-                self.play_again_or_quit_index %= len(self.play_again_or_quit)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                if not hasattr(self, "play_again_or_quit_index"):
-                    self.play_again_or_quit_index = len(self.play_again_or_quit) + 1
-                else:
-                    self.play_again_or_quit_index += 1
-                self.play_again_or_quit_index %= len(self.play_again_or_quit)
-                controller.isDownPressed = False
-
-            elif self.play_again_or_quit_index == 0:
-                if controller.isTPressed:
-                    print("lets go with it")
-                    pygame.time.delay(150)
-                    self.game_state = "choose_can"
-
-            elif self.play_again_or_quit_index == 1:
-                if controller.isTPressed:
-                    print("lets get out")
-
-
-
-
-
-
-
-
-
-
-        elif self.game_state == "loser_screen":
-            time.sleep(3)
-            self.refresh()
-            self.game_state = "welcome_opposum"
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-
-    def draw(self, state: "GameState"):
-        DISPLAY.fill((0, 0, 0))
-
-        if self.desperate == True:
-            DISPLAY.blit(self.font.render(
-                f" I Take care of the orphanage here Please think of the children!",
-                True, (255, 255, 255)), (10, 530))
-
-        DISPLAY.blit(self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)), (1, 333))
-
-        DISPLAY.blit(self.font.render(
-            f" SallyOpossum Money: {self.sallyOpossumMoney}",
-            True, (255, 255, 255)), (10, 190))
-        DISPLAY.blit(self.font.render(
-            f" player Money: {state.player.playerMoney}",
-            True, (255, 255, 255)), (10, 290))
-
-        DISPLAY.blit(self.font.render(
-            f" Players Bet: {self.bet}",
-            True, (255, 255, 255)), (10, 390))
-        DISPLAY.blit(self.font.render(
-            f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
-            True, (255, 255, 255)), (10, 490))
-
-        DISPLAY.blit(self.font.render(
-            f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
-            True, (255, 255, 255)), (10, 33))
-
-        if self.game_state == "choose_can":
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            if self.choices_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.choices_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.choices_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-        elif self.game_state == "choose_or_flee":
-            if self.bet_or_flee_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.bet_or_flee_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.bet_or_flee[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.bet_or_flee[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-
-
-        elif self.game_state == "magic_menu":
-            if self.magic_menu_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.magic_menu_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
-
-
-            elif self.magic_menu_index == 2:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-            elif self.magic_menu_index == 3:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
-                (700, 260))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (700, 310))
-
-
-
-        elif self.game_state == "welcome_opposum":
-            DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
-        elif self.game_state == "choose_can":
-            DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (100, 10))
-
-
-
-        elif self.game_state == "play_again_or_bail":
-            DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
-            if self.play_again_or_quit_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.play_again_or_quit_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.play_again_or_quit[0]}", True, (255, 255, 255)),
-                (700, 160))
-
-            DISPLAY.blit(
-                self.font.render(f"{self.play_again_or_quit[1]}", True, (255, 255, 255)),
-                (700, 210))
-
-        elif self.game_state == "loser_screen":
-            DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
-
-        pygame.display.flip()
+#
+# class CoinFlipTedScreen(Screen):
+#     def __init__(self):
+#         super().__init__("Casino Coin flip  Screen")
+#
+#         self.result = ""
+#         self.play_again = True
+#         self.players_side = ""
+#         self.new_font = pygame.font.Font(None, 36)
+#         self.message_display = ""
+#         self.second_message_display = ""
+#         self.third_message_display = ""
+#         self.magic_player_message_display = ""
+#         self.magic_enemy_message_display = ""
+#         self.choices = ["Heads", "Tails", "Magic"]
+#         self.yes_or_no_menu = ["Yes", "No"]
+#         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+#         self.game_state = "welcome_screen"
+#         self.choice_sequence = True
+#         self.bet = 0
+#         self.font = pygame.font.Font(None, 36)
+#         self.coinFlipSandyMoney = 700
+#         self.coinFlipSandyDefeated = False
+#         self.current_index = 0
+#         self.yes_no_current_index = 0
+#         self.magic_menu_index = 0
+#         self.leave_or_replay_index = 0
+#         self.high_exp = False
+#         self.low_exp = False
+#
+#         self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
+#         self.luck_activated = 0
+#         self.sandy_focus_points = 30
+#         self.reveal_hand = False
+#         self.cheating_alert = False
+#
+#     def giveExp(self, state: "GameState"):
+#         if state.player.level == 1:
+#             if self.high_exp == True:
+#                 state.player.exp += 15
+#             elif self.low_exp == True:
+#                 state.player.exp += 50
+#         elif state.player.level == 2:
+#             if self.high_exp == True:
+#                 state.player.exp += 5
+#             elif self.low_exp == True:
+#                 state.player.exp += 15
+#         else:
+#             print("your level is too high no exp for you")
+#
+#     def place_bet(self, state: "GameState"):
+#         controller = state.controller
+#         controller.update(state)
+#
+#         if controller.isUpPressed:
+#             self.bet += 10
+#             pygame.time.delay(200)
+#             self.isUpPressed = False
+#
+#         elif controller.isDownPressed:
+#             self.bet -= 10
+#             pygame.time.delay(200)
+#             self.isDownPressed = False
+#
+#         if self.bet < 10:
+#             self.bet = 10
+#
+#         if self.bet > 100:
+#             self.bet = 100
+#
+#     def flipCoin(self):
+#         # currently at .6 because heads is favored
+#         # in the future will have states to handle coin flip percentages
+#         # an item can add .1 to your rolls for heads, or -.1 for tails
+#         coin = random.random()
+#         if coin < 0.5:
+#             print("coin landed on heads")
+#             self.result = "heads"
+#         else:
+#             print("coin landed on tails")
+#             self.result = "tails"
+#
+#     def cheatCoin(self):
+#         coin = random.random()
+#         if coin < 0.3:
+#             print("coin landed on heads")
+#             self.result = "heads"
+#         else:
+#             print("coin landed on tails")
+#             self.result = "tails"
+#
+#     def update(self, state: "GameState"):
+#         if self.coinFlipSandyMoney <= 0:
+#             self.coinFlipSandyDefeated = True
+#         # Update the controller
+#         controller = state.controller
+#         controller.update(state)
+#
+#         if state.player.stamina_points < 3:
+#             state.currentScreen = state.mainScreen
+#             state.mainScreen.start(state)
+#
+#         if self.game_state == "welcome_screen":
+#
+#             self.message_display = "This is the welcome screen. Press R to continue"
+#             self.second_message_display = ""
+#             self.third_message_display = ""
+#             self.reveal_hand = False
+#
+#             if controller.isRPressed:
+#                 state.player.stamina_points -= 3
+#
+#                 self.game_state = "bet_screen"
+#
+#         elif self.game_state == "bet_screen":
+#             self.message_display = "This is the bet screen. Press up and down to change your bet."
+#             self.second_message_display = "When you are ready press T to continue."
+#             controller = state.controller
+#             self.place_bet(state)
+#             if controller.isTPressed:
+#                 print("t pressed")
+#                 self.game_state = "coin_flip_time"
+#
+#
+#         elif self.game_state == "coin_flip_time":
+#             self.message_display = "I'm flipping the coin now."
+#             pygame.time.delay(500)
+#             if self.bet < 80:
+#                 self.flipCoin()
+#                 self.game_state = "choose_heads_or_tails_message"
+#             elif self.bet > 70:
+#                 self.cheatCoin()
+#                 self.game_state = "choose_heads_or_tails_message"
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "choose_heads_or_tails_message":
+#             self.message_display = "Now Choose heads or tails. Make your choice"
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "current_index"):
+#                     self.current_index = len(self.choices) - 1
+#                 else:
+#                     self.current_index -= 1
+#                 self.current_index %= len(self.choices)
+#                 print(self.choices[self.current_index])
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "current_index"):
+#                     self.current_index = len(self.choices) + 1
+#                 else:
+#                     self.current_index += 1
+#                 self.current_index %= len(self.choices)
+#                 print(self.choices[self.current_index])
+#                 controller.isDownPressed = False
+#
+#             if self.current_index == 0:
+#                 if controller.isTPressed:
+#                     self.players_side = "heads"
+#                     self.game_state = "results_screen"
+#
+#             elif self.current_index == 1:
+#                 if controller.isTPressed:
+#                     self.players_side = "tails"
+#                     self.game_state = "results_screen"
+#
+#
+#             elif self.current_index == 2:
+#                 if controller.isTPressed:
+#                     print("This is how you pick magic")
+#                     self.game_state = "magic_menu"
+#
+#
+#
+#         # 534534543535353525532535353354
+#
+#         elif self.game_state == "magic_menu":
+#             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+#
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) - 1
+#                 else:
+#                     self.magic_menu_index -= 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) + 1
+#                 else:
+#                     self.magic_menu_index += 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isDownPressed = False
+#
+#             if self.magic_menu_index == 0:
+#                 if controller.isKPressed:
+#                     if self.luck_activated < 1 and self.reveal_hand == False:
+#                         if state.player.focus_points >= 10:
+#                             state.player.focus_points -= 10
+#
+#                             print("You cast bluff")
+#                             self.game_state = "bluff_state"
+#
+#                         else:
+#                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     elif self.luck_activated > 0 or self.reveal_hand == True:
+#                         self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 if controller.isKPressed:
+#                     if self.luck_activated < 1:
+#                         print("You cast reveal")
+#                         if controller.isKPressed:
+#                             if state.player.focus_points >= 10:
+#                                 state.player.focus_points -= 10
+#                                 self.reveal_hand = True
+#
+#                                 print("You cast bluff")
+#                                 self.game_state = "reveal_state"
+#
+#                             elif state.player.focus_points < 10:
+#                                 self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     elif self.luck_activated > 0:
+#                         self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#
+#
+#
+#             ##########################have a message state reserved for buff states
+#
+#             ##### boss enemies will use magic under more strict conditions
+#             elif self.magic_menu_index == 2:
+#                 if controller.isKPressed:
+#                     print("you cast avatar of luck")
+#                     self.third_message_display = "Your luck is now increased for 3 losses"
+#                     self.luck_activated = 3
+#                     state.player.focus_points -= 20
+#                     self.game_state = "choose_heads_or_tails_message"
+#
+#
+#             elif self.magic_menu_index == 3:
+#                 if controller.isKPressed:
+#                     print("going back")
+#                     self.game_state = "choose_heads_or_tails_message"
+#
+#         elif self.game_state == "reveal_state":
+#             self.message_display = "time to reveal your coin"
+#             self.third_message_display = f"The coin will be on the {self.result}"
+#             if state.controller.isAPressed:
+#                 self.game_state = "choose_heads_or_tails_message"
+#                 state.controller.isAPressed = False
+#
+#
+#
+#
+#         elif self.game_state == "bluff_state":
+#             self.message_display = "Triple my bet that tails will land 3 times in a  row."
+#             bluffalo = random.random()
+#
+#             if bluffalo < 0.7:
+#                 print("you win tripple bet")
+#                 state.player.playerMoney += self.bet * 3
+#                 self.game_state = "welcome_screen"
+#
+#
+#             else:
+#                 print("your bet lost")
+#                 state.player.playerMoney -= self.bet
+#                 self.game_state = "welcome_screen"
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "results_screen":
+#             self.second_message_display = " "
+#             if self.result == self.players_side:
+#                 # self.third_message_display = "You won"
+#                 state.player.playerMoney += self.bet
+#                 self.coinFlipSandyMoney -= self.bet
+#                 pygame.time.delay(1000)
+#
+#                 self.game_state = "you_won_the_toss"
+#
+#                 if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                     print("At 0 ending match")
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#
+#
+#
+#
+#             elif self.result != self.players_side:
+#                 if self.luck_activated > 0:
+#                     lucky_draw = random.random()
+#                     if lucky_draw < 0.9:
+#                         self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
+#
+#                         if controller.isAPressed:
+#                             self.luck_activated -= 1
+#                             state.player.playerMoney += self.bet
+#                             self.coinFlipSandyMoney -= self.bet
+#                             self.result = self.players_side
+#
+#                             self.game_state = "you_won_the_toss"
+#                     else:
+#                         # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
+#                         if controller.isAPressed:
+#                             self.luck_activated -= 1
+#
+#                             state.player.playerMoney -= self.bet
+#                             self.coinFlipSandyMoney += self.bet
+#
+#                             self.game_state = "you_lost_the_toss"
+#
+#                 elif self.luck_activated == 0:
+#                     pygame.time.delay(500)
+#                     state.player.playerMoney -= self.bet
+#                     self.coinFlipSandyMoney += self.bet
+#
+#                     self.game_state = "you_lost_the_toss"
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "you_won_the_toss":
+#             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
+#             self.second_message_display = f"Play again? Press T on your choice"
+#
+#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 print("At 0 ending match")
+#                 state.currentScreen = state.mainScreen
+#                 state.mainScreen.start(state)
+#
+#
+#
+#
+#
+#             elif controller.isUpPressed:
+#                 if not hasattr(self, "leave_or_replay_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
+#                 else:
+#                     self.leave_or_replay_index -= 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "yes_no_current_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
+#                 else:
+#                     self.leave_or_replay_index += 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isDownPressed = False
+#
+#             if self.leave_or_replay_index == 0:
+#                 if controller.isTPressed:
+#                     self.game_state = "welcome_screen"
+#
+#             elif self.leave_or_replay_index == 1:
+#                 if controller.isTPressed:
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#
+#
+#         elif self.game_state == "you_lost_the_toss":
+#
+#             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
+#             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
+#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 print("At 0 ending match")
+#                 state.currentScreen = state.mainScreen
+#                 state.mainScreen.start(state)
+#
+#
+#
+#
+#             elif controller.isUpPressed:
+#                 if not hasattr(self, "leave_or_replay_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
+#                 else:
+#                     self.leave_or_replay_index -= 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "yes_no_current_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
+#                 else:
+#                     self.leave_or_replay_index += 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isDownPressed = False
+#
+#             if self.leave_or_replay_index == 0:
+#                 if controller.isTPressed:
+#                     self.game_state = "welcome_screen"
+#
+#             elif self.leave_or_replay_index == 1:
+#                 if controller.isTPressed:
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
+#
+#     def draw(self, state: "GameState"):
+#         # Fill the screen with a solid color
+#         DISPLAY.fill((0, 0, 0))
+#
+#         DISPLAY.blit(self.new_font.render(
+#             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
+#             True, (255, 255, 255)), (10, 150))
+#         DISPLAY.blit(self.new_font.render(
+#             f" player Money: {state.player.playerMoney}",
+#             True, (255, 255, 255)), (10, 190))
+#
+#         # Draw the welcome message or choose bet message based on the game state
+#
+#         DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+#         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
+#         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
+#         DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
+#         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
+#         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
+#
+#         if self.game_state == "magic_menu":
+#             if self.magic_menu_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.magic_menu_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#             elif self.magic_menu_index == 3:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 305))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+#                 (700, 310))
+#
+#         elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#         if self.game_state == "bet_screen":
+#
+#             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
+#             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
+#
+#
+#         elif self.game_state == "choose_heads_or_tails_message":
+#
+#             if self.current_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.current_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.current_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             if self.yes_no_current_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.yes_no_current_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#         pygame.display.flip()
+#
+#
+# class CoinFlipFredScreen(Screen):
+#     def __init__(self):
+#         super().__init__("Casino Coin flip  Screen")
+#
+#         self.result = ""
+#         self.play_again = True
+#         self.players_side = ""
+#         self.new_font = pygame.font.Font(None, 36)
+#         self.message_display = ""
+#         self.second_message_display = ""
+#         self.third_message_display = ""
+#         self.magic_player_message_display = ""
+#         self.magic_enemy_message_display = ""
+#         self.choices = ["Heads", "Tails", "Magic"]
+#         self.yes_or_no_menu = ["Yes", "No"]
+#         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+#         self.game_state = "welcome_screen"
+#         self.choice_sequence = True
+#         self.bet = 0
+#         self.font = pygame.font.Font(None, 36)
+#         self.coinFlipSandyMoney = 700
+#         self.coinFlipSandyDefeated = False
+#         self.current_index = 0
+#         self.yes_no_current_index = 0
+#         self.magic_menu_index = 0
+#         self.leave_or_replay_index = 0
+#         self.high_exp = False
+#         self.low_exp = False
+#
+#         self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
+#         self.luck_activated = 0
+#         self.sandy_focus_points = 30
+#         self.reveal_hand = False
+#         self.cheating_alert = False
+#
+#     def giveExp(self, state: "GameState"):
+#         if state.player.level == 1:
+#             if self.high_exp == True:
+#                 state.player.exp += 15
+#             elif self.low_exp == True:
+#                 state.player.exp += 50
+#         elif state.player.level == 2:
+#             if self.high_exp == True:
+#                 state.player.exp += 5
+#             elif self.low_exp == True:
+#                 state.player.exp += 15
+#         else:
+#             print("your level is too high no exp for you")
+#
+#     def place_bet(self, state: "GameState"):
+#         controller = state.controller
+#         controller.update(state)
+#
+#         if controller.isUpPressed:
+#             self.bet += 10
+#             pygame.time.delay(200)
+#             self.isUpPressed = False
+#
+#         elif controller.isDownPressed:
+#             self.bet -= 10
+#             pygame.time.delay(200)
+#             self.isDownPressed = False
+#
+#         if self.bet < 10:
+#             self.bet = 10
+#
+#         if self.bet > 100:
+#             self.bet = 100
+#
+#     def flipCoin(self):
+#         # currently at .6 because heads is favored
+#         # in the future will have states to handle coin flip percentages
+#         # an item can add .1 to your rolls for heads, or -.1 for tails
+#         coin = random.random()
+#         if coin < 0.5:
+#             print("coin landed on heads")
+#             self.result = "heads"
+#         else:
+#             print("coin landed on tails")
+#             self.result = "tails"
+#
+#     def cheatCoin(self):
+#         coin = random.random()
+#         if coin < 0.3:
+#             print("coin landed on heads")
+#             self.result = "heads"
+#         else:
+#             print("coin landed on tails")
+#             self.result = "tails"
+#
+#     def update(self, state: "GameState"):
+#         if self.coinFlipSandyMoney <= 0:
+#             self.coinFlipSandyDefeated = True
+#         # Update the controller
+#         controller = state.controller
+#         controller.update(state)
+#
+#         if state.player.stamina_points < 3:
+#             state.currentScreen = state.mainScreen
+#             state.mainScreen.start(state)
+#
+#         if self.game_state == "welcome_screen":
+#
+#             self.message_display = "This is the welcome screen. Press R to continue"
+#             self.second_message_display = ""
+#             self.third_message_display = ""
+#             self.reveal_hand = False
+#
+#             if controller.isRPressed:
+#                 state.player.stamina_points -= 3
+#
+#                 self.game_state = "bet_screen"
+#
+#         elif self.game_state == "bet_screen":
+#             self.message_display = "This is the bet screen. Press up and down to change your bet."
+#             self.second_message_display = "When you are ready press T to continue."
+#             controller = state.controller
+#             self.place_bet(state)
+#             if controller.isTPressed:
+#                 print("t pressed")
+#                 self.game_state = "coin_flip_time"
+#
+#
+#         elif self.game_state == "coin_flip_time":
+#             self.message_display = "I'm flipping the coin now."
+#             pygame.time.delay(500)
+#             if self.bet < 80:
+#                 self.flipCoin()
+#                 self.game_state = "choose_heads_or_tails_message"
+#             elif self.bet > 70:
+#                 self.cheatCoin()
+#                 self.game_state = "choose_heads_or_tails_message"
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "choose_heads_or_tails_message":
+#             self.message_display = "Now Choose heads or tails. Make your choice"
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "current_index"):
+#                     self.current_index = len(self.choices) - 1
+#                 else:
+#                     self.current_index -= 1
+#                 self.current_index %= len(self.choices)
+#                 print(self.choices[self.current_index])
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "current_index"):
+#                     self.current_index = len(self.choices) + 1
+#                 else:
+#                     self.current_index += 1
+#                 self.current_index %= len(self.choices)
+#                 print(self.choices[self.current_index])
+#                 controller.isDownPressed = False
+#
+#             if self.current_index == 0:
+#                 if controller.isTPressed:
+#                     self.players_side = "heads"
+#                     self.game_state = "results_screen"
+#
+#             elif self.current_index == 1:
+#                 if controller.isTPressed:
+#                     self.players_side = "tails"
+#                     self.game_state = "results_screen"
+#
+#
+#             elif self.current_index == 2:
+#                 if controller.isTPressed:
+#                     print("This is how you pick magic")
+#                     self.game_state = "magic_menu"
+#
+#
+#
+#
+#
+#         elif self.game_state == "magic_menu":
+#             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+#
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) - 1
+#                 else:
+#                     self.magic_menu_index -= 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) + 1
+#                 else:
+#                     self.magic_menu_index += 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isDownPressed = False
+#
+#             if self.magic_menu_index == 0:
+#                 if controller.isKPressed:
+#                     if self.luck_activated < 1:
+#                         if state.player.focus_points >= 10:
+#                             state.player.focus_points -= 10
+#
+#                             print("You cast bluff")
+#                             self.game_state = "bluff_state"
+#
+#                         else:
+#                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     elif self.luck_activated > 0 or self.reveal_hand == True:
+#                         self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 if controller.isKPressed:
+#                     if self.luck_activated < 1:
+#                         print("You cast reveal")
+#                         if controller.isKPressed:
+#                             if state.player.focus_points >= 10:
+#                                 state.player.focus_points -= 10
+#                                 self.reveal_hand = True
+#
+#                                 print("You cast bluff")
+#                                 self.game_state = "reveal_state"
+#
+#                             elif state.player.focus_points < 10:
+#                                 self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     elif self.luck_activated > 0:
+#                         self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#
+#
+#
+#             ##########################have a message state reserved for buff states
+#
+#             ##### boss enemies will use magic under more strict conditions
+#             elif self.magic_menu_index == 2:
+#                 if controller.isKPressed:
+#                     print("you cast avatar of luck")
+#                     self.third_message_display = "Your luck is now increased for 3 losses"
+#                     self.luck_activated = 3
+#                     state.player.focus_points -= 20
+#                     self.game_state = "choose_heads_or_tails_message"
+#
+#
+#             elif self.magic_menu_index == 3:
+#                 if controller.isKPressed:
+#                     print("going back")
+#                     self.game_state = "choose_heads_or_tails_message"
+#
+#         elif self.game_state == "reveal_state":
+#             self.message_display = "time to reveal your coin"
+#             self.third_message_display = f"The coin will be on the {self.result}"
+#             if state.controller.isAPressed:
+#                 self.game_state = "choose_heads_or_tails_message"
+#                 state.controller.isAPressed = False
+#
+#
+#
+#
+#         elif self.game_state == "bluff_state":
+#             self.message_display = "Triple my bet that tails will land 3 times in a  row."
+#             bluffalo = random.random()
+#
+#             if bluffalo < 0.7:
+#                 print("you win tripple bet")
+#                 state.player.playerMoney += self.bet * 3
+#                 self.game_state = "welcome_screen"
+#
+#
+#             else:
+#                 print("your bet lost")
+#                 state.player.playerMoney -= self.bet
+#                 self.game_state = "welcome_screen"
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "results_screen":
+#             self.second_message_display = " "
+#             if self.result == self.players_side:
+#                 # self.third_message_display = "You won"
+#                 state.player.playerMoney += self.bet
+#                 self.coinFlipSandyMoney -= self.bet
+#                 pygame.time.delay(1000)
+#
+#                 self.game_state = "you_won_the_toss"
+#
+#                 if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                     print("At 0 ending match")
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#
+#
+#
+#
+#             elif self.result != self.players_side:
+#                 if self.luck_activated > 0:
+#                     lucky_draw = random.random()
+#                     if lucky_draw < 0.9:
+#                         self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
+#
+#                         if controller.isAPressed:
+#                             self.luck_activated -= 1
+#                             state.player.playerMoney += self.bet
+#                             self.coinFlipSandyMoney -= self.bet
+#                             self.result = self.players_side
+#
+#                             self.game_state = "you_won_the_toss"
+#                     else:
+#                         # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
+#                         if controller.isAPressed:
+#                             self.luck_activated -= 1
+#
+#                             state.player.playerMoney -= self.bet
+#                             self.coinFlipSandyMoney += self.bet
+#
+#                             self.game_state = "you_lost_the_toss"
+#
+#                 elif self.luck_activated == 0:
+#                     pygame.time.delay(500)
+#                     state.player.playerMoney -= self.bet
+#                     self.coinFlipSandyMoney += self.bet
+#
+#                     self.game_state = "you_lost_the_toss"
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "you_won_the_toss":
+#             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
+#             self.second_message_display = f"Play again? Press T on your choice"
+#
+#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 print("At 0 ending match")
+#                 state.currentScreen = state.mainScreen
+#                 state.mainScreen.start(state)
+#
+#
+#
+#
+#
+#             elif controller.isUpPressed:
+#                 if not hasattr(self, "leave_or_replay_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
+#                 else:
+#                     self.leave_or_replay_index -= 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "yes_no_current_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
+#                 else:
+#                     self.leave_or_replay_index += 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isDownPressed = False
+#
+#             if self.leave_or_replay_index == 0:
+#                 if controller.isTPressed:
+#                     self.game_state = "welcome_screen"
+#
+#             elif self.leave_or_replay_index == 1:
+#                 if controller.isTPressed:
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#
+#
+#         elif self.game_state == "you_lost_the_toss":
+#
+#             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
+#             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
+#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 print("At 0 ending match")
+#                 state.currentScreen = state.mainScreen
+#                 state.mainScreen.start(state)
+#
+#
+#
+#
+#             elif controller.isUpPressed:
+#                 if not hasattr(self, "leave_or_replay_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
+#                 else:
+#                     self.leave_or_replay_index -= 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "yes_no_current_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
+#                 else:
+#                     self.leave_or_replay_index += 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isDownPressed = False
+#
+#             if self.leave_or_replay_index == 0:
+#                 if controller.isTPressed:
+#                     self.game_state = "welcome_screen"
+#
+#             elif self.leave_or_replay_index == 1:
+#                 if controller.isTPressed:
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
+#
+#     def draw(self, state: "GameState"):
+#         # Fill the screen with a solid color
+#         DISPLAY.fill((0, 0, 0))
+#
+#         DISPLAY.blit(self.new_font.render(
+#             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
+#             True, (255, 255, 255)), (10, 150))
+#         DISPLAY.blit(self.new_font.render(
+#             f" player Money: {state.player.playerMoney}",
+#             True, (255, 255, 255)), (10, 190))
+#
+#         # Draw the welcome message or choose bet message based on the game state
+#
+#         DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+#         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
+#         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
+#         DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
+#         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
+#         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
+#
+#         if self.game_state == "magic_menu":
+#             if self.magic_menu_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.magic_menu_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#             elif self.magic_menu_index == 3:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 305))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+#                 (700, 310))
+#
+#         elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#         if self.game_state == "bet_screen":
+#
+#             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
+#             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
+#
+#
+#         elif self.game_state == "choose_heads_or_tails_message":
+#
+#             if self.current_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.current_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.current_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             if self.yes_no_current_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.yes_no_current_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#         pygame.display.flip()
+#
+#
+# class CoinFlipSandyScreen(Screen):
+#     def __init__(self):
+#         super().__init__("Casino Coin flip  Screen")
+#
+#         self.result = ""
+#         self.play_again = True
+#         self.players_side = ""
+#         self.new_font = pygame.font.Font(None, 36)
+#         self.message_display = ""
+#         self.second_message_display = ""
+#         self.third_message_display = ""
+#         self.magic_player_message_display = ""
+#         self.magic_enemy_message_display = ""
+#         self.choices = ["Heads", "Tails", "Magic"]
+#         self.yes_or_no_menu = ["Yes", "No"]
+#         self.game_state = "welcome_screen"
+#         self.choice_sequence = True
+#         self.bet = 0
+#         self.font = pygame.font.Font(None, 36)
+#         self.coinFlipSandyMoney = 700
+#         self.coinFlipSandyDefeated = False
+#         self.current_index = 0
+#         self.yes_no_current_index = 0
+#         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+#         self.magic_menu_index = 0
+#         self.leave_or_replay_index = 0
+#         self.high_exp = False
+#         self.low_exp = False
+#
+#         self.bluff_text_list = ["I bet you triple my bet that your coin will land on tails 3 times in a row", "Hehehe, your on sucker"]
+#         self.luck_activated = 0
+#         self.sandy_focus_points = 30
+#         self.reveal_hand = False
+#         self.cheating_alert = False
+#
+#     def giveExp(self, state: "GameState"):
+#         if state.player.level == 1:
+#             if self.high_exp == True:
+#                 state.player.exp += 15
+#             elif self.low_exp == True:
+#                 state.player.exp += 50
+#         elif state.player.level == 2:
+#             if self.high_exp == True:
+#                 state.player.exp += 5
+#             elif self.low_exp == True:
+#                 state.player.exp += 15
+#         else:
+#             print("your level is too high no exp for you")
+#
+#     def place_bet(self, state: "GameState"):
+#         controller = state.controller
+#         controller.update(state)
+#
+#         if controller.isUpPressed:
+#             self.bet += 10
+#             pygame.time.delay(200)
+#             self.isUpPressed = False
+#
+#         elif controller.isDownPressed:
+#             self.bet -= 10
+#             pygame.time.delay(200)
+#             self.isDownPressed = False
+#
+#         if self.bet < 10:
+#             self.bet = 10
+#
+#         if self.bet > 100:
+#             self.bet = 100
+#
+#     def flipCoin(self):
+#         # currently at .6 because heads is favored
+#         # in the future will have states to handle coin flip percentages
+#         # an item can add .1 to your rolls for heads, or -.1 for tails
+#         coin = random.random()
+#         if coin < 0.1:
+#             print("coin landed on heads")
+#             self.result = "heads"
+#         else:
+#             print("coin landed on tails")
+#             self.result = "tails"
+#
+#     def update(self, state: "GameState"):
+#         if self.coinFlipSandyMoney <= 0:
+#             self.coinFlipSandyDefeated = True
+#         # Update the controller
+#         controller = state.controller
+#         controller.update(state)
+#
+#         if state.player.stamina_points < 3:
+#             state.currentScreen = state.mainScreen
+#             state.mainScreen.start(state)
+#
+#         if self.game_state == "welcome_screen":
+#
+#             self.message_display = "This is the welcome screen. Press R to continue"
+#             self.second_message_display = ""
+#             self.third_message_display = ""
+#             self.reveal_hand = False
+#
+#             if controller.isRPressed:
+#                 state.player.stamina_points -= 3
+#
+#                 self.game_state = "bet_screen"
+#
+#         elif self.game_state == "bet_screen":
+#             self.message_display = "This is the bet screen. Press up and down to change your bet."
+#             self.second_message_display = "When you are ready press T to continue."
+#             controller = state.controller
+#             self.place_bet(state)
+#             if controller.isTPressed:
+#                 print("t pressed")
+#                 self.game_state = "coin_flip_time"
+#
+#
+#         elif self.game_state == "coin_flip_time":
+#             self.message_display = "I'm flipping the coin now."
+#             pygame.time.delay(500)
+#             self.flipCoin()
+#             self.game_state = "choose_heads_or_tails_message"
+#
+#
+#
+#
+#
+#         #############fix bug with current index below and our yes and no menu to leave or replay a game
+#
+#         elif self.game_state == "choose_heads_or_tails_message":
+#             self.message_display = "Now Choose heads or tails. Make your choice"
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "current_index"):
+#                     self.current_index = len(self.choices) - 1
+#                 else:
+#                     self.current_index -= 1
+#                 self.current_index %= len(self.choices)
+#                 print(self.choices[self.current_index])
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "current_index"):
+#                     self.current_index = len(self.choices) + 1
+#                 else:
+#                     self.current_index += 1
+#                 self.current_index %= len(self.choices)
+#                 print(self.choices[self.current_index])
+#                 controller.isDownPressed = False
+#
+#             if self.current_index == 0:
+#                 if controller.isTPressed:
+#                     self.players_side = "heads"
+#                     self.game_state = "results_screen"
+#
+#             elif self.current_index == 1:
+#                 if controller.isTPressed:
+#                     self.players_side = "tails"
+#                     self.game_state = "results_screen"
+#
+#
+#             elif self.current_index == 2:
+#                 if controller.isTPressed:
+#                     print("This is how you pick magic")
+#                     self.game_state = "magic_menu"
+#
+#
+#
+#
+#
+#         elif self.game_state == "magic_menu":
+#             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+#
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) - 1
+#                 else:
+#                     self.magic_menu_index -= 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) + 1
+#                 else:
+#                     self.magic_menu_index += 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isDownPressed = False
+#
+#             if self.magic_menu_index == 0:
+#                 if controller.isKPressed:
+#                     if self.luck_activated < 1:
+#                         if state.player.focus_points >= 10:
+#                             state.player.focus_points -= 10
+#
+#                             print("You cast bluff")
+#                             self.game_state = "bluff_state"
+#
+#                         else:
+#                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     elif self.luck_activated > 0 or self.reveal_hand == True:
+#                         self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 if controller.isKPressed:
+#                     if self.luck_activated < 1:
+#                         print("You cast reveal")
+#                         if controller.isKPressed:
+#                             if state.player.focus_points >= 10:
+#                                 state.player.focus_points -= 10
+#                                 self.reveal_hand = True
+#
+#                                 print("You cast bluff")
+#                                 self.game_state = "reveal_state"
+#
+#                             elif state.player.focus_points < 10:
+#                                 self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     elif self.luck_activated > 0:
+#                         self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#
+#
+#
+#             ##########################have a message state reserved for buff states
+#
+#             ##### boss enemies will use magic under more strict conditions
+#             elif self.magic_menu_index == 2:
+#                 if controller.isKPressed:
+#                     print("you cast avatar of luck")
+#                     self.third_message_display = "Your luck is now increased for 5 losses"
+#                     self.luck_activated = 3
+#                     state.player.focus_points -= 20
+#                     self.game_state = "choose_heads_or_tails_message"
+#
+#
+#             elif self.magic_menu_index == 3:
+#                 if controller.isKPressed:
+#                     print("going back")
+#                     self.game_state = "choose_heads_or_tails_message"
+#
+#         elif self.game_state == "reveal_state":
+#             self.message_display = "time to reveal your coin"
+#             self.third_message_display = f"The coin will be on the {self.result}"
+#             if state.controller.isAPressed:
+#                 self.game_state = "choose_heads_or_tails_message"
+#                 state.controller.isAPressed = False
+#
+#
+#
+#
+#         elif self.game_state == "bluff_state":
+#             self.message_display = "Triple my bet that tails will land 3 times in a  row."
+#             bluffalo = random.random()
+#
+#             if bluffalo < 0.7:
+#                 print("you win tripple bet")
+#                 state.player.playerMoney += self.bet * 3
+#                 self.game_state = "welcome_screen"
+#
+#
+#             else:
+#                 print("your bet lost")
+#                 state.player.playerMoney -= self.bet
+#                 self.game_state = "welcome_screen"
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "results_screen":
+#             self.second_message_display = " "
+#             if self.result == self.players_side:
+#                 # self.third_message_display = "You won"
+#                 state.player.playerMoney += self.bet
+#                 self.coinFlipSandyMoney -= self.bet
+#                 pygame.time.delay(1000)
+#
+#                 self.game_state = "you_won_the_toss"
+#
+#                 if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                     print("At 0 ending match")
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#
+#
+#
+#
+#             elif self.result != self.players_side:
+#                 if self.luck_activated > 0:
+#                     lucky_draw = random.random()
+#                     if lucky_draw < 0.9:
+#                         self.third_message_display = f"Your feeling lucky.{self.luck_activated}remains. Push A"
+#
+#                         if controller.isAPressed:
+#                             self.luck_activated -= 1
+#                             state.player.playerMoney += self.bet
+#                             self.coinFlipSandyMoney -= self.bet
+#                             self.result = self.players_side
+#
+#                             self.game_state = "you_won_the_toss"
+#                     else:
+#                         # self.third_message_display = f"Your luck didn't pan out.{self.luck_activated}remains. Push A"
+#                         if controller.isAPressed:
+#                             self.luck_activated -= 1
+#
+#                             state.player.playerMoney -= self.bet
+#                             self.coinFlipSandyMoney += self.bet
+#
+#                             self.game_state = "you_lost_the_toss"
+#
+#                 elif self.luck_activated == 0:
+#                     pygame.time.delay(500)
+#                     state.player.playerMoney -= self.bet
+#                     self.coinFlipSandyMoney += self.bet
+#
+#                     self.game_state = "you_lost_the_toss"
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "you_won_the_toss":
+#             if self.players_side == "tails" and self.sandy_focus_points > 0 and self.luck_activated < 1 and self.cheating_alert == False:
+#                 self.players_side = "heads"
+#                 print("I could have sworn I picked tails. Did they switch my bet?")
+#                 if self.reveal_hand == True:
+#                     print("The other person is cheating. I'll hold up my hands to signafy which side I'll guess")
+#                     self.cheating_alert = True
+#
+#                 self.game_state = "you_lost_the_toss"
+#
+#             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
+#             self.second_message_display = f"Play again? Press T on your choice"
+#
+#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 print("At 0 ending match")
+#                 state.currentScreen = state.mainScreen
+#                 state.mainScreen.start(state)
+#
+#
+#
+#
+#
+#             elif controller.isUpPressed:
+#                 if not hasattr(self, "leave_or_replay_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
+#                 else:
+#                     self.leave_or_replay_index -= 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "yes_no_current_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
+#                 else:
+#                     self.leave_or_replay_index += 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isDownPressed = False
+#
+#             if self.leave_or_replay_index == 0:
+#                 if controller.isTPressed:
+#                     self.game_state = "welcome_screen"
+#
+#             elif self.leave_or_replay_index == 1:
+#                 if controller.isTPressed:
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#
+#
+#         elif self.game_state == "you_lost_the_toss":
+#             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
+#             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
+#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 print("At 0 ending match")
+#                 state.currentScreen = state.mainScreen
+#                 state.mainScreen.start(state)
+#
+#
+#
+#
+#             elif controller.isUpPressed:
+#                 if not hasattr(self, "leave_or_replay_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) - 1
+#                 else:
+#                     self.leave_or_replay_index -= 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "yes_no_current_index"):
+#                     self.leave_or_replay_index = len(self.yes_or_no_menu) + 1
+#                 else:
+#                     self.leave_or_replay_index += 1
+#                 self.leave_or_replay_index %= len(self.yes_or_no_menu)
+#                 controller.isDownPressed = False
+#
+#             if self.leave_or_replay_index == 0:
+#                 if controller.isTPressed:
+#                     self.game_state = "welcome_screen"
+#
+#             elif self.leave_or_replay_index == 1:
+#                 if controller.isTPressed:
+#                     state.currentScreen = state.mainScreen
+#                     state.mainScreen.start(state)
+#
+#     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
+#
+#     def draw(self, state: "GameState"):
+#         # Fill the screen with a solid color
+#         DISPLAY.fill((0, 0, 0))
+#
+#         DISPLAY.blit(self.new_font.render(
+#             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
+#             True, (255, 255, 255)), (10, 150))
+#         DISPLAY.blit(self.new_font.render(
+#             f" player Money: {state.player.playerMoney}",
+#             True, (255, 255, 255)), (10, 190))
+#
+#         # Draw the welcome message or choose bet message based on the game state
+#
+#         DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+#         DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
+#         DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
+#         DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
+#         DISPLAY.blit(self.font.render(f"player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
+#         DISPLAY.blit(self.font.render(f"player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
+#
+#         if self.game_state == "magic_menu":
+#             if self.magic_menu_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.magic_menu_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#             elif self.magic_menu_index == 3:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 305))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+#                 (700, 310))
+#
+#         elif self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#         if self.game_state == "bet_screen":
+#
+#             DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)), (240, 235))
+#             DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)), (240, 288))
+#
+#
+#         elif self.game_state == "choose_heads_or_tails_message":
+#
+#             if self.current_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.current_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.current_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#         elif self.game_state == "you_won_the_toss" or self.game_state == "you_lost_the_toss":
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.yes_or_no_menu[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.yes_or_no_menu[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             if self.yes_no_current_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.yes_no_current_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#         pygame.display.flip()
+#
+#         ########have deals notice if player is low on stamina and magic and thus react to it
+#         #### have a dealer make a comment to player on this a few times.
+#
+#
+# #### no need to "defeat"people, but in doing so with some people you can complete quest
+# ####or have it to where you only need to defeat 1 of each type as a quest.hmmmmm not sure
+# class OpossumInACanScreen(Screen):
+#     def __init__(self):
+#         super().__init__("Opossum in a can screen")
+#         self.third_message_display = ""
+#         self.desperate = False
+#         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
+#         self.sallyOpossumMoney = 100
+#         self.sallyOpossumIsDefeated = False
+#         self.opossum_font = pygame.font.Font(None, 36)
+#         self.font = pygame.font.Font(None, 36)
+#         self.game_state = "welcome_opposum"
+#         self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
+#
+#                                             "win", "insurance_eater"]
+#         self.result = "win"
+#         self.bet = 20
+#         self.insurance = 200
+#         self.X3 = False
+#         self.has_opossum_insurance = True
+#
+#         self.choices = ["Grab", "Magic", "Quit"]
+#         self.choices_index = 0
+#
+#         self.bet_or_flee = ["bet", "flee"]
+#         self.bet_or_flee_index = 0
+#
+#         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+#         self.magic_menu_index = 0
+#
+#         self.play_again_or_quit = ["Play Again", "Quit"]
+#
+#         self.play_again_or_quit_index = 0
+#
+#         self.bluff_activated = 0
+#         self.bottom_message = ""
+#         self.opossum_rader = False
+#
+#         self.luck_activated = 0
+#
+#     def refresh(self):
+#         self.bet = 20
+#         self.has_opossum_insurance = True
+#         self.insurance = 200
+#
+#         self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "win",
+#
+#                                  "win", "insurance_eater"]
+#
+#     def shuffle_opposums(self) -> List[str]:
+#         """Creates a new list in a random order"""
+#
+#         random.shuffle(self.winner_or_looser)
+#         if self.luck_activated > 0:
+#             self.luck_activated -= 1
+#
+#         print(str(self.winner_or_looser))
+#         return self.winner_or_looser
+#
+#     def check_results(self, state: "GameState"):
+#         if self.result == "X3_star":
+#             self.X3 = True
+#             print(self.game_state)
+#             self.game_state = "play_again_or_bail"
+#
+#
+#         elif self.result == "win":
+#             if self.X3 == False:
+#                 self.bet = self.bet * 2
+#                 self.sallyOpossumMoney -= self.bet // 2
+#                 print("you win")
+#                 print(self.bet)
+#                 self.game_state = "play_again_or_bail"
+#             else:
+#                 self.bet = self.bet * 3
+#                 self.sallyOpossumMoney -= self.bet // 3 * 2
+#                 self.X3 = False
+#                 self.game_state = "play_again_or_bail"
+#
+#         elif self.result == "lucky_star":
+#             self.insurance = self.insurance + 200
+#             self.sallyOpossumMoney -= 200
+#             self.game_state = "play_again_or_bail"
+#
+#
+#         elif self.result == "insurance_eater":
+#
+#             if self.insurance <= 0:
+#                 self.sallyOpossumMoney += self.bet
+#
+#                 print("oh no your in trouble")
+#                 print(self.game_state)
+#                 self.game_state = "loser_screen"
+#             else:
+#                 print("what are you doing here?")
+#                 self.sallyOpossumMoney += self.insurance
+#                 self.insurance -= 200
+#                 self.game_state = "play_again_or_bail"
+#
+#         elif self.result == "lose":
+#             print("This is the losing screen")
+#             self.sallyOpossumMoney += self.bet
+#             self.sallyOpossumMoney += self.insurance
+#             self.bet = 0
+#
+#             self.game_state = "loser_screen"
+#
+#     def update(self, state: "GameState"):
+#         if self.sallyOpossumMoney <= 0:
+#             self.sallyOpossumIsDefeated = True
+#         controller = state.controller
+#         controller.update(state)
+#         if self.sallyOpossumMoney <= 300:
+#             self.desperate = True
+#         elif self.sallyOpossumMoney > 300:
+#             self.desperate = False
+#
+#         if self.game_state == "welcome_opposum":
+#
+#             if controller.isTPressed:
+#                 pygame.time.delay(150)
+#                 self.game_state = "choose_can"
+#
+#         elif self.game_state == "choose_can":
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "choices_index"):
+#                     self.choices_index = len(self.choices) - 1
+#                 else:
+#                     self.choices_index -= 1
+#                 self.choices_index %= len(self.choices)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "choices_index"):
+#                     self.choices_index = len(self.choices) + 1
+#                 else:
+#                     self.choices_index += 1
+#                 self.choices_index %= len(self.choices)
+#                 controller.isDownPressed = False
+#
+#             elif self.choices_index == 0:
+#                 if controller.isTPressed:
+#                     pygame.time.delay(150)
+#                     self.shuffle_opposums()
+#                     self.result = self.winner_or_looser[0]
+#                     if self.opossum_rader == True:
+#                         print("HEY THERE YOU GUY ITS POSSUM TIIIIIIME")
+#                         self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
+#                         if controller.isTPressed:
+#                             self.game_state = "choose_or_flee"
+#                             self.opossum_rader = False
+#
+#                     else:
+#                         del self.winner_or_looser[0]
+#                         self.check_results(state)
+#                         print("Get that opossum")
+#
+#             elif self.choices_index == 1:
+#                 if controller.isTPressed:
+#                     self.game_state = "magic_menu"
+#                     print("cast magic")
+#
+#
+#             elif self.choices_index == 2:
+#                 if controller.isTPressed:
+#                     print("Quitting")
+#
+#
+#
+#         elif self.game_state == "choose_or_flee":
+#             self.message_display = f"Will you go forward or retreat?"
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "bet_or_flee_index"):
+#                     self.bet_or_flee_index = len(self.bet_or_flee) - 1
+#                 else:
+#                     self.bet_or_flee_index -= 1
+#                 self.bet_or_flee_index %= len(self.bet_or_flee)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "bet_or_flee_index"):
+#                     self.bet_or_flee_index = len(self.bet_or_flee) + 1
+#                 else:
+#                     self.bet_or_flee_index += 1
+#                 self.bet_or_flee_index %= len(self.bet_or_flee)
+#                 controller.isDownPressed = False
+#
+#             elif self.bet_or_flee_index == 0:
+#                 if controller.isTPressed:
+#                     print("lets go with it")
+#                     self.game_state = "choose_can"
+#
+#             elif self.bet_or_flee_index == 1:
+#                 if controller.isTPressed:
+#                     print("lets get out")
+#
+#
+#
+#
+#         elif self.game_state == "magic_menu":
+#             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+#
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) - 1
+#                 else:
+#                     self.magic_menu_index -= 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) + 1
+#                 else:
+#                     self.magic_menu_index += 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isDownPressed = False
+#
+#             if self.magic_menu_index == 0:
+#                 if controller.isKPressed and state.player.focus_points > 9:
+#                     if len(self.winner_or_looser) < 6:
+#                         if state.player.focus_points >= 10:
+#                             state.player.focus_points -= 10
+#
+#                             print("You cast bluff")
+#                             print("I'll bet you I'll get the rst of the wins")
+#                             state.player.playerMoney += self.sallyOpossumMoney
+#                             self.sallyOpossumIsDefeated = True
+#                             self.sallyOpossumMoney = 0
+#                             print("exiting now")
+#
+#                         else:
+#                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     else:
+#                         self.third_message_display = "sorry but you can't stack magic spells.Wait till 3 wins left to cast."
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 if controller.isKPressed and self.luck_activated == 0:
+#                     print("You cast reveal")
+#                     if state.player.focus_points >= 10:
+#                         state.player.focus_points -= 10
+#                         self.opossum_rader = True
+#
+#                         self.game_state = "choose_can"
+#
+#                     elif state.player.focus_points < 10:
+#                         self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                 else:
+#                     self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#
+#
+#
+#             ##########################have a message state reserved for buff states
+#
+#             ##### boss enemies will use magic under more strict conditions
+#             elif self.magic_menu_index == 2:
+#                 if controller.isKPressed and self.luck_activated == 0:
+#                     print("you cast avatar of luck")
+#                     self.third_message_display = "The god of luck shines on you, looks like another trash can was hiding behind one of the others"
+#                     state.player.focus_points -= 20
+#                     self.winner_or_looser.append("win")
+#
+#                     self.game_state = "choose_can"
+#                     self.luck_activated = 5
+#
+#
+#
+#             elif self.magic_menu_index == 3:
+#                 if controller.isKPressed:
+#                     print("going back")
+#                     self.game_state = "choose_can"
+#
+#                     #########################################################################
+#
+#
+#         elif self.game_state == "play_again_or_bail":
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "play_again_or_quit_index"):
+#                     self.play_again_or_quit_index = len(self.play_again_or_quit) - 1
+#                 else:
+#                     self.play_again_or_quit_index -= 1
+#                 self.play_again_or_quit_index %= len(self.play_again_or_quit)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "play_again_or_quit_index"):
+#                     self.play_again_or_quit_index = len(self.play_again_or_quit) + 1
+#                 else:
+#                     self.play_again_or_quit_index += 1
+#                 self.play_again_or_quit_index %= len(self.play_again_or_quit)
+#                 controller.isDownPressed = False
+#
+#             elif self.play_again_or_quit_index == 0:
+#                 if controller.isTPressed:
+#                     print("lets go with it")
+#                     pygame.time.delay(150)
+#                     self.game_state = "choose_can"
+#
+#             elif self.play_again_or_quit_index == 1:
+#                 if controller.isTPressed:
+#                     print("lets get out")
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "loser_screen":
+#             time.sleep(3)
+#             self.refresh()
+#             self.game_state = "welcome_opposum"
+#             state.currentScreen = state.mainScreen
+#             state.mainScreen.start(state)
+#
+#     def draw(self, state: "GameState"):
+#         DISPLAY.fill((0, 0, 0))
+#
+#         if self.desperate == True:
+#             DISPLAY.blit(self.font.render(
+#                 f" I Take care of the orphanage here Please think of the children!",
+#                 True, (255, 255, 255)), (10, 530))
+#
+#         DISPLAY.blit(self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)), (1, 333))
+#
+#         DISPLAY.blit(self.font.render(
+#             f" SallyOpossum Money: {self.sallyOpossumMoney}",
+#             True, (255, 255, 255)), (10, 190))
+#         DISPLAY.blit(self.font.render(
+#             f" player Money: {state.player.playerMoney}",
+#             True, (255, 255, 255)), (10, 290))
+#
+#         DISPLAY.blit(self.font.render(
+#             f" Players Bet: {self.bet}",
+#             True, (255, 255, 255)), (10, 390))
+#         DISPLAY.blit(self.font.render(
+#             f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
+#             True, (255, 255, 255)), (10, 490))
+#
+#         DISPLAY.blit(self.font.render(
+#             f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
+#             True, (255, 255, 255)), (10, 33))
+#
+#         if self.game_state == "choose_can":
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             if self.choices_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.choices_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.choices_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#         elif self.game_state == "choose_or_flee":
+#             if self.bet_or_flee_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.bet_or_flee_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.bet_or_flee[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.bet_or_flee[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#
+#
+#         elif self.game_state == "magic_menu":
+#             if self.magic_menu_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.magic_menu_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#             elif self.magic_menu_index == 3:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 305))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+#                 (700, 310))
+#
+#
+#
+#         elif self.game_state == "welcome_opposum":
+#             DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
+#         elif self.game_state == "choose_can":
+#             DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (100, 10))
+#
+#
+#
+#         elif self.game_state == "play_again_or_bail":
+#             DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
+#             if self.play_again_or_quit_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.play_again_or_quit_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.play_again_or_quit[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.play_again_or_quit[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#         elif self.game_state == "loser_screen":
+#             DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
+#
+#         pygame.display.flip()
+#
+#
+# class OpossumInACanNellyScreen(Screen):
+#     def __init__(self):
+#         super().__init__("Opossum in a can screen")
+#         self.third_message_display = ""
+#         self.desperate = False
+#         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
+#         self.sallyOpossumMoney = 100
+#         self.sallyOpossumIsDefeated = False
+#         self.opossum_font = pygame.font.Font(None, 36)
+#         self.font = pygame.font.Font(None, 36)
+#         self.game_state = "welcome_opposum"
+#         self.winner_or_looser: List[str] = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
+#
+#                                             "win", "insurance_eater", "lose"]
+#         self.result = "win"
+#         self.bet = 20
+#         self.insurance = 200
+#         self.X3 = False
+#         self.has_opossum_insurance = True
+#
+#         self.choices = ["Grab", "Magic", "Quit"]
+#         self.choices_index = 0
+#
+#         self.bet_or_flee = ["bet", "flee"]
+#         self.bet_or_flee_index = 0
+#
+#         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+#         self.magic_menu_index = 0
+#
+#         self.play_again_or_quit = ["Play Again", "Quit"]
+#
+#         self.play_again_or_quit_index = 0
+#
+#         self.bluff_activated = 0
+#         self.bottom_message = ""
+#         self.opossum_rader = False
+#
+#         self.luck_activated = 0
+#
+#     def refresh(self):
+#         self.bet = 20
+#         self.has_opossum_insurance = True
+#         self.insurance = 200
+#
+#         self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win", "win", "win", "lucky_star", "lucky_star", "X3_star", "lose", "win",
+#
+#                                  "win", "insurance_eater", "lose"]
+#
+#     def shuffle_opposums(self) -> List[str]:
+#         """Creates a new list in a random order"""
+#
+#         random.shuffle(self.winner_or_looser)
+#         if self.luck_activated > 0:
+#             self.luck_activated -= 1
+#
+#         print(str(self.winner_or_looser))
+#         return self.winner_or_looser
+#
+#     def check_results(self, state: "GameState"):
+#         if self.result == "X3_star":
+#             self.X3 = True
+#             print(self.game_state)
+#             self.game_state = "play_again_or_bail"
+#
+#
+#         elif self.result == "win":
+#             if self.X3 == False:
+#                 self.bet = self.bet * 2
+#                 self.sallyOpossumMoney -= self.bet // 2
+#                 print("you win")
+#                 print(self.bet)
+#                 self.game_state = "play_again_or_bail"
+#             else:
+#                 self.bet = self.bet * 3
+#                 self.sallyOpossumMoney -= self.bet // 3 * 2
+#                 self.X3 = False
+#                 self.game_state = "play_again_or_bail"
+#
+#         elif self.result == "lucky_star":
+#             self.insurance = self.insurance + 200
+#             self.sallyOpossumMoney -= 200
+#             self.game_state = "play_again_or_bail"
+#
+#
+#         elif self.result == "insurance_eater":
+#
+#             if self.insurance <= 0:
+#                 self.sallyOpossumMoney += self.bet
+#
+#                 print("oh no your in trouble")
+#                 print(self.game_state)
+#                 self.game_state = "loser_screen"
+#             else:
+#                 print("what are you doing here?")
+#                 self.sallyOpossumMoney += self.insurance
+#                 self.insurance -= 200
+#                 self.game_state = "play_again_or_bail"
+#
+#         elif self.result == "lose":
+#             print("This is the losing screen")
+#             self.sallyOpossumMoney += self.bet
+#             self.sallyOpossumMoney += self.insurance
+#             self.bet = 0
+#
+#             self.game_state = "loser_screen"
+#
+#     def update(self, state: "GameState"):
+#         if self.sallyOpossumMoney <= 0:
+#             self.sallyOpossumIsDefeated = True
+#         controller = state.controller
+#         controller.update(state)
+#         if self.sallyOpossumMoney <= 300:
+#             self.desperate = True
+#         elif self.sallyOpossumMoney > 300:
+#             self.desperate = False
+#
+#         if self.game_state == "welcome_opposum":
+#
+#             if controller.isTPressed:
+#                 pygame.time.delay(150)
+#                 self.game_state = "choose_can"
+#
+#         elif self.game_state == "choose_can":
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "choices_index"):
+#                     self.choices_index = len(self.choices) - 1
+#                 else:
+#                     self.choices_index -= 1
+#                 self.choices_index %= len(self.choices)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "choices_index"):
+#                     self.choices_index = len(self.choices) + 1
+#                 else:
+#                     self.choices_index += 1
+#                 self.choices_index %= len(self.choices)
+#                 controller.isDownPressed = False
+#
+#             elif self.choices_index == 0:
+#                 if controller.isTPressed:
+#                     pygame.time.delay(150)
+#                     self.shuffle_opposums()
+#                     self.result = self.winner_or_looser[0]
+#                     if self.opossum_rader == True:
+#                         print("HEY THERE YOU GUY ITS POSSUM TIIIIIIME")
+#                         self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
+#                         if self.result == "lose":
+#                             print("you notice this dealer is cheating")
+#                             state.player.playerMoney += self.sallyOpossumMoney
+#                             self.sallyOpossumMoney = 0
+#                             print("time to leave we got the  cheater")
+#                         if controller.isTPressed:
+#                             self.game_state = "choose_or_flee"
+#                             self.opossum_rader = False
+#
+#                     else:
+#                         del self.winner_or_looser[0]
+#                         self.check_results(state)
+#                         print("Get that opossum")
+#
+#             elif self.choices_index == 1:
+#                 if controller.isTPressed:
+#                     self.game_state = "magic_menu"
+#                     print("cast magic")
+#
+#
+#             elif self.choices_index == 2:
+#                 if controller.isTPressed:
+#                     print("Quitting")
+#
+#
+#
+#         elif self.game_state == "choose_or_flee":
+#             self.message_display = f"Will you go forward or retreat?"
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "bet_or_flee_index"):
+#                     self.bet_or_flee_index = len(self.bet_or_flee) - 1
+#                 else:
+#                     self.bet_or_flee_index -= 1
+#                 self.bet_or_flee_index %= len(self.bet_or_flee)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "bet_or_flee_index"):
+#                     self.bet_or_flee_index = len(self.bet_or_flee) + 1
+#                 else:
+#                     self.bet_or_flee_index += 1
+#                 self.bet_or_flee_index %= len(self.bet_or_flee)
+#                 controller.isDownPressed = False
+#
+#             elif self.bet_or_flee_index == 0:
+#                 if controller.isTPressed:
+#                     print("lets go with it")
+#                     self.game_state = "choose_can"
+#
+#             elif self.bet_or_flee_index == 1:
+#                 if controller.isTPressed:
+#                     print("lets get out")
+#
+#
+#
+#
+#         elif self.game_state == "magic_menu":
+#             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+#
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) - 1
+#                 else:
+#                     self.magic_menu_index -= 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "magic_menu_index"):
+#                     self.magic_menu_index = len(self.magic_menu_selector) + 1
+#                 else:
+#                     self.magic_menu_index += 1
+#                 self.magic_menu_index %= len(self.magic_menu_selector)
+#                 controller.isDownPressed = False
+#
+#             if self.magic_menu_index == 0:
+#                 if controller.isKPressed and state.player.focus_points > 9:
+#                     if len(self.winner_or_looser) < 6:
+#                         if state.player.focus_points >= 10:
+#                             state.player.focus_points -= 10
+#
+#                             print("You cast bluff")
+#                             print("I'll bet you I'll get the rst of the wins")
+#                             state.player.playerMoney += self.sallyOpossumMoney
+#                             self.sallyOpossumIsDefeated = True
+#                             self.sallyOpossumMoney = 0
+#                             print("exiting now")
+#
+#                         else:
+#                             self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                     else:
+#                         self.third_message_display = "sorry but you can't stack magic spells.Wait till 3 wins left to cast."
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 if controller.isKPressed and self.luck_activated == 0:
+#                     print("You cast reveal")
+#                     if state.player.focus_points >= 10:
+#                         state.player.focus_points -= 10
+#                         self.opossum_rader = True
+#
+#                         self.game_state = "choose_can"
+#
+#                     elif state.player.focus_points < 10:
+#                         self.third_message_display = "Sorry but you dont have enough focus points to cast"
+#                 else:
+#                     self.third_message_display = "sorry but you can't stack magic spells"
+#
+#
+#
+#
+#
+#             ##########################have a message state reserved for buff states
+#
+#             ##### boss enemies will use magic under more strict conditions
+#             elif self.magic_menu_index == 2:
+#                 if controller.isKPressed and self.luck_activated == 0:
+#                     print("you cast avatar of luck")
+#                     self.third_message_display = "The god of luck shines on you, looks like another trash can was hiding behind one of the others"
+#                     state.player.focus_points -= 20
+#                     self.winner_or_looser.append("win")
+#
+#                     self.game_state = "choose_can"
+#                     self.luck_activated = 5
+#
+#
+#
+#             elif self.magic_menu_index == 3:
+#                 if controller.isKPressed:
+#                     print("going back")
+#                     self.game_state = "choose_can"
+#
+#                     #########################################################################
+#
+#
+#         elif self.game_state == "play_again_or_bail":
+#             if controller.isUpPressed:
+#                 if not hasattr(self, "play_again_or_quit_index"):
+#                     self.play_again_or_quit_index = len(self.play_again_or_quit) - 1
+#                 else:
+#                     self.play_again_or_quit_index -= 1
+#                 self.play_again_or_quit_index %= len(self.play_again_or_quit)
+#                 controller.isUpPressed = False
+#
+#             elif controller.isDownPressed:
+#                 if not hasattr(self, "play_again_or_quit_index"):
+#                     self.play_again_or_quit_index = len(self.play_again_or_quit) + 1
+#                 else:
+#                     self.play_again_or_quit_index += 1
+#                 self.play_again_or_quit_index %= len(self.play_again_or_quit)
+#                 controller.isDownPressed = False
+#
+#             elif self.play_again_or_quit_index == 0:
+#                 if controller.isTPressed:
+#                     print("lets go with it")
+#                     pygame.time.delay(150)
+#                     self.game_state = "choose_can"
+#
+#             elif self.play_again_or_quit_index == 1:
+#                 if controller.isTPressed:
+#                     print("lets get out")
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#         elif self.game_state == "loser_screen":
+#             time.sleep(3)
+#             self.refresh()
+#             self.game_state = "welcome_opposum"
+#             state.currentScreen = state.mainScreen
+#             state.mainScreen.start(state)
+#
+#     def draw(self, state: "GameState"):
+#         DISPLAY.fill((0, 0, 0))
+#
+#         if self.desperate == True:
+#             DISPLAY.blit(self.font.render(
+#                 f" I Take care of the orphanage here Please think of the children!",
+#                 True, (255, 255, 255)), (10, 530))
+#
+#         DISPLAY.blit(self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)), (1, 333))
+#
+#         DISPLAY.blit(self.font.render(
+#             f" SallyOpossum Money: {self.sallyOpossumMoney}",
+#             True, (255, 255, 255)), (10, 190))
+#         DISPLAY.blit(self.font.render(
+#             f" player Money: {state.player.playerMoney}",
+#             True, (255, 255, 255)), (10, 290))
+#
+#         DISPLAY.blit(self.font.render(
+#             f" Players Bet: {self.bet}",
+#             True, (255, 255, 255)), (10, 390))
+#         DISPLAY.blit(self.font.render(
+#             f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
+#             True, (255, 255, 255)), (10, 490))
+#
+#         DISPLAY.blit(self.font.render(
+#             f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
+#             True, (255, 255, 255)), (10, 33))
+#
+#         if self.game_state == "choose_can":
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             if self.choices_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.choices_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.choices_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#         elif self.game_state == "choose_or_flee":
+#             if self.bet_or_flee_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.bet_or_flee_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.bet_or_flee[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.bet_or_flee[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#
+#
+#         elif self.game_state == "magic_menu":
+#             if self.magic_menu_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.magic_menu_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#
+#
+#
+#             elif self.magic_menu_index == 2:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 255))
+#
+#             elif self.magic_menu_index == 3:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 305))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
+#                 (700, 260))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
+#                 (700, 310))
+#
+#
+#
+#         elif self.game_state == "welcome_opposum":
+#             DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)), (10, 10))
+#         elif self.game_state == "choose_can":
+#             DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True, (255, 255, 255)), (100, 10))
+#
+#
+#
+#         elif self.game_state == "play_again_or_bail":
+#             DISPLAY.blit(self.font.render(f"your result is {self.result}", True, (255, 255, 255)), (388, 50))
+#             if self.play_again_or_quit_index == 0:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 155))
+#
+#
+#
+#             elif self.play_again_or_quit_index == 1:
+#                 DISPLAY.blit(
+#                     self.font.render(f"->", True, (255, 255, 255)),
+#                     (650, 205))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.play_again_or_quit[0]}", True, (255, 255, 255)),
+#                 (700, 160))
+#
+#             DISPLAY.blit(
+#                 self.font.render(f"{self.play_again_or_quit[1]}", True, (255, 255, 255)),
+#                 (700, 210))
+#
+#         elif self.game_state == "loser_screen":
+#             DISPLAY.blit(self.font.render(f"You drew the {self.result} you lose goodbye", True, (255, 255, 255)), (210, 50))
+#
+#         pygame.display.flip()
 
 
 class DiceGameScreen(Screen, Dice):
@@ -4356,20 +4356,20 @@ class BlackJackScreen(Screen, TextBox):
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
         # DO NOT DELETE THIS CODE
-        mixer.init()
-
-        # Load audio file
-        mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-
-        print("music started playing....")
-
-        # Set preferred volume
-        mixer.music.set_volume(0.2)
-
-        # Play the music
-        pygame.mixer.music.play(-1, 0.0, 5000)
-
-        pygame.init()
+        # mixer.init()
+        #
+        # # Load audio file
+        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
+        #
+        # print("music started playing....")
+        #
+        # # Set preferred volume
+        # mixer.music.set_volume(0.2)
+        #
+        # # Play the music
+        # pygame.mixer.music.play(-1, 0.0, 5000)
+        #
+        # pygame.init()
 
     pygame.init()
 
@@ -4699,11 +4699,11 @@ class BlackJackScreen(Screen, TextBox):
                 self.cheater_bob_money += self.bet
 
                 if state.player.level == 1:
-                    state.player.exp += 25
-                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+                    state.player.exp += 5
+                    self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
                 elif state.player.level == 2:
-                    state.player.exp += 12
-                    self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
+                    state.player.exp += 2
+                    self.first_message_display = f"You gain 2 exp and lose {self.bet} gold "
                 self.second_message_display = "player bust you lose"
                 self.game_state = "results_screen"
 
@@ -5183,9 +5183,14 @@ class BlackJackScreen(Screen, TextBox):
 
         DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 80))
         DISPLAY.blit(self.font.render(f"Status:{self.enemy_status}", True, (255, 255, 255)), (37, 110))
+
         if self.reveal_hand < 11:
             DISPLAY.blit(self.font.render(f"Score:{self.enemy_score}", True, (255, 255, 255)),
                          (37, 140))
+        elif self.reveal_hand > 10:
+            DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)), (37, 140))
+
+
         DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (37, 30))
 
         #
@@ -5204,8 +5209,8 @@ class BlackJackScreen(Screen, TextBox):
         #     DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
         self.main_bordered_box.draw(state)
-        DISPLAY.blit(character_image, (650, 15))
-        DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (650, 145))
+        DISPLAY.blit(character_image, (633, 15))
+        DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (625, 145))
 
         # self.face_down_card((0,0))
 
@@ -5542,19 +5547,19 @@ class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(222, 111)
-        self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
+        # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0
         self.mainScreen = MainScreen()
-        self.coinFlipSandyScreen = CoinFlipSandyScreen()
-        self.opossumInACanScreen = OpossumInACanScreen()
-        self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
+        # self.coinFlipFredScreen = CoinFlipFredScreen()
+        # self.opossumInACanScreen = OpossumInACanScreen()
+        # self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.BlackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.BlackJackScreen  # assign a value to currentScreen here
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 
 class Game:
