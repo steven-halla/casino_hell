@@ -348,8 +348,7 @@ class Player(Entity):
         if self.isOverlap(state.obstacle) or self.isOutOfBounds():
             self.undoLastMove()
 
-        for npc in state.rest_area_floor_1_npcs:
-
+        for npc in state.npcs:
             if self.collision.isOverlap(npc.collision):
                 self.undoLastMove()
         #
@@ -404,7 +403,9 @@ class Npc(Entity):
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
-        if state.controller.isAPressed and (time.process_time() - self.speakStartTime) > .20:
+        if state.controller.isTPressed and (time.process_time() - self.speakStartTime) > .20:
+            print("hi there")
+
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # Check if distance is within the sum of the widths and heights of the rectangles
@@ -500,34 +501,48 @@ class CoinFlipExplanationGuy(Npc):
 class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = TextBox(["Hi there I'm the inn keeper", "It will cost you 100 gold a night to sleep."," I can assure you that since your new your bed will be a good 20 feet from the garbage."],(50, 450, 50, 45),30, 50)
+        self.textbox = TextBox(
+            ["Hi there I'm the inn keeper", "It will cost you 100 gold a night to sleep.", "I can assure you that since your new your bed will be a good 20 feet from the garbage."],
+            (50, 450, 50, 45), 30, 500)
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
-        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.input_delay = 500  # input delay in milliseconds
-        self.input_time = 0  # time when input was last read
-
-    def update(self, state):
-        super().update(state)
-
+    def update(self, state: "GameState"):
+        if self.state == "waiting":
+            self.update_waiting(state)
+        elif self.state == "talking":
+            self.update_talking(state)
 
 
-        # Get the current time in milliseconds
-        # current_time = pygame.time.get_ticks()
+    def update_waiting(self, state: "GameState"):
+        player = state.player
 
-        # If the T key is pressed and the input delay has passed
-        # if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
-        #
-        #     self.input_time = current_time  # update the input time
-        #
-        #     # Update the current message
-        #     self.current_message_index += 1
-        #     if self.current_message_index >= len(self.messages):
-        #         self.current_message_index = 0
-        #     self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            print("distance: " + str(distance))
+
+            if distance < 100:
+                print("start state: talking")
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            print("start state: waiting")
+            self.state = "waiting"
+            self.state_start_time = pygame.time.get_ticks()
+
 
     def draw(self, state):
         pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
-        if self.isSpeaking:
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            print("is talking")
             self.textbox.draw(state)
 
 
@@ -735,6 +750,10 @@ class MainScreen(Screen):
         # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/beta_floor1_casino.tmx")
 
+    # def start(self, state: "GameState"):
+    #     super().start(state)
+    #     state.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
+
     def update(self, state: "GameState"):
         controller = state.controller
         player = state.player
@@ -756,7 +775,7 @@ class MainScreen(Screen):
         DISPLAY.fill(WHITE)
         # Draw the player money
         DISPLAY.blit(font.render(
-            f" player Money: {state.player.playerMoney}",
+            f"player money: {state.player.playerMoney}",
             True, (5, 5, 5)), (10, 10))
 
         # Check if the Tiled map has any layers
@@ -827,17 +846,21 @@ class MainScreen(Screen):
         # Update the display
         pygame.display.update()
 
+
 class RestScreen(Screen):
     def __init__(self):
         super().__init__("Casino Rest Screen")
         # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
-        self.innkeeper = InnKeeper(333,333)
+
+    def start(self, state: "GameState"):
+        super().start(state)
+        state.npcs = [InnKeeper(231, 154)]
 
     def update(self, state: "GameState"):
+
         controller = state.controller
         player = state.player
-        rest_area_floor_1_npc = state.rest_area_floor_1_npcs
         obstacle = state.obstacle
         controller.update(state)
 
@@ -845,8 +868,10 @@ class RestScreen(Screen):
             state.isRunning = False
 
         player.update(state)
-        for npc in rest_area_floor_1_npc:
+
+        for npc in state.npcs:
             npc.update(state)
+
         obstacle.update(state)
 
 
@@ -854,9 +879,9 @@ class RestScreen(Screen):
         # Clear the screen
         DISPLAY.fill(WHITE)
         # Draw the player money
-        DISPLAY.blit(font.render(
-            f" player Money: {state.player.playerMoney}",
-            True, (5, 5, 5)), (10, 10))
+        # DISPLAY.blit(font.render(
+        #     f"player money: {state.player.playerMoney}",
+        #     True, (5, 5, 5)), (150, 150))
 
         # Check if the Tiled map has any layers
         if self.tiled_map.layers:
@@ -893,20 +918,13 @@ class RestScreen(Screen):
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(image, (pos_x, pos_y))
 
-            # Draw the player, NPCs, and obstacles
-            state.player.draw(state)
-            for npc in state.rest_area_floor_1_npcs:
-                npc.draw(state)
-
-            state.obstacle.draw(state)
-            # Update the display
-            pygame.display.update()
-
-        # Draw the player, NPCs, and obstacles
-        state.player.draw(state)
-        # state.npc.draw(state)
+        for npc in state.npcs:
+            npc.draw(state)
 
         state.obstacle.draw(state)
+
+        state.player.draw(state)
+
         # Update the display
         pygame.display.update()
 
@@ -4098,7 +4116,6 @@ ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
 suits = ['Spades', 'Diamonds', 'Clubs', 'Hearts']  # TODO use enum
 
 
-# dsf;dsaf;dsfjdajfdsafjsa;fjldsjjsdafjds;ajf;dj;sjfldsjafldsjaf;ldsjfldsajf
 # if a player has 3 cards, then an ace value is equal to one
 # ace should be set that if a value is less than 10, then at least one of them should be
 # set to 11
@@ -4274,7 +4291,7 @@ class Deck:
 
 
 class TextBox(Entity):
-    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int, ):
+    def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
         self.messages = messages
         self.message_index = 0
@@ -4286,6 +4303,7 @@ class TextBox(Entity):
         self.font = pygame.font.Font(None, 36)
 
     def update(self, state: "GameState"):
+        print("textbox update")
         controller = state.controller
 
         # show characters of text one at a time, not whole message.
@@ -4307,15 +4325,27 @@ class TextBox(Entity):
         # print("is finished? " + str(self.is_finished()))
 
     def draw(self, state: "GameState"):
+        print("Textbox draw")
         text_to_display = self.text[:self.characters_to_display]
         wrapped_text = textwrap.wrap(text_to_display, 60)
+        print("text: " + text_to_display)
+        print("position: " + str(self.position.toTuple()))
         for i, line in enumerate(wrapped_text):
-            text_surface = self.font.render(line, True, (255, 255, 255))
+            text_surface = self.font.render(line, True, (5, 5, 5))
             DISPLAY.blit(text_surface, (self.position.x, self.position.y + (i * 40)))
+
+        # DISPLAY.blit(font.render(
+        #     f"player money: {state.player.playerMoney}",
+        #     True, (5, 5, 5)), (150, 150))
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \
             pygame.time.get_ticks() - self.time > self.delay
+
+    def reset(self):
+        self.message_index = 0
+        self.characters_to_display = 0
+        self.time = pygame.time.get_ticks()
 
 
 class BorderedBox(Entity):
@@ -4360,7 +4390,7 @@ class BorderedTextBox(Entity):
         return self.text_box.is_finished()
 
 
-class BlackJackScreen(Screen, TextBox):
+class BlackJackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
@@ -5690,9 +5720,9 @@ class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
         self.player: Player = Player(202, 111)
+        self.npcs = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
-        self.rest_area_floor_1_npcs = [InnKeeper(231, 154)]
-        self.obstacle: Obstacle = Obstacle(22, 622)
+        self.obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0
@@ -5701,10 +5731,10 @@ class GameState:
         # self.coinFlipFredScreen = CoinFlipFredScreen()
         # self.opossumInACanScreen = OpossumInACanScreen()
         # self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
-        self.BlackJackScreen = BlackJackScreen()
+        self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.restScreen  # assign a value to currentScreen here
+        self.currentScreen = self.blackJackScreen  # assign a value to currentScreen here
 
 
 class Game:
