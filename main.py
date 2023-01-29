@@ -348,9 +348,9 @@ class Player(Entity):
         if self.isOverlap(state.obstacle) or self.isOutOfBounds():
             self.undoLastMove()
 
-        # for npc in state.npcs:
-        #     if self.collision.isOverlap(npc.collision):
-        #         self.undoLastMove()
+        for npc in state.rest_area_floor_1_npcs:
+            if self.collision.isOverlap(npc.collision):
+                self.undoLastMove()
         #
         # if controller.isQPressed:
         #     state.currentScreen = state.coinFlipScreen
@@ -496,9 +496,42 @@ class CoinFlipExplanationGuy(Npc):
 #         # Display the current message if self.isSpeaking is True
 #         if self.isSpeaking:
 #             message = pygame.display.get_surface().blit(self.message, (10, 10))
+class InnKeeper(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = TextBox(["Hi there I'm the inn keeper", "It will cost you 100 gold a night to sleep."," I can assure you that since your new your bed will be a good 20 feet from the garbage."],(50, 450, 50, 45),30, 50)
+
+        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_delay = 500  # input delay in milliseconds
+        self.input_time = 0  # time when input was last read
+
+    def update(self, state):
+        super().update(state)
+
+
+
+        # Get the current time in milliseconds
+        # current_time = pygame.time.get_ticks()
+
+        # If the T key is pressed and the input delay has passed
+        # if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+        #
+        #     self.input_time = current_time  # update the input time
+        #
+        #     # Update the current message
+        #     self.current_message_index += 1
+        #     if self.current_message_index >= len(self.messages):
+        #         self.current_message_index = 0
+        #     self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        if self.isSpeaking:
+            self.textbox.draw(state)
 
 
 class SalleyOpossum(Npc):
+
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.current_message_index = -1
@@ -695,6 +728,7 @@ class Screen:
 
 
 class MainScreen(Screen):
+
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
@@ -704,7 +738,7 @@ class MainScreen(Screen):
         controller = state.controller
         player = state.player
         # npc = state.npcs
-        obstacle = state.obstacle
+        # obstacle = state.obstacle
         controller.update(state)
 
         if controller.isExitPressed is True:
@@ -797,11 +831,12 @@ class RestScreen(Screen):
         super().__init__("Casino Rest Screen")
         # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
+        self.innkeeper = InnKeeper(333,333)
 
     def update(self, state: "GameState"):
         controller = state.controller
         player = state.player
-        # npc = state.npcs
+        rest_area_floor_1_npc = state.rest_area_floor_1_npcs
         obstacle = state.obstacle
         controller.update(state)
 
@@ -809,10 +844,10 @@ class RestScreen(Screen):
             state.isRunning = False
 
         player.update(state)
-        # npc.update(state)
-        # for npc in state.npcs:
-        #     npc.update(state)
-        # obstacle.update(state)
+        for npc in rest_area_floor_1_npc:
+            npc.update(state)
+        obstacle.update(state)
+
 
     def draw(self, state: "GameState"):
         # Clear the screen
@@ -859,7 +894,8 @@ class RestScreen(Screen):
 
             # Draw the player, NPCs, and obstacles
             state.player.draw(state)
-            # state.npc.draw(state)
+            for npc in state.rest_area_floor_1_npcs:
+                npc.draw(state)
 
             state.obstacle.draw(state)
             # Update the display
@@ -5652,8 +5688,9 @@ class BlackJackScreen(Screen, TextBox):
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
-        self.player: Player = Player(222, 111)
+        self.player: Player = Player(202, 111)
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
+        self.rest_area_floor_1_npcs = [InnKeeper(231, 154)]
         self.obstacle: Obstacle = Obstacle(22, 622)
         self.isRunning: bool = True
         self.isPaused: bool = False
@@ -5666,7 +5703,7 @@ class GameState:
         self.BlackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
+        self.currentScreen = self.restScreen  # assign a value to currentScreen here
 
 
 class Game:
