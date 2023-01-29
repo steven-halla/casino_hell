@@ -349,6 +349,7 @@ class Player(Entity):
             self.undoLastMove()
 
         for npc in state.rest_area_floor_1_npcs:
+
             if self.collision.isOverlap(npc.collision):
                 self.undoLastMove()
         #
