@@ -759,6 +759,20 @@ class MainScreen(Screen):
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(image, (pos_x, pos_y))
 
+            # for x, y, image in self.tiled_map.layers[2].tiles():
+            #     # Calculate the position of the tile in pixels
+            #     pos_x = x * tile_width
+            #     pos_y = y * tile_height
+            #     scaled_image = pygame.transform.scale(scaled_image, (tile_width * 1.3, tile_height * 1.3))
+            #
+            #     tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
+            #
+            #     if state.player.collision.isOverlap(tile_rect):
+            #         state.player.undoLastMove()
+            #
+            #     # Blit the tile image to the screen at the correct position
+            #     DISPLAY.blit(image, (pos_x, pos_y))
+
         # Draw the player, NPCs, and obstacles
         state.player.draw(state)
         # state.npc.draw(state)
