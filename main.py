@@ -504,12 +504,10 @@ class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NPCTextBox(
-            ["1st message."],
+            ["1st message.", "2nd message ?", " 3rd message", "4th message"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
-        self.font = pygame.font.Font(None, 36)
-
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
@@ -549,30 +547,7 @@ class InnKeeper(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
-            if state.controller.isUpPressed:
 
-                if not hasattr(self, "menu_index"):
-                    self.menu_index = len(self.choices) - 1
-                else:
-                    self.menu_index -= 1
-                self.menu_index %= len(self.choices)
-
-            if state.controller.isDownPressed:
-
-                if not hasattr(self, "menu_index"):
-                    self.menu_index = len(self.choices) + 1
-                else:
-                    self.menu_index += 1
-                self.menu_index %= len(self.choices)
-
-            if self.menu_index == 0:
-                if state.controller.isAPressed:
-                    state.player.stamina_points += 500
-                    state.player.playerMoney -= 100
-                    if state.player.stamina_points > 100:
-                        state.player.stamina_points = 100
-            elif self.menu_index == 1:
-                pass
             # print("start state: waiting")
             # self.textbox.reset()
 
@@ -589,37 +564,8 @@ class InnKeeper(Npc):
         if self.state == "waiting":
             pass
         elif self.state == "talking":
-
             # print("is talking")
             self.textbox.draw(state)
-            if self.textbox.is_finished():
-                black_box = pygame.Surface((255, 215))
-                black_box.fill((0, 0, 0))
-                # Create the white border
-                border_width = 5
-                white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
-                white_border.fill((255, 255, 255))
-                black_box = pygame.Surface((170, 215))
-                black_box.fill((0, 0, 0))
-                white_border.blit(black_box, (border_width, border_width))
-                DISPLAY.blit(white_border, (620 - 20, 190))
-                DISPLAY.blit(
-                    self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                    (687, 260))
-
-                DISPLAY.blit(
-                    self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                    (687, 310))
-
-            if self.menu_index == 0:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 200))
-
-            elif self.menu_index == 1:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 305))
 
 
 class ShopKeeper(Npc):
@@ -1092,7 +1038,7 @@ class RestScreen(Screen):
             f"player money: {state.player.playerMoney}",
             True, (255, 255, 255)), (333, 333))
         DISPLAY.blit(font.render(
-            f"player health: {state.player.stamina_points}",
+            f"player money: {state.player.stamina_points}",
             True, (255, 255, 255)), (333, 388))
 
         # Check if the Tiled map has any layers
