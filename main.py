@@ -544,6 +544,7 @@ class InnKeeper(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
+            state.player.playerMoney += 100
             # print("start state: waiting")
             # self.textbox.reset()
 
@@ -897,9 +898,9 @@ class RestScreen(Screen):
         # Clear the screen
         DISPLAY.fill(BLUEBLACK)
         # Draw the player money
-        # DISPLAY.blit(font.render(
-        #     f"player money: {state.player.playerMoney}",
-        #     True, (5, 5, 5)), (150, 150))
+        DISPLAY.blit(font.render(
+            f"player money: {state.player.playerMoney}",
+            True, (255, 255, 255)), (333, 333))
 
         # Check if the Tiled map has any layers
         if self.tiled_map.layers:
