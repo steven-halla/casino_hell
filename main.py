@@ -592,8 +592,13 @@ class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["I'm the shop keeper.", "In the future I'll be selling you items"],
+            ["I'm the shop keeper. In the future I'll be selling you items.", "Press A, B, R, E to buy stuff."],
             (50, 450, 50, 45), 30, 500)
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.input_time = pygame.time.get_ticks()
+
+
+
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
@@ -604,6 +609,35 @@ class ShopKeeper(Npc):
         elif self.state == "talking":
             # self.textbox.reset()
             # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+                    state.player.money -= 200
+
+                elif state.controller.isRPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+                    state.player.money -= 300
+
+                elif state.controller.isEPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+                    state.player.money -= 400
+
 
             self.update_talking(state)
 
