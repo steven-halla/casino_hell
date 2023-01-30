@@ -29,6 +29,7 @@ DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 pygame.display.set_caption("Casino Man")
 GREEN: Tuple[int, int, int] = (0, 255, 0)
 BLACK: Tuple[int, int, int] = (0, 0, 0)
+BLUEBLACK: Tuple[int, int, int] = (0, 0, 51)
 
 WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
@@ -502,7 +503,7 @@ class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = TextBox(
-            ["Hi there I'm the inn keeper", "It will cost you 100 gold a night to sleep.", "I can assure you that since your new your bed will be a good 20 feet from the garbage."],
+            ["1st message.", "2nd message ?", " 3rd message", "4th message"],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
@@ -510,8 +511,15 @@ class InnKeeper(Npc):
     def update(self, state: "GameState"):
         if self.state == "waiting":
             self.update_waiting(state)
+
         elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+
             self.update_talking(state)
+
+
+
 
 
     def update_waiting(self, state: "GameState"):
@@ -519,21 +527,31 @@ class InnKeeper(Npc):
 
         if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
-            print("distance: " + str(distance))
+            # print("distance: " + str(distance))
 
             if distance < 100:
-                print("start state: talking")
+                # print("start state: talking")
+
+
                 self.state = "talking"
+
                 self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
                 self.textbox.reset()
+
 
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
-            print("start state: waiting")
+            # print("start state: waiting")
+            # self.textbox.reset()
+
             self.state = "waiting"
+
             self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
 
 
     def draw(self, state):
@@ -542,7 +560,7 @@ class InnKeeper(Npc):
         if self.state == "waiting":
             pass
         elif self.state == "talking":
-            print("is talking")
+            # print("is talking")
             self.textbox.draw(state)
 
 
@@ -877,7 +895,7 @@ class RestScreen(Screen):
 
     def draw(self, state: "GameState"):
         # Clear the screen
-        DISPLAY.fill(WHITE)
+        DISPLAY.fill(BLUEBLACK)
         # Draw the player money
         # DISPLAY.blit(font.render(
         #     f"player money: {state.player.playerMoney}",
@@ -4295,7 +4313,6 @@ class TextBox(Entity):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
         self.messages = messages
         self.message_index = 0
-        self.text = self.messages[self.message_index]
         self.characters_to_display = 0
         self.font_size = font_size
         self.delay = delay
@@ -4303,35 +4320,33 @@ class TextBox(Entity):
         self.font = pygame.font.Font(None, 36)
 
     def update(self, state: "GameState"):
-        print("textbox update")
+        # print("textbox update")
         controller = state.controller
 
         # show characters of text one at a time, not whole message.
-        if self.characters_to_display < len(self.text):
+        text = self.messages[self.message_index]
+        if self.characters_to_display < len(text):
             self.characters_to_display += 1
 
         # handle button press to see next message
         if controller.isTPressed and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
-            pygame.time.delay(700)
-
             self.time = pygame.time.get_ticks()
             self.message_index += 1
-            self.text = self.messages[self.message_index]
             self.characters_to_display = 0
-            state.controller.isTPressed = False
 
         # print("is finished? " + str(self.is_finished()))
 
     def draw(self, state: "GameState"):
-        print("Textbox draw")
-        text_to_display = self.text[:self.characters_to_display]
+        # print("Textbox draw")
+        text = self.messages[self.message_index]
+        text_to_display = text[:self.characters_to_display]
         wrapped_text = textwrap.wrap(text_to_display, 60)
-        print("text: " + text_to_display)
-        print("position: " + str(self.position.toTuple()))
+        # print("text: " + text_to_display)
+        # print("position: " + str(self.position.toTuple()))
         for i, line in enumerate(wrapped_text):
-            text_surface = self.font.render(line, True, (5, 5, 5))
+            text_surface = font.render(line, True, (255, 255, 255))
             DISPLAY.blit(text_surface, (self.position.x, self.position.y + (i * 40)))
 
         # DISPLAY.blit(font.render(
@@ -5734,7 +5749,7 @@ class GameState:
         self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.blackJackScreen  # assign a value to currentScreen here
+        self.currentScreen = self.restScreen  # assign a value to currentScreen here
 
 
 class Game:
