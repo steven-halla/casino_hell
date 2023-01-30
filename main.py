@@ -504,7 +504,129 @@ class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NPCTextBox(
-            ["1st message.", "2nd message ?", " 3rd message", "4th message"],
+            ["1st message."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.font = pygame.font.Font(None, 36)
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+        if self.state == "waiting":
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 100:
+                # print("start state: talking")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            if state.controller.isUpPressed:
+
+                if not hasattr(self, "menu_index"):
+                    self.menu_index = len(self.choices) - 1
+                else:
+                    self.menu_index -= 1
+                self.menu_index %= len(self.choices)
+
+            if state.controller.isDownPressed:
+
+                if not hasattr(self, "menu_index"):
+                    self.menu_index = len(self.choices) + 1
+                else:
+                    self.menu_index += 1
+                self.menu_index %= len(self.choices)
+
+            if self.menu_index == 0:
+                if state.controller.isAPressed:
+                    state.player.stamina_points += 500
+                    state.player.playerMoney -= 100
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+            elif self.menu_index == 1:
+                pass
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+
+            # print("is talking")
+            self.textbox.draw(state)
+            if self.textbox.is_finished():
+                black_box = pygame.Surface((255, 215))
+                black_box.fill((0, 0, 0))
+                # Create the white border
+                border_width = 5
+                white_border = pygame.Surface((170 + 2 * border_width, 215 + 2 * border_width))
+                white_border.fill((255, 255, 255))
+                black_box = pygame.Surface((170, 215))
+                black_box.fill((0, 0, 0))
+                white_border.blit(black_box, (border_width, border_width))
+                DISPLAY.blit(white_border, (620 - 20, 190))
+                DISPLAY.blit(
+                    self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
+                    (687, 260))
+
+                DISPLAY.blit(
+                    self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                    (687, 310))
+
+            if self.menu_index == 0:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (640, 200))
+
+            elif self.menu_index == 1:
+                DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (637, 305))
+
+
+class ShopKeeper(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NPCTextBox(
+            ["I'm the shop keeper.", "In the future I'll be selling you items"],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
@@ -545,10 +667,74 @@ class InnKeeper(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
-            state.player.playerMoney -= 100
-            state.player.stamina_points += 500
-            if state.player.stamina_points > 100:
-                state.player.stamina_points = 100
+            #here we need to pull up a menu that has a yes or no to it
+            state.player.money -= 100
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+
+
+    def draw(self, state):
+        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class BarKeep(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NPCTextBox(
+            ["I'm the Bar keeper.", "I sell only one kind of beverage done here and it's not water", "It's highly fermented race horse piss","But don't worry, it may be fermented horse piss, but it'll get you drunks","No matter how many you drink, it still taste like horse piss"],
+            (50, 450, 50, 45), 30, 500)
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+        if self.state == "waiting":
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 100:
+                # print("start state: talking")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            #here we need to pull up a menu that has a yes or no to it
+            state.player.money -= 100
             # print("start state: waiting")
             # self.textbox.reset()
 
@@ -878,7 +1064,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(231, 154)]
+        state.npcs = [InnKeeper(251, 154),ShopKeeper(148, 154) ]
 
     def update(self, state: "GameState"):
 
@@ -906,7 +1092,7 @@ class RestScreen(Screen):
             f"player money: {state.player.playerMoney}",
             True, (255, 255, 255)), (333, 333))
         DISPLAY.blit(font.render(
-            f"player money: {state.player.stamina_points}",
+            f"player health: {state.player.stamina_points}",
             True, (255, 255, 255)), (333, 388))
 
         # Check if the Tiled map has any layers
