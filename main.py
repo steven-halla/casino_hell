@@ -281,7 +281,8 @@ class Player(Entity):
         self.walkSpeed = 3.5
         self.playerMoney = 5000
         self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
-        self.stamina_points = 100
+        #need to put in a max for stamina and focus
+        self.stamina_points = 97
         self.focus_points = 50
         self.exp = 0
         self.level = 1
@@ -544,7 +545,10 @@ class InnKeeper(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
-            state.player.playerMoney += 100
+            state.player.playerMoney -= 100
+            state.player.stamina_points += 500
+            if state.player.stamina_points > 100:
+                state.player.stamina_points = 100
             # print("start state: waiting")
             # self.textbox.reset()
 
@@ -901,6 +905,9 @@ class RestScreen(Screen):
         DISPLAY.blit(font.render(
             f"player money: {state.player.playerMoney}",
             True, (255, 255, 255)), (333, 333))
+        DISPLAY.blit(font.render(
+            f"player money: {state.player.stamina_points}",
+            True, (255, 255, 255)), (333, 388))
 
         # Check if the Tiled map has any layers
         if self.tiled_map.layers:
