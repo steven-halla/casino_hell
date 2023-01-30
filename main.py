@@ -692,16 +692,33 @@ class BarKeep(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["I'm the Bar keeper.", "I sell only one kind of beverage done here and it's not water", "It's highly fermented race horse piss","But don't worry, it may be fermented horse piss, but it'll get you drunks","No matter how many you drink, it still taste like horse piss"],
+            ["I'm the Waiter may I take your order? Press A for horse piss, and B for Water, or T to leave."],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
             self.update_waiting(state)
 
         elif self.state == "talking":
+            if self.textbox.message_index == 0:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+                    state.player.money -= 500
             # self.textbox.reset()
             # self.textbox.message_index = 0
 
@@ -1064,7 +1081,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(251, 154),ShopKeeper(148, 154) ]
+        state.npcs = [InnKeeper(251, 154),ShopKeeper(148, 154), BarKeep(40, 154)]
 
     def update(self, state: "GameState"):
 
