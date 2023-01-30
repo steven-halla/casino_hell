@@ -306,10 +306,10 @@ class Player(Entity):
 
         # Define canMove before the for loop
         canMove = True
-        # for npc in state.npcs:
-        #     if npc.isSpeaking:
-        #         canMove = False
-        #         break
+        for npc in state.npcs:
+            if npc.isSpeaking:
+                canMove = False
+                break
 
         if canMove:
             if controller.isLeftPressed:
@@ -1077,7 +1077,8 @@ class RestScreen(Screen):
     def __init__(self):
         super().__init__("Casino Rest Screen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
+        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
 
     def start(self, state: "GameState"):
         super().start(state)
