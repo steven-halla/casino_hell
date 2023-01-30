@@ -278,8 +278,8 @@ class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
-        self.walkSpeed = 3.5
-        self.playerMoney = 5000
+        self.walk_speed = 3.5
+        self.money = 5000
         self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
         #need to put in a max for stamina and focus
         self.stamina_points = 97
@@ -313,9 +313,9 @@ class Player(Entity):
 
         if canMove:
             if controller.isLeftPressed:
-                self.velocity.x = -self.walkSpeed
+                self.velocity.x = -self.walk_speed
             elif controller.isRightPressed:
-                self.velocity.x = self.walkSpeed
+                self.velocity.x = self.walk_speed
             else:
                 # hard stop
                 # self.velocity.x = 0  # default velocity to zero unless key pressed
@@ -325,9 +325,9 @@ class Player(Entity):
                     self.velocity.x = 0
 
             if controller.isUpPressed:
-                self.velocity.y = -self.walkSpeed
+                self.velocity.y = -self.walk_speed
             elif controller.isDownPressed:
-                self.velocity.y = self.walkSpeed
+                self.velocity.y = self.walk_speed
             else:
                 # hard stop
                 # self.velocity.y = 0  # default velocity to zero unless key pressed
@@ -503,11 +503,13 @@ class CoinFlipExplanationGuy(Npc):
 class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NPCTextBox(
-            ["1st message.", "2nd message ?", " 3rd message", "4th message"],
+        self.textbox = NpcTextBox(
+            ["Hi there welcome to our humble rest area. Don't mind the garbage, roaches, rats, or bed bugs. They're all very nice.", "Press A button to stay for 100 coins, and T button to leave."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
@@ -518,6 +520,21 @@ class InnKeeper(Npc):
         elif self.state == "talking":
             # self.textbox.reset()
             # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
 
             self.update_talking(state)
 
@@ -548,6 +565,9 @@ class InnKeeper(Npc):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
 
+        # if state.controller.isTPressed and self.textbox.message_index == 0:
+            print("Here we go we're walking here")
+
             # print("start state: waiting")
             # self.textbox.reset()
 
@@ -571,7 +591,7 @@ class InnKeeper(Npc):
 class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NPCTextBox(
+        self.textbox = NpcTextBox(
             ["I'm the shop keeper.", "In the future I'll be selling you items"],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
@@ -637,7 +657,7 @@ class ShopKeeper(Npc):
 class BarKeep(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NPCTextBox(
+        self.textbox = NpcTextBox(
             ["I'm the Bar keeper.", "I sell only one kind of beverage done here and it's not water", "It's highly fermented race horse piss","But don't worry, it may be fermented horse piss, but it'll get you drunks","No matter how many you drink, it still taste like horse piss"],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
@@ -733,8 +753,8 @@ class SalleyOpossum(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney > 319 and state.opossumInACanScreen.sallyOpossumMoney > 0:
-            state.player.playerMoney -= 220
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.money > 319 and state.opossumInACanScreen.sallyOpossumMoney > 0:
+            state.player.money -= 220
             state.currentScreen = state.opossumInACanScreen
             state.opossumInACanScreen.start(state)
         elif state.opossumInACanScreen.sallyOpossumMoney <= 0:
@@ -817,7 +837,7 @@ class ChiliWilley(Npc):
                 self.current_message_index = 0
             self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
 
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.playerMoney >= 500 and state.diceGameScreen.chiliWilleyMoney > 0:
+        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.money >= 500 and state.diceGameScreen.chiliWilleyMoney > 0:
             state.currentScreen = state.diceGameScreen
             state.diceGameScreen.start(state)
 
@@ -930,7 +950,7 @@ class MainScreen(Screen):
         DISPLAY.fill(WHITE)
         # Draw the player money
         DISPLAY.blit(font.render(
-            f"player money: {state.player.playerMoney}",
+            f"player money: {state.player.money}",
             True, (5, 5, 5)), (10, 10))
 
         # Check if the Tiled map has any layers
@@ -1035,10 +1055,10 @@ class RestScreen(Screen):
         DISPLAY.fill(BLUEBLACK)
         # Draw the player money
         DISPLAY.blit(font.render(
-            f"player money: {state.player.playerMoney}",
+            f"player money: {state.player.money}",
             True, (255, 255, 255)), (333, 333))
         DISPLAY.blit(font.render(
-            f"player money: {state.player.stamina_points}",
+            f"player stamina points: {state.player.stamina_points}",
             True, (255, 255, 255)), (333, 388))
 
         # Check if the Tiled map has any layers
@@ -1353,13 +1373,13 @@ class RestScreen(Screen):
 #
 #             if bluffalo < 0.7:
 #                 print("you win tripple bet")
-#                 state.player.playerMoney += self.bet * 3
+#                 state.player.money += self.bet * 3
 #                 self.game_state = "welcome_screen"
 #
 #
 #             else:
 #                 print("your bet lost")
-#                 state.player.playerMoney -= self.bet
+#                 state.player.money -= self.bet
 #                 self.game_state = "welcome_screen"
 #
 #
@@ -1371,13 +1391,13 @@ class RestScreen(Screen):
 #             self.second_message_display = " "
 #             if self.result == self.players_side:
 #                 # self.third_message_display = "You won"
-#                 state.player.playerMoney += self.bet
+#                 state.player.money += self.bet
 #                 self.coinFlipSandyMoney -= self.bet
 #                 pygame.time.delay(1000)
 #
 #                 self.game_state = "you_won_the_toss"
 #
-#                 if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                     print("At 0 ending match")
 #                     state.currentScreen = state.mainScreen
 #                     state.mainScreen.start(state)
@@ -1394,7 +1414,7 @@ class RestScreen(Screen):
 #
 #                         if controller.isAPressed:
 #                             self.luck_activated -= 1
-#                             state.player.playerMoney += self.bet
+#                             state.player.money += self.bet
 #                             self.coinFlipSandyMoney -= self.bet
 #                             self.result = self.players_side
 #
@@ -1404,14 +1424,14 @@ class RestScreen(Screen):
 #                         if controller.isAPressed:
 #                             self.luck_activated -= 1
 #
-#                             state.player.playerMoney -= self.bet
+#                             state.player.money -= self.bet
 #                             self.coinFlipSandyMoney += self.bet
 #
 #                             self.game_state = "you_lost_the_toss"
 #
 #                 elif self.luck_activated == 0:
 #                     pygame.time.delay(500)
-#                     state.player.playerMoney -= self.bet
+#                     state.player.money -= self.bet
 #                     self.coinFlipSandyMoney += self.bet
 #
 #                     self.game_state = "you_lost_the_toss"
@@ -1430,7 +1450,7 @@ class RestScreen(Screen):
 #             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
 #             self.second_message_display = f"Play again? Press T on your choice"
 #
-#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#             if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                 print("At 0 ending match")
 #                 state.currentScreen = state.mainScreen
 #                 state.mainScreen.start(state)
@@ -1470,7 +1490,7 @@ class RestScreen(Screen):
 #
 #             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
 #             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
-#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#             if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                 print("At 0 ending match")
 #                 state.currentScreen = state.mainScreen
 #                 state.mainScreen.start(state)
@@ -1513,7 +1533,7 @@ class RestScreen(Screen):
 #             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
 #             True, (255, 255, 255)), (10, 150))
 #         DISPLAY.blit(self.new_font.render(
-#             f" player Money: {state.player.playerMoney}",
+#             f" player Money: {state.player.money}",
 #             True, (255, 255, 255)), (10, 190))
 #
 #         # Draw the welcome message or choose bet message based on the game state
@@ -1898,13 +1918,13 @@ class RestScreen(Screen):
 #
 #             if bluffalo < 0.7:
 #                 print("you win tripple bet")
-#                 state.player.playerMoney += self.bet * 3
+#                 state.player.money += self.bet * 3
 #                 self.game_state = "welcome_screen"
 #
 #
 #             else:
 #                 print("your bet lost")
-#                 state.player.playerMoney -= self.bet
+#                 state.player.money -= self.bet
 #                 self.game_state = "welcome_screen"
 #
 #
@@ -1916,13 +1936,13 @@ class RestScreen(Screen):
 #             self.second_message_display = " "
 #             if self.result == self.players_side:
 #                 # self.third_message_display = "You won"
-#                 state.player.playerMoney += self.bet
+#                 state.player.money += self.bet
 #                 self.coinFlipSandyMoney -= self.bet
 #                 pygame.time.delay(1000)
 #
 #                 self.game_state = "you_won_the_toss"
 #
-#                 if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                     print("At 0 ending match")
 #                     state.currentScreen = state.mainScreen
 #                     state.mainScreen.start(state)
@@ -1939,7 +1959,7 @@ class RestScreen(Screen):
 #
 #                         if controller.isAPressed:
 #                             self.luck_activated -= 1
-#                             state.player.playerMoney += self.bet
+#                             state.player.money += self.bet
 #                             self.coinFlipSandyMoney -= self.bet
 #                             self.result = self.players_side
 #
@@ -1949,14 +1969,14 @@ class RestScreen(Screen):
 #                         if controller.isAPressed:
 #                             self.luck_activated -= 1
 #
-#                             state.player.playerMoney -= self.bet
+#                             state.player.money -= self.bet
 #                             self.coinFlipSandyMoney += self.bet
 #
 #                             self.game_state = "you_lost_the_toss"
 #
 #                 elif self.luck_activated == 0:
 #                     pygame.time.delay(500)
-#                     state.player.playerMoney -= self.bet
+#                     state.player.money -= self.bet
 #                     self.coinFlipSandyMoney += self.bet
 #
 #                     self.game_state = "you_lost_the_toss"
@@ -1975,7 +1995,7 @@ class RestScreen(Screen):
 #             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
 #             self.second_message_display = f"Play again? Press T on your choice"
 #
-#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#             if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                 print("At 0 ending match")
 #                 state.currentScreen = state.mainScreen
 #                 state.mainScreen.start(state)
@@ -2015,7 +2035,7 @@ class RestScreen(Screen):
 #
 #             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
 #             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
-#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#             if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                 print("At 0 ending match")
 #                 state.currentScreen = state.mainScreen
 #                 state.mainScreen.start(state)
@@ -2058,7 +2078,7 @@ class RestScreen(Screen):
 #             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
 #             True, (255, 255, 255)), (10, 150))
 #         DISPLAY.blit(self.new_font.render(
-#             f" player Money: {state.player.playerMoney}",
+#             f" player Money: {state.player.money}",
 #             True, (255, 255, 255)), (10, 190))
 #
 #         # Draw the welcome message or choose bet message based on the game state
@@ -2431,13 +2451,13 @@ class RestScreen(Screen):
 #
 #             if bluffalo < 0.7:
 #                 print("you win tripple bet")
-#                 state.player.playerMoney += self.bet * 3
+#                 state.player.money += self.bet * 3
 #                 self.game_state = "welcome_screen"
 #
 #
 #             else:
 #                 print("your bet lost")
-#                 state.player.playerMoney -= self.bet
+#                 state.player.money -= self.bet
 #                 self.game_state = "welcome_screen"
 #
 #
@@ -2449,13 +2469,13 @@ class RestScreen(Screen):
 #             self.second_message_display = " "
 #             if self.result == self.players_side:
 #                 # self.third_message_display = "You won"
-#                 state.player.playerMoney += self.bet
+#                 state.player.money += self.bet
 #                 self.coinFlipSandyMoney -= self.bet
 #                 pygame.time.delay(1000)
 #
 #                 self.game_state = "you_won_the_toss"
 #
-#                 if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#                 if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                     print("At 0 ending match")
 #                     state.currentScreen = state.mainScreen
 #                     state.mainScreen.start(state)
@@ -2472,7 +2492,7 @@ class RestScreen(Screen):
 #
 #                         if controller.isAPressed:
 #                             self.luck_activated -= 1
-#                             state.player.playerMoney += self.bet
+#                             state.player.money += self.bet
 #                             self.coinFlipSandyMoney -= self.bet
 #                             self.result = self.players_side
 #
@@ -2482,14 +2502,14 @@ class RestScreen(Screen):
 #                         if controller.isAPressed:
 #                             self.luck_activated -= 1
 #
-#                             state.player.playerMoney -= self.bet
+#                             state.player.money -= self.bet
 #                             self.coinFlipSandyMoney += self.bet
 #
 #                             self.game_state = "you_lost_the_toss"
 #
 #                 elif self.luck_activated == 0:
 #                     pygame.time.delay(500)
-#                     state.player.playerMoney -= self.bet
+#                     state.player.money -= self.bet
 #                     self.coinFlipSandyMoney += self.bet
 #
 #                     self.game_state = "you_lost_the_toss"
@@ -2517,7 +2537,7 @@ class RestScreen(Screen):
 #             self.message_display = f"choice  {self.players_side} coin landed  {self.result} You WON"
 #             self.second_message_display = f"Play again? Press T on your choice"
 #
-#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#             if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                 print("At 0 ending match")
 #                 state.currentScreen = state.mainScreen
 #                 state.mainScreen.start(state)
@@ -2556,7 +2576,7 @@ class RestScreen(Screen):
 #         elif self.game_state == "you_lost_the_toss":
 #             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "
 #             self.second_message_display = f"Play again?Yes to continue and No to exi. Press T on your choice"
-#             if self.coinFlipSandyMoney <= 0 or state.player.playerMoney <= 0:
+#             if self.coinFlipSandyMoney <= 0 or state.player.money <= 0:
 #                 print("At 0 ending match")
 #                 state.currentScreen = state.mainScreen
 #                 state.mainScreen.start(state)
@@ -2599,7 +2619,7 @@ class RestScreen(Screen):
 #             f" CoinFlipSandysMoney: {self.coinFlipSandyMoney}",
 #             True, (255, 255, 255)), (10, 150))
 #         DISPLAY.blit(self.new_font.render(
-#             f" player Money: {state.player.playerMoney}",
+#             f" player Money: {state.player.money}",
 #             True, (255, 255, 255)), (10, 190))
 #
 #         # Draw the welcome message or choose bet message based on the game state
@@ -2948,7 +2968,7 @@ class RestScreen(Screen):
 #
 #                             print("You cast bluff")
 #                             print("I'll bet you I'll get the rst of the wins")
-#                             state.player.playerMoney += self.sallyOpossumMoney
+#                             state.player.money += self.sallyOpossumMoney
 #                             self.sallyOpossumIsDefeated = True
 #                             self.sallyOpossumMoney = 0
 #                             print("exiting now")
@@ -3057,7 +3077,7 @@ class RestScreen(Screen):
 #             f" SallyOpossum Money: {self.sallyOpossumMoney}",
 #             True, (255, 255, 255)), (10, 190))
 #         DISPLAY.blit(self.font.render(
-#             f" player Money: {state.player.playerMoney}",
+#             f" player Money: {state.player.money}",
 #             True, (255, 255, 255)), (10, 290))
 #
 #         DISPLAY.blit(self.font.render(
@@ -3356,7 +3376,7 @@ class RestScreen(Screen):
 #                         self.bottom_message = f"The next draw is a {self.winner_or_looser[0]}Press T to continue"
 #                         if self.result == "lose":
 #                             print("you notice this dealer is cheating")
-#                             state.player.playerMoney += self.sallyOpossumMoney
+#                             state.player.money += self.sallyOpossumMoney
 #                             self.sallyOpossumMoney = 0
 #                             print("time to leave we got the  cheater")
 #                         if controller.isTPressed:
@@ -3437,7 +3457,7 @@ class RestScreen(Screen):
 #
 #                             print("You cast bluff")
 #                             print("I'll bet you I'll get the rst of the wins")
-#                             state.player.playerMoney += self.sallyOpossumMoney
+#                             state.player.money += self.sallyOpossumMoney
 #                             self.sallyOpossumIsDefeated = True
 #                             self.sallyOpossumMoney = 0
 #                             print("exiting now")
@@ -3546,7 +3566,7 @@ class RestScreen(Screen):
 #             f" SallyOpossum Money: {self.sallyOpossumMoney}",
 #             True, (255, 255, 255)), (10, 190))
 #         DISPLAY.blit(self.font.render(
-#             f" player Money: {state.player.playerMoney}",
+#             f" player Money: {state.player.money}",
 #             True, (255, 255, 255)), (10, 290))
 #
 #         DISPLAY.blit(self.font.render(
@@ -3928,7 +3948,7 @@ class DiceGameScreen(Screen, Dice):
             pygame.time.delay(5000)
             self.refresh()
 
-            state.player.playerMoney += 500
+            state.player.money += 500
             self.chiliWilleyMoney -= 500
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
@@ -3938,7 +3958,7 @@ class DiceGameScreen(Screen, Dice):
             pygame.time.delay(5000)
             self.refresh()
 
-            state.player.playerMoney -= 500
+            state.player.money -= 500
             self.chiliWilleyMoney += 500
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
@@ -4007,7 +4027,7 @@ class DiceGameScreen(Screen, Dice):
             print("player jadfllasf;jslfjls;jaf")
             if self.player_1_lost_game == True:
                 pygame.time.delay(3000)
-                state.player.playerMoney -= 500
+                state.player.money -= 500
                 self.chiliWilleyMoney += 500
 
                 state.currentScreen = state.mainScreen
@@ -4175,7 +4195,7 @@ class DiceGameScreen(Screen, Dice):
 
         elif self.game_state == "player_1_wins":
             DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (200, 10))
-            DISPLAY.blit(self.diceFont.render(f"Player 1 MONEY: {state.player.playerMoney}", True, (255, 255, 255)), (200, 100))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 MONEY: {state.player.money}", True, (255, 255, 255)), (200, 100))
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (200, 200))
             DISPLAY.blit(self.diceFont.render(f"Player 2 MONEY: {self.chiliWilleyMoney}", True, (255, 255, 255)), (200, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (200, 400))
@@ -4184,7 +4204,7 @@ class DiceGameScreen(Screen, Dice):
 
         elif self.game_state == "player_2_wins":
             DISPLAY.blit(self.diceFont.render(f"Player 1 Pile: {self.player1pile}", True, (255, 255, 255)), (155, 10))
-            DISPLAY.blit(self.diceFont.render(f"Player 1 Money: {state.player.playerMoney}", True, (255, 255, 255)), (155, 100))
+            DISPLAY.blit(self.diceFont.render(f"Player 1 Money: {state.player.money}", True, (255, 255, 255)), (155, 100))
             DISPLAY.blit(self.diceFont.render(f"Player 2 Pile: {self.player2pile}", True, (255, 255, 255)), (155, 200))
             DISPLAY.blit(self.diceFont.render(f"Player 2 Money: {self.chiliWilleyMoney}", True, (255, 255, 255)), (155, 300))
             DISPLAY.blit(self.diceFont.render(f"Ante: {self.ante}", True, (255, 255, 255)), (155, 400))
@@ -4471,7 +4491,6 @@ class TextBox(Entity):
         if controller.isTPressed and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
-            pygame.time.delay(700)
 
             self.time = pygame.time.get_ticks()
             self.message_index += 1
@@ -4493,7 +4512,7 @@ class TextBox(Entity):
             pygame.time.get_ticks() - self.time > self.delay
 
 
-class NPCTextBox(Entity):
+class NpcTextBox(Entity):
     def __init__(self, messages: list[str], rect: tuple[int, int, int, int], font_size: int, delay: int):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
         self.messages = messages
@@ -4535,7 +4554,7 @@ class NPCTextBox(Entity):
             DISPLAY.blit(text_surface, (self.position.x, self.position.y + (i * 40)))
 
         # DISPLAY.blit(font.render(
-        #     f"player money: {state.player.playerMoney}",
+        #     f"player money: {state.player.money}",
         #     True, (5, 5, 5)), (150, 150))
 
     def is_finished(self) -> bool:
@@ -4922,7 +4941,7 @@ class BlackJackScreen(Screen):
                                 self.npc_speaking = False
                                 self.hero_speaking = True
                                 self.hero_reveal_text_component.update(state)
-                                state.player.playerMoney += self.cheater_bob_money
+                                state.player.money += self.cheater_bob_money
                                 self.cheater_bob_money = 0
                                 if self.hero_reveal_text_component.is_finished():
                                     self.player_hand = []
@@ -5032,15 +5051,15 @@ class BlackJackScreen(Screen):
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
 
                 print("its time for you to have double winnings")
-                # state.player.playerMoney += self.bet
-                # state.player.playerMoney += self.bet
+                # state.player.money += self.bet
+                # state.player.money += self.bet
                 # self.cheater_bob_money -= self.bet
                 # self.cheater_bob_money -= self.bet
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
-                # state.player.playerMoney -= self.bet
-                # state.player.playerMoney -= self.bet
+                # state.player.money -= self.bet
+                # state.player.money -= self.bet
                 # self.cheater_bob_money += self.bet
                 # self.cheater_bob_money += self.bet
 
@@ -5068,7 +5087,7 @@ class BlackJackScreen(Screen):
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21 and self.reveal_hand > 10:
-                state.player.playerMoney -= self.bet
+                state.player.money -= self.bet
                 self.cheater_bob_money += self.bet
 
                 if state.player.level == 1:
@@ -5110,7 +5129,7 @@ class BlackJackScreen(Screen):
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
-                    state.player.playerMoney += self.bet
+                    state.player.money += self.bet
                     self.cheater_bob_money -= self.bet
                     print("enemy bust")
                     if state.player.level == 1:
@@ -5140,7 +5159,7 @@ class BlackJackScreen(Screen):
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
-                    state.player.playerMoney += self.bet
+                    state.player.money += self.bet
                     self.cheater_bob_money -= self.bet
                     print("enemy bust")
                     self.second_message_display = "enemy bust player wins"
@@ -5157,7 +5176,7 @@ class BlackJackScreen(Screen):
 
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
-                # state.player.playerMoney -= self.bet
+                # state.player.money -= self.bet
                 # self.cheater_bob_money += self.bet
                 self.game_state = "results_screen"
 
@@ -5395,7 +5414,7 @@ class BlackJackScreen(Screen):
                 channel2.play(sound2)
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-                    state.player.playerMoney += self.bet * 2
+                    state.player.money += self.bet * 2
                     self.cheater_bob_money -= self.bet * 2
                     if state.player.level == 1:
                         state.player.exp += 50
@@ -5418,7 +5437,7 @@ class BlackJackScreen(Screen):
 
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                    state.player.playerMoney -= self.bet * 2
+                    state.player.money -= self.bet * 2
                     self.cheater_bob_money += self.bet * 2
                     if state.player.level == 1:
                         state.player.exp += 100
@@ -5431,7 +5450,7 @@ class BlackJackScreen(Screen):
                 elif self.player_score > self.enemy_score and self.player_score < 22:
                     self.second_message_display = "You win player press T when ready"
 
-                    state.player.playerMoney += self.bet
+                    state.player.money += self.bet
                     self.cheater_bob_money -= self.bet
                     if state.player.level == 1:
                         self.first_message_display = f"You gain 25 exp and {self.bet} gold "
@@ -5446,7 +5465,7 @@ class BlackJackScreen(Screen):
 
                 elif self.player_score < self.enemy_score and self.enemy_score < 22:
                     self.second_message_display = "You lose player press T when ready"
-                    state.player.playerMoney -= self.bet
+                    state.player.money -= self.bet
                     self.cheater_bob_money += self.bet
                     if state.player.level == 1:
                         self.first_message_display = f"You gain 50 exp and lose {self.bet} gold "
@@ -5528,7 +5547,7 @@ class BlackJackScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 195))
 
-        DISPLAY.blit(self.font.render(f"Money:{state.player.playerMoney}", True, (255, 255, 255)), (37, 240))
+        DISPLAY.blit(self.font.render(f"Money:{state.player.money}", True, (255, 255, 255)), (37, 240))
         DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 275))
         DISPLAY.blit(self.font.render(f"Exp:{state.player.exp}", True, (255, 255, 255)), (111, 315))
 
@@ -5568,7 +5587,7 @@ class BlackJackScreen(Screen):
 
         #
         # DISPLAY.blit(
-        #     self.font.render(f"Hero Money:{state.player.playerMoney}", True, (255, 255, 255)),
+        #     self.font.render(f"Hero Money:{state.player.money}", True, (255, 255, 255)),
         #     (55, 260))
 
         # if self.npc_speaking == True:
