@@ -1077,8 +1077,7 @@ class RestScreen(Screen):
     def __init__(self):
         super().__init__("Casino Rest Screen")
         # Load the Tiled map file
-        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -5599,14 +5598,12 @@ class BlackJackScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 195))
 
-        DISPLAY.blit(self.font.render(f"Money:{state.player.money}", True, (255, 255, 255)), (37, 240))
-        DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 275))
-        DISPLAY.blit(self.font.render(f"Exp:{state.player.exp}", True, (255, 255, 255)), (111, 315))
+        DISPLAY.blit(self.font.render(f"Money:{state.player.money}", True, (255, 255, 255)), (37, 250))
+        DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
 
-        DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 315))
-        DISPLAY.blit(self.font.render(f"Status:{self.player_status}", True, (255, 255, 255)), (37, 355))
-        DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 385))
-        DISPLAY.blit(self.font.render(f"score:{self.player_score}", True, (255, 255, 255)), (126, 385))
+        DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 330))
+        DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 370))
+
         DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
 
         black_box = pygame.Surface((200 - 10, 110 - 10))
@@ -5617,22 +5614,22 @@ class BlackJackScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 20))
 
-        black_box = pygame.Surface((200 - 10, 110 - 10))
+        black_box = pygame.Surface((200 - 10, 130 - 10))
         black_box.fill((0, 0, 0))
         border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
         white_border.fill((255, 255, 255))
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 60))
 
-        DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 80))
+        DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 70))
         DISPLAY.blit(self.font.render(f"Status:{self.enemy_status}", True, (255, 255, 255)), (37, 110))
 
         if self.reveal_hand < 11:
             DISPLAY.blit(self.font.render(f"Score:{self.enemy_score}", True, (255, 255, 255)),
-                         (37, 140))
+                         (37, 150))
         elif self.reveal_hand > 10:
-            DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)), (37, 140))
+            DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)), (37, 150))
 
 
         DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (37, 30))
@@ -6005,7 +6002,7 @@ class GameState:
         self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.restScreen  # assign a value to currentScreen here
+        self.currentScreen = self.blackJackScreen  # assign a value to currentScreen here
 
 
 class Game:
