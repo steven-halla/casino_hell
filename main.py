@@ -311,6 +311,18 @@ class Player(Entity):
                 canMove = False
                 break
 
+        other_entity = state.player if isinstance(self, Npc) else state.npcs
+        for entity in other_entity:
+            if self.collision.isOverlap(entity.collision):
+                # Reverse direction
+                self.velocity.x = -self.velocity.x
+                self.velocity.y = -self.velocity.y
+                # Move the entity away from the collision
+                self.position.x += self.velocity.x
+                self.position.y += self.velocity.y
+                self.collision.x = self.position.x
+                self.collision.y = self.position.y
+
         # if canMove:
         #     if controller.isLeftPressed:
         #         self.velocity.x = -self.walk_speed
@@ -346,7 +358,7 @@ class Player(Entity):
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-        # if self.isOverlap(state.npc) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
+        # if self.isOverlap(state.npcs) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
         #     self.undoLastMove()
         if self.isOverlap(state.obstacle) or self.isOutOfBounds():
             print("lapover")
@@ -398,13 +410,25 @@ class Player(Entity):
 
 class Npc(Entity):
     def __init__(self, x: int, y: int):
-        super(Npc, self).__init__(x, y, 16, 16)
+        super().__init__(x, y, 16, 16)
         self.color: Tuple[int, int, int] = BLUE
         self.speakStartTime: int = 0
         self.isSpeaking: bool = False
 
     def update(self, state):
         super().update(state)
+
+        other_entity = state.player if isinstance(self, Npc) else state.npcs
+        for entity in other_entity:
+            if self.collision.isOverlap(entity.collision):
+                # Reverse direction
+                self.velocity.x = -self.velocity.x
+                self.velocity.y = -self.velocity.y
+                # Move the entity away from the collision
+                self.position.x += self.velocity.x
+                self.position.y += self.velocity.y
+                self.collision.x = self.position.x
+                self.collision.y = self.position.y
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
@@ -419,7 +443,8 @@ class Npc(Entity):
                 self.speakStartTime = time.process_time()
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
         if self.isSpeaking:
             pygame.display.get_surface().blit(text_surface, (
                 self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
@@ -582,7 +607,8 @@ class InnKeeper(Npc):
 
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
 
         if self.state == "waiting":
             pass
@@ -683,7 +709,8 @@ class ShopKeeper(Npc):
 
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
 
         if self.state == "waiting":
             pass
@@ -766,7 +793,8 @@ class BarKeep(Npc):
 
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
 
         if self.state == "waiting":
             pass
@@ -1083,8 +1111,7 @@ class RestScreen(Screen):
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
 
         # Initialize the camera position
-        self.x_offset = 0
-        self.y_offset = 0
+
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -1119,14 +1146,15 @@ class RestScreen(Screen):
         if controller.isUpPressed:
             print("j")
             self.y_up_move = True
-            self.y_offset += 5
+            state.camera.y += 5
+
         elif controller.isUpPressed == False:
             self.y_up_move = False
 
         if controller.isDownPressed:
             print("j")
             self.y_down_move = True
-            self.y_offset -= 5
+            state.camera.y -= 5
 
         elif controller.isDownPressed == False:
             self.y_down_move = False
@@ -1136,7 +1164,7 @@ class RestScreen(Screen):
         if controller.isLeftPressed:
             print("j")
             self.x_left_move = True
-            self.x_offset += 5
+            state.camera.x += 5
         elif controller.isLeftPressed == False:
             self.x_left_move = False
 
@@ -1145,7 +1173,7 @@ class RestScreen(Screen):
         if controller.isRightPressed:
             print("j")
             self.x_right_move = True
-            self.x_offset -= 5
+            state.camera.x -= 5
         elif controller.isRightPressed == False:
             self.x_right_move = False
         # player.update(state)
@@ -1168,8 +1196,8 @@ class RestScreen(Screen):
             # Iterate over the tiles in the background layer
             for x, y, image in bg_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width + self.x_offset
-                pos_y = y * tile_height + self.y_offset
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
 
@@ -1179,8 +1207,8 @@ class RestScreen(Screen):
             collision_layer = self.tiled_map.get_layer_by_name("collision")
             for x, y, image in collision_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width + self.x_offset
-                pos_y = y * tile_height + self.y_offset
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
 
@@ -1192,13 +1220,13 @@ class RestScreen(Screen):
                     print("doggo")
                     state.player.undoLastMove()
                     if self.x_right_move == True:
-                        self.x_offset += 7
+                        state.camera.x += 7
                     elif self.y_down_move == True:
-                        self.y_offset += 7
+                        state.camera.y += 7
                     elif self.y_up_move == True:
-                        self.y_offset -= 7
+                        state.camera.y -= 7
                     elif self.x_left_move == True:
-                        self.x_offset -= 7
+                        state.camera.x -= 7
 
 
 
@@ -6050,9 +6078,11 @@ class GameState:
         self.npcs = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
         self.obstacle = Obstacle(22, 622)
+
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0
+        self.camera = Vector(0.0,0.0)
         self.mainScreen = MainScreen()
         self.restScreen = RestScreen()
         # self.coinFlipFredScreen = CoinFlipFredScreen()
