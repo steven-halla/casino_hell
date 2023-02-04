@@ -1114,22 +1114,39 @@ class RestScreen(Screen):
 
 
         # Check if the J key is pressed
+
+        if controller.isUpPressed:
+            print("j")
+            self.y_up_move = True
+            self.y_offset += 5
+            if controller.isUpPressed == False:
+                self.y_up_move = False
+
         if controller.isDownPressed:
             print("j")
             self.y_down_move = True
             self.y_offset -= 5
-        elif controller.isUpPressed:
-            print("j")
-            self.y_up_move = True
-            self.y_offset += 5
-        elif controller.isLeftPressed:
+
+            if controller.isDownPressed == False:
+                self.y_down_move = False
+
+
+
+        if controller.isLeftPressed:
             print("j")
             self.x_left_move = True
             self.x_offset += 5
-        elif controller.isRightPressed:
+            if controller.isLeftPressed == False:
+                self.x_left_move = False
+
+        # elif controller.isLeftPressed == False:
+        #     self.x_left_move = False
+        if controller.isRightPressed:
             print("j")
             self.x_right_move = True
             self.x_offset -= 5
+            if controller.isRightPressed == False:
+                self.x_right_move = False
         # player.update(state)
 
     def draw(self, state: "GameState"):
@@ -1174,13 +1191,13 @@ class RestScreen(Screen):
                     print("doggo")
                     state.player.undoLastMove()
                     if self.y_down_move == True:
-                        self.y_offset += 5
+                        self.y_offset += 7
                     elif self.y_up_move == True:
-                        self.y_offset -= 5
+                        self.y_offset -= 7
                     elif self.x_left_move == True:
-                        self.x_offset -= 5
+                        self.x_offset -= 7
                     elif self.x_right_move == True:
-                        self.x_offset += 5
+                        self.x_offset += 7
 
 
 
