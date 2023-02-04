@@ -311,34 +311,35 @@ class Player(Entity):
                 canMove = False
                 break
 
-        if canMove:
-            if controller.isLeftPressed:
-                self.velocity.x = -self.walk_speed
-            elif controller.isRightPressed:
-                self.velocity.x = self.walk_speed
-            else:
-                # hard stop
-                # self.velocity.x = 0  # default velocity to zero unless key pressed
-                # slow stop
-                self.velocity.x *= 0.65  # gradually slow the x velocity down
-                if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
-                    self.velocity.x = 0
-
-            if controller.isUpPressed:
-                self.velocity.y = -self.walk_speed
-            elif controller.isDownPressed:
-                self.velocity.y = self.walk_speed
-            else:
-                # hard stop
-                # self.velocity.y = 0  # default velocity to zero unless key pressed
-                # slow stop
-                self.velocity.y *= 0.65  # gradually slow the y velocity down
-                if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
-                    self.velocity.y = 0
-
-        else:  # if can not move, set velocity to zero
-            self.velocity.x = 0
-            self.velocity.y = 0
+        # if canMove:
+        #     if controller.isLeftPressed:
+        #         self.velocity.x = -self.walk_speed
+        #     elif controller.isRightPressed:
+        #         self.velocity.x = self.walk_speed
+        #     else:
+        #         # hard stop
+        #         # self.velocity.x = 0  # default velocity to zero unless key pressed
+        #         # slow stop
+        #         self.velocity.x *= 0.65  # gradually slow the x velocity down
+        #         if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
+        #             self.velocity.x = 0
+        #
+        #     if controller.isUpPressed:
+        #         self.velocity.y = -self.walk_speed
+        #     elif controller.isDownPressed:
+        #         self.velocity.y = self.walk_speed
+        #     else:
+        #         # hard stop
+        #         # self.velocity.y = 0  # default velocity to zero unless key pressed
+        #         # slow stop
+        #         self.velocity.y *= 0.65  # gradually slow the y velocity down
+        #         if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
+        #             self.velocity.y = 0
+        #
+        # else:  # if can not move, set velocity to zero
+        #     print("0")
+        #     self.velocity.x = 0
+        #     self.velocity.y = 0
 
         # move player by velocity
         # note that if we have any collisions later we will undo the movements.
@@ -348,10 +349,12 @@ class Player(Entity):
         # if self.isOverlap(state.npc) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
         #     self.undoLastMove()
         if self.isOverlap(state.obstacle) or self.isOutOfBounds():
+            print("lapover")
             self.undoLastMove()
 
         for npc in state.npcs:
             if self.collision.isOverlap(npc.collision):
+                print("no noc")
                 self.undoLastMove()
         #
         # if controller.isQPressed:
@@ -1082,6 +1085,10 @@ class RestScreen(Screen):
         # Initialize the camera position
         self.x_offset = 0
         self.y_offset = 0
+        self.y_up_move = False
+        self.y_down_move = False
+        self.x_left_move = False
+        self.x_right_move = False
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -1104,10 +1111,26 @@ class RestScreen(Screen):
 
         obstacle.update(state)
 
+
+
         # Check if the J key is pressed
-        if controller.isJPressed:
+        if controller.isDownPressed:
             print("j")
+            self.y_down_move = True
             self.y_offset -= 5
+        elif controller.isUpPressed:
+            print("j")
+            self.y_up_move = True
+            self.y_offset += 5
+        elif controller.isLeftPressed:
+            print("j")
+            self.x_left_move = True
+            self.x_offset += 5
+        elif controller.isRightPressed:
+            print("j")
+            self.x_right_move = True
+            self.x_offset -= 5
+        # player.update(state)
 
     def draw(self, state: "GameState"):
         DISPLAY.fill(BLUEBLACK)
@@ -1148,7 +1171,18 @@ class RestScreen(Screen):
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
 
                 if state.player.collision.isOverlap(tile_rect):
+                    print("doggo")
                     state.player.undoLastMove()
+                    if self.y_down_move == True:
+                        self.y_offset += 5
+                    elif self.y_up_move == True:
+                        self.y_offset -= 5
+                    elif self.x_left_move == True:
+                        self.x_offset -= 5
+                    elif self.x_right_move == True:
+                        self.x_offset += 5
+
+
 
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(image, (pos_x, pos_y))
