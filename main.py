@@ -282,8 +282,8 @@ class Player(Entity):
         self.money = 5000
         self.image = pygame.image.load("/Users/steven/code/games/casino/casino_sprites/Boss.png")
         #need to put in a max for stamina and focus
-        self.stamina_points = 97
-        self.focus_points = 50
+        self.stamina_points = 100
+        self.focus_points = 100
         self.exp = 0
         self.level = 1
         self.health = 0
@@ -1072,16 +1072,20 @@ class MainScreen(Screen):
         # Update the display
         pygame.display.update()
 
-
 class RestScreen(Screen):
     def __init__(self):
         super().__init__("Casino Rest Screen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
+        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
+
+        # Initialize the camera position
+        self.x_offset = 0
+        self.y_offset = 0
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(251, 154),ShopKeeper(148, 154), BarKeep(40, 154)]
+        state.npcs = [InnKeeper(251, 154), ShopKeeper(148, 154), BarKeep(40, 154)]
 
     def update(self, state: "GameState"):
 
@@ -1100,11 +1104,13 @@ class RestScreen(Screen):
 
         obstacle.update(state)
 
+        # Check if the J key is pressed
+        if controller.isJPressed:
+            print("j")
+            self.y_offset -= 5
 
     def draw(self, state: "GameState"):
-        # Clear the screen
         DISPLAY.fill(BLUEBLACK)
-        # Draw the player money
         DISPLAY.blit(font.render(
             f"player money: {state.player.money}",
             True, (255, 255, 255)), (333, 333))
@@ -1112,9 +1118,7 @@ class RestScreen(Screen):
             f"player stamina points: {state.player.stamina_points}",
             True, (255, 255, 255)), (333, 388))
 
-        # Check if the Tiled map has any layers
         if self.tiled_map.layers:
-            # Get the size of a single tile in pixels
             tile_width = self.tiled_map.tilewidth
             tile_height = self.tiled_map.tileheight
 
@@ -1123,21 +1127,23 @@ class RestScreen(Screen):
             # Iterate over the tiles in the background layer
             for x, y, image in bg_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width
-                pos_y = y * tile_height
+                pos_x = x * tile_width + self.x_offset
+                pos_y = y * tile_height + self.y_offset
 
                 scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
 
-                # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
             # Get the collision layer
             collision_layer = self.tiled_map.get_layer_by_name("collision")
             for x, y, image in collision_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width
-                pos_y = y * tile_height
-                scaled_image = pygame.transform.scale(scaled_image, (tile_width * 1.3, tile_height * 1.3))
+                pos_x = x * tile_width + self.x_offset
+                pos_y = y * tile_height + self.y_offset
+
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
 
@@ -4720,7 +4726,7 @@ class BlackJackScreen(Screen):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Cheater Bob: Press T key for all commands.", " My name's Cheater Bob. I promise it's the name my parents gave me.", "I'm what you would call a 'newb stomper'.", "You look pretty fresh to me.", ""],
+            "welcome_screen": ["Cheater Bob: Press T key for all commands.", " My name's Cheater Bob, it's not a nickname.", "I'm what you would call a 'newb stomper'.", "You look pretty fresh to me.", ""],
             "hero_intro_text": ["Hero: Thanks for holding on to those coins for me.", "I'll be sure to take every last one of them from you.", "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": ["Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
@@ -5598,11 +5604,11 @@ class BlackJackScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 195))
 
-        DISPLAY.blit(self.font.render(f"Money:{state.player.money}", True, (255, 255, 255)), (37, 250))
-        DISPLAY.blit(self.font.render(f"HP:{state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
+        DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, (255, 255, 255)), (37, 250))
+        DISPLAY.blit(self.font.render(f"HP: {state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
 
-        DISPLAY.blit(self.font.render(f"MP:{state.player.focus_points}", True, (255, 255, 255)), (37, 330))
-        DISPLAY.blit(self.font.render(f"Bet:{self.bet}", True, (255, 255, 255)), (37, 370))
+        DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True, (255, 255, 255)), (37, 330))
+        DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
         DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
 
@@ -5622,11 +5628,11 @@ class BlackJackScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         DISPLAY.blit(white_border, (25, 60))
 
-        DISPLAY.blit(self.font.render(f"Money:{self.cheater_bob_money}", True, (255, 255, 255)), (37, 70))
-        DISPLAY.blit(self.font.render(f"Status:{self.enemy_status}", True, (255, 255, 255)), (37, 110))
+        DISPLAY.blit(self.font.render(f"Money: {self.cheater_bob_money}", True, (255, 255, 255)), (37, 70))
+        DISPLAY.blit(self.font.render(f"Status: {self.enemy_status}", True, (255, 255, 255)), (37, 110))
 
         if self.reveal_hand < 11:
-            DISPLAY.blit(self.font.render(f"Score:{self.enemy_score}", True, (255, 255, 255)),
+            DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True, (255, 255, 255)),
                          (37, 150))
         elif self.reveal_hand > 10:
             DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)), (37, 150))
@@ -6002,7 +6008,7 @@ class GameState:
         self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.blackJackScreen  # assign a value to currentScreen here
+        self.currentScreen = self.restScreen  # assign a value to currentScreen here
 
 
 class Game:
