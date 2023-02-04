@@ -1105,7 +1105,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(251, 154), ShopKeeper(148, 154), BarKeep(40, 154)]
+        state.npcs = [InnKeeper(241, 164), ShopKeeper(133, 164), BarKeep(3, 154)]
 
     def update(self, state: "GameState"):
 
