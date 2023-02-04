@@ -1110,25 +1110,26 @@ class RestScreen(Screen):
             npc.update(state)
 
         obstacle.update(state)
+        print(str(self.y_up_move))
 
 
 
-        # Check if the J key is pressed
+        # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
 
         if controller.isUpPressed:
             print("j")
             self.y_up_move = True
             self.y_offset += 5
-            if controller.isUpPressed == False:
-                self.y_up_move = False
+        elif controller.isUpPressed == False:
+            self.y_up_move = False
 
         if controller.isDownPressed:
             print("j")
             self.y_down_move = True
             self.y_offset -= 5
 
-            if controller.isDownPressed == False:
-                self.y_down_move = False
+        elif controller.isDownPressed == False:
+            self.y_down_move = False
 
 
 
@@ -1136,8 +1137,8 @@ class RestScreen(Screen):
             print("j")
             self.x_left_move = True
             self.x_offset += 5
-            if controller.isLeftPressed == False:
-                self.x_left_move = False
+        elif controller.isLeftPressed == False:
+            self.x_left_move = False
 
         # elif controller.isLeftPressed == False:
         #     self.x_left_move = False
@@ -1145,8 +1146,8 @@ class RestScreen(Screen):
             print("j")
             self.x_right_move = True
             self.x_offset -= 5
-            if controller.isRightPressed == False:
-                self.x_right_move = False
+        elif controller.isRightPressed == False:
+            self.x_right_move = False
         # player.update(state)
 
     def draw(self, state: "GameState"):
@@ -1190,14 +1191,15 @@ class RestScreen(Screen):
                 if state.player.collision.isOverlap(tile_rect):
                     print("doggo")
                     state.player.undoLastMove()
-                    if self.y_down_move == True:
+                    if self.x_right_move == True:
+                        self.x_offset += 7
+                    elif self.y_down_move == True:
                         self.y_offset += 7
                     elif self.y_up_move == True:
                         self.y_offset -= 7
                     elif self.x_left_move == True:
                         self.x_offset -= 7
-                    elif self.x_right_move == True:
-                        self.x_offset += 7
+
 
 
 
