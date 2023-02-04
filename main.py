@@ -113,7 +113,14 @@ class Entity:
         self.collision.y = y
 
     def isOverlap(self, entity: "Entity") -> bool:
+        # print("Overlap called")
         return self.collision.isOverlap(entity.collision)
+
+
+
+
+
+
 
 
 # class Item:
@@ -292,6 +299,7 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
 
+
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update(state)
@@ -311,17 +319,7 @@ class Player(Entity):
                 canMove = False
                 break
 
-        other_entity = state.player if isinstance(self, Npc) else state.npcs
-        for entity in other_entity:
-            if self.collision.isOverlap(entity.collision):
-                # Reverse direction
-                self.velocity.x = -self.velocity.x
-                self.velocity.y = -self.velocity.y
-                # Move the entity away from the collision
-                self.position.x += self.velocity.x
-                self.position.y += self.velocity.y
-                self.collision.x = self.position.x
-                self.collision.y = self.position.y
+
 
         # if canMove:
         #     if controller.isLeftPressed:
@@ -364,10 +362,10 @@ class Player(Entity):
             print("lapover")
             self.undoLastMove()
 
-        for npc in state.npcs:
-            if self.collision.isOverlap(npc.collision):
-                print("no noc")
-                self.undoLastMove()
+        # for npc in state.npcs:
+        #     if self.collision.isOverlap(npc.collision):
+        #         print("no noc")
+        #         self.undoLastMove()
         #
         # if controller.isQPressed:
         #     state.currentScreen = state.coinFlipScreen
@@ -417,18 +415,6 @@ class Npc(Entity):
 
     def update(self, state):
         super().update(state)
-
-        other_entity = state.player if isinstance(self, Npc) else state.npcs
-        for entity in other_entity:
-            if self.collision.isOverlap(entity.collision):
-                # Reverse direction
-                self.velocity.x = -self.velocity.x
-                self.velocity.y = -self.velocity.y
-                # Move the entity away from the collision
-                self.position.x += self.velocity.x
-                self.position.y += self.velocity.y
-                self.collision.x = self.position.x
-                self.collision.y = self.position.y
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
@@ -1136,15 +1122,13 @@ class RestScreen(Screen):
         for npc in state.npcs:
             npc.update(state)
 
-        obstacle.update(state)
-        print(str(self.y_up_move))
+        # obstacle.update(state)
 
 
 
         # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
 
         if controller.isUpPressed:
-            print("j")
             self.y_up_move = True
             state.camera.y += 5
 
@@ -1152,7 +1136,6 @@ class RestScreen(Screen):
             self.y_up_move = False
 
         if controller.isDownPressed:
-            print("j")
             self.y_down_move = True
             state.camera.y -= 5
 
@@ -1162,7 +1145,6 @@ class RestScreen(Screen):
 
 
         if controller.isLeftPressed:
-            print("j")
             self.x_left_move = True
             state.camera.x += 5
         elif controller.isLeftPressed == False:
@@ -1171,12 +1153,16 @@ class RestScreen(Screen):
         # elif controller.isLeftPressed == False:
         #     self.x_left_move = False
         if controller.isRightPressed:
-            print("j")
             self.x_right_move = True
             state.camera.x -= 5
         elif controller.isRightPressed == False:
             self.x_right_move = False
         # player.update(state)
+        #
+        for npc in state.npcs:
+            if state.player.isOverlap(npc):
+                print("no noc")
+
 
     def draw(self, state: "GameState"):
         DISPLAY.fill(BLUEBLACK)
@@ -1217,7 +1203,6 @@ class RestScreen(Screen):
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
 
                 if state.player.collision.isOverlap(tile_rect):
-                    print("doggo")
                     state.player.undoLastMove()
                     if self.x_right_move == True:
                         state.camera.x += 7
