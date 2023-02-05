@@ -408,6 +408,32 @@ class Player(Entity):
         DISPLAY.blit(scaled_image, (offset_x, offset_y))
 
 
+class Demon(Entity):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y, 16, 16)
+        self.color: Tuple[int, int, int] = GREEN
+        self.hp = 100
+
+    def update(self, state):
+        # print("updating")
+        super().update(state)
+        distance = math.sqrt((state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
+        # print("distance: " + str(distance))
+
+
+        if distance < 55:
+            # print("start state: talking")
+            print("Yo")
+        else:
+            self.hp -= 15
+
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+
+
 class Npc(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 16, 16)
@@ -1130,19 +1156,25 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        # state.npcs = [InnKeeper(271, 164), ShopKeeper(173, 194), BarKeep(3, 194)]
+        state.npcs = [InnKeeper(271, 164), ShopKeeper(173, 194), BarKeep(3, 194)]
+        state.demons = [Demon(255, 199)]
 
     def update(self, state: "GameState"):
+        #i dont think npc and demons getting updated
+
 
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
         controller.update(state)
 
+        player.update(state)
+
         if controller.isExitPressed is True:
             state.isRunning = False
 
         player.update(state)
+
 
         # state.player.setPosition(state.player.position.x + state.player.velocity.x,
         #                          state.player.position.y + state.player.velocity.y)
@@ -1190,12 +1222,18 @@ class RestScreen(Screen):
             self.x_right_move = False
 
         # player.update(state)
+        #the below if you set distace, the distance starts at the start point of game ,
+        # if player moves, then distance variables will not work
 
         for npc in state.npcs:
             if state.player.collision.isOverlap(npc.collision):
                 print("yo")
                 state.player.undoLastMove()
             npc.update(state)
+
+        for demon in state.demons:
+
+            demon.update(state)
         #
 
 
@@ -1255,16 +1293,17 @@ class RestScreen(Screen):
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(image, (pos_x, pos_y))
 
+        for demon in state.demons:
+            demon.draw(state)
+
         for npc in state.npcs:
-            if state.player.collision.isOverlap(npc.collision):
-                print("hi")
-                state.player.undoLastMove()
-            else:
-                npc.draw(state)
+
+            npc.draw(state)
 
         state.obstacle.draw(state)
 
         state.player.draw(state)
+
 
         # Update the display
         pygame.display.update()
@@ -6101,6 +6140,7 @@ class GameState:
         self.controller: Controller = Controller()
         self.player: Player = Player(202, 111)
         self.npcs = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
+        self.demons = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
         self.obstacle = Obstacle(22, 622)
 
