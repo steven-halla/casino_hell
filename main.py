@@ -358,9 +358,11 @@ class Player(Entity):
 
         # if self.isOverlap(state.npcs) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
         #     self.undoLastMove()
-        if self.isOverlap(state.obstacle) or self.isOutOfBounds():
-            print("lapover")
-            self.undoLastMove()
+        # for npc in state.npcs:
+        #
+        #     if self.isOverlap(state.npc) or self.isOutOfBounds():
+        #         print("lapover")
+        #         self.undoLastMove()
 
         # for npc in state.npcs:
         #     if self.collision.isOverlap(npc.collision):
@@ -414,6 +416,7 @@ class Npc(Entity):
         self.isSpeaking: bool = False
 
     def update(self, state):
+        print("hia")
         super().update(state)
 
         player = state.player
@@ -530,6 +533,15 @@ class InnKeeper(Npc):
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
+            player = state.player
+
+            # print("waiting")
+            #if value is below 88 it wont activate for some reason
+            # min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            #
+            # if min_distance < 55:
+            #     print("nooo")
+
             self.update_waiting(state)
 
         elif self.state == "talking":
@@ -559,13 +571,19 @@ class InnKeeper(Npc):
 
     def update_waiting(self, state: "GameState"):
         player = state.player
+        # print(self.state)
+        # min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+        #
+        # if min_distance < 10:
+        #     print("nooo")
 
         if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # print("distance: " + str(distance))
 
-            if distance < 100:
+            if distance < 90:
                 # print("start state: talking")
+                print("Yo")
 
 
                 self.state = "talking"
@@ -573,6 +591,8 @@ class InnKeeper(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 #the below is where kenny had it
                 self.textbox.reset()
+
+
 
 
 
@@ -1110,7 +1130,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(271, 164), ShopKeeper(173, 164), BarKeep(3, 154)]
+        # state.npcs = [InnKeeper(271, 164), ShopKeeper(173, 194), BarKeep(3, 194)]
 
     def update(self, state: "GameState"):
 
@@ -1138,32 +1158,37 @@ class RestScreen(Screen):
         if controller.isUpPressed:
             self.y_up_move = True
             state.camera.y += 5
+            self.y_down_move = False
+            self.x_left_move = False
+            self.x_right_move = False
 
-        elif controller.isUpPressed == False:
-            self.y_up_move = False
-
-        if controller.isDownPressed:
+        elif controller.isDownPressed:
             self.y_down_move = True
             state.camera.y -= 5
+            self.y_up_move = False
+            self.x_left_move = False
+            self.x_right_move = False
 
-        elif controller.isDownPressed == False:
-            self.y_down_move = False
-
-
-
-        if controller.isLeftPressed:
+        elif controller.isLeftPressed:
             self.x_left_move = True
             state.camera.x += 5
-        elif controller.isLeftPressed == False:
-            self.x_left_move = False
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_right_move = False
 
-        # elif controller.isLeftPressed == False:
-        #     self.x_left_move = False
-        if controller.isRightPressed:
+        elif controller.isRightPressed:
             self.x_right_move = True
             state.camera.x -= 5
-        elif controller.isRightPressed == False:
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_left_move = False
+
+        else:
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_left_move = False
             self.x_right_move = False
+
         # player.update(state)
 
         for npc in state.npcs:
@@ -1231,7 +1256,11 @@ class RestScreen(Screen):
                 DISPLAY.blit(image, (pos_x, pos_y))
 
         for npc in state.npcs:
-            npc.draw(state)
+            if state.player.collision.isOverlap(npc.collision):
+                print("hi")
+                state.player.undoLastMove()
+            else:
+                npc.draw(state)
 
         state.obstacle.draw(state)
 
