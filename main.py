@@ -427,6 +427,7 @@ class Npc(Entity):
             if 48 >= distance <= player.collision.width + player.collision.height + self.collision.width + self.collision.height:
                 self.isSpeaking = not self.isSpeaking
                 self.speakStartTime = time.process_time()
+                print("yo")
 
     def draw(self, state):
         rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
@@ -589,6 +590,10 @@ class InnKeeper(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             # self.textbox.reset()
+
+    # def isOverlap(self, entity: "Entity") -> bool:
+    #     print("Overlap called")
+    #     return self.collision.isOverlap(entity.collision)
 
 
 
@@ -1105,7 +1110,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(241, 164), ShopKeeper(133, 164), BarKeep(3, 154)]
+        state.npcs = [InnKeeper(271, 164), ShopKeeper(173, 164), BarKeep(3, 154)]
 
     def update(self, state: "GameState"):
 
@@ -1119,8 +1124,10 @@ class RestScreen(Screen):
 
         player.update(state)
 
-        for npc in state.npcs:
-            npc.update(state)
+        # state.player.setPosition(state.player.position.x + state.player.velocity.x,
+        #                          state.player.position.y + state.player.velocity.y)
+
+
 
         # obstacle.update(state)
 
@@ -1158,10 +1165,14 @@ class RestScreen(Screen):
         elif controller.isRightPressed == False:
             self.x_right_move = False
         # player.update(state)
-        #
+
         for npc in state.npcs:
-            if state.player.isOverlap(npc):
-                print("no noc")
+            if state.player.collision.isOverlap(npc.collision):
+                print("yo")
+                state.player.undoLastMove()
+            npc.update(state)
+        #
+
 
 
     def draw(self, state: "GameState"):
