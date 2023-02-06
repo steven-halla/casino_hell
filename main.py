@@ -425,6 +425,7 @@ class Demon(Entity):
         # print("distance: " + str(distance))
         if distance < 55:
             print("warning")
+            state.player.money -= 200
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             # print("start state: talking")
