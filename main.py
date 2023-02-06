@@ -423,17 +423,23 @@ class Demon(Entity):
         super().update(state)
         distance = math.sqrt((state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
         # print("distance: " + str(distance))
-
-
         if distance < 55:
+            print("warning")
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
             # print("start state: talking")
-            print("Yo")
+
+
+
+
 
 
 
     def draw(self, state):
         rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
         pygame.draw.rect(DISPLAY, self.color, rect)
+        distance = math.sqrt((state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
+
 
 
 
@@ -1049,37 +1055,96 @@ class MainScreen(Screen):
         # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/beta_floor1_casino.tmx")
 
-    # def start(self, state: "GameState"):
-    #     super().start(state)
-    #     state.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
+        self.y_up_move = False
+        self.y_down_move = False
+        self.x_left_move = False
+        self.x_right_move = False
+
+    def start(self, state: "GameState"):
+        super().start(state)
+
 
     def update(self, state: "GameState"):
+        # i dont think npc and demons getting updated
+
         controller = state.controller
         player = state.player
-        # npc = state.npcs
-        # obstacle = state.obstacle
+        obstacle = state.obstacle
         controller.update(state)
 
         if controller.isExitPressed is True:
             state.isRunning = False
 
-        player.update(state)
-        # npc.update(state)
-        # for npc in state.npcs:
-        #     npc.update(state)
+        # state.player.setPosition(state.player.position.x + state.player.velocity.x,
+        #                          state.player.position.y + state.player.velocity.y)
+
         # obstacle.update(state)
 
+        # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
+
+        if controller.isUpPressed:
+            self.y_up_move = True
+            self.y_down_move = False
+            self.x_left_move = False
+            self.x_right_move = False
+
+        elif controller.isDownPressed:
+            self.y_down_move = True
+            self.y_up_move = False
+            self.x_left_move = False
+            self.x_right_move = False
+
+        elif controller.isLeftPressed:
+            self.x_left_move = True
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_right_move = False
+
+        elif controller.isRightPressed:
+            self.x_right_move = True
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_left_move = False
+
+        else:
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_left_move = False
+            self.x_right_move = False
+
+        # player.update(state)
+        # the below if you set distace, the distance starts at the start point of game ,
+        # if player moves, then distance variables will not work
+
+        player.update(state)
+
+        # check map for collision
+        if self.tiled_map.layers:
+            tile_rect = Rectangle(0, 0, 16, 16)
+            collision_layer = self.tiled_map.get_layer_by_name("collision")
+            for x, y, image in collision_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("collide with map")
+                    state.player.undoLastMove()
+                    break
+
+        state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
+        state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
+
+
+
     def draw(self, state: "GameState"):
-        # Clear the screen
-        DISPLAY.fill(WHITE)
-        # Draw the player money
+        DISPLAY.fill(BLUEBLACK)
         DISPLAY.blit(font.render(
             f"player money: {state.player.money}",
-            True, (5, 5, 5)), (10, 10))
+            True, (255, 255, 255)), (333, 333))
+        DISPLAY.blit(font.render(
+            f"player stamina points: {state.player.stamina_points}",
+            True, (255, 255, 255)), (333, 388))
 
-        # Check if the Tiled map has any layers
         if self.tiled_map.layers:
-            # Get the size of a single tile in pixels
             tile_width = self.tiled_map.tilewidth
             tile_height = self.tiled_map.tileheight
 
@@ -1088,31 +1153,27 @@ class MainScreen(Screen):
             # Iterate over the tiles in the background layer
             for x, y, image in bg_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width
-                pos_y = y * tile_height
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
 
-                # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
             # Get the collision layer
             collision_layer = self.tiled_map.get_layer_by_name("collision")
             for x, y, image in collision_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width
-                pos_y = y * tile_height
-                scaled_image = pygame.transform.scale(scaled_image, (tile_width * 1.3, tile_height * 1.3))
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
 
-                tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
 
-                if state.player.collision.isOverlap(tile_rect):
-                    state.player.undoLastMove()
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
                 # Blit the tile image to the screen at the correct position
-                DISPLAY.blit(image, (pos_x, pos_y))
+                # DISPLAY.blit(image, (pos_x, pos_y))
 
-            # Get the collision layer
             objects_layer = self.tiled_map.get_layer_by_name("door")
             for x, y, image in objects_layer.tiles():
                 # Calculate the position of the tile in pixels
@@ -1128,22 +1189,16 @@ class MainScreen(Screen):
 
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(image, (pos_x, pos_y))
+        #
 
-            # Draw the player, NPCs, and obstacles
-            state.player.draw(state)
-            # state.npc.draw(state)
-
-            state.obstacle.draw(state)
-            # Update the display
-            pygame.display.update()
-
-        # Draw the player, NPCs, and obstacles
-        state.player.draw(state)
-        # state.npc.draw(state)
 
         state.obstacle.draw(state)
+
+        state.player.draw(state)
+
         # Update the display
         pygame.display.update()
+
 
 class RestScreen(Screen):
     def __init__(self):
@@ -1162,7 +1217,7 @@ class RestScreen(Screen):
     def start(self, state: "GameState"):
         super().start(state)
         state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
-        state.demons = [Demon(16*10, 16  * 10)]
+        state.demons = [Demon(16*13, 16  * 30)]
 
     def update(self, state: "GameState"):
         #i dont think npc and demons getting updated
@@ -6129,7 +6184,7 @@ class BlackJackScreen(Screen):
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 1, 16 * 1)
+        self.player: Player = Player(16 * 2, 16 * 2)
         self.npcs = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
@@ -6165,6 +6220,7 @@ class Game:
             self.state.currentScreen.draw(self.state)
             # self.textBox.update(self.state)
             # self.textBox.display()
+
 
         pygame.quit()
 
