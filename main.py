@@ -36,6 +36,7 @@ BLUE: Tuple[int, int, int] = (0, 0, 255)
 RED: Tuple[int, int, int] = (255, 0, 0)
 PURPLE: Tuple[int, int, int] = (200, 0, 125)
 TILE_SIZE: int = 16
+PLAYER_OFFSET = (16 * 10, 16 * 15)
 
 # nextScreen = false
 
@@ -321,54 +322,50 @@ class Player(Entity):
 
 
 
-        # if canMove:
-        #     if controller.isLeftPressed:
-        #         self.velocity.x = -self.walk_speed
-        #     elif controller.isRightPressed:
-        #         self.velocity.x = self.walk_speed
-        #     else:
-        #         # hard stop
-        #         # self.velocity.x = 0  # default velocity to zero unless key pressed
-        #         # slow stop
-        #         self.velocity.x *= 0.65  # gradually slow the x velocity down
-        #         if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
-        #             self.velocity.x = 0
-        #
-        #     if controller.isUpPressed:
-        #         self.velocity.y = -self.walk_speed
-        #     elif controller.isDownPressed:
-        #         self.velocity.y = self.walk_speed
-        #     else:
-        #         # hard stop
-        #         # self.velocity.y = 0  # default velocity to zero unless key pressed
-        #         # slow stop
-        #         self.velocity.y *= 0.65  # gradually slow the y velocity down
-        #         if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
-        #             self.velocity.y = 0
-        #
-        # else:  # if can not move, set velocity to zero
-        #     print("0")
-        #     self.velocity.x = 0
-        #     self.velocity.y = 0
+        if canMove:
+            if controller.isLeftPressed:
+                self.velocity.x = -self.walk_speed
+            elif controller.isRightPressed:
+                self.velocity.x = self.walk_speed
+            else:
+                # hard stop
+                # self.velocity.x = 0  # default velocity to zero unless key pressed
+                # slow stop
+                self.velocity.x *= 0.65  # gradually slow the x velocity down
+                if abs(self.velocity.x) < 0.15:  # if x velocity is close to zero, just set to zero
+                    self.velocity.x = 0
+
+            if controller.isUpPressed:
+                self.velocity.y = -self.walk_speed
+            elif controller.isDownPressed:
+                self.velocity.y = self.walk_speed
+            else:
+                # hard stop
+                # self.velocity.y = 0  # default velocity to zero unless key pressed
+                # slow stop
+                self.velocity.y *= 0.65  # gradually slow the y velocity down
+                if abs(self.velocity.y) < 0.15:  # if y velocity is close to zero, just set to zero
+                    self.velocity.y = 0
+
+        else:  # if can not move, set velocity to zero
+            self.velocity.x = 0
+            self.velocity.y = 0
 
         # move player by velocity
         # note that if we have any collisions later we will undo the movements.
         # TODO test collision BEFORE moving
         self.setPosition(self.position.x + self.velocity.x, self.position.y + self.velocity.y)
 
-        # if self.isOverlap(state.npcs) or self.isOverlap(state.obstacle) or self.isOutOfBounds():
-        #     self.undoLastMove()
-        # for npc in state.npcs:
-        #
-        #     if self.isOverlap(state.npc) or self.isOutOfBounds():
-        #         print("lapover")
-        #         self.undoLastMove()
+        if self.isOverlap(state.obstacle):
+            self.undoLastMove()
 
-        # for npc in state.npcs:
-        #     if self.collision.isOverlap(npc.collision):
-        #         print("no noc")
-        #         self.undoLastMove()
-        #
+        for npc in state.npcs:
+            # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
+            if self.collision.isOverlap(npc.collision) or self.isOutOfBounds():
+                print("collide with npc: " + str(npc.collision.toTuple()))
+                self.undoLastMove()
+                break
+
         # if controller.isQPressed:
         #     state.currentScreen = state.coinFlipScreen
         #     state.coinFlipScreen.start(state)
@@ -401,11 +398,11 @@ class Player(Entity):
         image_center_y = new_height // 2
 
         # Define an offset that will be used to draw the image at the center of the player
-        offset_x = self.collision.x + self.collision.width // 2 - image_center_x
-        offset_y = self.collision.y + self.collision.height // 2 - image_center_y
+        # offset_x = self.collision.x + self.collision.width // 2 - image_center_x
+        # offset_y = self.collision.y + self.collision.height // 2 - image_center_y
 
         # Draw the image on the display surface
-        DISPLAY.blit(scaled_image, (offset_x, offset_y))
+        DISPLAY.blit(scaled_image, PLAYER_OFFSET)
 
 
 class Demon(Entity):
@@ -461,6 +458,7 @@ class Npc(Entity):
     def draw(self, state):
         rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
         pygame.draw.rect(DISPLAY, self.color, rect)
+
         if self.isSpeaking:
             pygame.display.get_surface().blit(text_surface, (
                 self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
@@ -558,6 +556,7 @@ class InnKeeper(Npc):
         self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
     def update(self, state: "GameState"):
+
         if self.state == "waiting":
             player = state.player
 
@@ -1156,7 +1155,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(271, 164), ShopKeeper(173, 194), BarKeep(3, 194)]
+        state.npcs = [InnKeeper(16 * 5, 16 * 10) , ShopKeeper(16 * 10, 16 * 10), BarKeep(16 * 1, 16 * 10)]
         state.demons = [Demon(255, 199)]
 
     def update(self, state: "GameState"):
@@ -1168,49 +1167,36 @@ class RestScreen(Screen):
         obstacle = state.obstacle
         controller.update(state)
 
-        player.update(state)
-
         if controller.isExitPressed is True:
             state.isRunning = False
-
-        player.update(state)
-
 
         # state.player.setPosition(state.player.position.x + state.player.velocity.x,
         #                          state.player.position.y + state.player.velocity.y)
 
-
-
         # obstacle.update(state)
-
-
 
         # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
 
         if controller.isUpPressed:
             self.y_up_move = True
-            state.camera.y += 5
             self.y_down_move = False
             self.x_left_move = False
             self.x_right_move = False
 
         elif controller.isDownPressed:
             self.y_down_move = True
-            state.camera.y -= 5
             self.y_up_move = False
             self.x_left_move = False
             self.x_right_move = False
 
         elif controller.isLeftPressed:
             self.x_left_move = True
-            state.camera.x += 5
             self.y_up_move = False
             self.y_down_move = False
             self.x_right_move = False
 
         elif controller.isRightPressed:
             self.x_right_move = True
-            state.camera.x -= 5
             self.y_up_move = False
             self.y_down_move = False
             self.x_left_move = False
@@ -1221,20 +1207,35 @@ class RestScreen(Screen):
             self.x_left_move = False
             self.x_right_move = False
 
+
+
         # player.update(state)
         #the below if you set distace, the distance starts at the start point of game ,
         # if player moves, then distance variables will not work
 
+        player.update(state)
+
+        # check map for collision
+        if self.tiled_map.layers:
+            tile_rect = Rectangle(0, 0, 16, 16)
+            collision_layer = self.tiled_map.get_layer_by_name("collision")
+            for x, y, image in collision_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("collide with map")
+                    state.player.undoLastMove()
+                    break
+
+        state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
+        state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
+
         for npc in state.npcs:
-            if state.player.collision.isOverlap(npc.collision):
-                print("yo")
-                state.player.undoLastMove()
             npc.update(state)
+            # print("npc: " + str(npc.collision.toTuple()))
 
         for demon in state.demons:
-
             demon.update(state)
-        #
 
 
 
@@ -1274,25 +1275,9 @@ class RestScreen(Screen):
 
                 DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
-                tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
-
-                if state.player.collision.isOverlap(tile_rect):
-                    state.player.undoLastMove()
-                    if self.x_right_move == True:
-                        state.camera.x += 7
-                    elif self.y_down_move == True:
-                        state.camera.y += 7
-                    elif self.y_up_move == True:
-                        state.camera.y -= 7
-                    elif self.x_left_move == True:
-                        state.camera.x -= 7
-
-
-
-
                 # Blit the tile image to the screen at the correct position
-                DISPLAY.blit(image, (pos_x, pos_y))
-
+                # DISPLAY.blit(image, (pos_x, pos_y))
+        #
         for demon in state.demons:
             demon.draw(state)
 
@@ -6138,7 +6123,7 @@ class BlackJackScreen(Screen):
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
-        self.player: Player = Player(202, 111)
+        self.player: Player = Player(16 * 1, 16 * 1)
         self.npcs = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
@@ -6147,7 +6132,7 @@ class GameState:
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0
-        self.camera = Vector(0.0,0.0)
+        self.camera = Vector(0.0, 0.0)
         self.mainScreen = MainScreen()
         self.restScreen = RestScreen()
         # self.coinFlipFredScreen = CoinFlipFredScreen()
