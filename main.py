@@ -419,22 +419,18 @@ class Demon(Entity):
         self.hp = 100
 
     def update(self, state):
+
+        # use enums for facing
+
         # print("updating")
         super().update(state)
         distance = math.sqrt((state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
         # print("distance: " + str(distance))
-        if distance < 55:
-            print("warning")
-            state.player.money -= 200
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-            # print("start state: talking")
-
-
-
-
-
-
+        if state.player.collision.x - self.collision.x < 0 and distance < 30:
+            print("yupp")
+            distance = math.sqrt((state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
+        else:
+            distance = float('inf')
 
     def draw(self, state):
         rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
@@ -4751,7 +4747,7 @@ class TextBox(Entity):
 
     def draw(self, state: "GameState"):
         text_to_display = self.text[:self.characters_to_display]
-        wrapped_text = textwrap.wrap(text_to_display, 60)
+        wrapped_text = textwrap.wrap(text_to_display, 58)
         for i, line in enumerate(wrapped_text):
             text_surface = self.font.render(line, True, (255, 255, 255))
             DISPLAY.blit(text_surface, (self.position.x, self.position.y + (i * 40)))
@@ -6203,7 +6199,7 @@ class GameState:
         self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.restScreen  # assign a value to currentScreen here
+        self.currentScreen = self.blackJackScreen  # assign a value to currentScreen here
 
 
 class Game:
