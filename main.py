@@ -1050,7 +1050,7 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/beta_floor1_casino.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/1st_area_beta.tmx")
 
         self.y_up_move = False
         self.y_down_move = False
@@ -1174,8 +1174,8 @@ class MainScreen(Screen):
             objects_layer = self.tiled_map.get_layer_by_name("door")
             for x, y, image in objects_layer.tiles():
                 # Calculate the position of the tile in pixels
-                pos_x = x * tile_width
-                pos_y = y * tile_height
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
                 scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
 
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
@@ -1185,7 +1185,7 @@ class MainScreen(Screen):
                     state.restScreen.start(state)
 
                 # Blit the tile image to the screen at the correct position
-                DISPLAY.blit(image, (pos_x, pos_y))
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
         #
 
 
@@ -4879,7 +4879,7 @@ class BlackJackScreen(Screen):
         self.current_index = 0
         self.welcome_screen_choices = ["Play", "Magic", "Quit"]
         self.welcome_screen_index = 0
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+        self.magic_menu_selector = [ "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
         self.ace_value = 1
         self.bust_protection = False
@@ -5403,18 +5403,7 @@ class BlackJackScreen(Screen):
                 if self.avatar_of_luck_card_redraw_counter < 1:
                     self.redraw_lock = True
 
-                # deck = Deck(ranks, suits)
-                # player_card_x = 235
-                # player_card_y = 195
-                # enemy_card_x = 235
-                # enemy_card_y = 15
-                #
-                # for i, card in enumerate(self.player_hand):
-                #     if i > 3:
-                #         player_card_y = 305
-                #         player_card_x = 235
-                #     deck.show_card(card[0], card[1], (player_card_x, player_card_y))
-                #     player_card_x += 75
+
 
                 self.game_state = "menu_screen"
                 state.controller.isTPressed = False
@@ -5754,20 +5743,6 @@ class BlackJackScreen(Screen):
 
         DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)), (37, 30))
 
-        #
-        # DISPLAY.blit(
-        #     self.font.render(f"Hero Money:{state.player.money}", True, (255, 255, 255)),
-        #     (55, 260))
-
-        # if self.npc_speaking == True:
-        #     DISPLAY.blit(character_image, (23, 245))
-        #
-        #     self.current_speaker = "cheater bob"
-        # elif self.hero_speaking == True:
-        #     DISPLAY.blit(hero_image, (23, 245))
-        #
-        #     self.current_speaker = "hero"
-        #     DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
 
         self.main_bordered_box.draw(state)
         DISPLAY.blit(character_image, (633, 15))
@@ -5958,16 +5933,7 @@ class BlackJackScreen(Screen):
 
 
 
-        # elif self.game_state == "refresh":
-        #     print("going back to menu screen")
-        #     self.game_state = "menu_screen"
 
-        # DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (40, 390))
-        #
-        #
-        # DISPLAY.blit(self.font.render(f"Player Hand{self.hand_to_str(self.player_hand)}", True, (255, 255, 255)), (40, 420))
-        #
-        # DISPLAY.blit(self.font.render(f"Enemy Hand{self.hand_to_str(self.enemy_hand)}", True, (255, 255, 255)), (40, 480))
 
         elif self.game_state == "magic_menu":
 
@@ -5988,7 +5954,8 @@ class BlackJackScreen(Screen):
                 # DISPLAY.blit(
                 #     self.font.render("Bluff status. When enemy ", True, (255, 255, 255)),
                 #     (40, 445))
-                self.bluff_magic_explain_component.draw(state)
+                self.reveal_magic_explain_component.draw(state)
+
 
 
 
@@ -6000,7 +5967,8 @@ class BlackJackScreen(Screen):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (640, 250))
-                self.reveal_magic_explain_component.draw(state)
+                self.avatar_magic_explain_component.draw(state)
+
 
 
 
@@ -6010,24 +5978,17 @@ class BlackJackScreen(Screen):
                 DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (640, 300))
-                self.avatar_magic_explain_component.draw(state)
-
-
-            elif self.magic_menu_index == 3:
-                DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (630, 350))
                 self.back_magic_explain_component.draw(state)
 
-            if self.cheater_bob_money <= 900:
 
-                DISPLAY.blit(
-                    self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                    (680, 205))
-            else:
-                DISPLAY.blit(
-                    self.font.render("Locked", True, (255, 255, 255)),
-                    (680, 205))
+
+
+
+
+
+            DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                (680, 205))
 
             DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
@@ -6037,35 +5998,9 @@ class BlackJackScreen(Screen):
                 self.font.render(f"{self.magic_menu_selector[2]}", True, (255, 255, 255)),
                 (680, 305))
 
-            DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True, (255, 255, 255)),
-                (680, 355))
 
-        elif self.game_state == "final_strike_screen":
-            self.final_strike_text_component.draw(state)
-            self.enemy_bluffed_text_component.draw(state)
-            self.hero_bluffing_text_component.draw(state)
-            self.enemy_falling_for_bluff_text_component.draw(state)
 
-            player_card_x = 300
-            player_card_y = 250
-            enemy_card_x = 300
-            enemy_card_y = 25
 
-            for card in self.player_hand:
-                self.deck.show_card(card[1], card[0], (player_card_x, player_card_y))
-                player_card_x += 100
-                # pygame.display.update()
-
-            # pygame.display.update()
-
-            for index, card in enumerate(self.enemy_hand):
-                self.deck.show_card(card[1], card[0], (enemy_card_x, enemy_card_y))
-                enemy_card_x += 100
-
-            self.enemy_crying_text_component.draw(state)
-            self.hero_reveal_text_component.draw(state)
-            pygame.display.update()
 
 
         elif self.game_state == "results_screen":
@@ -6107,7 +6042,7 @@ class BlackJackScreen(Screen):
 class GameState:
     def __init__(self):
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 2, 16 * 2)
+        self.player: Player = Player(16 * 20, 16 * 34)
         self.npcs = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = [] # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
@@ -6125,7 +6060,7 @@ class GameState:
         self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
         # self.textBox = TextBox("", any, any)
-        self.currentScreen = self.blackJackScreen  # assign a value to currentScreen here
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
 
 
 class Game:
