@@ -366,6 +366,13 @@ class Player(Entity):
                 self.undoLastMove()
                 break
 
+        for demon in state.demons:
+            # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
+            if self.collision.isOverlap(demon.collision) or self.isOutOfBounds():
+                print("collide with npc: " + str(demon.collision.toTuple()))
+                self.undoLastMove()
+                break
+
         # if controller.isQPressed:
         #     state.currentScreen = state.coinFlipScreen
         #     state.coinFlipScreen.start(state)
@@ -421,8 +428,7 @@ class Demon(Entity):
         if distance < 55:
             # print("start state: talking")
             print("Yo")
-        else:
-            self.hp -= 15
+
 
 
     def draw(self, state):
@@ -562,9 +568,9 @@ class InnKeeper(Npc):
 
             # print("waiting")
             #if value is below 88 it wont activate for some reason
-            # min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             #
-            # if min_distance < 55:
+            # if min_distance < 25:
             #     print("nooo")
 
             self.update_waiting(state)
@@ -597,18 +603,18 @@ class InnKeeper(Npc):
     def update_waiting(self, state: "GameState"):
         player = state.player
         # print(self.state)
-        # min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
-        #
-        # if min_distance < 10:
-        #     print("nooo")
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
 
         if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
             # print("distance: " + str(distance))
 
-            if distance < 90:
+            if distance < 40:
                 # print("start state: talking")
-                print("Yo")
+                print("10")
 
 
                 self.state = "talking"
@@ -1155,8 +1161,8 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(16 * 5, 16 * 10) , ShopKeeper(16 * 10, 16 * 10), BarKeep(16 * 1, 16 * 10)]
-        state.demons = [Demon(255, 199)]
+        state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
+        state.demons = [Demon(16*10, 16  * 10)]
 
     def update(self, state: "GameState"):
         #i dont think npc and demons getting updated
