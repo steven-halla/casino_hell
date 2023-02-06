@@ -473,41 +473,6 @@ class Npc(Entity):
                 self.position.x + self.collision.width / 2, self.position.y - self.collision.height))
 
 
-class CoinFlipExplanationGuy(Npc):
-    def __init__(self, x: int, y: int):
-        super().__init__(x, y)
-        self.current_message_index = -1
-        self.messages = ["Hi there I'm the coin flip guy. ", "I'm here to tell you about the coinflip game", "You get 3 kinds of bets: High, Medium, and Low.", "Set your own pace for this game.Play it safe or bet big.",
-                         "Was my explanation  boring?", " If you think that was boring, wait till you play coin flip!", "Since you stuck around this long I'll give you a tip:", "Coin flip fred is using a weighted coin,",
-                         " not sure which side he favors", "If you give me a sandwhich It might jar my memory"]
-        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.input_delay = 500  # input delay in milliseconds
-        self.input_time = 0  # time when input was last read
-
-    def update(self, state):
-        super().update(state)
-
-        # Get the current time in milliseconds
-        current_time = pygame.time.get_ticks()
-
-        # If the T key is pressed and the input delay has passed
-        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
-
-            self.input_time = current_time  # update the input time
-
-            # Update the current message
-            self.current_message_index += 1
-            if self.current_message_index >= len(self.messages):
-                self.current_message_index = 0
-            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-
-    def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
-
-        # Display the current message if self.isSpeaking is True
-        if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 #
 # class CoinFlipFred(Npc):
@@ -895,125 +860,588 @@ class SalleyOpossum(Npc):
             message = pygame.display.get_surface().blit(self.message, (10, 10))
 
 
-class OposumInACanExplainGirl(Npc):
+
+
+
+
+
+class JustinNoFruit(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.current_message_index = -1
-        self.messages = ["Hi there I'm the Opossum in a can  girl. ", "I'm here to tell you all about Opposum in a can", "which some refer to it as 'devil roulette'.", "There are 5 win cans and  3 opossum cans.",
-                         "You'll need to put down 300 ante for your insurance ",
-                         "If you get an X3 star you triple your next bet", "if you get an lucky star you double your insurance", "if you get an rabid Opossum, that is red", "you lose everything",
-                         "The blue opossums, which also have rabies", " eat your insurance. Get two blues and its gameover", "you can leave the match anytime and", " keep your current winnings, or go big for the jackpot.",
-                         "We load the opossum cans in the can shaker.", "That way they are nice and angry when you are unlucky.", "are there any Opossums down here without rabies?", " I don't think so?"]
-        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.input_delay = 500  # input delay in milliseconds
-        self.input_time = 0  # time when input was last read
+        self.textbox = NpcTextBox(
+            ["Justin: Most folks round here dont move around much, it's very important to conserve energy so you don't go hungry.", "Whatever you do , don't eat the fruit. It taste like shit.",
+             "Hero: Oh come on now it can't taste that bad right?", "Justin: No, I mean it literally taste like shit.The fruit looks so delicious on the outside and smell good.", "But once you take a bit you'll know what I mean."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
 
-    def update(self, state):
-        super().update(state)
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
-        # Get the current time in milliseconds
-        current_time = pygame.time.get_ticks()
+    def update(self, state: "GameState"):
 
-        # If the T key is pressed and the input delay has passed
-        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
 
-            self.input_time = current_time  # update the input time
+        elif self.state == "talking":
 
-            # Update the current message
-            self.current_message_index += 1
-            if self.current_message_index >= len(self.messages):
-                self.current_message_index = 0
-            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
 
-        # Display the current message if self.isSpeaking is True
-        if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10, 10))
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
 
-
-class ChiliWilley(Npc):
+class CindyLongHair(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.current_message_index = -1
-        self.messages = ["It's a 1000 coin bet I hope your ready to lose.", "I wont take it easy on you.", "You'll end up just like the others.", "I'm the boss of this level you better run away",
-                         "I'm the boss for a reason, you better get ready for a fight!"]
-        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.input_delay = 500  # input delay in milliseconds
-        self.input_time = 0  # time when input was last read
+        self.textbox = NpcTextBox(
+            ["Cindy: Cheat Bob is such a jerk. If you could take all of his coins I'll reward you.", "Word gets around fast so I'll know.",
+             "Hero: As long as he's here to gamble, I'll take every last coin if I feel like it.I'll think about your offer."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
 
-    def update(self, state):
-        super().update(state)
-        distance = math.sqrt(
-            (state.player.collision.x - self.collision.x) ** 2 + (state.player.collision.y - self.collision.y) ** 2)
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
-        # Get the current time in milliseconds
-        current_time = pygame.time.get_ticks()
+    def update(self, state: "GameState"):
 
-        # If the T key is pressed and the input delay has passed
-        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
 
-            self.input_time = current_time  # update the input time
+        elif self.state == "talking":
 
-            # Update the current message
-            self.current_message_index += 1
-            if self.current_message_index >= len(self.messages):
-                self.current_message_index = 0
-            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
 
-        elif 48 >= distance <= state.player.collision.width + state.player.collision.height + self.collision.width + self.collision.height and state.controller.isTPressed and current_time - self.input_time >= self.input_delay and state.player.money >= 500 and state.diceGameScreen.chiliWilleyMoney > 0:
-            state.currentScreen = state.diceGameScreen
-            state.diceGameScreen.start(state)
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
 
-        elif state.diceGameScreen.chiliWilleyMoney <= 0:
-            print("Chilli Willey is defeated already move on you vulture")
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
 
-        # Display the current message if self.isSpeaking is True
-        if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10, 10))
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
 
 
-class NuclearAnnilationGeneralExplainGuy(Npc):
+class SleepyNed(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.current_message_index = -1
-        self.messages = ["I'm the general, so show me some respect. ", "I'm here to tell you all about my favorite game: Nuke em.", "Wait what, you want me to actually explain the rules?",
-                         "I'm the general I'm too busy for that, read the Docs.", "In the future we'll have a tear sheet for you to look at.",
-                         "The game is currently in medical.", "Once it's all patched up it'll be released."]
-        self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
-        self.start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.input_delay = 500  # input delay in milliseconds
-        self.input_time = 0  # time when input was last read
+        self.textbox = NpcTextBox(
+            ["Ned: I can't remember the last time I has anything good to eat, or had a good nights sleep...", "I don't have a lot of coins either, it's so hard to focus with how tired I am.",
+             "Hero: You should always have a fresh mind when Gambling. Just hang your head up high You'll be ok.", "Justin: That's what we need more of around here. I hope you can hang on to your santiy, somepeople here tend to lost it.",
+             "Hero: I'm afraid I never had any to begin with. I'm just crazy about gambling."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
 
-    def update(self, state):
-        super().update(state)
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
 
-        # Get the current time in milliseconds
-        current_time = pygame.time.get_ticks()
+    def update(self, state: "GameState"):
 
-        # If the T key is pressed and the input delay has passed
-        if self.isSpeaking and state.controller.isAPressed and current_time - self.input_time >= self.input_delay:
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
 
-            self.input_time = current_time  # update the input time
+        elif self.state == "talking":
 
-            # Update the current message
-            self.current_message_index += 1
-            if self.current_message_index >= len(self.messages):
-                self.current_message_index = 0
-            self.message = font.render(self.messages[self.current_message_index], True, GREEN, BLUE)
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
 
     def draw(self, state):
-        pygame.draw.rect(DISPLAY, self.color, self.collision.toTuple())
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
 
-        # Display the current message if self.isSpeaking is True
-        if self.isSpeaking:
-            message = pygame.display.get_surface().blit(self.message, (10, 10))
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class NickyHints(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Nicky: Every round that you gamble drains your stamina. Betting higher will drain your stamina faster.", "It's always good to start off with low bets till you get the hang of the game.",
+             "Hero: I've been gambling ever since I could walk and talk. My dad never much liked it, but my mom encouraged it.", "NIcky: You havn't played all of these games. Such as Opposum in a can.", "Be careful of everyone."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class JackyHints(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Jacky: Some people cheat, if you catch them you can take their money.", "Just remember, its ok to cheat, and it's even encouraged. Just don't get caught.",
+             "Hero: Ha! I can spot a cheater from a mile away,with my high perception I can catch anyone here.", "Jacky: What about you Mr. Gambling man, do you cheat?", "Hero: Nope, never had to , but I might start if it comes down to it."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class BappingMike(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Mike: You can stay at the inn to replenish your Health and magic. It does cost  money,", "Money down here is finite, so don't waste it, and only stay at the inn if you really feel it's needed.",
+            " You don't have to beat everybody here, but you'll need to save up 3000 coins if you want to fight the boss."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class WallyGuide(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Wally: To the right is Rat Alley, along with the door that leads to the rest area where you can shop and stay at the end.", "Up top is the harder area, I'd steer clear unless you got the hang of things."
+             , "Around here is where you'll find the easier opponents."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class BrutalPatrick(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Patrick: You don't want to spend a night in the slammer, we charge 1000 coins a night.", "Just don't cause trouble, no rough housing, no making threats, and no hugging.",
+             "Hero: We're not allowed to hug?", "Patrick: Yes, you can, I just don't want to see it."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
 
 
 class Obstacle(Entity):
@@ -1059,6 +1487,7 @@ class MainScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
+        state.npcs = [JustinNoFruit(16 * 4, 16 * 4),CindyLongHair(16 * 35, 16 * 4),SleepyNed(16 * 20, 16 * 6),NickyHints(16 * 20, 16 * 16),JackyHints(16 * 10, 16 * 26),BappingMike(16 * 25, 16 * 26),WallyGuide(16 * 33, 16 * 36),BrutalPatrick(16 * 10, 16 * 36)]
 
 
     def update(self, state: "GameState"):
@@ -1068,6 +1497,8 @@ class MainScreen(Screen):
         player = state.player
         obstacle = state.obstacle
         controller.update(state)
+        for npc in state.npcs:
+            npc.update(state)
 
         if controller.isExitPressed is True:
             state.isRunning = False
@@ -1187,7 +1618,8 @@ class MainScreen(Screen):
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(scaled_image, (pos_x, pos_y))
         #
-
+        for npc in state.npcs:
+            npc.draw(state)
 
         state.obstacle.draw(state)
 
