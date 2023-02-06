@@ -5144,65 +5144,6 @@ class BlackJackScreen(Screen):
                     if self.enemy_losing_confused_money_text.is_finished():
                         self.game_state = "welcome_screen"
 
-        elif self.game_state == "final_strike_screen":
-            # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
-            # if enemy hits 1000 coins, desperate lock needs to go away for future ref
-            self.npc_speaking = False
-            self.hero_speaking = True
-            self.final_strike_text_component.update(state)
-            if self.final_strike_text_component.is_finished():
-                self.npc_speaking = True
-                self.hero_speaking = False
-                self.enemy_bluffed_text_component.update(state)
-                if self.enemy_bluffed_text_component.is_finished():
-                    self.npc_speaking = False
-                    self.hero_speaking = True
-                    self.hero_bluffing_text_component.update(state)
-                    if self.hero_bluffing_text_component.is_finished():
-                        self.npc_speaking = True
-                        self.hero_speaking = False
-                        self.enemy_falling_for_bluff_text_component.update(state)
-                        if self.enemy_falling_for_bluff_text_component.is_finished():
-                            # this is how we hard code
-                            # self.player_hand = [('10', 'Diamonds', 10), ('Ace', 'Spades', 11)]
-                            # self.player_cards_list = [ ('Diamonds', '10'), ('Spades', 'Ace')]
-                            while self.player_score <= 20:
-                                self.deck.shuffle()
-                                self.player_hand = self.deck.player_draw_hand(2)
-                                self.enemy_hand = self.deck.enemy_draw_hand(2)
-                                print("Player hand is" + str(self.player_hand))
-                                self.player_score = self.deck.compute_hand_value(self.player_hand)
-                                # print(self.player_score)
-                                if self.player_score > 20:
-                                    self.player_hand[:-2] = []
-                                    self.enemy_hand[:-2] = []
-                                    print(self.player_hand)
-
-                            print("out of the loop")
-                            self.npc_speaking = True
-                            self.hero_speaking = False
-                            self.enemy_crying_text_component.update(state)
-                            if self.enemy_crying_text_component.is_finished():
-                                self.npc_speaking = False
-                                self.hero_speaking = True
-                                self.hero_reveal_text_component.update(state)
-                                state.player.money += self.cheater_bob_money
-                                self.cheater_bob_money = 0
-                                if self.hero_reveal_text_component.is_finished():
-                                    self.player_hand = []
-                                    self.enemy_hand = []
-                                    pygame.quit()
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -5508,29 +5449,15 @@ class BlackJackScreen(Screen):
 
             # we need to make this work right after a black jack
             # set a counter to minus 1 this is the counter is above 0
+
+
+
+
+
+
+
+
             if self.magic_menu_index == 0:
-                self.bluff_magic_explain_component.update(state)
-
-                if controller.isTPressed and self.cheater_bob_money <= 700 and state.player.focus_points > 24:
-                    channel3 = pygame.mixer.Channel(3)
-                    sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
-                    channel3.play(sound3)
-                    pygame.time.delay(300)
-                    state.player.focus_points -= 25
-                    self.despair = True
-                    self.magic_lock = True
-                    self.player_status = "Bluffalo"
-                    self.enemy_status = "Despair"
-                    self.game_state = "welcome_screen"
-                    state.controller.isTPressed = False
-
-
-
-
-
-
-
-            elif self.magic_menu_index == 1:
                 self.reveal_magic_explain_component.update(state)
 
                 if controller.isTPressed:
@@ -5562,7 +5489,7 @@ class BlackJackScreen(Screen):
             ##########################have a message state reserved for buff states
 
             ##### boss enemies will use magic under more strict conditions
-            elif self.magic_menu_index == 2:
+            elif self.magic_menu_index == 1:
                 self.avatar_magic_explain_component.update(state)
 
                 if controller.isTPressed:
@@ -5580,12 +5507,11 @@ class BlackJackScreen(Screen):
                     state.controller.isTPressed = False
 
 
-            elif self.magic_menu_index == 3:
+            elif self.magic_menu_index == 2:
                 self.back_magic_explain_component.update(state)
 
                 if controller.isTPressed:
                     pygame.time.delay(300)
-
                     self.game_state = "welcome_screen"
                     self.isTPressed = False
 
