@@ -816,7 +816,7 @@ class SallyOpossum(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["Would you like to do battle?Prss A to battle, T for no"],
+            ["Salley: Would you like to do battle?Prss A to battle, T for no"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -838,6 +838,92 @@ class SallyOpossum(Npc):
                 print("Hi A here")
                 state.currentScreen = state.opossumInACanScreen
                 state.opossumInACanScreen.start(state)
+
+            if self.textbox.message_index == 1:
+                print("talking")
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40:
+                # print("distance here")
+                #
+                # if state.controller.isAPressed:
+                #     print("Hi A here")
+                #     state.currentScreen = state.opossumInACanScreen
+                #     state.opossumInACanScreen.start(state)
+                self.state = "talking"
+
+
+
+
+
+                self.state_start_time = pygame.time.get_ticks()
+                self.textbox.reset()
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+
+            # print("is talking")
+            self.textbox.draw(state)
+
+class NellyOpossum(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Nelly: Would you like to do battle?Prss A to battle, T for no"],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting"  # states = "waiting" | "talking" | "finished" | "game_start
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            print("distance here")
+
+            if state.controller.isAPressed:
+                print("Hi A here")
+                state.currentScreen = state.opossumInACanNellyScreen
+                state.opossumInACanNellyScreen.start(state)
 
             if self.textbox.message_index == 1:
                 print("talking")
@@ -1523,7 +1609,7 @@ class MainScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [SallyOpossum(16 * 35, 16 * 31),JustinNoFruit(16 * 4, 16 * 4),CindyLongHair(16 * 35, 16 * 4),SleepyNed(16 * 20, 16 * 6),NickyHints(16 * 20, 16 * 16),JackyHints(16 * 10, 16 * 26),BappingMike(16 * 25, 16 * 26),WallyGuide(16 * 33, 16 * 36),BrutalPatrick(16 * 10, 16 * 36)]
+        state.npcs = [NellyOpossum(16 * 5, 16 * 31),SallyOpossum(16 * 35, 16 * 31),JustinNoFruit(16 * 4, 16 * 4),CindyLongHair(16 * 35, 16 * 4),SleepyNed(16 * 20, 16 * 6),NickyHints(16 * 20, 16 * 16),JackyHints(16 * 10, 16 * 26),BappingMike(16 * 25, 16 * 26),WallyGuide(16 * 33, 16 * 36),BrutalPatrick(16 * 10, 16 * 36)]
 
 
     def update(self, state: "GameState"):
@@ -4244,7 +4330,7 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.desperate == True:
             DISPLAY.blit(self.font.render(
-                f" I Take care of the orphanage here Please think of the children!",
+                f" I Take care of the nelly here Please think of the children!",
                 True, (255, 255, 255)), (10, 530))
 
         DISPLAY.blit(self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)), (1, 333))
@@ -6449,6 +6535,7 @@ class GameState:
         self.restScreen = RestScreen()
         # self.coinFlipFredScreen = CoinFlipFredScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
+        self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         # self.OpossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.blackJackScreen = BlackJackScreen()
         self.diceGameScreen = DiceGameScreen()
