@@ -816,14 +816,14 @@ class SallyOpossum(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["Would you like to do battle?"],
+            ["Would you like to do battle?Prss A to battle, T for no"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+        self.state = "waiting"  # states = "waiting" | "talking" | "finished" | "game_start
 
     def update(self, state: "GameState"):
 
@@ -832,8 +832,15 @@ class SallyOpossum(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
+            print("distance here")
+
+            if state.controller.isAPressed:
+                print("Hi A here")
+                state.currentScreen = state.opossumInACanScreen
+                state.opossumInACanScreen.start(state)
 
             if self.textbox.message_index == 1:
+                print("talking")
                 if state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
@@ -858,7 +865,18 @@ class SallyOpossum(Npc):
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40:
+                # print("distance here")
+                #
+                # if state.controller.isAPressed:
+                #     print("Hi A here")
+                #     state.currentScreen = state.opossumInACanScreen
+                #     state.opossumInACanScreen.start(state)
                 self.state = "talking"
+
+
+
+
+
                 self.state_start_time = pygame.time.get_ticks()
                 self.textbox.reset()
 
@@ -876,6 +894,7 @@ class SallyOpossum(Npc):
         if self.state == "waiting":
             pass
         elif self.state == "talking":
+
             # print("is talking")
             self.textbox.draw(state)
 
