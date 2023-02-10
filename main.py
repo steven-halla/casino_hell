@@ -1829,13 +1829,23 @@ class MainScreen(Screen):
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
+            door_layer = self.tiled_map.get_layer_by_name("door")
             for x, y, image in collision_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
                     print("collide with map")
                     state.player.undoLastMove()
-                    break
+
+            for x,y, image in door_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("door map")
+                    state.currentScreen = state.restScreen
+                    state.restScreen.start(state)
+
+
 
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
@@ -1891,6 +1901,7 @@ class MainScreen(Screen):
                 tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
 
                 if state.player.collision.isOverlap(tile_rect):
+                    print("hi there")
                     state.currentScreen = state.restScreen
                     state.restScreen.start(state)
 
