@@ -301,6 +301,8 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
 
+        self.perk_iron_stomach = False
+
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -1435,11 +1437,11 @@ class NickyHints(Npc):
             # print("is talking")
             self.textbox.draw(state)
 
-class JackyHints(Npc):
+class JackyBanna(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["Jacky: Some people cheat, if you catch them you can take their money.", "Just remember, its ok to cheat, and it's even encouraged. Just don't get caught.",
+            ["Jacky: Some people cheat, if you catch them you can take their money.", "If you have the perk 'iron stomach' I'll give you a banana",
              "Hero: Ha! I can spot a cheater from a mile away,with my high perception I can catch anyone here.", "Jacky: What about you Mr. Gambling man, do you cheat?", "Hero: Nope, never had to , but I might start if it comes down to it."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
@@ -1456,6 +1458,9 @@ class JackyHints(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
+
+            if state.player.perk_iron_stomach:
+                print("you can have a banana")
 
             if self.textbox.message_index == 1:
                 if state.controller.isAPressed and \
@@ -1733,7 +1738,7 @@ class InnGuard(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["InnGuard: Unless you have the Inn Badge we can't let you pass"],
+            ["InnGuard: Unless you have the Inn Badge you will continue to see me and I'll block your path. Talk to Mike for the inn badge"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -1851,7 +1856,7 @@ class MainScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnGuard(16 * 33, 16 * 20),RumbleBill(16 * 5, 16 * 10),FlippinTed(16 * 25, 16 * 10),SallyOpossum(16 * 35, 16 * 10),JustinNoFruit(16 * 4, 16 * 4),CindyLongHair(16 * 35, 16 * 4),SleepyNed(16 * 20, 16 * 6),NickyHints(16 * 20, 16 * 16),JackyHints(16 * 10, 16 * 26),BappingMike(16 * 25, 16 * 26),WallyGuide(16 * 33, 16 * 36),BrutalPatrick(16 * 10, 16 * 36)]
+        state.npcs = [InnGuard(16 * 33, 16 * 20),RumbleBill(16 * 5, 16 * 10),FlippinTed(16 * 25, 16 * 10),SallyOpossum(16 * 35, 16 * 10),JustinNoFruit(16 * 4, 16 * 4),CindyLongHair(16 * 35, 16 * 4),SleepyNed(16 * 20, 16 * 6),NickyHints(16 * 20, 16 * 16),JackyBanna(16 * 10, 16 * 26),BappingMike(16 * 25, 16 * 26),WallyGuide(16 * 33, 16 * 36),BrutalPatrick(16 * 10, 16 * 36)]
 
 
     def update(self, state: "GameState"):
@@ -1919,15 +1924,32 @@ class MainScreen(Screen):
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
-            door_layer = self.tiled_map.get_layer_by_name("door")
+            door_layer_rest = self.tiled_map.get_layer_by_name("door rest")
+            door_layer_boss = self.tiled_map.get_layer_by_name("door boss")
+            door_layer_hedge_hog_maze = self.tiled_map.get_layer_by_name("door hedge hog maze")
             for x, y, image in collision_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
-                    print("collide with map")
                     state.player.undoLastMove()
 
-            for x,y, image in door_layer.tiles():
+            for x,y, image in door_layer_rest.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("door map")
+                    state.currentScreen = state.restScreen
+                    state.restScreen.start(state)
+
+            for x,y, image in door_layer_boss.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("door map")
+                    state.currentScreen = state.restScreen
+                    state.restScreen.start(state)
+
+            for x,y, image in door_layer_hedge_hog_maze.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
@@ -1981,7 +2003,7 @@ class MainScreen(Screen):
                 # Blit the tile image to the screen at the correct position
                 # DISPLAY.blit(image, (pos_x, pos_y))
 
-            objects_layer = self.tiled_map.get_layer_by_name("door")
+            objects_layer = self.tiled_map.get_layer_by_name("door rest")
             for x, y, image in objects_layer.tiles():
                 # Calculate the position of the tile in pixels
                 pos_x = x * tile_width + state.camera.x
@@ -1992,8 +2014,8 @@ class MainScreen(Screen):
 
                 if state.player.collision.isOverlap(tile_rect):
                     print("hi there")
-                    state.currentScreen = state.restScreen
-                    state.restScreen.start(state)
+                    # state.currentScreen = state.restScreen
+                    # state.restScreen.start(state)
 
                 # Blit the tile image to the screen at the correct position
                 DISPLAY.blit(scaled_image, (pos_x, pos_y))
@@ -2013,8 +2035,8 @@ class RestScreen(Screen):
     def __init__(self):
         super().__init__("Casino Rest Screen")
         # Load the Tiled map file
-        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
-        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
+        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
 
         # Initialize the camera position
 
@@ -2025,8 +2047,8 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
-        state.demons = [Demon(16*13, 16  * 30)]
+        # state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
+        # state.demons = [Demon(16*13, 16  * 30)]
 
     def update(self, state: "GameState"):
         #i dont think npc and demons getting updated
@@ -2104,8 +2126,8 @@ class RestScreen(Screen):
             npc.update(state)
             # print("npc: " + str(npc.collision.toTuple()))
 
-        for demon in state.demons:
-            demon.update(state)
+        # for demon in state.demons:
+        #     demon.update(state)
 
 
 
@@ -2148,8 +2170,8 @@ class RestScreen(Screen):
                 # Blit the tile image to the screen at the correct position
                 # DISPLAY.blit(image, (pos_x, pos_y))
         #
-        for demon in state.demons:
-            demon.draw(state)
+        # for demon in state.demons:
+        #     demon.draw(state)
 
         for npc in state.npcs:
 
