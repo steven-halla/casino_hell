@@ -456,7 +456,7 @@ class Npc(Entity):
         player = state.player
         # print(time.process_time() - self.speakStartTime)
         if state.controller.isTPressed and (time.process_time() - self.speakStartTime) > .20:
-            print("hi there")
+            print("hi there partner")
 
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
@@ -1856,6 +1856,7 @@ class MainScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
+        state.npcs = []
         state.npcs = [InnGuard(16 * 33, 16 * 20),RumbleBill(16 * 5, 16 * 10),FlippinTed(16 * 25, 16 * 10),SallyOpossum(16 * 35, 16 * 10),JustinNoFruit(16 * 4, 16 * 4),CindyLongHair(16 * 35, 16 * 4),SleepyNed(16 * 20, 16 * 6),NickyHints(16 * 20, 16 * 16),JackyBanna(16 * 10, 16 * 26),BappingMike(16 * 25, 16 * 26),WallyGuide(16 * 33, 16 * 36),BrutalPatrick(16 * 10, 16 * 36)]
 
 
@@ -2031,14 +2032,15 @@ class MainScreen(Screen):
         pygame.display.update()
 
 
+
+
+
 class RestScreen(Screen):
+
     def __init__(self):
-        super().__init__("Casino Rest Screen")
+        super().__init__("Casino MainScreen")
         # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
-        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
-
-        # Initialize the camera position
 
         self.y_up_move = False
         self.y_down_move = False
@@ -2047,20 +2049,25 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        # state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
-        # state.demons = [Demon(16*13, 16  * 30)]
+        state.npcs = []
+        state.npcs = [InnKeeper(16 * 10, 16 * 2) , ShopKeeper(16 * 19, 16 * 2), BarKeep(16 * 33, 16 * 2)]
+
+
 
     def update(self, state: "GameState"):
-        #i dont think npc and demons getting updated
-
+        # i dont think npc and demons getting updated
 
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
         controller.update(state)
+        for npc in state.npcs:
+            npc.update(state)
 
         if controller.isExitPressed is True:
             state.isRunning = False
+
+
 
         # state.player.setPosition(state.player.position.x + state.player.velocity.x,
         #                          state.player.position.y + state.player.velocity.y)
@@ -2099,10 +2106,8 @@ class RestScreen(Screen):
             self.x_left_move = False
             self.x_right_move = False
 
-
-
         # player.update(state)
-        #the below if you set distace, the distance starts at the start point of game ,
+        # the below if you set distace, the distance starts at the start point of game ,
         # if player moves, then distance variables will not work
 
         player.update(state)
@@ -2111,23 +2116,28 @@ class RestScreen(Screen):
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
+            door_layer_main = self.tiled_map.get_layer_by_name("door main")
+
             for x, y, image in collision_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
-                    print("collide with map")
                     state.player.undoLastMove()
-                    break
+
+            for x,y, image in door_layer_main.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("door map")
+                    state.currentScreen = state.restScreen
+                    state.restScreen.start(state)
+
+
+
+
 
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
-
-        for npc in state.npcs:
-            npc.update(state)
-            # print("npc: " + str(npc.collision.toTuple()))
-
-        # for demon in state.demons:
-        #     demon.update(state)
 
 
 
@@ -2169,23 +2179,41 @@ class RestScreen(Screen):
 
                 # Blit the tile image to the screen at the correct position
                 # DISPLAY.blit(image, (pos_x, pos_y))
+
+            objects_layer = self.tiled_map.get_layer_by_name("door main")
+            for x, y, image in objects_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
+
+                if state.player.collision.isOverlap(tile_rect):
+                    print("hi there")
+                    # state.currentScreen = state.restScreen
+                    # state.restScreen.start(state)
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
         #
-        # for demon in state.demons:
-        #     demon.draw(state)
-
         for npc in state.npcs:
-
             npc.draw(state)
 
         state.obstacle.draw(state)
 
         state.player.draw(state)
 
-
         # Update the display
         pygame.display.update()
 
-#
+
+
+
+        # state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
+
+
+
 class CoinFlipTedScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
