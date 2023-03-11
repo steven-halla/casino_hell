@@ -518,6 +518,113 @@ class Npc(Entity):
 #         # Display the current message if self.isSpeaking is True
 #         if self.isSpeaking:
 #             message = pygame.display.get_surface().blit(self.message, (10, 10))
+class QuestGiverJanet(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["In the future I'll be giving you out quest to complete", "I'll even say different things and give out different quest as you progress"],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+
+            # print("waiting")
+            #if value is below 88 it wont activate for some reason
+            min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            #
+            # if min_distance < 25:
+            #     print("nooo")
+
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        # print(self.state)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 40:
+                # print("start state: talking")
+                print("10")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+
+        # if state.controller.isTPressed and self.textbox.message_index == 0:
+            print("Here we go we're walking here")
+
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+    # def isOverlap(self, entity: "Entity") -> bool:
+    #     print("Overlap called")
+    #     return self.collision.isOverlap(entity.collision)
+
+
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
 class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
@@ -801,6 +908,434 @@ class BarKeep(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             # self.textbox.reset()
+
+
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class ChillyBilly(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["ChillyBilly: I sure do love chili", "It's all we eat everyday."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+
+            # print("waiting")
+            #if value is below 88 it wont activate for some reason
+            min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            #
+            # if min_distance < 25:
+            #     print("nooo")
+
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        # print(self.state)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 40:
+                # print("start state: talking")
+                print("10")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+
+        # if state.controller.isTPressed and self.textbox.message_index == 0:
+            print("Here we go we're walking here")
+
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+    # def isOverlap(self, entity: "Entity") -> bool:
+    #     print("Overlap called")
+    #     return self.collision.isOverlap(entity.collision)
+
+
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class SufferingSuzy(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Suzy: I want to go home...this is pure hell", "I want ice cream....anything but this..."],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+
+            # print("waiting")
+            #if value is below 88 it wont activate for some reason
+            min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            #
+            # if min_distance < 25:
+            #     print("nooo")
+
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        # print(self.state)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 40:
+                # print("start state: talking")
+                print("10")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+
+        # if state.controller.isTPressed and self.textbox.message_index == 0:
+            print("Here we go we're walking here")
+
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+    # def isOverlap(self, entity: "Entity") -> bool:
+    #     print("Overlap called")
+    #     return self.collision.isOverlap(entity.collision)
+
+
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class BobbyBibs(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["It's hard to find good clothes down here", "Which is why I always wear a bib"],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+
+            # print("waiting")
+            #if value is below 88 it wont activate for some reason
+            min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            #
+            # if min_distance < 25:
+            #     print("nooo")
+
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        # print(self.state)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 40:
+                # print("start state: talking")
+                print("10")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+
+        # if state.controller.isTPressed and self.textbox.message_index == 0:
+            print("Here we go we're walking here")
+
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+    # def isOverlap(self, entity: "Entity") -> bool:
+    #     print("Overlap called")
+    #     return self.collision.isOverlap(entity.collision)
+
+
+
+    def draw(self, state):
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
+        pygame.draw.rect(DISPLAY, self.color, rect)
+
+        if self.state == "waiting":
+            pass
+        elif self.state == "talking":
+            # print("is talking")
+            self.textbox.draw(state)
+
+class HungryPatrick(Npc):
+    def __init__(self, x: int, y: int):
+        super().__init__(x, y)
+        self.textbox = NpcTextBox(
+            ["Patrick: I can't remember the last time I ate anything.", "They do really bad things to the chili"],
+            (50, 450, 50, 45), 30, 500)
+        self.choices = ["Yes", "No"]
+        self.menu_index = 0
+        self.input_time = pygame.time.get_ticks()
+
+        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.state = "waiting" # states = "waiting" | "talking" | "finished"
+
+    def update(self, state: "GameState"):
+
+        if self.state == "waiting":
+            player = state.player
+
+            # print("waiting")
+            #if value is below 88 it wont activate for some reason
+            min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            #
+            # if min_distance < 25:
+            #     print("nooo")
+
+            self.update_waiting(state)
+
+        elif self.state == "talking":
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
+            if self.textbox.message_index == 1:
+                if state.controller.isAPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and \
+                        pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    print("bye player")
+                    self.state = "waiting"
+
+            self.update_talking(state)
+
+
+
+
+
+    def update_waiting(self, state: "GameState"):
+        player = state.player
+        # print(self.state)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+        if min_distance < 10:
+            print("nooo")
+
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+            # print("distance: " + str(distance))
+
+            if distance < 40:
+                # print("start state: talking")
+                print("10")
+
+
+                self.state = "talking"
+
+                self.state_start_time = pygame.time.get_ticks()
+                #the below is where kenny had it
+                self.textbox.reset()
+
+
+
+
+
+    def update_talking(self, state: "GameState"):
+        self.textbox.update(state)
+        if state.controller.isTPressed and self.textbox.is_finished():
+
+        # if state.controller.isTPressed and self.textbox.message_index == 0:
+            print("Here we go we're walking here")
+
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
+            # self.textbox.reset()
+
+    # def isOverlap(self, entity: "Entity") -> bool:
+    #     print("Overlap called")
+    #     return self.collision.isOverlap(entity.collision)
 
 
 
@@ -1955,8 +2490,8 @@ class MainScreen(Screen):
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
                     print("door map")
-                    state.currentScreen = state.restScreen
-                    state.restScreen.start(state)
+                    state.currentScreen = state.hedgeMazeScreen
+                    state.hedgeMazeScreen.start(state)
 
 
 
@@ -2050,7 +2585,7 @@ class RestScreen(Screen):
     def start(self, state: "GameState"):
         super().start(state)
         state.npcs = []
-        state.npcs = [InnKeeper(16 * 10, 16 * 2) , ShopKeeper(16 * 19, 16 * 2), BarKeep(16 * 33, 16 * 2)]
+        state.npcs = [InnKeeper(16 * 10, 16 * 2) , ShopKeeper(16 * 19, 16 * 2), BarKeep(16 * 33, 16 * 2), QuestGiverJanet(16 * 30, 16 * 22)]
 
 
 
@@ -2211,6 +2746,181 @@ class RestScreen(Screen):
 
 
         # state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]
+
+
+class HedgeMazeScreen(Screen):
+
+    def __init__(self):
+        super().__init__("Casino MainScreen")
+        # Load the Tiled map file
+        self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
+
+        self.y_up_move = False
+        self.y_down_move = False
+        self.x_left_move = False
+        self.x_right_move = False
+
+    def start(self, state: "GameState"):
+        super().start(state)
+        state.npcs = []
+        state.npcs = [ChillyBilly(16 * 3, 16 * 2) , SufferingSuzy(16 * 15, 16 * 2), BobbyBibs(16 * 3, 16 * 12), HungryPatrick(16 * 15, 16 * 12)]
+
+
+
+    def update(self, state: "GameState"):
+        # i dont think npc and demons getting updated
+
+        controller = state.controller
+        player = state.player
+        obstacle = state.obstacle
+        controller.update(state)
+        for npc in state.npcs:
+            npc.update(state)
+
+        if controller.isExitPressed is True:
+            state.isRunning = False
+
+
+
+        # state.player.setPosition(state.player.position.x + state.player.velocity.x,
+        #                          state.player.position.y + state.player.velocity.y)
+
+        # obstacle.update(state)
+
+        # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
+
+        if controller.isUpPressed:
+            self.y_up_move = True
+            self.y_down_move = False
+            self.x_left_move = False
+            self.x_right_move = False
+
+        elif controller.isDownPressed:
+            self.y_down_move = True
+            self.y_up_move = False
+            self.x_left_move = False
+            self.x_right_move = False
+
+        elif controller.isLeftPressed:
+            self.x_left_move = True
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_right_move = False
+
+        elif controller.isRightPressed:
+            self.x_right_move = True
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_left_move = False
+
+        else:
+            self.y_up_move = False
+            self.y_down_move = False
+            self.x_left_move = False
+            self.x_right_move = False
+
+        # player.update(state)
+        # the below if you set distace, the distance starts at the start point of game ,
+        # if player moves, then distance variables will not work
+
+        player.update(state)
+
+        # check map for collision
+        if self.tiled_map.layers:
+            tile_rect = Rectangle(0, 0, 16, 16)
+            collision_layer = self.tiled_map.get_layer_by_name("collision")
+            door_layer_main = self.tiled_map.get_layer_by_name("door main")
+
+            for x, y, image in collision_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    state.player.undoLastMove()
+
+            for x,y, image in door_layer_main.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    print("door map")
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
+
+
+
+
+
+        state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
+        state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
+
+
+
+    def draw(self, state: "GameState"):
+        DISPLAY.fill(BLUEBLACK)
+        DISPLAY.blit(font.render(
+            f"player money: {state.player.money}",
+            True, (255, 255, 255)), (333, 333))
+        DISPLAY.blit(font.render(
+            f"player stamina points: {state.player.stamina_points}",
+            True, (255, 255, 255)), (333, 388))
+
+        if self.tiled_map.layers:
+            tile_width = self.tiled_map.tilewidth
+            tile_height = self.tiled_map.tileheight
+
+            # Get the background layer
+            bg_layer = self.tiled_map.get_layer_by_name("bg")
+            # Iterate over the tiles in the background layer
+            for x, y, image in bg_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
+
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
+
+            # Get the collision layer
+            collision_layer = self.tiled_map.get_layer_by_name("collision")
+            for x, y, image in collision_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
+
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
+
+                # Blit the tile image to the screen at the correct position
+                # DISPLAY.blit(image, (pos_x, pos_y))
+
+            objects_layer = self.tiled_map.get_layer_by_name("door main")
+            for x, y, image in objects_layer.tiles():
+                # Calculate the position of the tile in pixels
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
+                scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
+
+                tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
+
+                if state.player.collision.isOverlap(tile_rect):
+                    print("hi there")
+                    # state.currentScreen = state.restScreen
+                    # state.restScreen.start(state)
+
+                # Blit the tile image to the screen at the correct position
+                DISPLAY.blit(scaled_image, (pos_x, pos_y))
+        #
+        for npc in state.npcs:
+            npc.draw(state)
+
+        state.obstacle.draw(state)
+
+        state.player.draw(state)
+
+        # Update the display
+        pygame.display.update()
+
+
 
 
 
@@ -6839,8 +7549,10 @@ class GameState:
         self.isPaused: bool = False
         self.delta: float = 0.0
         self.camera = Vector(0.0, 0.0)
+
         self.mainScreen = MainScreen()
         self.restScreen = RestScreen()
+        self.hedgeMazeScreen = HedgeMazeScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         # self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
