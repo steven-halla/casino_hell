@@ -2129,8 +2129,8 @@ class RestScreen(Screen):
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
                     print("door map")
-                    state.currentScreen = state.restScreen
-                    state.restScreen.start(state)
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
 
 
 
