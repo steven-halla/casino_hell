@@ -10,6 +10,9 @@ import pytmx
 
 import pygame
 
+from refactor import Rectangle
+from vector import Vector
+
 # Instantiate mixer
 # this is where we get our music:
 # https://soundimage.org/chiptunes-2/
@@ -50,44 +53,6 @@ wrap_width = 200
 # pygame.time.get_ticks()
 # def nowMilliseconds() -> int:
 #     return round(time.time() * 1000)
-
-
-class Vector:
-    def __init__(self, x: float, y: float):
-        self.x: float = x
-        self.y: float = y
-
-    def toTuple(self) -> Tuple[float, float]:
-        return (self.x, self.y)
-
-
-
-class Rectangle:
-    def __init__(self, x: float, y: float, width: float, height: float):
-        self.x: float = x
-        self.y: float = y
-        self.width: float = width
-        self.height: float = height
-        # self.rect = pygame.Rect(x, y, width, height)
-
-    def toTuple(self) -> Tuple[float, float, float, float]:
-        return (self.x, self.y, self.width, self.height)
-
-    #           ---------- (x2+width,y2+height)
-    # (x,y+height)        |
-    #   -------------     |
-    #  |        |    |    |
-    #  |        -----|---- (x2+width2,y2)
-    #  |    (x2,y2)  |
-    #   -------------
-    # (x,y)         (x+width,y)
-
-    #  r: Rectangle =>
-    def isOverlap(self, r: "Rectangle") -> bool:
-        # print("hi")
-
-        return self.x < r.x + r.width and self.x + self.width > r.x \
-            and self.y < r.y + r.height and self.y + self.height > r.y
 
 
 class Entity:
@@ -153,7 +118,7 @@ class Controller:
             return -1
         return pygame.time.get_ticks() - self.keyReleasedTimes[key]
 
-    def update(self, state: "GameState"):
+    def update(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
@@ -297,7 +262,7 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
         controller = state.controller
-        controller.update(state)
+        controller.update()
         if self.exp > 1000:
             self.level = 2
 
@@ -2386,7 +2351,7 @@ class MainScreen(Screen):
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
-        controller.update(state)
+        controller.update()
         for npc in state.npcs:
             npc.update(state)
 
@@ -2580,7 +2545,7 @@ class RestScreen(Screen):
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
-        controller.update(state)
+        controller.update()
         for npc in state.npcs:
             npc.update(state)
 
@@ -2758,7 +2723,7 @@ class HedgeMazeScreen(Screen):
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
-        controller.update(state)
+        controller.update()
         for npc in state.npcs:
             npc.update(state)
 
@@ -2930,7 +2895,7 @@ class HedgeMazeScreen(Screen):
 #         controller = state.controller
 #         player = state.player
 #         obstacle = state.obstacle
-#         controller.update(state)
+#         controller.update()
 #         for npc in state.npcs:
 #             npc.update(state)
 #
@@ -3133,7 +3098,7 @@ class CoinFlipTedScreen(Screen):
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
-        controller.update(state)
+        controller.update()
 
         if controller.isUpPressed:
             self.bet += 10
@@ -3177,7 +3142,7 @@ class CoinFlipTedScreen(Screen):
             self.coinFlipSandyDefeated = True
         # Update the controller
         controller = state.controller
-        controller.update(state)
+        controller.update()
 
         if state.player.stamina_points < 3:
             state.currentScreen = state.mainScreen
@@ -3678,7 +3643,7 @@ class CoinFlipTedScreen(Screen):
 #
 #     def place_bet(self, state: "GameState"):
 #         controller = state.controller
-#         controller.update(state)
+#         controller.update()
 #
 #         if controller.isUpPressed:
 #             self.bet += 10
@@ -3722,7 +3687,7 @@ class CoinFlipTedScreen(Screen):
 #             self.coinFlipSandyDefeated = True
 #         # Update the controller
 #         controller = state.controller
-#         controller.update(state)
+#         controller.update()
 #
 #         if state.player.stamina_points < 3:
 #             state.currentScreen = state.mainScreen
@@ -4223,7 +4188,7 @@ class CoinFlipTedScreen(Screen):
 #
 #     def place_bet(self, state: "GameState"):
 #         controller = state.controller
-#         controller.update(state)
+#         controller.update()
 #
 #         if controller.isUpPressed:
 #             self.bet += 10
@@ -4258,7 +4223,7 @@ class CoinFlipTedScreen(Screen):
 #             self.coinFlipSandyDefeated = True
 #         # Update the controller
 #         controller = state.controller
-#         controller.update(state)
+#         controller.update()
 #
 #         if state.player.stamina_points < 3:
 #             state.currentScreen = state.mainScreen
@@ -4828,7 +4793,7 @@ class OpossumInACanScreen(Screen):
         if self.sallyOpossumMoney <= 0:
             self.sallyOpossumIsDefeated = True
         controller = state.controller
-        controller.update(state)
+        controller.update()
         if self.sallyOpossumMoney <= 300:
             self.desperate = True
         elif self.sallyOpossumMoney > 300:
@@ -5312,7 +5277,7 @@ class OpossumInACanNellyScreen(Screen):
         if self.sallyOpossumMoney <= 0:
             self.sallyOpossumIsDefeated = True
         controller = state.controller
-        controller.update(state)
+        controller.update()
         if self.sallyOpossumMoney <= 300:
             self.desperate = True
         elif self.sallyOpossumMoney > 300:
@@ -5883,7 +5848,7 @@ class DiceGameScreen(Screen, Dice):
         # print("update() - state: " + str(self.game_state) + ", start at: " + str(delta))
 
         controller = state.controller
-        controller.update(state)
+        controller.update()
         print("HERE WE GOO OOOOOO")
 
         if self.game_state == "player_1_wins":
@@ -6731,7 +6696,7 @@ class BlackJackScreen(Screen):
         # pygame.time.wait(100)
 
         controller = state.controller
-        controller.update(state)
+        controller.update()
         state.player.update(state)
 
         #
