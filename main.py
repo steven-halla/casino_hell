@@ -1,5 +1,4 @@
 import math
-import sys
 import time
 import random
 from typing import *
@@ -10,13 +9,11 @@ import pytmx
 
 
 import pygame
-from pygame import mixer
 
 # Instantiate mixer
 # this is where we get our music:
 # https://soundimage.org/chiptunes-2/
 
-from pygame.surface import Surface
 
 clock = pygame.time.Clock()
 FPS = 60
@@ -62,6 +59,7 @@ class Vector:
 
     def toTuple(self) -> Tuple[float, float]:
         return (self.x, self.y)
+
 
 
 class Rectangle:
