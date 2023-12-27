@@ -316,8 +316,6 @@ class Player(Entity):
                 canMove = False
                 break
 
-
-
         if canMove:
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
@@ -376,10 +374,6 @@ class Player(Entity):
         # elif controller.isPPressed:
         #     state.currentScreen = state.opossumInACanScreen
         #     state.opossumInACanScreen.start(state)
-
-
-
-
 
 
     def isOutOfBounds(self) -> bool:
