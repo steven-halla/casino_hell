@@ -5,7 +5,7 @@ pygame.init()
 screen_size = (800, 600)
 screen = pygame.display.set_mode(screen_size)
 
-sprite_sheet = pygame.image.load("images/playingcards.png")
+sprite_sheet = pygame.image.load("../images/playingcards.png")
 # first number is width, 2nd is height
 sprite_size = (67, 95)
 suit_index = {
