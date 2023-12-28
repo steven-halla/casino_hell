@@ -1,6 +1,10 @@
 import pygame
 
-from game_core import GameState
+from game_state import GameState
+
+# Instantiate mixer
+# this is where we get our music:
+# https://soundimage.org/chiptunes-2/
 
 class Game:
     def __init__(self):

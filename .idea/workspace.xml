@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="&quot; talking is working as needed&quot;">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game_core.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/game_core.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/lib/python3.9/site-packages/pip/_vendor/html5lib/treewalkers/etree_lxml.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/lib/python3.9/site-packages/pip/_vendor/html5lib/treewalkers/etree_lxml.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -617,6 +619,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
