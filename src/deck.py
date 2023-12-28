@@ -28,7 +28,7 @@ class Deck(Entity):
         self.card_width = 68
         self.card_height = 98
 
-        self.sprite_sheet = pygame.image.load("./images/playingcards.png")
+        self.sprite_sheet = pygame.image.load("./assets/images/playingcards.png")
 
         self.suit_index = {
             "Clubs": 0,

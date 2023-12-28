@@ -4,7 +4,7 @@ from typing import Tuple
 
 import pygame
 
-from core.constants import BLUE
+from constants import BLUE
 from entity.entity import Entity
 
 

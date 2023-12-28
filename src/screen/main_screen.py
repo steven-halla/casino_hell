@@ -4,14 +4,14 @@ import pytmx
 from entity.npc.bapping_mike import BappingMike
 from entity.npc.brutal_patrick import BrutalPatrick
 from entity.npc.cindy_long_hair import CindyLongHair
-from core.constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.inn_guard import InnGuard
 from screen.screen import Screen
 from entity.npc.jacky_banana import JackyBanana
 from entity.npc.justin_no_fruit import JustinNoFruit
 from entity.npc.nicky_hints import NickyHints
-from core.math.rectangle import Rectangle
+from physics.rectangle import Rectangle
 from entity.npc.rumble_bill import RumbleBill
 from entity.npc.sally_opossum import SallyOpossum
 from entity.npc.sleepy_ned import SleepyNed
@@ -23,7 +23,7 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("./map/casino_main_game.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casino_main_game.tmx")
 
         self.y_up_move = False
         self.y_down_move = False

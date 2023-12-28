@@ -1,6 +1,6 @@
 import pygame
 
-from core.constants import GREEN
+from constants import GREEN
 from entity.entity import Entity
 
 

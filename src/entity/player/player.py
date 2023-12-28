@@ -2,7 +2,7 @@ from typing import Tuple
 
 import pygame
 
-from core.constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_OFFSET
+from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_OFFSET
 from entity.entity import Entity
 
 

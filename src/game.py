@@ -1,6 +1,6 @@
 import pygame
 
-from core.game_state import GameState
+from game_state import GameState
 
 
 # Instantiate mixer

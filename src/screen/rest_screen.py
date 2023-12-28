@@ -1,20 +1,22 @@
 import pygame
+import pytmx
 
-from entity.npc.bobby_bibs import BobbyBibs
-from entity.npc.chilly_billy import ChillyBilly
-from core.constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.bar_keep import BarKeep
+from constants import PLAYER_OFFSET, BLUEBLACK
 from screen.screen import Screen
-from entity.npc.hungry_patrick import HungryPatrick
-from core.math.rectangle import Rectangle
-from entity.npc.suffering_suzy import SufferingSuzy
+from entity.npc.inn_keeper import InnKeeper
+from entity.npc.quest_giver_janet import QuestGiverJanet
+from physics.rectangle import Rectangle
+from entity.npc.shop_keeper import ShopKeeper
 
 
-class HedgeMazeScreen(Screen):
+class RestScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        # self.tiled_map = pytmx.load_pygame("/Users/steven/code/games/casino/casino_sprites/chili_hedge_maze_beta.tmx")
+        self.tiled_map = pytmx.load_pygame(
+            "/Users/steven/code/games/casino/casino_sprites/rest_area.tmx")
 
         self.y_up_move = False
         self.y_down_move = False
@@ -24,10 +26,9 @@ class HedgeMazeScreen(Screen):
     def start(self, state: "GameState"):
         super().start(state)
         state.npcs = []
-        state.npcs = [ChillyBilly(16 * 3, 16 * 2),
-                      SufferingSuzy(16 * 15, 16 * 2),
-                      BobbyBibs(16 * 3, 16 * 12),
-                      HungryPatrick(16 * 15, 16 * 12)]
+        state.npcs = [InnKeeper(16 * 10, 16 * 2), ShopKeeper(16 * 19, 16 * 2),
+                      BarKeep(16 * 33, 16 * 2),
+                      QuestGiverJanet(16 * 30, 16 * 22)]
 
     def update(self, state: "GameState"):
         # i dont think npc and demons getting updated
@@ -176,3 +177,5 @@ class HedgeMazeScreen(Screen):
 
         # Update the display
         pygame.display.update()
+
+        # state.npcs = [InnKeeper(16 * 3, 16 * 10) , ShopKeeper(16 * 10, 16 * 2), BarKeep(16 * 17, 6 * 101)]

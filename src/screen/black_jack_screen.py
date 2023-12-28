@@ -1,7 +1,7 @@
 import pygame
 
 from screen.screen import Screen
-from core.deck import Deck
+from deck import Deck
 from entity.gui.textbox.text_box import TextBox
 from entity.gui.textbox.bordered_box import BorderedBox
 

@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 Run game
 ```bash
-python main.py
+python src/main.py
 ```
 
 ## Tools 

@@ -1,8 +1,8 @@
 import pygame
 
-from core.constants import RED
-from core.math.rectangle import Rectangle
-from core.math.vector import Vector
+from constants import RED
+from physics.rectangle import Rectangle
+from physics.vector import Vector
 
 
 class Entity:

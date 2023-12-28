@@ -2,7 +2,7 @@ import time
 
 import pygame
 
-from core.dice import Dice
+from dice import Dice
 from screen.screen import Screen
 
 
