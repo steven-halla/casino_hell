@@ -635,9 +635,9 @@ class BlackJackScreen(Screen):
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
-                channel3 = pygame.mixer.Channel(3)
-                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                channel3.play(sound3)
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
                 if not hasattr(self, "magic_menu_index"):
                     self.magic_menu_index = len(self.magic_menu_selector) - 1
                 else:
@@ -646,9 +646,9 @@ class BlackJackScreen(Screen):
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
-                channel3 = pygame.mixer.Channel(3)
-                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                channel3.play(sound3)
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
                 if not hasattr(self, "magic_menu_index"):
                     self.magic_menu_index = len(self.magic_menu_selector) + 1
                 else:
@@ -663,9 +663,9 @@ class BlackJackScreen(Screen):
                 self.reveal_magic_explain_component.update(state)
 
                 if controller.isTPressed:
-                    channel3 = pygame.mixer.Channel(3)
-                    sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
-                    channel3.play(sound3)
+                    # channel3 = pygame.mixer.Channel(3)
+                    # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
+                    # channel3.play(sound3)
                     pygame.time.delay(300)
                     if state.player.focus_points >= 10:
                         state.player.focus_points -= 10
@@ -692,9 +692,9 @@ class BlackJackScreen(Screen):
                 self.avatar_magic_explain_component.update(state)
 
                 if controller.isTPressed:
-                    channel3 = pygame.mixer.Channel(3)
-                    sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
-                    channel3.play(sound3)
+                    # channel3 = pygame.mixer.Channel(3)
+                    # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
+                    # channel3.play(sound3)
                     pygame.time.delay(300)
                     print("you cast avatar of luck")
                     self.luck_of_jack = 6
@@ -773,9 +773,9 @@ class BlackJackScreen(Screen):
             if controller.isTPressed:
 
                 # Load audio file
-                channel2 = pygame.mixer.Channel(1)
-                sound2 = pygame.mixer.Sound("audio/Coins1.mp3")
-                channel2.play(sound2)
+                # channel2 = pygame.mixer.Channel(1)
+                # sound2 = pygame.mixer.Sound("audio/Coins1.mp3")
+                # channel2.play(sound2)
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                     state.player.money += self.bet * 2
@@ -1220,8 +1220,8 @@ class BlackJackScreen(Screen):
                 if i > 3:
                     player_card_y = 305
                     player_card_x = 235
-                self.deck.draw_card_face_up(card[1], card[0],
-                                            (player_card_x, player_card_y))
+                self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
+
                 player_card_x += 75
 
                 # pygame.display.update()
@@ -1229,8 +1229,8 @@ class BlackJackScreen(Screen):
             # pygame.display.update()
 
             for index, card in enumerate(self.enemy_hand):
-                self.deck.draw_card_face_up(card[1], card[0],
-                                            (enemy_card_x, enemy_card_y))
+                self.deck.draw_card_face_up(card[1], card[0], (enemy_card_x, enemy_card_y), DISPLAY)
+
                 enemy_card_x += 75
 
             # self.current_speaker = "cheater bob"
