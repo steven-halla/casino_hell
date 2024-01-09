@@ -7,6 +7,7 @@ from entity.npc.cindy_long_hair import CindyLongHair
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.inn_guard import InnGuard
+from entity.player.player import Player
 from screen.screen import Screen
 from entity.npc.jacky_banana import JackyBanana
 from entity.npc.justin_no_fruit import JustinNoFruit
@@ -23,7 +24,7 @@ class MainScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         # Load the Tiled map file
-        self.tiled_map = pytmx.load_pygame("./assets/map/casino_main_game.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame3.tmx")
 
         self.y_up_move = False
         self.y_down_move = False
@@ -32,17 +33,18 @@ class MainScreen(Screen):
 
     def start(self, state: "GameState"):
         super().start(state)
-        state.npcs = []
-        state.npcs = [InnGuard(16 * 33, 16 * 20), RumbleBill(16 * 5, 16 * 10),
-                      FlippinTed(16 * 25, 16 * 10),
-                      SallyOpossum(16 * 35, 16 * 10),
-                      JustinNoFruit(16 * 4, 16 * 4),
-                      CindyLongHair(16 * 35, 16 * 4),
-                      SleepyNed(16 * 20, 16 * 6), NickyHints(16 * 20, 16 * 16),
-                      JackyBanana(16 * 10, 16 * 26),
-                      BappingMike(16 * 25, 16 * 29),
-                      WallyGuide(16 * 33, 16 * 36),
-                      BrutalPatrick(16 * 10, 16 * 36)]
+
+        player_start_x = 100  # Replace these values with your desired starting position
+        player_start_y = 200  # Replace these values with your desired starting position
+
+        # Create an instance of Player with the specified starting position
+        state.player = Player(player_start_x, player_start_y)
+        # state.npcs = []
+        state.npcs = [
+            InnGuard(16 * 33, 16 * 20),
+            RumbleBill(16 * 5, 16 * 10),
+
+                      ]
 
     def update(self, state: "GameState"):
         # i dont think npc and demons getting updated

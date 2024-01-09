@@ -1,5 +1,6 @@
 import pygame
 
+from constants import DISPLAY
 from screen.screen import Screen
 from deck import Deck
 from entity.gui.textbox.text_box import TextBox
@@ -300,10 +301,10 @@ class BlackJackScreen(Screen):
                 if self.welcome_screen_text_box_hero.is_finished():
 
                     if controller.isUpPressed:
-                        channel3 = pygame.mixer.Channel(3)
-                        sound3 = pygame.mixer.Sound(
-                            "audio/Fotstep_Carpet_Right_3.mp3")
-                        channel3.play(sound3)
+                        # channel3 = pygame.mixer.Channel(3)
+                        # sound3 = pygame.mixer.Sound(
+                        #     "audio/Fotstep_Carpet_Right_3.mp3")
+                        # channel3.play(sound3)
                         if not hasattr(self, "welcome_screen_index"):
                             self.welcome_screen_index = len(
                                 self.welcome_screen_choices) - 1
@@ -314,10 +315,10 @@ class BlackJackScreen(Screen):
                         controller.isUpPressed = False
 
                     elif controller.isDownPressed:
-                        channel3 = pygame.mixer.Channel(3)
-                        sound3 = pygame.mixer.Sound(
-                            "audio/Fotstep_Carpet_Right_3.mp3")
-                        channel3.play(sound3)
+                        # channel3 = pygame.mixer.Channel(3)
+                        # sound3 = pygame.mixer.Sound(
+                        #     "audio/Fotstep_Carpet_Right_3.mp3")
+                        # channel3.play(sound3)
                         if not hasattr(self, "welcome_screen_index"):
                             self.welcome_screen_index = len(
                                 self.welcome_screen_choices) + 1
@@ -479,11 +480,6 @@ class BlackJackScreen(Screen):
 
 
 
-
-
-
-
-
         elif self.game_state == "player_draw_one_card":
             self.player_hand += self.deck.player_draw_hand(1)
             self.deck.compute_hand_value(self.player_hand)
@@ -591,9 +587,9 @@ class BlackJackScreen(Screen):
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
-                channel3 = pygame.mixer.Channel(3)
-                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                channel3.play(sound3)
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) - 1
                 else:
@@ -603,9 +599,9 @@ class BlackJackScreen(Screen):
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
-                channel3 = pygame.mixer.Channel(3)
-                sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                channel3.play(sound3)
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
                 if not hasattr(self, "current_index"):
                     self.current_index = len(self.choices) + 1
                 else:
@@ -894,8 +890,8 @@ class BlackJackScreen(Screen):
 
     def draw(self, state: "GameState"):
         # change to dealer image
-        character_image = pygame.image.load("images/128by128.png")
-        hero_image = pygame.image.load("images/hero.png")
+        # character_image = pygame.image.load("images/128by128.png")
+        # hero_image = pygame.image.load("images/hero.png")
 
         state.DISPLAY.fill((0, 0, 51))
 
@@ -967,7 +963,7 @@ class BlackJackScreen(Screen):
                      (37, 30))
 
         self.main_bordered_box.draw(state)
-        state.DISPLAY.blit(character_image, (633, 15))
+        # state.DISPLAY.blit(character_image, (633, 15))
         state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
                      (625, 145))
 
@@ -1077,8 +1073,8 @@ class BlackJackScreen(Screen):
                 if i > 3:
                     player_card_y = 305
                     player_card_x = 235
-                self.deck.draw_card_face_up(card[1], card[0],
-                                            (player_card_x, player_card_y))
+                self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
+
                 player_card_x += 75
 
                 # pygame.display.update()

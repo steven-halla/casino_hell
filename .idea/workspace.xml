@@ -5,75 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="&quot; talking is working as needed&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/casino_hell.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/casino_hell.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/deck.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/deck.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/dice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/math/rectangle.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/physics/rectangle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/math/vector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/physics/vector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/demon/demon.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/entity.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/entity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/gui/textbox/bordered_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/bordered_box.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/gui/textbox/bordered_text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/bordered_text_box.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/gui/textbox/npc_text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/npc_text_box.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/gui/textbox/text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/bapping_mike.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/bapping_mike.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/bar_keep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/bar_keep.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/bobby_bibs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/brutal_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/brutal_patrick.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/chilly_billy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilly_billy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/cindy_long_hair.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/coin_flip_fred.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/coin_flip_fred.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/flippin_ted.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/hungry_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hungry_patrick.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/inn_guard.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/inn_guard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/inn_keeper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/jacky_banana.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/jacky_banana.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/justin_no_fruit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/justin_no_fruit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/nelly_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/nelly_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/nicky_hints.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/nicky_hints.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/npc.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/npc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/rumble_bill.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rumble_bill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/sally_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/sally_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/shop_keeper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/sleepy_ned.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/sleepy_ned.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/suffering_suzy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/suffering_suzy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/npc/wally_guide.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/wally_guide.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/obstacle/obstacle.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/obstacle/obstacle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/player_walk_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/player_walk_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/player_walk_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/player_walk_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/player_walk_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/player_walk_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/player_walk_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/player_walk_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/playingcards.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/playingcards.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/shotgun.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/shotgun.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/slime_animation_0.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/slime_animation_0.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/slime_animation_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/slime_animation_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/slime_animation_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/slime_animation_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/slime_animation_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/slime_animation_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map/NES - Casino Kid - Casino JPN.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/NES - Casino Kid - Casino JPN.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map/casino_main2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/casino_main2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map/casino_main_game.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/casino_main_game.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/black_jack_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/black_jack_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/boss_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_fred_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/coin_flip_sandy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_sandy_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/dice_game_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/dice_game_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/hedge_maze_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/hedge_maze_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/main_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/main_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/opossum_in_a_can_nelly_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/opossum_in_a_can_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/rest_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screen/screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/deck.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/deck.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/black_jack_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/black_jack_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/main_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/main_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,35 +44,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.$AffectedModuleNames$.executor": "Run",
-    "Python.blackjack.executor": "Run",
-    "Python.main (1).executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.nukeem.executor": "Run",
-    "Python.opposuminacan.executor": "Run",
-    "Python.playground.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode",
-    "ts.external.directory.path": "/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.$AffectedModuleNames$.executor&quot;: &quot;Run&quot;,
+    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.nukeem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.opposuminacan.executor&quot;: &quot;Run&quot;,
+    &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/assets/map&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/map" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/map" />
       <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/core" />
       <recent name="$PROJECT_DIR$/entity/npc" />
-      <recent name="$PROJECT_DIR$/core/math" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -338,6 +279,8 @@
       <workItem from="1703713482364" duration="396000" />
       <workItem from="1703713923056" duration="911000" />
       <workItem from="1703714896923" duration="472000" />
+      <workItem from="1704770305924" duration="4863000" />
+      <workItem from="1704838630616" duration="2421000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>

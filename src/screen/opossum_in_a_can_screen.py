@@ -318,15 +318,6 @@ class OpossumInACanScreen(Screen):
                 if controller.isTPressed:
                     print("lets get out")
 
-
-
-
-
-
-
-
-
-
         elif self.game_state == "loser_screen":
             time.sleep(3)
             self.refresh()

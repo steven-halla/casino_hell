@@ -106,12 +106,14 @@ class Deck(Entity):
         sprite.set_colorkey((0, 190, 0))
         display.blit(sprite, position)
 
-    def draw_card_face_up(self, suit: str, value: str, position: tuple[int, int], display: pygame.Surface):
+    def draw_card_face_up(self, suit: str, value: str, position: Tuple[int, int], display: pygame.Surface):
         x_offset = self.value_index[value]
         y_offset = self.suit_index[suit]
         card_position = (x_offset * self.card_width, y_offset * self.card_height)
         sprite = self.sprite_sheet.subsurface(pygame.Rect(card_position, (self.card_width, self.card_height)))
         sprite.set_colorkey((0, 190, 0))
+
+        # Ensure 'display' is a valid pygame.Surface object
         display.blit(sprite, position)
 
     def get_next_card(self):
