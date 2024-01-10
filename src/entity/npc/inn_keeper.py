@@ -48,8 +48,8 @@ class InnKeeper(Npc):
 
                     state.player.money -= 100
                     state.player.stamina_points += 500
-                    if state.player.stamina_points > 100:
-                        state.player.stamina_points = 100
+                    if state.player.stamina_points > state.player.max_stamina_points:
+                        state.player.stamina_points = state.player.max_stamina_points
                 elif state.controller.isBPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()

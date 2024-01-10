@@ -16,19 +16,21 @@ class Player(Entity):
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
         # need to put in a max for stamina and focus
-        self.stamina_points = 100
+        self.stamina_points = 10
+        self.max_stamina_points = 100
 
-        self.focus_points = 100
+        self.focus_points = 10
+        self.max_focus_points = 100
         self.exp = 0
         self.inn_badge = False
         self.level = 1
-        self.health = 0
-        self.intelligence = 0
-        self.charisma = 0
+        self.body = 0
+        self.mind = 0
+        self.spirit = 0
         self.luck = 0
         self.perception = 0
+        self.perks = []
 
-        self.perk_iron_stomach = False
 
     def update(self, state: "GameState"):
         controller = state.controller

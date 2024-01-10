@@ -82,15 +82,24 @@ Games:
 7) nuke em
 8) slots
 
-Black jack:
-intelligence : reveal PC score
-luck: reshuffle 3 times
-trickster :  trade face down cards 
 
-coin flip:
-intelligence: based on how coin is flip , you can calcuate where it will land. 
-luck:  if your con toss is wrong, reflip 
-trickster: plant a double sided coin, and call opponent out 
+trade face down card. 
+
+perks: 
+At every 4 levels gain a perk. 
+
+perks: Every level give player a choice out of 3
+HP ^
+MP ^
+FP ^
+Stat Boost: add +1 to a stat of 1
+Level 1 perks:
+Black Jack:  +10% to get an ace on your initial hand
+Coin Flip: adds + 10
+Oppusum in a can: +5% to your winnings
+
+
+
 
 
 

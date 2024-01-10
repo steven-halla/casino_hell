@@ -11,7 +11,10 @@ class FlippinTed(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Flippin Ted: Would you like to do battle?Prss A to battle, T for no"],
+                "Everyone calls me Cheating ted but it only happened that one time.....",
+                "Flippin Ted: Would you like to do battle?Prss A to battle, T for no"
+
+            ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

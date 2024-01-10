@@ -11,7 +11,7 @@ class CindyLongHair(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Cindy: Cheat Bob is such a jerk. If you could take all of his coins I'll reward you.",
+                "Cindy: Cheating Ted is such a jerk. If you could take all of his coins I'll reward you.",
                 "Word gets around fast so I'll know.",
                 "Hero: As long as he's here to gamble, I'll take every last coin if I feel like it.I'll think about your offer."],
             (50, 450, 50, 45), 30, 500)
@@ -36,10 +36,6 @@ class CindyLongHair(Npc):
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > 100:
-                        state.player.stamina_points = 100
                 elif state.controller.isBPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
