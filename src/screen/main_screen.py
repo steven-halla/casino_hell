@@ -10,6 +10,7 @@ from entity.npc.cindy_long_hair import CindyLongHair
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
+from entity.npc.hungry_patrick import HungryPatrick
 from entity.npc.inn_guard import InnGuard
 from entity.player.player import Player
 from screen.screen import Screen
@@ -50,11 +51,15 @@ class MainScreen(Screen):
             InnGuard(16 * 36, 16 * 2),
             BappingMike(16 * 36, 16 * 10),
             BarKeep(16 * 36, 16 * 18),
+
+
             BobbyBibs(16 * 2, 16 * 2),
             BrutalPatrick(16 * 2, 16 * 10),
             ChillyBilly(16 * 2, 16 * 18),
             CindyLongHair(16 * 2, 16 * 26),
-            CoinFlipFred(16 * 2, 16 * 34),
+            HungryPatrick(16 * 2, 16 * 34),
+
+            CoinFlipFred(16 * 28, 16 * 36),
             FlippinTed(16 * 20, 16 * 36),
 
 
