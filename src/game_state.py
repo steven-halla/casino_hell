@@ -1,6 +1,7 @@
 import pygame
 
 from screen.black_jack_screen import BlackJackScreen
+from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
@@ -42,6 +43,7 @@ class GameState:
         # self.bossScreen = BossScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
+        self.coinFlipFredScreen = CoinFlipFredScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.blackJackScreen = BlackJackScreen()

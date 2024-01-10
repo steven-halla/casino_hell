@@ -49,7 +49,48 @@ lets also flesh out the stats
 all start at level 1, max level 6
 
 -luck  - 
--perception
+-trickster- cheat mode activated 
 -intellect  - 
--stamina  - affects hit points as well as how much food you can eat
+-body  - affects hit/magic points as well as how much food you can eat
 -charisma - higher scores helps with NPC Interactions can also open unique character dialouge  
+
+perks Field:Alwyas active
+perks battle : always active
+spells: gain advantages in battle
+NPcS: sometimes having a perk of a certain level gets you stuff in interactions
+
+Luck:
+Field : sometimes you can find items , higher luck gives better items from chests sometimes 
+NPC: Certain interactiosn having high luck can make an interaction go one way or another. be sure
+to have audio/visual ques
+Battle: depends on the game. Black jack will have enemy get worse cards depending on your luck.
+Spell: black  jack: reshuffle hand 3 times. 
+SPell: Ace, increse chance of getting an ace by 25%
+
+Perception:
+Feild: certain chest are now visible to you, or perhaps we can have an highlight for invis items
+battle: alerts player when NPC is cheating, this is used to help you bet low
+spell: 
+
+Games:
+1) coin flip
+2) black jack
+3) oppsum in a can 
+4) hungry starving hippos
+5) poker
+6) dice fighter
+7) nuke em
+8) slots
+
+Black jack:
+intelligence : reveal PC score
+luck: reshuffle 3 times
+trickster :  trade face down cards 
+
+coin flip:
+intelligence: based on how coin is flip , you can calcuate where it will land. 
+luck:  if your con toss is wrong, reflip 
+trickster: plant a double sided coin, and call opponent out 
+
+
+

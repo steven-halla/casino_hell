@@ -2,9 +2,13 @@ import pygame
 import pytmx
 
 from entity.npc.bapping_mike import BappingMike
+from entity.npc.bar_keep import BarKeep
+from entity.npc.bobby_bibs import BobbyBibs
 from entity.npc.brutal_patrick import BrutalPatrick
+from entity.npc.chilly_billy import ChillyBilly
 from entity.npc.cindy_long_hair import CindyLongHair
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.inn_guard import InnGuard
 from entity.player.player import Player
@@ -41,8 +45,19 @@ class MainScreen(Screen):
         state.player = Player(player_start_x, player_start_y)
         # state.npcs = []
         state.npcs = [
-            InnGuard(16 * 33, 16 * 20),
-            RumbleBill(16 * 5, 16 * 10),
+            # make sure to seperate by a factor of 8 for y
+            #x, y
+            InnGuard(16 * 36, 16 * 2),
+            BappingMike(16 * 36, 16 * 10),
+            BarKeep(16 * 36, 16 * 18),
+            BobbyBibs(16 * 2, 16 * 2),
+            BrutalPatrick(16 * 2, 16 * 10),
+            ChillyBilly(16 * 2, 16 * 18),
+            CindyLongHair(16 * 2, 16 * 26),
+            CoinFlipFred(16 * 2, 16 * 34),
+            FlippinTed(16 * 20, 16 * 36),
+
+
 
                       ]
 

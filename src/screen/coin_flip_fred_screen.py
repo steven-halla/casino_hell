@@ -25,8 +25,8 @@ class CoinFlipFredScreen(Screen):
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipSandyMoney = 700
-        self.coinFlipSandyDefeated = False
+        self.coinFlipFredMoney = 700
+        self.coinFlipFredDefeated = False
         self.current_index = 0
         self.yes_no_current_index = 0
         self.magic_menu_index = 0
