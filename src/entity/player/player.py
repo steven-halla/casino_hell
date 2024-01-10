@@ -17,6 +17,7 @@ class Player(Entity):
 
         # need to put in a max for stamina and focus
         self.stamina_points = 100
+
         self.focus_points = 100
         self.exp = 0
         self.inn_badge = False

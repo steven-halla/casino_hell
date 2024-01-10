@@ -12,6 +12,11 @@ from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.hungry_patrick import HungryPatrick
 from entity.npc.inn_guard import InnGuard
+from entity.npc.inn_keeper import InnKeeper
+from entity.npc.nelly_opossum import NellyOpossum
+from entity.npc.quest_giver_janet import QuestGiverJanet
+from entity.npc.shop_keeper import ShopKeeper
+from entity.npc.suffering_suzy import SufferingSuzy
 from entity.player.player import Player
 from screen.screen import Screen
 from entity.npc.jacky_banana import JackyBanana
@@ -51,6 +56,7 @@ class MainScreen(Screen):
             InnGuard(16 * 36, 16 * 2),
             BappingMike(16 * 36, 16 * 10),
             BarKeep(16 * 36, 16 * 18),
+            InnKeeper(16 * 36, 16 * 26),
 
 
             BobbyBibs(16 * 2, 16 * 2),
@@ -58,9 +64,20 @@ class MainScreen(Screen):
             ChillyBilly(16 * 2, 16 * 18),
             CindyLongHair(16 * 2, 16 * 26),
             HungryPatrick(16 * 2, 16 * 34),
+            JackyBanana(16 * 10, 16 * 2),
+            JustinNoFruit(16 * 10, 16 * 10),
+            NickyHints(16 * 10, 16 * 18),
+            QuestGiverJanet(16 * 10, 16 * 26),
+            RumbleBill(16 * 18, 16 * 2),
+            SallyOpossum(16 * 18, 16 * 10),
+            ShopKeeper(16 * 18, 16 * 18),
+            SleepyNed(16 * 18, 16 * 26),
+            SufferingSuzy(16 * 26, 16 * 2),
+            WallyGuide(16 * 26, 16 * 10),
 
             CoinFlipFred(16 * 28, 16 * 36),
             FlippinTed(16 * 20, 16 * 36),
+            NellyOpossum(16 * 12, 16 * 36),
 
 
 
