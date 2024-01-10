@@ -62,7 +62,7 @@ class MainScreen(Screen):
             # BobbyBibs(16 * 2, 16 * 2),
             # BrutalPatrick(16 * 2, 16 * 10),
             # ChillyBilly(16 * 2, 16 * 18),
-             CindyLongHair(16 * 2, 16 * 26, COINFLIPTEDDEFEATED),
+             CindyLongHair(16 * 2, 16 * 26),
         # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
