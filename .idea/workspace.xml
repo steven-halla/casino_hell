@@ -4,17 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added all npcs to the game board&#10;about to update player">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/map/casinomaingame3.tmx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/map/casinomaingame4.tmx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/cindy_long_hair.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/flippin_ted.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/inn_keeper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed error with arrows stripped out magic">
       <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/main_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/main_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -283,7 +274,7 @@
       <workItem from="1703713923056" duration="911000" />
       <workItem from="1703714896923" duration="472000" />
       <workItem from="1704770305924" duration="4863000" />
-      <workItem from="1704838630616" duration="25971000" />
+      <workItem from="1704838630616" duration="26497000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -628,7 +619,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -657,7 +648,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;text display on button press&quot;" />
     <MESSAGE value="&quot;screen is now black&quot;" />
     <MESSAGE value="&quot;player 1 now displays&quot;" />
     <MESSAGE value="&quot;player 1 now moves&quot;" />
@@ -682,7 +672,8 @@
     <MESSAGE value="black jack is working" />
     <MESSAGE value="fixed issue with NPC position" />
     <MESSAGE value="added all npcs to the game board&#10;about to update player" />
-    <option name="LAST_COMMIT_MESSAGE" value="added all npcs to the game board&#10;about to update player" />
+    <MESSAGE value="fixed error with arrows stripped out magic" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed error with arrows stripped out magic" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

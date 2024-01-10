@@ -38,8 +38,6 @@ class CoinFlipTedScreen(Screen):
             "Hehehe, your on sucker"]
         self.reveal_hand = False
 
-
-
     def giveExp(self, state: "GameState"):
         if self.high_exp == True:
             state.player.exp += 15
@@ -65,6 +63,9 @@ class CoinFlipTedScreen(Screen):
 
         if self.bet > 100:
             self.bet = 100
+
+        if self.bet > self.coinFlipTedMoney:
+            self.bet = self.coinFlipTedMoney
 
     def flipCoin(self):
         coin = random.random()
