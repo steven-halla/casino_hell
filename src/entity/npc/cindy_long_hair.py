@@ -12,12 +12,13 @@ class CindyLongHair(Npc):
         self.textbox = NpcTextBox(
             [
                 "Cindy: Cheating Ted is such a jerk. If you could take all of his coins I'll reward you.",
-                "Word gets around fast so I'll know.",
-                "Hero: As long as he's here to gamble, I'll take every last coin if I feel like it.I'll think about your offer."],
+                "Most of his coin flips land on tails, he trained himself to do that.  ",
+                "Hero: So against him I should bet tails , most people tend to bet 'heads' , very smart of him to know that much."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.coinFlipTedReward = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
@@ -62,6 +63,8 @@ class CindyLongHair(Npc):
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 self.textbox.reset()
+                print("coinFlipTedReward:", self.coinFlipTedReward)
+
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)

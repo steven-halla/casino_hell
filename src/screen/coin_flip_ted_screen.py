@@ -4,6 +4,8 @@ import pygame
 import sys
 
 from screen.screen import Screen
+from constants import COINFLIPTEDDEFEATED
+
 
 
 class CoinFlipTedScreen(Screen):
@@ -79,7 +81,11 @@ class CoinFlipTedScreen(Screen):
 
     def update(self, state: "GameState"):
         if self.coinFlipTedMoney <= 0:
-            self.coinFlipTedDefeated = True
+            global COINFLIPTEDDEFEATED  # Use the global keyword to modify the global variable
+            if self.coinFlipTedMoney <= 0:
+                self.coinFlipTedDefeated = True
+                COINFLIPTEDDEFEATED = True # Set CindyLongHair's attribute to True when conditions are met
+
         # Update the controller
         controller = state.controller
         controller.update()

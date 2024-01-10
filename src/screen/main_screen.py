@@ -7,7 +7,7 @@ from entity.npc.bobby_bibs import BobbyBibs
 from entity.npc.brutal_patrick import BrutalPatrick
 from entity.npc.chilly_billy import ChillyBilly
 from entity.npc.cindy_long_hair import CindyLongHair
-from constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK, COINFLIPTEDDEFEATED
 from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.hungry_patrick import HungryPatrick
@@ -62,8 +62,8 @@ class MainScreen(Screen):
             # BobbyBibs(16 * 2, 16 * 2),
             # BrutalPatrick(16 * 2, 16 * 10),
             # ChillyBilly(16 * 2, 16 * 18),
-            CindyLongHair(16 * 2, 16 * 26),
-            # HungryPatrick(16 * 2, 16 * 34),
+             CindyLongHair(16 * 2, 16 * 26, COINFLIPTEDDEFEATED),
+        # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
             # NickyHints(16 * 10, 16 * 18),
