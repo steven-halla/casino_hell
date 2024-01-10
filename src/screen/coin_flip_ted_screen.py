@@ -80,13 +80,15 @@ class CoinFlipTedScreen(Screen):
             self.result = "heads"
 
     def update(self, state: "GameState"):
+        global COINFLIPTEDDEFEATED
+
+
         if self.coinFlipTedMoney <= 0:
-            global COINFLIPTEDDEFEATED  # Use the global keyword to modify the global variable
             if self.coinFlipTedMoney <= 0:
                 self.coinFlipTedDefeated = True
-                COINFLIPTEDDEFEATED = True # Set CindyLongHair's attribute to True when conditions are met
+                COINFLIPTEDDEFEATED = True
 
-        # Update the controller
+                # Update the controller
         controller = state.controller
         controller.update()
 

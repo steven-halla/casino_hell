@@ -53,9 +53,9 @@ class MainScreen(Screen):
         state.npcs = [
             # make sure to seperate by a factor of 8 for y
             #x, y
-            # InnGuard(16 * 36, 16 * 2),
-            # BappingMike(16 * 36, 16 * 10),
-            # BarKeep(16 * 36, 16 * 18),
+            InnGuard(16 * 36, 16 * 2),
+            BappingMike(16 * 36, 16 * 10),
+            BarKeep(16 * 36, 16 * 18),
             InnKeeper(16 * 36, 16 * 26),
 
 
@@ -109,6 +109,10 @@ class MainScreen(Screen):
         # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
 
         if controller.isUpPressed:
+            global COINFLIPTEDDEFEATED
+
+            print("we are here: " + str(COINFLIPTEDDEFEATED))
+
             self.y_up_move = True
             self.y_down_move = False
             self.x_left_move = False
