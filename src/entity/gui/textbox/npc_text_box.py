@@ -37,20 +37,30 @@ class NpcTextBox(Entity):
         # print("is finished? " + str(self.is_finished()))
 
     def draw(self, state: "GameState"):
-        # print("Textbox draw")
         text = self.messages[self.message_index]
         text_to_display = text[:self.characters_to_display]
         wrapped_text = textwrap.wrap(text_to_display, 60)
-        # print("text: " + text_to_display)
-        # print("position: " + str(self.position.toTuple()))
-        for i, line in enumerate(wrapped_text):
-            text_surface = state.FONT.render(line, True, (255, 255, 255))
-            state.DISPLAY.blit(text_surface,
-                         (self.position.x, self.position.y + (i * 40)))
 
-        # state.DISPLAY.blit(font.render(
-        #     f"player money: {state.player.money}",
-        #     True, (5, 5, 5)), (150, 150))
+        # Fixed dimensions for the text box
+        box_width = 700  # Set the width of the text box
+        box_height = 120  # Set the height of the text box
+
+        # Position of the text box
+        box_x = self.position.x
+        box_y = self.position.y
+
+        # Draw the black background rectangle
+        pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
+
+        # Draw the text within the text box
+        line_height = 40  # Adjust as needed
+        for i, line in enumerate(wrapped_text):
+            # Calculate the Y position of each line within the box
+            text_line_y = box_y + (i * line_height) + 10  # Adding 10 for padding from the top
+            text_surface = state.FONT.render(line, True, (255, 255, 255))
+            state.DISPLAY.blit(text_surface, (box_x + 10, text_line_y))  # Adding 10 for padding from the left
+
+        # Adjust the number '60' in the textwrap.wrap function and the padding values as needed
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \

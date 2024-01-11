@@ -1,6 +1,6 @@
 from entity.entity import Entity
-from text_box import TextBox
-from bordered_box import BorderedBox
+from entity.gui.textbox.bordered_box import BorderedBox
+from entity.gui.textbox.text_box import TextBox
 
 
 class BorderedTextBox(Entity):

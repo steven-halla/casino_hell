@@ -39,15 +39,18 @@ class MainScreen(Screen):
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
+        self.player = Player(400, 200)
+
 
     def start(self, state: "GameState"):
         super().start(state)
 
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 100
+            player_start_x = 300
             player_start_y = 200
             state.player = Player(player_start_x, player_start_y)
+
         # state.npcs = []
         state.npcs = [
             # make sure to seperate by a factor of 8 for y
@@ -69,7 +72,7 @@ class MainScreen(Screen):
             # QuestGiverJanet(16 * 10, 16 * 26),
             # RumbleBill(16 * 18, 16 * 2),
             # SallyOpossum(16 * 18, 16 * 10),
-            # ShopKeeper(16 * 18, 16 * 18),
+            ShopKeeper(16 * 18, 16 * 18),
             # SleepyNed(16 * 18, 16 * 26),
             # SufferingSuzy(16 * 26, 16 * 2),
             # WallyGuide(16 * 26, 16 * 10),

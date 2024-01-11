@@ -229,11 +229,9 @@ class CoinFlipTedScreen(Screen):
 
             elif self.leave_or_replay_index == 1:
                 if controller.isTPressed:
-                    print("we are here: " + str(COINFLIPERTEDDEFEATED))
 
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
-                    print("we are here2: " + str(COINFLIPERTEDDEFEATED))
 
 
         elif self.game_state == "you_lost_the_toss":
