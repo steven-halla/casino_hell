@@ -48,7 +48,6 @@ class Controller:
 
             if event.type == pygame.KEYDOWN:
                 self.keyPressedTimes[event.key] = pygame.time.get_ticks()
-                print(self.keyPressedTimes)
 
                 if event.key == pygame.K_LEFT:
                     self.isLeftPressed = True
@@ -97,7 +96,6 @@ class Controller:
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = False
                 elif event.key == pygame.K_UP:
-                    print("hi")
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False

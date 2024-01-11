@@ -68,7 +68,6 @@ class CindyLongHair(Npc):
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 self.textbox.reset()
-                print("coinFlipTedReward:", self.coinFlipTedReward)
 
 
     def update_talking(self, state: "GameState"):

@@ -56,7 +56,6 @@ class Player(Entity):
         if self.canMove:
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
-                print(str(self.items))
             elif controller.isRightPressed:
                 self.velocity.x = self.walk_speed
             else:

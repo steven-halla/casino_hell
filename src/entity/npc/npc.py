@@ -17,6 +17,7 @@ class Npc(Entity):
 
     def update(self, state):
         super().update(state)
+        print("Updating")
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
@@ -28,12 +29,15 @@ class Npc(Entity):
                 (player.collision.x - self.collision.x) ** 2 + (
                             player.collision.y - self.collision.y) ** 2)
             # Check if distance is within the sum of the widths and heights of the rectangles
-            if 48 >= distance <= player.collision.width + player.collision.height + self.collision.width + self.collision.height:
-                self.isSpeaking = not self.isSpeaking
-                self.speakStartTime = time.process_time()
+            if 0 <= distance <= 48 + player.collision.width + player.collision.height + self.collision.width + self.collision.height:
                 print("yo")
 
+                self.isSpeaking = not self.isSpeaking
+                self.speakStartTime = time.process_time()
+                print("fyo")
+
     def draw(self, state):
+        print("drawing")
         rect = (
         self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         self.collision.width, self.collision.height)

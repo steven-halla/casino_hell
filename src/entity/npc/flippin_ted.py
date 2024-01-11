@@ -23,6 +23,7 @@ class FlippinTed(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished" | "game_start
 
+
     def update(self, state: "GameState"):
 
         if self.state == "waiting":
@@ -30,15 +31,12 @@ class FlippinTed(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
-            print("distance here")
 
             if state.controller.isAPressed:
-                print("Hi A here")
                 state.currentScreen = state.coinFlipTedScreen
                 state.coinFlipTedScreen.start(state)
 
             if self.textbox.message_index == 1:
-                print("talking")
                 if state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()

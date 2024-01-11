@@ -34,7 +34,6 @@ class SallyOpossum(Npc):
                 state.opossumInACanScreen.start(state)
 
             if self.textbox.message_index == 1:
-                print("talking")
                 if state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()

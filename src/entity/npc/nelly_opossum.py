@@ -26,7 +26,6 @@ class NellyOpossum(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
-            print("distance here")
 
             if state.controller.isAPressed:
                 print("Hi A here")

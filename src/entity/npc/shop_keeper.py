@@ -2,6 +2,7 @@ import math
 
 import pygame
 
+from entity.gui.textbox.shop_npc_text_box import ShopNpcTextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
@@ -9,7 +10,7 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NpcTextBox(
+        self.textbox = ShopNpcTextBox(
             ["I'm the shop keeper. In the future I'll be selling you items.",
              "Press A, B, R, E to buy stuff."],
             (50, 450, 50, 45), 30, 500)
