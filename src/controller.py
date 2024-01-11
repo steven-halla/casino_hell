@@ -40,6 +40,8 @@ class Controller:
         return pygame.time.get_ticks() - self.keyReleasedTimes[key]
 
     def update(self):
+        current_time = pygame.time.get_ticks()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.isExitPressed = True
@@ -95,6 +97,7 @@ class Controller:
                 elif event.key == pygame.K_RIGHT:
                     self.isRightPressed = False
                 elif event.key == pygame.K_UP:
+                    print("hi")
                     self.isUpPressed = False
                 elif event.key == pygame.K_DOWN:
                     self.isDownPressed = False

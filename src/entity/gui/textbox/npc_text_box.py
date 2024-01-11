@@ -18,6 +18,10 @@ class NpcTextBox(Entity):
         self.font = pygame.font.Font(None, 36)
         self.show_shop_menu = False  # New flag for showing shop menu
         self.shop_items = []  # New: List to store shop items
+        self.selected_item_index = 0  # New attribute to track selected item index
+        self.last_key_time = 0  # Track the time of the last key press for scrolling
+
+
 
     # def populate_with_dummy_data(self):
     #     # Dummy data: a simple array of items
@@ -28,7 +32,16 @@ class NpcTextBox(Entity):
 
     def update(self, state: "GameState"):
         # print("textbox update")
-        controller = state.controller
+        current_time = pygame.time.get_ticks()
+        key_scroll_delay = 200  # Time in milliseconds before recognizing another key press
+
+        if state.controller.isUpPressed and (current_time - self.last_key_time > key_scroll_delay):
+            self.selected_item_index = max(0, self.selected_item_index - 1)
+            self.last_key_time = current_time  # Update the time of the last key press
+
+        elif state.controller.isDownPressed and (current_time - self.last_key_time > key_scroll_delay):
+            self.selected_item_index = min(len(self.shop_items) - 1, self.selected_item_index + 1)
+            self.last_key_time = current_time  # Update the time of the last key press
 
         # show characters of text one at a time, not whole message.
         text = self.messages[self.message_index]
@@ -36,7 +49,7 @@ class NpcTextBox(Entity):
             self.characters_to_display += 1
 
         # handle button press to see next message
-        if controller.isTPressed and \
+        if state.controller.isTPressed and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
             self.time = pygame.time.get_ticks()
@@ -47,6 +60,8 @@ class NpcTextBox(Entity):
 
         if self.is_finished():
             self.show_shop_menu = True
+
+
 
     def draw(self, state: "GameState"):
         text = self.messages[self.message_index]
@@ -93,18 +108,21 @@ class NpcTextBox(Entity):
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
 
         # Starting offsets for the items and arrow
-        item_y_offset = 50  # Starting y-offset for the first item
-        item_x_offset = 50  # Starting x-offset for the items, adjust as needed
+        item_y_offset = 50
+        item_x_offset = 50
+        arrow_offset = -40  # Adjust the position of the arrow to the left of the item
 
         # Draw the title of the shop menu
         shop_title = "Welcome to the Shop!"
         title_surface = state.FONT.render(shop_title, True, (255, 255, 255))
         state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))
 
-        # Draw an arrow at the position of the first item
+        # Create an arrow surface to indicate the selected item
         arrow_surface = state.FONT.render("->", True, (255, 255, 255))
-        state.DISPLAY.blit(arrow_surface, (box_x + item_x_offset - 30, box_y + item_y_offset))
-        # Note: The '- 30' positions the arrow to the left of the item
+
+        # Draw arrow for the selected item
+        arrow_y_position = box_y + item_y_offset + self.selected_item_index * 40
+        state.DISPLAY.blit(arrow_surface, (box_x + item_x_offset + arrow_offset, arrow_y_position))
 
         # Draw each item in the shop_items list
         for item in self.shop_items:

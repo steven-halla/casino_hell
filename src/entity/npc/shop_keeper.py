@@ -20,6 +20,9 @@ class ShopKeeper(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
         self.shop_items = ["item 11", "item 2", "item 3"]
+        self.selected_item_index = 0  # New attribute to track selected item index
+
+
 
     def show_shop(self, state: "GameState"):
         # This method passes the shop items to the textbox
@@ -31,6 +34,8 @@ class ShopKeeper(Npc):
     def update(self, state: "GameState"):
         if self.state == "waiting":
             self.update_waiting(state)
+
+
 
         elif self.state == "talking":
             # self.textbox.reset()
