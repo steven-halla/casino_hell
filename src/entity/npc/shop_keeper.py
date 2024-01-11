@@ -18,6 +18,15 @@ class ShopKeeper(Npc):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+        # New: Initialize an array of items for the shopkeeper
+        self.shop_items = ["item 11", "item 2", "item 3"]
+
+    def show_shop(self, state: "GameState"):
+        # This method passes the shop items to the textbox
+        self.textbox.set_shop_items(self.shop_items)
+        self.textbox.show_shop_menu = True
+
+
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -76,9 +85,14 @@ class ShopKeeper(Npc):
                 # the below is where kenny had it
                 self.textbox.reset()
 
+
+
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
+        self.show_shop(state)
+
         if state.controller.isTPressed and self.textbox.is_finished():
+
             # here we need to pull up a gui that has a yes or no to it
             state.player.money -= 100
             # print("start state: waiting")
@@ -88,6 +102,7 @@ class ShopKeeper(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             # self.textbox.reset()
+
 
     def draw(self, state):
         rect = (

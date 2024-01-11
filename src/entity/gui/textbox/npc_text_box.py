@@ -17,6 +17,13 @@ class NpcTextBox(Entity):
         self.time = pygame.time.get_ticks()
         self.font = pygame.font.Font(None, 36)
         self.show_shop_menu = False  # New flag for showing shop menu
+        self.shop_items = []  # New: List to store shop items
+
+    # def populate_with_dummy_data(self):
+    #     # Dummy data: a simple array of items
+    #     dummy_items = ["Dummy Item 1", "Dummy Item 2", "Dummy Item 3"]
+    #     self.set_shop_items(dummy_items)
+    #     self.show_shop_menu = True
 
 
     def update(self, state: "GameState"):
@@ -70,10 +77,16 @@ class NpcTextBox(Entity):
 
         # Adjust the number '60' in the textwrap.wrap function and the padding values as needed
 
+    def set_shop_items(self, items: list[str]):
+        self.shop_items = items
+
     def draw_shop_menu(self, state: "GameState"):
         # Set the dimensions for the shop menu text box
         box_width = 700
         box_height = 400
+        # self.populate_with_dummy_data()
+
+
 
         # Position of the shop menu text box - Adjust as needed
         # Assuming you want it above the NPC text box
@@ -88,6 +101,18 @@ class NpcTextBox(Entity):
         shop_title = "Welcome to the Shop!"
         title_surface = state.FONT.render(shop_title, True, (255, 255, 255))
         state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))  # Adjust positioning as needed
+
+        item_y_offset = 50  # Starting y-offset for the first item
+        item_y_offset = 50  # Starting y-offset for the first item
+        item_x_offset = 50  # Starting x-offset for the items, adjust as needed
+
+        for item in self.shop_items:
+            item_surface = state.FONT.render(item, True, (255, 255, 255))
+            state.DISPLAY.blit(item_surface, (box_x + item_x_offset, box_y + item_y_offset))
+            item_y_offset += 40
+
+
+
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \

@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="made improvements to the NPC text box so that now it has a black background">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="shop box created">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/gui/textbox/npc_text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/npc_text_box.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/shop_keeper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -275,7 +276,7 @@
       <workItem from="1703713923056" duration="911000" />
       <workItem from="1703714896923" duration="472000" />
       <workItem from="1704770305924" duration="4863000" />
-      <workItem from="1704838630616" duration="42919000" />
+      <workItem from="1704838630616" duration="46568000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -620,7 +621,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <option name="localTasksCounter" value="67" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -649,7 +650,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;save&quot;" />
     <MESSAGE value="&quot;collisoin works&quot;" />
     <MESSAGE value="&quot;obstacles built&quot;" />
     <MESSAGE value="&quot;text displays via text&quot;" />
@@ -674,7 +674,8 @@
     <MESSAGE value="state is not being handled right" />
     <MESSAGE value="coin monicle is now a rewart item, not sure on what it will do but its there" />
     <MESSAGE value="made improvements to the NPC text box so that now it has a black background" />
-    <option name="LAST_COMMIT_MESSAGE" value="made improvements to the NPC text box so that now it has a black background" />
+    <MESSAGE value="shop box created" />
+    <option name="LAST_COMMIT_MESSAGE" value="shop box created" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
