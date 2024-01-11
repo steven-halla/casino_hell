@@ -84,35 +84,33 @@ class NpcTextBox(Entity):
         # Set the dimensions for the shop menu text box
         box_width = 700
         box_height = 400
-        # self.populate_with_dummy_data()
-
-
 
         # Position of the shop menu text box - Adjust as needed
-        # Assuming you want it above the NPC text box
         box_x = self.position.x
         box_y = self.position.y - box_height - 20  # 20 pixels above the NPC text box
 
         # Draw the black background rectangle for the shop menu
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
 
-        # Add any additional text or graphics for the shop menu here
-        # For example, draw the title of the shop menu
-        shop_title = "Welcome to the Shop!"
-        title_surface = state.FONT.render(shop_title, True, (255, 255, 255))
-        state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))  # Adjust positioning as needed
-
-        item_y_offset = 50  # Starting y-offset for the first item
+        # Starting offsets for the items and arrow
         item_y_offset = 50  # Starting y-offset for the first item
         item_x_offset = 50  # Starting x-offset for the items, adjust as needed
 
+        # Draw the title of the shop menu
+        shop_title = "Welcome to the Shop!"
+        title_surface = state.FONT.render(shop_title, True, (255, 255, 255))
+        state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))
+
+        # Draw an arrow at the position of the first item
+        arrow_surface = state.FONT.render("->", True, (255, 255, 255))
+        state.DISPLAY.blit(arrow_surface, (box_x + item_x_offset - 30, box_y + item_y_offset))
+        # Note: The '- 30' positions the arrow to the left of the item
+
+        # Draw each item in the shop_items list
         for item in self.shop_items:
             item_surface = state.FONT.render(item, True, (255, 255, 255))
             state.DISPLAY.blit(item_surface, (box_x + item_x_offset, box_y + item_y_offset))
-            item_y_offset += 40
-
-
-
+            item_y_offset += 40  # Increment y-offset for the next item
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \
