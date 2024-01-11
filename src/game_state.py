@@ -1,5 +1,6 @@
 import pygame
 
+from entity.npc.cindy_long_hair import CindyLongHair
 from screen.black_jack_screen import BlackJackScreen
 from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
@@ -12,6 +13,7 @@ from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
+
 
 
 class GameState:
@@ -27,6 +29,7 @@ class GameState:
         # core game state
         self.controller: Controller = Controller()
         self.player: Player = Player(16 * 20, 16 * 34)
+        self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]

@@ -30,6 +30,7 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
         self.perks = []
+        self.items = []
 
 
     def update(self, state: "GameState"):
@@ -44,6 +45,7 @@ class Player(Entity):
             if self.exp > 3000:
                 self.exp = 3000
 
+
         # Define canMove before the for loop
         canMove = True
         for npc in state.npcs:
@@ -54,6 +56,7 @@ class Player(Entity):
         if canMove:
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
+                print(str(self.items))
             elif controller.isRightPressed:
                 self.velocity.x = self.walk_speed
             else:

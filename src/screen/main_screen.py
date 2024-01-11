@@ -7,7 +7,7 @@ from entity.npc.bobby_bibs import BobbyBibs
 from entity.npc.brutal_patrick import BrutalPatrick
 from entity.npc.chilly_billy import ChillyBilly
 from entity.npc.cindy_long_hair import CindyLongHair
-from constants import PLAYER_OFFSET, BLUEBLACK, COINFLIPTEDDEFEATED
+from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.hungry_patrick import HungryPatrick
@@ -29,13 +29,12 @@ from entity.npc.sleepy_ned import SleepyNed
 from entity.npc.wally_guide import WallyGuide
 
 
+
 class MainScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        # Load the Tiled map file
         self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
-
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -44,11 +43,11 @@ class MainScreen(Screen):
     def start(self, state: "GameState"):
         super().start(state)
 
-        player_start_x = 100  # Replace these values with your desired starting position
-        player_start_y = 200  # Replace these values with your desired starting position
-
-        # Create an instance of Player with the specified starting position
-        state.player = Player(player_start_x, player_start_y)
+        # Check if a player instance already exists
+        if not hasattr(state, 'player') or state.player is None:
+            player_start_x = 100
+            player_start_y = 200
+            state.player = Player(player_start_x, player_start_y)
         # state.npcs = []
         state.npcs = [
             # make sure to seperate by a factor of 8 for y
@@ -86,6 +85,8 @@ class MainScreen(Screen):
     def update(self, state: "GameState"):
         # i dont think npc and demons getting updated
 
+
+
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
@@ -101,19 +102,17 @@ class MainScreen(Screen):
                 if isinstance(npc, InnGuard):
                     state.npcs.remove(npc)
 
-        # state.player.setPosition(state.player.position.x + state.player.velocity.x,
-        #                          state.player.position.y + state.player.velocity.y)
 
-        # obstacle.update(state)
 
-        # When pressing two buttons at once, it will cause the button to stay true need to handle multiple button press
+        #
+        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
+        #     coinMonicle = "coin monicle"
+        #     state.player.items.append(coinMonicle)
 
         if controller.isUpPressed:
-            global COINFLIPTEDDEFEATED
-
-            print("we are here: " + str(COINFLIPTEDDEFEATED))
 
             self.y_up_move = True
+
             self.y_down_move = False
             self.x_left_move = False
             self.x_right_move = False
@@ -142,48 +141,19 @@ class MainScreen(Screen):
             self.x_left_move = False
             self.x_right_move = False
 
-        # player.update(state)
-        # the below if you set distace, the distance starts at the start point of game ,
-        # if player moves, then distance variables will not work
-
         player.update(state)
 
         # check map for collision
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
-            # door_layer_rest = self.tiled_map.get_layer_by_name("door rest")
-            # door_layer_boss = self.tiled_map.get_layer_by_name("door boss")
-            # door_layer_hedge_hog_maze = self.tiled_map.get_layer_by_name("door hedge hog maze")
+
             for x, y, image in collision_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
                     state.player.undoLastMove()
 
-            # for x,y, image in door_layer_rest.tiles():
-            #     tile_rect.x = x * 16
-            #     tile_rect.y = y * 16
-            #     if state.player.collision.isOverlap(tile_rect):
-            #         print("door map")
-            #         state.currentScreen = state.restScreen
-            #         state.restScreen.start(state)
-
-            # for x,y, image in door_layer_boss.tiles():
-            #     tile_rect.x = x * 16
-            #     tile_rect.y = y * 16
-            #     if state.player.collision.isOverlap(tile_rect):
-            #         print("door map")
-            #         state.currentScreen = state.bossScreen
-            #         state.bossScreen.start(state)
-
-            # for x,y, image in door_layer_hedge_hog_maze.tiles():
-            #     tile_rect.x = x * 16
-            #     tile_rect.y = y * 16
-            #     if state.player.collision.isOverlap(tile_rect):
-            #         print("door map")
-            #         state.currentScreen = state.hedgeMazeScreen
-            #         state.hedgeMazeScreen.start(state)
 
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
@@ -226,26 +196,8 @@ class MainScreen(Screen):
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
-                # Blit the tile image to the screen at the correct position
-                # state.DISPLAY.blit(image, (pos_x, pos_y))
 
-            # objects_layer = self.tiled_map.get_layer_by_name("door rest")
-            # for x, y, image in objects_layer.tiles():
-            #     # Calculate the position of the tile in pixels
-            #     pos_x = x * tile_width + state.camera.x
-            #     pos_y = y * tile_height + state.camera.y
-            #     scaled_image = pygame.transform.scale(image, (tile_width * 1.3, tile_height * 1.3))
-            #
-            #     tile_rect = Rectangle(pos_x, pos_y, tile_width, tile_height)
-            #
-            #     if state.player.collision.isOverlap(tile_rect):
-            #         print("hi there")
-            #         # state.currentScreen = state.restScreen
-            #         # state.restScreen.start(state)
-            #
-            #     # Blit the tile image to the screen at the correct position
-            #     state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-        #
+
         for npc in state.npcs:
             npc.draw(state)
 

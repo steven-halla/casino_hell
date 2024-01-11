@@ -32,6 +32,11 @@ class CindyLongHair(Npc):
         elif self.state == "talking":
 
             if self.textbox.message_index == 1:
+                if state.coinFlipTedScreen.coinFlipTedDefeated == True:
+                    if "coin monicle" not in state.player.items:
+                        self.coinFlipTedReward = True
+                        coinMonicle = "coin monicle"
+                        state.player.items.append(coinMonicle)
                 if state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
@@ -72,6 +77,7 @@ class CindyLongHair(Npc):
             self.state = "waiting"
 
             self.state_start_time = pygame.time.get_ticks()
+            print("I am the reward" + str(self.coinFlipTedReward))
 
     def draw(self, state):
         rect = (

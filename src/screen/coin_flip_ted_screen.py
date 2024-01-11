@@ -4,7 +4,6 @@ import pygame
 import sys
 
 from screen.screen import Screen
-from constants import COINFLIPTEDDEFEATED
 
 
 
@@ -80,13 +79,11 @@ class CoinFlipTedScreen(Screen):
             self.result = "heads"
 
     def update(self, state: "GameState"):
-        global COINFLIPTEDDEFEATED
-
-
         if self.coinFlipTedMoney <= 0:
             if self.coinFlipTedMoney <= 0:
                 self.coinFlipTedDefeated = True
-                COINFLIPTEDDEFEATED = True
+                print("Defeated???" + str(self.coinFlipTedDefeated))
+
 
                 # Update the controller
         controller = state.controller
@@ -104,6 +101,7 @@ class CoinFlipTedScreen(Screen):
             self.reveal_hand = False
 
             if controller.isRPressed:
+
                 if self.bet >= 10 and self.bet <= 30:
                     state.player.stamina_points -= 1
                 elif self.bet >= 40 and self.bet <= 70:
@@ -183,8 +181,14 @@ class CoinFlipTedScreen(Screen):
 
                 self.game_state = "you_won_the_toss"
 
-                if self.coinFlipTedMoney <= 0 or state.player.money <= 0:
-                    print("At 0 ending match")
+                if self.coinFlipTedMoney <= 0:
+                    print("Are we defeated yet" + str(self.coinFlipTedMoney))
+                    self.coinFlipTedDefeated = True
+
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
+
+                elif state.player.money <= 0:
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 
@@ -225,8 +229,12 @@ class CoinFlipTedScreen(Screen):
 
             elif self.leave_or_replay_index == 1:
                 if controller.isTPressed:
+                    print("we are here: " + str(COINFLIPERTEDDEFEATED))
+
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
+                    print("we are here2: " + str(COINFLIPERTEDDEFEATED))
+
 
         elif self.game_state == "you_lost_the_toss":
             self.message_display = f"choice  {self.players_side} coin landed  {self.result} lost! "

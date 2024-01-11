@@ -7,7 +7,6 @@ SCREEN_WIDTH: int = 800
 SCREEN_HEIGHT: int = 600
 WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
-COINFLIPTEDDEFEATED = False
 
 TILE_SIZE: int = 16
 GREEN: Tuple[int, int, int] = (0, 255, 0)
