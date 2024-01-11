@@ -97,16 +97,15 @@ class ShopKeeper(Npc):
         self.show_shop(state)
 
         if state.controller.isTPressed and self.textbox.is_finished():
-
-            # here we need to pull up a gui that has a yes or no to it
-            state.player.money -= 100
-            # print("start state: waiting")
-            # self.textbox.reset()
-
+            # Exiting the shop conversation
             self.state = "waiting"
-
             self.state_start_time = pygame.time.get_ticks()
+            # Allow the player to move again (new)
+            state.player.canMove = True  # Ensure this attribute exists in your Player class
             # self.textbox.reset()
+        else:
+            # While in conversation, prevent the player from moving (new)
+            state.player.canMove = False
 
 
     def draw(self, state):
