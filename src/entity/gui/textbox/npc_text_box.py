@@ -16,6 +16,8 @@ class NpcTextBox(Entity):
         self.delay = delay
         self.time = pygame.time.get_ticks()
         self.font = pygame.font.Font(None, 36)
+        self.show_shop_menu = False  # New flag for showing shop menu
+
 
     def update(self, state: "GameState"):
         # print("textbox update")
@@ -35,6 +37,9 @@ class NpcTextBox(Entity):
             self.characters_to_display = 0
 
         # print("is finished? " + str(self.is_finished()))
+
+        if self.is_finished():
+            self.show_shop_menu = True
 
     def draw(self, state: "GameState"):
         text = self.messages[self.message_index]
@@ -60,7 +65,29 @@ class NpcTextBox(Entity):
             text_surface = state.FONT.render(line, True, (255, 255, 255))
             state.DISPLAY.blit(text_surface, (box_x + 10, text_line_y))  # Adding 10 for padding from the left
 
+        if self.show_shop_menu:
+            self.draw_shop_menu(state)
+
         # Adjust the number '60' in the textwrap.wrap function and the padding values as needed
+
+    def draw_shop_menu(self, state: "GameState"):
+        # Set the dimensions for the shop menu text box
+        box_width = 700
+        box_height = 400
+
+        # Position of the shop menu text box - Adjust as needed
+        # Assuming you want it above the NPC text box
+        box_x = self.position.x
+        box_y = self.position.y - box_height - 20  # 20 pixels above the NPC text box
+
+        # Draw the black background rectangle for the shop menu
+        pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
+
+        # Add any additional text or graphics for the shop menu here
+        # For example, draw the title of the shop menu
+        shop_title = "Welcome to the Shop!"
+        title_surface = state.FONT.render(shop_title, True, (255, 255, 255))
+        state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))  # Adjust positioning as needed
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \
