@@ -19,7 +19,7 @@ class WaterBottle(TreasureChest):
             print(f"Received item: {self.hidden_item}")
             state.player.items.append(self.hidden_item)
             print("Your inventory so far: " + str(state.player.items))
-            state.treasure_chests.remove(self)  # Remove the chest from the game
+            state.treasurechests.remove(self)  # Remove the chest from the game
             self.isOpened = True  #
 
     def open_chest(self, state: "GameState"):
@@ -33,4 +33,6 @@ class WaterBottle(TreasureChest):
 
             if distance < 40:
                 print("Yo ho ho and a bottle of bum")
+                self.give_item(state)  # Call the give_item method to add the item to the player's inventory
+
 
