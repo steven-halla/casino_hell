@@ -62,11 +62,16 @@ class ShopKeeper(Npc):
                 # Convert the cost of the selected item from string to int
                 cost = int(self.shop_costs[self.selected_item_index])
 
+
                 # Check if the player has enough money
                 if state.player.money >= cost:
                     # Subtract the cost from the player's money
                     state.player.money -= cost
-                    print(f"Item purchased for {cost}. Remaining money: {state.player.money}")
+                    selected_item = self.shop_items[self.selected_item_index]
+                    state.player.items.append(selected_item)
+                    print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
+                    print("You inventory as it stands: " + str(state.player.items))
+
                 else:
                     print("Not enough money to purchase item.")
 
