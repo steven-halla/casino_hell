@@ -12,6 +12,12 @@ class TreasureChest(Entity):
         super().__init__(x, y, 16, 16)  # Assuming 16x16 is the size of the chest
         self.color: Tuple[int, int, int] = PURPLE
 
+    def update(self, state: "GameState"):
+        # Check for collision with the player
+        if self.collision.isOverlap(state.player.collision):
+            # Prevent the player from moving through the chest
+            state.player.undoLastMove()
+
     def draw(self, state: "GameState"):
         rect = (
             self.collision.x + state.camera.x,
@@ -20,3 +26,5 @@ class TreasureChest(Entity):
             self.collision.height
         )
         pygame.draw.rect(state.DISPLAY, self.color, rect)
+
+

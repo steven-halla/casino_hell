@@ -54,7 +54,7 @@ class MainScreen(Screen):
 
         state.treasurechests = [
 
-            WaterBottle(16 * 36, 16 * 2),
+            WaterBottle(16 * 36, 16 * 10),
 
         ]
 
@@ -103,6 +103,10 @@ class MainScreen(Screen):
         controller.update()
         for npc in state.npcs:
             npc.update(state)
+
+        # Game Update Loop
+        for chest in state.treasurechests:
+            chest.update(state)
 
         if controller.isExitPressed is True:
             state.isRunning = False

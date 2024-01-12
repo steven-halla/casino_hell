@@ -91,10 +91,19 @@ class Player(Entity):
         if self.isOverlap(state.obstacle):
             self.undoLastMove()
 
+
+
         for npc in state.npcs:
             # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
             if self.collision.isOverlap(npc.collision) or self.isOutOfBounds():
                 print("collide with npc: " + str(npc.collision.toTuple()))
+                self.undoLastMove()
+                break
+
+        for treasurechests in state.treasurechests:
+            # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
+            if self.collision.isOverlap(treasurechests.collision) or self.isOutOfBounds():
+                print("collide with chests: " + str(treasurechests.collision.toTuple()))
                 self.undoLastMove()
                 break
 

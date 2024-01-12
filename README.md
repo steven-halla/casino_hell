@@ -101,6 +101,7 @@ Oppusum in a can: +5% to your winnings
 
 to get players playing games daily have daily rewards. Rewards can be things such as heart points, food, money, exp etc etc
 
+quest can also be " dont use magic" or anything else that will make the game harder.
 
 
 
