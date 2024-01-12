@@ -83,6 +83,8 @@ class QuestGiverJanet(Npc):
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
+        if "Water Bottle" in state.player.items:
+            print("Kool, you passed my quest!")
         if state.controller.isTPressed and self.textbox.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
