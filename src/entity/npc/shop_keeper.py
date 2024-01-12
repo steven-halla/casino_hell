@@ -21,15 +21,15 @@ class ShopKeeper(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
         self.shop_items = ["item 11", "item 2", "item 3"]
+        self.shop_costs = ["100", "200", "300"]
         self.selected_item_index = 0  # New attribute to track selected item index
 
 
 
     def show_shop(self, state: "GameState"):
         # This method passes the shop items to the textbox
-        self.textbox.set_shop_items(self.shop_items)
+        self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
-
 
 
     def update(self, state: "GameState"):

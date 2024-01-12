@@ -65,7 +65,7 @@ class MainScreen(Screen):
             # BrutalPatrick(16 * 2, 16 * 10),
             # ChillyBilly(16 * 2, 16 * 18),
              CindyLongHair(16 * 2, 16 * 26),
-        # HungryPatrick(16 * 2, 16 * 34),
+             # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
             # NickyHints(16 * 10, 16 * 18),
