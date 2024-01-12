@@ -7,7 +7,7 @@ from entity.npc.bobby_bibs import BobbyBibs
 from entity.npc.brutal_patrick import BrutalPatrick
 from entity.npc.chilly_billy import ChillyBilly
 from entity.npc.cindy_long_hair import CindyLongHair
-from constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK, TILE_SIZE
 from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.hungry_patrick import HungryPatrick
@@ -18,6 +18,7 @@ from entity.npc.quest_giver_janet import QuestGiverJanet
 from entity.npc.shop_keeper import ShopKeeper
 from entity.npc.suffering_suzy import SufferingSuzy
 from entity.player.player import Player
+from entity.treasurechests.waterbottle import WaterBottle
 from screen.screen import Screen
 from entity.npc.jacky_banana import JackyBanana
 from entity.npc.justin_no_fruit import JustinNoFruit
@@ -51,34 +52,40 @@ class MainScreen(Screen):
             player_start_y = 200
             state.player = Player(player_start_x, player_start_y)
 
+        state.treasurechests = [
+
+            WaterBottle(16 * 36, 16 * 2),
+
+        ]
+
         # state.npcs = []
         state.npcs = [
             # make sure to seperate by a factor of 8 for y
             #x, y
-            InnGuard(16 * 36, 16 * 2),
-            BappingMike(16 * 36, 16 * 10),
-            BarKeep(16 * 36, 16 * 18),
-            InnKeeper(16 * 36, 16 * 26),
+            # InnGuard(16 * 36, 16 * 2),
+            # BappingMike(16 * 36, 16 * 10),
+            # BarKeep(16 * 36, 16 * 18),
+            # InnKeeper(16 * 36, 16 * 26),
 
 
             # BobbyBibs(16 * 2, 16 * 2),
             # BrutalPatrick(16 * 2, 16 * 10),
             # ChillyBilly(16 * 2, 16 * 18),
-             CindyLongHair(16 * 2, 16 * 26),
+            #  CindyLongHair(16 * 2, 16 * 26),
              # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
             # NickyHints(16 * 10, 16 * 18),
-            # QuestGiverJanet(16 * 10, 16 * 26),
+            QuestGiverJanet(16 * 10, 16 * 26),
             # RumbleBill(16 * 18, 16 * 2),
             # SallyOpossum(16 * 18, 16 * 10),
-            ShopKeeper(16 * 18, 16 * 18),
+            # ShopKeeper(16 * 18, 16 * 18),
             # SleepyNed(16 * 18, 16 * 26),
             # SufferingSuzy(16 * 26, 16 * 2),
             # WallyGuide(16 * 26, 16 * 10),
             #
             # CoinFlipFred(16 * 28, 16 * 36),
-            FlippinTed(16 * 20, 16 * 36),
+            # FlippinTed(16 * 20, 16 * 36),
             # NellyOpossum(16 * 12, 16 * 36),
 
 
@@ -203,6 +210,9 @@ class MainScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        for treasurechests in state.treasurechests:
+            treasurechests.draw(state)
 
         state.obstacle.draw(state)
 

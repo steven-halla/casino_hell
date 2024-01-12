@@ -32,6 +32,7 @@ class GameState:
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
+        self.treasurechests = []
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
         self.obstacle = Obstacle(22, 622)
 

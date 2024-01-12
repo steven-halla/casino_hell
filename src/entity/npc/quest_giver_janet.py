@@ -10,8 +10,8 @@ class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["In the future I'll be giving you out quest to complete",
-             "I'll even say different things and give out different quest as you progress"],
+            ["Hi there, I have some quest for you. Your first quest is easy : I want a bottle of water",
+             "You should be able to find it in an treasure chest. Come back when you find it."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
