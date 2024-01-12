@@ -119,7 +119,8 @@ class ShopNpcTextBox(Entity):
         title_surface = state.FONT.render(shop_title, True, (255, 255, 255))
         state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))
 
-        # Create an arrow surface to indicate the selected item
+        # Create an
+        # arrow surface to indicate the selected item
         arrow_surface = state.FONT.render("->", True, (255, 255, 255))
 
         # Draw arrow for the selected item
