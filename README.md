@@ -103,6 +103,18 @@ to get players playing games daily have daily rewards. Rewards can be things suc
 
 quest can also be " dont use magic" or anything else that will make the game harder.
 
+quest giver janet has 3 quests:
+one is a simple fetch item quest to give her  a bottle of water
+the second quests is to rescuse hodge podge the hedge hog from the maze (1 of 10 hedge hogs that are hidden)
+the third quest is to defeat one of the bosses,like fully defeat this will unlcok her final convo . 
+
+Rewards:
+first is a spell for black jack
+2nd is a save coin
+3rd is an item that gives a bonus for black jack to help with final boss of the level
+
+lets not forget to add the doctor for fixing opposum status
+
 
 
 

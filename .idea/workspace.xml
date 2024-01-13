@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="no moving while talkign to hsop kep">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="janet know nows if you have water bottle">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/shop_keeper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,6 +277,10 @@
       <workItem from="1703714896923" duration="472000" />
       <workItem from="1704770305924" duration="4863000" />
       <workItem from="1704838630616" duration="50808000" />
+      <workItem from="1705011602798" duration="11611000" />
+      <workItem from="1705118562808" duration="219000" />
+      <workItem from="1705119978048" duration="604000" />
+      <workItem from="1705123656694" duration="1140000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -620,7 +625,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -649,15 +654,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot;collsion funtion works&quot;" />
-    <MESSAGE value="&quot;collision works as needed&quot;" />
-    <MESSAGE value="&quot;talking now works&quot;" />
-    <MESSAGE value="&quot;talking now improved&quot;" />
-    <MESSAGE value="&quot;talking now with button on and off press&quot;" />
-    <MESSAGE value="&quot;about to make talking more oop&quot;" />
-    <MESSAGE value="&quot;save point&quot;" />
-    <MESSAGE value="&quot; point&quot;" />
-    <MESSAGE value="&quot; making progress on taking movement out of classes&quot;" />
     <MESSAGE value="&quot; talking is working as needed&quot;" />
     <MESSAGE value="fixing errors and such rewriting code since everything is in seperate files" />
     <MESSAGE value="black jack is working" />
@@ -674,7 +670,27 @@
     <MESSAGE value="arrow added" />
     <MESSAGE value="arrow now moves at a smooth pace" />
     <MESSAGE value="no moving while talkign to hsop kep" />
-    <option name="LAST_COMMIT_MESSAGE" value="no moving while talkign to hsop kep" />
+    <MESSAGE value="addedd new text box, I will need to in the future modify my NPC class as it doesn't do enough" />
+    <MESSAGE value="money is now added to teh shop" />
+    <MESSAGE value="now subtracting money as we buy things" />
+    <MESSAGE value="now adding items to player inventory" />
+    <MESSAGE value="addeed treasure chest class&#10;can now also see my treasure chests" />
+    <MESSAGE value="tresure chest collision" />
+    <MESSAGE value="can now sort of talk to treasure chests" />
+    <MESSAGE value="can now open treasure chests and take items" />
+    <MESSAGE value="janet know nows if you have water bottle" />
+    <option name="LAST_COMMIT_MESSAGE" value="janet know nows if you have water bottle" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/entity/npc/npc.py</url>
+          <line>15</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
