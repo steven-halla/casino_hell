@@ -1,9 +1,9 @@
 import pygame
 
 from constants import DISPLAY
+from entity.gui.textbox.text_box import TextBox
 from screen.screen import Screen
 from deck import Deck
-from entity.gui.textbox.text_box import TextBox
 from entity.gui.textbox.bordered_box import BorderedBox
 
 # if a player has 3 cards, then an ace value is equal to one

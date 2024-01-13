@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="janet know nows if you have water bottle">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now opens 2nd dialuge">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/black_jack_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/black_jack_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +282,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="1140000" />
+      <workItem from="1705123656694" duration="2630000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -625,7 +627,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,7 +656,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&quot; talking is working as needed&quot;" />
     <MESSAGE value="fixing errors and such rewriting code since everything is in seperate files" />
     <MESSAGE value="black jack is working" />
     <MESSAGE value="fixed issue with NPC position" />
@@ -679,7 +680,8 @@
     <MESSAGE value="can now sort of talk to treasure chests" />
     <MESSAGE value="can now open treasure chests and take items" />
     <MESSAGE value="janet know nows if you have water bottle" />
-    <option name="LAST_COMMIT_MESSAGE" value="janet know nows if you have water bottle" />
+    <MESSAGE value="now opens 2nd dialuge" />
+    <option name="LAST_COMMIT_MESSAGE" value="now opens 2nd dialuge" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
