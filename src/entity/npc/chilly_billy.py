@@ -18,6 +18,9 @@ class ChillyBilly(Npc):
         self.queststart2 = NpcTextBox(
             ["ChillyBilly: I have a new quest for you. Find me some water please"],
             (50, 450, 50, 45), 30, 500)
+        self.questfinish2 = NpcTextBox(
+            ["ChillyBilly: Oh wow this is water thank you!"],
+            (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
@@ -25,14 +28,18 @@ class ChillyBilly(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
-        self.talkfirstbeforehandoveritem = False
+        self.talkfirstbeforehandoverhog = False
 
     def update(self, state: "GameState"):
 
         if self.state == "waiting":
-            if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoveritem == True:
+            if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoverhog == True:
 
                 self.textboxstate = "textbox2"
+                print(self.textboxstate)
+
+            if "Water Bottle" in state.player.items :
+                self.textboxstate = "textbox4"
                 print(self.textboxstate)
 
             player = state.player
@@ -101,7 +108,7 @@ class ChillyBilly(Npc):
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
-                    self.talkfirstbeforehandoveritem = True
+                    self.talkfirstbeforehandoverhog = True
 
 
         elif self.textboxstate == "textbox2":
@@ -112,6 +119,7 @@ class ChillyBilly(Npc):
                     state.player.items.remove("Nurgle the hedge hog")
 
                     self.textboxstate = "textbox3"
+                    # self.talkfirstbeforehandoverhog = False
 
                     self.state = "waiting"
                     self.state_start_time = current_time
