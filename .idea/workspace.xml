@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="better names for our text boxes variables">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="save point">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/quest_giver_janet.py" afterDir="false" />
     </list>
@@ -279,7 +279,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="3742000" />
+      <workItem from="1705123656694" duration="5018000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -624,7 +624,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +653,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed issue with NPC position" />
     <MESSAGE value="added all npcs to the game board&#10;about to update player" />
     <MESSAGE value="fixed error with arrows stripped out magic" />
     <MESSAGE value="now players can't bet more money than enemy pool" />
@@ -678,7 +677,8 @@
     <MESSAGE value="now opens 2nd dialuge" />
     <MESSAGE value="that was dangerou s" />
     <MESSAGE value="better names for our text boxes variables" />
-    <option name="LAST_COMMIT_MESSAGE" value="better names for our text boxes variables" />
+    <MESSAGE value="save point" />
+    <option name="LAST_COMMIT_MESSAGE" value="save point" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

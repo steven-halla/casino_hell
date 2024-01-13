@@ -63,7 +63,7 @@ class QuestGiverJanet(Npc):
                         self.state = "waiting"
 
             elif self.quest2state == True:
-                if self.textbox.message_index == 1:
+                if self.quest2giving.message_index == 1:
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
                         self.input_time = pygame.time.get_ticks()
@@ -123,6 +123,8 @@ class QuestGiverJanet(Npc):
 
         elif self.reward1recieved == False:
             self.quest1giving.update(state)
+        elif self.quest2state == True:
+            self.quest2giving.update(state)
         if "Water Bottle" in state.player.items and not self.reward1recieved:
             self.reward1recieved = True
             print("Kool, you passed my quest!")
@@ -166,6 +168,8 @@ class QuestGiverJanet(Npc):
             self.state = "waiting"
 
             self.state_start_time = pygame.time.get_ticks()
+            self.quest2state = True
+
             # self.textbox.reset()
 
     # def isOverlap(self, entity: "Entity") -> bool:
@@ -186,4 +190,6 @@ class QuestGiverJanet(Npc):
                 self.quest1completed.draw(state)
             elif self.reward1recieved == False:
                 self.quest1giving.draw(state)
+            elif self.quest2state == True:
+                self.quest2giving.draw(state)
 
