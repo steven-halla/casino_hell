@@ -9,8 +9,11 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class ChillyBilly(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NpcTextBox(
-            ["ChillyBilly: I sure do love chili", "It's all we eat everyday."],
+        self.queststart1 = NpcTextBox(
+            ["ChillyBilly: I also want some water", "give me water and I'll reward you."],
+            (50, 450, 50, 45), 30, 500)
+        self.questfinish1 = NpcTextBox(
+            ["ChillyBilly: Thanks for the hog of hedge I sure am hungry"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -18,10 +21,14 @@ class ChillyBilly(Npc):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
-
+        self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
+        self.initialtalk = False
     def update(self, state: "GameState"):
 
         if self.state == "waiting":
+            if "Nurgle the hedge hog" in state.player.items:
+                self.textboxstate = "textbox2"
+
             player = state.player
 
             # print("waiting")
@@ -38,18 +45,21 @@ class ChillyBilly(Npc):
         elif self.state == "talking":
             # self.textbox.reset()
             # self.textbox.message_index = 0
-            if self.textbox.message_index == 1:
+            if self.queststart1.message_index == 1:
                 if state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
-
-                elif state.controller.isBPressed and \
+            elif self.questfinish1.message_index == 1:
+                if state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
-                    print("bye player")
                     self.state = "waiting"
+
+            elif "Nurgle the hedge hog" in state.player.items:
+                print("Nurgle is here")
+
 
             self.update_talking(state)
 
@@ -78,11 +88,16 @@ class ChillyBilly(Npc):
 
                 self.state_start_time = pygame.time.get_ticks()
                 # the below is where kenny had it
-                self.textbox.reset()
+                if self.textboxstate == "textbox1":
+                    print("Textbox1")
+                    self.queststart1.reset()
+                elif self.textboxstate == "textbox2":
+                    print("Textbox2")
+                    self.questfinish1.reset()
 
     def update_talking(self, state: "GameState"):
-        self.textbox.update(state)
-        if state.controller.isTPressed and self.textbox.is_finished():
+        self.queststart1.update(state)
+        if state.controller.isTPressed and self.queststart1.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
 
@@ -93,6 +108,10 @@ class ChillyBilly(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             # self.textbox.reset()
+            print("now we are fin")
+            self.initialtalk = True
+
+            #this is where we want to set state to go to the next text box
 
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")
@@ -108,4 +127,5 @@ class ChillyBilly(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            self.textbox.draw(state)
+            if self.textboxstate == "textbox1":
+                self.queststart1.draw(state)

@@ -19,43 +19,61 @@ class QuestGiverJanet(Npc):
              "I suppose you want a reward now. i'll teach you a new technique you can use for black jack."],
             (50, 450, 50, 45), 30, 500)
         self.quest2giving = NpcTextBox(
-            ["Now for your next task I want you to find my friend",
-             "it's a sickly pasty white little hedge hog named nurgle. I think you can find him in the hedge hog maze."],
+            ["IT's such a good thing you got me that water, you have no idea how good this tate.",
+             "For future ref completing quest can net you other benifits such as increasing freindship with that person ."],
+            (50, 450, 50, 45), 30, 500)
+        self.quest2completed = NpcTextBox(
+            ["Thank you so much for finding my friend",
+             "now we can drink together, that is until the demons catch him again."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.reward1recieved = False
+        self.reward2recieved = False
         self.quest2state = False
+        self.quest3state = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
     def update(self, state: "GameState"):
 
+
         if self.state == "waiting":
+  
+            if "Nurgle the hedge hog" in state.player.items:
+                if self.quest3state == False:
+                    self.quest3state = True
+
+
+
             player = state.player
 
-            # print("waiting")
-            # if value is below 88 it wont activate for some reason
             min_distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (
                             player.collision.y - self.collision.y) ** 2)
-            #
-            # if min_distance < 25:
-            #     print("nooo")
+
 
             self.update_waiting(state)
 
         elif self.state == "talking":
-            # self.textbox.reset()
-            # self.textbox.message_index = 0
+
+            # if "Nurgle the hedge hog" in state.player.items:
+            #     print(" this is the talking")
+            #     if self.quest2completed.message_index == 1:
+            #         if state.controller.isAPressed and \
+            #                 pygame.time.get_ticks() - self.input_time > 500:
+            #             self.input_time = pygame.time.get_ticks()
+            #             self.state = "waiting"
             if self.reward1recieved == True and self.quest2state == False:
                 if self.quest1completed.message_index == 1:
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
                         self.input_time = pygame.time.get_ticks()
                         self.state = "waiting"
+
+
             elif self.reward1recieved == False:
                 if self.quest1giving.message_index == 1:
                     if state.controller.isAPressed and \
@@ -70,12 +88,9 @@ class QuestGiverJanet(Npc):
                         self.input_time = pygame.time.get_ticks()
                         self.state = "waiting"
 
-
-
                 elif state.controller.isBPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
-                    print("bye player")
                     self.state = "waiting"
 
             self.update_talking(state)
@@ -104,9 +119,14 @@ class QuestGiverJanet(Npc):
                 self.state = "talking"
 
                 self.state_start_time = pygame.time.get_ticks()
+                # if self.quest3state == True:
+                #     self.quest2completed.reset()
                 if self.quest2state == True:
                     self.quest2giving.reset()
                 if self.reward1recieved and not self.quest2state:
+                    self.quest2state = True
+                    self.quest2giving.reset()
+                if self.reward2recieved and not self.quest2state:
                     self.quest2state = True
                     self.quest2giving.reset()
                 # the below is where kenny had it
@@ -120,12 +140,11 @@ class QuestGiverJanet(Npc):
                 #     self.quest2giving.reset()
 
     def update_talking(self, state: "GameState"):
+
         if self.reward1recieved == True:
             if "black jack spell" not in state.player.magicinventory:
-                print("This is my magic inventory before: " + str(state.player.magicinventory))
 
                 state.player.magicinventory.append("black jack spell")
-                print("This is my magic inventory after : " + str(state.player.magicinventory))
             self.quest1completed.update(state)
             # if self.quest1completed.is_finished():
             #     self.quest2state = True
@@ -135,6 +154,20 @@ class QuestGiverJanet(Npc):
             self.quest1giving.update(state)
         if self.quest2state == True:
             self.quest2giving.update(state)
+
+        # if self.quest3state == True:
+        #     print("hey there hedge hog boy")
+        #     self.quest2completed.update(state)
+
+        # if self.quest3state == True and "Nurgle the hedge hog" in state.player.items:
+            # print("this should be full" + str(state.player.items))
+
+            # state.player.items.remove("Nurgle the hedge hog")
+            # print("this should be empty" + str(state.player.items))
+
+            # Reset quest1completed when the reward is first received
+            # self.quest2completed.reset()
+
         if "Water Bottle" in state.player.items and not self.reward1recieved:
             self.reward1recieved = True
             print("Kool, you passed my quest!")
@@ -145,6 +178,17 @@ class QuestGiverJanet(Npc):
 
             # Reset quest1completed when the reward is first received
             self.quest1completed.reset()
+
+        if state.controller.isTPressed and self.quest2completed.is_finished():
+            # if state.controller.isTPressed and self.textbox.message_index == 0:
+            # print("Here we go we're walking here")
+
+            # print("start state: waiting")
+            # self.textbox.reset()
+
+            self.state = "waiting"
+
+            self.state_start_time = pygame.time.get_ticks()
 
 
         if state.controller.isTPressed and self.quest1giving.is_finished():
@@ -197,10 +241,17 @@ class QuestGiverJanet(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            if self.reward1recieved == True and self.quest2state == False:
+
+            if self.quest3state == True:
+                print("are we drawing this?")
+                self.quest2completed.draw(state)
+            elif self.reward1recieved == True and self.quest2state == False:
                 self.quest1completed.draw(state)
             elif self.reward1recieved == False and self.quest2state == False:
                 self.quest1giving.draw(state)
             elif self.quest2state == True:
                 self.quest2giving.draw(state)
+
+
+
 
