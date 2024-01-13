@@ -14,6 +14,7 @@ from entity.npc.hungry_patrick import HungryPatrick
 from entity.npc.inn_guard import InnGuard
 from entity.npc.inn_keeper import InnKeeper
 from entity.npc.nelly_opossum import NellyOpossum
+from entity.npc.nurgle import Nurgle
 from entity.npc.quest_giver_janet import QuestGiverJanet
 from entity.npc.shop_keeper import ShopKeeper
 from entity.npc.suffering_suzy import SufferingSuzy
@@ -87,7 +88,7 @@ class MainScreen(Screen):
             # CoinFlipFred(16 * 28, 16 * 36),
             # FlippinTed(16 * 20, 16 * 36),
             # NellyOpossum(16 * 12, 16 * 36),
-
+            Nurgle(16 * 24, 16 * 34)
 
 
                       ]
@@ -103,6 +104,8 @@ class MainScreen(Screen):
         controller.update()
         for npc in state.npcs:
             npc.update(state)
+            if isinstance(npc, Nurgle) and npc.to_be_deleted:
+                state.npcs.remove(npc)
 
         # Game Update Loop
         for chest in state.treasurechests:
@@ -115,6 +118,7 @@ class MainScreen(Screen):
             for npc in state.npcs:
                 if isinstance(npc, InnGuard):
                     state.npcs.remove(npc)
+
 
 
 
