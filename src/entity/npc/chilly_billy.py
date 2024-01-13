@@ -85,6 +85,9 @@ class ChillyBilly(Npc):
                 elif self.textboxstate == "textbox2":
                     # print("Textbox2")
                     self.questfinish1.reset()
+                elif self.textboxstate == "textbox3":
+                    print("Textbox3")
+                    self.queststart2.reset()
 
     def update_talking(self, state: "GameState"):
         current_time = pygame.time.get_ticks()
@@ -106,9 +109,25 @@ class ChillyBilly(Npc):
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.questfinish1.is_finished():
                     print("Closing textbox2")
+                    state.player.items.remove("Nurgle the hedge hog")
+
+                    self.textboxstate = "textbox3"
+
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
+
+
+        elif self.textboxstate == "textbox3":
+            self.queststart2.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.queststart2.is_finished():
+                    print("Closing textbox2")
+                    print("new state")
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+
 
     def draw(self, state):
         rect = (
@@ -124,3 +143,5 @@ class ChillyBilly(Npc):
                 self.queststart1.draw(state)
             elif self.textboxstate == "textbox2":
                 self.questfinish1.draw(state)
+            elif self.textboxstate == "textbox3":
+                self.queststart2.draw(state)
