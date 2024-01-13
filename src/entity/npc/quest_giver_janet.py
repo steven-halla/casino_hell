@@ -9,15 +9,15 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NpcTextBox(
+        self.quest1giving = NpcTextBox(
             ["Hi there, I have some quest for you. Your first quest is easy : I want a bottle of water",
              "You should be able to find it in an treasure chest. Come back when you find it."],
             (50, 450, 50, 45), 30, 500)
-        self.textboxwaterbottlegiven = NpcTextBox(
+        self.quest1completed = NpcTextBox(
             ["Oh you, giving me water, thank you so much I'll take that, are you sure? Fresh water is so rare down here",
              "I suppose you want a reward now. i'll teach you a new technique you can use for black jack."],
             (50, 450, 50, 45), 30, 500)
-        self.task2talking = NpcTextBox(
+        self.quest2giving = NpcTextBox(
             ["Now for your next task I want you to find my friend",
              "it's a sickly pasty white little hedge hog named nurgle. I think you can find him in the hedge hog maze."],
             (50, 450, 50, 45), 30, 500)
@@ -50,13 +50,13 @@ class QuestGiverJanet(Npc):
             # self.textbox.reset()
             # self.textbox.message_index = 0
             if self.reward1recieved == True:
-                if self.textboxwaterbottlegiven.message_index == 1:
+                if self.quest1completed.message_index == 1:
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
                         self.input_time = pygame.time.get_ticks()
                         self.state = "waiting"
             elif self.reward1recieved == False:
-                if self.textbox.message_index == 1:
+                if self.quest1giving.message_index == 1:
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
                         self.input_time = pygame.time.get_ticks()
@@ -105,11 +105,11 @@ class QuestGiverJanet(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # the below is where kenny had it
                 if self.reward1recieved == True:
-                    self.textboxwaterbottlegiven.reset()
+                    self.quest1completed.reset()
                 elif self.reward1recieved == False:
-                    self.textbox.reset()
+                    self.quest1giving.reset()
                 elif self.quest2state == True:
-                    self.task2talking.reset()
+                    self.quest2giving.reset()
 
     def update_talking(self, state: "GameState"):
         if self.reward1recieved == True:
@@ -118,11 +118,11 @@ class QuestGiverJanet(Npc):
 
                 state.player.magicinventory.append("black jack spell")
                 print("This is my magic inventory after : " + str(state.player.magicinventory))
-            self.textboxwaterbottlegiven.update(state)
+            self.quest1completed.update(state)
             self.quest3state = True
 
         elif self.reward1recieved == False:
-            self.textbox.update(state)
+            self.quest1giving.update(state)
         if "Water Bottle" in state.player.items and not self.reward1recieved:
             self.reward1recieved = True
             print("Kool, you passed my quest!")
@@ -131,11 +131,11 @@ class QuestGiverJanet(Npc):
             state.player.items.remove("Water Bottle")
             print("this should be empty" + str(state.player.items))
 
-            # Reset textboxwaterbottlegiven when the reward is first received
-            self.textboxwaterbottlegiven.reset()
+            # Reset quest1completed when the reward is first received
+            self.quest1completed.reset()
 
 
-        if state.controller.isTPressed and self.textbox.is_finished():
+        if state.controller.isTPressed and self.quest1giving.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             # print("Here we go we're walking here")
 
@@ -145,7 +145,7 @@ class QuestGiverJanet(Npc):
             self.state = "waiting"
 
             self.state_start_time = pygame.time.get_ticks()
-        if state.controller.isTPressed and self.textboxwaterbottlegiven.is_finished():
+        if state.controller.isTPressed and self.quest1completed.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             # print("Here we go we're walking here")
 
@@ -156,7 +156,7 @@ class QuestGiverJanet(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
 
-        if state.controller.isTPressed and self.task2talking.is_finished():
+        if state.controller.isTPressed and self.quest2giving.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             # print("Here we go we're walking here")
 
@@ -183,7 +183,7 @@ class QuestGiverJanet(Npc):
         elif self.state == "talking":
             # print("is talking")
             if self.reward1recieved == True:
-                self.textboxwaterbottlegiven.draw(state)
+                self.quest1completed.draw(state)
             elif self.reward1recieved == False:
-                self.textbox.draw(state)
+                self.quest1giving.draw(state)
 
