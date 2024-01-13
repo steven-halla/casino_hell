@@ -22,11 +22,12 @@ class ChillyBilly(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
+        self.talkfirstbeforehandoveritem = False
 
     def update(self, state: "GameState"):
 
         if self.state == "waiting":
-            if "Nurgle the hedge hog" in state.player.items:
+            if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoveritem == True:
 
                 self.textboxstate = "textbox2"
                 print(self.textboxstate)
@@ -94,6 +95,8 @@ class ChillyBilly(Npc):
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
+                    self.talkfirstbeforehandoveritem = True
+
 
         elif self.textboxstate == "textbox2":
             self.questfinish1.update(state)
