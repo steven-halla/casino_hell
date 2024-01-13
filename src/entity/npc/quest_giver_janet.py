@@ -104,13 +104,16 @@ class QuestGiverJanet(Npc):
                 self.state = "talking"
 
                 self.state_start_time = pygame.time.get_ticks()
+                if self.reward1recieved and not self.quest2state:
+                    self.quest2state = True
+                    self.quest2giving.reset()
                 # the below is where kenny had it
                 if self.reward1recieved == True:
                     self.quest1completed.reset()
                 elif self.reward1recieved == False:
                     self.quest1giving.reset()
-                elif self.quest2state == True:
-                    self.quest2giving.reset()
+                # elif self.quest2state == True:
+                #     self.quest2giving.reset()
 
     def update_talking(self, state: "GameState"):
         if self.reward1recieved == True:
@@ -120,9 +123,9 @@ class QuestGiverJanet(Npc):
                 state.player.magicinventory.append("black jack spell")
                 print("This is my magic inventory after : " + str(state.player.magicinventory))
             self.quest1completed.update(state)
-            if self.quest1completed.is_finished():
-                self.quest2state = True
-                print("quest 2 state is now: " + str(self.quest2state))
+            # if self.quest1completed.is_finished():
+            #     self.quest2state = True
+            #     print("quest 2 state is now: " + str(self.quest2state))
 
         elif self.reward1recieved == False:
             self.quest1giving.update(state)
