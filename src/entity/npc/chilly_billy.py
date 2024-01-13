@@ -6,6 +6,9 @@ from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
 
+#### NOTE: BOTH JANET AND BILLY BOTH NEED HEDGE HOG AND WATER WILL NEED TO CHANGE IN FUTURE
+####
+####
 class ChillyBilly(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
@@ -160,7 +163,6 @@ class ChillyBilly(Npc):
             self.queststart3.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.queststart3.is_finished():
-
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time

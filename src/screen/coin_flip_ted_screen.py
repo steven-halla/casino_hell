@@ -79,6 +79,12 @@ class CoinFlipTedScreen(Screen):
             self.result = "heads"
 
     def update(self, state: "GameState"):
+        if state.controller.isQPressed:
+            # Transition to the main screen
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
+            return
+
         if self.coinFlipTedMoney <= 0:
             if self.coinFlipTedMoney <= 0:
                 self.coinFlipTedDefeated = True
@@ -265,17 +271,51 @@ class CoinFlipTedScreen(Screen):
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
 
     def draw(self, state: "GameState"):
-        state.DISPLAY.fill((0, 0, 0))
+        # state.DISPLAY.fill((0, 0, 0))
+        state.DISPLAY.fill((0, 0, 51))
 
-        state.DISPLAY.blit(self.new_font.render(f"CoinFlipTedsMoney: {self.coinFlipTedMoney}", True, (255, 255, 255)), (10, 150))
-        state.DISPLAY.blit(self.new_font.render(f"Player Money: {state.player.money}", True, (255, 255, 255)), (10, 190))
+        black_box = pygame.Surface((200 - 10, 180 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 235))
 
-        state.DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
-        state.DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
-        state.DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
-        state.DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
-        state.DISPLAY.blit(self.font.render(f"Player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
-        state.DISPLAY.blit(self.font.render(f"Player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
+        black_box = pygame.Surface((200 - 10, 45 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 195))
+
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
+                                            (255, 255, 255)), (37, 250))
+        state.DISPLAY.blit(
+            self.font.render(f"HP: {state.player.stamina_points}", True,
+                             (255, 255, 255)), (37, 290))
+
+        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
+                                            (255, 255, 255)), (37, 330))
+        state.DISPLAY.blit(
+            self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
+            (37, 370))
+
+        state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
+                           (37, 205))
+
+        # state.DISPLAY.blit(self.new_font.render(f"CoinFlipTedsMoney: {self.coinFlipTedMoney}", True, (255, 255, 255)), (10, 150))
+        # state.DISPLAY.blit(self.new_font.render(f"Player Money: {state.player.money}", True, (255, 255, 255)), (10, 190))
+        #
+        # state.DISPLAY.blit(self.font.render(f"{self.message_display}", True, (255, 255, 255)), (10, 10))
+        # state.DISPLAY.blit(self.font.render(f"{self.second_message_display}", True, (255, 255, 255)), (10, 50))
+        # state.DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (10, 230))
+        # state.DISPLAY.blit(self.font.render(f"Your current bet is:{self.bet}", True, (255, 255, 255)), (10, 260))
+        # state.DISPLAY.blit(self.font.render(f"Player health:{state.player.stamina_points}", True, (255, 255, 255)), (10, 290))
+        # state.DISPLAY.blit(self.font.render(f"Player magic:{state.player.focus_points}", True, (255, 255, 255)), (10, 320))
 
         if self.game_state != "you_won_the_toss" and self.game_state != "you_lost_the_toss":
             state.DISPLAY.blit(self.font.render(f"{self.choices[0]}", True, (255, 255, 255)), (700, 160))

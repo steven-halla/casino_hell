@@ -6,7 +6,9 @@ import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-
+#### NOTE: BOTH JANET AND BILLY BOTH NEED HEDGE HOG AND WATER WILL NEED TO CHANGE IN FUTURE
+####
+####
 class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
