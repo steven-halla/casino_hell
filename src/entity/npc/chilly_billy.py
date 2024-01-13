@@ -21,6 +21,9 @@ class ChillyBilly(Npc):
         self.questfinish2 = NpcTextBox(
             ["ChillyBilly: Oh wow this is water thank you!"],
             (50, 450, 50, 45), 30, 500)
+        self.queststart3 = NpcTextBox(
+            ["ChillyBilly: in the future you'll need to defeat two opponets "],
+            (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
@@ -29,8 +32,10 @@ class ChillyBilly(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
         self.talkfirstbeforehandoverhog = False
+        self.talkfirstbeforehandoverwater = False
 
     def update(self, state: "GameState"):
+        print("current state is:" + str(self.textboxstate))
 
         if self.state == "waiting":
             if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoverhog == True:
@@ -38,7 +43,7 @@ class ChillyBilly(Npc):
                 self.textboxstate = "textbox2"
                 print(self.textboxstate)
 
-            if "Water Bottle" in state.player.items :
+            if "Water Bottle" in state.player.items and self.talkfirstbeforehandoverwater == True:
                 self.textboxstate = "textbox4"
                 print(self.textboxstate)
 
@@ -93,8 +98,11 @@ class ChillyBilly(Npc):
                     # print("Textbox2")
                     self.questfinish1.reset()
                 elif self.textboxstate == "textbox3":
-                    print("Textbox3")
                     self.queststart2.reset()
+                elif self.textboxstate == "textbox4":
+                    self.questfinish2.reset()
+                elif self.textboxstate == "textbox5":
+                    self.queststart3.reset()
 
     def update_talking(self, state: "GameState"):
         current_time = pygame.time.get_ticks()
@@ -104,7 +112,6 @@ class ChillyBilly(Npc):
             self.queststart1.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.queststart1.is_finished():
-                    print("Closing textbox1")
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
@@ -115,7 +122,6 @@ class ChillyBilly(Npc):
             self.questfinish1.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.questfinish1.is_finished():
-                    print("Closing textbox2")
                     state.player.items.remove("Nurgle the hedge hog")
 
                     self.textboxstate = "textbox3"
@@ -130,11 +136,35 @@ class ChillyBilly(Npc):
             self.queststart2.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.queststart2.is_finished():
-                    print("Closing textbox2")
-                    print("new state")
+
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
+                    self.talkfirstbeforehandoverwater = True
+
+
+
+        elif self.textboxstate == "textbox4":
+            self.questfinish2.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.questfinish2.is_finished():
+                    state.player.items.remove("Water Bottle")
+
+
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    self.textboxstate = "textbox5"
+
+        elif self.textboxstate == "textbox5":
+            self.queststart3.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.queststart3.is_finished():
+
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+
 
 
     def draw(self, state):
@@ -153,3 +183,7 @@ class ChillyBilly(Npc):
                 self.questfinish1.draw(state)
             elif self.textboxstate == "textbox3":
                 self.queststart2.draw(state)
+            elif self.textboxstate == "textbox4":
+                self.questfinish2.draw(state)
+            elif self.textboxstate == "textbox5":
+                self.queststart3.draw(state)
