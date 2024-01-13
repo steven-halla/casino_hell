@@ -47,21 +47,6 @@ class ChillyBilly(Npc):
         elif self.state == "talking":
             # self.textbox.reset()
             # self.textbox.message_index = 0
-            if self.queststart1.message_index == 1:
-                if state.controller.isAPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
-
-            elif self.questfinish1.message_index == 1:
-                if state.controller.isAPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
-
-            elif "Nurgle the hedge hog" in state.player.items:
-                print("Nurgle is here")
-
 
             self.update_talking(state)
 
@@ -84,39 +69,40 @@ class ChillyBilly(Npc):
 
             if distance < 40:
                 # print("start state: talking")
-                print("10")
+                # print("10")
 
                 self.state = "talking"
 
                 self.state_start_time = pygame.time.get_ticks()
                 # the below is where kenny had it
                 if self.textboxstate == "textbox1":
-                    print("Textbox1")
+                    # print("Textbox1")
                     self.queststart1.reset()
                 elif self.textboxstate == "textbox2":
-                    print("Textbox2")
+                    # print("Textbox2")
                     self.questfinish1.reset()
 
     def update_talking(self, state: "GameState"):
-        self.queststart1.update(state)
-        if state.controller.isTPressed and self.queststart1.is_finished():
-            # if state.controller.isTPressed and self.textbox.message_index == 0:
-            print("Here we go we're walking here")
+        current_time = pygame.time.get_ticks()
 
-            # print("start state: waiting")
-            # self.textbox.reset()
+        # Update and check the state of the appropriate text box
+        if self.textboxstate == "textbox1":
+            self.queststart1.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.queststart1.is_finished():
+                    print("Closing textbox1")
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
 
-            self.state = "waiting"
-
-            self.state_start_time = pygame.time.get_ticks()
-            # self.textbox.reset()
-            print("now we are fin")
-
-            #this is where we want to set state to go to the next text box
-
-    # def isOverlap(self, entity: "Entity") -> bool:
-    #     print("Overlap called")
-    #     return self.collision.isOverlap(entity.collision)
+        elif self.textboxstate == "textbox2":
+            self.questfinish1.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.questfinish1.is_finished():
+                    print("Closing textbox2")
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
 
     def draw(self, state):
         rect = (
@@ -130,3 +116,5 @@ class ChillyBilly(Npc):
             # print("is talking")
             if self.textboxstate == "textbox1":
                 self.queststart1.draw(state)
+            elif self.textboxstate == "textbox2":
+                self.questfinish1.draw(state)
