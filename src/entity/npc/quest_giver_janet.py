@@ -50,7 +50,7 @@ class QuestGiverJanet(Npc):
         elif self.state == "talking":
             # self.textbox.reset()
             # self.textbox.message_index = 0
-            if self.reward1recieved == True:
+            if self.reward1recieved == True and self.quest2state == False:
                 if self.quest1completed.message_index == 1:
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
@@ -104,6 +104,8 @@ class QuestGiverJanet(Npc):
                 self.state = "talking"
 
                 self.state_start_time = pygame.time.get_ticks()
+                if self.quest2state == True:
+                    self.quest2giving.reset()
                 if self.reward1recieved and not self.quest2state:
                     self.quest2state = True
                     self.quest2giving.reset()
@@ -112,6 +114,8 @@ class QuestGiverJanet(Npc):
                     self.quest1completed.reset()
                 elif self.reward1recieved == False:
                     self.quest1giving.reset()
+
+
                 # elif self.quest2state == True:
                 #     self.quest2giving.reset()
 
@@ -127,7 +131,7 @@ class QuestGiverJanet(Npc):
             #     self.quest2state = True
             #     print("quest 2 state is now: " + str(self.quest2state))
 
-        elif self.reward1recieved == False:
+        if self.reward1recieved == False:
             self.quest1giving.update(state)
         if self.quest2state == True:
             self.quest2giving.update(state)
