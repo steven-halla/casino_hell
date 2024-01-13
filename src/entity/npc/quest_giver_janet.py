@@ -66,32 +66,32 @@ class QuestGiverJanet(Npc):
             #                 pygame.time.get_ticks() - self.input_time > 500:
             #             self.input_time = pygame.time.get_ticks()
             #             self.state = "waiting"
-            if self.reward1recieved == True and self.quest2state == False:
-                if self.quest1completed.message_index == 1:
-                    if state.controller.isAPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        self.state = "waiting"
+            # if self.reward1recieved == True and self.quest2state == False:
+            #     if self.quest1completed.message_index == 1:
+            #         if state.controller.isAPressed and \
+            #                 pygame.time.get_ticks() - self.input_time > 500:
+            #             self.input_time = pygame.time.get_ticks()
+            #             self.state = "waiting"
 
+            #
+            # elif self.reward1recieved == False:
+            #     if self.quest1giving.message_index == 1:
+            #         if state.controller.isAPressed and \
+            #                 pygame.time.get_ticks() - self.input_time > 500:
+            #             self.input_time = pygame.time.get_ticks()
+            #             self.state = "waiting"
+            #
+            # elif self.quest2state == True:
+            #     if self.quest2giving.message_index == 1:
+            #         if state.controller.isAPressed and \
+            #                 pygame.time.get_ticks() - self.input_time > 500:
+            #             self.input_time = pygame.time.get_ticks()
+            #             self.state = "waiting"
 
-            elif self.reward1recieved == False:
-                if self.quest1giving.message_index == 1:
-                    if state.controller.isAPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        self.state = "waiting"
-
-            elif self.quest2state == True:
-                if self.quest2giving.message_index == 1:
-                    if state.controller.isAPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        self.state = "waiting"
-
-                elif state.controller.isBPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
+                # elif state.controller.isBPressed and \
+                #         pygame.time.get_ticks() - self.input_time > 500:
+                #     self.input_time = pygame.time.get_ticks()
+                #     self.state = "waiting"
 
             self.update_talking(state)
 

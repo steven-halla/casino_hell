@@ -22,12 +22,14 @@ class ChillyBilly(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
-        self.initialtalk = False
+
     def update(self, state: "GameState"):
 
         if self.state == "waiting":
             if "Nurgle the hedge hog" in state.player.items:
+
                 self.textboxstate = "textbox2"
+                print(self.textboxstate)
 
             player = state.player
 
@@ -109,7 +111,6 @@ class ChillyBilly(Npc):
             self.state_start_time = pygame.time.get_ticks()
             # self.textbox.reset()
             print("now we are fin")
-            self.initialtalk = True
 
             #this is where we want to set state to go to the next text box
 
