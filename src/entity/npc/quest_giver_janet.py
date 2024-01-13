@@ -1,3 +1,4 @@
+
 import math
 
 import pygame
@@ -119,11 +120,13 @@ class QuestGiverJanet(Npc):
                 state.player.magicinventory.append("black jack spell")
                 print("This is my magic inventory after : " + str(state.player.magicinventory))
             self.quest1completed.update(state)
-            self.quest2state = True
+            if self.quest1completed.is_finished():
+                self.quest2state = True
+                print("quest 2 state is now: " + str(self.quest2state))
 
         elif self.reward1recieved == False:
             self.quest1giving.update(state)
-        elif self.quest2state == True:
+        if self.quest2state == True:
             self.quest2giving.update(state)
         if "Water Bottle" in state.player.items and not self.reward1recieved:
             self.reward1recieved = True
@@ -168,7 +171,8 @@ class QuestGiverJanet(Npc):
             self.state = "waiting"
 
             self.state_start_time = pygame.time.get_ticks()
-            self.quest2state = True
+            # self.quest2state = True
+            # print("quest 2 state is now here:" + str(self.quest2state))
 
             # self.textbox.reset()
 
@@ -186,9 +190,9 @@ class QuestGiverJanet(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            if self.reward1recieved == True:
+            if self.reward1recieved == True and self.quest2state == False:
                 self.quest1completed.draw(state)
-            elif self.reward1recieved == False:
+            elif self.reward1recieved == False and self.quest2state == False:
                 self.quest1giving.draw(state)
             elif self.quest2state == True:
                 self.quest2giving.draw(state)
