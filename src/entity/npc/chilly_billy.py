@@ -15,6 +15,9 @@ class ChillyBilly(Npc):
         self.questfinish1 = NpcTextBox(
             ["ChillyBilly: Thanks for the hog of hedge I sure am hungry"],
             (50, 450, 50, 45), 30, 500)
+        self.queststart2 = NpcTextBox(
+            ["ChillyBilly: I have a new quest for you. Find me some water please"],
+            (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
