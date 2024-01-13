@@ -307,6 +307,61 @@ class CoinFlipTedScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
                            (37, 205))
 
+        black_box = pygame.Surface((200 - 10, 110 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 20))
+
+        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
+
+        black_box = pygame.Surface((200 - 10, 130 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 60))
+
+        state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipTedMoney}", True,
+                                            (255, 255, 255)), (37, 70))
+
+        state.DISPLAY.blit(self.font.render(f"Status: ", True,
+                                            (255, 255, 255)), (37, 110))
+
+        black_box_height = 130
+        black_box_width = 700
+        border_width = 5  # Width of the white border
+
+        # Create the black box
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill((0, 0, 0))  # Fill the box with black color
+
+        # Create a white border
+        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))  # Fill the border with white color
+        white_border.blit(black_box, (border_width, border_width))
+
+        # Determine the position of the white-bordered box
+        # Assuming you want it centered horizontally and at the bottom of the screen
+        screen_width, screen_height = state.DISPLAY.get_size()
+        black_box_x = (screen_width - black_box_width) // 2 - border_width
+        black_box_y = screen_height - black_box_height - 20 - border_width  # Subtract 20 pixels and adjust for border
+
+        # Blit the white-bordered box onto the display
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        # ... [rest of your drawing code] ...
+
+        pygame.display.flip()
+
+
+
+
         # state.DISPLAY.blit(self.new_font.render(f"CoinFlipTedsMoney: {self.coinFlipTedMoney}", True, (255, 255, 255)), (10, 150))
         # state.DISPLAY.blit(self.new_font.render(f"Player Money: {state.player.money}", True, (255, 255, 255)), (10, 190))
         #
