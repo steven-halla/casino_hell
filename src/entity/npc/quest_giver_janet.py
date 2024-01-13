@@ -119,7 +119,7 @@ class QuestGiverJanet(Npc):
                 state.player.magicinventory.append("black jack spell")
                 print("This is my magic inventory after : " + str(state.player.magicinventory))
             self.quest1completed.update(state)
-            self.quest3state = True
+            self.quest2state = True
 
         elif self.reward1recieved == False:
             self.quest1giving.update(state)
