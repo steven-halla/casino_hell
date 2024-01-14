@@ -26,20 +26,20 @@ class CoinFlipTedScreen(Screen):
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 10
+        self.coinFlipTedMoney = 100
         self.coinFlipTedDefeated = False
         self.win_exp = False
         self.lose_exp = False
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
-            "welcome_screen": TextBox(
+            "welcome_message": TextBox(
                 ["Welcome to black jack where you get all the best stuff", "press T to select", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
-            "bet_screen": TextBox(
-                ["hi this is your bet screen"],
+            "bet_message": TextBox(
+                ["Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -61,11 +61,15 @@ class CoinFlipTedScreen(Screen):
             self.bet += 10
             pygame.time.delay(200)
             self.isUpPressed = False
+            print(self.bet)
+
 
         elif controller.isDownPressed:
             self.bet -= 10
             pygame.time.delay(200)
             self.isDownPressed = False
+            print(self.bet)
+
 
         if self.bet < 10:
             self.bet = 10
@@ -95,20 +99,22 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "welcome_screen":
             # Update the welcome screen text box
-            self.coin_flip_messages["welcome_screen"].update(state)
+            self.coin_flip_messages["welcome_message"].update(state)
 
             # Check if the text box message index is at the second element (index 1)
-            if self.coin_flip_messages["welcome_screen"].message_index == 2:
+            if self.coin_flip_messages["welcome_message"].message_index == 2:
                 # Change the game state to "bet"
-                self.game_state = "bet"
+                self.game_state = "bet_screen"
             
-        if self.game_state == "bet":
-            self.coin_flip_messages["bet_screen"].update(state)
+        if self.game_state == "bet_screen":
+            self.coin_flip_messages["bet_message"].update(state)
+            self.place_bet(state)  # Call the place_bet method to handle bet adjustments
+                # Add other game state updates here
 
             # Add other game state updates here
 
             # Print the current game state for debugging
-        print("Current game state:", self.game_state)
+        # print("Current game state:", self.game_state)
 
 
 
@@ -208,14 +214,21 @@ class CoinFlipTedScreen(Screen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
         if self.game_state == "welcome_screen":
-            self.coin_flip_messages["welcome_screen"].update(state)
-            self.coin_flip_messages["welcome_screen"].draw(state)
+            self.coin_flip_messages["welcome_message"].update(state)
+            self.coin_flip_messages["welcome_message"].draw(state)
 
 
-        if self.game_state == "bet":
-            print("Game state is 'bet'")  # Debugging
-            self.coin_flip_messages["bet_screen"].update(state)
-            self.coin_flip_messages["bet_screen"].draw(state)
+        if self.game_state == "bet_screen":
+            # print("Game state is 'bet'")  # Debugging
+            self.coin_flip_messages["bet_message"].update(state)
+            self.coin_flip_messages["bet_message"].draw(state)
+            state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
+                                                (255, 255, 255)), (50, 530))
+
+            state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
+                               (260, 550))
+            state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
+                               (257, 510))
             bet_box_width = 150
             bet_box_height = 100
             border_width = 5
@@ -235,7 +248,6 @@ class CoinFlipTedScreen(Screen):
             text_y_yes = bet_box_y + 20
             text_y_no = text_y_yes + 40
 
-            print(f"Text positions - Yes: ({text_x}, {text_y_yes}), No: ({text_x}, {text_y_no})")  # Debugging
 
             # Draw the box on the screen
             state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))

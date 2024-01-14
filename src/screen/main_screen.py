@@ -71,24 +71,24 @@ class MainScreen(Screen):
 
             # BobbyBibs(16 * 2, 16 * 2),
             # BrutalPatrick(16 * 2, 16 * 10),
-            ChillyBilly(16 * 2, 16 * 18),
+            # ChillyBilly(16 * 2, 16 * 18),
             #  CindyLongHair(16 * 2, 16 * 26),
              # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
             # NickyHints(16 * 10, 16 * 18),
-            QuestGiverJanet(16 * 10, 16 * 26),
+            # QuestGiverJanet(16 * 10, 16 * 26),
             # RumbleBill(16 * 18, 16 * 2),
             # SallyOpossum(16 * 18, 16 * 10),
             # ShopKeeper(16 * 18, 16 * 18),
             # SleepyNed(16 * 18, 16 * 26),
             # SufferingSuzy(16 * 26, 16 * 2),
-            # WallyGuide(16 * 26, 16 * 10),
+            WallyGuide(16 * 26, 16 * 10),
             #
             # CoinFlipFred(16 * 28, 16 * 36),
             # FlippinTed(16 * 20, 16 * 36),
             # NellyOpossum(16 * 12, 16 * 36),
-            Nurgle(16 * 24, 16 * 34)
+            # Nurgle(16 * 24, 16 * 34)
 
 
                       ]
