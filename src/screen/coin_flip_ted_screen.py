@@ -108,7 +108,8 @@ class CoinFlipTedScreen(Screen):
 
         if controller.isTPressed:
             self.game_state = "flip_screen"
-            print(self.game_state)
+            state.controller.isTPressed = False  # Reset the button state
+
 
     def flipCoin(self):
         coin = random.random()
@@ -363,6 +364,7 @@ class CoinFlipTedScreen(Screen):
 
             if state.controller.isTPressed:
                 self.game_state = "play_again_screen"
+                state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
 
@@ -411,6 +413,8 @@ class CoinFlipTedScreen(Screen):
                 if self.arrow_index == 0:
                     print("0 index")
                     self.game_state = "bet_screen"
+                    state.controller.isTPressed = False  # Reset the button state
+
                 else:
                     print("1 index")
                     state.currentScreen = state.mainScreen
