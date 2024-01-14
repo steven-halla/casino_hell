@@ -29,6 +29,9 @@ class CoinFlipTedScreen(Screen):
         self.coinFlipTedMoney = 100
         self.coinFlipTedDefeated = False
         self.win_exp = False
+        self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
+        self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
+
         self.lose_exp = False
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
@@ -45,7 +48,13 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "flip_message": TextBox(
-                ["Flipping the coin now. "],
+                ["Flipping the coin now hold your breath . "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "results_message": TextBox(
+                ["Here you go , the result of your flip. "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -96,16 +105,22 @@ class CoinFlipTedScreen(Screen):
         if coin < 0.6:
             print("coin landed on tails")
             self.result = "tails"
+            self.game_state = "results_screen"
         else:
             print("coin landed on heads")
             self.result = "heads"
+            self.game_state = "results_screen"
+
 
     def update(self, state: "GameState"):
+
         if state.controller.isQPressed:
             # Transition to the main screen
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
+
+
 
         if self.game_state == "welcome_screen":
             # Update the welcome screen text box
@@ -121,6 +136,23 @@ class CoinFlipTedScreen(Screen):
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
                 # Add other game state updates here
 
+        if self.game_state == "flip_screen":
+            elapsed_time = pygame.time.get_ticks() - self.pause_timer
+            self.pause_timer += elapsed_time
+            self.coin_flip_messages["flip_message"].update(state)
+
+            print("Timer set to:", self.flip_timer)  # Add this line to check the timer value
+
+            if self.pause_timer >= self.flip_timer:  # Check if pause_timer exceeds flip_timer
+                print("am i gett called")
+                print(self.game_state)
+
+                self.flipCoin()
+                self.pause_timer = 0
+                # Add other game state updates here
+
+        if self.game_state == "results_screen":
+            print("here are the results")
 
             # Add other game state updates here
 
