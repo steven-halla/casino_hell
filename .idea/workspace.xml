@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="remaking coin flip ted screen">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new scree">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -66,11 +67,11 @@
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/assets/map" />
       <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/core" />
-      <recent name="$PROJECT_DIR$/entity/npc" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -279,7 +280,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="26040000" />
+      <workItem from="1705123656694" duration="29714000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -624,7 +625,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +654,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="addedd new text box, I will need to in the future modify my NPC class as it doesn't do enough" />
     <MESSAGE value="money is now added to teh shop" />
     <MESSAGE value="now subtracting money as we buy things" />
     <MESSAGE value="now adding items to player inventory" />
@@ -678,7 +678,8 @@
     <MESSAGE value="better" />
     <MESSAGE value="complete almost just need two tokens now" />
     <MESSAGE value="remaking coin flip ted screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="remaking coin flip ted screen" />
+    <MESSAGE value="new scree" />
+    <option name="LAST_COMMIT_MESSAGE" value="new scree" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
