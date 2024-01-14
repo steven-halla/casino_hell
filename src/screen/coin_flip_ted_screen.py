@@ -53,12 +53,8 @@ class CoinFlipTedScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
-            "results_message": TextBox(
-                ["Here you go , the result of your flip. "],
-                (50, 450, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
+            "results_message": TextBox(["Here you go, the result of your flip: ", str(self.result)], (50, 450, 700, 130), 36, 500),
+
             # You can add more game state keys and TextBox instances here
         }
 
@@ -151,8 +147,18 @@ class CoinFlipTedScreen(Screen):
                 self.pause_timer = 0
                 # Add other game state updates here
 
+
         if self.game_state == "results_screen":
-            print("here are the results")
+            self.coin_flip_messages["results_message"].update(state)
+
+            # Construct the result message
+            result_message = f"Here you go, the result of your flip: {self.result}"
+            bet_message = f"Bet amount: {self.bet}"
+
+            # Update the messages in the TextBox
+            self.coin_flip_messages["results_message"].messages = [result_message, bet_message]
+
+            # print("here are the results")
 
             # Add other game state updates here
 
@@ -301,6 +307,10 @@ class CoinFlipTedScreen(Screen):
         if self.game_state == "flip_screen":
             self.coin_flip_messages["flip_message"].update(state)
             self.coin_flip_messages["flip_message"].draw(state)
+
+        if self.game_state == "results_screen":
+            self.coin_flip_messages["results_message"].update(state)
+            self.coin_flip_messages["results_message"].draw(state)
 
         pygame.display.flip()
 

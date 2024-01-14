@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="making progress">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="reslts screen is here">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" afterDir="false" />
     </list>
@@ -279,7 +279,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="36535000" />
+      <workItem from="1705123656694" duration="37500000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -624,7 +624,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="105" />
+    <option name="localTasksCounter" value="106" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +653,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="tresure chest collision" />
     <MESSAGE value="can now sort of talk to treasure chests" />
     <MESSAGE value="can now open treasure chests and take items" />
     <MESSAGE value="janet know nows if you have water bottle" />
@@ -678,7 +677,8 @@
     <MESSAGE value="state flow is goign good" />
     <MESSAGE value="fixed  betting and screen/game state name to avoid collision" />
     <MESSAGE value="making progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="making progress" />
+    <MESSAGE value="reslts screen is here" />
+    <option name="LAST_COMMIT_MESSAGE" value="reslts screen is here" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
