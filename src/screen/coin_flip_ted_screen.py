@@ -44,6 +44,12 @@ class CoinFlipTedScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "flip_message": TextBox(
+                ["Flipping the coin now. "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
             # You can add more game state keys and TextBox instances here
         }
 
@@ -80,6 +86,10 @@ class CoinFlipTedScreen(Screen):
         if self.bet > self.coinFlipTedMoney:
             self.bet = self.coinFlipTedMoney
 
+        if controller.isTPressed:
+            self.game_state = "flip_screen"
+            print(self.game_state)
+
     def flipCoin(self):
         coin = random.random()
 
@@ -110,6 +120,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
                 # Add other game state updates here
+
 
             # Add other game state updates here
 
@@ -254,6 +265,10 @@ class CoinFlipTedScreen(Screen):
 
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+
+        if self.game_state == "flip_screen":
+            self.coin_flip_messages["flip_message"].update(state)
+            self.coin_flip_messages["flip_message"].draw(state)
 
         pygame.display.flip()
 
