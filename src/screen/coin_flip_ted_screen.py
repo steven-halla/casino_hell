@@ -37,10 +37,15 @@ class CoinFlipTedScreen(Screen):
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
-            )
+            ),
+            "bet_screen": TextBox(
+                ["hi this is your bet screen"],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
             # You can add more game state keys and TextBox instances here
         }
-
 
     def giveExp(self, state: "GameState"):
         if self.win_exp == True:
@@ -96,6 +101,9 @@ class CoinFlipTedScreen(Screen):
             if self.coin_flip_messages["welcome_screen"].message_index == 2:
                 # Change the game state to "bet"
                 self.game_state = "bet"
+            
+        if self.game_state == "bet":
+            self.coin_flip_messages["bet_screen"].update(state)
 
             # Add other game state updates here
 
@@ -110,31 +118,6 @@ class CoinFlipTedScreen(Screen):
                 # Update the controller
         controller = state.controller
         controller.update()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
 
@@ -228,26 +211,11 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["welcome_screen"].update(state)
             self.coin_flip_messages["welcome_screen"].draw(state)
 
-            # heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
-
-            # Get the size of the screen and the image
-            # screen_width, screen_height = state.DISPLAY.get_size()
-            # image_width, image_height = heads_image.get_size()
-            #
-            # # Calculate the position to center the image
-            # image_x = (screen_width - image_width) // 2
-            # image_y = (screen_height - image_height) // 2
-            #
-            # # Blit the image onto the screen at the calculated position
-            # state.DISPLAY.blit(heads_image, (image_x, image_y))
-            #
-            # # Update and draw the welcome screen text box
-            # self.coin_flip_messages["welcome_screen"].update(state)
-            # self.coin_flip_messages["welcome_screen"].draw(state)'
 
         if self.game_state == "bet":
             print("Game state is 'bet'")  # Debugging
-
+            self.coin_flip_messages["bet_screen"].update(state)
+            self.coin_flip_messages["bet_screen"].draw(state)
             bet_box_width = 150
             bet_box_height = 100
             border_width = 5
