@@ -60,7 +60,9 @@ class CoinFlipTedScreen(Screen):
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
             "play_again_message": TextBox(
-                ["Would you like to play again? Hit T on your answer. "],
+                ["How are you doing. "
+                 , " Would you like to play again or quit?"
+                 ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -347,6 +349,9 @@ class CoinFlipTedScreen(Screen):
 
             # Now, draw the results_message TextBox
             self.coin_flip_messages["results_message"].draw(state)
+
+            if state.controller.isTPressed:
+                self.game_state = "play_again_screen"
 
         if self.game_state == "play_again_screen":
 
