@@ -24,6 +24,9 @@ class CoinFlipTedScreen(Screen):
         self.yes_or_no_menu = ["Yes", "No"]
         self.magic_menu_selector = []
         self.choice_sequence = True
+        self.menu_selector_index = 0  # Initialize the menu selector index to 0
+        self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
+
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
         self.coinFlipTedMoney = 100
@@ -172,6 +175,16 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "play_again_screen":
             self.coin_flip_messages["play_again_message"].update(state)
+            if state.controller.isUpPressed:
+                self.arrow_index -= 1
+                if self.arrow_index < 0:
+                    self.arrow_index = len(self.yes_or_no_menu) - 1  # Wrap around to the last item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+            elif state.controller.isDownPressed:
+                self.arrow_index += 1
+                if self.arrow_index >= len(self.yes_or_no_menu):
+                    self.arrow_index = 0  # Wrap around to the first item
+                pygame.time.delay(200)
 
 
 
@@ -325,8 +338,10 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["results_message"].draw(state)
 
         if self.game_state == "play_again_screen":
+
             self.coin_flip_messages["play_again_message"].update(state)
             self.coin_flip_messages["play_again_message"].draw(state)
+
             bet_box_width = 150
             bet_box_height = 100
             border_width = 5
@@ -351,6 +366,19 @@ class CoinFlipTedScreen(Screen):
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
+            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+            arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+            # Set the initial arrow position to "Yes"
+
+            # Draw the arrow next to the selected option
+            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+            #
+            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         pygame.display.flip()
 
