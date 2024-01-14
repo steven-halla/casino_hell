@@ -31,6 +31,8 @@ class CoinFlipTedScreen(Screen):
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
+        self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
+        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
         self.lose_exp = False
         self.game_state = "welcome_screen"
@@ -54,6 +56,12 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
+            "play_again_message": TextBox(
+                ["Would you like to play again? Hit T on your answer. "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -153,10 +161,19 @@ class CoinFlipTedScreen(Screen):
 
             # Construct the result message
             result_message = f"Here you go, the result of your flip: {self.result}"
-            bet_message = f"Bet amount: {self.bet}"
+            # bet_message = f"Bet amount: {self.bet}"
 
             # Update the messages in the TextBox
-            self.coin_flip_messages["results_message"].messages = [result_message, bet_message]
+            self.coin_flip_messages["results_message"].messages = [result_message]
+
+            if state.controller.isTPressed:
+                self.game_state = "play_again_screen"
+                print(str(self.game_state))
+
+        if self.game_state == "play_again_screen":
+            self.coin_flip_messages["play_again_message"].update(state)
+
+
 
             # print("here are the results")
 
@@ -312,6 +329,14 @@ class CoinFlipTedScreen(Screen):
         #     self.coin_flip_messages["results_message"].update(state)
         #     self.coin_flip_messages["results_message"].draw(state)
         if self.game_state == "results_screen":
+            self.coin_flip_messages["results_message"].update(state)
+            self.coin_flip_messages["results_message"].draw(state)
+
+            # Display the image based on self.result
+            image_to_display = self.heads_image if self.result == "heads" else self.tails_image
+            image_rect = image_to_display.get_rect()
+            image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
+            state.DISPLAY.blit(image_to_display, image_rect)
             state.DISPLAY.blit(self.font.render(f"Your Current hand :{self.result}", True,
                                                 (255, 255, 255)), (70, 460))
 
