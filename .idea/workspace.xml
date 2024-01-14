@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="save point issue with results page">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="solved issue with routing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -279,7 +280,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="46134000" />
+      <workItem from="1705123656694" duration="48089000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -624,7 +625,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,7 +654,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now quest line is working almost smooth" />
     <MESSAGE value="2nd quest line now owrking" />
     <MESSAGE value="nurgle goes away after picking up the cute little guy" />
     <MESSAGE value="going forward" />
@@ -678,7 +678,8 @@
     <MESSAGE value="box almost built" />
     <MESSAGE value="up down arrows working" />
     <MESSAGE value="save point issue with results page" />
-    <option name="LAST_COMMIT_MESSAGE" value="save point issue with results page" />
+    <MESSAGE value="solved issue with routing" />
+    <option name="LAST_COMMIT_MESSAGE" value="solved issue with routing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

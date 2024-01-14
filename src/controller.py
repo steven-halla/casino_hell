@@ -73,7 +73,6 @@ class Controller:
                     self.isEPressed = True
                 elif event.key == pygame.K_t:
                     self.isTPressed = True
-                    print("HHHHIHdhjsadjf;dasjfjsafjsl;fja;sjflsajfsa;")
                 elif event.key == pygame.K_w:
                     self.isWPressed = True
                 elif event.key == pygame.K_1:

@@ -11,6 +11,8 @@ from screen.screen import Screen
 class CoinFlipTedScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
+        self.flip_screen_initialized = True
+
         self.result = ""
         self.play_again = True
         self.players_side = ""
@@ -24,7 +26,6 @@ class CoinFlipTedScreen(Screen):
         self.yes_or_no_menu = ["Yes", "No"]
         self.magic_menu_selector = []
         self.choice_sequence = True
-        self.menu_selector_index = 0  # Initialize the menu selector index to 0
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
 
         self.bet = 0
@@ -41,7 +42,7 @@ class CoinFlipTedScreen(Screen):
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["Welcome to black jack where you get all the best stuff", "press T to select", ""],
+                ["Welcome to coin flip where you get all the best stuff", "press T to select", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -80,6 +81,7 @@ class CoinFlipTedScreen(Screen):
     def place_bet(self, state: "GameState"):
         controller = state.controller
         controller.update()
+        print("HI")
 
         if controller.isUpPressed:
             self.bet += 10
@@ -139,26 +141,35 @@ class CoinFlipTedScreen(Screen):
             if self.coin_flip_messages["welcome_message"].message_index == 2:
                 # Change the game state to "bet"
                 self.game_state = "bet_screen"
-            
+
         if self.game_state == "bet_screen":
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
                 # Add other game state updates here
 
+
         if self.game_state == "flip_screen":
+            print("We are in the flip_screen state")
+
+            # Initialize the timer when entering the flip_screen state
+            if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
+                self.flip_timer = 4000  # Duration for the pause
+                self.pause_timer = pygame.time.get_ticks()  # Current time
+                self.flip_screen_initialized = True
+
+            # Calculate elapsed time since the flip_screen was entered
             elapsed_time = pygame.time.get_ticks() - self.pause_timer
-            self.pause_timer += elapsed_time
-            self.coin_flip_messages["flip_message"].update(state)
 
-            print("Timer set to:", self.flip_timer)  # Add this line to check the timer value
-
-            if self.pause_timer >= self.flip_timer:  # Check if pause_timer exceeds flip_timer
-                print("am i gett called")
-                print(self.game_state)
-
+            if elapsed_time >= self.flip_timer:
+                # Timer has elapsed, proceed with flipping the coin
                 self.flipCoin()
-                self.pause_timer = 0
-                # Add other game state updates here
+                # Reset flip_screen_initialized for next time
+                self.flip_screen_initialized = False
+                self.pause_timer = 0  # Reset pause timer for the next use
+                # Transition to the next state as needed
+                # ...
+
+            self.coin_flip_messages["flip_message"].update(state)
 
 
         if self.game_state == "results_screen":
@@ -176,7 +187,7 @@ class CoinFlipTedScreen(Screen):
             #     print(str(self.game_state))
 
         if self.game_state == "play_again_screen":
-            print("I'm play again scree" + str(self.game_state))
+            # print("I'm play again scree" + str(self.game_state))
             self.coin_flip_messages["play_again_message"].update(state)
             if state.controller.isUpPressed:
                 self.arrow_index -= 1
@@ -395,6 +406,16 @@ class CoinFlipTedScreen(Screen):
             # Here's a simple example using a triangle:
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+            if state.controller.isTPressed:
+                if self.arrow_index == 0:
+                    print("0 index")
+                    self.game_state = "bet_screen"
+                else:
+                    print("1 index")
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
+
 
 
 
