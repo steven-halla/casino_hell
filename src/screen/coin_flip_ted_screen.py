@@ -295,31 +295,9 @@ class CoinFlipTedScreen(Screen):
                                (260, 550))
             state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
                                (257, 510))
-            bet_box_width = 150
-            bet_box_height = 100
-            border_width = 5
-
-            screen_width, screen_height = state.DISPLAY.get_size()
-            bet_box_x = screen_width - bet_box_width - border_width - 30
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
-
-            bet_box = pygame.Surface((bet_box_width, bet_box_height))
-            bet_box.fill((0, 0, 0))
-            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(bet_box, (border_width, border_width))
-
-            # Calculate text positions
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20
-            text_y_no = text_y_yes + 40
 
 
-            # Draw the box on the screen
-            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
-            # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
 
         if self.game_state == "flip_screen":
             self.coin_flip_messages["flip_message"].update(state)
@@ -345,6 +323,33 @@ class CoinFlipTedScreen(Screen):
 
             # Now, draw the results_message TextBox
             self.coin_flip_messages["results_message"].draw(state)
+
+        if self.game_state == "play_again_screen":
+            self.coin_flip_messages["play_again_message"].update(state)
+            self.coin_flip_messages["play_again_message"].draw(state)
+            bet_box_width = 150
+            bet_box_height = 100
+            border_width = 5
+
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
+
+            # Calculate text positions
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20
+            text_y_no = text_y_yes + 40
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
 
         pygame.display.flip()
 
