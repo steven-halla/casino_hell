@@ -53,7 +53,7 @@ class CoinFlipTedScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
-            "results_message": TextBox(["Here you go, the result of your flip: ", str(self.result)], (50, 450, 700, 130), 36, 500),
+            "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -308,8 +308,17 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["flip_message"].update(state)
             self.coin_flip_messages["flip_message"].draw(state)
 
+        # if self.game_state == "results_screen":
+        #     self.coin_flip_messages["results_message"].update(state)
+        #     self.coin_flip_messages["results_message"].draw(state)
         if self.game_state == "results_screen":
+            state.DISPLAY.blit(self.font.render(f"Your Current hand :{self.result}", True,
+                                                (255, 255, 255)), (70, 460))
+
+            # Call the update method for the results_message TextBox
             self.coin_flip_messages["results_message"].update(state)
+
+            # Now, draw the results_message TextBox
             self.coin_flip_messages["results_message"].draw(state)
 
         pygame.display.flip()
