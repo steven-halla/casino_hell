@@ -169,11 +169,12 @@ class CoinFlipTedScreen(Screen):
             # Update the messages in the TextBox
             self.coin_flip_messages["results_message"].messages = [result_message]
 
-            if state.controller.isTPressed:
-                self.game_state = "play_again_screen"
-                print(str(self.game_state))
+            # if state.controller.isTPressed:
+            #     self.game_state = "play_again_screen"
+            #     print(str(self.game_state))
 
         if self.game_state == "play_again_screen":
+            print("I'm play again scree" + str(self.game_state))
             self.coin_flip_messages["play_again_message"].update(state)
             if state.controller.isUpPressed:
                 self.arrow_index -= 1
@@ -185,6 +186,16 @@ class CoinFlipTedScreen(Screen):
                 if self.arrow_index >= len(self.yes_or_no_menu):
                     self.arrow_index = 0  # Wrap around to the first item
                 pygame.time.delay(200)
+
+
+
+
+
+
+
+            # if state.controller.isTPressed:
+            #     if self.arrow_index == 0:
+            #         self.game_state = "bet_screen"
 
 
 
@@ -379,6 +390,11 @@ class CoinFlipTedScreen(Screen):
             # Here's a simple example using a triangle:
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+
+
+            # Check if the arrow is at index 0 ("Yes") and T is pressed
+
 
         pygame.display.flip()
 
