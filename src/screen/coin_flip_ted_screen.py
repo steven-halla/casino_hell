@@ -31,6 +31,10 @@ class CoinFlipTedScreen(Screen):
         self.choice_sequence = True
         self.player_choice = ""
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
+        self.debuff_vanish = False
+        self.debuff_counter = 0
+        self.game_reset = False
+
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
@@ -147,6 +151,7 @@ class CoinFlipTedScreen(Screen):
             self.result = "tails"
 
 
+
             if state.player.luck == 1:
                 # Random roll event
                 roll = random.randint(1, 100)  # Random number between 1 and 100
@@ -194,9 +199,11 @@ class CoinFlipTedScreen(Screen):
                 # Change the game state to "bet"
                 self.game_state = "bet_screen"
 
+
         if self.game_state == "bet_screen":
             self.has_run_money_logic = False
             self.player_choice = ""
+
 
 
             self.coin_flip_messages["bet_message"].update(state)
@@ -596,6 +603,8 @@ class CoinFlipTedScreen(Screen):
 
                     print(str(self.magic_menu_selector[0]))
                     print(str(self.magic_menu_selector))
+                    self.debuff_vanish = True
+                    self.debuff_counter += 3
                     state.controller.isTPressed = False  # Reset the button state
 
 
@@ -603,6 +612,7 @@ class CoinFlipTedScreen(Screen):
                 elif self.magicindex == 1:
                     print(str(self.magic_menu_selector[1]))
                     self.game_state = "heads_tails_choose_screen"
+
 
 
                     state.controller.isTPressed = False  # Reset the button state
@@ -689,9 +699,19 @@ class CoinFlipTedScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.arrow_index == 0:
-                    print("0 index")
-                    self.game_state = "bet_screen"
+
+                    if self.debuff_counter > 0:
+                        self.debuff_counter -= 1
+                        print(self.debuff_counter)
+                        print(self.debuff_vanish)
+                        if self.debuff_counter == 0:
+                            self.debuff_vanish = False
+                            print(self.debuff_vanish)
+
                     state.controller.isTPressed = False  # Reset the button state
+
+                    self.game_state = "bet_screen"
+
 
                 else:
                     print("1 index")
