@@ -24,9 +24,10 @@ class CoinFlipTedScreen(Screen):
         self.magic_player_message_display = ""
         self.magic_enemy_message_display = ""
         self.headstailsindex = 0
+        self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
         self.heads_or_tails_Menu = ["Heads", "Tails"]
-        self.magic_menu_selector = ["back"]
+        self.magic_menu_selector = ["Back"]
         self.choice_sequence = True
         self.player_choice = ""
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
@@ -180,8 +181,8 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
-            if "shield" in state.player.magicinventory:
-                self.magic_menu_selector.append("shield")
+            if "Shield" in state.player.magicinventory:
+                self.magic_menu_selector.append("Shield")
 
 
             # Update the welcome screen text box
@@ -205,7 +206,7 @@ class CoinFlipTedScreen(Screen):
             print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
 
-            if "shield" in state.player.magicinventory:
+            if "Shield" in state.player.magicinventory:
                 self.heads_or_tails_Menu.append("Magic")
 
             if state.controller.isUpPressed:
@@ -225,7 +226,21 @@ class CoinFlipTedScreen(Screen):
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
-            print("do you believe in magic?")
+            if state.controller.isUpPressed:
+                self.magicindex -= 1
+                if self.magicindex < 0:
+                    self.magicindex = len(self.magic_menu_selector) - 1  # Wrap around to the last item
+
+                print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+            elif state.controller.isDownPressed:
+                self.magicindex += 1
+                if self.magicindex >= len(self.magic_menu_selector):
+                    self.magicindex = 0  # Wrap around to the first item
+
+                print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
 
         if self.game_state == "flip_screen":
@@ -458,7 +473,7 @@ class CoinFlipTedScreen(Screen):
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            if "shield" in state.player.magicinventory:
+            if "Shield" in state.player.magicinventory:
                 state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
@@ -498,35 +513,35 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["magic_message"].update(state)
             self.coin_flip_messages["magic_message"].draw(state)
 
+            # Define new_box_x
+
             # Updated dimensions
             bet_box_width = 150  # Width for both boxes
-            top_box_height = 50  # Height for top box, now 50 pixels tall
-            bet_box_height = 100 + 40  # Height for bottom box
+            top_box_height = 50  # Height for top box
+            bet_box_height = 100 + 40 - 50  # Height for bottom box, now 50 pixels shorter
             border_width = 5
 
             # Screen dimensions
             screen_width, screen_height = state.DISPLAY.get_size()
 
-            # Top box positions
+            # Positions for the top and bottom boxes
             new_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
             magic_box_y = 320 - 40
-            new_box_y = magic_box_y - top_box_height - border_width  # Y position for top box
+            new_box_y = magic_box_y - top_box_height - border_width + 50  # Adjusted Y position for top box
 
             # Create the top box (black box with white border but no bottom border)
             black_box_top = pygame.Surface((bet_box_width, top_box_height))
             black_box_top.fill((0, 0, 0))
-            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))  # Adjusted height for top box
+            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))
             white_border_top.fill((255, 255, 255))
             white_border_top.blit(black_box_top, (border_width, border_width))
             state.DISPLAY.blit(white_border_top, (new_box_x, new_box_y))
 
-            # The bottom box creation code remains the same
+            # Adjusted bottom box positions
+            bet_box_x = new_box_x  # Aligning with the top box
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 40  # Raised by 40 pixels, accounting for borders
 
-            # Bottom box positions (bet_box_x, bet_box_y)
-            bet_box_x = screen_width - bet_box_width - border_width - 30
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
-
-            # Create the bottom box (
+            # Create the bottom box (now shorter)
             bottom_box = pygame.Surface((bet_box_width, bet_box_height))
             bottom_box.fill((0, 0, 0))
             white_border_bottom = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
@@ -536,18 +551,57 @@ class CoinFlipTedScreen(Screen):
 
             # Adjust text and arrow positions relative to the bottom box
             text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20
+            text_y_yes = bet_box_y + 20  # Adjusted back to the original position
             text_y_no = text_y_yes + 40
-            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
-            arrow_y = text_y_yes + self.headstailsindex * 40
+            # Adjust arrow positions relative to the bottom box
+            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
+            arrow_y = text_y_yes + self.headstailsindex * 40  # Arrow position adjusted based on selected menu item
 
+            # Draw text
             # Draw text
             state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            # Y position for "Shield" text, using self.magic_menu_selector[1]
+            text_y_shield = text_y_yes  # Assuming "Shield" is rendered at this position
+
+            # Draw the arrow on the same Y coordinate as "Shield"
+            # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
+            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
+            arrow_y = text_y_shield  # Arrow Y position aligned with "Shield"
 
             # Draw the arrow using pygame's drawing functions
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+            magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
+            text_margin = 10  # Margin from the left edge of the top box for the text
+
+            # Position for the "Magic" text inside the top box
+            magic_text_x = new_box_x + text_margin
+            magic_text_y = new_box_y + (top_box_height - magic_text.get_height()) // 2  # Vertically center inside the top box
+
+            # Blit the "Magic" text onto the screen
+            state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
+
+            if state.controller.isTPressed:
+                if self.magicindex == 0:
+                    print("index 0")
+                    state.controller.isTPressed = False  # Reset the button state
+
+
+
+                elif self.magicindex == 1:
+                    print("index1")
+
+                    state.controller.isTPressed = False  # Reset the button state
+
+
+
+
+
+            # Updated dimensions
+            # Define new_box_x
+
 
         if self.game_state == "flip_screen":
             self.coin_flip_messages["flip_message"].update(state)
