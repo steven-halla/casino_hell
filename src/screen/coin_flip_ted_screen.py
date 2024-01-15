@@ -440,8 +440,13 @@ class CoinFlipTedScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipTedMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
-        state.DISPLAY.blit(self.font.render(f"Status: ", True,
-                                            (255, 255, 255)), (37, 110))
+        if self.debuff_counter == 0:
+            state.DISPLAY.blit(self.font.render(f"Status: ", True,
+                                                (255, 255, 255)), (37, 110))
+        elif self.debuff_counter > 0:
+            state.DISPLAY.blit(self.font.render(f"Status: bad luck for {self.debuff_counter} turns", True,
+                                                (255, 255, 255)), (37, 110))
+
 
         black_box_height = 130
         black_box_width = 700
