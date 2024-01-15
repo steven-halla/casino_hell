@@ -55,7 +55,7 @@ class CoinFlipTedScreen(Screen):
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["Welcome to coin flip where you get all the best stuff", "press T to select", ""],
+                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
