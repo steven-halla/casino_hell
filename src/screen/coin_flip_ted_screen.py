@@ -79,7 +79,7 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "flip_message": TextBox(
-                ["Flipping the coin now hold your breath . "],
+                ["Flipping the coin now hold your breath. "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
