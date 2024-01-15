@@ -25,7 +25,7 @@ class CoinFlipTedScreen(Screen):
         self.magic_enemy_message_display = ""
         self.headstailsindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
-        self.heads_or_tails_Menu = ["Heads", "Tails"]
+        self.heads_or_tails_Menu = ["Heads", "Tails", "Magic"]
         self.magic_menu_selector = []
         self.choice_sequence = True
         self.player_choice = ""
@@ -120,17 +120,47 @@ class CoinFlipTedScreen(Screen):
             state.controller.isTPressed = False  # Reset the button state
 
 
-    def flipCoin(self):
+    # def flipCoin(self, state: "GameState"):
+    #     coin = random.random()
+    #     if coin < 0.6:
+    #         print("coin landed on tails")
+    #         self.result = "tails"
+    #         self.game_state = "results_screen"
+    #         if state.player.luck == 1:
+    #             print("your so luck")
+    #
+    #     else:
+    #         print("coin landed on heads")
+    #         self.result = "heads"
+    #         self.game_state = "results_screen"
+    def flipCoin(self, state: "GameState"):
         coin = random.random()
-
-        if coin < 0.6:
+        if coin < 0.9:
             print("coin landed on tails")
             self.result = "tails"
+
+
+            if state.player.luck == 1:
+                # Random roll event
+                roll = random.randint(1, 100)  # Random number between 1 and 100
+                if roll < 10:
+                    print("You lucky doggy dog")
+                    self.result = self.player_choice
+
             self.game_state = "results_screen"
+
         else:
             print("coin landed on heads")
             self.result = "heads"
+
+            if state.player.luck == 1:
+                # Random roll event
+                roll = random.randint(1, 100)  # Random number between 1 and 100
+                if roll < 10:
+                    print("You lucky doggy dog")
+                    self.result = self.player_choice
             self.game_state = "results_screen"
+
 
 
     def update(self, state: "GameState"):
@@ -144,6 +174,10 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
+            if "divine coin flip shield" in state.player.magicinventory:
+                self.magic_menu_selector.append("divine coin flip shield")
+
+
             # Update the welcome screen text box
             self.coin_flip_messages["welcome_message"].update(state)
 
@@ -164,22 +198,22 @@ class CoinFlipTedScreen(Screen):
         if self.game_state == "heads_tails_choose_screen":
             print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
+
             if state.controller.isUpPressed:
                 self.headstailsindex -= 1
                 if self.headstailsindex < 0:
                     self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
-                    print("heads")
 
+                print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
             elif state.controller.isDownPressed:
                 self.headstailsindex += 1
                 if self.headstailsindex >= len(self.heads_or_tails_Menu):
                     self.headstailsindex = 0  # Wrap around to the first item
-                    print("tails")
 
-                pygame.time.delay(200)
-
-
+                print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "flip_screen":
 
@@ -194,7 +228,7 @@ class CoinFlipTedScreen(Screen):
 
             if elapsed_time >= self.flip_timer:
                 # Timer has elapsed, proceed with flipping the coin
-                self.flipCoin()
+                self.flipCoin(state)
                 # Reset flip_screen_initialized for next time
                 self.flip_screen_initialized = False
                 self.pause_timer = 0  # Reset pause timer for the next use
@@ -388,7 +422,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["heads_tails_message"].update(state)
             self.coin_flip_messages["heads_tails_message"].draw(state)
             bet_box_width = 150
-            bet_box_height = 100
+            bet_box_height = 100 + 40  # Increased height by 40 pixels
             border_width = 5
 
             screen_width, screen_height = state.DISPLAY.get_size()
@@ -401,16 +435,17 @@ class CoinFlipTedScreen(Screen):
             white_border.fill((255, 255, 255))
             white_border.blit(bet_box, (border_width, border_width))
 
-            # Calculate text positions
+            # Calculate text positions - adjust if necessary
             text_x = bet_box_x + 40 + border_width
             text_y_yes = bet_box_y + 20
-            text_y_no = text_y_yes + 40
+            text_y_no = text_y_yes + 40  # Consider adjusting this if needed due to the taller box
             # Draw the box on the screen
             state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
             # Set the initial arrow position to "Yes"
@@ -433,17 +468,17 @@ class CoinFlipTedScreen(Screen):
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
+                elif self.headstailsindex == 1:
+                    print("Tails")
+                    self.player_choice = "tails"
+                    self.game_state = "flip_screen"
+                    state.controller.isTPressed = False  # Reset the button state
+
                 else:
-                    if self.headstailsindex == 1:
-                        print("Tails")
-                        self.player_choice = "tails"
-
-                        self.game_state = "flip_screen"
-                        state.controller.isTPressed = False  # Reset the button state
-
-
-
-
+                    print("Magic")  # Added print statement for consistency
+                    self.player_choice = "magic"
+                    self.game_state = "magic_menu"
+                    state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "flip_screen":
             self.coin_flip_messages["flip_message"].update(state)
