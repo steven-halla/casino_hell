@@ -181,7 +181,8 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
-            if "Shield" in state.player.magicinventory:
+            if "Shield" in state.player.magicinventory and "Shield"not in self.magic_menu_selector:
+
                 self.magic_menu_selector.append("Shield")
 
 
@@ -206,9 +207,11 @@ class CoinFlipTedScreen(Screen):
             print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
 
-            if "Shield" in state.player.magicinventory:
+            # Append "Magic" to the menu only if "Shield" is in inventory and "Magic" is not already in the menu
+            if "Shield" in state.player.magicinventory and "Magic" not in self.heads_or_tails_Menu:
                 self.heads_or_tails_Menu.append("Magic")
 
+            # Handling Up Press
             if state.controller.isUpPressed:
                 self.headstailsindex -= 1
                 if self.headstailsindex < 0:
@@ -217,6 +220,7 @@ class CoinFlipTedScreen(Screen):
                 print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
+            # Handling Down Press
             elif state.controller.isDownPressed:
                 self.headstailsindex += 1
                 if self.headstailsindex >= len(self.heads_or_tails_Menu):
@@ -230,16 +234,19 @@ class CoinFlipTedScreen(Screen):
                 self.magicindex -= 1
                 if self.magicindex < 0:
                     self.magicindex = len(self.magic_menu_selector) - 1  # Wrap around to the last item
+                    print(str(self.magicindex))
 
-                print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
             elif state.controller.isDownPressed:
                 self.magicindex += 1
                 if self.magicindex >= len(self.magic_menu_selector):
                     self.magicindex = 0  # Wrap around to the first item
+                    print(str(self.magicindex))
 
-                print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+
+                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
 
@@ -559,7 +566,8 @@ class CoinFlipTedScreen(Screen):
 
             # Draw text
             # Draw text
-            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
+            if "Shield" in self.magic_menu_selector:
+                state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
             # Y position for "Shield" text, using self.magic_menu_selector[1]
             text_y_shield = text_y_yes  # Assuming "Shield" is rendered at this position
@@ -567,8 +575,8 @@ class CoinFlipTedScreen(Screen):
             # Draw the arrow on the same Y coordinate as "Shield"
             # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
             arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_shield  # Arrow Y position aligned with "Shield"
-
+            arrow_y = text_y_shield + self.magicindex * 40  # Update arrow Y position based on selected item
+            # print(str(self.magic_menu_selector))
             # Draw the arrow using pygame's drawing functions
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
@@ -585,13 +593,17 @@ class CoinFlipTedScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.magicindex == 0:
-                    print("index 0")
+
+                    print(str(self.magic_menu_selector[0]))
+                    print(str(self.magic_menu_selector))
                     state.controller.isTPressed = False  # Reset the button state
 
 
 
                 elif self.magicindex == 1:
-                    print("index1")
+                    print(str(self.magic_menu_selector[1]))
+                    self.game_state = "heads_tails_choose_screen"
+
 
                     state.controller.isTPressed = False  # Reset the button state
 
