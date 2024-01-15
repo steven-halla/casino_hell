@@ -117,5 +117,6 @@ lets not forget to add the doctor for fixing opposum status
 
 
 
+How to start program:
 
-
+ python src/main.py 

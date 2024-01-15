@@ -85,8 +85,20 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
-            "shield_message": TextBox(
-                ["A bird came down and stole the coin, who knows who won now. ", "coin landed out of bounds time to reflip", "Hey thats a cool coin! Oh no someone just stole the coin mid flip!!!!" ],
+            "shield_message1": TextBox(
+                ["A bird came down and stole the coin, who knows who won now. "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "shield_message2": TextBox(
+                ["someone just took the coin "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "shield_message3": TextBox(
+                ["now the coin is gone :(. "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -104,7 +116,7 @@ class CoinFlipTedScreen(Screen):
         }
 
     def giveExp(self, state: "GameState"):
-        print("Player exp is: " + str(state.player.exp))
+        # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
             state.player.exp += 30
             if self.bet > 60:
@@ -180,6 +192,8 @@ class CoinFlipTedScreen(Screen):
 
 
     def update(self, state: "GameState"):
+        import random  # Importing inside the method
+
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -190,9 +204,11 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
+
             if "Shield" in state.player.magicinventory and "Shield"not in self.magic_menu_selector:
 
                 self.magic_menu_selector.append("Shield")
+
 
 
             # Update the welcome screen text box
@@ -205,6 +221,7 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "bet_screen":
+
             self.has_run_money_logic = False
             self.player_choice = ""
             self.message_printed = False
@@ -215,7 +232,7 @@ class CoinFlipTedScreen(Screen):
                 # Add other game state updates here
 
         if self.game_state == "heads_tails_choose_screen":
-            print("welcome to the choice screen")
+            # print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
 
             # Append "Magic" to the menu only if "Shield" is in inventory and "Magic" is not already in the menu
@@ -241,6 +258,7 @@ class CoinFlipTedScreen(Screen):
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
+
             if state.controller.isUpPressed:
                 self.magicindex -= 1
                 if self.magicindex < 0:
@@ -262,6 +280,7 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "flip_screen":
+
 
             # Initialize the timer when entering the flip_screen state
             if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
@@ -285,6 +304,7 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "results_screen":
+
             # Assuming this is part of a class
             if not self.has_run_money_logic:
                 if self.player_choice == self.result:
@@ -317,7 +337,7 @@ class CoinFlipTedScreen(Screen):
             #     print(str(self.game_state))
 
         if self.game_state == "shield_screen":
-            print("sheild time")
+            # print("sheild time")
             if state.controller.isTPressed:
                 self.game_state = "play_again_screen"
                 state.controller.isTPressed = False  # Reset the button state
@@ -346,6 +366,7 @@ class CoinFlipTedScreen(Screen):
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
 
     def draw(self, state: "GameState"):
+
         # background
         state.DISPLAY.fill((0, 0, 51))
 
@@ -441,10 +462,10 @@ class CoinFlipTedScreen(Screen):
                                             (255, 255, 255)), (37, 70))
 
         if self.debuff_counter == 0:
-            state.DISPLAY.blit(self.font.render(f"Status: ", True,
+            state.DISPLAY.blit(self.font.render(f"Status: normal", True,
                                                 (255, 255, 255)), (37, 110))
         elif self.debuff_counter > 0:
-            state.DISPLAY.blit(self.font.render(f"Status: bad luck for {self.debuff_counter} turns", True,
+            state.DISPLAY.blit(self.font.render(f"unlucky: {self.debuff_counter}  ", True,
                                                 (255, 255, 255)), (37, 110))
 
 
@@ -471,6 +492,7 @@ class CoinFlipTedScreen(Screen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
         if self.game_state == "welcome_screen":
+
             self.coin_flip_messages["welcome_message"].update(state)
             self.coin_flip_messages["welcome_message"].draw(state)
 
@@ -681,27 +703,38 @@ class CoinFlipTedScreen(Screen):
                 self.game_state = "play_again_screen"
                 state.controller.isTPressed = False  # Reset the button state
 
+        # if self.game_state == "shield_screen":
+        #     if not self.entered_shield_screen:
+        #         # Select a random message from the TextBox's existing messages
+        #         random_message = random.choice(self.coin_flip_messages["shield_message"].messages)
+        #         # Manually update the text of the TextBox
+        #         self.coin_flip_messages["shield_message"].text = random_message
+        #         # Reset characters_to_display to start gradual display
+        #         self.coin_flip_messages["shield_message"].characters_to_display = 0
+        #         # Set the flag to True to avoid repeating this in the current state
+        #         self.entered_shield_screen = True
+        #
+        #     # Update and draw the TextBox
+        #     self.coin_flip_messages["shield_message"].update(state)
+        #     self.coin_flip_messages["shield_message"].draw(state)
+        # else:
+        #     # Reset the flag when leaving the state to enable a new random message next time
+        #     self.entered_shield_screen
         if self.game_state == "shield_screen":
             if not self.entered_shield_screen:
-                # Select a random message from the TextBox's existing messages
-                random_message = random.choice(self.coin_flip_messages["shield_message"].messages)
-                # Manually update the text of the TextBox
-                self.coin_flip_messages["shield_message"].text = random_message
-                self.coin_flip_messages["shield_message"].characters_to_display = 0
+                # Randomly select one of the shield messages
+                selected_message_key = random.choice(["shield_message1", "shield_message2", "shield_message3"])
+                self.selected_shield_message = self.coin_flip_messages[selected_message_key]
 
+                # Set the flag to True to avoid repeating this in the current state
                 self.entered_shield_screen = True
 
-            # Set the image to display based on the result
-            image_to_display = self.heads_image if self.result == "heads" else self.tails_image
-            # Get the rect and center it
-            image_rect = image_to_display.get_rect()
-            image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
-            # Display the image
-            state.DISPLAY.blit(image_to_display, image_rect)
-
-            # Update and draw the TextBox
-            self.coin_flip_messages["shield_message"].update(state)
-            self.coin_flip_messages["shield_message"].draw(state)
+            # Update and draw the selected TextBox
+            self.selected_shield_message.update(state)
+            self.selected_shield_message.draw(state)
+        else:
+            # Reset the flag when leaving the state to enable a new random message next time
+            self.entered_shield_screen = False
 
         if self.game_state == "play_again_screen":
             image_to_display = self.heads_image if self.result == "heads" else self.tails_image
