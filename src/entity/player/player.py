@@ -27,7 +27,7 @@ class Player(Entity):
         self.body = 0
         self.mind = 0
         self.spirit = 0
-        self.luck = 1
+        self.luck = 0
         self.perception = 0
         self.perks = []
         self.items = []

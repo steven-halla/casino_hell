@@ -82,6 +82,12 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
+            "shield_message": TextBox(
+                ["A bird came down and stole the coin, who knows who won now. "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
             "play_again_message": TextBox(
                 ["How are you doing. "
                  , " Would you like to play again or quit?"
@@ -297,6 +303,7 @@ class CoinFlipTedScreen(Screen):
                         if roll > 10:
                             print("gotcha")
                             state.player.money += self.bet
+                            self.game_state = "shield_screen"
 
                 self.has_run_money_logic = True
 
@@ -312,6 +319,12 @@ class CoinFlipTedScreen(Screen):
             # if state.controller.isTPressed:
             #     self.game_state = "play_again_screen"
             #     print(str(self.game_state))
+
+        if self.game_state == "shield_screen":
+            print("sheild time")
+            if state.controller.isTPressed:
+                self.game_state = "play_again_screen"
+
 
         if self.game_state == "play_again_screen":
             # print("I'm play again scree" + str(self.game_state))
@@ -664,6 +677,11 @@ class CoinFlipTedScreen(Screen):
             if state.controller.isTPressed:
                 self.game_state = "play_again_screen"
                 state.controller.isTPressed = False  # Reset the button state
+
+        if self.game_state == "shield_screen":
+            self.coin_flip_messages["shield_message"].update(state)
+            self.coin_flip_messages["shield_message"].draw(state)
+
 
         if self.game_state == "play_again_screen":
 
