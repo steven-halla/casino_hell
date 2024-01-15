@@ -34,7 +34,7 @@ class CoinFlipTedScreen(Screen):
         self.debuff_vanish = False
         self.debuff_counter = 0
         self.game_reset = False
-
+        self.message_printed = False
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
@@ -101,10 +101,16 @@ class CoinFlipTedScreen(Screen):
         }
 
     def giveExp(self, state: "GameState"):
-        if self.win_exp == True:
+        print("Player exp is: " + str(state.player.exp))
+        if self.result == self.player_choice:
             state.player.exp += 30
-        elif self.lose_exp == True:
+            if self.bet > 60:
+                state.player.stamina_points -= 1
+
+        elif self.result != self.player_choice:
             state.player.exp += 20
+            if self.bet > 60:
+                state.player.stamina_points -= 2
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -211,8 +217,7 @@ class CoinFlipTedScreen(Screen):
         if self.game_state == "bet_screen":
             self.has_run_money_logic = False
             self.player_choice = ""
-
-
+            self.message_printed = False
 
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
@@ -327,8 +332,12 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "play_again_screen":
-            # print("I'm play again scree" + str(self.game_state))
             self.coin_flip_messages["play_again_message"].update(state)
+            if not self.message_printed:
+                self.giveExp(state)
+                # Set the flag to True after printing the message
+                self.message_printed = True
+
             if state.controller.isUpPressed:
                 self.arrow_index -= 1
                 if self.arrow_index < 0:
@@ -640,13 +649,6 @@ class CoinFlipTedScreen(Screen):
 
 
                     state.controller.isTPressed = False  # Reset the button state
-
-
-
-
-
-            # Updated dimensions
-            # Define new_box_x
 
 
         if self.game_state == "flip_screen":

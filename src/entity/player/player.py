@@ -19,7 +19,7 @@ class Player(Entity):
         self.stamina_points = 10
         self.max_stamina_points = 100
 
-        self.focus_points = 10
+        self.focus_points = 30
         self.max_focus_points = 100
         self.exp = 0
         self.inn_badge = False
