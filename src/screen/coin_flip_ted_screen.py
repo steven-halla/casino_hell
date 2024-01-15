@@ -45,6 +45,10 @@ class CoinFlipTedScreen(Screen):
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
         self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
+
+
+        self.entered_shield_screen = False  # Add this flag
+
         self.shield_triggered = False
 
         self.lose_exp = False
@@ -82,7 +86,7 @@ class CoinFlipTedScreen(Screen):
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
             "shield_message": TextBox(
-                ["A bird came down and stole the coin, who knows who won now. ", "coin landed out of bounds time to reflip"],
+                ["A bird came down and stole the coin, who knows who won now. ", "coin landed out of bounds time to reflip", "Hey thats a cool coin! Oh no someone just stole the coin mid flip!!!!" ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -217,6 +221,7 @@ class CoinFlipTedScreen(Screen):
             self.has_run_money_logic = False
             self.player_choice = ""
             self.message_printed = False
+            self.entered_shield_screen = False  # Add this flag
 
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
@@ -680,14 +685,26 @@ class CoinFlipTedScreen(Screen):
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "shield_screen":
+            if not self.entered_shield_screen:
+                # Select a random message from the TextBox's existing messages
+                random_message = random.choice(self.coin_flip_messages["shield_message"].messages)
+                # Manually update the text of the TextBox
+                self.coin_flip_messages["shield_message"].text = random_message
+                self.coin_flip_messages["shield_message"].characters_to_display = 0
+
+                self.entered_shield_screen = True
+
+            # Set the image to display based on the result
             image_to_display = self.heads_image if self.result == "heads" else self.tails_image
+            # Get the rect and center it
             image_rect = image_to_display.get_rect()
             image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
+            # Display the image
             state.DISPLAY.blit(image_to_display, image_rect)
 
-            self.coin_flip_messages[f"shield_message"].update(state)
-            self.coin_flip_messages[f"shield_message"].draw(state)
-
+            # Update and draw the TextBox
+            self.coin_flip_messages["shield_message"].update(state)
+            self.coin_flip_messages["shield_message"].draw(state)
 
         if self.game_state == "play_again_screen":
             image_to_display = self.heads_image if self.result == "heads" else self.tails_image
