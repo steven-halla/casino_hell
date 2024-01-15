@@ -12,6 +12,7 @@ class CoinFlipTedScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
         self.flip_screen_initialized = True
+        self.has_run_money_logic = False
 
         self.result = ""
         self.play_again = True
@@ -22,10 +23,12 @@ class CoinFlipTedScreen(Screen):
         self.third_message_display = ""
         self.magic_player_message_display = ""
         self.magic_enemy_message_display = ""
-        self.choices = ["Heads", "Tails"]
+        self.headstailsindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
+        self.heads_or_tails_Menu = ["Heads", "Tails"]
         self.magic_menu_selector = []
         self.choice_sequence = True
+        self.player_choice = ""
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
 
         self.bet = 0
@@ -49,6 +52,12 @@ class CoinFlipTedScreen(Screen):
             ),
             "bet_message": TextBox(
                 ["Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "heads_tails_message": TextBox(
+                ["Choose heads or tails. "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -81,7 +90,6 @@ class CoinFlipTedScreen(Screen):
     def place_bet(self, state: "GameState"):
         controller = state.controller
         controller.update()
-        print("HI")
 
         if controller.isUpPressed:
             self.bet += 10
@@ -107,7 +115,8 @@ class CoinFlipTedScreen(Screen):
             self.bet = self.coinFlipTedMoney
 
         if controller.isTPressed:
-            self.game_state = "flip_screen"
+
+            self.game_state = "heads_tails_choose_screen"
             state.controller.isTPressed = False  # Reset the button state
 
 
@@ -144,13 +153,33 @@ class CoinFlipTedScreen(Screen):
                 self.game_state = "bet_screen"
 
         if self.game_state == "bet_screen":
+            self.has_run_money_logic = False
+
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
                 # Add other game state updates here
 
+        if self.game_state == "heads_tails_choose_screen":
+            print("welcome to the choice screen")
+            self.coin_flip_messages["heads_tails_message"].update(state)
+            if state.controller.isUpPressed:
+                self.headstailsindex -= 1
+                if self.headstailsindex < 0:
+                    self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
+                    print("heads")
+
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+            elif state.controller.isDownPressed:
+                self.headstailsindex += 1
+                if self.headstailsindex >= len(self.heads_or_tails_Menu):
+                    self.headstailsindex = 0  # Wrap around to the first item
+                    print("tails")
+
+                pygame.time.delay(200)
+
+
 
         if self.game_state == "flip_screen":
-            print("We are in the flip_screen state")
 
             # Initialize the timer when entering the flip_screen state
             if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
@@ -174,6 +203,14 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "results_screen":
+            # Assuming this is part of a class
+            if not self.has_run_money_logic:
+                if self.player_choice == self.result:
+                    state.player.money += self.bet
+                elif self.player_choice != self.result:
+                    state.player.money -= self.bet
+                self.has_run_money_logic = True
+
             self.coin_flip_messages["results_message"].update(state)
 
             # Construct the result message
@@ -201,31 +238,6 @@ class CoinFlipTedScreen(Screen):
                     self.arrow_index = 0  # Wrap around to the first item
                 pygame.time.delay(200)
 
-
-
-
-
-
-
-            # if state.controller.isTPressed:
-            #     if self.arrow_index == 0:
-            #         self.game_state = "bet_screen"
-
-
-
-            # print("here are the results")
-
-            # Add other game state updates here
-
-            # Print the current game state for debugging
-        # print("Current game state:", self.game_state)
-
-
-
-
-
-
-                # Update the controller
         controller = state.controller
         controller.update()
 
@@ -234,6 +246,8 @@ class CoinFlipTedScreen(Screen):
     def draw(self, state: "GameState"):
         # background
         state.DISPLAY.fill((0, 0, 51))
+
+
         #this box is for hero money , bet amount and other info
         black_box = pygame.Surface((200 - 10, 180 - 10))
         black_box.fill((0, 0, 0))
@@ -333,6 +347,66 @@ class CoinFlipTedScreen(Screen):
                                (260, 550))
             state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
                                (257, 510))
+
+
+
+        if self.game_state == "heads_tails_choose_screen":
+            self.coin_flip_messages["heads_tails_message"].update(state)
+            self.coin_flip_messages["heads_tails_message"].draw(state)
+            bet_box_width = 150
+            bet_box_height = 100
+            border_width = 5
+
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
+
+            # Calculate text positions
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20
+            text_y_no = text_y_yes + 40
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
+            state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+            arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
+            # Set the initial arrow position to "Yes"
+
+
+            # Draw the arrow next to the selected option
+            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+            #
+            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+            if state.controller.isTPressed:
+                if self.headstailsindex == 0:
+                    print("Heads")
+                    self.player_choice = "heads"
+                    self.game_state = "flip_screen"
+                    state.controller.isTPressed = False  # Reset the button state
+
+                else:
+                    if self.headstailsindex == 1:
+                        print("Tails")
+                        self.player_choice = "tails"
+
+                        self.game_state = "flip_screen"
+                        state.controller.isTPressed = False  # Reset the button state
+
 
 
 
