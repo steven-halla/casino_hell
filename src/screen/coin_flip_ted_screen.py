@@ -148,19 +148,6 @@ class CoinFlipTedScreen(Screen):
             state.controller.isTPressed = False  # Reset the button state
 
 
-    # def flipCoin(self, state: "GameState"):
-    #     coin = random.random()
-    #     if coin < 0.6:
-    #         print("coin landed on tails")
-    #         self.result = "tails"
-    #         self.game_state = "results_screen"
-    #         if state.player.luck == 1:
-    #             print("your so luck")
-    #
-    #     else:
-    #         print("coin landed on heads")
-    #         self.result = "heads"
-    #         self.game_state = "results_screen"
     def flipCoin(self, state: "GameState"):
         coin = random.random()
         if coin < 0.9:
@@ -333,7 +320,7 @@ class CoinFlipTedScreen(Screen):
             print("sheild time")
             if state.controller.isTPressed:
                 self.game_state = "play_again_screen"
-
+                state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
             self.coin_flip_messages["play_again_message"].update(state)
@@ -524,8 +511,11 @@ class CoinFlipTedScreen(Screen):
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            if "Shield" in state.player.magicinventory:
+            if "Shield" in state.player.magicinventory and self.debuff_counter == 0:
                 state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
+            elif self.debuff_counter > 0:
+                state.DISPLAY.blit(self.font.render(f"Locked ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
+
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
             # Set the initial arrow position to "Yes"
@@ -556,9 +546,12 @@ class CoinFlipTedScreen(Screen):
 
                 else:
                     print("Magic")  # Added print statement for consistency
-                    self.player_choice = "magic"
-                    self.game_state = "magic_screen"
-                    state.controller.isTPressed = False  # Reset the button state
+                    if self.debuff_counter == 0:
+                        self.player_choice = "magic"
+                        self.game_state = "magic_screen"
+                        state.controller.isTPressed = False  # Reset the button state
+                    elif self.debuff_counter > 0:
+                        print("stay here")
 
         if self.game_state == "magic_screen":
             self.coin_flip_messages["magic_message"].update(state)
@@ -642,16 +635,15 @@ class CoinFlipTedScreen(Screen):
                     print(str(self.magic_menu_selector))
                     self.debuff_vanish = True
                     self.debuff_counter += 3
+                    state.player.focus_points -= 10
                     state.controller.isTPressed = False  # Reset the button state
+                    self.game_state = "heads_tails_choose_screen"
 
 
 
                 elif self.magicindex == 1:
                     print(str(self.magic_menu_selector[1]))
                     self.game_state = "heads_tails_choose_screen"
-
-
-
                     state.controller.isTPressed = False  # Reset the button state
 
 
