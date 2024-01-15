@@ -498,36 +498,29 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["magic_message"].update(state)
             self.coin_flip_messages["magic_message"].draw(state)
 
-            # Updated dimensions and positions
+            # Updated dimensions
             bet_box_width = 150  # Width for both boxes
+            top_box_height = 50  # Height for top box, now 50 pixels tall
             bet_box_height = 100 + 40  # Height for bottom box
             border_width = 5
 
             # Screen dimensions
             screen_width, screen_height = state.DISPLAY.get_size()
 
-            # Top box positions (new_box_x, new_box_y)
-            new_box_x = screen_width - bet_box_width - 2 * border_width - 48
-            magic_box_y = 300 - 40
-            new_box_y = magic_box_y - bet_box_height - border_width  # Directly above bottom box, without bottom border
-
-            bet_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
-
             # Top box positions
-            new_box_y = magic_box_y - bet_box_height - border_width  # Y position for top box
+            new_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
+            magic_box_y = 320 - 40
+            new_box_y = magic_box_y - top_box_height - border_width  # Y position for top box
 
             # Create the top box (black box with white border but no bottom border)
-            black_box_top = pygame.Surface((bet_box_width, bet_box_height))
+            black_box_top = pygame.Surface((bet_box_width, top_box_height))
             black_box_top.fill((0, 0, 0))
-            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + border_width))
+            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))  # Adjusted height for top box
             white_border_top.fill((255, 255, 255))
             white_border_top.blit(black_box_top, (border_width, border_width))
-            state.DISPLAY.blit(white_border_top, (bet_box_x, new_box_y))
+            state.DISPLAY.blit(white_border_top, (new_box_x, new_box_y))
 
-
-
-
-
+            # The bottom box creation code remains the same
 
             # Bottom box positions (bet_box_x, bet_box_y)
             bet_box_x = screen_width - bet_box_width - border_width - 30
