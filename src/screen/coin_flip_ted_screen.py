@@ -154,6 +154,8 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "bet_screen":
             self.has_run_money_logic = False
+            self.player_choice = ""
+
 
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
@@ -247,17 +249,31 @@ class CoinFlipTedScreen(Screen):
         # background
         state.DISPLAY.fill((0, 0, 51))
 
+        # Box for hero money, bet amount, and other info
+        # Original dimensions
+        box_width = 200 - 10
+        box_height = 180 - 10
 
-        #this box is for hero money , bet amount and other info
-        black_box = pygame.Surface((200 - 10, 180 - 10))
+        # New height: 40 pixels taller
+        new_box_height = box_height + 40
+
+        # Create the black box with the new height
+        black_box = pygame.Surface((box_width, new_box_height))
         black_box.fill((0, 0, 0))
+
         border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+
+        # Adjust the dimensions of the white border surface to fit the new black box size
+        white_border = pygame.Surface((box_width + 2 * border_width, new_box_height + 2 * border_width))
         white_border.fill((255, 255, 255))
+
+        # Blit the black box onto the white border
         white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 235))
-        #holds horo name
+
+        # Blit the white border (with the black box) onto the state display at the adjusted position
+        state.DISPLAY.blit(white_border, (25, 235 - 40))  # Position moved up by 40 pixels
+
+        # Box for hero name
         black_box = pygame.Surface((200 - 10, 45 - 10))
         black_box.fill((0, 0, 0))
         border_width = 5
@@ -265,22 +281,26 @@ class CoinFlipTedScreen(Screen):
             (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
         white_border.fill((255, 255, 255))
         white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 195))
+        state.DISPLAY.blit(white_border, (25, 195 - 40))  # Moved up by 40 pixels
 
+        # Adjusting text positions accordingly
         state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
-                                            (255, 255, 255)), (37, 250))
+                                            (255, 255, 255)), (37, 250 - 40))
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             (255, 255, 255)), (37, 290))
+                             (255, 255, 255)), (37, 290 - 40))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
-                                            (255, 255, 255)), (37, 330))
+                                            (255, 255, 255)), (37, 330 - 40))
         state.DISPLAY.blit(
             self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
-            (37, 370))
+            (37, 370 - 40))
+
+        state.DISPLAY.blit(self.font.render(f"Choice: {self.player_choice}", True, (255, 255, 255)), (37, 370))
 
         state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
-                           (37, 205))
+                           (37, 205 - 40))
+
         #holds enemy name
         black_box = pygame.Surface((200 - 10, 110 - 10))
         black_box.fill((0, 0, 0))
@@ -294,13 +314,27 @@ class CoinFlipTedScreen(Screen):
         state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
 
         #holds enemy status, money and other info
-        black_box = pygame.Surface((200 - 10, 130 - 10))
+        # Original dimensions
+        box_width = 200 - 10
+        box_height = 130 - 10
+
+        # New height: 40 pixels smaller
+        new_box_height = box_height - 40
+
+        # Create the black box with the new height
+        black_box = pygame.Surface((box_width, new_box_height))
         black_box.fill((0, 0, 0))
+
         border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
+
+        # Adjust the dimensions of the white border surface to fit the new black box size
+        white_border = pygame.Surface((box_width + 2 * border_width, new_box_height + 2 * border_width))
         white_border.fill((255, 255, 255))
+
+        # Blit the black box onto the white border
         white_border.blit(black_box, (border_width, border_width))
+
+        # Blit the white border (with the black box) onto the state display
         state.DISPLAY.blit(white_border, (25, 60))
 
         state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipTedMoney}", True,
