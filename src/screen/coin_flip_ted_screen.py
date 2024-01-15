@@ -13,7 +13,6 @@ class CoinFlipTedScreen(Screen):
         super().__init__("Casino Coin flip  Screen")
         self.flip_screen_initialized = True
         self.has_run_money_logic = False
-
         self.result = ""
         self.play_again = True
         self.players_side = ""
@@ -83,7 +82,7 @@ class CoinFlipTedScreen(Screen):
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
             "shield_message": TextBox(
-                ["A bird came down and stole the coin, who knows who won now. "],
+                ["A bird came down and stole the coin, who knows who won now. ", "coin landed out of bounds time to reflip"],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -681,11 +680,21 @@ class CoinFlipTedScreen(Screen):
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "shield_screen":
-            self.coin_flip_messages["shield_message"].update(state)
-            self.coin_flip_messages["shield_message"].draw(state)
+            image_to_display = self.heads_image if self.result == "heads" else self.tails_image
+            image_rect = image_to_display.get_rect()
+            image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
+            state.DISPLAY.blit(image_to_display, image_rect)
+
+            self.coin_flip_messages[f"shield_message"].update(state)
+            self.coin_flip_messages[f"shield_message"].draw(state)
 
 
         if self.game_state == "play_again_screen":
+            image_to_display = self.heads_image if self.result == "heads" else self.tails_image
+            image_rect = image_to_display.get_rect()
+            image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
+            state.DISPLAY.blit(image_to_display, image_rect)
+
 
             self.coin_flip_messages["play_again_message"].update(state)
             self.coin_flip_messages["play_again_message"].draw(state)
