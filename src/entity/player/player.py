@@ -31,7 +31,7 @@ class Player(Entity):
         self.perception = 0
         self.perks = []
         self.items = []
-        self.magicinventory = []
+        self.magicinventory = ["shield"]
         self.canMove = True
 
 

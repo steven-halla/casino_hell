@@ -25,8 +25,8 @@ class CoinFlipTedScreen(Screen):
         self.magic_enemy_message_display = ""
         self.headstailsindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
-        self.heads_or_tails_Menu = ["Heads", "Tails", "Magic"]
-        self.magic_menu_selector = []
+        self.heads_or_tails_Menu = ["Heads", "Tails"]
+        self.magic_menu_selector = ["back"]
         self.choice_sequence = True
         self.player_choice = ""
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
@@ -58,6 +58,12 @@ class CoinFlipTedScreen(Screen):
             ),
             "heads_tails_message": TextBox(
                 ["Choose heads or tails. "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "magic_message": TextBox(
+                ["Choose your spell . "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -174,8 +180,8 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
-            if "divine coin flip shield" in state.player.magicinventory:
-                self.magic_menu_selector.append("divine coin flip shield")
+            if "shield" in state.player.magicinventory:
+                self.magic_menu_selector.append("shield")
 
 
             # Update the welcome screen text box
@@ -199,6 +205,9 @@ class CoinFlipTedScreen(Screen):
             print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
 
+            if "shield" in state.player.magicinventory:
+                self.heads_or_tails_Menu.append("Magic")
+
             if state.controller.isUpPressed:
                 self.headstailsindex -= 1
                 if self.headstailsindex < 0:
@@ -214,6 +223,10 @@ class CoinFlipTedScreen(Screen):
 
                 print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+        if self.game_state == "magic_screen":
+            print("do you believe in magic?")
+
 
         if self.game_state == "flip_screen":
 
@@ -445,7 +458,8 @@ class CoinFlipTedScreen(Screen):
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
+            if "shield" in state.player.magicinventory:
+                state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
             # Set the initial arrow position to "Yes"
@@ -477,8 +491,70 @@ class CoinFlipTedScreen(Screen):
                 else:
                     print("Magic")  # Added print statement for consistency
                     self.player_choice = "magic"
-                    self.game_state = "magic_menu"
+                    self.game_state = "magic_screen"
                     state.controller.isTPressed = False  # Reset the button state
+
+        if self.game_state == "magic_screen":
+            self.coin_flip_messages["magic_message"].update(state)
+            self.coin_flip_messages["magic_message"].draw(state)
+
+            # Updated dimensions and positions
+            bet_box_width = 150  # Width for both boxes
+            bet_box_height = 100 + 40  # Height for bottom box
+            border_width = 5
+
+            # Screen dimensions
+            screen_width, screen_height = state.DISPLAY.get_size()
+
+            # Top box positions (new_box_x, new_box_y)
+            new_box_x = screen_width - bet_box_width - 2 * border_width - 48
+            magic_box_y = 300 - 40
+            new_box_y = magic_box_y - bet_box_height - border_width  # Directly above bottom box, without bottom border
+
+            bet_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
+
+            # Top box positions
+            new_box_y = magic_box_y - bet_box_height - border_width  # Y position for top box
+
+            # Create the top box (black box with white border but no bottom border)
+            black_box_top = pygame.Surface((bet_box_width, bet_box_height))
+            black_box_top.fill((0, 0, 0))
+            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + border_width))
+            white_border_top.fill((255, 255, 255))
+            white_border_top.blit(black_box_top, (border_width, border_width))
+            state.DISPLAY.blit(white_border_top, (bet_box_x, new_box_y))
+
+
+
+
+
+
+            # Bottom box positions (bet_box_x, bet_box_y)
+            bet_box_x = screen_width - bet_box_width - border_width - 30
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+            # Create the bottom box (
+            bottom_box = pygame.Surface((bet_box_width, bet_box_height))
+            bottom_box.fill((0, 0, 0))
+            white_border_bottom = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border_bottom.fill((255, 255, 255))
+            white_border_bottom.blit(bottom_box, (border_width, border_width))
+            state.DISPLAY.blit(white_border_bottom, (bet_box_x, bet_box_y))
+
+            # Adjust text and arrow positions relative to the bottom box
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20
+            text_y_no = text_y_yes + 40
+            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+            arrow_y = text_y_yes + self.headstailsindex * 40
+
+            # Draw text
+            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
+            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+
+            # Draw the arrow using pygame's drawing functions
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         if self.game_state == "flip_screen":
             self.coin_flip_messages["flip_message"].update(state)
