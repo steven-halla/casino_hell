@@ -46,6 +46,8 @@ class CoinFlipTedScreen(Screen):
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
         self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
+        self.shield_triggered = False
+
         self.lose_exp = False
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
@@ -286,7 +288,16 @@ class CoinFlipTedScreen(Screen):
                 if self.player_choice == self.result:
                     state.player.money += self.bet
                 elif self.player_choice != self.result:
+
+
                     state.player.money -= self.bet
+                    if self.debuff_vanish == True:
+                        import random
+                        roll = random.randint(1, 100)
+                        if roll > 10:
+                            print("gotcha")
+                            state.player.money += self.bet
+
                 self.has_run_money_logic = True
 
             self.coin_flip_messages["results_message"].update(state)
