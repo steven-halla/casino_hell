@@ -47,6 +47,8 @@ class CoinFlipTedScreen(Screen):
 
 
 
+
+
         self.entered_shield_screen = False  # Add this flag
 
         self.shield_triggered = False
@@ -121,6 +123,36 @@ class CoinFlipTedScreen(Screen):
             ),
             "game_over_no_stamina": TextBox(
                 ["Hero: I'm so tired, if I keep gambling i'll pass out at the dealer table. "
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "enemy_desperate_message": TextBox(
+                ["Enemy: NOOoooooo....Do you know how many years i've spent coin flipping!!! This is impossible! ",
+                 "Hero: It's not,  either you've been doing it wrong for years, or you reached you best a long time ago",
+                 "Enemy: You bastard, I'll show you, I'll show you to mess with me you mother fucker!!!"
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "hero_desperate_message": TextBox(
+                ["Hero: Why am I having so much trouble with this chump? ",
+                 "I wonder if any of the towns people has a clue to defeat him?",
+                 "Should I leave, or stay with it and trust in my luck?"
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "enemy_defeated": TextBox(
+                ["Hero: Well looks like I'm done with you! ",
+                 "Enemy: Looks like it's back to an all chili diet for me!",
+                 "Enemy: I bet Cindy will be happy to  hear that I lost my standing....."
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -845,6 +877,15 @@ class CoinFlipTedScreen(Screen):
                 print("no money")
                 self.coin_flip_messages["game_over_no_money"].update(state)
                 self.coin_flip_messages["game_over_no_money"].draw(state)
+
+
+        if self.game_state == "enemy_desperate_screen":
+            print("enemy is veyr desperate now")
+            self.coin_flip_messages["enemy_desperate_message"].update(state)
+            self.coin_flip_messages["enemy_desperate_message"].draw(state)
+
+
+
 
 
 
