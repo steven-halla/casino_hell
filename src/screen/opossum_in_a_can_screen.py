@@ -64,6 +64,8 @@ class OpossumInACanScreen(Screen):
         self.can7 = ""
         self.can8 = ""
 
+        self.fill_cans = True
+
     def initializeGarbageCans(self):
         # Randomly shuffle the winner_or_looser list
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
@@ -175,8 +177,11 @@ class OpossumInACanScreen(Screen):
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
-        if state.controller.isWPressed:
+        if self.fill_cans == True:
             self.initializeGarbageCans()
+            self.fill_cans = False
+
+
         key_press_threshold = 80  # Example threshold, adjust as needed
 
         # Debugging: Print the time since the last right key press
@@ -185,8 +190,12 @@ class OpossumInACanScreen(Screen):
 
         # Check if enough time has passed since the last right key press
         if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+            # Move to the next box
             self.green_box_index = (self.green_box_index + 1) % 8
-            # print(f"Current green box index: {self.green_box_index}")
+
+            # Print the current green box index and its content
+            current_can_content = getattr(self, f'can{self.green_box_index + 1}')
+            print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
 
             # Reset the key pressed time
             state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
@@ -402,6 +411,8 @@ class OpossumInACanScreen(Screen):
             self.game_state = "welcome_opposum"
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
+
+        # self.fill_cans = True
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill((0, 0, 51))
