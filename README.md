@@ -120,3 +120,9 @@ lets not forget to add the doctor for fixing opposum status
 How to start program:
 
  python src/main.py 
+ 
+lets add random messsages that play on the bet screen no reason to see the same text
+over and over again 
+maybe do this via a counter say every 10 games we can change the welcome messge
+this means all games will need to back to the welcome screen
+or we just make a new screen type that only triggers on counter of 10

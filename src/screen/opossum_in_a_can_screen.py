@@ -17,6 +17,7 @@ class OpossumInACanScreen(Screen):
         self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
+        self.player_score = 0
         self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["win", "win", "insurance_eater",
                                             "win", "win", "win", "win",
@@ -59,6 +60,18 @@ class OpossumInACanScreen(Screen):
                                  "X3_star", "win",
 
                                  "win", "insurance_eater"]
+
+    # def giveExp(self, state: "GameState"):
+    #     # print("Player exp is: " + str(state.player.exp))
+    #     if self.result == self.player_choice:
+    #         state.player.exp += 30
+    #         if self.bet > 60:
+    #             state.player.stamina_points -= 1
+    #
+    #     elif self.result != self.player_choice:
+    #         state.player.exp += 20
+    #         if self.bet > 60:
+    #             state.player.stamina_points -= 2
 
     def shuffle_opposums(self) -> List[str]:
         """Creates a new list in a random order"""
@@ -119,6 +132,12 @@ class OpossumInACanScreen(Screen):
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
+        if state.controller.isQPressed:
+            # Transition to the main screen
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
+            return
+
         if self.sallyOpossumMoney <= 0:
             self.sallyOpossumIsDefeated = True
         controller = state.controller
@@ -326,179 +345,100 @@ class OpossumInACanScreen(Screen):
             state.mainScreen.start(state)
 
     def draw(self, state: "GameState"):
-        state.DISPLAY.fill((0, 0, 0))
+        state.DISPLAY.fill((0, 0, 51))
 
-        if self.desperate == True:
-            state.DISPLAY.blit(self.font.render(
-                f" I Take care of the orphanage here Please think of the children!",
-                True, (255, 255, 255)), (10, 530))
+        #this box is for hero info
+        box_width = 200 - 10
+        box_height = 180 - 10
+        new_box_height = box_height + 40
+        black_box = pygame.Surface((box_width, new_box_height))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((box_width + 2 * border_width, new_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 235 - 40))
 
+        # Box for hero name
+        black_box = pygame.Surface((200 - 10, 45 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 195 - 40))  # Moved up by 40 pixels
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
+                                            (255, 255, 255)), (37, 250 - 40))
         state.DISPLAY.blit(
-            self.font.render(f"{self.winner_or_looser}", True, (255, 255, 255)),
-            (1, 333))
+            self.font.render(f"HP: {state.player.stamina_points}", True,
+                             (255, 255, 255)), (37, 290 - 40))
 
-        state.DISPLAY.blit(self.font.render(
-            f" SallyOpossum Money: {self.sallyOpossumMoney}",
-            True, (255, 255, 255)), (10, 190))
-        state.DISPLAY.blit(self.font.render(
-            f" player Money: {state.player.money}",
-            True, (255, 255, 255)), (10, 290))
+        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
+                                            (255, 255, 255)), (37, 330 - 40))
+        state.DISPLAY.blit(
+            self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
+            (37, 370 - 40))
 
-        state.DISPLAY.blit(self.font.render(
-            f" Players Bet: {self.bet}",
-            True, (255, 255, 255)), (10, 390))
-        state.DISPLAY.blit(self.font.render(
-            f" player Insurance: {self.insurance} here is your luck duck : {self.luck_activated}",
-            True, (255, 255, 255)), (10, 490))
+        state.DISPLAY.blit(self.font.render(f"Score: {self.player_score} ", True, (255, 255, 255)), (37, 370))
 
-        state.DISPLAY.blit(self.font.render(
-            f" bottom message: {self.bottom_message}  rader is: {self.opossum_rader}",
-            True, (255, 255, 255)), (10, 33))
+        state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
+                           (37, 205 - 40))
 
-        if self.game_state == "choose_can":
+        #the below is for enemy boxes
+        # holds enemy name
+        black_box = pygame.Surface((200 - 10, 110 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 20))
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (700, 160))
+        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (700, 210))
+        # holds enemy status, money and other info
+        # Original dimensions
+        box_width = 200 - 10
+        box_height = 130 - 10
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.choices[2]}", True, (255, 255, 255)),
-                (700, 260))
+        # New height: 40 pixels smaller
+        new_box_height = box_height - 40
 
-            if self.choices_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
+        # Create the black box with the new height
+        black_box = pygame.Surface((box_width, new_box_height))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((box_width + 2 * border_width, new_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 60))
 
-
-
-            elif self.choices_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-
+        state.DISPLAY.blit(self.font.render(f"Money: {self.sallyOpossumMoney}", True,
+                                            (255, 255, 255)), (37, 70))
 
 
-            elif self.choices_index == 2:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-        elif self.game_state == "choose_or_flee":
-            if self.bet_or_flee_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
+        state.DISPLAY.blit(self.font.render(f"Status: normal", True,
+                                                (255, 255, 255)), (37, 110))
 
 
-
-            elif self.bet_or_flee_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.bet_or_flee[0]}", True,
-                                 (255, 255, 255)),
-                (700, 160))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.bet_or_flee[1]}", True,
-                                 (255, 255, 255)),
-                (700, 210))
-
-
-
-        elif self.game_state == "magic_menu":
-            if self.magic_menu_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.magic_menu_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
+        #this creates the text box for our below messages
+        black_box_height = 130
+        black_box_width = 700
+        border_width = 5
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill((0, 0, 0))
+        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        screen_width, screen_height = state.DISPLAY.get_size()
+        black_box_x = (screen_width - black_box_width) // 2 - border_width
+        black_box_y = screen_height - black_box_height - 20 - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
 
 
 
-            elif self.magic_menu_index == 2:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 255))
-
-            elif self.magic_menu_index == 3:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 305))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True,
-                                 (255, 255, 255)),
-                (700, 160))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True,
-                                 (255, 255, 255)),
-                (700, 210))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True,
-                                 (255, 255, 255)),
-                (700, 260))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[3]}", True,
-                                 (255, 255, 255)),
-                (700, 310))
-
-
-
-        elif self.game_state == "welcome_opposum":
-            state.DISPLAY.blit(self.font.render(f"press T", True, (255, 255, 255)),
-                         (10, 10))
-        elif self.game_state == "choose_can":
-            state.DISPLAY.blit(self.font.render(f"Press 1 to choose  a opossum", True,
-                                          (255, 255, 255)), (100, 10))
-
-
-
-        elif self.game_state == "play_again_or_bail":
-            state.DISPLAY.blit(self.font.render(f"your result is {self.result}", True,
-                                          (255, 255, 255)), (388, 50))
-            if self.play_again_or_quit_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 155))
-
-
-
-            elif self.play_again_or_quit_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (650, 205))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.play_again_or_quit[0]}", True,
-                                 (255, 255, 255)),
-                (700, 160))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.play_again_or_quit[1]}", True,
-                                 (255, 255, 255)),
-                (700, 210))
-
-        elif self.game_state == "loser_screen":
-            state.DISPLAY.blit(
-                self.font.render(f"You drew the {self.result} you lose goodbye",
-                                 True, (255, 255, 255)), (210, 50))
 
         pygame.display.flip()

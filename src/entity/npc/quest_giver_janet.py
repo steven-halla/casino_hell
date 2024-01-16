@@ -8,7 +8,11 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 
 #### NOTE: BOTH JANET AND BILLY BOTH NEED HEDGE HOG AND WATER WILL NEED TO CHANGE IN FUTURE
 ####
-####
+####lets have a convo where she offers to give player hedge hog key after they complete first quest
+###### Hero says " You want me to rescue him, sorry I dont involve myself in non gambling matters.
+##### Janet says " I bet you can't find my hedge hot and return him to me"
+##### Hero: says " 10 coins that I find him"
+##### Janet: says " Deal"
 class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)

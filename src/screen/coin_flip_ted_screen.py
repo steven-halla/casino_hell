@@ -49,17 +49,12 @@ class CoinFlipTedScreen(Screen):
         self.enemy_defeated_counter = False
         self.hero_desperate_counter = False
 
-
-
-
-
-
         self.entered_shield_screen = False  # Add this flag
-
         self.shield_triggered = False
 
         self.lose_exp = False
         self.game_state = "welcome_screen"
+
         self.coin_flip_messages = {
             "welcome_message": TextBox(
                 ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
@@ -452,6 +447,11 @@ class CoinFlipTedScreen(Screen):
         controller.update()
 
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
+
+
+
+
+
 
     def draw(self, state: "GameState"):
 
