@@ -19,12 +19,12 @@ class OpossumInACanScreen(Screen):
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
         self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win", "insurance_eater",
-                                            "win", "win", "win", "win",
-                                            "lucky_star", "lucky_star",
-                                            "X3_star", "lose", "win",
+        self.winner_or_looser: List[str] = ["win", "win",
+                                            "win", "win", "lose",
+                                            "lucky_star",
+                                            "X3_star", "lose",
 
-                                            "win", "insurance_eater"]
+                                     ]
         self.result = "win"
         self.bet = 20
         self.insurance = 200
@@ -54,18 +54,55 @@ class OpossumInACanScreen(Screen):
         self.luck_activated = 0
 
         self.green_box_index = 0  # Index of the currently green box
+        self.initializeGarbageCans()
+        self.can1 = ""
+        self.can2 = ""
+        self.can3 = ""
+        self.can4 = ""
+        self.can5 = ""
+        self.can6 = ""
+        self.can7 = ""
+        self.can8 = ""
 
+    def initializeGarbageCans(self):
+        # Randomly shuffle the winner_or_looser list
+        shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
+
+        # Assign a shuffled item to each can and print the content
+        self.can1 = shuffled_items[0]
+        print("Can 1 contains:", self.can1)
+
+        self.can2 = shuffled_items[1]
+        print("Can 2 contains:", self.can2)
+
+        self.can3 = shuffled_items[2]
+        print("Can 3 contains:", self.can3)
+
+        self.can4 = shuffled_items[3]
+        print("Can 4 contains:", self.can4)
+
+        self.can5 = shuffled_items[4]
+        print("Can 5 contains:", self.can5)
+
+        self.can6 = shuffled_items[5]
+        print("Can 6 contains:", self.can6)
+
+        self.can7 = shuffled_items[6]
+        print("Can 7 contains:", self.can7)
+
+        self.can8 = shuffled_items[7]
+        print("Can 8 contains:", self.can8)
 
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 200
 
-        self.winner_or_looser = ["win", "win", "insurance_eater", "win", "win",
-                                 "win", "win", "lucky_star", "lucky_star",
+        self.winner_or_looser = ["win", "win",  "win",
+                                 "lucky_star", "lucky_star",
                                  "X3_star", "win",
 
-                                 "win", "insurance_eater"]
+                                ]
 
     # def giveExp(self, state: "GameState"):
     #     # print("Player exp is: " + str(state.player.exp))
@@ -138,16 +175,18 @@ class OpossumInACanScreen(Screen):
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
+        if state.controller.isWPressed:
+            self.initializeGarbageCans()
         key_press_threshold = 80  # Example threshold, adjust as needed
 
         # Debugging: Print the time since the last right key press
         time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
-        print(f"Time since right key pressed: {time_since_right_pressed}")
+        # print(f"Time since right key pressed: {time_since_right_pressed}")
 
         # Check if enough time has passed since the last right key press
         if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
             self.green_box_index = (self.green_box_index + 1) % 8
-            print(f"Current green box index: {self.green_box_index}")
+            # print(f"Current green box index: {self.green_box_index}")
 
             # Reset the key pressed time
             state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
