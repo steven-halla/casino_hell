@@ -443,6 +443,7 @@ class CoinFlipTedScreen(Screen):
         if self.game_state == "enemy_defeated_screen":
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
+                self.coinFlipTedDefeated = True
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -790,23 +791,6 @@ class CoinFlipTedScreen(Screen):
                 self.game_state = "play_again_screen"
                 state.controller.isTPressed = False  # Reset the button state
 
-        # if self.game_state == "shield_screen":
-        #     if not self.entered_shield_screen:
-        #         # Select a random message from the TextBox's existing messages
-        #         random_message = random.choice(self.coin_flip_messages["shield_message"].messages)
-        #         # Manually update the text of the TextBox
-        #         self.coin_flip_messages["shield_message"].text = random_message
-        #         # Reset characters_to_display to start gradual display
-        #         self.coin_flip_messages["shield_message"].characters_to_display = 0
-        #         # Set the flag to True to avoid repeating this in the current state
-        #         self.entered_shield_screen = True
-        #
-        #     # Update and draw the TextBox
-        #     self.coin_flip_messages["shield_message"].update(state)
-        #     self.coin_flip_messages["shield_message"].draw(state)
-        # else:
-        #     # Reset the flag when leaving the state to enable a new random message next time
-        #     self.entered_shield_screen
         if self.game_state == "shield_screen":
             if not self.entered_shield_screen:
                 # Randomly select one of the shield messages
@@ -926,13 +910,6 @@ class CoinFlipTedScreen(Screen):
             print("you won the game")
             self.coin_flip_messages["enemy_defeated_message"].update(state)
             self.coin_flip_messages["enemy_defeated_message"].draw(state)
-
-
-
-
-
-
-        # Check if the arrow is at index 0 ("Yes") and T is pressed
 
 
         pygame.display.flip()

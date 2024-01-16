@@ -3,6 +3,7 @@ import pygame
 from entity.npc.cindy_long_hair import CindyLongHair
 from screen.black_jack_screen import BlackJackScreen
 from screen.coin_flip_fred_screen import CoinFlipFredScreen
+from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
@@ -47,7 +48,8 @@ class GameState:
         # self.bossScreen = BossScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
+        self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.blackJackScreen = BlackJackScreen()
 
-        self.currentScreen = self.coinFlipTedScreen  # assign a value to currentScreen here
+        self.currentScreen = self.coinFlipSandyScreen  # assign a value to currentScreen here
