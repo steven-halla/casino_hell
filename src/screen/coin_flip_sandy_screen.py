@@ -49,11 +49,6 @@ class CoinFlipSandyScreen(Screen):
         self.enemy_defeated_counter = False
         self.hero_desperate_counter = False
 
-
-
-
-
-
         self.entered_shield_screen = False  # Add this flag
 
         self.shield_triggered = False

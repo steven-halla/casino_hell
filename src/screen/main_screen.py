@@ -1,6 +1,7 @@
 import pygame
 import pytmx
 
+from entity.npc.FlippingSandy import FlippingSandy
 from entity.npc.bapping_mike import BappingMike
 from entity.npc.bar_keep import BarKeep
 from entity.npc.bobby_bibs import BobbyBibs
@@ -86,7 +87,8 @@ class MainScreen(Screen):
             WallyGuide(16 * 26, 16 * 10),
             #
             # CoinFlipFred(16 * 28, 16 * 36),
-            # FlippinTed(16 * 20, 16 * 36),
+            FlippinTed(16 * 20, 16 * 36),
+            FlippingSandy(16 * 28, 16 * 36),
             # NellyOpossum(16 * 12, 16 * 36),
             # Nurgle(16 * 24, 16 * 34)
 
