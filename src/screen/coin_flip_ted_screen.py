@@ -45,6 +45,11 @@ class CoinFlipTedScreen(Screen):
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
         self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
+        self.enemy_desperate_counter = False
+        self.enemy_defeated_counter = False
+        self.hero_desperate_counter = False
+
+
 
 
 
@@ -132,7 +137,7 @@ class CoinFlipTedScreen(Screen):
             "enemy_desperate_message": TextBox(
                 ["Enemy: NOOoooooo....Do you know how many years i've spent coin flipping!!! This is impossible! ",
                  "Hero: It's not,  either you've been doing it wrong for years, or you reached you best a long time ago",
-                 "Enemy: You bastard, I'll show you, I'll show you to mess with me you mother fucker!!!"
+                 "Enemy: You bastard, I'll show you, I'll show you to mess with me you mother fucker!!!", ""
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -142,17 +147,17 @@ class CoinFlipTedScreen(Screen):
             "hero_desperate_message": TextBox(
                 ["Hero: Why am I having so much trouble with this chump? ",
                  "I wonder if any of the towns people has a clue to defeat him?",
-                 "Should I leave, or stay with it and trust in my luck?"
+                 "Should I leave, or stay with it and trust in my luck?", ""
 
                  ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
-            "enemy_defeated": TextBox(
+            "enemy_defeated_message": TextBox(
                 ["Hero: Well looks like I'm done with you! ",
                  "Enemy: Looks like it's back to an all chili diet for me!",
-                 "Enemy: I bet Cindy will be happy to  hear that I lost my standing....."
+                 "Enemy: I bet Cindy will be happy to  hear that I lost my standing.....", ""
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -242,6 +247,12 @@ class CoinFlipTedScreen(Screen):
 
     def update(self, state: "GameState"):
         import random  # Importing inside the method
+        if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
+            self.game_state = "enemy_desperate_screen"
+
+        if self.coinFlipTedMoney < 10:
+            self.game_state = "enemy_defeated_screen"
+
 
 
         if state.controller.isQPressed:
@@ -358,10 +369,12 @@ class CoinFlipTedScreen(Screen):
             if not self.has_run_money_logic:
                 if self.player_choice == self.result:
                     state.player.money += self.bet
+                    self.coinFlipTedMoney -= self.bet
                 elif self.player_choice != self.result:
 
 
                     state.player.money -= self.bet
+                    self.coinFlipTedMoney += self.bet
                     if self.debuff_vanish == True:
                         import random
                         roll = random.randint(1, 100)
@@ -411,6 +424,25 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "game_over_screen":
             if state.controller.isTPressed:
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+        if self.game_state == "enemy_desperate_screen":
+            if self.coin_flip_messages["enemy_desperate_message"].message_index == 3:
+                self.enemy_desperate_counter = True
+                self.game_state = "bet_screen"
+
+
+
+        if self.game_state == "hero_desperate_screen":
+            if self.coin_flip_messages["hero_desperate_message"].message_index == 3:
+                self.hero_desperate_counter = True
+
+                self.game_state = "bet_screen"
+
+        if self.game_state == "enemy_defeated_screen":
+            if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
+                self.enemy_defeated_counter = True
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -792,10 +824,11 @@ class CoinFlipTedScreen(Screen):
             self.entered_shield_screen = False
 
         if self.game_state == "play_again_screen":
-            image_to_display = self.heads_image if self.result == "heads" else self.tails_image
-            image_rect = image_to_display.get_rect()
-            image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
-            state.DISPLAY.blit(image_to_display, image_rect)
+            ## this shows the coin
+            # image_to_display = self.heads_image if self.result == "heads" else self.tails_image
+            # image_rect = image_to_display.get_rect()
+            # image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
+            # state.DISPLAY.blit(image_to_display, image_rect)
 
 
             self.coin_flip_messages["play_again_message"].update(state)
@@ -884,8 +917,15 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["enemy_desperate_message"].update(state)
             self.coin_flip_messages["enemy_desperate_message"].draw(state)
 
+        if self.game_state == "hero_desperate_screen":
+            print("hero is most desperate now")
+            self.coin_flip_messages["hero_desperate_message"].update(state)
+            self.coin_flip_messages["hero_desperate_message"].draw(state)
 
-
+        if self.game_state == "enemy_defeated_screen":
+            print("you won the game")
+            self.coin_flip_messages["enemy_defeated_message"].update(state)
+            self.coin_flip_messages["enemy_defeated_message"].draw(state)
 
 
 
