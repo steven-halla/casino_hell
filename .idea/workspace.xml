@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="game now fin">
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_sandy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_sandy_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/coin_flip_ted_screen.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new npc created">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/FlippingSandy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/FlippingSandy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/flippin_ted.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +281,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="83755000" />
+      <workItem from="1705123656694" duration="87784000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -625,7 +626,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="137" />
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,8 +655,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="play again box placed" />
-    <MESSAGE value="box almost built" />
     <MESSAGE value="up down arrows working" />
     <MESSAGE value="save point issue with results page" />
     <MESSAGE value="solved issue with routing" />
@@ -679,7 +678,9 @@
     <MESSAGE value="now with game over screen" />
     <MESSAGE value="going forwrd with final parts" />
     <MESSAGE value="game now fin" />
-    <option name="LAST_COMMIT_MESSAGE" value="game now fin" />
+    <MESSAGE value="coin flip sandy updated" />
+    <MESSAGE value="new npc created" />
+    <option name="LAST_COMMIT_MESSAGE" value="new npc created" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

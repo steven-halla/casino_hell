@@ -1,92 +1,68 @@
 import math
-
 import pygame
-
+from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
-
 
 class FlippinTed(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NpcTextBox(
-            [
-                "Everyone calls me Cheating ted but it only happened that one time.....",
-                "Flippin Ted: Would you like to do battle?Prss A to battle, T for no"
-
-            ],
-            (50, 450, 50, 45), 30, 500)
+        self.flipping_ted_messages = {
+            "welcome_message": NpcTextBox(
+                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!"],
+                (50, 450, 700, 130), 36, 500),
+            "defeated_message": NpcTextBox(
+                ["Looks like you defeated me, how sad :("],
+                (50, 450, 700, 130), 36, 500)
+        }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
-
-        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.state = "waiting"  # states = "waiting" | "talking" | "finished" | "game_start
-
+        self.state_start_time = pygame.time.get_ticks()
+        self.state = "waiting"
 
     def update(self, state: "GameState"):
-
         if self.state == "waiting":
-            player = state.player
             self.update_waiting(state)
-
         elif self.state == "talking":
-
-            if state.controller.isAPressed:
-                state.currentScreen = state.coinFlipTedScreen
-                state.coinFlipTedScreen.start(state)
-
-            if self.textbox.message_index == 1:
-                if state.controller.isAPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
-
-
-                elif state.controller.isBPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
-
             self.update_talking(state)
 
     def update_waiting(self, state: "GameState"):
         player = state.player
-        min_distance = math.sqrt(
-            (player.collision.x - self.collision.x) ** 2 + (
-                        player.collision.y - self.collision.y) ** 2)
+        distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
+                             (player.collision.y - self.collision.y) ** 2)
 
-        if min_distance < 10:
-            print("nooo")
-
-        if state.controller.isTPressed and (
-                pygame.time.get_ticks() - self.state_start_time) > 500:
-            distance = math.sqrt(
-                (player.collision.x - self.collision.x) ** 2 + (
-                            player.collision.y - self.collision.y) ** 2)
-
-            if distance < 40:
-                self.state = "talking"
-
-                self.state_start_time = pygame.time.get_ticks()
-                self.textbox.reset()
+        if distance < 40 and state.controller.isTPressed and \
+                (pygame.time.get_ticks() - self.state_start_time) > 500:
+            self.state = "talking"
+            self.state_start_time = pygame.time.get_ticks()
+            # Reset the message depending on the game state
+            if state.coinFlipTedScreen.coinFlipTedDefeated:
+                self.flipping_ted_messages["defeated_message"].reset()
+            else:
+                self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        self.textbox.update(state)
-        if state.controller.isTPressed and self.textbox.is_finished():
-            self.state = "waiting"
+        current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+        current_message.update(state)
 
+        # Logic for entering the game by pressing the 'A' button
+        if state.controller.isAPressed and not state.coinFlipTedScreen.coinFlipTedDefeated:
+            state.currentScreen = state.coinFlipTedScreen
+            state.coinFlipTedScreen.start(state)
+
+        if state.controller.isTPressed and current_message.is_finished():
+            self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y, self.collision.width, self.collision.height)
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        if self.state == "waiting":
-            pass
-        elif self.state == "talking":
+        if self.state == "talking":
+            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+            current_message.draw(state)
 
-            # print("is talking")
-            self.textbox.draw(state)
+
+
+

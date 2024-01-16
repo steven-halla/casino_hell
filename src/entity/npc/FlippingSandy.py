@@ -33,11 +33,11 @@ class FlippingSandy(Npc):
         elif self.state == "talking":
 
             if state.controller.isAPressed:
-                state.currentScreen = state.coinFlipTedScreen
-                state.coinFlipTedScreen.start(state)
+                state.currentScreen = state.coinFlipSandyScreen
+                state.coinFlipSandyScreen.start(state)
 
             if self.textbox.message_index == 1:
-                if state.controller.isAPressed and \
+                if state.coinflipFredScreen.  state.controller.isAPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
