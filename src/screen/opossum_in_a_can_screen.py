@@ -53,6 +53,9 @@ class OpossumInACanScreen(Screen):
 
         self.luck_activated = 0
 
+        self.green_box_index = 0  # Index of the currently green box
+
+
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
@@ -135,8 +138,20 @@ class OpossumInACanScreen(Screen):
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
-        if state.controller.isRightPressed:
-            self.box_color = (0, 255, 0)
+        key_press_threshold = 80  # Example threshold, adjust as needed
+
+        # Debugging: Print the time since the last right key press
+        time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
+        print(f"Time since right key pressed: {time_since_right_pressed}")
+
+        # Check if enough time has passed since the last right key press
+        if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+            self.green_box_index = (self.green_box_index + 1) % 8
+            print(f"Current green box index: {self.green_box_index}")
+
+            # Reset the key pressed time
+            state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+
         if state.controller.isQPressed:
             # Transition to the main screen
             state.currentScreen = state.mainScreen
@@ -363,10 +378,16 @@ class OpossumInACanScreen(Screen):
                 y = row * (box_size + margin) + margin + 70
                 positions.append((x, y))
 
-        # Draw the boxes with the current box color
-        for pos in positions:
-            pygame.draw.rect(state.DISPLAY, self.box_color, (*pos, box_size, box_size))
+        # Draw the boxes
+        for i, pos in enumerate(positions):
+            # Determine the color based on the green box index
+            if i == self.green_box_index:
+                box_color = (0, 255, 0)  # Green for the selected box
+            else:
+                box_color = (255, 0, 0)  # Red for all other boxes
 
+            # Draw the box with the determined color
+            pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))
 
 
 
