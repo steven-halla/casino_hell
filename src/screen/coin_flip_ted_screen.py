@@ -111,6 +111,23 @@ class CoinFlipTedScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "game_over_no_money": TextBox(
+                ["Looks like your out of money, sorry time for you to go. "
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "game_over_no_stamina": TextBox(
+                ["Hero: I'm so tired, if I keep gambling i'll pass out at the dealer table. "
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+
 
             # You can add more game state keys and TextBox instances here
         }
@@ -359,6 +376,12 @@ class CoinFlipTedScreen(Screen):
                 if self.arrow_index >= len(self.yes_or_no_menu):
                     self.arrow_index = 0  # Wrap around to the first item
                 pygame.time.delay(200)
+
+        if self.game_state == "game_over_screen":
+            if state.controller.isTPressed:
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
 
         controller = state.controller
         controller.update()
@@ -797,7 +820,12 @@ class CoinFlipTedScreen(Screen):
 
                     state.controller.isTPressed = False  # Reset the button state
 
-                    self.game_state = "bet_screen"
+                    if state.player.stamina_points < 2 or state.player.money < 10:
+                        self.game_state = "game_over_screen"
+                        print("game over")
+
+                    elif state.player.stamina_points > 1 or state.player.money > 9:
+                        self.game_state = "bet_screen"
 
 
                 else:
@@ -805,10 +833,25 @@ class CoinFlipTedScreen(Screen):
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 
+        if self.game_state == "game_over_screen":
+            print("your game state is: " + str(self.game_state))
+            if state.player.stamina_points < 2:
+                print("no stamina")
+                self.coin_flip_messages["game_over_no_stamina"].update(state)
+                self.coin_flip_messages["game_over_no_stamina"].draw(state)
+
+
+            elif state.player.money < 10:
+                print("no money")
+                self.coin_flip_messages["game_over_no_money"].update(state)
+                self.coin_flip_messages["game_over_no_money"].draw(state)
 
 
 
-            # Check if the arrow is at index 0 ("Yes") and T is pressed
+
+
+
+        # Check if the arrow is at index 0 ("Yes") and T is pressed
 
 
         pygame.display.flip()
