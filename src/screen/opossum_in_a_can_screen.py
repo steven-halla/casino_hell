@@ -347,6 +347,23 @@ class OpossumInACanScreen(Screen):
     def draw(self, state: "GameState"):
         state.DISPLAY.fill((0, 0, 51))
 
+        # Settings for the red boxes
+        box_size = 64  # Updated box size
+        box_color = (255, 0, 0)  # Red color
+        margin = 30  # Margin between boxes
+
+        # Calculate positions for the red boxes, shifted to the right by 200 pixels
+        positions = []
+        for row in range(2):  # Two rows
+            for col in range(4):  # Four columns
+                x = col * (box_size + margin) + margin + 270  # Shifted to the right
+                y = row * (box_size + margin) + margin + 70
+                positions.append((x, y))
+
+        # Draw the red boxes
+        for pos in positions:
+            pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))
+
         #this box is for hero info
         box_width = 200 - 10
         box_height = 180 - 10
