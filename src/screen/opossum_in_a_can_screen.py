@@ -29,6 +29,9 @@ class OpossumInACanScreen(Screen):
         self.bet = 20
         self.insurance = 200
         self.X3 = False
+
+        self.box_color = (255, 0, 0)  # Initially red
+
         self.has_opossum_insurance = True
 
         self.choices = ["Grab", "Magic", "Quit"]
@@ -132,6 +135,8 @@ class OpossumInACanScreen(Screen):
             self.game_state = "loser_screen"
 
     def update(self, state: "GameState"):
+        if state.controller.isRightPressed:
+            self.box_color = (0, 255, 0)
         if state.controller.isQPressed:
             # Transition to the main screen
             state.currentScreen = state.mainScreen
@@ -347,22 +352,26 @@ class OpossumInACanScreen(Screen):
     def draw(self, state: "GameState"):
         state.DISPLAY.fill((0, 0, 51))
 
-        # Settings for the red boxes
-        box_size = 64  # Updated box size
-        box_color = (255, 0, 0)  # Red color
-        margin = 30  # Margin between boxes
+        box_size = 64
+        margin = 30
 
-        # Calculate positions for the red boxes, shifted to the right by 200 pixels
+        # Calculate positions for the boxes
         positions = []
-        for row in range(2):  # Two rows
-            for col in range(4):  # Four columns
-                x = col * (box_size + margin) + margin + 270  # Shifted to the right
+        for row in range(2):
+            for col in range(4):
+                x = col * (box_size + margin) + margin + 270
                 y = row * (box_size + margin) + margin + 70
                 positions.append((x, y))
 
-        # Draw the red boxes
+        # Draw the boxes with the current box color
         for pos in positions:
-            pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))
+            pygame.draw.rect(state.DISPLAY, self.box_color, (*pos, box_size, box_size))
+
+
+
+
+
+
 
         #this box is for hero info
         box_width = 200 - 10
@@ -412,18 +421,10 @@ class OpossumInACanScreen(Screen):
         white_border.fill((255, 255, 255))
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 20))
-
         state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
-
-        # holds enemy status, money and other info
-        # Original dimensions
         box_width = 200 - 10
         box_height = 130 - 10
-
-        # New height: 40 pixels smaller
         new_box_height = box_height - 40
-
-        # Create the black box with the new height
         black_box = pygame.Surface((box_width, new_box_height))
         black_box.fill((0, 0, 0))
         border_width = 5
