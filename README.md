@@ -162,3 +162,45 @@ we are going in the hedge maze to gete something for the doctor  for the rabies 
 Rewards:
 if one hedgeog found: save coin
 If all 4 hogs are found: save coin + item
+
+now going forward:
+now the next step is game flow. 
+Now before we make the game more tight, we need to make up our quests. 
+here is the following step by step game flow:
+
+For quest maybe have confirm boxes : "Do you have what I want Yes/No" Or maybe do a check afer dialgue box 
+closes and if the item is there on close open up next dialog box
+
+Main mission: get 2000 coins! You need 2000 coins to play against the bosses
+2nd Mission:  beat opossum in a can to unlock next part whatever that is
+
+mission 1: defeat cheating ted
+There is going to be our first quest: beat him, and talk to cindy for your reward: Inn badge. Very easy battle!
+
+Mission 2:
+Talk to janet
+she is the optional quest giver, at this point the other 5 npcs will show up. 
+I feeel the best way to go forard is to delete the NPC, and replace it with another once defeated, this will
+hard elimate any chances of going through menu by accident.
+
+Her quests are as follows:
+1) get a score of 400 on opossum in a can between either of hte two opossum in a can people(not boss). 
+1) if both are defeated ,move on to next quest line.  
+2) have a CHR of 1
+3) find nurgle-hes in a trash can give a hint " he looooves to hang out in trash cans"
+
+
+Mission 3:
+Oh no you got rabies!
+Oh shit you got the opossum demon rabies, go to the doctor, whom tells you there is a plant in the hedge maze
+
+Mission 4:
+talk to sir Leopold, hedgehog "knight" , who will tell you that his friends in the maze are also there. 
+Now we go in hedge maze, rescue hedge hogs, get the plant, and collect our rewards!
+
+Mission 5: By this point we are simply collecting enough coins to defeat the bosses and wrap up quests
+
+Mission 6: defeat the boss and move on to nexxt area!
+
+
+
