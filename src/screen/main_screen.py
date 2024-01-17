@@ -11,6 +11,10 @@ from entity.npc.cindy_long_hair import CindyLongHair
 from constants import PLAYER_OFFSET, BLUEBLACK, TILE_SIZE
 from entity.npc.coin_flip_fred import CoinFlipFred
 from entity.npc.flippin_ted import FlippinTed
+from entity.npc.hedgehog1 import HedgeHog1
+from entity.npc.hedgehog2 import HedgeHog2
+from entity.npc.hedgehog3 import HedgeHog3
+from entity.npc.hedgehog4 import HedgeHog4
 from entity.npc.hungry_patrick import HungryPatrick
 from entity.npc.inn_guard import InnGuard
 from entity.npc.inn_keeper import InnKeeper
@@ -43,6 +47,7 @@ class MainScreen(Screen):
         self.x_left_move = False
         self.x_right_move = False
         self.player = Player(400, 200)
+        self.hedge_hog_counter = 0
 
 
     def start(self, state: "GameState"):
@@ -91,6 +96,10 @@ class MainScreen(Screen):
             FlippingSandy(16 * 28, 16 * 36),
             # NellyOpossum(16 * 12, 16 * 36),
             # Nurgle(16 * 24, 16 * 34)
+            HedgeHog1(16 * 24, 16 * 34),
+            HedgeHog2(16 * 32, 16 * 34),
+            HedgeHog3(16 * 24, 16 * 20),
+            HedgeHog4(16 * 24, 16 * 15),
 
 
                       ]
@@ -107,6 +116,17 @@ class MainScreen(Screen):
         for npc in state.npcs:
             npc.update(state)
             if isinstance(npc, Nurgle) and npc.to_be_deleted:
+                state.npcs.remove(npc)
+
+        # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
+        # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
+
+        for npc in state.npcs:
+            npc.update(state)
+            # Check if the npc is any of the hedgehogs
+            if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
+                self.hedge_hog_counter += 1
+                print(self.hedge_hog_counter)
                 state.npcs.remove(npc)
 
         # Game Update Loop

@@ -6,12 +6,12 @@ from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
 
-class Nurgle(Npc):
+class HedgeHog1(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["Thank god you found me , i was so scared, I don't want to go back in the chilli",
-             "swimming in there makes me poop and fart at the same time. "],
+            ["I'm hedge hog number 1",
+             "please dont let them put me back in the chilli i swear I'll be a good hedge hog. "],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -86,6 +86,7 @@ class Nurgle(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         if state.controller.isTPressed and self.textbox.is_finished():
+
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
 
@@ -94,14 +95,15 @@ class Nurgle(Npc):
             # self.textbox.reset()
 
             self.state = "waiting"
-            if "Nurgle the hedge hog" not in state.player.items:
-                state.player.items.append("Nurgle the hedge hog")
-                print("Added: " + str(state.player.items))
+            # if "Nurgle the hedge hog" not in state.player.items:
+            #     state.player.items.append("Nurgle the hedge hog")
+            #     print("Added: " + str(state.player.items))
 
             self.state_start_time = pygame.time.get_ticks()
             self.to_be_deleted = True  # Mark the object for deletion
 
-            # self.textbox.reset()x
+
+            # self.textbox.reset()
 
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")

@@ -146,3 +146,15 @@ play again screen: select play again or quit
 
 opossom guard: this item blocks opposum bites from doing damage
 opossom repellant: 25% chance picking the wrong can wont result in a loss 
+
+next up is the demons:
+we need to have a few on the screen moving about
+hedge hogs as well lets have 8 of them plus nurgle
+hedge hogs go in the chilli to stir it around
+
+demons be all like "the hedge hogs go in the chili to stir it aroudn where else would a hedge hog go?""
+we are going in the hedge maze to gete something for the doctor  for the rabies cure.
+"Come on out you little hoggers, time to get back in the chilli where you belong"
+"If you come out now I promise not to put any ghost peppers in the chilli  next time.""
+"Well thats nice of him"
+"Last time I heard him say that he stayed true to his word, but they always add something even worse"

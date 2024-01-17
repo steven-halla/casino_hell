@@ -52,4 +52,4 @@ class GameState:
         self.opossumInACanScreen = OpossumInACanScreen()
         self.blackJackScreen = BlackJackScreen()
 
-        self.currentScreen = self.opossumInACanScreen  # assign a value to currentScreen here
+        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
