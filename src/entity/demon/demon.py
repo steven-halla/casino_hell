@@ -33,35 +33,6 @@ class Demon(Entity):
                 self.velocity.x = self.move_distance
 
         # Reset velocity after moving
-        if current_time - self.last_move_time > self.move_interval:
-            # ... [existing direction choosing code]
-
-            # Predict next position
-            next_x = self.position.x + self.velocity.x
-            next_y = self.position.y + self.velocity.y
-
-            # Create a temporary rectangle for the next position
-            next_rect = Rectangle(next_x, next_y, self.collision.width, self.collision.height)
-
-            # Check for collisions with obstacles, npcs, etc.
-            collision = False
-            if next_rect.isOverlap(state.obstacle):
-                self.undoLastMove()
-
-            for demon in state.demons:
-                if next_rect.isOverlap(demon.collision):
-                    collision = True
-                    break
-
-            if not collision:
-                self.position.x = next_x
-                self.position.y = next_y
-                self.collision.x = next_x
-                self.collision.y = next_y
-            else:
-                # Reset velocity to stop movement
-                self.velocity.x = 0
-                self.velocity.y = 0
 
     def draw(self, state):
         rect = (

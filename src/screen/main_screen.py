@@ -205,6 +205,9 @@ class MainScreen(Screen):
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
                     state.player.undoLastMove()
+                for demon in state.demons:
+                    if demon.collision.isOverlap(tile_rect):
+                        demon.undoLastMove()
 
 
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
