@@ -126,3 +126,20 @@ over and over again
 maybe do this via a counter say every 10 games we can change the welcome messge
 this means all games will need to back to the welcome screen
 or we just make a new screen type that only triggers on counter of 10
+
+rib demon slots:
+every time you lose you get plucked, but its hell so it regrows. 
+having a high body  can deflect the rib snatchers  or even reduce damage
+
+each game needs 2 stats attached to it
+
+
+
+opossum in a can game states:
+Welcome screen-has welcome message
+THere is no need for a bet screen
+
+pick_screen
+if you are here, subtract money from player pool
+
+play again screen: select play again or quit 
