@@ -83,7 +83,7 @@ class OpossumInACanScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["oh no you just got bite!!! ", ""],
+                ["oh wowers..... ", "Oh no you just got bit", "fjsdjfa", "fdfsaf", "fdsfafasa"],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -292,13 +292,14 @@ class OpossumInACanScreen(Screen):
                 state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
 
             # Check for 'T' key press
-            if state.controller.isTPressed:
+            if state.controller.isBPressed:
                 print(self.game_state)
 
                 # Call the function to reveal the selected box content
-                state.controller.isPressed = False
 
                 self.reveal_selected_box_content(state)
+                state.controller.isPressed = False
+
 
             self.opossumInACanMessages["pick_message"].update(state)
 
@@ -317,7 +318,7 @@ class OpossumInACanScreen(Screen):
             self.opossumInACanMessages["lose_message"].update(state)
 
             # Perform actions based on the message_index
-            if self.opossumInACanMessages["lose_message"].message_index == 1:
+            if self.opossumInACanMessages["lose_message"].message_index == 3:
                 self.initializeGarbageCans()
                 self.initialized_message = False
 
