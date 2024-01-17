@@ -19,7 +19,7 @@ class QuestGiverJanet(Npc):
             ["Janet: Wow you really got hte 500 points!!! Hope you enjoy your reward"],
             (50, 450, 50, 45), 30, 500)
         self.queststart2 = NpcTextBox(
-            ["Janet: If you want more from me you need to be more suave, get a CHR of 1 and come back and talk to me."],
+            ["Janet: If you want more from me you need to be more suave, get a Spirit of 1 and come back and talk to me."],
             (50, 450, 50, 45), 30, 500)
         self.questfinish2 = NpcTextBox(
             ["Janet: Your chariasma is magnetic I'll talk to you now and reward you!"],
@@ -36,6 +36,7 @@ class QuestGiverJanet(Npc):
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
         self.talkfirstfivehundred = False
         self.talkfirstbeforehandoverwater = False
+        self.quest2counter = False
 
     def update(self, state: "GameState"):
         # print("current state is:" + str(self.textboxstate))
@@ -47,6 +48,12 @@ class QuestGiverJanet(Npc):
                 # print("am I getting reset?")
                 # if self.talkfirstfivehundred == True:
                 #     print("fjasd;fjkdls")
+
+
+            if state.player.spirit == 1 and self.quest2counter == True:
+                print("time for the 2nd quest")
+                self.textboxstate = "textbox4"
+
 
 
 
@@ -111,7 +118,10 @@ class QuestGiverJanet(Npc):
                     # print("Textbox2")
                     self.questfinish1.reset()
                 elif self.textboxstate == "textbox3":
+
                     self.queststart2.reset()
+                    self.quest2counter = True
+
                 elif self.textboxstate == "textbox4":
                     self.questfinish2.reset()
                 elif self.textboxstate == "textbox5":
