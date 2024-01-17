@@ -14,7 +14,7 @@ class Demon(Entity):
         self.color: Tuple[int, int, int] = GREEN
         self.last_move_time = pygame.time.get_ticks()
         self.move_interval = 3000  # 3 seconds in milliseconds
-        self.move_distance = 5  # distance to move each step
+        self.move_distance = 32  # distance to move each step
 
     def update(self, state):
         super().update(state)
@@ -23,14 +23,19 @@ class Demon(Entity):
             self.last_move_time = current_time
             direction = random.choice(['up', 'down', 'left', 'right'])
 
+            # Adjust position based on direction
             if direction == 'up':
-                self.velocity.y = -self.move_distance
+                self.position.y -= self.move_distance
             elif direction == 'down':
-                self.velocity.y = self.move_distance
+                self.position.y += self.move_distance
             elif direction == 'left':
-                self.velocity.x = -self.move_distance
+                self.position.x -= self.move_distance
             elif direction == 'right':
-                self.velocity.x = self.move_distance
+                self.position.x += self.move_distance
+
+            # Update the collision rectangle's position
+            self.collision.x = self.position.x
+            self.collision.y = self.position.y
 
         # Reset velocity after moving
 
