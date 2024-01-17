@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="managed to go to welcome screen and display messages">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="draw methods for all screens">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" afterDir="false" />
     </list>
@@ -279,7 +279,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="100879000" />
+      <workItem from="1705123656694" duration="106828000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -624,7 +624,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="149" />
+    <option name="localTasksCounter" value="152" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,9 +653,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="boxes created, currently working on getting arrow to move up and down" />
-    <MESSAGE value="menu now created :)" />
-    <MESSAGE value="magic counter finished" />
     <MESSAGE value="magic now works for pplayer getting money back" />
     <MESSAGE value="magic works need to figure out random messages later" />
     <MESSAGE value="exp now works" />
@@ -678,7 +675,10 @@
     <MESSAGE value="now itereating through all boxes" />
     <MESSAGE value="now we are shaking for X3 star and one of the lose cans" />
     <MESSAGE value="managed to go to welcome screen and display messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="managed to go to welcome screen and display messages" />
+    <MESSAGE value="now we are giving points" />
+    <MESSAGE value="created logic for other screens" />
+    <MESSAGE value="draw methods for all screens" />
+    <option name="LAST_COMMIT_MESSAGE" value="draw methods for all screens" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

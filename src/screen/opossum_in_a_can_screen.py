@@ -8,6 +8,12 @@ from entity.gui.textbox.text_box import TextBox
 from screen.screen import Screen
 
 
+#
+#
+#
+#   ON LOSS OR IF ALL EMPTY BUT LOSE, LOCK OUT GRAB UNTIL PLAYER HITS RESHUFFLE
+#
+
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
@@ -20,6 +26,7 @@ class OpossumInACanScreen(Screen):
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
+        self.opossum_index = 0
         self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["win", "win",
                                             "win", "win", "lose",
@@ -36,13 +43,19 @@ class OpossumInACanScreen(Screen):
                 500  # Delay
             ),
             "pick_message": TextBox(
-                ["Be careful, you get bite and you lose big time , more than you can ever imagine...... "],
+                ["Keep picking boxes I believe in you...... ", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "play_again_or_leave_message": TextBox(
                 ["Get ready for some fun! "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "rapid_opossum_ message": TextBox(
+                ["Oh no you got bite!!! Wrong Trash can!!!! ", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -73,6 +86,7 @@ class OpossumInACanScreen(Screen):
         self.bet = 200
         self.insurance = 200
         self.X3 = False
+        self.trash_can_pick = ""
 
         self.game_state = "welcome_screen"
 
@@ -85,6 +99,8 @@ class OpossumInACanScreen(Screen):
 
         self.bet_or_flee = ["bet", "flee"]
         self.bet_or_flee_index = 0
+        self.menu_selector = ["grab", "magic", "reshuffle", "back"]
+
 
         self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
         self.magic_menu_index = 0
@@ -167,19 +183,24 @@ class OpossumInACanScreen(Screen):
         print(f"Selected box content: {selected_box_content}")
 
         if selected_box_content == "win":
+            self.trash_can_pick = "win"
             self.player_score += 50
 
         if selected_box_content == "X3_star":
+            self.trash_can_pick = "X3_star"
+
             self.player_score *= 3
 
         if selected_box_content == "lucky_star":
+            self.trash_can_pick = "lucky_star"
+
             self.player_score += 100
 
         if selected_box_content == "lose":
+            self.trash_can_pick = "lose"
+
             self.player_score = 0
-            state.player.score -= 10
             self.opossumBite = True
-            self.game_state = "play_again_or_leave"
 
 
         # Remove the item from the can (set it to an empty string)
@@ -204,10 +225,36 @@ class OpossumInACanScreen(Screen):
 
             if self.opossumInACanMessages["welcome_message"].message_index == 3:
 
-                self.game_state = "pick_screen"
+                self.game_state = "menu_screen"
+
+
+        if self.game_state == "menu_screen":
+
+            if state.controller.isUpPressed:
+                self.opossum_index -= 1
+                if self.opossum_index < 0:
+                    self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
+                    print(str(self.opossum_index))
+
+                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+            elif state.controller.isDownPressed:
+                self.opossum_index += 1
+                if self.opossum_index >= len(self.menu_selector):
+                    self.opossum_index = 0  # Wrap around to the first item
+                    print(str(self.opossum_index))
+
+                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+
 
 
         if self.game_state == "pick_screen":
+            if state.controller.isBitePressed:
+                self.game_state = "menu_screen"
+
             self.opossumInACanMessages["pick_message"].update(state)
 
             key_press_threshold = 80  # Example threshold, adjust as needed
@@ -231,7 +278,7 @@ class OpossumInACanScreen(Screen):
             # Check for 'T' key press
             if state.controller.isTPressed:
                 # Call the function to reveal the selected box content
-                self.reveal_selected_box_content()
+                self.reveal_selected_box_content(state)
 
         if self.game_state == "play_again_or_leave_screen":
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
@@ -418,9 +465,67 @@ class OpossumInACanScreen(Screen):
 
 
         if self.game_state == "pick_screen":
+
+
             # self.opossumInACanMessages["welcome_message"].update(state)
+            if self.opossumInACanMessages["pick_message"].message_index == 1:
+                state.DISPLAY.blit(self.font.render(f"Your pick equals :{self.trash_can_pick}", True,
+                                                    (255, 255, 255)), (70, 460))
+
+
+                    # if state.controller.isTPressed:
+                    #     state.controller.isTPressed = False  # Reset the button state
+                    #
+                    #     self.game_state = "play_again_or_leave_screen"
+
 
             self.opossumInACanMessages["pick_message"].draw(state)
+
+        if self.game_state == "menu_screen":
+            bet_box_width = 150
+            # Increase the bet box height by an additional 40 pixels
+            bet_box_height = 100 + 40 + 40  # Increased height by 40 pixels initially and 40 more now
+            border_width = 5
+
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30
+            # Adjust the Y position of the bet box to accommodate the increased height
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
+
+            # Calculate text positions - you might want to adjust these further if needed
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20
+            text_y_no = text_y_yes + 40  # Consider adjusting this if needed due to the taller box
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render(f"Grab ", True, (255, 255, 255)), (text_x, text_y_yes))
+            state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            state.DISPLAY.blit(self.font.render(f"Reshuffle ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
+            state.DISPLAY.blit(self.font.render(f"Back ", True, (255, 255, 255)), (text_x, text_y_yes + 120))
+
+            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+            arrow_y = text_y_yes + self.opossum_index * 40  # Adjust based on the item's height
+            # Set the initial arrow position to "Yes"
+
+            # Draw the arrow next to the selected option
+            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+            #
+            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+
 
         if self.game_state == "play_again_or_leave_screen":
             self.opossumInACanMessages["play_again_or_leave_message"].draw(state)
