@@ -25,7 +25,7 @@ class QuestGiverJanet(Npc):
             ["Janet: Your chariasma is magnetic I'll talk to you now and reward you!"],
             (50, 450, 50, 45), 30, 500)
         self.queststart3 = NpcTextBox(
-            ["Janet: in the future you'll need to defeat two opponets "],
+            ["Janet: Can you find my hedge hog friend Nurgle? ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
