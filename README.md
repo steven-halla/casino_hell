@@ -143,3 +143,6 @@ pick_screen
 if you are here, subtract money from player pool
 
 play again screen: select play again or quit 
+
+opossom guard: this item blocks opposum bites from doing damage
+opossom repellant: 25% chance picking the wrong can wont result in a loss 

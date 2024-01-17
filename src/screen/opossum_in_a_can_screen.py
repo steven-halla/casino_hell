@@ -15,6 +15,7 @@ class OpossumInACanScreen(Screen):
         self.desperate = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 100
+        self.opossumBite = False
         self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
@@ -34,14 +35,32 @@ class OpossumInACanScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
-            "bet_message": TextBox(
-                ["Put one bet of 100 coins down. You can win big with opossum in a can. Yes you can. "],
+            "pick_message": TextBox(
+                ["Be careful, you get bite and you lose big time , more than you can ever imagine...... "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
-            "heads_tails_message": TextBox(
+            "play_again_or_leave_message": TextBox(
                 ["Get ready for some fun! "],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "opossum_defeated_message": TextBox(
+                ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your lat bit of humanity", ""],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "hero_defeated_stamina_message": TextBox(
+                ["if i gamble anymore i'll pass out right in front of the dealer", ""],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "hero_defeated_money_message": TextBox(
+                ["i need more money to play i should leave ", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -140,17 +159,28 @@ class OpossumInACanScreen(Screen):
     #         if self.bet > 60:
     #             state.player.stamina_points -= 2
 
-    # def reveal_selected_box_content(self):
-    #     selected_box_content = getattr(self, f'can{self.green_box_index + 1}')
-    #     print(f"Selected box content: {selected_box_content}")
 
-    def reveal_selected_box_content(self):
+
+    def reveal_selected_box_content(self, state):
         selected_can_attribute = f'can{self.green_box_index + 1}'
         selected_box_content = getattr(self, selected_can_attribute)
         print(f"Selected box content: {selected_box_content}")
 
         if selected_box_content == "win":
             self.player_score += 50
+
+        if selected_box_content == "X3_star":
+            self.player_score *= 3
+
+        if selected_box_content == "lucky_star":
+            self.player_score += 100
+
+        if selected_box_content == "lose":
+            self.player_score = 0
+            state.player.score -= 10
+            self.opossumBite = True
+            self.game_state = "play_again_or_leave"
+
 
         # Remove the item from the can (set it to an empty string)
         setattr(self, selected_can_attribute, "")
@@ -167,6 +197,8 @@ class OpossumInACanScreen(Screen):
             return
 
 
+
+
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
 
@@ -174,25 +206,10 @@ class OpossumInACanScreen(Screen):
 
                 self.game_state = "pick_screen"
 
-        # if self.game_state == "pick_screen":
-        #     key_press_threshold = 80  # Example threshold, adjust as needed
-        #
-        #     # Debugging: Print the time since the last right key press
-        #     time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
-        #     # print(f"Time since right key pressed: {time_since_right_pressed}")
-        #
-        #     # Check if enough time has passed since the last right key press
-        #     if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
-        #         # Move to the next box
-        #         self.green_box_index = (self.green_box_index + 1) % 8
-        #
-        #         # Print the current green box index and its content
-        #         current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-        #         print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
-        #
-        #         # Reset the key pressed time
-        #         state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+
         if self.game_state == "pick_screen":
+            self.opossumInACanMessages["pick_message"].update(state)
+
             key_press_threshold = 80  # Example threshold, adjust as needed
 
             # Debugging: Print the time since the last right key press
@@ -215,6 +232,39 @@ class OpossumInACanScreen(Screen):
             if state.controller.isTPressed:
                 # Call the function to reveal the selected box content
                 self.reveal_selected_box_content()
+
+        if self.game_state == "play_again_or_leave_screen":
+            self.opossumInACanMessages["play_again_or_leave_message"].update(state)
+
+        if self.game_state == "opossum_defeated_screen":
+            self.opossumInACanMessages = True
+            self.opossumInACanMessages["opossum_defeated_message"].update(state)
+            if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
+                # Change the game state to "bet"
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+
+        if self.game_state == "hero_defeated_stamina_screen":
+            self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
+            if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
+                # Change the game state to "bet"
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+        if self.game_state == "hero_defeated_money_screen":
+            self.opossumInACanMessages["hero_defeated_money_message"].update(state)
+            if self.opossumInACanMessages["hero_defeated_money_message"].message_index == 1:
+                # Change the game state to "bet"
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
+
+
+
+
+            # if self.opossumInACanMessages["defeat_message"].message_index == 2:
+            #
+            #     self.game_state = "pick_screen"
 
 
 
@@ -365,6 +415,12 @@ class OpossumInACanScreen(Screen):
             # self.opossumInACanMessages["welcome_message"].update(state)
 
             self.opossumInACanMessages["welcome_message"].draw(state)
+
+
+        if self.game_state == "pick_screen":
+            # self.opossumInACanMessages["welcome_message"].update(state)
+
+            self.opossumInACanMessages["pick_message"].draw(state)
 
 
 
