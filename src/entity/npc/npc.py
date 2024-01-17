@@ -14,6 +14,9 @@ class Npc(Entity):
         self.color: Tuple[int, int, int] = BLUE
         self.speakStartTime: int = 0
         self.isSpeaking: bool = False
+        self.message_index = 0
+
+
 
     def update(self, state):
         super().update(state)
@@ -35,6 +38,9 @@ class Npc(Entity):
                 self.isSpeaking = not self.isSpeaking
                 self.speakStartTime = time.process_time()
                 print("fyo")
+
+
+
 
     def draw(self, state):
         print("drawing")

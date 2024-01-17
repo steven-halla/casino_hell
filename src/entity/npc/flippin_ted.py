@@ -9,7 +9,7 @@ class FlippinTed(Npc):
         super().__init__(x, y)
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!"],
+                ["Press T to select options and go through T messages, press  A to play", "Welcome to Coin flip I'll make you flip!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
