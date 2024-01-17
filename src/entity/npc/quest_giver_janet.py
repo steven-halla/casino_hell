@@ -35,7 +35,6 @@ class QuestGiverJanet(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
         self.talkfirstfivehundred = False
-        self.talkfirstbeforehandoverwater = False
         self.quest2counter = False
 
     def update(self, state: "GameState"):
@@ -51,7 +50,7 @@ class QuestGiverJanet(Npc):
 
 
             if state.player.spirit == 1 and self.quest2counter == True:
-                print("time for the 2nd quest")
+                # print("time for the 2nd quest")
                 self.textboxstate = "textbox4"
 
 
@@ -120,7 +119,6 @@ class QuestGiverJanet(Npc):
                 elif self.textboxstate == "textbox3":
 
                     self.queststart2.reset()
-                    self.quest2counter = True
 
                 elif self.textboxstate == "textbox4":
                     self.questfinish2.reset()
@@ -174,6 +172,8 @@ class QuestGiverJanet(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
                     # self.talkfirstfivehundred = True
+                    self.quest2counter = True
+
 
 
 
@@ -182,6 +182,9 @@ class QuestGiverJanet(Npc):
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.questfinish2.is_finished():
                     # state.player.items.remove("Water Bottle")
+                    print("we are in textbox4")
+                    self.quest2counter = False
+
 
 
                     self.state = "waiting"
