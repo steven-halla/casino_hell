@@ -51,7 +51,7 @@ class OpossumInACanScreen(Screen):
             # You can add more game state keys and TextBox instances here
         }
         self.result = "win"
-        self.bet = 20
+        self.bet = 200
         self.insurance = 200
         self.X3 = False
 
@@ -140,9 +140,20 @@ class OpossumInACanScreen(Screen):
     #         if self.bet > 60:
     #             state.player.stamina_points -= 2
 
+    # def reveal_selected_box_content(self):
+    #     selected_box_content = getattr(self, f'can{self.green_box_index + 1}')
+    #     print(f"Selected box content: {selected_box_content}")
 
-    def check_results(self, state: "GameState"):
-        pass
+    def reveal_selected_box_content(self):
+        selected_can_attribute = f'can{self.green_box_index + 1}'
+        selected_box_content = getattr(self, selected_can_attribute)
+        print(f"Selected box content: {selected_box_content}")
+
+        if selected_box_content == "win":
+            self.player_score += 50
+
+        # Remove the item from the can (set it to an empty string)
+        setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
         if self.fill_cans == True:
@@ -163,6 +174,24 @@ class OpossumInACanScreen(Screen):
 
                 self.game_state = "pick_screen"
 
+        # if self.game_state == "pick_screen":
+        #     key_press_threshold = 80  # Example threshold, adjust as needed
+        #
+        #     # Debugging: Print the time since the last right key press
+        #     time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
+        #     # print(f"Time since right key pressed: {time_since_right_pressed}")
+        #
+        #     # Check if enough time has passed since the last right key press
+        #     if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+        #         # Move to the next box
+        #         self.green_box_index = (self.green_box_index + 1) % 8
+        #
+        #         # Print the current green box index and its content
+        #         current_can_content = getattr(self, f'can{self.green_box_index + 1}')
+        #         print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
+        #
+        #         # Reset the key pressed time
+        #         state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
         if self.game_state == "pick_screen":
             key_press_threshold = 80  # Example threshold, adjust as needed
 
@@ -181,6 +210,11 @@ class OpossumInACanScreen(Screen):
 
                 # Reset the key pressed time
                 state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+
+            # Check for 'T' key press
+            if state.controller.isTPressed:
+                # Call the function to reveal the selected box content
+                self.reveal_selected_box_content()
 
 
 
@@ -325,7 +359,7 @@ class OpossumInACanScreen(Screen):
         black_box_y = screen_height - black_box_height - 20 - border_width
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        print(str(self.game_state))
+        # print(str(self.game_state))
 
         if self.game_state == "welcome_screen":
             # self.opossumInACanMessages["welcome_message"].update(state)
