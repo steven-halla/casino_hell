@@ -198,7 +198,6 @@ class OpossumInACanScreen(Screen):
 
         if selected_box_content == "lucky_star":
             self.trash_can_pick = "lucky_star"
-
             self.player_score += 100
 
         if selected_box_content == "lose":
@@ -354,6 +353,7 @@ class OpossumInACanScreen(Screen):
 
 
         current_time = pygame.time.get_ticks()
+
         shake_duration = 1000  # 1 second in milliseconds
         shake_interval = 3000  # 3 seconds in milliseconds
 
@@ -376,6 +376,9 @@ class OpossumInACanScreen(Screen):
         # ...
 
         # Draw the boxes
+        # ... [your previous code for setup and calculating positions]
+
+        # Draw the boxes
         for i, pos in enumerate(positions):
             # Determine the color based on the green box index
             box_color = (0, 255, 0) if i == self.green_box_index else (255, 0, 0)
@@ -383,21 +386,26 @@ class OpossumInACanScreen(Screen):
             # Check if the current box contains an opossum
             current_can_content = getattr(self, f'can{i + 1}')
 
-            # Check if the current can is of type "lose" and has not been shaken yet
-            if current_can_content == 'lose' and not shaken_lose:
-                shaken_lose = True
-                time_since_last_shake = current_time % shake_interval
-                if time_since_last_shake < shake_duration:
-                    shake_effect = random.randint(-2, 2)  # Small random offset for shaking
-                    pos = (pos[0] + shake_effect, pos[1] + shake_effect)
+            # If debuff is active, apply the shaking effect
+            if self.debuff_keen_perception:
+                # Check if the current can is of type "lose" and has not been shaken yet
+                if current_can_content == 'lose' and not shaken_lose:
+                    shaken_lose = True
+                    time_since_last_shake = current_time % shake_interval
+                    if time_since_last_shake < shake_duration:
+                        shake_effect = random.randint(-2, 2)  # Small random offset for shaking
+                        pos = (pos[0] + shake_effect, pos[1] + shake_effect)
 
-            # Check if the current can is of type "X3_star" and has not been shaken yet
-            if current_can_content == 'X3_star' and not shaken_x3_star:
-                shaken_x3_star = True
-                time_since_last_shake = current_time % shake_interval
-                if time_since_last_shake < shake_duration:
-                    shake_effect = random.randint(-2, 2)  # Small random offset for shaking
-                    pos = (pos[0] + shake_effect, pos[1] + shake_effect)
+                # Check if the current can is of type "X3_star" and has not been shaken yet
+                if current_can_content == 'X3_star' and not shaken_x3_star:
+                    shaken_x3_star = True
+                    time_since_last_shake = current_time % shake_interval
+                    if time_since_last_shake < shake_duration:
+                        shake_effect = random.randint(-2, 2)  # Small random offset for shaking
+                        pos = (pos[0] + shake_effect, pos[1] + shake_effect)
+
+            # Draw the box with the determined color
+            pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))
 
             # Draw the box with the determined color
             pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))

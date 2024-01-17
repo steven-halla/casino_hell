@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed pick screen bug">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="game almost built">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -280,7 +279,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="109330000" />
+      <workItem from="1705123656694" duration="110300000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -625,7 +624,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="154" />
+    <option name="localTasksCounter" value="156" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,8 +653,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="exp now works" />
-    <MESSAGE value="about to terrform for random messages" />
     <MESSAGE value="now player is locked out from magic" />
     <MESSAGE value="random messages now displayed" />
     <MESSAGE value="game is almost complete save for sound" />
@@ -679,7 +676,9 @@
     <MESSAGE value="draw methods for all screens" />
     <MESSAGE value="menu is now created" />
     <MESSAGE value="fixed pick screen bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed pick screen bug" />
+    <MESSAGE value="menus now built" />
+    <MESSAGE value="game almost built" />
+    <option name="LAST_COMMIT_MESSAGE" value="game almost built" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
