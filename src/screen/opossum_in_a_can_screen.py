@@ -422,6 +422,24 @@ class OpossumInACanScreen(Screen):
 
             self.opossumInACanMessages["pick_message"].draw(state)
 
+        if self.game_state == "play_again_or_leave_screen":
+            self.opossumInACanMessages["play_again_or_leave_message"].draw(state)
+
+        if self.game_state == "opossum_defeated_screen":
+            self.opossumInACanMessages["opossum_defeated_message"].draw(state)
+
+
+        if self.game_state == "hero_defeated_stamina_screen":
+            self.opossumInACanMessages["hero_defeated_stamina_message"].draw(state)
+
+        if self.game_state == "hero_defeated_money_screen":
+            self.opossumInACanMessages["hero_defeated_stamina_screen"].draw(state)
+
+
+
+
+
+
 
 
 
