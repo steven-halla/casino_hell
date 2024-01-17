@@ -82,6 +82,12 @@ class OpossumInACanScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "lose_message": TextBox(
+                ["oh no you just got bite!!! ", ""],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
 
             # You can add more game state keys and TextBox instances here
@@ -136,6 +142,7 @@ class OpossumInACanScreen(Screen):
 
     def initializeGarbageCans(self):
         # Randomly shuffle the winner_or_looser list
+        print("yabbba dabbbba dooooooooooo")
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
         # Assign a shuffled item to each can and print the content
@@ -205,6 +212,9 @@ class OpossumInACanScreen(Screen):
 
             self.player_score = 0
             self.opossumBite = True
+            self.refresh()
+            self.initializeGarbageCans()
+            self.game_state = "lose_screen"
 
 
         # Remove the item from the can (set it to an empty string)
@@ -282,9 +292,19 @@ class OpossumInACanScreen(Screen):
             # Check for 'T' key press
             if state.controller.isTPressed:
                 # Call the function to reveal the selected box content
+                state.controller.isPressed = False
+
                 self.reveal_selected_box_content(state)
 
             self.opossumInACanMessages["pick_message"].update(state)
+
+        if self.game_state == "lose_screen":
+            self.opossumInACanMessages["lose_message"].update(state)
+
+            if self.opossumInACanMessages["lose_message"].message_index == 1:
+                self.initializeGarbageCans()
+
+                self.game_state = "menu_screen"
 
         if self.game_state == "magic_menu_screen":
             if state.controller.isUpPressed:
@@ -589,6 +609,11 @@ class OpossumInACanScreen(Screen):
 
 
             self.opossumInACanMessages["pick_message"].draw(state)
+
+        if self.game_state == "lose_screen":
+            # self.opossumInACanMessages["welcome_message"].update(state)
+
+            self.opossumInACanMessages["lose_message"].draw(state)
 
 
         if self.game_state == "magic_menu_screen":
