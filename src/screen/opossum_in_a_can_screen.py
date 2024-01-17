@@ -252,10 +252,9 @@ class OpossumInACanScreen(Screen):
 
 
         if self.game_state == "pick_screen":
-            if state.controller.isBitePressed:
+            if state.controller.isBPressed:
                 self.game_state = "menu_screen"
 
-            self.opossumInACanMessages["pick_message"].update(state)
 
             key_press_threshold = 80  # Example threshold, adjust as needed
 
@@ -279,6 +278,9 @@ class OpossumInACanScreen(Screen):
             if state.controller.isTPressed:
                 # Call the function to reveal the selected box content
                 self.reveal_selected_box_content(state)
+
+            self.opossumInACanMessages["pick_message"].update(state)
+
 
         if self.game_state == "play_again_or_leave_screen":
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
@@ -463,24 +465,6 @@ class OpossumInACanScreen(Screen):
 
             self.opossumInACanMessages["welcome_message"].draw(state)
 
-
-        if self.game_state == "pick_screen":
-
-
-            # self.opossumInACanMessages["welcome_message"].update(state)
-            if self.opossumInACanMessages["pick_message"].message_index == 1:
-                state.DISPLAY.blit(self.font.render(f"Your pick equals :{self.trash_can_pick}", True,
-                                                    (255, 255, 255)), (70, 460))
-
-
-                    # if state.controller.isTPressed:
-                    #     state.controller.isTPressed = False  # Reset the button state
-                    #
-                    #     self.game_state = "play_again_or_leave_screen"
-
-
-            self.opossumInACanMessages["pick_message"].draw(state)
-
         if self.game_state == "menu_screen":
             bet_box_width = 150
             # Increase the bet box height by an additional 40 pixels
@@ -524,6 +508,38 @@ class OpossumInACanScreen(Screen):
             # Here's a simple example using a triangle:
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+            if state.controller.isTPressed:
+                if self.opossum_index == 0:
+                    print(str(self.game_state))
+                    self.game_state = "pick_screen"
+                    print(str(self.game_state))
+                    state.controller.isTPressed = False
+
+
+
+
+
+
+        if self.game_state == "pick_screen":
+            print("we are here yo")
+
+
+            # self.opossumInACanMessages["welcome_message"].update(state)
+            if self.opossumInACanMessages["pick_message"].message_index == 1:
+                state.DISPLAY.blit(self.font.render(f"Your pick equals :{self.trash_can_pick}", True,
+                                                    (255, 255, 255)), (70, 460))
+
+
+                    # if state.controller.isTPressed:
+                    #     state.controller.isTPressed = False  # Reset the button state
+                    #
+                    #     self.game_state = "play_again_or_leave_screen"
+
+
+            self.opossumInACanMessages["pick_message"].draw(state)
+
+
 
 
 
