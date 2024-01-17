@@ -19,6 +19,7 @@ class OpossumInACanScreen(Screen):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
         self.desperate = False
+        self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 100
         self.opossumBite = False
@@ -27,6 +28,7 @@ class OpossumInACanScreen(Screen):
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
         self.opossum_index = 0
+        self.magic_menu_selector_index = 0
         self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["win", "win",
                                             "win", "win", "lose",
@@ -87,6 +89,7 @@ class OpossumInACanScreen(Screen):
         self.insurance = 200
         self.X3 = False
         self.trash_can_pick = ""
+        self.magic_menu_opossum_index = 0
 
         self.game_state = "welcome_screen"
 
@@ -102,7 +105,7 @@ class OpossumInACanScreen(Screen):
         self.menu_selector = ["grab", "magic", "reshuffle", "back"]
 
 
-        self.magic_menu_selector = ["Bluff", "Reveal", "Lucky", "Back"]
+        self.magic_menu_selector = ["Back", "Keen"]
         self.magic_menu_index = 0
 
         self.play_again_or_quit = ["Play Again", "Quit"]
@@ -280,6 +283,27 @@ class OpossumInACanScreen(Screen):
                 self.reveal_selected_box_content(state)
 
             self.opossumInACanMessages["pick_message"].update(state)
+
+        if self.game_state == "magic_menu_screen":
+            if state.controller.isUpPressed:
+                self.magic_menu_opossum_index -= 1
+                if self.magic_menu_opossum_index < 0:
+                    self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
+                    print(str(self.magic_menu_opossum_index))
+
+                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+            elif state.controller.isDownPressed:
+                self.magic_menu_opossum_index += 1
+                if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
+                    self.magic_menu_opossum_index = 0  # Wrap around to the first item
+                    print(str(self.magic_menu_opossum_index))
+
+                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+
 
 
         if self.game_state == "play_again_or_leave_screen":
@@ -491,7 +515,11 @@ class OpossumInACanScreen(Screen):
 
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Grab ", True, (255, 255, 255)), (text_x, text_y_yes))
-            state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            if self.debuff_keen_perception == False:
+                state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            elif self.debuff_keen_perception == True:
+                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+
             state.DISPLAY.blit(self.font.render(f"Reshuffle ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
             state.DISPLAY.blit(self.font.render(f"Back ", True, (255, 255, 255)), (text_x, text_y_yes + 120))
 
@@ -512,11 +540,23 @@ class OpossumInACanScreen(Screen):
             if state.controller.isTPressed:
                 if self.opossum_index == 0:
                     print(str(self.game_state))
-                    self.game_state = "pick_screen"
-                    print(str(self.game_state))
                     state.controller.isTPressed = False
 
+                    self.game_state = "pick_screen"
 
+                    print(str(self.game_state))
+                elif self.opossum_index == 1 and self.debuff_keen_perception == False:
+                    state.controller.isTPressed = False
+                    self.debuff_keen_perception = True
+                    self.game_state = "magic_menu_screen"
+                elif self.opossum_index == 2:
+                    state.controller.isTPressed = False
+                    self.refresh()
+                    self.initializeGarbageCans()
+                    self.game_state = "menu_screen"
+                elif self.opossum_index == == 3:
+                    state.controller.isTPressed = False
+                    self.game_state = "menu_screen"
 
 
 
@@ -538,6 +578,98 @@ class OpossumInACanScreen(Screen):
 
 
             self.opossumInACanMessages["pick_message"].draw(state)
+
+
+        if self.game_state == "magic_menu_screen":
+
+            bet_box_width = 150  # Width for both boxes
+            top_box_height = 50  # Height for top box
+            bet_box_height = 100 + 40 - 50  # Height for bottom box, now 50 pixels shorter
+            border_width = 5
+
+            # Screen dimensions
+            screen_width, screen_height = state.DISPLAY.get_size()
+
+            # Positions for the top and bottom boxes
+            new_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
+            magic_box_y = 320 - 40
+            new_box_y = magic_box_y - top_box_height - border_width + 50  # Adjusted Y position for top box
+
+            # Create the top box (black box with white border but no bottom border)
+            black_box_top = pygame.Surface((bet_box_width, top_box_height))
+            black_box_top.fill((0, 0, 0))
+            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))
+            white_border_top.fill((255, 255, 255))
+            white_border_top.blit(black_box_top, (border_width, border_width))
+            state.DISPLAY.blit(white_border_top, (new_box_x, new_box_y))
+
+            # Adjusted bottom box positions
+            bet_box_x = new_box_x  # Aligning with the top box
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 40  # Raised by 40 pixels, accounting for borders
+
+            # Create the bottom box (now shorter)
+            bottom_box = pygame.Surface((bet_box_width, bet_box_height))
+            bottom_box.fill((0, 0, 0))
+            white_border_bottom = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border_bottom.fill((255, 255, 255))
+            white_border_bottom.blit(bottom_box, (border_width, border_width))
+            state.DISPLAY.blit(white_border_bottom, (bet_box_x, bet_box_y))
+
+            # Adjust text and arrow positions relative to the bottom box
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20  # Adjusted back to the original position
+            text_y_no = text_y_yes + 40
+            # Adjust arrow positions relative to the bottom box
+            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
+            arrow_y = text_y_yes + self.magic_menu_selector_index * 40  # Arrow position adjusted based on selected menu item
+
+            # Draw text
+            # Draw text
+            if "Keen" in self.magic_menu_selector:
+                state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
+            else:
+                state.DISPLAY.blit(self.font.render(" ", True, (255, 255, 255)), (text_x, text_y_yes))
+
+            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            # Y position for "Shield" text, using self.magic_menu_selector[1]
+            text_y_shield = text_y_yes  # Assuming "Shield" is rendered at this position
+
+            # Draw the arrow on the same Y coordinate as "Shield"
+            # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
+            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
+            arrow_y = text_y_shield + self.magic_menu_opossum_index * 40  # Update arrow Y position based on selected item
+            # print(str(self.magic_menu_selector))
+            # Draw the arrow using pygame's drawing functions
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
+            magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
+            text_margin = 10  # Margin from the left edge of the top box for the text
+
+            # Position for the "Magic" text inside the top box
+            magic_text_x = new_box_x + text_margin
+            magic_text_y = new_box_y + (top_box_height - magic_text.get_height()) // 2  # Vertically center inside the top box
+
+            # Blit the "Magic" text onto the screen
+            state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
+
+            if state.controller.isTPressed:
+                if self.magic_menu_opossum_index == 0:
+                    self.debuff_keen_perception = True
+                    state.player.focus_points -= 10
+                    self.game_state = "menu_screen"
+                    state.controller.isTPressed = False  # Reset the button state
+
+                elif self.magic_menu_opossum_index == 1:
+                    state.controller.isTPressed = False  # Reset the button state
+
+                    self.game_state = "menu_screen"
+
+
+            #     elif self.magicindex == 1:
+            #         print(str(self.magic_menu_selector[1]))
+            #         self.game_state = "heads_tails_choose_screen"
+            #         state.controller.isTPressed = False  # Reset the button state
 
 
 
