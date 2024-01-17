@@ -84,7 +84,7 @@ class MainScreen(Screen):
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
             # NickyHints(16 * 10, 16 * 18),
-            # QuestGiverJanet(16 * 10, 16 * 26),
+            QuestGiverJanet(16 * 10, 16 * 26),
             # RumbleBill(16 * 18, 16 * 2),
             # SallyOpossum(16 * 18, 16 * 10),
             # ShopKeeper(16 * 18, 16 * 18),
@@ -95,7 +95,7 @@ class MainScreen(Screen):
             # CoinFlipFred(16 * 28, 16 * 36),
             FlippinTed(16 * 20, 16 * 36),
             # FlippingSandy(16 * 28, 16 * 36),
-            # NellyOpossum(16 * 12, 16 * 36),
+            NellyOpossum(16 * 12, 16 * 36),
             # Nurgle(16 * 24, 16 * 34)
             # HedgeHog1(16 * 24, 16 * 34),
             # HedgeHog2(16 * 32, 16 * 34),

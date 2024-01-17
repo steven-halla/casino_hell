@@ -20,7 +20,7 @@ class CindyLongHair(Npc):
             'reward_message': NpcTextBox(
                 [
                     "",
-                    "Cindy: Oh kool look at you, time for your reward *smooch*. Oh, you want something else too, what a greedy man you are, take it and good luck!."
+                    "Cindy: Oh kool look at you, time for your reward (inn badge). Oh, you want something else too, what a greedy man you are!."
                 ],
                 (50, 450, 50, 45), 30, 500
             )
@@ -40,6 +40,8 @@ class CindyLongHair(Npc):
             self.update_talking(state)
 
     def update_waiting(self, state: "GameState"):
+        if state.coinFlipTedScreen.coinFlipTedDefeated and "inn badge" not in state.player.items:
+            state.player.items.append("inn badge")
         player = state.player
         min_distance = math.sqrt(
             (player.collision.x - self.collision.x) ** 2 + (

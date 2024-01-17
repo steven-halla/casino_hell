@@ -1,4 +1,3 @@
-
 import math
 
 import pygame
@@ -6,66 +5,77 @@ import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
+
 #### NOTE: BOTH JANET AND BILLY BOTH NEED HEDGE HOG AND WATER WILL NEED TO CHANGE IN FUTURE
 ####
-####lets have a convo where she offers to give player hedge hog key after they complete first quest
-###### Hero says " You want me to rescue him, sorry I dont involve myself in non gambling matters.
-##### Janet says " I bet you can't find my hedge hot and return him to me"
-##### Hero: says " 10 coins that I find him"
-##### Janet: says " Deal"
+####
 class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.quest1giving = NpcTextBox(
-            ["Hi there, I have some quest for you. Your first quest is easy : I want a bottle of water",
-             "You should be able to find it in an treasure chest. Come back when you find it."],
+        self.queststart1 = NpcTextBox(
+            ["I have a quest for you, get a score of 500 in opossum in a can from nelly OR sandy", "there are two people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them."],
             (50, 450, 50, 45), 30, 500)
-        self.quest1completed = NpcTextBox(
-            ["Oh you, giving me water, thank you so much I'll take that, are you sure? Fresh water is so rare down here",
-             "I suppose you want a reward now. i'll teach you a new technique you can use for black jack."],
+        self.questfinish1 = NpcTextBox(
+            ["Janet: Wow you really got hte 500 points!!! Hope you enjoy your reward"],
             (50, 450, 50, 45), 30, 500)
-        self.quest2giving = NpcTextBox(
-            ["IT's such a good thing you got me that water, you have no idea how good this tate.",
-             "For future ref completing quest can net you other benifits such as increasing freindship with that person ."],
+        self.queststart2 = NpcTextBox(
+            ["Janet: If you want more from me you need to be more suave, get a CHR of 1 and come back and talk to me."],
             (50, 450, 50, 45), 30, 500)
-        self.quest2completed = NpcTextBox(
-            ["Thank you so much for finding my friend",
-             "now we can drink together, that is until the demons catch him again."],
+        self.questfinish2 = NpcTextBox(
+            ["Janet: Your chariasma is magnetic I'll talk to you now and reward you!"],
+            (50, 450, 50, 45), 30, 500)
+        self.queststart3 = NpcTextBox(
+            ["Janet: in the future you'll need to defeat two opponets "],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
-        self.reward1recieved = False
-        self.reward2recieved = False
-        self.quest2state = False
-        self.quest3state = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+        self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
+        self.talkfirstfivehundred = False
+        self.talkfirstbeforehandoverwater = False
 
     def update(self, state: "GameState"):
-
+        # print("current state is:" + str(self.textboxstate))
 
         if self.state == "waiting":
-  
-            if "Nurgle the hedge hog" in state.player.items:
-                if self.quest3state == False:
-                    self.quest3state = True
+            if state.opossumInACanScreen.five_hundred_points == True and self.talkfirstfivehundred == True:
+                self.textboxstate = "textbox2"
+                self.talkfirstfivehundred = False
+                # print("am I getting reset?")
+                # if self.talkfirstfivehundred == True:
+                #     print("fjasd;fjkdls")
 
 
+
+
+            # if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoverhog == True:
+            #
+            #     self.textboxstate = "textbox2"
+            #     print(self.textboxstate)
+            #
+            # if "Water Bottle" in state.player.items and self.talkfirstbeforehandoverwater == True:
+            #     self.textboxstate = "textbox4"
+            #     print(self.textboxstate)
 
             player = state.player
 
+            # print("waiting")
+            # if value is below 88 it wont activate for some reason
             min_distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (
                             player.collision.y - self.collision.y) ** 2)
-
+            #
+            # if min_distance < 25:
+            #     print("nooo")
 
             self.update_waiting(state)
 
         elif self.state == "talking":
-
-
+            # self.textbox.reset()
+            # self.textbox.message_index = 0
 
             self.update_talking(state)
 
@@ -88,122 +98,96 @@ class QuestGiverJanet(Npc):
 
             if distance < 40:
                 # print("start state: talking")
-                print("10")
+                # print("10")
 
                 self.state = "talking"
 
                 self.state_start_time = pygame.time.get_ticks()
-                # if self.quest3state == True:
-                #     self.quest2completed.reset()
-                if self.quest2state == True:
-                    self.quest2giving.reset()
-                if self.reward1recieved and not self.quest2state:
-                    self.quest2state = True
-                    self.quest2giving.reset()
-                if self.reward2recieved and not self.quest2state:
-                    self.quest2state = True
-                    self.quest2giving.reset()
                 # the below is where kenny had it
-                if self.reward1recieved == True:
-                    self.quest1completed.reset()
-                elif self.reward1recieved == False:
-                    self.quest1giving.reset()
-
-
-                # elif self.quest2state == True:
-                #     self.quest2giving.reset()
+                if self.textboxstate == "textbox1":
+                    # print("Textbox1")
+                    self.queststart1.reset()
+                elif self.textboxstate == "textbox2":
+                    # print("Textbox2")
+                    self.questfinish1.reset()
+                elif self.textboxstate == "textbox3":
+                    self.queststart2.reset()
+                elif self.textboxstate == "textbox4":
+                    self.questfinish2.reset()
+                elif self.textboxstate == "textbox5":
+                    self.queststart3.reset()
 
     def update_talking(self, state: "GameState"):
+        current_time = pygame.time.get_ticks()
 
-        if self.reward1recieved == True:
-            if "black jack spell" not in state.player.magicinventory:
-
-                state.player.magicinventory.append("black jack spell")
-            self.quest1completed.update(state)
-            # if self.quest1completed.is_finished():
-            #     self.quest2state = True
-            #     print("quest 2 state is now: " + str(self.quest2state))
-
-        if self.reward1recieved == False:
-            self.quest1giving.update(state)
-        if self.quest2state == True:
-            self.quest2giving.update(state)
-
-        # if self.quest3state == True:
-        #     print("hey there hedge hog boy")
-        #     self.quest2completed.update(state)
-
-        # if self.quest3state == True and "Nurgle the hedge hog" in state.player.items:
-            # print("this should be full" + str(state.player.items))
-
-            # state.player.items.remove("Nurgle the hedge hog")
-            # print("this should be empty" + str(state.player.items))
-
-            # Reset quest1completed when the reward is first received
-            # self.quest2completed.reset()
-
-        if "Water Bottle" in state.player.items and not self.reward1recieved:
-            self.reward1recieved = True
-            print("Kool, you passed my quest!")
-            print("this should be full" + str(state.player.items))
-
-            state.player.items.remove("Water Bottle")
-            print("this should be empty" + str(state.player.items))
-
-            # Reset quest1completed when the reward is first received
-            self.quest1completed.reset()
-
-        if state.controller.isTPressed and self.quest2completed.is_finished():
-            # if state.controller.isTPressed and self.textbox.message_index == 0:
-            # print("Here we go we're walking here")
-
-            # print("start state: waiting")
-            # self.textbox.reset()
-
-            self.state = "waiting"
-
-            self.state_start_time = pygame.time.get_ticks()
+        # Update and check the state of the appropriate text box
+        if self.textboxstate == "textbox1":
+            self.queststart1.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.queststart1.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    self.talkfirstfivehundred = True
 
 
-        if state.controller.isTPressed and self.quest1giving.is_finished():
-            # if state.controller.isTPressed and self.textbox.message_index == 0:
-            # print("Here we go we're walking here")
+        elif self.textboxstate == "textbox2":
+            self.questfinish1.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                print("Hi")
+                if self.questfinish1.is_finished():
+                    # state.player.items.remove("Nurgle the hedge hog")
+                    # if "janet reward 1" not in state.player.items:
+                    #     state.player.items.append("janet reward 1")
+                    print(self.textboxstate)
 
-            # print("start state: waiting")
-            # self.textbox.reset()
+                    self.textboxstate = "textbox3"
+                    print(self.textboxstate)
 
-            self.state = "waiting"
+                    # self.talkfirstbeforehandoverhog = False
 
-            self.state_start_time = pygame.time.get_ticks()
-        if state.controller.isTPressed and self.quest1completed.is_finished():
-            # if state.controller.isTPressed and self.textbox.message_index == 0:
-            # print("Here we go we're walking here")
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    print(self.textboxstate)
 
-            # print("start state: waiting")
-            # self.textbox.reset()
 
-            self.state = "waiting"
 
-            self.state_start_time = pygame.time.get_ticks()
+        elif self.textboxstate == "textbox3":
+            print("am i here??????")
 
-        if state.controller.isTPressed and self.quest2giving.is_finished():
-            # if state.controller.isTPressed and self.textbox.message_index == 0:
-            # print("Here we go we're walking here")
+            self.queststart2.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.queststart2.is_finished():
 
-            # print("start state: waiting")
-            # self.textbox.reset()
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    # self.talkfirstfivehundred = True
 
-            self.state = "waiting"
 
-            self.state_start_time = pygame.time.get_ticks()
-            # self.quest2state = True
-            # print("quest 2 state is now here:" + str(self.quest2state))
 
-            # self.textbox.reset()
+        elif self.textboxstate == "textbox4":
+            self.questfinish2.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.questfinish2.is_finished():
+                    # state.player.items.remove("Water Bottle")
 
-    # def isOverlap(self, entity: "Entity") -> bool:
-    #     print("Overlap called")
-    #     return self.collision.isOverlap(entity.collision)
+
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    self.textboxstate = "textbox5"
+
+        elif self.textboxstate == "textbox5":
+            self.queststart3.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.queststart3.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+
+
 
     def draw(self, state):
         rect = (
@@ -215,17 +199,13 @@ class QuestGiverJanet(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-
-            if self.quest3state == True:
-                print("are we drawing this?")
-                self.quest2completed.draw(state)
-            elif self.reward1recieved == True and self.quest2state == False:
-                self.quest1completed.draw(state)
-            elif self.reward1recieved == False and self.quest2state == False:
-                self.quest1giving.draw(state)
-            elif self.quest2state == True:
-                self.quest2giving.draw(state)
-
-
-
-
+            if self.textboxstate == "textbox1":
+                self.queststart1.draw(state)
+            elif self.textboxstate == "textbox2":
+                self.questfinish1.draw(state)
+            elif self.textboxstate == "textbox3":
+                self.queststart2.draw(state)
+            elif self.textboxstate == "textbox4":
+                self.questfinish2.draw(state)
+            elif self.textboxstate == "textbox5":
+                self.queststart3.draw(state)

@@ -50,6 +50,7 @@ class GameState:
         self.coinFlipTedScreen = CoinFlipTedScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
+        self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.blackJackScreen = BlackJackScreen()
 
         self.currentScreen = self.mainScreen  # assign a value to currentScreen here
