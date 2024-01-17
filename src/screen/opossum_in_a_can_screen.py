@@ -98,6 +98,7 @@ class OpossumInACanScreen(Screen):
         self.X3 = False
         self.trash_can_pick = ""
         self.magic_menu_opossum_index = 0
+        self.initialized_message = False  # Add this line to initialize the flag
 
         self.game_state = "welcome_screen"
 
@@ -147,28 +148,28 @@ class OpossumInACanScreen(Screen):
 
         # Assign a shuffled item to each can and print the content
         self.can1 = shuffled_items[0]
-        print("Can 1 contains:", self.can1)
+        # print("Can 1 contains:", self.can1)
 
         self.can2 = shuffled_items[1]
-        print("Can 2 contains:", self.can2)
+        # print("Can 2 contains:", self.can2)
 
         self.can3 = shuffled_items[2]
-        print("Can 3 contains:", self.can3)
+        # print("Can 3 contains:", self.can3)
 
         self.can4 = shuffled_items[3]
-        print("Can 4 contains:", self.can4)
+        # print("Can 4 contains:", self.can4)
 
         self.can5 = shuffled_items[4]
-        print("Can 5 contains:", self.can5)
+        # print("Can 5 contains:", self.can5)
 
         self.can6 = shuffled_items[5]
-        print("Can 6 contains:", self.can6)
+        # print("Can 6 contains:", self.can6)
 
         self.can7 = shuffled_items[6]
-        print("Can 7 contains:", self.can7)
+        # print("Can 7 contains:", self.can7)
 
         self.can8 = shuffled_items[7]
-        print("Can 8 contains:", self.can8)
+        # print("Can 8 contains:", self.can8)
 
     def refresh(self):
         self.bet = 20
@@ -211,6 +212,7 @@ class OpossumInACanScreen(Screen):
             self.trash_can_pick = "lose"
 
             self.player_score = 0
+            state.player.exp += 50
             self.opossumBite = True
             self.refresh()
             self.initializeGarbageCans()
@@ -291,6 +293,8 @@ class OpossumInACanScreen(Screen):
 
             # Check for 'T' key press
             if state.controller.isTPressed:
+                print(self.game_state)
+
                 # Call the function to reveal the selected box content
                 state.controller.isPressed = False
 
@@ -299,12 +303,27 @@ class OpossumInACanScreen(Screen):
             self.opossumInACanMessages["pick_message"].update(state)
 
         if self.game_state == "lose_screen":
+            print("WERE ARE HERE AGGHHGHHGHGHGGHFSGHJLSADJFJSFJSDA;FFJAS;LJF;DAFL;SDLFL;A")
+            print(str(self.opossumInACanMessages["lose_message"].message_index))
+            # Reset the message index every time you enter the lose_screen
+            if not self.initialized_message:
+                self.opossumInACanMessages["lose_message"].message_index = 0
+                self.initialized_message = True  # Set the flag to True to avoid resetting again
+
+            # Print the current message index for debugging
+            # print(f"Current 'lose_message' index: {self.opossumInACanMessages['lose_message'].message_index}")
+
+            # Update the lose message after resetting the index
             self.opossumInACanMessages["lose_message"].update(state)
 
+            # Perform actions based on the message_index
             if self.opossumInACanMessages["lose_message"].message_index == 1:
                 self.initializeGarbageCans()
+                self.initialized_message = False
 
                 self.game_state = "menu_screen"
+
+            # Reset the flag when you leave the lose_screen state to ensure the message will be reset next time you enter
 
         if self.game_state == "magic_menu_screen":
             if state.controller.isUpPressed:
@@ -578,6 +597,7 @@ class OpossumInACanScreen(Screen):
                 elif self.opossum_index == 2:
                     state.player.money += self.player_score
                     self.sallyOpossumMoney -= self.player_score
+                    state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     self.refresh()
                     self.initializeGarbageCans()
@@ -610,10 +630,7 @@ class OpossumInACanScreen(Screen):
 
             self.opossumInACanMessages["pick_message"].draw(state)
 
-        if self.game_state == "lose_screen":
-            # self.opossumInACanMessages["welcome_message"].update(state)
 
-            self.opossumInACanMessages["lose_message"].draw(state)
 
 
         if self.game_state == "magic_menu_screen":
@@ -707,8 +724,10 @@ class OpossumInACanScreen(Screen):
             #         self.game_state = "heads_tails_choose_screen"
             #         state.controller.isTPressed = False  # Reset the button state
 
+        if self.game_state == "lose_screen":
+            # self.opossumInACanMessages["welcome_message"].update(state)
 
-
+            self.opossumInACanMessages["lose_message"].draw(state)
 
 
         if self.game_state == "play_again_or_leave_screen":
