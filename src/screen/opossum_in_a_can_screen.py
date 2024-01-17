@@ -14,6 +14,8 @@ from screen.screen import Screen
 #   ON LOSS OR IF ALL EMPTY BUT LOSE, LOCK OUT GRAB UNTIL PLAYER HITS RESHUFFLE
 #
 
+## PRESS B TO GET OUT FOR OPTIONS
+
 class OpossumInACanScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
@@ -45,7 +47,7 @@ class OpossumInACanScreen(Screen):
                 500  # Delay
             ),
             "pick_message": TextBox(
-                ["Keep picking boxes I believe in you...... ", ""],
+                ["Keep picking boxes I believe in you......Dont forget that B opens the menu ", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -102,7 +104,7 @@ class OpossumInACanScreen(Screen):
 
         self.bet_or_flee = ["bet", "flee"]
         self.bet_or_flee_index = 0
-        self.menu_selector = ["grab", "magic", "reshuffle", "back"]
+        self.menu_selector = ["grab", "magic", "reshuffle", "quit"]
 
 
         self.magic_menu_selector = ["Back", "Keen"]
@@ -521,7 +523,7 @@ class OpossumInACanScreen(Screen):
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
 
             state.DISPLAY.blit(self.font.render(f"Reshuffle ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
-            state.DISPLAY.blit(self.font.render(f"Back ", True, (255, 255, 255)), (text_x, text_y_yes + 120))
+            state.DISPLAY.blit(self.font.render(f"Quit ", True, (255, 255, 255)), (text_x, text_y_yes + 120))
 
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.opossum_index * 40  # Adjust based on the item's height
@@ -554,9 +556,11 @@ class OpossumInACanScreen(Screen):
                     self.refresh()
                     self.initializeGarbageCans()
                     self.game_state = "menu_screen"
-                elif self.opossum_index == == 3:
+                elif self.opossum_index == 3:
                     state.controller.isTPressed = False
-                    self.game_state = "menu_screen"
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
+
 
 
 
