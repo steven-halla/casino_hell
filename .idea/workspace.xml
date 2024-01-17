@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now we have unique lose message when opposum picked this makes game flow better">
-      <change beforePath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/opossum_in_a_can_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now we have unique lose message when opposum picked this makes game flow better" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -278,7 +276,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="116103000" />
+      <workItem from="1705123656694" duration="116498000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -623,7 +621,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="162" />
+    <option name="localTasksCounter" value="163" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

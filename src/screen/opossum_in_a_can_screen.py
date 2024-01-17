@@ -83,7 +83,7 @@ class OpossumInACanScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["oh wowers..... ", "Oh no you just got bit", "fjsdjfa", "fdfsaf", "fdsfafasa"],
+                ["oh no you just got bite!!! ", "fdsfsafsaf", "fjsdjfa", "fdfsaf", "fdsfafasa"],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -292,7 +292,7 @@ class OpossumInACanScreen(Screen):
                 state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
 
             # Check for 'T' key press
-            if state.controller.isBPressed:
+            if state.controller.isTPressed:
                 print(self.game_state)
 
                 # Call the function to reveal the selected box content
