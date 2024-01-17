@@ -554,16 +554,17 @@ class OpossumInACanScreen(Screen):
                     print(str(self.game_state))
                 elif self.opossum_index == 1 and self.debuff_keen_perception == False:
                     state.controller.isTPressed = False
-                    # self.debuff_keen_perception = True
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
                     state.player.money += self.player_score
+                    self.sallyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
                     self.refresh()
                     self.initializeGarbageCans()
-                    self.game_state = "menu_screen"
+                    self.game_state = "pick_screen"
                 elif self.opossum_index == 3:
                     state.player.money += self.player_score
+                    self.sallyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
@@ -573,7 +574,6 @@ class OpossumInACanScreen(Screen):
 
 
         if self.game_state == "pick_screen":
-            print("we are here yo")
 
 
             # self.opossumInACanMessages["welcome_message"].update(state)
