@@ -19,6 +19,7 @@ class Game:
         self.state.currentScreen.start(self.state)
 
         while self.state.isRunning:
+
             self.state.delta = clock.tick(60)
 
             # will need to move this to Screen class

@@ -1,6 +1,7 @@
 import pygame
 import pytmx
 
+from entity.demon.demon1 import Demon1
 from entity.npc.FlippingSandy import FlippingSandy
 from entity.npc.bapping_mike import BappingMike
 from entity.npc.bar_keep import BarKeep
@@ -48,7 +49,7 @@ class MainScreen(Screen):
         self.x_right_move = False
         self.player = Player(400, 200)
         self.hedge_hog_counter = 0
-
+        move_player_down_flag = False
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -104,6 +105,11 @@ class MainScreen(Screen):
 
                       ]
 
+        state.demons = [
+            Demon1(16 * 32, 16 * 10)
+
+        ]
+
     def update(self, state: "GameState"):
         # i dont think npc and demons getting updated
 
@@ -132,6 +138,9 @@ class MainScreen(Screen):
         # Game Update Loop
         for chest in state.treasurechests:
             chest.update(state)
+
+        for demon in state.demons:
+            demon.update(state)
 
         if controller.isExitPressed is True:
             state.isRunning = False
@@ -240,6 +249,9 @@ class MainScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        for demon in state.demons:
+            demon.draw(state)
 
         for treasurechests in state.treasurechests:
             treasurechests.draw(state)

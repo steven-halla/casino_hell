@@ -11,7 +11,9 @@ class Demon(Entity):
     def __init__(self, x: int, y: int):
         super().__init__(x, y, 16, 16)
         self.color: Tuple[int, int, int] = GREEN
-        self.hp = 100
+        self.speakStartTime: int = 0
+        self.isSpeaking: bool = False
+
 
     def update(self, state):
 
@@ -24,7 +26,6 @@ class Demon(Entity):
                         state.player.collision.y - self.collision.y) ** 2)
         # print("distance: " + str(distance))
         if state.player.collision.x - self.collision.x < 0 and distance < 30:
-            print("yupp")
             distance = math.sqrt(
                 (state.player.collision.x - self.collision.x) ** 2 + (
                             state.player.collision.y - self.collision.y) ** 2)

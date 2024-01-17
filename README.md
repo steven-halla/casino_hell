@@ -158,3 +158,7 @@ we are going in the hedge maze to gete something for the doctor  for the rabies 
 "If you come out now I promise not to put any ghost peppers in the chilli  next time.""
 "Well thats nice of him"
 "Last time I heard him say that he stayed true to his word, but they always add something even worse"
+
+Rewards:
+if one hedgeog found: save coin
+If all 4 hogs are found: save coin + item
