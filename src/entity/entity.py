@@ -22,6 +22,10 @@ class Entity:
         self.setPosition(self.position.x - self.velocity.x,
                          self.position.y - self.velocity.y)
 
+    def moveDownBy100(self):
+        self.setPosition(self.position.x, self.position.y + 100)
+
+
     def setPosition(self, x: float, y: float):
         self.position.x = x
         self.position.y = y

@@ -43,11 +43,15 @@ class Demon1(Demon):
         if state.player.collision.x - self.collision.x < 0 and distance < 30:
             self.isSpeaking = True
             print("Demon bumped, starting conversation...")
+            self.move_player_down = True  # S
 
-        if state.controller.isTPressed:
-            self.isSpeaking = False
-            self.move_player_down = True  # This is the flag to indicate the player needs to move down.
-            state.controller.isTPressed = False
+
+            if state.controller.isTPressed:
+                self.isSpeaking = False
+                self.move_player_down = True  # This is the flag to indicate the player needs to move down.
+                state.controller.isTPressed = False
+                state.player.setPosition(100, 500)  # Set the player's position to fixed coordinates
+
 
 
             # Update the textbox visibility based on the demon's speaking state

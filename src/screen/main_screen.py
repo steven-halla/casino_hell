@@ -141,6 +141,9 @@ class MainScreen(Screen):
 
         for demon in state.demons:
             demon.update(state)
+            if demon.move_player_down:
+                state.player.collision.y += 100  # Move player down by 100 pixels
+                demon.move_player_down = False
 
         if controller.isExitPressed is True:
             state.isRunning = False
