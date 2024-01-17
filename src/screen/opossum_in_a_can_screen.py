@@ -23,7 +23,7 @@ class OpossumInACanScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 100
+        self.sallyOpossumMoney = 1200
         self.opossumBite = False
         self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
@@ -41,7 +41,7 @@ class OpossumInACanScreen(Screen):
 
         self.opossumInACanMessages = {
             "welcome_message": TextBox(
-                ["Press T to select options and go through T messages", "Welcome to Opossum in a can !", "Can you spell Opossum, i sure can't", ""],
+                ["Press T to select options and go through T messages", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -198,7 +198,7 @@ class OpossumInACanScreen(Screen):
 
         if selected_box_content == "lucky_star":
             self.trash_can_pick = "lucky_star"
-            self.player_score += 100
+            self.player_score += 200
 
         if selected_box_content == "lose":
             self.trash_can_pick = "lose"
@@ -214,6 +214,7 @@ class OpossumInACanScreen(Screen):
         if self.fill_cans == True:
             self.initializeGarbageCans()
             self.fill_cans = False
+            state.player.money -= 200
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -311,7 +312,7 @@ class OpossumInACanScreen(Screen):
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
 
         if self.game_state == "opossum_defeated_screen":
-            self.opossumInACanMessages = True
+            self.opossumBite = True
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
@@ -348,10 +349,6 @@ class OpossumInACanScreen(Screen):
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill((0, 0, 51))
-
-
-
-
         current_time = pygame.time.get_ticks()
 
         shake_duration = 1000  # 1 second in milliseconds
@@ -387,7 +384,7 @@ class OpossumInACanScreen(Screen):
             current_can_content = getattr(self, f'can{i + 1}')
 
             # If debuff is active, apply the shaking effect
-            if self.debuff_keen_perception:
+            if self.debuff_keen_perception == True:
                 # Check if the current can is of type "lose" and has not been shaken yet
                 if current_can_content == 'lose' and not shaken_lose:
                     shaken_lose = True
@@ -557,14 +554,16 @@ class OpossumInACanScreen(Screen):
                     print(str(self.game_state))
                 elif self.opossum_index == 1 and self.debuff_keen_perception == False:
                     state.controller.isTPressed = False
-                    self.debuff_keen_perception = True
+                    # self.debuff_keen_perception = True
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
+                    state.player.money += self.player_score
                     state.controller.isTPressed = False
                     self.refresh()
                     self.initializeGarbageCans()
                     self.game_state = "menu_screen"
                 elif self.opossum_index == 3:
+                    state.player.money += self.player_score
                     state.controller.isTPressed = False
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
@@ -664,7 +663,7 @@ class OpossumInACanScreen(Screen):
 
             # Blit the "Magic" text onto the screen
             state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
-
+            print(str(self.debuff_keen_perception))
             if state.controller.isTPressed:
                 if self.magic_menu_opossum_index == 0:
                     self.debuff_keen_perception = True
