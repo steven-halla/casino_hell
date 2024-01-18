@@ -11,8 +11,8 @@ class CindyLongHair(Npc):
         self.cindy_long_hair_messages = {
             'textbox': NpcTextBox(
                 [
-                    "Cindy: Cheating Ted is such a jerk. If you could take all of his coins I'll reward you.",
-                    "Most of his coin flips land on tails, he trained himself to do that.",
+                    "Cindy: Cheating Ted is such a bastard. Because of him my boyfriend is making beer.",
+                    "If you can take all his coins I'll reward you. Most of his coin flips land on tails, he trained himself to do that.",
                     "Hero: So against him I should bet tails, most people tend to bet 'heads', very smart of him to know that much."
                 ],
                 (50, 450, 50, 45), 30, 500
