@@ -25,17 +25,23 @@ class QuestGiverJanet(Npc):
             ["Janet: Your chariasma is magnetic I'll talk to you now and reward you!"],
             (50, 450, 50, 45), 30, 500)
         self.queststart3 = NpcTextBox(
-            ["Janet: Can you find my hedge hog friend Nurgle? ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly"],
+            ["Janet: Can you find my hedge hog friend Nurgle? We just seperated right before you talked to me. ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly"],
+            (50, 450, 50, 45), 30, 500)
+
+        self.questfinish3 = NpcTextBox(
+            ["Janet:Thank you so much for finding my drinking buddy. ", "I'll teach you the ultimate black jack technique"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.find_hog = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
         self.talkfirstfivehundred = False
         self.quest2counter = False
+        self.quest3counter = False
 
     def update(self, state: "GameState"):
         # print("current state is:" + str(self.textboxstate))
@@ -52,6 +58,13 @@ class QuestGiverJanet(Npc):
             if state.player.spirit == 1 and self.quest2counter == True:
                 # print("time for the 2nd quest")
                 self.textboxstate = "textbox4"
+                self.find_hog = True
+
+            if "Nurgle the hedge hog" in state.player.items and self.quest3counter == True:
+                print("Hi")
+                self.textboxstate = "textbox6"
+
+
 
 
 
@@ -124,6 +137,8 @@ class QuestGiverJanet(Npc):
                     self.questfinish2.reset()
                 elif self.textboxstate == "textbox5":
                     self.queststart3.reset()
+                elif self.textboxstate == "textbox6":
+                    self.questfinish3.reset()
 
     def update_talking(self, state: "GameState"):
         current_time = pygame.time.get_ticks()
@@ -199,6 +214,20 @@ class QuestGiverJanet(Npc):
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
+                    self.find_hog = True
+                    self.quest3counter = True
+
+        elif self.textboxstate == "textbox6":
+            self.questfinish3.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.questfinish3.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    self.find_hog = True
+                    self.quest3counter = True
+
+
 
 
 
@@ -222,3 +251,8 @@ class QuestGiverJanet(Npc):
                 self.questfinish2.draw(state)
             elif self.textboxstate == "textbox5":
                 self.queststart3.draw(state)
+                self.find_hog = True
+            elif self.textboxstate == "textbox6":
+                self.questfinish3.draw(state)
+                self.find_hog = True
+

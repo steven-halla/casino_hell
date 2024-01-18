@@ -1,6 +1,7 @@
 import pygame
 
 from entity.npc.cindy_long_hair import CindyLongHair
+from entity.npc.quest_giver_janet import QuestGiverJanet
 from screen.black_jack_screen import BlackJackScreen
 from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
@@ -31,6 +32,7 @@ class GameState:
         self.controller: Controller = Controller()
         self.player: Player = Player(16 * 20, 16 * 34)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
+        self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.treasurechests = []

@@ -96,7 +96,7 @@ class MainScreen(Screen):
             FlippinTed(16 * 20, 16 * 36),
             # FlippingSandy(16 * 28, 16 * 36),
             NellyOpossum(16 * 12, 16 * 36),
-            # Nurgle(16 * 24, 16 * 34)
+            Nurgle(16 * 24, 16 * 34)
             # HedgeHog1(16 * 24, 16 * 34),
             # HedgeHog2(16 * 32, 16 * 34),
             # HedgeHog3(16 * 24, 16 * 20),
@@ -104,6 +104,9 @@ class MainScreen(Screen):
 
 
                       ]
+        #
+        # if state.quest_giver_janet.find_hog:
+        #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
             Demon1(16 * 32, 16 * 10)
@@ -112,7 +115,8 @@ class MainScreen(Screen):
 
     def update(self, state: "GameState"):
         # i dont think npc and demons getting updated
-
+        # print(state.quest_giver_janet.find_hog)
+        # print(state.quest_giver_janet.quest2counter)
 
 
         controller = state.controller
