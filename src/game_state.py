@@ -1,14 +1,12 @@
 import pygame
 
-from entity.npc.cindy_long_hair import CindyLongHair
+from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.quest_giver_janet import QuestGiverJanet
 from screen.black_jack_screen import BlackJackScreen
-from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
-from screen.dice_game_screen import DiceGameScreen
 from entity.obstacle.obstacle import Obstacle
 from screen.main_screen import MainScreen
 from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen

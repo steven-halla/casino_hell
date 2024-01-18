@@ -7,6 +7,7 @@ from entity.npc.hedgehog2 import HedgeHog2
 from entity.npc.hedgehog3 import HedgeHog3
 from entity.npc.hedgehog4 import HedgeHog4
 from entity.npc.start_screen.bapping_mike import BappingMike
+from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.start_screen.flippin_ted import FlippinTed
 from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from entity.npc.start_screen.inn_guard import InnGuard
@@ -69,7 +70,7 @@ class StartScreen(Screen):
             # BobbyBibs(16 * 2, 16 * 2),
             # BrutalPatrick(16 * 2, 16 * 10),
             # ChillyBilly(16 * 2, 16 * 18),
-            #  CindyLongHair(16 * 2, 16 * 26),
+             CindyLongHair(16 * 2, 16 * 26),
              # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
