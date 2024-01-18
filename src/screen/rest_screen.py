@@ -328,6 +328,10 @@ class RestScreen(Screen):
         for npc in state.npcs:
             npc.draw(state)
 
+        # for npc in state.npcs:
+        #     if isinstance(npc, ShopKeeper):
+        #         npc.textbox.draw(state)
+
         for demon in state.demons:
             demon.draw(state)
 

@@ -214,3 +214,7 @@ maybe have magic lock, but player increases luck + 1
 "I didn't want to have to use this so soon in , but it looks likke i dont have much  of achoice, brings out lucky
 coin and rubs it, +1 luck."
 "His luck.....its radiating off of him like a blast furnace"
+
+easy fix: 
+Npcs are showing on text box, so just have npc posistions not intersect with a text box, 
+easy fix lol
