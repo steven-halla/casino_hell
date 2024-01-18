@@ -2,6 +2,9 @@ import pygame
 import pytmx
 
 from entity.demon.demon1 import Demon1
+from entity.demon.demon2 import Demon2
+from entity.demon.demon3 import Demon3
+from entity.demon.demon4 import Demon4
 from entity.npc.FlippingSandy import FlippingSandy
 from entity.npc.bapping_mike import BappingMike
 from entity.npc.bar_keep import BarKeep
@@ -81,12 +84,12 @@ class MainScreen(Screen):
             # BobbyBibs(16 * 2, 16 * 2),
             # BrutalPatrick(16 * 2, 16 * 10),
             # ChillyBilly(16 * 2, 16 * 18),
-             CindyLongHair(16 * 2, 16 * 26),
+            #  CindyLongHair(16 * 2, 16 * 26),
              # HungryPatrick(16 * 2, 16 * 34),
             # JackyBanana(16 * 10, 16 * 2),
             # JustinNoFruit(16 * 10, 16 * 10),
             # NickyHints(16 * 10, 16 * 18),
-            QuestGiverJanet(16 * 10, 16 * 26),
+            # QuestGiverJanet(16 * 10, 16 * 26),
             # RumbleBill(16 * 18, 16 * 2),
             # SallyOpossum(16 * 18, 16 * 10),
             # ShopKeeper(16 * 18, 16 * 18),
@@ -95,10 +98,10 @@ class MainScreen(Screen):
             # WallyGuide(16 * 26, 16 * 10),
             #
             # CoinFlipFred(16 * 28, 16 * 36),
-            FlippinTed(16 * 20, 16 * 36),
+            # FlippinTed(16 * 20, 16 * 36),
             # FlippingSandy(16 * 28, 16 * 36),
-            NellyOpossum(16 * 12, 16 * 36),
-            Nurgle(16 * 24, 16 * 34)
+            # NellyOpossum(16 * 12, 16 * 36),
+            # Nurgle(16 * 24, 16 * 34)
             # HedgeHog1(16 * 24, 16 * 34),
             # HedgeHog2(16 * 32, 16 * 34),
             # HedgeHog3(16 * 24, 16 * 20),
@@ -111,8 +114,10 @@ class MainScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            Demon1(16 * 32, 16 * 10)
-
+            Demon1(16 * 55, 16 * 3),
+            Demon2(16 * 55, 16 * 13),
+            Demon3(16 * 55, 16 * 23),
+            Demon4(16 * 55, 16 * 33),
         ]
 
     def update(self, state: "GameState"):
