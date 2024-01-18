@@ -11,8 +11,8 @@ class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = ShopNpcTextBox(
-            ["I'm the shop keeper. In the future I'll be selling you items.Press B to leave",
-             "Press A, B, R, E to buy stuff."],
+            ["I'm the shop keeper. feel free to browse my wares",
+             "Press B to leave, T to buy"],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_time = pygame.time.get_ticks()
@@ -46,11 +46,12 @@ class ShopKeeper(Npc):
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
 
+
                 # Allow the player to move again
                 state.player.canMove = True
 
                 # Reset the selected item index
-                self.selected_item_index = 0
+                ShopNpcTextBox.reset(state)
 
                 # Transition the state back to "waiting"
                 self.state = "waiting"
@@ -64,6 +65,8 @@ class ShopKeeper(Npc):
                     self.input_time = pygame.time.get_ticks()
                     self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
                     print(f"Selected item index: {self.selected_item_index}")
+                    print(f"Selected item index after pressing up: {self.selected_item_index}")
+
 
             elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()

@@ -141,6 +141,8 @@ class ShopNpcTextBox(Entity):
             pygame.time.get_ticks() - self.time > self.delay
 
     def reset(self):
+        print("reseting")
         self.message_index = 0
+        self.selected_item_index = 0
         self.characters_to_display = 0
         self.time = pygame.time.get_ticks()
