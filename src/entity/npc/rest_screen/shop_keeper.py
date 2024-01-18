@@ -11,7 +11,7 @@ class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = ShopNpcTextBox(
-            ["I'm the shop keeper. In the future I'll be selling you items.",
+            ["I'm the shop keeper. In the future I'll be selling you items.Press B to leave",
              "Press A, B, R, E to buy stuff."],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
@@ -32,36 +32,46 @@ class ShopKeeper(Npc):
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
 
-
     def update(self, state: "GameState"):
         if self.state == "waiting":
             self.update_waiting(state)
 
-
-
         elif self.state == "talking":
-            # self.textbox.reset()
-            # self.textbox.message_index = 0
-            # Print the selected item index and its cost
+
+
             cost = int(self.shop_costs[self.selected_item_index])
             print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
 
-            if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
+            # Handle 'B' press for leaving the shop
+            if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
-                self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
-                print(f"Selected item index: {self.selected_item_index}")
+
+                # Allow the player to move again
+                state.player.canMove = True
+
+                # Reset the selected item index
+                self.selected_item_index = 0
+
+                # Transition the state back to "waiting"
+                self.state = "waiting"
+                print("Leaving the shop...")
+                self.textbox.reset()  # Reset the textbox
+                return  # Exit early to ensure no further processing in this update cycle
+
+
+
+            elif state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
+                    print(f"Selected item index: {self.selected_item_index}")
 
             elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
                 print(f"Selected item index: {self.selected_item_index}")
 
-            if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+            elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
-
-                # Convert the cost of the selected item from string to int
-                cost = int(self.shop_costs[self.selected_item_index])
-
 
                 # Check if the player has enough money
                 if state.player.money >= cost:
@@ -70,12 +80,12 @@ class ShopKeeper(Npc):
                     selected_item = self.shop_items[self.selected_item_index]
                     state.player.items.append(selected_item)
                     print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
-                    print("You inventory as it stands: " + str(state.player.items))
-
+                    print("Your inventory as it stands: " + str(state.player.items))
                 else:
                     print("Not enough money to purchase item.")
 
-                self.state = "waiting"
+                # No need to transition the state back to "waiting" after purchase
+                # as the player might want to continue shopping
 
             self.update_talking(state)
 

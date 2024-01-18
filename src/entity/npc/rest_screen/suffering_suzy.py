@@ -10,8 +10,12 @@ class SufferingSuzy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["Suzy: I want to go home...this is pure hell",
-             "I want ice cream....anything but this..."],
+            ["Suzy: If you have 3000 coins you can go to the next area",
+             "There is a shop, inn, and bar here...", "the shop sells items to help you.",
+             "sleep at the inn to save, replenish health and magic",
+             "you can buy food/drink at the bar. ",
+             "the higher your body the more food/drink you can consume"
+             ,"food can have unique effects depending on what you eat."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

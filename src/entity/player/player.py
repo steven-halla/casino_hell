@@ -16,7 +16,7 @@ class Player(Entity):
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
         # need to put in a max for stamina and focus
-        self.stamina_points = 100
+        self.stamina_points = 30
         self.max_stamina_points = 100
 
         self.focus_points = 0
