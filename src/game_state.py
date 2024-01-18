@@ -2,7 +2,9 @@ import pygame
 
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
+from screen.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
 from screen.black_jack_screen import BlackJackScreen
+from screen.black_jack_thomas_screen import BlackJackThomasScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
@@ -51,10 +53,15 @@ class GameState:
         # self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
         self.startScreen = StartScreen()
+
         self.coinFlipTedScreen = CoinFlipTedScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
+
         self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
+
         self.blackJackScreen = BlackJackScreen()
+        self.blackJackThomasScreen = BlackJackThomasScreen()
+        self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
 
         self.currentScreen = self.gamblingAreaScreen  # assign a value to currentScreen here

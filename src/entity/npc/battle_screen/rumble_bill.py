@@ -31,8 +31,8 @@ class RumbleBill(Npc):
 
             if state.controller.isAPressed:
                 print("Hi A here")
-                state.currentScreen = state.blackJackScreen
-                state.blackJackScreen.start(state)
+                state.currentScreen = state.blackJackRumbleBillScreen
+                state.blackJackRumbleBillScreen.start(state)
 
             if self.textbox.message_index == 1:
                 print("talking")
