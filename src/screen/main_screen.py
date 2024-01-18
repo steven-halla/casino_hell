@@ -11,6 +11,7 @@ from entity.npc.chilly_billy import ChillyBilly
 from entity.npc.cindy_long_hair import CindyLongHair
 from constants import PLAYER_OFFSET, BLUEBLACK, TILE_SIZE
 from entity.npc.coin_flip_fred import CoinFlipFred
+from entity.npc.doctor_opossum import DoctorOpossum
 from entity.npc.flippin_ted import FlippinTed
 from entity.npc.hedgehog1 import HedgeHog1
 from entity.npc.hedgehog2 import HedgeHog2
@@ -74,6 +75,7 @@ class MainScreen(Screen):
             # BappingMike(16 * 36, 16 * 10),
             # BarKeep(16 * 36, 16 * 18),
             # InnKeeper(16 * 36, 16 * 26),
+            DoctorOpossum(16 * 30, 16 * 30),
 
 
             # BobbyBibs(16 * 2, 16 * 2),
