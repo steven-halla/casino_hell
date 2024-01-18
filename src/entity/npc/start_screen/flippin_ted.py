@@ -62,17 +62,15 @@ class FlippinTed(Npc):
             self.input_time = pygame.time.get_ticks()
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
 
-        if state.controller.isAPressed:
-            # Handle the selected option
+        if state.controller.isTPressed:
+            # Handle the selected option (In this example, just print it)
             selected_option = self.choices[self.arrow_index]
-            if selected_option == "No":
-                # If "No" is selected, close the messages and the "Yes/No" box
-                self.state = "waiting"
-                self.state_start_time = pygame.time.get_ticks()
-                state.player.canMove = True  # Unlock the player
-            else:
-                # If "Yes" is selected (or any other option), you can add your logic here
-                print(f"Selected option: {selected_option}")
+            print(f"Selected option: {selected_option}")
+
+            # Check if the selected option is "Yes" and execute the code you provided
+            if selected_option == "Yes":
+                state.currentScreen = state.coinFlipTedScreen
+                state.coinFlipTedScreen.start(state)
 
         if state.controller.isTPressed and current_message.is_finished():
             # Exiting the conversation
