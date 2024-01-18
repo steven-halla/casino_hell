@@ -14,6 +14,7 @@ from entity.obstacle.obstacle import Obstacle
 from screen.gambling_area_screen import GamblingAreaScreen
 from screen.main_screen import MainScreen
 from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
+from screen.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
 from screen.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
@@ -61,6 +62,7 @@ class GameState:
 
         self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
+        self.opossumInACanSallyScreen = OpossumInACanSallyScreen()
 
         self.blackJackScreen = BlackJackScreen()
         self.blackJackThomasScreen = BlackJackThomasScreen()

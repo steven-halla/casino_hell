@@ -218,3 +218,5 @@ coin and rubs it, +1 luck."
 easy fix: 
 Npcs are showing on text box, so just have npc posistions not intersect with a text box, 
 easy fix lol
+
+losing all your money turns you into a hedge hog or a horse
