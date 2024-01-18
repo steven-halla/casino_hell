@@ -6,18 +6,23 @@ from entity.npc.hedgehog1 import HedgeHog1
 from entity.npc.hedgehog2 import HedgeHog2
 from entity.npc.hedgehog3 import HedgeHog3
 from entity.npc.hedgehog4 import HedgeHog4
+from entity.npc.start_screen.bapping_mike import BappingMike
+from entity.npc.start_screen.flippin_ted import FlippinTed
+from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
+from entity.npc.start_screen.jacky_banana import JackyBanana
+from entity.npc.start_screen.nicky_hints import NickyHints
 from entity.player.player import Player
 from screen.screen import Screen
 from physics.rectangle import Rectangle
 
 
-class MainScreen(Screen):
+class StartScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame5.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -50,6 +55,15 @@ class MainScreen(Screen):
             # BarKeep(16 * 36, 16 * 18),
             # InnKeeper(16 * 36, 16 * 26),
             # DoctorOpossum(16 * 30, 16 * 30),
+            JackyBanana(16* 5, 16 * 15),
+            BappingMike(16* 15, 16 * 15),
+            HungryPatrick(16* 25, 16 * 15),
+            InnGuard(16* 35, 16 * 15),
+            NickyHints(16* 25, 16 * 25),
+
+
+
+            FlippinTed(16* 35, 16 * 34),
 
 
             # BobbyBibs(16 * 2, 16 * 2),

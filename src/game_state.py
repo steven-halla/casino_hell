@@ -15,7 +15,7 @@ from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
-
+from screen.start_screen import StartScreen
 
 
 class GameState:
@@ -30,7 +30,7 @@ class GameState:
 
         # core game state
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 5, 16 * 22)
+        self.player: Player = Player(16 * 5, 16 * 11)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
@@ -48,11 +48,11 @@ class GameState:
         # self.restScreen = RestScreen()
         # self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
-
+        self.startScreen = StartScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
         self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.blackJackScreen = BlackJackScreen()
 
-        self.currentScreen = self.mainScreen  # assign a value to currentScreen here
+        self.currentScreen = self.startScreen  # assign a value to currentScreen here

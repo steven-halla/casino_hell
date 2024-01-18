@@ -32,8 +32,8 @@ class JackyBanana(Npc):
 
         elif self.state == "talking":
 
-            if state.player.perk_iron_stomach:
-                print("you can have a banana")
+            # if state.player.perk_iron_stomach:
+            #     print("you can have a banana")
 
             if self.textbox.message_index == 1:
                 if state.controller.isAPressed and \

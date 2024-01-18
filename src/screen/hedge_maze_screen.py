@@ -4,7 +4,7 @@ from entity.npc.bobby_bibs import BobbyBibs
 from entity.npc.chilly_billy import ChillyBilly
 from constants import PLAYER_OFFSET, BLUEBLACK
 from screen.screen import Screen
-from entity.npc.hungry_patrick import HungryPatrick
+from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from physics.rectangle import Rectangle
 from entity.npc.suffering_suzy import SufferingSuzy
 
