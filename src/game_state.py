@@ -30,14 +30,14 @@ class GameState:
 
         # core game state
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 20, 16 * 34)
+        self.player: Player = Player(16 * 5, 16 * 22)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.treasurechests = []
         # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
-        self.obstacle = Obstacle(22, 622)
+        self.obstacle = Obstacle(444, 999)
 
         self.isRunning: bool = True
         self.isPaused: bool = False

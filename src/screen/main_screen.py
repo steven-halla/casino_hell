@@ -66,7 +66,7 @@ class MainScreen(Screen):
 
         state.treasurechests = [
 
-            WaterBottle(16 * 36, 16 * 10),
+            # WaterBottle(16 * 36, 16 * 10),
 
         ]
 
@@ -78,7 +78,7 @@ class MainScreen(Screen):
             # BappingMike(16 * 36, 16 * 10),
             # BarKeep(16 * 36, 16 * 18),
             # InnKeeper(16 * 36, 16 * 26),
-            DoctorOpossum(16 * 30, 16 * 30),
+            # DoctorOpossum(16 * 30, 16 * 30),
 
 
             # BobbyBibs(16 * 2, 16 * 2),
@@ -95,7 +95,7 @@ class MainScreen(Screen):
             # ShopKeeper(16 * 18, 16 * 18),
             # SleepyNed(16 * 18, 16 * 26),
             # SufferingSuzy(16 * 26, 16 * 2),
-            # WallyGuide(16 * 26, 16 * 10),
+            WallyGuide(16 * 26, 16 * 10),
             #
             # CoinFlipFred(16 * 28, 16 * 36),
             # FlippinTed(16 * 20, 16 * 36),
@@ -114,10 +114,10 @@ class MainScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            Demon1(16 * 55, 16 * 3),
-            Demon2(16 * 55, 16 * 13),
-            Demon3(16 * 55, 16 * 23),
-            Demon4(16 * 55, 16 * 33),
+            # Demon1(16 * 55, 16 * 3),
+            # Demon2(16 * 55, 16 * 13),
+            # Demon3(16 * 55, 16 * 23),
+            # Demon4(16 * 55, 16 * 33),
         ]
 
     def update(self, state: "GameState"):
@@ -138,6 +138,8 @@ class MainScreen(Screen):
         # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
         # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
 
+
+        ### i can use this to append NPC if i need to , just state.npcs.append(npc)
         for npc in state.npcs:
             npc.update(state)
             # Check if the npc is any of the hedgehogs
@@ -246,7 +248,7 @@ class MainScreen(Screen):
                 pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (
-                tile_width * 1.3, tile_height * 1.3))
+                    tile_width * 1.3, tile_height * 1.3))
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
@@ -258,14 +260,16 @@ class MainScreen(Screen):
                 pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (
-                tile_width * 1.3, tile_height * 1.3))
+                    tile_width * 1.3, tile_height * 1.3))
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
-
-
         for npc in state.npcs:
             npc.draw(state)
+            if isinstance(npc, WallyGuide):
+                # Assuming npc.collision has x, y, width, and height attributes
+                rect = (npc.collision.x, npc.collision.y, npc.collision.width, npc.collision.height)
+                pygame.draw.rect(state.DISPLAY, (0, 255, 0), rect, 2)
 
         for demon in state.demons:
             demon.draw(state)
@@ -277,5 +281,64 @@ class MainScreen(Screen):
 
         state.player.draw(state)
 
-        # Update the display
+        # Draw Player's collision box in red
+        pygame.draw.rect(state.DISPLAY, (255, 0, 0), state.player.collision.toTuple(), 2)
+
+        # ... (rest of your drawing code, like updating the display) ...
         pygame.display.update()
+
+    # def draw(self, state: "GameState"):
+    #     state.DISPLAY.fill(BLUEBLACK)
+    #     state.DISPLAY.blit(state.FONT.render(
+    #         f"player money: {state.player.money}",
+    #         True, (255, 255, 255)), (333, 333))
+    #     state.DISPLAY.blit(state.FONT.render(
+    #         f"player stamina points: {state.player.stamina_points}",
+    #         True, (255, 255, 255)), (333, 388))
+    #
+    #     if self.tiled_map.layers:
+    #         tile_width = self.tiled_map.tilewidth
+    #         tile_height = self.tiled_map.tileheight
+    #
+    #         # Get the background layer
+    #         bg_layer = self.tiled_map.get_layer_by_name("bg")
+    #         # Iterate over the tiles in the background layer
+    #         for x, y, image in bg_layer.tiles():
+    #             # Calculate the position of the tile in pixels
+    #             pos_x = x * tile_width + state.camera.x
+    #             pos_y = y * tile_height + state.camera.y
+    #
+    #             scaled_image = pygame.transform.scale(image, (
+    #             tile_width * 1.3, tile_height * 1.3))
+    #
+    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
+    #
+    #         # Get the collision layer
+    #         collision_layer = self.tiled_map.get_layer_by_name("collision")
+    #         for x, y, image in collision_layer.tiles():
+    #             # Calculate the position of the tile in pixels
+    #             pos_x = x * tile_width + state.camera.x
+    #             pos_y = y * tile_height + state.camera.y
+    #
+    #             scaled_image = pygame.transform.scale(image, (
+    #             tile_width * 1.3, tile_height * 1.3))
+    #
+    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
+    #
+    #
+    #
+    #     for npc in state.npcs:
+    #         npc.draw(state)
+    #
+    #     for demon in state.demons:
+    #         demon.draw(state)
+    #
+    #     for treasurechests in state.treasurechests:
+    #         treasurechests.draw(state)
+    #
+    #     state.obstacle.draw(state)
+    #
+    #     state.player.draw(state)
+    #
+    #     # Update the display
+    #     pygame.display.update()
