@@ -119,10 +119,10 @@ class ShopKeeper(Npc):
 
         if state.controller.isTPressed and self.textbox.is_finished():
             # Exiting the shop conversation
-            self.state = "waiting"
+            # self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             # Allow the player to move again (new)
-            state.player.canMove = True  # Ensure this attribute exists in your Player class
+            # state.player.canMove = True  # Ensure this attribute exists in your Player class
             # self.textbox.reset()
         else:
             # While in conversation, prevent the player from moving (new)
