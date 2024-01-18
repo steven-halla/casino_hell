@@ -113,10 +113,6 @@ class CoinFlipFredScreen(Screen):
             self.third_message_display = ""
             self.reveal_hand = False
 
-            if controller.isRPressed:
-                state.player.stamina_points -= 3
-
-                self.game_state = "bet_screen"
 
         elif self.game_state == "bet_screen":
             self.message_display = "This is the bet screen. Press up and down to change your bet."

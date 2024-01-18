@@ -168,11 +168,13 @@ class CoinFlipSandyScreen(Screen):
         # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
             state.player.exp += 30
+            print("Current exp equals: " + str(state.player.exp))
             if self.bet > 60:
                 state.player.stamina_points -= 1
 
         elif self.result != self.player_choice:
-            state.player.exp += 20
+            state.player.exp += 15
+            print("Current exp equals: " + str(state.player.exp))
             if self.bet > 60:
                 state.player.stamina_points -= 2
 
