@@ -8,6 +8,7 @@ from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
 from entity.obstacle.obstacle import Obstacle
+from screen.gambling_area_screen import GamblingAreaScreen
 from screen.main_screen import MainScreen
 from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.opossum_in_a_can_screen import OpossumInACanScreen
@@ -45,6 +46,7 @@ class GameState:
 
         self.mainScreen = MainScreen()
         self.restScreen = RestScreen()
+        self.gamblingAreaScreen = GamblingAreaScreen()
         # self.restScreen = RestScreen()
         # self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
@@ -55,4 +57,4 @@ class GameState:
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.blackJackScreen = BlackJackScreen()
 
-        self.currentScreen = self.restScreen  # assign a value to currentScreen here
+        self.currentScreen = self.gamblingAreaScreen  # assign a value to currentScreen here
