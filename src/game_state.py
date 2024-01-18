@@ -5,6 +5,7 @@ from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from screen.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
 from screen.black_jack_screen import BlackJackScreen
 from screen.black_jack_thomas_screen import BlackJackThomasScreen
+from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
@@ -55,6 +56,7 @@ class GameState:
         self.startScreen = StartScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
+        self.coinFlipFredScreen = CoinFlipFredScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
 
         self.opossumInACanScreen = OpossumInACanScreen()
