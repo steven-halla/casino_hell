@@ -11,9 +11,9 @@ class WallyGuide(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Wally: To the right is Rat Alley, along with the door that leads to the rest area where you can shop and stay at the end.",
-                "Up top is the harder area, I'd steer clear unless you got the hang of things."
-                , "Around here is where you'll find the easier opponents."],
+                "People at the bar area will have different things to say as you progress.",
+                "There are no opponets in the rest area, come here to relax , kick back and see if anything is new."
+                , "Pay close attention to what people tell you."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

@@ -17,7 +17,7 @@ class MainScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame5.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False

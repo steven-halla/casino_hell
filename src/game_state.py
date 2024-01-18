@@ -1,7 +1,7 @@
 import pygame
 
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
-from entity.npc.quest_giver_janet import QuestGiverJanet
+from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from screen.black_jack_screen import BlackJackScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
@@ -13,6 +13,7 @@ from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
+from screen.rest_screen import RestScreen
 from screen.start_screen import StartScreen
 
 
@@ -43,6 +44,7 @@ class GameState:
         self.camera = Vector(0.0, 0.0)
 
         self.mainScreen = MainScreen()
+        self.restScreen = RestScreen()
         # self.restScreen = RestScreen()
         # self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
@@ -53,4 +55,4 @@ class GameState:
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.blackJackScreen = BlackJackScreen()
 
-        self.currentScreen = self.startScreen  # assign a value to currentScreen here
+        self.currentScreen = self.restScreen  # assign a value to currentScreen here

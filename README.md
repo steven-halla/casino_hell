@@ -205,3 +205,12 @@ Mission 6: defeat the boss and move on to nexxt area!
 
 NPC text box has methods to start over from our len.index back to one which my Text boxes are missing
 I'll need to go through the game bit by bit , improving everything to make it good.
+
+For boss:
+maybe have magic lock, but player increases luck + 1 
+"Hahahaha now you are even less likely to win"
+"Your wrong, now I'm more likely to win"
+"that doesn't make any sense?"
+"I didn't want to have to use this so soon in , but it looks likke i dont have much  of achoice, brings out lucky
+coin and rubs it, +1 luck."
+"His luck.....its radiating off of him like a blast furnace"

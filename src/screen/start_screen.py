@@ -6,7 +6,6 @@ from entity.npc.hedgehog1 import HedgeHog1
 from entity.npc.hedgehog2 import HedgeHog2
 from entity.npc.hedgehog3 import HedgeHog3
 from entity.npc.hedgehog4 import HedgeHog4
-from entity.npc.shop_keeper import ShopKeeper
 from entity.npc.start_screen.bapping_mike import BappingMike
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.start_screen.flippin_ted import FlippinTed
@@ -14,6 +13,7 @@ from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.npc.start_screen.jacky_banana import JackyBanana
+from entity.npc.start_screen.main_screen_teleporter import MainScreenTeleporter
 from entity.npc.start_screen.nicky_hints import NickyHints
 from entity.player.player import Player
 from screen.screen import Screen
@@ -62,6 +62,7 @@ class StartScreen(Screen):
             HungryPatrick(16* 25, 16 * 15),
             InnGuard(16* 35, 16 * 15),
             NickyHints(16* 25, 16 * 25),
+            MainScreenTeleporter(16 * 1, 16 * 10),
 
 
 

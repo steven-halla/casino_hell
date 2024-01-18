@@ -6,7 +6,7 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from screen.screen import Screen
 from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from physics.rectangle import Rectangle
-from entity.npc.suffering_suzy import SufferingSuzy
+from entity.npc.rest_screen.suffering_suzy import SufferingSuzy
 
 
 class HedgeMazeScreen(Screen):

@@ -37,7 +37,7 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 600
+        self.coinFlipTedMoney = 100
         self.coinFlipTedDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
@@ -255,8 +255,8 @@ class CoinFlipTedScreen(Screen):
 
         if state.controller.isQPressed:
             # Transition to the main screen
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
+            state.currentScreen = state.startScreen
+            state.startScreen.start(state)
             return
 
 
@@ -422,8 +422,8 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "game_over_screen":
             if state.controller.isTPressed:
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.startScreen
+                state.startScreen.start(state)
 
         if self.game_state == "enemy_desperate_screen":
             if self.coin_flip_messages["enemy_desperate_message"].message_index == 3:
@@ -442,8 +442,8 @@ class CoinFlipTedScreen(Screen):
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.startScreen
+                state.startScreen.start(state)
 
 
         controller = state.controller
@@ -882,8 +882,8 @@ class CoinFlipTedScreen(Screen):
 
                 else:
                     print("1 index")
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
+                    state.currentScreen = state.startScreen
+                    state.startScreen.start(state)
 
         if self.game_state == "game_over_screen":
             print("your game state is: " + str(self.game_state))
