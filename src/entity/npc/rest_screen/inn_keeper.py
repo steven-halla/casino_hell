@@ -12,7 +12,7 @@ class InnKeeper(Npc):
         self.textbox = NpcTextBox(
             [
                 "Hi there welcome to our humble rest area. Don't mind the garbage, roaches, rats, or bed bugs. They're all very nice.",
-                "Press A button to stay for 100 coins, and T button to leave."],
+                "Press T button to stay for 100 coins, and B button to leave."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -40,16 +40,16 @@ class InnKeeper(Npc):
         elif self.state == "talking":
             # self.textbox.reset()
             # self.textbox.message_index = 0
-            if self.textbox.message_index == 1:
-                if state.controller.isAPressed and \
+            if self.textbox.is_finished():
+                if state.controller.isTPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
-
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > state.player.max_stamina_points:
-                        state.player.stamina_points = state.player.max_stamina_points
+                    if state.player.stamina_points < state.player.max_stamina_points:
+                        state.player.money -= 100
+                        state.player.stamina_points += 500
+                        if state.player.stamina_points > state.player.max_stamina_points:
+                            state.player.stamina_points = state.player.max_stamina_points
                 elif state.controller.isBPressed and \
                         pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
