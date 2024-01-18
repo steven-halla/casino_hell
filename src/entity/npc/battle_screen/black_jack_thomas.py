@@ -76,6 +76,7 @@ class BlackJackThomas(Npc):
                 self.t_pressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
+            state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
