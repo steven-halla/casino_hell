@@ -6,6 +6,7 @@ from entity.npc.hedgehog1 import HedgeHog1
 from entity.npc.hedgehog2 import HedgeHog2
 from entity.npc.hedgehog3 import HedgeHog3
 from entity.npc.hedgehog4 import HedgeHog4
+from entity.npc.shop_keeper import ShopKeeper
 from entity.npc.start_screen.bapping_mike import BappingMike
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.start_screen.flippin_ted import FlippinTed

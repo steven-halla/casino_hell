@@ -24,6 +24,7 @@ class FlippinTed(Npc):
         self.flipping_ted_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
+        self.t_pressed = False
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -53,17 +54,15 @@ class FlippinTed(Npc):
         # Lock the player in place while talking
         state.player.canMove = False
 
-        # Navigation logic for moving between "Yes" and "No" options
-        if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
-            self.input_time = pygame.time.get_ticks()
+        # Check for keypresses only once per frame
+        if state.controller.isUpPressed:
             self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-
-        elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
-            self.input_time = pygame.time.get_ticks()
+        elif state.controller.isDownPressed:
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
 
-        if state.controller.isTPressed:
-            # Handle the selected option (In this example, just print it)
+        # Check if the "T" key is pressed and the flag is not set
+        if current_message.is_finished() and state.controller.isTPressed:
+            # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
@@ -71,6 +70,10 @@ class FlippinTed(Npc):
             if selected_option == "Yes":
                 state.currentScreen = state.coinFlipTedScreen
                 state.coinFlipTedScreen.start(state)
+
+            # Reset the flag when the "T" key is released
+            if not state.controller.isTPressed:
+                self.t_pressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
             # Exiting the conversation

@@ -169,12 +169,15 @@ class CoinFlipTedScreen(Screen):
         if self.result == self.player_choice:
             state.player.exp += 30
             if self.bet > 60:
-                state.player.stamina_points -= 1
+                state.player.stamina_points -= 2
 
         elif self.result != self.player_choice:
-            state.player.exp += 20
+            state.player.exp += 15
             if self.bet > 60:
-                state.player.stamina_points -= 2
+                state.player.stamina_points -= 3
+
+        elif self.bet < 60:
+            state.player.stamina_points -= 1
 
     def place_bet(self, state: "GameState"):
         controller = state.controller

@@ -213,11 +213,9 @@ class CoinFlipSandyScreen(Screen):
 
     def flipCoin(self, state: "GameState"):
         coin = random.random()
-        if coin < 0.9:
+        if coin < 0.7:
             print("coin landed on tails")
             self.result = "tails"
-
-
 
             if state.player.luck == 1:
                 # Random roll event
@@ -225,7 +223,6 @@ class CoinFlipSandyScreen(Screen):
                 if roll < 10:
                     print("You lucky doggy dog")
                     self.result = self.player_choice
-
             self.game_state = "results_screen"
 
         else:
