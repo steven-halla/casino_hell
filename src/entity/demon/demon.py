@@ -48,23 +48,31 @@ class Demon(Entity):
             else:
                 self.color = GREEN
 
-        # Define the LOS range to the left of the demon
-        los_range = 50  # Adjust this value as needed
+        # Define the LOS horizontal range to the left of the demon
+        los_horizontal_range = 50  # Adjust this value as needed
 
-        # Calculate the left boundary of the LOS range
-        los_left_boundary = self.collision.x - los_range
+        # Define the LOS vertical range
+        los_vertical_range = 16  # Adjust this value as needed
+
+        # Calculate the left boundary of the LOS horizontal range
+        los_left_boundary = self.collision.x - los_horizontal_range
+
+        # Calculate the upper boundary of the LOS vertical range
+        los_upper_boundary = self.collision.y - los_vertical_range
 
         # Check if the player's position falls within the LOS range
         if state.player.collision.x < self.collision.x and \
-                self.collision.x > los_left_boundary:
+                self.collision.x > los_left_boundary and \
+                state.player.collision.y > los_upper_boundary:
             print("Player is in LOS!")  # Print statement when the player is in LOS
 
             # Check if the player is to the left of the demon
             if state.player.collision.x < self.collision.x:
                 print("I see you to the left")  # Print statement when the player is to the left
 
-        # Store the LOS range for drawing
-        self.los_range = los_range
+        # Store the LOS horizontal range and vertical range for drawing
+        self.los_horizontal_range = los_horizontal_range
+        self.los_vertical_range = los_vertical_range
 
     def update(self, state):
         super().update(state)
