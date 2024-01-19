@@ -12,8 +12,8 @@ class Demon(Entity):
         super().__init__(x, y, 16, 16)
         self.color: Tuple[int, int, int] = GREEN
         self.last_move_time = pygame.time.get_ticks()
-        self.move_interval = 3000  # 3 seconds in milliseconds
-        self.move_distance = 32  # distance to move each step
+        self.move_interval = 5555  # 3 seconds in milliseconds
+        self.move_distance = 10  # distance to move each step
         self.last_color_change_time = pygame.time.get_ticks()
         self.color_change_interval = 3000
         self.LOScounter = 0
@@ -67,6 +67,11 @@ class Demon(Entity):
             for other_demon in state.demons:
                 if other_demon != self and self.isOverlap(other_demon):
                     self.color = PURPLE
+            if self.color == PURPLE:
+                if current_time - self.last_color_change_time > 8500:  # 1000 milliseconds = 1 second
+                    print("Green")
+                    self.last_color_change_time = current_time
+                    self.color = GREEN
 
             # You can break here if you want to change colors of only the first pair of colliding demons
                 # break
@@ -93,7 +98,7 @@ class Demon(Entity):
                     distance_to_left_demon = self.collision.x - (demon.collision.x + demon.collision.width)
                     y_distance = abs(self.collision.y - demon.collision.y)  # Calculate the absolute y-position difference
 
-                    print(f"Checking demon at ({demon.collision.x}, {demon.collision.y}) with horizontal distance: {distance_to_left_demon} and vertical distance: {y_distance}")
+                    # print(f"Checking demon at ({demon.collision.x}, {demon.collision.y}) with horizontal distance: {distance_to_left_demon} and vertical distance: {y_distance}")
 
                     # Check if the demon is within 130 pixels to the left and the y-position difference is 30 pixels or less
                     if 0 < distance_to_left_demon <= 130 and y_distance <= 30:
