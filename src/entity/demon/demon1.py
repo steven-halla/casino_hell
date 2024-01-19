@@ -33,6 +33,8 @@ class Demon1(Demon):
     def update(self, state):
 
         # use enums for facing
+        self.LOSLeft()  # Specific to this subclass
+
 
         # print("updating")
         super().update(state)

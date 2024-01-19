@@ -14,6 +14,8 @@ from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
 from entity.obstacle.obstacle import Obstacle
 from screen.gambling_area_screen import GamblingAreaScreen
+from screen.hedge_maze_screen import HedgeMazeScreen
+from screen.hotel_room_screen import HotelRoomScreen
 from screen.main_screen import MainScreen
 from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
@@ -56,8 +58,9 @@ class GameState:
         self.mainScreen = MainScreen()
         self.restScreen = RestScreen()
         self.gamblingAreaScreen = GamblingAreaScreen()
+        self.hotelRoomScreen = HotelRoomScreen()
         # self.restScreen = RestScreen()
-        # self.hedgeMazeScreen = HedgeMazeScreen()
+        self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
@@ -73,4 +76,5 @@ class GameState:
         self.blackJackThomasScreen = BlackJackThomasScreen()
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
 
-        self.currentScreen = self.chilliScreen  # assign a value to currentScreen here
+        self.currentScreen = self.hedgeMazeScreen
+        # assign a value to currentScreen here

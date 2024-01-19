@@ -2,11 +2,6 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.battle_screen.black_jack_thomas import BlackJackThomas
-from entity.npc.battle_screen.coin_flip_fred import CoinFlipFred
-from entity.npc.battle_screen.nelly_opossum import NellyOpossum
-from entity.npc.battle_screen.rumble_bill import RumbleBill
-from entity.npc.battle_screen.sally_opossum import SallyOpossum
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -18,7 +13,7 @@ from screen.screen import Screen
 from physics.rectangle import Rectangle
 
 
-class GamblingAreaScreen(Screen):
+class HotelRoomScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -48,14 +43,13 @@ class GamblingAreaScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-             BlackJackThomas(16 * 4, 16 * 2),
-             CoinFlipFred(16 * 12, 16 * 2),
-             NellyOpossum(16 * 20, 16 * 2),
-             RumbleBill(16 * 4, 16 * 12),
-             SallyOpossum(16 * 14, 16 * 12),
+
+
 
                       ]
-
+        #
+        # if state.quest_giver_janet.find_hog:
+        #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
             # Demon1(16 * 55, 16 * 3),
@@ -273,6 +267,10 @@ class GamblingAreaScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        # for npc in state.npcs:
+        #     if isinstance(npc, ShopKeeper):
+        #         npc.textbox.draw(state)
 
         for demon in state.demons:
             demon.draw(state)
