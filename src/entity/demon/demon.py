@@ -16,6 +16,7 @@ class Demon(Entity):
         self.move_distance = 32  # distance to move each step
         self.last_color_change_time = pygame.time.get_ticks()
         self.color_change_interval = 3000
+        self.LOScounter = 0
 
     def move_randomly(self, state):
         current_time = pygame.time.get_ticks()
@@ -65,6 +66,8 @@ class Demon(Entity):
                 self.collision.x > los_left_boundary and \
                 state.player.collision.y > los_upper_boundary:
             print("Player is in LOS!")  # Print statement when the player is in LOS
+            self.LOScounter += 1
+            print(self.LOScounter)
 
             # Check if the player is to the left of the demon
             if state.player.collision.x < self.collision.x:
