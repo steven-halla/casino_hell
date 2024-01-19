@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="logic working for demons ejecting players">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/demon/demon.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new demon made" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +14,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "steven-halla"
+  }
+}]]></component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -24,6 +27,14 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="845cad6e-2ea7-4e14-a257-159f054436fc" />
+        <option name="url" value="git@github.com:steven-halla/casino_hell.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -50,7 +61,7 @@
     "Python.playground.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/assets/map",
+    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/src/entity/demon",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -63,14 +74,15 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/entity/demon" />
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/entity/npc" />
-      <recent name="$PROJECT_DIR$/assets/images" />
-      <recent name="$PROJECT_DIR$/assets/map" />
-      <recent name="$PROJECT_DIR$/assets" />
-      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/chilli_screen" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/battle_screen" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/rest_screen" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/start_screen" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -279,7 +291,7 @@
       <workItem from="1705011602798" duration="11611000" />
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
-      <workItem from="1705123656694" duration="122696000" />
+      <workItem from="1705123656694" duration="180424000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -624,7 +636,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="167" />
+    <option name="localTasksCounter" value="216" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -653,32 +665,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now there is condistions for talking" />
-    <MESSAGE value="two npcs can now be defeated and we keep track of state :)" />
-    <MESSAGE value="created baseline boxes for future use" />
-    <MESSAGE value="boxes displayed" />
-    <MESSAGE value="boxes change color" />
-    <MESSAGE value="can now turn each box green 1 at a time" />
-    <MESSAGE value="garbage cans confirmed filled" />
-    <MESSAGE value="now itereating through all boxes" />
-    <MESSAGE value="now we are shaking for X3 star and one of the lose cans" />
-    <MESSAGE value="managed to go to welcome screen and display messages" />
-    <MESSAGE value="now we are giving points" />
-    <MESSAGE value="created logic for other screens" />
-    <MESSAGE value="draw methods for all screens" />
-    <MESSAGE value="menu is now created" />
-    <MESSAGE value="fixed pick screen bug" />
-    <MESSAGE value="menus now built" />
-    <MESSAGE value="game almost built" />
-    <MESSAGE value="magic shakes now works" />
-    <MESSAGE value="fixed bug" />
-    <MESSAGE value="huge improvement, now goes to pick screen when re shuffled is picked" />
-    <MESSAGE value="now we have unique lose message when opposum picked this makes game flow better" />
-    <MESSAGE value="save point for fixing message error" />
-    <MESSAGE value="hedge hogs are being handled as needed" />
-    <MESSAGE value="trying to figure out how to move player" />
-    <MESSAGE value="logic working for demons ejecting players" />
-    <option name="LAST_COMMIT_MESSAGE" value="logic working for demons ejecting players" />
+    <MESSAGE value="can now buy items in both shops" />
+    <MESSAGE value="inn is now set up" />
+    <MESSAGE value="battle area is now set up" />
+    <MESSAGE value="fixing bug" />
+    <MESSAGE value="eerror that was skipping past welcome screen with lots of T presses" />
+    <MESSAGE value="moving along with fred" />
+    <MESSAGE value="sally is done" />
+    <MESSAGE value="Nelly is done" />
+    <MESSAGE value="Chilli Part discovered" />
+    <MESSAGE value="hedge maze setting up , now chnages colors" />
+    <MESSAGE value="setting up los" />
+    <MESSAGE value="los woring" />
+    <MESSAGE value="los not working" />
+    <MESSAGE value="los  working" />
+    <MESSAGE value="los wokring good" />
+    <MESSAGE value="demon is blue and while its blue it blocks" />
+    <MESSAGE value="LOS is now bieng blocked" />
+    <MESSAGE value="LOS is now working" />
+    <MESSAGE value="turns purple if touching" />
+    <MESSAGE value="changes course" />
+    <MESSAGE value="fixed bug turning all demons purpole" />
+    <MESSAGE value="demons completed" />
+    <MESSAGE value="demon appears on PRess of A" />
+    <MESSAGE value="almost done with this area" />
+    <MESSAGE value="new demon made" />
+    <option name="LAST_COMMIT_MESSAGE" value="new demon made" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -687,6 +699,11 @@
           <url>file://$PROJECT_DIR$/src/entity/npc/npc.py</url>
           <line>15</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/entity/demon/demon.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

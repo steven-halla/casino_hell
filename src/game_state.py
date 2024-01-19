@@ -3,9 +3,11 @@ import pygame
 from entity.demon.demon1 import Demon1
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
+from screen.black_jack_jared_screen import BlackJackJaredScreen
 from screen.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
 from screen.black_jack_screen import BlackJackScreen
 from screen.black_jack_thomas_screen import BlackJackThomasScreen
+from screen.boss_screen import BossScreen
 from screen.chilli_screen import ChilliScreen
 from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
@@ -39,7 +41,7 @@ class GameState:
 
         # core game state
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 15, 16 * 88)
+        self.player: Player = Player(16 * 15, 16 * 22)
         self.demon_left: Demon1 = Demon1(0,0)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
@@ -61,6 +63,7 @@ class GameState:
         self.restScreen = RestScreen()
         self.gamblingAreaScreen = GamblingAreaScreen()
         self.hotelRoomScreen = HotelRoomScreen()
+        self.bossScreen = BossScreen()
         # self.restScreen = RestScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
@@ -77,6 +80,7 @@ class GameState:
         self.blackJackScreen = BlackJackScreen()
         self.blackJackThomasScreen = BlackJackThomasScreen()
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
+        self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.hedgeMazeScreen
+        self.currentScreen = self.bossScreen
         # assign a value to currentScreen here
