@@ -1,5 +1,6 @@
 import pygame
 
+from entity.demon.demon1 import Demon1
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from screen.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
@@ -38,7 +39,8 @@ class GameState:
 
         # core game state
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 15, 16 * 55)
+        self.player: Player = Player(16 * 15, 16 * 88)
+        self.demon_left: Demon1 = Demon1(0,0)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())

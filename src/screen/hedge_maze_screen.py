@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
+from entity.demon.demon2 import Demon2
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -63,33 +64,6 @@ class HedgeMazeScreen(Screen):
             # FlippinTed(16* 35, 16 * 34),
 
 
-            # BobbyBibs(16 * 2, 16 * 2),
-            # BrutalPatrick(16 * 2, 16 * 10),
-            # ChillyBilly(16 * 2, 16 * 18),
-            #  CindyLongHair(16 * 2, 16 * 26),
-             # HungryPatrick(16 * 2, 16 * 34),
-            # JackyBanana(16 * 10, 16 * 2),
-            # JustinNoFruit(16 * 10, 16 * 10),
-            # NickyHints(16 * 10, 16 * 18),
-            # QuestGiverJanet(16 * 10, 16 * 26),
-            # RumbleBill(16 * 18, 16 * 2),
-            # SallyOpossum(16 * 18, 16 * 10),
-            # ShopKeeper(16 * 18, 16 * 18),
-            # SleepyNed(16 * 18, 16 * 26),
-            # SufferingSuzy(16 * 26, 16 * 2),
-            # WallyGuide(16 * 26, 16 * 10),
-            #
-            # CoinFlipFred(16 * 28, 16 * 36),
-            # FlippinTed(16 * 20, 16 * 36),
-            # FlippingSandy(16 * 28, 16 * 36),
-            # NellyOpossum(16 * 12, 16 * 36),
-            # Nurgle(16 * 24, 16 * 34)
-            # HedgeHog1(16 * 24, 16 * 34),
-            # HedgeHog2(16 * 32, 16 * 34),
-            # HedgeHog3(16 * 24, 16 * 20),
-            # HedgeHog4(16 * 24, 16 * 15),
-            # SirLeopoldTheHedgeHog(16 * 24, 16 * 25),
-
 
 
                       ]
@@ -98,7 +72,8 @@ class HedgeMazeScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            Demon1(16 * 22, 14 * 111),
+            Demon1(16 * 34, 14 * 144),
+            Demon2(16 * 30, 14 * 144),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),
