@@ -39,7 +39,7 @@ class Demon(Entity):
 
         super().update(state)  # Call update at the end
 
-    def LOSLeft(self):
+    def LOSLeft(self, state):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_color_change_time > self.color_change_interval:
             self.last_color_change_time = current_time
@@ -47,6 +47,24 @@ class Demon(Entity):
                 self.color = PURPLE
             else:
                 self.color = GREEN
+
+        # Define the LOS range to the left of the demon
+        los_range = 50  # Adjust this value as needed
+
+        # Calculate the left boundary of the LOS range
+        los_left_boundary = self.collision.x - los_range
+
+        # Check if the player's position falls within the LOS range
+        if state.player.collision.x < self.collision.x and \
+                self.collision.x > los_left_boundary:
+            print("Player is in LOS!")  # Print statement when the player is in LOS
+
+            # Check if the player is to the left of the demon
+            if state.player.collision.x < self.collision.x:
+                print("I see you to the left")  # Print statement when the player is to the left
+
+        # Store the LOS range for drawing
+        self.los_range = los_range
 
     def update(self, state):
         super().update(state)
@@ -57,3 +75,8 @@ class Demon(Entity):
             self.collision.x + state.camera.x, self.collision.y + state.camera.y,
             self.collision.width, self.collision.height)
         pygame.draw.rect(state.DISPLAY, self.color, rect)
+
+        if self.color == GREEN and hasattr(self, 'los_rect'):
+            # Offset the LOS rect by the camera position for correct positioning on the screen
+            los_rect_screen = self.los_rect.move(state.camera.x, state.camera.y)
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), los_rect_screen, 1)
