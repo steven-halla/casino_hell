@@ -38,7 +38,7 @@ class GameState:
 
         # core game state
         self.controller: Controller = Controller()
-        self.player: Player = Player(16 * 5, 16 * 11)
+        self.player: Player = Player(16 * 15, 16 * 55)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())

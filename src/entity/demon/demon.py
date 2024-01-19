@@ -50,9 +50,10 @@ class Demon(Entity):
                 self.color = GREEN
 
         # Define the LOS horizontal range to the left of the demon
-        los_horizontal_range = 50  # Adjust this value as needed
+        # Define the LOS horizontal range to the left of the demon
+        los_horizontal_range = 150  # Adjust this value as needed
 
-        # Define the LOS vertical range
+        # Define the LOS vertical range (height)
         los_vertical_range = 16  # Adjust this value as needed
 
         # Calculate the left boundary of the LOS horizontal range
@@ -61,10 +62,14 @@ class Demon(Entity):
         # Calculate the upper boundary of the LOS vertical range
         los_upper_boundary = self.collision.y - los_vertical_range
 
+        # Calculate the lower boundary of the LOS vertical range
+        los_lower_boundary = self.collision.y + self.collision.height + los_vertical_range
+
         # Check if the player's position falls within the LOS range
         if state.player.collision.x < self.collision.x and \
-                self.collision.x > los_left_boundary and \
-                state.player.collision.y > los_upper_boundary:
+                state.player.collision.x > los_left_boundary and \
+                state.player.collision.y > los_upper_boundary and \
+                state.player.collision.y < los_lower_boundary:
             print("Player is in LOS!")  # Print statement when the player is in LOS
             self.LOScounter += 1
             print(self.LOScounter)
