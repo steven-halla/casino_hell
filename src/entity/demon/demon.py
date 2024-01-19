@@ -45,24 +45,28 @@ class Demon(Entity):
 
         super().update(state)  # Call update at the end
 
-    def move_up_and_down(self, state):
+    def move_up_and_down(demon, state):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_vertical_move_time > self.vertical_move_interval:
-            self.last_vertical_move_time = current_time
+        if current_time - demon.last_vertical_move_time > demon.vertical_move_interval:
+            demon.last_vertical_move_time = current_time
 
-            # Move the character down by a fixed amount
-            self.position.y += self.move_distance
+            if demon.color == GREEN:
+                # Move the character down by a fixed amount
+                demon.position.y += demon.move_distance
+            elif demon.color == PURPLE:
+                # Move the character up by a fixed amount
+                demon.position.y -= demon.move_distance
 
             # Update the collision rectangle's position
-            self.collision.y = self.position.y
+            demon.collision.y = demon.position.y
 
             # Check for collisions with other demons and turn them both PURPLE if colliding
-            for demon in state.demons:
-                if demon != self and self.isOverlap(demon):
-                    self.color = PURPLE
+            for other_demon in state.demons:
+                if other_demon != demon and demon.isOverlap(other_demon):
                     demon.color = PURPLE
-
-
+                    other_demon.color = PURPLE
+                    # You can break here if you want to change colors of only the first pair of colliding demons
+                    # break
 
     def LOSLeft(self, state):
         current_time = pygame.time.get_ticks()
