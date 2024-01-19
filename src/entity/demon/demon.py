@@ -58,16 +58,17 @@ class Demon(Entity):
 
             # Flag to indicate if LOS is blocked by a shielding demon
             los_blocked = False
-
             for demon in state.demons:
                 if demon != self:  # Ensure we're not checking the demon against itself
                     distance_to_left_demon = self.collision.x - (demon.collision.x + demon.collision.width)
-                    print(f"Checking demon at ({demon.collision.x}, {demon.collision.y}) with distance: {distance_to_left_demon}")
+                    y_distance = abs(self.collision.y - demon.collision.y)  # Calculate the absolute y-position difference
 
-                    # Check if the demon is within 130 pixels to the left
-                    if 0 < distance_to_left_demon <= 130:
+                    print(f"Checking demon at ({demon.collision.x}, {demon.collision.y}) with horizontal distance: {distance_to_left_demon} and vertical distance: {y_distance}")
+
+                    # Check if the demon is within 130 pixels to the left and the y-position difference is 30 pixels or less
+                    if 0 < distance_to_left_demon <= 130 and y_distance <= 30:
                         self.color = BLUE  # Turn the current demon BLUE
-                        print(f"Demon {self} turned BLUE because of nearby demon {demon} at ({demon.collision.x}, {demon.collision.y})")
+                        print(f"Demon {self} turned BLUE because of nearby demon {demon} at ({demon.collision.x}, {demon.collision.y}) with y-distance: {y_distance}")
                         los_blocked = True  # Set the flag indicating LOS is blocked
                         break  # A demon is found within the range, no need to check further
 
