@@ -31,6 +31,7 @@ class Demon4(Demon):
 
 
     def update(self, state):
+        self.move_down_fast(state)
 
         # use enums for facing
 

@@ -21,6 +21,9 @@ class Demon(Entity):
         self.last_vertical_move_time = pygame.time.get_ticks()
         self.vertical_move_interval = 1111
         self.vertical_direction = 1  # 1 for down, -1 for up
+        self.last_fast_move_time = pygame.time.get_ticks()  # Initialize with the current time
+        self.fast_move_interval = 55  # Time interval between fast moves, in milliseconds
+        self.fast_move_distance = 15
 
 
     def move_randomly(self, state):
@@ -44,6 +47,29 @@ class Demon(Entity):
             self.collision.y = self.position.y
 
         super().update(state)  # Call update at the end
+
+    def move_down_fast(self, state):
+        # Set an initial timer value
+        timer = 0
+        current_time = pygame.time.get_ticks()
+
+        # Check if the required time has passed to update the movement
+        if current_time - self.last_fast_move_time > self.fast_move_interval:
+            self.last_fast_move_time = current_time
+
+            # Move the character down fast by a larger fixed amount
+            self.position.y += self.fast_move_distance  # fast_move_distance is greater than move_distance
+
+            # Update the collision rectangle's position
+            self.collision.y = self.position.y
+
+            # Optional: You can add logic to handle what happens when the entity moves down fast
+            # For example, checking for collisions or changing state
+
+    # You will need to initialize last_fast_move_time and fast_move_interval in your entity's __init__ method:
+    # self.last_fast_move_time = pygame.time.get_ticks()  # Initialize with the current time
+    # self.fast_move_interval = some_value  # Time interval between fast moves
+    # self.fast_move_distance = larger_value_than_normal  # The distance to move down fast
 
     def move_up_and_down(self, state):
 
