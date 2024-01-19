@@ -98,7 +98,7 @@ class HedgeMazeScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            Demon1(16 * 22, 14 * 90),
+            Demon1(16 * 22, 14 * 111),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),
