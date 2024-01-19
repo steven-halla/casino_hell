@@ -5,6 +5,7 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
 from entity.demon.demon2 import Demon2
 from entity.demon.demon3 import Demon3
+from entity.demon.demon4 import Demon4
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -76,6 +77,7 @@ class HedgeMazeScreen(Screen):
             Demon1(16 * 22, 14 * 91),
             Demon2(16 * 20, 14 * 79),
             Demon3(16 * 20, 14 * 85),
+            # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
@@ -86,6 +88,16 @@ class HedgeMazeScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+
+        controller = state.controller
+        # ... (rest of your update code) ...
+
+        # Check if 'A' key is pressed
+        if controller.isAPressed:
+            # Instantiate Demon4 at a specific position (x, y)
+            new_demon = Demon4(16 * 20, 16 * 10)  # You can set the position as needed
+            # Add the new demon to the state.demons list
+            state.demons.append(new_demon)
 
 
         controller = state.controller
