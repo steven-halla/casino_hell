@@ -76,6 +76,7 @@ class HedgeMazeScreen(Screen):
             Demon1(16 * 22, 14 * 91),
             Demon2(16 * 20, 14 * 79),
             Demon3(16 * 20, 14 * 85),
+            Demon3(16 * 20, 14 * 76),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),
