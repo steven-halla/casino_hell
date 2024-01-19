@@ -5,8 +5,10 @@ from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from screen.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
 from screen.black_jack_screen import BlackJackScreen
 from screen.black_jack_thomas_screen import BlackJackThomasScreen
+from screen.chilli_screen import ChilliScreen
 from screen.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
+from screen.coin_flip_screen import CoinFlipScreen
 from screen.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
@@ -48,14 +50,17 @@ class GameState:
         self.delta: float = 0.0
         self.camera = Vector(0.0, 0.0)
 
+
+        self.startScreen = StartScreen()
+        self.chilliScreen = ChilliScreen()
         self.mainScreen = MainScreen()
         self.restScreen = RestScreen()
         self.gamblingAreaScreen = GamblingAreaScreen()
         # self.restScreen = RestScreen()
         # self.hedgeMazeScreen = HedgeMazeScreen()
         # self.bossScreen = BossScreen()
-        self.startScreen = StartScreen()
 
+        self.coinFlipScreen = CoinFlipScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()
         self.coinFlipFredScreen = CoinFlipFredScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
@@ -68,4 +73,4 @@ class GameState:
         self.blackJackThomasScreen = BlackJackThomasScreen()
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
 
-        self.currentScreen = self.gamblingAreaScreen  # assign a value to currentScreen here
+        self.currentScreen = self.chilliScreen  # assign a value to currentScreen here

@@ -1,7 +1,7 @@
 import pygame
 
-from entity.npc.bobby_bibs import BobbyBibs
-from entity.npc.chilly_billy import ChillyBilly
+from entity.npc.chilli_screen.bobby_bibs import BobbyBibs
+from entity.npc.chilli_screen.chilly_billy import ChillyBilly
 from constants import PLAYER_OFFSET, BLUEBLACK
 from screen.screen import Screen
 from entity.npc.start_screen.hungry_patrick import HungryPatrick
