@@ -18,6 +18,10 @@ class Demon(Entity):
         self.color_change_interval = 3000
         self.LOScounter = 0
         self.los_blocked = False
+        self.last_vertical_move_time = pygame.time.get_ticks()
+        self.vertical_move_interval = 1111
+        self.vertical_direction = 1  # 1 for down, -1 for up
+
 
     def move_randomly(self, state):
         current_time = pygame.time.get_ticks()
@@ -40,6 +44,25 @@ class Demon(Entity):
             self.collision.y = self.position.y
 
         super().update(state)  # Call update at the end
+
+    def move_up_and_down(self, state):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_vertical_move_time > self.vertical_move_interval:
+            self.last_vertical_move_time = current_time
+
+            # Move the character down by a fixed amount
+            self.position.y += self.move_distance
+
+            # Update the collision rectangle's position
+            self.collision.y = self.position.y
+
+            # Check for collisions with other demons and turn them both PURPLE if colliding
+            for demon in state.demons:
+                if demon != self and self.isOverlap(demon):
+                    self.color = PURPLE
+                    demon.color = PURPLE
+
+
 
     def LOSLeft(self, state):
         current_time = pygame.time.get_ticks()

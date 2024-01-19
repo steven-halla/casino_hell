@@ -4,6 +4,7 @@ import pytmx
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
 from entity.demon.demon2 import Demon2
+from entity.demon.demon3 import Demon3
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -74,6 +75,7 @@ class HedgeMazeScreen(Screen):
         state.demons = [
             Demon1(16 * 22, 14 * 91),
             Demon2(16 * 20, 14 * 79),
+            Demon3(16 * 20, 14 * 85),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),

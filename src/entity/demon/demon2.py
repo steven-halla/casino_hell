@@ -33,6 +33,7 @@ class Demon2(Demon):
     def update(self, state):
 
         # use enums for facing
+        self.move_up_and_down(state)
 
         # print("updating")
         super().update(state)
