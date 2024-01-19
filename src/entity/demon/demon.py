@@ -59,44 +59,33 @@ class Demon(Entity):
             # Flag to indicate if LOS is blocked by a shielding demon
             los_blocked = False
 
-            # Check for shielding demons
-            # for demon in state.demons:
-            #     if demon != self and getattr(demon, 'isShielding', False):  # Skip the current demon and check if the demon is shielding
-            #         if demon.collision.x > los_left_boundary and demon.collision.x < self.collision.x and \
-            #                 demon.collision.y < los_lower_boundary and (demon.collision.y + demon.collision.height) > los_upper_boundary:
-            #             # There's a shielding demon in the LOS, blocking the view
-            #             los_blocked = True
-            #             break  # No need to check other demons if LOS is already blocked
-            los_vertical_range = 16  # Adjust this based on the actual height of your demons
-
             for demon in state.demons:
                 if demon != self:  # Ensure we're not checking the demon against itself
                     distance_to_left_demon = self.collision.x - (demon.collision.x + demon.collision.width)
                     print(f"Checking demon at ({demon.collision.x}, {demon.collision.y}) with distance: {distance_to_left_demon}")
 
-                    # Check if the demon is within 30 pixels to the left
+                    # Check if the demon is within 130 pixels to the left
                     if 0 < distance_to_left_demon <= 130:
                         self.color = BLUE  # Turn the current demon BLUE
                         print(f"Demon {self} turned BLUE because of nearby demon {demon} at ({demon.collision.x}, {demon.collision.y})")
-                        self.los_blocked = True
-
+                        los_blocked = True  # Set the flag indicating LOS is blocked
                         break  # A demon is found within the range, no need to check further
 
-            # If LOS is not blocked by a shielding demon, check if the player is in LOS
-                elif not los_blocked:
-                    if state.player.collision.x < self.collision.x and \
-                            state.player.collision.x > los_left_boundary and \
-                            state.player.collision.y > los_upper_boundary and \
-                            state.player.collision.y < los_lower_boundary:
-                        print("Player is in LOS!")
-                        self.LOScounter += 1
-                        print(self.LOScounter)
-                        if state.player.collision.x < self.collision.x:
-                            print("I see you to the left")
-                        return False  # Player is in LOS and not shielded
+            # Check if the player is in LOS and the LOS is not blocked
+            if not los_blocked:
+                if state.player.collision.x < self.collision.x and \
+                        state.player.collision.x > los_left_boundary and \
+                        state.player.collision.y > los_upper_boundary and \
+                        state.player.collision.y < los_lower_boundary:
+                    print("Player is in LOS!")
+                    self.LOScounter += 1
+                    print(self.LOScounter)
+                    if state.player.collision.x < self.collision.x:
+                        print("I see you to the left")
+                    return False  # Player is in LOS and not shielded
 
         # LOS is blocked by a demon or LOS is not towards the player
-            return True  # Safe, either LOS is blocked or player is not in LOS
+        return True  # Safe, either LOS is blocked or player is not in LOS
 
     def update(self, state):
         super().update(state)

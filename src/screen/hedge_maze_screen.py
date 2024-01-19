@@ -73,7 +73,7 @@ class HedgeMazeScreen(Screen):
 
         state.demons = [
             Demon1(16 * 34, 14 * 144),
-            Demon2(16 * 30, 14 * 144),
+            # Demon2(16 * 30, 14 * 144),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),
