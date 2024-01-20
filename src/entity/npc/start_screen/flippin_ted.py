@@ -79,9 +79,13 @@ class FlippinTed(Npc):
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
+                # print("ya")
                 self.t_pressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
+
+            self.arrow_index = 0
+
             # Exiting the conversation
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
