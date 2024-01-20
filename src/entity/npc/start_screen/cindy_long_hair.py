@@ -79,7 +79,12 @@ class CindyLongHair(Npc):
 
 
     def update_talking(self, state: "GameState"):
-        current_message = self.cindy_long_hair_messages['reward_message'] if state.coinFlipTedScreen.coinFlipTedDefeated else self.cindy_long_hair_messages['textbox']
+        if self.coinFlipTedReward == True:
+            current_message = self.cindy_long_hair_messages['final_message']
+        elif state.coinFlipTedScreen.coinFlipTedDefeated:
+            current_message = self.cindy_long_hair_messages['reward_message']
+        else:
+            current_message = self.cindy_long_hair_messages['textbox']
         current_message.update(state)
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
@@ -90,18 +95,22 @@ class CindyLongHair(Npc):
         rect = (
             self.collision.x + state.camera.x, self.collision.y + state.camera.y,
             self.collision.width, self.collision.height)
-
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.cindy_long_hair_messages['reward_message'] if state.coinFlipTedScreen.coinFlipTedDefeated else self.cindy_long_hair_messages['textbox']
+            if self.coinFlipTedReward == True:
+                current_message = self.cindy_long_hair_messages['final_message']
+            elif state.coinFlipTedScreen.coinFlipTedDefeated:
+                current_message = self.cindy_long_hair_messages['reward_message']
+            else:
+                current_message = self.cindy_long_hair_messages['textbox']
             current_message.draw(state)
             while state.coinFlipTedScreen.coinFlipTedDefeated == True and "black jack reveal" not in state.player.magicinventory:
                 state.player.mind += 1
                 state.player.magicinventory.append("black jack reveal")
                 print(state.player.magicinventory)
                 print(state.player.mind)
-                self.coinFlipTedReward = True
+                # self.coinFlipTedReward = True
 
                 return
 
