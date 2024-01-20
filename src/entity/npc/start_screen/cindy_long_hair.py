@@ -47,6 +47,7 @@ class CindyLongHair(Npc):
         self.input_time = pygame.time.get_ticks()
         self.coinFlipTedReward = True
 
+
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
