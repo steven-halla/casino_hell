@@ -35,7 +35,6 @@ class ShopKeeper(Npc):
         self.textbox.show_shop_menu = True
 
     def update(self, state: "GameState"):
-        print(state.player.perception)
         if "+1 perception" in state.player.items:
             state.player.perception += 1
             state.player.items.remove("+1 perception")
