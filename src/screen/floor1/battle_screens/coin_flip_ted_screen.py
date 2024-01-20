@@ -36,7 +36,7 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 500
+        self.coinFlipTedMoney = 100
         self.coinFlipTedDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
@@ -131,7 +131,8 @@ class CoinFlipTedScreen(Screen):
             "enemy_desperate_message": TextBox(
                 ["Enemy: NOOoooooo....Do you know how many years i've spent coin flipping!!! This is impossible! ",
                  "Hero: It's not,  either you've been doing it wrong for years, or you reached you best a long time ago",
-                 "Enemy: You bastard, I'll show you, I'll show you to mess with me you mother fucker!!!", ""
+                 "Enemy: Please...don't take my coins......you don't know what they do to people who lose all their coins!!!",
+                 "Hero: Sadly for you I'm ruthless, I'm taking you out!", ""
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -249,7 +250,9 @@ class CoinFlipTedScreen(Screen):
 
 
     def update(self, state: "GameState"):
-        if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
+
+
+        if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:
             self.game_state = "enemy_desperate_screen"
 
         if self.coinFlipTedMoney < 10:
