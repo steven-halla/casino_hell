@@ -22,6 +22,7 @@ class ShopKeeper(Npc):
         # New: Initialize an array of items for the shopkeeper
         self.shop_items = ["+1 perception", "save coin", "coin bandanna"]
         self.shop_costs = ["100", "200", "300"]
+
         self.selected_item_index = 0  # New attribute to track selected item index
         self.selected_money_index = 0  # New attribute to track selected item index
 
@@ -82,21 +83,32 @@ class ShopKeeper(Npc):
             elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
 
-                # Check if the player has enough money
-                if state.player.money >= cost and self.textbox.is_finished():
+                # Check if the player has enough money and the item is not already sold out
+                if state.player.money >= cost and self.shop_items[self.selected_item_index] != "sold out" and self.textbox.is_finished():
                     # Subtract the cost from the player's money
                     state.player.money -= cost
                     selected_item = self.shop_items[self.selected_item_index]
                     state.player.items.append(selected_item)
+
+                    # Mark the purchased item as "sold out"
+                    self.sold_out(self.selected_item_index)
+
                     print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
                     print("Your inventory as it stands: " + str(state.player.items))
                 else:
-                    print("Not enough money to purchase item.")
+                    if self.shop_items[self.selected_item_index] == "sold out":
+                        print("This item is sold out.")
+                    else:
+                        print("Not enough money to purchase item.")
 
                 # No need to transition the state back to "waiting" after purchase
                 # as the player might want to continue shopping
 
             self.update_talking(state)
+
+    def sold_out(self, item_index: int):
+        # Mark the item as sold out
+        self.shop_items[item_index] = "sold out"
 
     def update_waiting(self, state: "GameState"):
         player = state.player
