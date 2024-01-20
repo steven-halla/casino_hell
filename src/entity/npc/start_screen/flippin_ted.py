@@ -56,9 +56,15 @@ class FlippinTed(Npc):
 
         # Check for keypresses only once per frame
         if state.controller.isUpPressed:
+            state.controller.isUpPressed = False
+
             self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+            print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
+
         elif state.controller.isDownPressed:
+            state.controller.isDownPressed = False
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:
