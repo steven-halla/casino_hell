@@ -37,6 +37,7 @@ class ShopNpcTextBox(Entity):
         key_scroll_delay = 200  # Time in milliseconds before recognizing another key press
         if self.is_finished():
 
+
             if state.controller.isUpPressed and (current_time - self.last_key_time > key_scroll_delay):
                 self.selected_item_index = max(0, self.selected_item_index - 1)
                 self.last_key_time = current_time  # Update the time of the last key press
