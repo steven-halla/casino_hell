@@ -20,7 +20,7 @@ class ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["item 11", "item 2", "item 3"]
+        self.shop_items = ["+1 perception", "save coin", "coin bandanna"]
         self.shop_costs = ["100", "200", "300"]
         self.selected_item_index = 0  # New attribute to track selected item index
         self.selected_money_index = 0  # New attribute to track selected item index
@@ -40,7 +40,7 @@ class ShopKeeper(Npc):
 
 
             cost = int(self.shop_costs[self.selected_item_index])
-            print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
+            # print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
 
             # Handle 'B' press for leaving the shop
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -64,20 +64,20 @@ class ShopKeeper(Npc):
             elif state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
-                    print(f"Selected item index: {self.selected_item_index}")
-                    print(f"Selected item index after pressing up: {self.selected_item_index}")
+                    # print(f"Selected item index: {self.selected_item_index}")
+                    # print(f"Selected item index after pressing up: {self.selected_item_index}")
 
 
             elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
-                print(f"Selected item index: {self.selected_item_index}")
+                # print(f"Selected item index: {self.selected_item_index}")
 
             elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
 
                 # Check if the player has enough money
-                if state.player.money >= cost:
+                if state.player.money >= cost and self.textbox.is_finished():
                     # Subtract the cost from the player's money
                     state.player.money -= cost
                     selected_item = self.shop_items[self.selected_item_index]
@@ -129,7 +129,7 @@ class ShopKeeper(Npc):
             state.player.canMove = False
 
         cost = int(self.shop_costs[self.selected_item_index])
-        print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
+        # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
 
 
     def draw(self, state):
