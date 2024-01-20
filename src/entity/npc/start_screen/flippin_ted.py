@@ -67,7 +67,7 @@ class FlippinTed(Npc):
             print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed:
+        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -104,7 +104,7 @@ class FlippinTed(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

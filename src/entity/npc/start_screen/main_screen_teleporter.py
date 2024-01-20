@@ -10,10 +10,10 @@ class MainScreenTeleporter(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Teleporter: I'll transport you to the next screen !"],
+                ["Inn Guard: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Looks like you defeated me, how sad :("],
+                ["Good job on that take down, I was tired of looking at his ugly face, he'll look much better like a horse. Would you like to go to the rest area?You've earned it!"],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -61,7 +61,7 @@ class MainScreenTeleporter(Npc):
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed:
+        if current_message.is_finished() and state.controller.isTPressed and "black jack reveal" in state.player.items:
             state.currentScreen = state.restScreen
             state.restScreen.start(state)
             # Handle the selected option
@@ -92,7 +92,7 @@ class MainScreenTeleporter(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == True:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

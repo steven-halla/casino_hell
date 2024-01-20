@@ -11,7 +11,7 @@ class InnGuard(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "InnGuard: Unless you have the Inn Badge you will continue to see me and I'll block your path. Talk to Mike for the inn badge"],
+                "InnGuard: Cheatting ted is a real piece of work. Try betting low to see his pattern he picks"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
