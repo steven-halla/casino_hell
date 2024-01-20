@@ -14,7 +14,7 @@ class BappingMike(Npc):
                 "Mike: Money is FINITE, so don't waste it.",
                 "You need money to buy items, gamble, and move on to the next area..",
                 " ammass 2000 coins and  you can play the boss to advance.",
-            "If a dealer is too hard for you, you can always leave and try again later"],
+            "Also, the more you bet, the more stamina you lose, but you gain more EXP, you also gain EXP for losing"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

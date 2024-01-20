@@ -14,7 +14,7 @@ class JackyBanana(Npc):
                 "Jacky: Talk to everyone you meet, you can sometimes get clues on how to beat people.",
                 "I'll even do you a solid and give you a clue now",
                 "If an enemy is beating you, try betting low and see if they have a  pattern.",
-                "Some people have optional quest too",
+                "If the enemy is too strong, you can come back another time when your stronger",
                 "There is an rest area nearby, but you'll need to prove yourself first before you can use it.",
             "There is a bar where you can chat with people, a store to buy items, and an Inn where you can rest and save your game"],
             (50, 450, 50, 45), 30, 500)
