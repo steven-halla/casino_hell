@@ -36,8 +36,8 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 0
-        self.coinFlipTedDefeated = True
+        self.coinFlipTedMoney = 1000
+        self.coinFlipTedDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
@@ -166,17 +166,23 @@ class CoinFlipTedScreen(Screen):
     def giveExp(self, state: "GameState"):
         # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
-            state.player.exp += 30
-            if self.bet > 60:
+            if self.bet >= 60:
                 state.player.stamina_points -= 2
+                state.player.exp += 30
+
+            elif self.bet < 60:
+                state.player.stamina_points -= 1
+                state.player.exp += 5
+
 
         elif self.result != self.player_choice:
-            state.player.exp += 15
-            if self.bet > 60:
+            if self.bet >= 60:
                 state.player.stamina_points -= 3
+                state.player.exp += 15
 
-        elif self.bet < 60:
-            state.player.stamina_points -= 1
+            elif self.bet < 60:
+                state.player.stamina_points -= 1
+                state.player.exp += 5
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -880,6 +886,7 @@ class CoinFlipTedScreen(Screen):
 
                 else:
                     print("1 index")
+                    self.arrow_index = 0
                     state.currentScreen = state.startScreen
                     state.startScreen.start(state)
 
