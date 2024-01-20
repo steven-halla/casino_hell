@@ -27,12 +27,18 @@ class ShopKeeper(Npc):
 
 
 
+
     def show_shop(self, state: "GameState"):
         # This method passes the shop items to the textbox
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
 
     def update(self, state: "GameState"):
+        print(state.player.perception)
+        if "+1 perception" in state.player.items:
+            state.player.perception += 1
+            state.player.items.remove("+1 perception")
+            return
         if self.state == "waiting":
             self.update_waiting(state)
 
