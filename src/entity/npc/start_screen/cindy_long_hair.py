@@ -36,7 +36,7 @@ class CindyLongHair(Npc):
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
-        self.coinFlipTedReward = False
+        self.coinFlipTedReward = True
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
@@ -83,3 +83,14 @@ class CindyLongHair(Npc):
         if self.state == "talking":
             current_message = self.cindy_long_hair_messages['reward_message'] if state.coinFlipTedScreen.coinFlipTedDefeated else self.cindy_long_hair_messages['textbox']
             current_message.draw(state)
+            while state.coinFlipTedScreen.coinFlipTedDefeated == True and self.coinFlipTedReward == True:
+                state.player.mind += 1
+                state.player.magicinventory.append("black jack reveal")
+                print(state.player.magicinventory)
+                print(state.player.mind)
+                self.coinFlipTedReward = False
+
+                return
+
+
+
