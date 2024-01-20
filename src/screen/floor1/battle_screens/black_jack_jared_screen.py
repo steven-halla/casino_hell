@@ -2,7 +2,7 @@ import pygame
 
 from constants import DISPLAY
 from entity.gui.textbox.text_box import TextBox
-from screen.screen import Screen
+from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
 
@@ -13,7 +13,7 @@ from entity.gui.textbox.bordered_box import BorderedBox
 
 # betting is also broken, a black jack should net X 2 winnings
 
-class BlackJackThomasScreen(Screen):
+class BlackJackJaredScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
@@ -74,7 +74,7 @@ class BlackJackThomasScreen(Screen):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Thomas: Press T key for all commands.",
+            "welcome_screen": ["Jared: I'm the boss you better get ready to have a good WAGGGGGGHH!!!",
                                " My name's Cheater Bob, it's not a nickname.",
                                "I'm what you would call a 'newb stomper'.",
                                "You look pretty fresh to me.", ""],

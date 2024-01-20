@@ -2,7 +2,7 @@ import pygame
 
 from constants import DISPLAY
 from entity.gui.textbox.text_box import TextBox
-from screen.screen import Screen
+from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
 
@@ -13,7 +13,7 @@ from entity.gui.textbox.bordered_box import BorderedBox
 
 # betting is also broken, a black jack should net X 2 winnings
 
-class BlackJackScreen(Screen):
+class BlackJackThomasScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
@@ -55,6 +55,7 @@ class BlackJackScreen(Screen):
 
         self.despair = False
         # self.despair = True
+        self.black_jack_thomas_defeated = False
 
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
@@ -73,7 +74,7 @@ class BlackJackScreen(Screen):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Cheater Bob: Press T key for all commands.",
+            "welcome_screen": ["Thomas: Press T key for all commands.",
                                " My name's Cheater Bob, it's not a nickname.",
                                "I'm what you would call a 'newb stomper'.",
                                "You look pretty fresh to me.", ""],
@@ -83,7 +84,7 @@ class BlackJackScreen(Screen):
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": [
-                "Cheater Bob: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
+                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
 
             "hero_losing_text": [
                 "Hero: This isn't good, I'll need to get serious if I want to make a comeback.",

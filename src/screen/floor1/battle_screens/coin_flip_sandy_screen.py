@@ -1,14 +1,13 @@
 import random
 
 import pygame
-import sys
 
 from entity.gui.textbox.text_box import TextBox
-from screen.screen import Screen
+from screen.examples.screen import Screen
 
 
 
-class CoinFlipTedScreen(Screen):
+class CoinFlipSandyScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
         self.flip_screen_initialized = True
@@ -37,27 +36,27 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 100
-        self.coinFlipTedDefeated = False
+        self.coinFlipSandyMoney = 100
+        self.coinFlipSandyDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
-        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
+        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
 
         self.enemy_desperate_counter = False
         self.enemy_defeated_counter = False
         self.hero_desperate_counter = False
 
         self.entered_shield_screen = False  # Add this flag
+
         self.shield_triggered = False
 
         self.lose_exp = False
         self.game_state = "welcome_screen"
-
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
+                ["Sandy: I got some new boots, time for to stomp you into the ground punk.", "I'm a little harder than cheating ted, hope you have some magic!", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -168,16 +167,15 @@ class CoinFlipTedScreen(Screen):
         # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
             state.player.exp += 30
+            print("Current exp equals: " + str(state.player.exp))
             if self.bet > 60:
-                state.player.stamina_points -= 2
+                state.player.stamina_points -= 1
 
         elif self.result != self.player_choice:
             state.player.exp += 15
+            print("Current exp equals: " + str(state.player.exp))
             if self.bet > 60:
-                state.player.stamina_points -= 3
-
-        elif self.bet < 60:
-            state.player.stamina_points -= 1
+                state.player.stamina_points -= 2
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -203,8 +201,8 @@ class CoinFlipTedScreen(Screen):
         if self.bet > 100:
             self.bet = 100
 
-        if self.bet > self.coinFlipTedMoney:
-            self.bet = self.coinFlipTedMoney
+        if self.bet > self.coinFlipSandyMoney:
+            self.bet = self.coinFlipSandyMoney
 
         if controller.isTPressed:
 
@@ -214,11 +212,9 @@ class CoinFlipTedScreen(Screen):
 
     def flipCoin(self, state: "GameState"):
         coin = random.random()
-        if coin < 0.9:
+        if coin < 0.7:
             print("coin landed on tails")
             self.result = "tails"
-
-
 
             if state.player.luck == 1:
                 # Random roll event
@@ -226,7 +222,6 @@ class CoinFlipTedScreen(Screen):
                 if roll < 10:
                     print("You lucky doggy dog")
                     self.result = self.player_choice
-
             self.game_state = "results_screen"
 
         else:
@@ -244,19 +239,18 @@ class CoinFlipTedScreen(Screen):
 
 
     def update(self, state: "GameState"):
-        import random  # Importing inside the method
-        if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
+        if self.coinFlipSandyMoney < 50 and self.enemy_desperate_counter == False:
             self.game_state = "enemy_desperate_screen"
 
-        if self.coinFlipTedMoney < 10:
+        if self.coinFlipSandyMoney < 10:
             self.game_state = "enemy_defeated_screen"
 
 
 
         if state.controller.isQPressed:
             # Transition to the main screen
-            state.currentScreen = state.startScreen
-            state.startScreen.start(state)
+            state.currentScreen = state.mainScreen
+            state.mainScreen.start(state)
             return
 
 
@@ -367,12 +361,12 @@ class CoinFlipTedScreen(Screen):
             if not self.has_run_money_logic:
                 if self.player_choice == self.result:
                     state.player.money += self.bet
-                    self.coinFlipTedMoney -= self.bet
+                    self.coinFlipSandyMoney -= self.bet
                 elif self.player_choice != self.result:
 
 
                     state.player.money -= self.bet
-                    self.coinFlipTedMoney += self.bet
+                    self.coinFlipSandyMoney += self.bet
                     if self.debuff_vanish == True:
                         import random
                         roll = random.randint(1, 100)
@@ -422,8 +416,8 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "game_over_screen":
             if state.controller.isTPressed:
-                state.currentScreen = state.startScreen
-                state.startScreen.start(state)
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
 
         if self.game_state == "enemy_desperate_screen":
             if self.coin_flip_messages["enemy_desperate_message"].message_index == 3:
@@ -441,20 +435,15 @@ class CoinFlipTedScreen(Screen):
         if self.game_state == "enemy_defeated_screen":
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
-                self.coinFlipTedDefeated = True
-                state.currentScreen = state.startScreen
-                state.startScreen.start(state)
+                self.coinFlipSandyDefeated = True
+                state.currentScreen = state.mainScreen
+                state.mainScreen.start(state)
 
 
         controller = state.controller
         controller.update()
 
     ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
-
-
-
-
-
 
     def draw(self, state: "GameState"):
 
@@ -549,7 +538,7 @@ class CoinFlipTedScreen(Screen):
         # Blit the white border (with the black box) onto the state display
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipTedMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipSandyMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
         if self.debuff_counter == 0:
@@ -882,8 +871,8 @@ class CoinFlipTedScreen(Screen):
 
                 else:
                     print("1 index")
-                    state.currentScreen = state.startScreen
-                    state.startScreen.start(state)
+                    state.currentScreen = state.mainScreen
+                    state.mainScreen.start(state)
 
         if self.game_state == "game_over_screen":
             print("your game state is: " + str(self.game_state))

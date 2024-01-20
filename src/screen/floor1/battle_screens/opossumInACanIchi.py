@@ -1,11 +1,10 @@
 import random
-import time
 from typing import List
 
 import pygame
 
 from entity.gui.textbox.text_box import TextBox
-from screen.screen import Screen
+from screen.examples.screen import Screen
 
 
 #
@@ -16,22 +15,21 @@ from screen.screen import Screen
 
 ## PRESS B TO GET OUT FOR OPTIONS
 
-class OpossumInACanScreen(Screen):
+class OpossumInACanIchiScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
         self.desperate = False
-        self.five_hundred_points = True
-
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 1200
+        self.nellyOpossumMoney = 1200
         self.opossumBite = False
-        self.sallyOpossumIsDefeated = False
+        self.nellyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
         self.opossum_index = 0
+        self.five_hundred_points = False
         self.magic_menu_selector_index = 0
         self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["win", "win",
@@ -43,7 +41,7 @@ class OpossumInACanScreen(Screen):
 
         self.opossumInACanMessages = {
             "welcome_message": TextBox(
-                ["Press T to select options and go through T messages", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
+                ["Ichi here, very itch itch itchy", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -226,10 +224,7 @@ class OpossumInACanScreen(Screen):
 
     def update(self, state: "GameState"):
         if self.player_score >= 500:
-            print("all the points")
-
             self.five_hundred_points = True
-
         if self.fill_cans == True:
             self.initializeGarbageCans()
             self.fill_cans = False
@@ -253,8 +248,6 @@ class OpossumInACanScreen(Screen):
 
 
         if self.game_state == "menu_screen":
-            if self.player_score >= 500:
-                self.five_hundred_points = True
 
             if state.controller.isUpPressed:
                 self.opossum_index -= 1
@@ -278,8 +271,6 @@ class OpossumInACanScreen(Screen):
 
 
         if self.game_state == "pick_screen":
-            if self.player_score >= 500:
-                self.five_hundred_points = True
             if state.controller.isBPressed:
                 self.game_state = "menu_screen"
 
@@ -314,8 +305,8 @@ class OpossumInACanScreen(Screen):
             self.opossumInACanMessages["pick_message"].update(state)
 
         if self.game_state == "lose_screen":
-            # print("WERE ARE HERE AGGHHGHHGHGHGGHFSGHJLSADJFJSFJSDA;FFJAS;LJF;DAFL;SDLFL;A")
-            # print(str(self.opossumInACanMessages["lose_message"].message_index))
+            print("WERE ARE HERE AGGHHGHHGHGHGGHFSGHJLSADJFJSFJSDA;FFJAS;LJF;DAFL;SDLFL;A")
+            print(str(self.opossumInACanMessages["lose_message"].message_index))
             # Reset the message index every time you enter the lose_screen
             if not self.initialized_message:
                 self.opossumInACanMessages["lose_message"].message_index = 0
@@ -337,12 +328,11 @@ class OpossumInACanScreen(Screen):
             # Reset the flag when you leave the lose_screen state to ensure the message will be reset next time you enter
 
         if self.game_state == "magic_menu_screen":
-
             if state.controller.isUpPressed:
                 self.magic_menu_opossum_index -= 1
                 if self.magic_menu_opossum_index < 0:
                     self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
-                    # print(str(self.magic_menu_opossum_index))
+                    print(str(self.magic_menu_opossum_index))
 
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -351,7 +341,7 @@ class OpossumInACanScreen(Screen):
                 self.magic_menu_opossum_index += 1
                 if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
                     self.magic_menu_opossum_index = 0  # Wrap around to the first item
-                    # print(str(self.magic_menu_opossum_index))
+                    print(str(self.magic_menu_opossum_index))
 
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -360,8 +350,6 @@ class OpossumInACanScreen(Screen):
 
 
         if self.game_state == "play_again_or_leave_screen":
-            if self.player_score >= 500:
-                self.five_hundred_points = True
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
 
         if self.game_state == "opossum_defeated_screen":
@@ -520,7 +508,7 @@ class OpossumInACanScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.sallyOpossumMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.nellyOpossumMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
 
@@ -609,24 +597,16 @@ class OpossumInACanScreen(Screen):
                     state.controller.isTPressed = False
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
-                    if self.player_score >= 500:
-                        print("all the points")
-
-                        self.five_hundred_points = True
                     state.player.money += self.player_score
-                    self.sallyOpossumMoney -= self.player_score
+                    self.nellyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     self.refresh()
                     self.initializeGarbageCans()
                     self.game_state = "pick_screen"
                 elif self.opossum_index == 3:
-                    if self.player_score >= 500:
-                        print("all the points")
-
-                        self.five_hundred_points = True
                     state.player.money += self.player_score
-                    self.sallyOpossumMoney -= self.player_score
+                    self.nellyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)

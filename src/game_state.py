@@ -3,31 +3,31 @@ import pygame
 from entity.demon.demon1 import Demon1
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
-from screen.black_jack_jared_screen import BlackJackJaredScreen
-from screen.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
-from screen.black_jack_screen import BlackJackScreen
-from screen.black_jack_thomas_screen import BlackJackThomasScreen
-from screen.boss_screen import BossScreen
-from screen.chilli_screen import ChilliScreen
-from screen.coin_flip_fred_screen import CoinFlipFredScreen
-from screen.coin_flip_sandy_screen import CoinFlipSandyScreen
-from screen.coin_flip_screen import CoinFlipScreen
-from screen.coin_flip_ted_screen import CoinFlipTedScreen
+from screen.floor1.battle_screens.black_jack_jared_screen import BlackJackJaredScreen
+from screen.floor1.battle_screens.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
+from screen.examples.black_jack_screen import BlackJackScreen
+from screen.floor1.battle_screens.black_jack_thomas_screen import BlackJackThomasScreen
+from screen.floor1.map_screens.boss_screen import BossScreen
+from screen.floor1.map_screens.chilli_screen import ChilliScreen
+from screen.floor1.battle_screens.coin_flip_fred_screen import CoinFlipFredScreen
+from screen.floor1.battle_screens.coin_flip_sandy_screen import CoinFlipSandyScreen
+from screen.examples.coin_flip_screen import CoinFlipScreen
+from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
 from entity.obstacle.obstacle import Obstacle
-from screen.gambling_area_screen import GamblingAreaScreen
-from screen.hedge_maze_screen import HedgeMazeScreen
-from screen.hotel_room_screen import HotelRoomScreen
-from screen.main_screen import MainScreen
-from screen.opossumInACanIchi import OpossumInACanIchiScreen
-from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
-from screen.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
-from screen.opossum_in_a_can_screen import OpossumInACanScreen
+from screen.floor1.map_screens.gambling_area_screen import GamblingAreaScreen
+from screen.floor1.map_screens.hedge_maze_screen import HedgeMazeScreen
+from screen.floor1.map_screens.hotel_room_screen import HotelRoomScreen
+from screen.examples.main_screen import MainScreen
+from screen.floor1.battle_screens.opossumInACanIchi import OpossumInACanIchiScreen
+from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
+from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
+from screen.examples.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
-from screen.rest_screen import RestScreen
-from screen.start_screen import StartScreen
+from screen.floor1.map_screens.rest_screen import RestScreen
+from screen.floor1.map_screens.start_screen import StartScreen
 
 
 class GameState:
@@ -84,5 +84,5 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.bossScreen
+        self.currentScreen = self.startScreen
         # assign a value to currentScreen here

@@ -2,29 +2,26 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.demon.demon1 import Demon1
+from entity.demon.demon2 import Demon2
+from entity.demon.demon3 import Demon3
+from entity.demon.demon4 import Demon4
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
 from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
-from entity.npc.start_screen.bapping_mike import BappingMike
-from entity.npc.start_screen.cindy_long_hair import CindyLongHair
-from entity.npc.start_screen.flippin_ted import FlippinTed
-from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
-from entity.npc.start_screen.jacky_banana import JackyBanana
-from entity.npc.start_screen.main_screen_teleporter import MainScreenTeleporter
-from entity.npc.start_screen.nicky_hints import NickyHints
 from entity.player.player import Player
-from screen.screen import Screen
+from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
-class StartScreen(Screen):
+class HedgeMazeScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/hedgemaze1.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -54,47 +51,20 @@ class StartScreen(Screen):
             #x, y
             # InnGuard(16 * 36, 16 * 2),
             # BappingMike(16 * 36, 16 * 10),
-            # BarKeep(16 * 36, 16 * 18),
+
             # InnKeeper(16 * 36, 16 * 26),
             # DoctorOpossum(16 * 30, 16 * 30),
-            JackyBanana(16* 5, 16 * 15),
-            BappingMike(16* 15, 16 * 15),
-            HungryPatrick(16* 25, 16 * 15),
-            InnGuard(16* 35, 16 * 15),
-            NickyHints(16* 25, 16 * 25),
-            MainScreenTeleporter(16 * 1, 16 * 10),
-
-
-
-            FlippinTed(16* 35, 16 * 34),
-
-
-            # BobbyBibs(16 * 2, 16 * 2),
-            # BrutalPatrick(16 * 2, 16 * 10),
-            # ChillyBilly(16 * 2, 16 * 18),
-             CindyLongHair(16 * 2, 16 * 26),
-             # HungryPatrick(16 * 2, 16 * 34),
-            # JackyBanana(16 * 10, 16 * 2),
-            # JustinNoFruit(16 * 10, 16 * 10),
-            # NickyHints(16 * 10, 16 * 18),
-            # QuestGiverJanet(16 * 10, 16 * 26),
-            # RumbleBill(16 * 18, 16 * 2),
-            # SallyOpossum(16 * 18, 16 * 10),
-            # ShopKeeper(16 * 18, 16 * 18),
-            # SleepyNed(16 * 18, 16 * 26),
-            # SufferingSuzy(16 * 26, 16 * 2),
-            # WallyGuide(16 * 26, 16 * 10),
+            # JackyBanana(16* 5, 16 * 15),
+            # BappingMike(16* 15, 16 * 15),
+            # HungryPatrick(16* 25, 16 * 15),
+            # InnGuard(16* 35, 16 * 15),
+            # NickyHints(16* 25, 16 * 25),
+            # MainScreenTeleporter(16 * 1, 16 * 10),
             #
-            # CoinFlipFred(16 * 28, 16 * 36),
-            # FlippinTed(16 * 20, 16 * 36),
-            # FlippingSandy(16 * 28, 16 * 36),
-            # NellyOpossum(16 * 12, 16 * 36),
-            # Nurgle(16 * 24, 16 * 34)
-            # HedgeHog1(16 * 24, 16 * 34),
-            # HedgeHog2(16 * 32, 16 * 34),
-            # HedgeHog3(16 * 24, 16 * 20),
-            # HedgeHog4(16 * 24, 16 * 15),
-            # SirLeopoldTheHedgeHog(16 * 24, 16 * 25),
+            #
+            #
+            # FlippinTed(16* 35, 16 * 34),
+
 
 
 
@@ -104,7 +74,11 @@ class StartScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            # Demon1(16 * 55, 16 * 3),
+            Demon1(16 * 22, 14 * 91),
+            Demon2(16 * 20, 14 * 79),
+            Demon3(16 * 20, 14 * 85),
+            # Demon4(16 * 20, 14 * 10),
+            # Demon3(16 * 20, 14 * 76),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),
@@ -114,6 +88,16 @@ class StartScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+
+        controller = state.controller
+        # ... (rest of your update code) ...
+
+        # Check if 'A' key is pressed
+        if controller.isAPressed:
+            # Instantiate Demon4 at a specific position (x, y)
+            new_demon = Demon4(16 * 20, 16 * 10)  # You can set the position as needed
+            # Add the new demon to the state.demons list
+            state.demons.append(new_demon)
 
 
         controller = state.controller
@@ -279,12 +263,12 @@ class StartScreen(Screen):
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)
-        state.DISPLAY.blit(state.FONT.render(
-            f"player money: {state.player.money}",
-            True, (255, 255, 255)), (333, 333))
-        state.DISPLAY.blit(state.FONT.render(
-            f"player stamina points: {state.player.stamina_points}",
-            True, (255, 255, 255)), (333, 388))
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player money: {state.player.money}",
+        #     True, (255, 255, 255)), (333, 333))
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player stamina points: {state.player.stamina_points}",
+        #     True, (255, 255, 255)), (333, 388))
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
@@ -319,6 +303,10 @@ class StartScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        # for npc in state.npcs:
+        #     if isinstance(npc, ShopKeeper):
+        #         npc.textbox.draw(state)
 
         for demon in state.demons:
             demon.draw(state)

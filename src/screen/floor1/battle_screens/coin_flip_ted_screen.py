@@ -1,14 +1,13 @@
 import random
 
 import pygame
-import sys
 
 from entity.gui.textbox.text_box import TextBox
-from screen.screen import Screen
+from screen.examples.screen import Screen
 
 
 
-class CoinFlipFredScreen(Screen):
+class CoinFlipTedScreen(Screen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
         self.flip_screen_initialized = True
@@ -43,7 +42,7 @@ class CoinFlipFredScreen(Screen):
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
-        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
+        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
 
         self.enemy_desperate_counter = False
         self.enemy_defeated_counter = False
@@ -57,7 +56,7 @@ class CoinFlipFredScreen(Screen):
 
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["Freddy Fred: Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
+                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -244,7 +243,6 @@ class CoinFlipFredScreen(Screen):
 
 
     def update(self, state: "GameState"):
-        import random  # Importing inside the method
         if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
             self.game_state = "enemy_desperate_screen"
 

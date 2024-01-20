@@ -3,7 +3,7 @@ import time
 import pygame
 
 from dice import Dice
-from screen.screen import Screen
+from screen.examples.screen import Screen
 
 
 class DiceGameScreen(Screen, Dice):

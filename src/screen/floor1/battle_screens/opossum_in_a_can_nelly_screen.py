@@ -1,11 +1,10 @@
 import random
-import time
 from typing import List
 
 import pygame
 
 from entity.gui.textbox.text_box import TextBox
-from screen.screen import Screen
+from screen.examples.screen import Screen
 
 
 #

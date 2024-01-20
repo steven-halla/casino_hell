@@ -2,24 +2,26 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.chilli_screen.bobby_bibs import BobbyBibs
-from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
-from entity.npc.chilli_screen.chilly_billy import ChillyBilly
-from entity.npc.chilli_screen.jessica_starving import JessicaStarving
-from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
-from entity.npc.chilli_screen.sleepy_ned import SleepyNed
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
 from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
+from entity.npc.rest_screen.bar_keep import BarKeep
+from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
+from entity.npc.rest_screen.inn_keeper import InnKeeper
+from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
+from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
+from entity.npc.rest_screen.shop_keeper import ShopKeeper
+from entity.npc.rest_screen.suffering_suzy import SufferingSuzy
+from entity.npc.rest_screen.wally_guide import WallyGuide
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
-from screen.screen import Screen
+from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
-class ChilliScreen(Screen):
+class RestScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -53,13 +55,14 @@ class ChilliScreen(Screen):
             #x, y
             # InnGuard(16 * 36, 16 * 2),
             # BappingMike(16 * 36, 16 * 10),
-            BobbyBibs(16 * 36, 16 * 18),
-            BrutalPatrick(16 * 26, 16 * 18),
-            ChillyBilly(16 * 18, 16 * 18),
-            JessicaStarving(16 * 10, 16 * 18),
-            SirLeopoldTheHedgeHog(16 * 10, 16 * 26),
-            SleepyNed(16 * 18, 16 * 26),
-
+            BarKeep(16 * 36, 16 * 18),
+            DoctorOpossum(16 * 26, 16 * 18),
+            InnKeeper(16 * 18, 16 * 18),
+            JustinNoFruit(16 * 10, 16 * 18),
+            QuestGiverJanet(16 * 10, 16 * 26),
+            ShopKeeper(16 * 18, 16 * 26),
+            SufferingSuzy(16 * 26, 16 * 26),
+            WallyGuide(16 * 34, 16 * 26),
             # InnKeeper(16 * 36, 16 * 26),
             # DoctorOpossum(16 * 30, 16 * 30),
             # JackyBanana(16* 5, 16 * 15),

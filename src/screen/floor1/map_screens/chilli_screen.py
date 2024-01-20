@@ -2,11 +2,12 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.battle_screen.black_jack_thomas import BlackJackThomas
-from entity.npc.battle_screen.coin_flip_fred import CoinFlipFred
-from entity.npc.battle_screen.nelly_opossum import NellyOpossum
-from entity.npc.battle_screen.rumble_bill import RumbleBill
-from entity.npc.battle_screen.sally_opossum import SallyOpossum
+from entity.npc.chilli_screen.bobby_bibs import BobbyBibs
+from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
+from entity.npc.chilli_screen.chilly_billy import ChillyBilly
+from entity.npc.chilli_screen.jessica_starving import JessicaStarving
+from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
+from entity.npc.chilli_screen.sleepy_ned import SleepyNed
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -14,15 +15,15 @@ from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
-from screen.screen import Screen
+from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
-class GamblingAreaScreen(Screen):
+class ChilliScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame3.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -48,14 +49,64 @@ class GamblingAreaScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-             BlackJackThomas(16 * 4, 16 * 2),
-             CoinFlipFred(16 * 12, 16 * 2),
-             NellyOpossum(16 * 20, 16 * 2),
-             RumbleBill(16 * 4, 16 * 12),
-             SallyOpossum(16 * 14, 16 * 12),
+            # make sure to seperate by a factor of 8 for y
+            #x, y
+            # InnGuard(16 * 36, 16 * 2),
+            # BappingMike(16 * 36, 16 * 10),
+            BobbyBibs(16 * 36, 16 * 18),
+            BrutalPatrick(16 * 26, 16 * 18),
+            ChillyBilly(16 * 18, 16 * 18),
+            JessicaStarving(16 * 10, 16 * 18),
+            SirLeopoldTheHedgeHog(16 * 10, 16 * 26),
+            SleepyNed(16 * 18, 16 * 26),
+
+            # InnKeeper(16 * 36, 16 * 26),
+            # DoctorOpossum(16 * 30, 16 * 30),
+            # JackyBanana(16* 5, 16 * 15),
+            # BappingMike(16* 15, 16 * 15),
+            # HungryPatrick(16* 25, 16 * 15),
+            # InnGuard(16* 35, 16 * 15),
+            # NickyHints(16* 25, 16 * 25),
+            # MainScreenTeleporter(16 * 1, 16 * 10),
+            #
+            #
+            #
+            # FlippinTed(16* 35, 16 * 34),
+
+
+            # BobbyBibs(16 * 2, 16 * 2),
+            # BrutalPatrick(16 * 2, 16 * 10),
+            # ChillyBilly(16 * 2, 16 * 18),
+            #  CindyLongHair(16 * 2, 16 * 26),
+             # HungryPatrick(16 * 2, 16 * 34),
+            # JackyBanana(16 * 10, 16 * 2),
+            # JustinNoFruit(16 * 10, 16 * 10),
+            # NickyHints(16 * 10, 16 * 18),
+            # QuestGiverJanet(16 * 10, 16 * 26),
+            # RumbleBill(16 * 18, 16 * 2),
+            # SallyOpossum(16 * 18, 16 * 10),
+            # ShopKeeper(16 * 18, 16 * 18),
+            # SleepyNed(16 * 18, 16 * 26),
+            # SufferingSuzy(16 * 26, 16 * 2),
+            # WallyGuide(16 * 26, 16 * 10),
+            #
+            # CoinFlipFred(16 * 28, 16 * 36),
+            # FlippinTed(16 * 20, 16 * 36),
+            # FlippingSandy(16 * 28, 16 * 36),
+            # NellyOpossum(16 * 12, 16 * 36),
+            # Nurgle(16 * 24, 16 * 34)
+            # HedgeHog1(16 * 24, 16 * 34),
+            # HedgeHog2(16 * 32, 16 * 34),
+            # HedgeHog3(16 * 24, 16 * 20),
+            # HedgeHog4(16 * 24, 16 * 15),
+            # SirLeopoldTheHedgeHog(16 * 24, 16 * 25),
+
+
 
                       ]
-
+        #
+        # if state.quest_giver_janet.find_hog:
+        #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
             # Demon1(16 * 55, 16 * 3),
@@ -273,6 +324,10 @@ class GamblingAreaScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        # for npc in state.npcs:
+        #     if isinstance(npc, ShopKeeper):
+        #         npc.textbox.draw(state)
 
         for demon in state.demons:
             demon.draw(state)

@@ -1,9 +1,8 @@
 import random
 
 import pygame
-import sys
 
-from screen.screen import Screen
+from screen.examples.screen import Screen
 
 
 class CoinFlipScreen(Screen):

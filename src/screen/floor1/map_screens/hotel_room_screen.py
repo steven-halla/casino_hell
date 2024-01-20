@@ -2,10 +2,6 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.demon.demon1 import Demon1
-from entity.demon.demon2 import Demon2
-from entity.demon.demon3 import Demon3
-from entity.demon.demon4 import Demon4
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -13,15 +9,15 @@ from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
-from screen.screen import Screen
+from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
-class HedgeMazeScreen(Screen):
+class HotelRoomScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/hedgemaze1.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame3.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -47,24 +43,6 @@ class HedgeMazeScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-            # make sure to seperate by a factor of 8 for y
-            #x, y
-            # InnGuard(16 * 36, 16 * 2),
-            # BappingMike(16 * 36, 16 * 10),
-
-            # InnKeeper(16 * 36, 16 * 26),
-            # DoctorOpossum(16 * 30, 16 * 30),
-            # JackyBanana(16* 5, 16 * 15),
-            # BappingMike(16* 15, 16 * 15),
-            # HungryPatrick(16* 25, 16 * 15),
-            # InnGuard(16* 35, 16 * 15),
-            # NickyHints(16* 25, 16 * 25),
-            # MainScreenTeleporter(16 * 1, 16 * 10),
-            #
-            #
-            #
-            # FlippinTed(16* 35, 16 * 34),
-
 
 
 
@@ -74,11 +52,7 @@ class HedgeMazeScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            Demon1(16 * 22, 14 * 91),
-            Demon2(16 * 20, 14 * 79),
-            Demon3(16 * 20, 14 * 85),
-            # Demon4(16 * 20, 14 * 10),
-            # Demon3(16 * 20, 14 * 76),
+            # Demon1(16 * 55, 16 * 3),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),
@@ -88,16 +62,6 @@ class HedgeMazeScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
-
-        controller = state.controller
-        # ... (rest of your update code) ...
-
-        # Check if 'A' key is pressed
-        if controller.isAPressed:
-            # Instantiate Demon4 at a specific position (x, y)
-            new_demon = Demon4(16 * 20, 16 * 10)  # You can set the position as needed
-            # Add the new demon to the state.demons list
-            state.demons.append(new_demon)
 
 
         controller = state.controller
@@ -263,12 +227,12 @@ class HedgeMazeScreen(Screen):
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)
-        # state.DISPLAY.blit(state.FONT.render(
-        #     f"player money: {state.player.money}",
-        #     True, (255, 255, 255)), (333, 333))
-        # state.DISPLAY.blit(state.FONT.render(
-        #     f"player stamina points: {state.player.stamina_points}",
-        #     True, (255, 255, 255)), (333, 388))
+        state.DISPLAY.blit(state.FONT.render(
+            f"player money: {state.player.money}",
+            True, (255, 255, 255)), (333, 333))
+        state.DISPLAY.blit(state.FONT.render(
+            f"player stamina points: {state.player.stamina_points}",
+            True, (255, 255, 255)), (333, 388))
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
