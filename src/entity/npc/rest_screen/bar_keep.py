@@ -79,7 +79,7 @@ class BarKeep(Npc):
                 self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
                 print(f"Selected item index: {self.selected_item_index}")
 
-            elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+            elif state.player.body > 0 and state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
 
                 # Check if the player has enough money
@@ -100,6 +100,20 @@ class BarKeep(Npc):
 
                 # No need to transition the state back to "waiting" after purchase
                 # as the player might want to continue shopping
+            elif state.player.body == 0 and state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+                self.input_time = pygame.time.get_ticks()
+
+                # Allow the player to move again
+                state.player.canMove = True
+
+                # Reset the selected item index
+                NpcTextBox.reset(state)
+
+                # Transition the state back to "waiting"
+                self.state = "waiting"
+                print("Leaving the shop...")
+                self.nohealthbox.reset()  # Reset the textbox
+                return  # Exit early to ensure no further processing in this update cycle
 
             self.update_talking(state)
 
@@ -125,18 +139,8 @@ class BarKeep(Npc):
 
 
     def update_talking(self, state: "GameState"):
-        # self.textbox.update(state)
-        # self.show_shop(state)
-
-        if state.player.body == 0:
-            # Show the message for players with body == 0
-            self.nohealthbox.update(state)
-            state.player.canMove = False  # Player can't move while this message is displayed
-
-        else:
-            # The existing code for normal shop interaction
-            self.textbox.update(state)
-            self.show_shop(state)
+        self.textbox.update(state)
+        self.show_shop(state)
 
         if state.controller.isTPressed and self.textbox.is_finished():
             # Exiting the shop conversation
@@ -163,9 +167,4 @@ class BarKeep(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            if state.player.body == 0:
-                # Draw the no health box instead
-                self.nohealthbox.draw(state)
-            else:
-                # Draw the regular shop interaction
-                self.textbox.draw(state)
+            self.textbox.draw(state)
