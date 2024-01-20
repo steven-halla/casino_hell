@@ -57,7 +57,7 @@ class CoinFlipSandyScreen(Screen):
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["I got some new boots, time for to stomp you into the ground punk.", "I'm a little harder than cheating ted, hope you have some magic!", ""],
+                ["Sandy: I got some new boots, time for to stomp you into the ground punk.", "I'm a little harder than cheating ted, hope you have some magic!", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay

@@ -20,6 +20,7 @@ from screen.gambling_area_screen import GamblingAreaScreen
 from screen.hedge_maze_screen import HedgeMazeScreen
 from screen.hotel_room_screen import HotelRoomScreen
 from screen.main_screen import MainScreen
+from screen.opossumInACanIchi import OpossumInACanIchiScreen
 from screen.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
 from screen.opossum_in_a_can_screen import OpossumInACanScreen
@@ -76,6 +77,7 @@ class GameState:
         self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.opossumInACanSallyScreen = OpossumInACanSallyScreen()
+        self.opossumInACanIchiScreen = OpossumInACanIchiScreen()
 
         self.blackJackScreen = BlackJackScreen()
         self.blackJackThomasScreen = BlackJackThomasScreen()

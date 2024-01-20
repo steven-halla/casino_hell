@@ -2,6 +2,9 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.boss_screen.FlippingSandy import FlippingSandy
+from entity.npc.boss_screen.black_jack_jared import BlackJackJared
+from entity.npc.boss_screen.opossum_in_a_can_ichi import IchiOpossum
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -50,6 +53,10 @@ class BossScreen(Screen):
             # BarKeep(16 * 36, 16 * 18),
             # InnKeeper(16 * 36, 16 * 26),
             # DoctorOpossum(16 * 30, 16 * 30),
+            BlackJackJared(16 * 30, 16 * 30),
+            FlippingSandy(16 * 22, 16 * 30),
+            IchiOpossum(16 * 11, 16 * 30),
+
 
 
             # BobbyBibs(16 * 2, 16 * 2),
