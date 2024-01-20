@@ -11,12 +11,14 @@ class InnKeeper(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Hi there welcome to our humble rest area. Don't mind the garbage, roaches, rats, or bed bugs. They're all very nice.",
+                "Hi there welcome to our humble rest area. Don't mind the fleas, roaches, drooling rats, or bed bugs. They're all very nice.",
                 "Press T button to stay for 100 coins, and B button to leave."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
+
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"

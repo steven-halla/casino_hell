@@ -24,7 +24,7 @@ class Player(Entity):
         self.exp = 0
         self.inn_badge = False
         self.level = 1
-        self.body = 1
+        self.body = 0
         self.mind = 0
         self.spirit = 0
         self.luck = 0

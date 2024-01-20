@@ -35,7 +35,7 @@ class DoctorOpossum(Npc):
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
-        self.hero_rabies = True
+        self.hero_rabies = False
 
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
