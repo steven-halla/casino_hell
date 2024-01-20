@@ -37,17 +37,38 @@ class BarKeep(Npc):
         # This method passes the shop items to the textbox
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
+        # print("better now")
 
     def update(self, state: "GameState"):
+
+        if state.player.body == 0:
+            self.state = "no body"
+            print(self.state)
+            self.input_time = pygame.time.get_ticks()
+            state.controller.isTPressed = False
+            print("Hifasd")
+
+            # Allow the player to move again
+            state.player.canMove = True
+
+            # Reset the selected item index
+            NpcTextBox.reset(state)
+
+            # Transition the state back to "waiting"
+            # self.state = "talking"
+
+            print("Leaving the shop...")
+            self.nohealthbox.reset()  # Reset the textbox
+            return  # Exit early to ensure no further processing in this update cycle
+
+
+
         if self.state == "waiting":
             self.update_waiting(state)
 
         elif self.state == "talking":
-
-
             cost = int(self.shop_costs[self.selected_item_index])
-            print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
-
+            # print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
             # Handle 'B' press for leaving the shop
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
@@ -70,14 +91,14 @@ class BarKeep(Npc):
             elif state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
-                    print(f"Selected item index: {self.selected_item_index}")
-                    print(f"Selected item index after pressing up: {self.selected_item_index}")
+                    # print(f"Selected item index: {self.selected_item_index}")
+                    # print(f"Selected item index after pressing up: {self.selected_item_index}")
 
 
             elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
-                print(f"Selected item index: {self.selected_item_index}")
+                # print(f"Selected item index: {self.selected_item_index}")
 
             elif state.player.body > 0 and state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
@@ -93,27 +114,52 @@ class BarKeep(Npc):
                             state.player.stamina_points = state.player.max_stamina_points
                         selected_item = self.shop_items[self.selected_item_index]
                         state.player.items.append(selected_item)
-                        print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
-                        print("Your inventory as it stands: " + str(state.player.items))
+                        # print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
+                        # print("Your inventory as it stands: " + str(state.player.items))
                     else:
                         print("Not enough money to purchase item.")
 
                 # No need to transition the state back to "waiting" after purchase
                 # as the player might want to continue shopping
-            elif state.player.body == 0 and state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
-                self.input_time = pygame.time.get_ticks()
+            # elif state.player.body == 0 and state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+            #     self.input_time = pygame.time.get_ticks()
+            #     state.controller.isTPressed = False
+            #     print("Hifasd")
+            #
+            #     # Allow the player to move again
+            #     state.player.canMove = True
+            #
+            #     # Reset the selected item index
+            #     NpcTextBox.reset(state)
+            #
+            #     # Transition the state back to "waiting"
+            #     # self.state = "talking"
+            #
+            #     print("Leaving the shop...")
+            #     self.nohealthbox.reset()  # Reset the textbox
+            #     return  # Exit early to ensure no further processing in this update cycle
 
-                # Allow the player to move again
-                state.player.canMove = True
 
-                # Reset the selected item index
-                NpcTextBox.reset(state)
-
-                # Transition the state back to "waiting"
-                self.state = "waiting"
-                print("Leaving the shop...")
-                self.nohealthbox.reset()  # Reset the textbox
-                return  # Exit early to ensure no further processing in this update cycle
+            # elif state.player.body == 0 and state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+            #     self.input_time = pygame.time.get_ticks()
+            #
+            #     print("Processing 'T' press with player body == 0")
+            #
+            #     # Allow the player to move again
+            #     state.player.canMove = True
+            #
+            #     # Reset the selected item index
+            #     NpcTextBox.reset(state)
+            #
+            #     # Ensure the game state transitions away from talking or interacting
+            #     # self.state = "talking"  # Uncomment this if needed
+            #
+            #     print("Leaving the shop...")
+            #
+            #     self.nohealthbox.reset()  # Reset the textbox
+            #
+            #     # Ensure no further processing that might reopen the textbox
+            #     return
 
             self.update_talking(state)
 
@@ -127,7 +173,7 @@ class BarKeep(Npc):
                             player.collision.y - self.collision.y) ** 2)
             # print("distance: " + str(distance))
 
-            if distance < 100:
+            if distance < 100 and state.player.body > 0:
                 # print("start state: talking")
 
                 self.state = "talking"
@@ -135,26 +181,39 @@ class BarKeep(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # the below is where kenny had it
                 self.textbox.reset()
+            elif distance < 100 and state.player.body == 0:
+                self.state = "talking"
+                self.state_start_time = pygame.time.get_ticks()
+                self.nohealthbox.reset()
+
+
 
 
 
     def update_talking(self, state: "GameState"):
-        self.textbox.update(state)
-        self.show_shop(state)
+        if state.player.body > 0:
+            self.textbox.update(state)
+            self.show_shop(state)
+        elif state.player.body == 0:
+            self.nohealthbox.update(state)
 
-        if state.controller.isTPressed and self.textbox.is_finished():
+        if state.player.body > 0 and state.controller.isTPressed and self.textbox.is_finished():
             # Exiting the shop conversation
             # self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             # Allow the player to move again (new)
             # state.player.canMove = True  # Ensure this attribute exists in your Player class
             # self.textbox.reset()
+        elif state.player.body == 0 and state.controller.isTPressed and self.nohealthbox.is_finished():
+            self.state_start_time = pygame.time.get_ticks()
+            self.state = "talking"
+            state.player.canMove = True
         else:
             # While in conversation, prevent the player from moving (new)
             state.player.canMove = False
 
         cost = int(self.shop_costs[self.selected_item_index])
-        print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
+        # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
 
 
     def draw(self, state):
@@ -167,4 +226,8 @@ class BarKeep(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            self.textbox.draw(state)
+            if state.player.body > 0:
+                self.textbox.draw(state)
+            elif state.player.body == 0:
+                # print("am i drawing")
+                self.nohealthbox.draw(state)
