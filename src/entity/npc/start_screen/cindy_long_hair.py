@@ -35,8 +35,9 @@ class CindyLongHair(Npc):
             ),
             'final_message': NpcTextBox(
                 [
+                    "",
                     "Cindy: Watching you take him down was so satisfying thank you.",
-                    "Black Jack Technique Reveal learned. Get a good sense of what your opponent has.",
+                    "Black Jack Technique Reveal: Get a good sense of what your opponent has.",
                     "low: 1-9, med 10=15, high 16-21",
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -90,6 +91,9 @@ class CindyLongHair(Npc):
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             current_message.reset()  # Ensure the message is reset for the next interaction
+            if "black jack reveal" in state.player.magicinventory:
+                self.coinFlipTedReward = True
+
 
     def draw(self, state):
         rect = (
