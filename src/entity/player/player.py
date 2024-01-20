@@ -28,11 +28,12 @@ class Player(Entity):
         self.mind = 0
         self.spirit = 0
         self.luck = 0
-        self.perception = 0
+        self.perception = 1
         self.perks = []
         self.items = []
         self.magicinventory = []
         self.canMove = True
+        self.hedge_hog_counter = 4
 
 
     def update(self, state: "GameState"):

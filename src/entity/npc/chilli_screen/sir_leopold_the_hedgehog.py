@@ -39,6 +39,9 @@ class SirLeopoldTheHedgeHog(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
+            if state.player.hedge_hog_counter > 3:
+                print("you got em all")
+
             # self.textbox.reset()
             # self.textbox.message_index = 0
             if self.textbox.message_index == 1:

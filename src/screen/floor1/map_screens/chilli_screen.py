@@ -47,18 +47,26 @@ class ChilliScreen(Screen):
 
         ]
 
-        # state.npcs = []
-        state.npcs = [
-            # make sure to seperate by a factor of 8 for y
-            #x, y
-            # InnGuard(16 * 36, 16 * 2),
-            # BappingMike(16 * 36, 16 * 10),
+        if state.player.perception > 0:
+            state.npcs.append(SirLeopoldTheHedgeHog(16 * 10, 16 * 26))
+
+
+            # Add other NPCs to the state.npcs list
+        state.npcs.extend([
             BobbyBibs(16 * 36, 16 * 18),
             BrutalPatrick(16 * 26, 16 * 18),
             ChillyBilly(16 * 18, 16 * 18),
             JessicaStarving(16 * 10, 16 * 18),
-            SirLeopoldTheHedgeHog(16 * 10, 16 * 26),
             SleepyNed(16 * 18, 16 * 26),
+        ])
+
+        # state.npcs = []
+        # state.npcs = [
+            # make sure to seperate by a factor of 8 for y
+            #x, y
+            # InnGuard(16 * 36, 16 * 2),
+            # BappingMike(16 * 36, 16 * 10),
+
 
             # InnKeeper(16 * 36, 16 * 26),
             # DoctorOpossum(16 * 30, 16 * 30),
@@ -103,7 +111,7 @@ class ChilliScreen(Screen):
 
 
 
-                      ]
+                      # ]
         #
         # if state.quest_giver_janet.find_hog:
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
