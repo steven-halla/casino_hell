@@ -11,9 +11,10 @@ class BappingMike(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Mike: You can stay at the inn to replenish your Health and magic. It does cost  money,",
-                "Money down here is finite, so don't waste it, and only stay at the inn if you really feel it's needed.",
-                " come back to me when you are holding 1300 coins, I'll give you access to the inn."],
+                "Mike: Money is FINITE, so don't waste it.",
+                "You need money to buy items, gamble, and move on to the next area..",
+                " ammass 2000 coins and  you can play the boss to advance.",
+            "If a dealer is too hard for you, you can always leave and try again later"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

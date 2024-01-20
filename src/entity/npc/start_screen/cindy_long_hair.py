@@ -12,8 +12,9 @@ class CindyLongHair(Npc):
             'textbox': NpcTextBox(
                 [
                     "Cindy: Cheating Ted is such a bastard. Because of him my boyfriend is making beer.",
-                    "If you can take all his coins I'll reward you. Most of his coin flips land on tails, he trained himself to do that.",
-                    "Hero: So against him I should bet tails, most people tend to bet 'heads', very smart of him to know that much."
+                    "If you can take all his coins I'll reward you with a black jack technique. Pay attention to what his coins land on the most",
+                    "Hero: What technique is that?.",
+                    "Reveal, you'll get a sense of how good their hand is."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

@@ -11,11 +11,12 @@ class JackyBanana(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Jacky: Some people cheat, if you catch them you can take their money.",
-                "If you have the perk 'iron stomach' I'll give you a banana",
-                "Hero: Ha! I can spot a cheater from a mile away,with my high perception I can catch anyone here.",
-                "Jacky: What about you Mr. Gambling man, do you cheat?",
-                "Hero: Nope, never had to , but I might start if it comes down to it."],
+                "Jacky: Talk to everyone you meet, you can sometimes get clues on how to beat people.",
+                "I'll even do you a solid and give you a clue now",
+                "You'll need to complete quest to advance the story.",
+                "Some people have optional quest too",
+                "There is an rest area nearby, but you'll need to prove yourself first before you can use it.",
+            "There is a bar where you can chat with people, a store to buy items, and an Inn where you can rest and save your game"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
