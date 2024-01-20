@@ -69,12 +69,13 @@ class FlippinTed(Npc):
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
             # Handle the selected option
-            state.controller.isTPressed = False
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
+                state.controller.isTPressed = False
+
                 state.currentScreen = state.coinFlipTedScreen
                 state.coinFlipTedScreen.start(state)
 
