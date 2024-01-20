@@ -34,6 +34,77 @@ class ShopKeeper(Npc):
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
 
+    # def update(self, state: "GameState"):
+    #     if "+1 perception" in state.player.items:
+    #         state.player.perception += 1
+    #         state.player.items.remove("+1 perception")
+    #         return
+    #     if self.state == "waiting":
+    #         self.update_waiting(state)
+    #
+    #     elif self.state == "talking":
+    #
+    #
+    #         cost = int(self.shop_costs[self.selected_item_index])
+    #         # print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
+    #
+    #         # Handle 'B' press for leaving the shop
+    #         if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+    #             self.input_time = pygame.time.get_ticks()
+    #
+    #
+    #             # Allow the player to move again
+    #             state.player.canMove = True
+    #
+    #             # Reset the selected item index
+    #             ShopNpcTextBox.reset(state)
+    #
+    #             # Transition the state back to "waiting"
+    #             self.state = "waiting"
+    #             print("Leaving the shop...")
+    #             self.textbox.reset()  # Reset the textbox
+    #             return  # Exit early to ensure no further processing in this update cycle
+    #
+    #
+    #
+    #         elif state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
+    #                 self.input_time = pygame.time.get_ticks()
+    #                 self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
+    #                 # print(f"Selected item index: {self.selected_item_index}")
+    #                 # print(f"Selected item index after pressing up: {self.selected_item_index}")
+    #
+    #
+    #         elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
+    #             self.input_time = pygame.time.get_ticks()
+    #             self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
+    #             # print(f"Selected item index: {self.selected_item_index}")
+    #
+    #         elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+    #             self.input_time = pygame.time.get_ticks()
+    #
+    #             # Check if the player has enough money and the item is not already sold out
+    #             if state.player.money >= cost and self.shop_items[self.selected_item_index] != "sold out" and self.textbox.is_finished():
+    #                 # Subtract the cost from the player's money
+    #                 state.player.money -= cost
+    #                 selected_item = self.shop_items[self.selected_item_index]
+    #                 state.player.items.append(selected_item)
+    #
+    #                 # Mark the purchased item as "sold out"
+    #                 self.sold_out(self.selected_item_index)
+    #
+    #                 print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
+    #                 print("Your inventory as it stands: " + str(state.player.items))
+    #             else:
+    #                 if self.shop_items[self.selected_item_index] == "sold out":
+    #                     print("This item is sold out.")
+    #                 else:
+    #                     print("Not enough money to purchase item.")
+    #
+    #             # No need to transition the state back to "waiting" after purchase
+    #             # as the player might want to continue shopping
+    #
+    #         self.update_talking(state)
+
     def update(self, state: "GameState"):
         if "+1 perception" in state.player.items:
             state.player.perception += 1
@@ -41,57 +112,40 @@ class ShopKeeper(Npc):
             return
         if self.state == "waiting":
             self.update_waiting(state)
-
         elif self.state == "talking":
-
-
             cost = int(self.shop_costs[self.selected_item_index])
-            # print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
 
-            # Handle 'B' press for leaving the shop
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
-
-
-                # Allow the player to move again
                 state.player.canMove = True
-
-                # Reset the selected item index
                 ShopNpcTextBox.reset(state)
-
-                # Transition the state back to "waiting"
                 self.state = "waiting"
                 print("Leaving the shop...")
-                self.textbox.reset()  # Reset the textbox
-                return  # Exit early to ensure no further processing in this update cycle
+                self.textbox.reset()
+                return
 
+            # print(self.textbox.message_index)
 
+            # Change the item selection only if the textbox is finished and the current message is at least the second message (index 1)
+            if self.textbox.message_index >= 1:
+                # print(self.textbox.message_index)
+                if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    print("Up pressed and message index >= 1")  # Confirm condition is met
 
-            elif state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
-                    # print(f"Selected item index: {self.selected_item_index}")
-                    # print(f"Selected item index after pressing up: {self.selected_item_index}")
 
+                elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
 
-            elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
+            if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
-                self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
-                # print(f"Selected item index: {self.selected_item_index}")
-
-            elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
-                self.input_time = pygame.time.get_ticks()
-
-                # Check if the player has enough money and the item is not already sold out
                 if state.player.money >= cost and self.shop_items[self.selected_item_index] != "sold out" and self.textbox.is_finished():
-                    # Subtract the cost from the player's money
                     state.player.money -= cost
                     selected_item = self.shop_items[self.selected_item_index]
                     state.player.items.append(selected_item)
-
-                    # Mark the purchased item as "sold out"
                     self.sold_out(self.selected_item_index)
-
                     print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
                     print("Your inventory as it stands: " + str(state.player.items))
                 else:
@@ -99,10 +153,6 @@ class ShopKeeper(Npc):
                         print("This item is sold out.")
                     else:
                         print("Not enough money to purchase item.")
-
-                # No need to transition the state back to "waiting" after purchase
-                # as the player might want to continue shopping
-
             self.update_talking(state)
 
     def sold_out(self, item_index: int):
