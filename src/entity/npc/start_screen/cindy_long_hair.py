@@ -45,7 +45,7 @@ class CindyLongHair(Npc):
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
-        self.coinFlipTedReward = True
+        self.coinFlipTedReward = False
 
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
@@ -76,6 +76,8 @@ class CindyLongHair(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 self.cindy_long_hair_messages['textbox'].reset()
 
+
+
     def update_talking(self, state: "GameState"):
         current_message = self.cindy_long_hair_messages['reward_message'] if state.coinFlipTedScreen.coinFlipTedDefeated else self.cindy_long_hair_messages['textbox']
         current_message.update(state)
@@ -93,12 +95,12 @@ class CindyLongHair(Npc):
         if self.state == "talking":
             current_message = self.cindy_long_hair_messages['reward_message'] if state.coinFlipTedScreen.coinFlipTedDefeated else self.cindy_long_hair_messages['textbox']
             current_message.draw(state)
-            while state.coinFlipTedScreen.coinFlipTedDefeated == True and self.coinFlipTedReward == True:
+            while state.coinFlipTedScreen.coinFlipTedDefeated == True and "black jack reveal" not in state.player.magicinventory:
                 state.player.mind += 1
                 state.player.magicinventory.append("black jack reveal")
                 print(state.player.magicinventory)
                 print(state.player.mind)
-                self.coinFlipTedReward = False
+                self.coinFlipTedReward = True
 
                 return
 
