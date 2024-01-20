@@ -64,7 +64,7 @@ class FlippinTed(Npc):
         elif state.controller.isDownPressed:
             state.controller.isDownPressed = False
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
+            print("Down pressed, arrow_index:", self.arrow_index)
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
