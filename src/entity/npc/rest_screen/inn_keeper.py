@@ -81,6 +81,12 @@ class InnKeeper(Npc):
                     if state.player.stamina_points > state.player.max_stamina_points:
                         state.player.stamina_points = state.player.max_stamina_points
 
+                        print("Yes selected, closing shop.")
+                        self.arrow_index = 0
+                        self.state = "waiting"
+                        self.state_start_time = pygame.time.get_ticks()
+                        state.player.canMove = True
+
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
                 # print("ya")
@@ -108,7 +114,7 @@ class InnKeeper(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == False:
+            if current_message.is_finished():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

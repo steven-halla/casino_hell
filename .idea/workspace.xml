@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new demon made" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="inn keeper almost fin">
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,12 +16,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "steven-halla"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;steven-halla&quot;
   }
-}]]></component>
+}</component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -50,39 +52,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.$AffectedModuleNames$.executor": "Run",
-    "Python.blackjack.executor": "Run",
-    "Python.main (1).executor": "Run",
-    "Python.main.executor": "Debug",
-    "Python.nukeem.executor": "Run",
-    "Python.opposuminacan.executor": "Run",
-    "Python.playground.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/src/entity/demon",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode",
-    "ts.external.directory.path": "/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.$AffectedModuleNames$.executor&quot;: &quot;Run&quot;,
+    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.nukeem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.opposuminacan.executor&quot;: &quot;Run&quot;,
+    &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/src/entity/demon&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/entity/demon" />
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen" />
-      <recent name="$PROJECT_DIR$/src/entity/npc/chilli_screen" />
-      <recent name="$PROJECT_DIR$/src/entity/npc/battle_screen" />
-      <recent name="$PROJECT_DIR$/src/entity/npc/rest_screen" />
-      <recent name="$PROJECT_DIR$/src/entity/npc/start_screen" />
+      <recent name="$PROJECT_DIR$/src/screen/examples" />
+      <recent name="$PROJECT_DIR$/src/screen/floor1/map_screens" />
+      <recent name="$PROJECT_DIR$/src/screen/floor1/battle_screens" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/boss_screen" />
+      <recent name="$PROJECT_DIR$/src/screen/floor1" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -292,6 +294,7 @@
       <workItem from="1705118562808" duration="219000" />
       <workItem from="1705119978048" duration="604000" />
       <workItem from="1705123656694" duration="180424000" />
+      <workItem from="1705706706573" duration="28431000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -636,7 +639,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="216" />
+    <option name="localTasksCounter" value="246" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -665,32 +668,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="can now buy items in both shops" />
-    <MESSAGE value="inn is now set up" />
-    <MESSAGE value="battle area is now set up" />
-    <MESSAGE value="fixing bug" />
-    <MESSAGE value="eerror that was skipping past welcome screen with lots of T presses" />
-    <MESSAGE value="moving along with fred" />
-    <MESSAGE value="sally is done" />
-    <MESSAGE value="Nelly is done" />
-    <MESSAGE value="Chilli Part discovered" />
-    <MESSAGE value="hedge maze setting up , now chnages colors" />
-    <MESSAGE value="setting up los" />
-    <MESSAGE value="los woring" />
-    <MESSAGE value="los not working" />
-    <MESSAGE value="los  working" />
-    <MESSAGE value="los wokring good" />
-    <MESSAGE value="demon is blue and while its blue it blocks" />
-    <MESSAGE value="LOS is now bieng blocked" />
-    <MESSAGE value="LOS is now working" />
-    <MESSAGE value="turns purple if touching" />
-    <MESSAGE value="changes course" />
-    <MESSAGE value="fixed bug turning all demons purpole" />
-    <MESSAGE value="demons completed" />
-    <MESSAGE value="demon appears on PRess of A" />
-    <MESSAGE value="almost done with this area" />
-    <MESSAGE value="new demon made" />
-    <option name="LAST_COMMIT_MESSAGE" value="new demon made" />
+    <MESSAGE value="light refactored, put maps in a more orginized manner" />
+    <MESSAGE value="text updated" />
+    <MESSAGE value="fixed bug with button presses" />
+    <MESSAGE value="menus is now fixed goes to yes after saying no and talking again" />
+    <MESSAGE value="updating dialog" />
+    <MESSAGE value="reward working" />
+    <MESSAGE value="almsot done with  cindy class" />
+    <MESSAGE value="working now on reveal message" />
+    <MESSAGE value="klose" />
+    <MESSAGE value="opening screen almost done" />
+    <MESSAGE value="fixed dialog box for flipping ted now it wont pop up when he's defeated" />
+    <MESSAGE value="start area finished, all rewards and quest lines working proper and all text working, now moving on to test coin flip for bugs" />
+    <MESSAGE value="fixing minor bugs, as well as fixing how exp is handled so players dont farm exp" />
+    <MESSAGE value="text upddated" />
+    <MESSAGE value="bugs with menu options fixed" />
+    <MESSAGE value="start area finished" />
+    <MESSAGE value="bar keep reset back to older state" />
+    <MESSAGE value="this way wont work go back  1 commit" />
+    <MESSAGE value="this displays the toher text box" />
+    <MESSAGE value="trying to update bar keep trying again this is the best state" />
+    <MESSAGE value="i think i figured it out" />
+    <MESSAGE value="went back" />
+    <MESSAGE value="went a new route to append NPC with a new NPC" />
+    <MESSAGE value="updating inn keeper with a menu" />
+    <MESSAGE value="inn keeper almost fin" />
+    <option name="LAST_COMMIT_MESSAGE" value="inn keeper almost fin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -704,6 +707,11 @@
           <url>file://$PROJECT_DIR$/src/entity/demon/demon.py</url>
           <line>104</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py</url>
+          <line>123</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
