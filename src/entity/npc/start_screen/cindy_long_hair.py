@@ -30,8 +30,17 @@ class CindyLongHair(Npc):
                     "low: 1-9, med 10=15, high 16-21",
 
                 ],
+
                 (50, 450, 50, 45), 30, 500
-            )
+            ),
+            'final_message': NpcTextBox(
+                [
+                    "Cindy: Watching you take him down was so satisfying thank you.",
+                    "Black Jack Technique Reveal learned. Get a good sense of what your opponent has.",
+                    "low: 1-9, med 10=15, high 16-21",
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
