@@ -13,7 +13,7 @@ class MainScreenTeleporter(Npc):
                 ["Inn Guard: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Good job on that take down, I was tired of looking at his ugly face, he'll look much better like a horse. Would you like to go to the rest area?You've earned it!"],
+                ["Good job on that take down, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -56,12 +56,19 @@ class MainScreenTeleporter(Npc):
 
         # Check for keypresses only once per frame
         if state.controller.isUpPressed:
+            state.controller.isUpPressed = False
+
             self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+            print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
+
         elif state.controller.isDownPressed:
+            state.controller.isDownPressed = False
+
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and "black jack reveal" in state.player.items:
+        if current_message.is_finished() and state.controller.isTPressed:
             state.currentScreen = state.restScreen
             state.restScreen.start(state)
             # Handle the selected option
