@@ -90,6 +90,7 @@ class CindyLongHair(Npc):
         rect = (
             self.collision.x + state.camera.x, self.collision.y + state.camera.y,
             self.collision.width, self.collision.height)
+
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
