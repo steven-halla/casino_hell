@@ -39,13 +39,13 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 300
+        self.coinFlipTedMoney = 40
         self.coinFlipTedDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
-        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
+        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
         self.enemy_desperate_counter = False
         self.enemy_defeated_counter = False
@@ -255,11 +255,11 @@ class CoinFlipTedScreen(Screen):
     def update(self, state: "GameState"):
 
 
-        if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:
-            self.game_state = "enemy_desperate_screen"
+        # if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:
+        #     self.game_state = "enemy_desperate_screen"
 
         if self.coinFlipTedMoney < 10:
-            self.game_state = "enemy_defeated_screen"
+            self.coinFlipTedDefeated = True
 
 
 
@@ -368,6 +368,9 @@ class CoinFlipTedScreen(Screen):
             elapsed_time = pygame.time.get_ticks() - self.pause_timer
             print(f"Elapsed time: {elapsed_time}")
 
+            # if self.coinFlipTedMoney < 10:
+            #     self.game_state = "enemy_defeated_screen"
+
             if elapsed_time >= self.flip_timer:
                 # Timer has elapsed, proceed with flipping the coin
                 self.flipCoin(state)
@@ -382,9 +385,13 @@ class CoinFlipTedScreen(Screen):
                 self.flip_screen_initialized = False
 
             self.coin_flip_messages["flip_message"].update(state)
+            # if self.coinFlipTedMoney < 10:
+            #     self.game_state = "enemy_defeated_screen"
 
 
         if self.game_state == "results_screen":
+            # if self.coinFlipTedMoney < 10:
+            #     self.game_state = "enemy_defeated_screen"
 
             # Assuming this is part of a class
             if not self.has_run_money_logic:
@@ -415,6 +422,7 @@ class CoinFlipTedScreen(Screen):
             # Update the messages in the TextBox
             self.coin_flip_messages["results_message"].messages = [result_message]
 
+
             # if state.controller.isTPressed:
             #     self.game_state = "play_again_screen"
             #     print(str(self.game_state))
@@ -426,6 +434,10 @@ class CoinFlipTedScreen(Screen):
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
+            if self.coinFlipTedMoney < 10:
+                self.coinFlipTedDefeated = True
+                self.game_state = "enemy_defeated_screen"
+
             self.coin_flip_messages["play_again_message"].update(state)
             if not self.message_printed:
                 self.giveExp(state)
@@ -840,47 +852,47 @@ class CoinFlipTedScreen(Screen):
             # image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
             # state.DISPLAY.blit(image_to_display, image_rect)
 
+            if self.coinFlipTedDefeated == False:
+                self.coin_flip_messages["play_again_message"].update(state)
+                self.coin_flip_messages["play_again_message"].draw(state)
 
-            self.coin_flip_messages["play_again_message"].update(state)
-            self.coin_flip_messages["play_again_message"].draw(state)
+                bet_box_width = 150
+                bet_box_height = 100
+                border_width = 5
 
-            bet_box_width = 150
-            bet_box_height = 100
-            border_width = 5
+                screen_width, screen_height = state.DISPLAY.get_size()
+                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
 
-            screen_width, screen_height = state.DISPLAY.get_size()
-            bet_box_x = screen_width - bet_box_width - border_width - 30
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+                bet_box = pygame.Surface((bet_box_width, bet_box_height))
+                bet_box.fill((0, 0, 0))
+                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+                white_border.fill((255, 255, 255))
+                white_border.blit(bet_box, (border_width, border_width))
 
-            bet_box = pygame.Surface((bet_box_width, bet_box_height))
-            bet_box.fill((0, 0, 0))
-            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(bet_box, (border_width, border_width))
+                # Calculate text positions
+                text_x = bet_box_x + 40 + border_width
+                text_y_yes = bet_box_y + 20
+                text_y_no = text_y_yes + 40
+                # Draw the box on the screen
+                state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
-            # Calculate text positions
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20
-            text_y_no = text_y_yes + 40
-            # Draw the box on the screen
-            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+                # Draw the text on the screen (over the box)
+                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
+                arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+                # Set the initial arrow position to "Yes"
 
-            # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
-            state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
-            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
-            arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            # Set the initial arrow position to "Yes"
-
-            # Draw the arrow next to the selected option
-            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            #
-            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-            # Here's a simple example using a triangle:
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+                # Draw the arrow next to the selected option
+                # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+                # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+                #
+                # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+                # Here's a simple example using a triangle:
+                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
             if state.controller.isTPressed:
                 if self.arrow_index == 0:
