@@ -108,8 +108,8 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "play_again_message": TextBox(
-                ["How are you doing. "
-                 , " Would you like to play again or quit?"
+                [
+                  " Would you like to play again or quit?"
                  ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
@@ -906,6 +906,7 @@ class CoinFlipTedScreen(Screen):
                 else:
                     print("1 index")
                     self.arrow_index = 0
+                    self.game_state ="bet_screen"
                     state.currentScreen = state.startScreen
                     state.startScreen.start(state)
 
