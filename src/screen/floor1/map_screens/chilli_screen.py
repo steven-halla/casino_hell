@@ -29,7 +29,7 @@ class ChilliScreen(Screen):
         self.x_left_move = False
         self.x_right_move = False
         self.player = Player(333, 555)
-        self.hedge_hog_counter = 0
+        self.hedge_hog_counter = 4
         move_player_down_flag = False
 
     def start(self, state: "GameState"):
@@ -128,6 +128,8 @@ class ChilliScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+        print(str(state.player.items))
+        print(str(state.player.money))
 
 
         controller = state.controller
