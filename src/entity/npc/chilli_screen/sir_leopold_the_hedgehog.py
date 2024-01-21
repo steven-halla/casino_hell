@@ -15,24 +15,33 @@ class SirLeopoldTheHedgeHog(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             ["I'm the head hog round these parts",
-             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded ",
+             "If you can find all 4 i'll reward you with a super special technique."],
             (50, 450, 50, 45), 30, 500)
         self.reward_no_hogs = NpcTextBox(
             ["wow you reall suckss",
-             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+             "YOur hopeless.......I guess I have noi choice but to join you, by the looks of it you can use a helping paw."],
             (50, 450, 50, 45), 30, 500)
         self.reward_some_hogs = NpcTextBox(
             ["well at least you triedss",
-             "Oh hero got some of dem hoggy hoggers out in the hedge maze, please help you'll get rewarded "],
+             "Oh hero got some of dem hoggy hoggers out in the hedge maze, please help you'll get rewarded ",
+             "Since you tried I'll give you 500 coins"],
             (50, 450, 50, 45), 30, 500)
         self.reward_all_hogs = NpcTextBox(
             ["you got em all great",
-             "I'll be here to help you now, since you have a Spirit of 1, I'll join you as a companion. Maybe more will join us if you get a higher spirit? "],
+             "I'll be here to help you now, since you have a Spirit of 1, I'll join you as a companion. Maybe more will join us if you get a higher spirit? ",
+             "I'll reward you with Shake, a super secret technique taught to me by a kung fu ganbling master chef",
+             "This wil shake one  of two opoussums plus a X3 Star."],
             (50, 450, 50, 45), 30, 500)
 
         self.final_message = NpcTextBox(
-            ["", "final message here from sir leopold",
-             "final messages hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "
+            ["", "final message here from sir leopold" ,
+             "Since your Spirit is high I'll join you, the higher spirit yo uhave the more companioins will join us",
+             "You can now equpid compaion items for me, sir leopold the hedge hog  ",
+             "I may be small but my perception is quiet high, I can feel the print of cards without even touching them",
+             "I hear that Cindy has a special companion item that I can use, can you complete her quest and get it? ",
+
+
              ],
             (50, 450, 50, 45), 30, 500)
 
