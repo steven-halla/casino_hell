@@ -15,7 +15,7 @@ class Guy(Npc):
                 "enemy money won't reset, so take it at your own pace.",
                 "You dont' have to take everyone's money?",
                 "For those that beat this area, on average takes them 5 days.",
-                "But once you take a bit you'll know what I mean."],
+                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

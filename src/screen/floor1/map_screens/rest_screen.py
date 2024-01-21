@@ -52,20 +52,20 @@ class RestScreen(Screen):
         # Check the value of state.player.body
 
         # state.npcs = []
-        if state.player.body > 0:
-            state.npcs.append(BarKeep(16 * 36, 16 * 18))
-        elif state.player.body == 0:
-            state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
+        # if state.player.body > 0:
+        #     state.npcs.append(BarKeep(16 * 36, 16 * 18))
+        # elif state.player.body == 0:
+        #     state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
 
         # Add other NPCs to the state.npcs list
         state.npcs.extend([
-            DoctorOpossum(16 * 26, 16 * 18),
-            InnKeeper(16 * 18, 16 * 18),
-            JustinNoFruit(16 * 10, 16 * 18),
-            QuestGiverJanet(16 * 10, 16 * 26),
-            ShopKeeper(16 * 18, 16 * 26),
-            SufferingSuzy(16 * 26, 16 * 26),
-            WallyGuide(16 * 34, 16 * 26),
+            # DoctorOpossum(16 * 26, 16 * 18),
+            # InnKeeper(16 * 18, 16 * 18),
+            # JustinNoFruit(16 * 10, 16 * 18),
+            # QuestGiverJanet(16 * 10, 16 * 26),
+            # ShopKeeper(16 * 18, 16 * 26),
+            # SufferingSuzy(16 * 26, 16 * 26),
+            # WallyGuide(16 * 34, 16 * 26),
         ])
         #
         # if state.quest_giver_janet.find_hog:

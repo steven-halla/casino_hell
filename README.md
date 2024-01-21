@@ -223,3 +223,12 @@ losing all your money turns you into a hedge hog or a horse
 
 NOTE:
  change reveal to say low, medium or high score, 
+
+
+GAME BUG FIXES:
+COIN FLIP NEEDS FIXES
+WHEN QUITTING AND GOING BACK TO A MATCH IT PUTS USER ON THE CONFIRM QUIT SCREEN INSTEAD OF 
+BET SCREEN
+
+ALSO THE MAKIKNG PEOPLE WAIT WHILE FLIPPING COIN, ITS NOT WORKING IT SOMETIMES SKIPS
+The first flip it never shows the "flipping coin screen"

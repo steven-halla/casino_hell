@@ -52,10 +52,10 @@ class BossScreen(Screen):
             # BappingMike(16 * 36, 16 * 10),
             # BarKeep(16 * 36, 16 * 18),
             # InnKeeper(16 * 36, 16 * 26),
-            # DoctorOpossum(16 * 30, 16 * 30),
-            BlackJackJared(16 * 30, 16 * 30),
-            FlippingSandy(16 * 22, 16 * 30),
-            IchiOpossum(16 * 11, 16 * 30),
+            # # DoctorOpossum(16 * 30, 16 * 30),
+            # BlackJackJared(16 * 30, 16 * 30),
+            # FlippingSandy(16 * 22, 16 * 30),
+            # IchiOpossum(16 * 11, 16 * 30),
 
 
 

@@ -49,12 +49,12 @@ class GamblingAreaScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-             BlackJackThomas(16 * 4, 16 * 2),
-             CoinFlipFred(16 * 12, 16 * 2),
-             NellyOpossum(16 * 20, 16 * 2),
-             RumbleBill(16 * 4, 16 * 12),
-             SallyOpossum(16 * 14, 16 * 12),
-             Guy(16 * 26, 16 * 12),
+             # BlackJackThomas(16 * 4, 16 * 2),
+             # CoinFlipFred(16 * 12, 16 * 2),
+             # NellyOpossum(16 * 20, 16 * 2),
+             # RumbleBill(16 * 4, 16 * 12),
+             # SallyOpossum(16 * 14, 16 * 12),
+             # Guy(16 * 26, 16 * 12),
 
                       ]
 
