@@ -15,7 +15,7 @@ class JustinNoFruit(Npc):
                 "Whatever you do , don't eat the fruit. It taste like shit.",
                 "Hero: Oh come on now it can't taste that bad right?",
                 "Justin: No, I mean it literally taste like shit.The fruit looks so delicious on the outside and smell good.",
-                "But once you take a bit you'll know what I mean."],
+                "But once you take a bite you'll know what I mean."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

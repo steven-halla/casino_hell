@@ -20,7 +20,7 @@ class OpossumInACanScreen(Screen):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
         self.desperate = False
-        self.five_hundred_points = True
+        self.five_hundred_points = False
 
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst

@@ -52,7 +52,7 @@ class CoinFlipTedScreen(Screen):
 
 
 
-        self.coinFlipTedDefeated = False
+        self.coinFlipTedDefeated = True
 
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)

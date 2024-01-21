@@ -13,7 +13,10 @@ class WallyGuide(Npc):
             [
                 "People at the bar area will have different things to say as you progress.",
                 "There are no opponets in the rest area, come here to relax , kick back and see if anything is new."
-                , "Pay close attention to what people tell you."],
+                , "Pay close attention to what people tell you.",
+            "I'll tell you something good, dont' trust the Clown Demons, if you see one run away.",
+            "Hero: But I like clowns, My sister is a clown on a TV show",
+            "Walley:You havn't seen what they do to people to entertain them. Saw a guy get tied up like a dog balloon, took em weeks to untangle him. I can still hear the screams in my nightmares " ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

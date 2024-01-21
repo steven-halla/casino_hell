@@ -13,7 +13,7 @@ class InnKeeper(Npc):
                 ["Inn Keeper Neddry: Wanna stay at our inn?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Looks like you defeated me, how sad :("],
+                ["I'm inn keeper nedry wanna stay at my inn??"],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -66,7 +66,7 @@ class InnKeeper(Npc):
             print("Down pressed, arrow_index:", self.arrow_index)
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
+        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == True:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")

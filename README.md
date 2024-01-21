@@ -226,6 +226,8 @@ NOTE:
 
 for NPC
 
-GAME BUG FIXES:
-COIN FLIP NEEDS FIXES
-when hes beat it doesn't show the coin flip sequence
+GAME BUG FIXES and NEEDED UPDATES:
+Teleporters need fixing, selecting NO Still teleports
+Need to update Bar to have a food item, roach burger, lots of protein 
+Items need description when hoovering in shop
+Need to fix it to where player can appear at fixed points on each map
