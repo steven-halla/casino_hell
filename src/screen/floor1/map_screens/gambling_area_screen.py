@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.battle_screen.Guy import Guy
 from entity.npc.battle_screen.black_jack_thomas import BlackJackThomas
 from entity.npc.battle_screen.coin_flip_fred import CoinFlipFred
 from entity.npc.battle_screen.nelly_opossum import NellyOpossum
@@ -53,6 +54,7 @@ class GamblingAreaScreen(Screen):
              NellyOpossum(16 * 20, 16 * 2),
              RumbleBill(16 * 4, 16 * 12),
              SallyOpossum(16 * 14, 16 * 12),
+             Guy(16 * 26, 16 * 12),
 
                       ]
 
