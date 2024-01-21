@@ -48,6 +48,10 @@ class StartScreen(Screen):
 
         ]
 
+#
+        #
+        #I'm thinking that if I have other ways to load NPCS,
+        #maybe have nPCS be unique to their screens?
         # state.npcs = []
         state.npcs = [
             # make sure to seperate by a factor of 8 for y
@@ -63,9 +67,6 @@ class StartScreen(Screen):
             InnGuard(16* 35, 16 * 15),
             NickyHints(16* 25, 16 * 25),
             MainScreenTeleporter(16 * 1, 16 * 10),
-
-
-
             FlippinTed(16* 35, 16 * 34),
 
 

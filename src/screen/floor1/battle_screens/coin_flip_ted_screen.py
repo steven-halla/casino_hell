@@ -34,6 +34,9 @@ class CoinFlipTedScreen(Screen):
         self.game_reset = False
         self.message_printed = False
 
+        self.flip_screen_initialized = False  # Add this line
+
+
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
         self.coinFlipTedMoney = 300
@@ -345,16 +348,25 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "flip_screen":
+            print("entering flip screen")
 
 
             # Initialize the timer when entering the flip_screen state
-            if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
-                self.flip_timer = 4000  # Duration for the pause
+            # if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
+            #     print("about to flip timer")
+            #     self.flip_timer = 4000  # Duration for the pause
+            #     print("timer flipped")
+            #     self.pause_timer = pygame.time.get_ticks()  # Current time
+            #     self.flip_screen_initialized = True
+            if not self.flip_screen_initialized:
+                print("Initializing flip timer")
+                self.flip_timer = 2500  # Duration for the pause
                 self.pause_timer = pygame.time.get_ticks()  # Current time
                 self.flip_screen_initialized = True
 
             # Calculate elapsed time since the flip_screen was entered
             elapsed_time = pygame.time.get_ticks() - self.pause_timer
+            print(f"Elapsed time: {elapsed_time}")
 
             if elapsed_time >= self.flip_timer:
                 # Timer has elapsed, proceed with flipping the coin
@@ -364,6 +376,10 @@ class CoinFlipTedScreen(Screen):
                 self.pause_timer = 0  # Reset pause timer for the next use
                 # Transition to the next state as needed
                 # ...
+            if elapsed_time >= self.flip_timer:
+                # Logic to transition away from flip_screen
+                # ...
+                self.flip_screen_initialized = False
 
             self.coin_flip_messages["flip_message"].update(state)
 

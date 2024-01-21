@@ -224,6 +224,7 @@ losing all your money turns you into a hedge hog or a horse
 NOTE:
  change reveal to say low, medium or high score, 
 
+for NPC
 
 GAME BUG FIXES:
 COIN FLIP NEEDS FIXES
