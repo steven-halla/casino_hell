@@ -30,10 +30,9 @@ class Player(Entity):
         self.luck = 0
         self.perception = 1
         self.perks = []
-        self.items = []
+        self.items = ["blue flower"]
         self.magicinventory = []
         self.canMove = True
-        self.hedge_hog_counter = 4
 
 
     def update(self, state: "GameState"):

@@ -38,7 +38,6 @@ class ChillyBilly(Npc):
         self.talkfirstbeforehandoverwater = False
 
     def update(self, state: "GameState"):
-        print("current state is:" + str(self.textboxstate))
 
         if self.state == "waiting":
             if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoverhog == True:

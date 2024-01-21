@@ -5,7 +5,11 @@ import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-
+##
+##sir leopold should block exit till we talk to him post quests
+##we will append sir leopold in front of entrance if player has flower
+##
+##
 class SirLeopoldTheHedgeHog(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
@@ -13,10 +17,29 @@ class SirLeopoldTheHedgeHog(Npc):
             ["I'm the head hog round these parts",
              "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
             (50, 450, 50, 45), 30, 500)
+        self.reward_no_hogs = NpcTextBox(
+            ["wow you reall suckss",
+             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+            (50, 450, 50, 45), 30, 500)
+        self.reward_some_hogs = NpcTextBox(
+            ["well at least you triedss",
+             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+            (50, 450, 50, 45), 30, 500)
+        self.reward_all_hogs = NpcTextBox(
+            ["you got em all great",
+             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+            (50, 450, 50, 45), 30, 500)
+
+        self.final_message = NpcTextBox(
+            ["final message here from sir leopold",
+             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+            (50, 450, 50, 45), 30, 500)
+
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.to_be_deleted = False  # Flag to mark the object for deletion
+        self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
 
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
@@ -24,7 +47,24 @@ class SirLeopoldTheHedgeHog(Npc):
 
     def update(self, state: "GameState"):
 
+
         if self.state == "waiting":
+            print("current state is:" + str(self.textboxstate))
+
+            if state.hedgeMazeScreen.blue_flower == True:
+                if state.hedgeMazeScreen.hedge_hog_counter == 0:
+                    self.textboxstate = "textbox2"
+                    print("no hoggy hogs for u")
+                elif state.hedgeMazeScreen.hedge_hog_counter < 4:
+                    self.textboxstate = "textbox3"
+                elif state.hedgeMazeScreen.hedge_hog_counter == 4:
+                    self.textboxstate = "textbox4"
+
+
+
+
+
+
             player = state.player
 
             # print("waiting")
@@ -36,11 +76,11 @@ class SirLeopoldTheHedgeHog(Npc):
             # if min_distance < 25:
             #     print("nooo")
 
+
             self.update_waiting(state)
 
         elif self.state == "talking":
-            if state.player.hedge_hog_counter > 3:
-                print("you got em all")
+
 
             # self.textbox.reset()
             # self.textbox.message_index = 0
@@ -83,8 +123,19 @@ class SirLeopoldTheHedgeHog(Npc):
                 self.state = "talking"
 
                 self.state_start_time = pygame.time.get_ticks()
-                # the below is where kenny had it
-                self.textbox.reset()
+                if self.textboxstate == "textbox2":
+                    # print("Textbox1")
+                    self.reward_no_hogs.reset()
+                elif self.textboxstate == "textbox3":
+                    # print("Textbox1")
+                    self.reward_some_hogs.reset()
+                elif self.textboxstate == "textbox4":
+                    # print("Textbox1")
+                    self.reward_all_hogs.reset()
+                elif self.textboxstate == "textbox1":
+                    self.textbox.reset()
+                elif self.textboxstate == "textbox1":
+                    self.final_message.reset()
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
