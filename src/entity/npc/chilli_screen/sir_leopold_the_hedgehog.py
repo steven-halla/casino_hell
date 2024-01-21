@@ -31,7 +31,20 @@ class SirLeopoldTheHedgeHog(Npc):
             ["you got em all great",
              "I'll be here to help you now, since you have a Spirit of 1, I'll join you as a companion. Maybe more will join us if you get a higher spirit? ",
              "I'll reward you with Shake, a super secret technique taught to me by a kung fu ganbling master chef",
-             "This wil shake one  of two opoussums plus a X3 Star."],
+             "This wil shake one  of two opoussums plus a X3 Star.",
+             "In addiiton I'll also give you 500 coins, how am I carrying so many for being so small...because I have a high perception",
+             "Hero: Wait what.....how does that even make sense?",
+             "Sir Leopold: The rules of reality as you know them don't apply here, up is waffles and birds are triangles.",
+             "Hero: What?",
+             "leopold: this place is like living in a wacky  cartoon universe, which in effect has some different rules, for starters, nobody can die",
+             "Hero: No wonder everything here seems so comimcal.",
+             "leoppold: i used to watch cartoons, watch cartoon characters get flattoned by steam rollers , and air themselves back up",
+             "Hero: me too those were some funny chartoons",
+             "Leoppld: well you wont think so when you experience it first hand, , to you a comical cartoony situation is funny,",
+             " but now that your down here you won't think so. Every wacky situation you can think of, can happen down here",
+             "ANd it does take a toll on your mind and body. And , it does hurt, a lot, even if you don't scream, it always hurts.",
+             "In effect, we're the cartoon characters, and the demons....are the viewers interacting like in virtual reality, and they do love to be entertained.,"
+             "enough of this, lets go back to the inn and rest up I'm sure everyone will have something new to say."],
             (50, 450, 50, 45), 30, 500)
 
         self.final_message = NpcTextBox(
@@ -40,8 +53,6 @@ class SirLeopoldTheHedgeHog(Npc):
              "You can now equpid compaion items for me, sir leopold the hedge hog  ",
              "I may be small but my perception is quiet high, I can feel the print of cards without even touching them",
              "I hear that Cindy has a special companion item that I can use, can you complete her quest and get it? ",
-
-
              ],
             (50, 450, 50, 45), 30, 500)
 
@@ -51,6 +62,8 @@ class SirLeopoldTheHedgeHog(Npc):
         self.to_be_deleted = False  # Flag to mark the object for deletion
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
         self.vanish = False
+        self.reward1 = False
+        self.reward2 = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
@@ -172,6 +185,7 @@ class SirLeopoldTheHedgeHog(Npc):
             self.reward_some_hogs.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.reward_some_hogs.is_finished():
+                    state.player.money += 500
                     self.textboxstate = "textbox5"
                     self.state_start_time = current_time
                     self.input_time = current_time
@@ -179,6 +193,8 @@ class SirLeopoldTheHedgeHog(Npc):
             self.reward_all_hogs.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.reward_all_hogs.is_finished():
+                    state.player.money += 500
+                    state.player.items.append("save coin")
                     self.textboxstate = "textbox5"
                     self.state_start_time = current_time
                     self.input_time = current_time
@@ -200,6 +216,7 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time
                     self.vanish = True
+
 
 
         if state.controller.isTPressed and self.textbox.is_finished():
