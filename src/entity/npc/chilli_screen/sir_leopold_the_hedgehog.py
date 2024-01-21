@@ -23,7 +23,7 @@ class SirLeopoldTheHedgeHog(Npc):
             (50, 450, 50, 45), 30, 500)
         self.reward_some_hogs = NpcTextBox(
             ["well at least you triedss",
-             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded "],
+             "Oh hero got some of dem hoggy hoggers out in the hedge maze, please help you'll get rewarded "],
             (50, 450, 50, 45), 30, 500)
         self.reward_all_hogs = NpcTextBox(
             ["you got em all great",
@@ -134,11 +134,53 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.reward_all_hogs.reset()
                 elif self.textboxstate == "textbox1":
                     self.textbox.reset()
-                elif self.textboxstate == "textbox1":
+                elif self.textboxstate == "textbox5":
                     self.final_message.reset()
 
+
+
     def update_talking(self, state: "GameState"):
-        self.textbox.update(state)
+
+        current_time = pygame.time.get_ticks()
+
+
+        if self.textboxstate == "textbox2":
+            self.reward_no_hogs.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.reward_no_hogs.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+        elif self.textboxstate == "textbox3":
+            self.reward_some_hogs.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.reward_some_hogs.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time
+        elif self.textboxstate == "textbox4":
+            self.reward_all_hogs.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.reward_all_hogs.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time
+        elif self.textboxstate == "textbox1":
+            self.textbox.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.textbox.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time
+        elif self.textboxstate == "textbox5":
+            self.final_message.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.final_message.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time
+
+
         if state.controller.isTPressed and self.textbox.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
@@ -171,4 +213,14 @@ class SirLeopoldTheHedgeHog(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            self.textbox.draw(state)
+            if self.textboxstate == "textbox2":
+                self.reward_no_hogs.draw(state)
+            elif self.textboxstate == "textbox3":
+                self.reward_some_hogs.draw(state)
+            elif self.textboxstate == "textbox4":
+                self.reward_all_hogs.draw(state)
+            elif self.textboxstate == "textbox5":
+                self.final_message.draw(state)
+            elif self.textboxstate == "textbox1":
+                self.textbox.draw(state)
+
