@@ -21,7 +21,10 @@ class CoinFlipTedScreen(Screen):
         self.third_message_display = ""
         self.magic_player_message_display = ""
         self.magic_enemy_message_display = ""
+
         self.headstailsindex = 0
+
+
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
         self.heads_or_tails_Menu = ["Heads", "Tails"]
@@ -35,6 +38,11 @@ class CoinFlipTedScreen(Screen):
         self.message_printed = False
 
         self.flip_screen_initialized = False  # Add this line
+
+
+        self.coin_leaning_counter = 5
+
+        self.coin_leaning_tracker = ""  # Initialize to "none" or similar
 
 
         self.bet = 0
@@ -170,23 +178,41 @@ class CoinFlipTedScreen(Screen):
     def giveExp(self, state: "GameState"):
         # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
-            if self.bet >= 60:
-                state.player.stamina_points -= 2
-                state.player.exp += 30
 
-            elif self.bet < 60:
+            if self.bet < 11:
                 state.player.stamina_points -= 1
-                state.player.exp += 5
+                state.player.exp += 10
+                print(str(state.player.exp))
+
+            elif self.bet >= 50:
+                state.player.stamina_points -= 4
+                state.player.exp += 100
+                print(str(state.player.exp))
+
+
+            elif self.bet < 50:
+                state.player.stamina_points -= 2
+                state.player.exp += 50
+                print(str(state.player.exp))
+
 
 
         elif self.result != self.player_choice:
-            if self.bet >= 60:
-                state.player.stamina_points -= 3
-                state.player.exp += 15
-
-            elif self.bet < 60:
+            if self.bet < 11:
                 state.player.stamina_points -= 1
-                state.player.exp += 5
+                state.player.exp += 3
+                print(str(state.player.exp))
+
+            elif self.bet >= 50:
+                state.player.stamina_points -= 6
+                state.player.exp += 50
+                print(str(state.player.exp))
+
+
+            elif self.bet < 50:
+                state.player.stamina_points -= 3
+                state.player.exp += 25
+                print(str(state.player.exp))
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -220,37 +246,56 @@ class CoinFlipTedScreen(Screen):
             self.game_state = "heads_tails_choose_screen"
             state.controller.isTPressed = False  # Reset the button state
 
-
     def flipCoin(self, state: "GameState"):
-        coin = random.random()
-        if coin < 0.9:
-            print("coin landed on tails")
-            self.result = "tails"
+        # Check if we need to determine a new bias
+        # coin = random.random()
+        # if coin < 0.9:
+        #     print("coin landed on tails")
+        #     self.result = "tails"
+        print("The coin counter is now at the start so what is it?: " + str(self.coin_leaning_counter))
 
-
-
-            if state.player.luck == 1:
-                # Random roll event
-                roll = random.randint(1, 100)  # Random number between 1 and 100
-                if roll < 10:
-                    print("You lucky doggy dog")
-                    self.result = self.player_choice
-
-            self.game_state = "results_screen"
-
+        coin_fate = random.randint(1, 2)
+        print("your coin fate is" + str(coin_fate))
+        print("coin counter at:" + str(self.coin_leaning_counter))
+        if coin_fate == 1:
+            self.coin_leaning_tracker = "tails"
+            # self.coin_leaning_counter -= 1
         else:
-            print("coin landed on heads")
-            self.result = "heads"
+            self.coin_leaning_tracker = "heads"
+            # self.coin_leaning_counter -= 1
 
-            if state.player.luck == 1:
-                # Random roll event
-                roll = random.randint(1, 100)  # Random number between 1 and 100
-                if roll < 10:
-                    print("You lucky doggy dog")
-                    self.result = self.player_choice
-            self.game_state = "results_screen"
+        if self.coin_leaning_tracker == "tails":
+            coin_flip = random.randint(1, 100)
+            print(str(coin_flip))
+            if coin_flip <= 70:
+                self.result = "tails"
+                # self.coin_leaning_counter -= 1
+                print("Your result is " + str(self.result))
+            else:
+                self.result = "heads"
 
 
+        elif self.coin_leaning_tracker == "heads":
+            coin_flip = random.randint(1, 100)
+            print(str(coin_flip))
+
+            if coin_flip <= 70:
+                self.result = "heads"
+                print(self.result)
+            else:
+                self.result = "tails"
+                print(self.result)
+
+
+
+    # Adjust for the player's luck
+
+        self.coin_leaning_counter -= 1  # Decrement the counter after each coin flip
+
+        if self.coin_leaning_counter == 0:
+            self.coin_leaning_counter += 5
+
+        self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
 
@@ -348,7 +393,7 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "flip_screen":
-            print("entering flip screen")
+            # print("entering flip screen")
 
 
             # Initialize the timer when entering the flip_screen state
@@ -359,14 +404,14 @@ class CoinFlipTedScreen(Screen):
             #     self.pause_timer = pygame.time.get_ticks()  # Current time
             #     self.flip_screen_initialized = True
             if not self.flip_screen_initialized:
-                print("Initializing flip timer")
+                # print("Initializing flip timer")
                 self.flip_timer = 2500  # Duration for the pause
                 self.pause_timer = pygame.time.get_ticks()  # Current time
                 self.flip_screen_initialized = True
 
             # Calculate elapsed time since the flip_screen was entered
             elapsed_time = pygame.time.get_ticks() - self.pause_timer
-            print(f"Elapsed time: {elapsed_time}")
+            # print(f"Elapsed time: {elapsed_time}")
 
             # if self.coinFlipTedMoney < 10:
             #     self.game_state = "enemy_defeated_screen"
