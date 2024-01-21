@@ -51,6 +51,7 @@ class ChilliScreen(Screen):
             state.npcs.append(SirLeopoldTheHedgeHog(16 * 10, 16 * 26))
 
 
+
             # Add other NPCs to the state.npcs list
         state.npcs.extend([
             BobbyBibs(16 * 36, 16 * 18),
@@ -136,6 +137,10 @@ class ChilliScreen(Screen):
         for npc in state.npcs:
             npc.update(state)
             if isinstance(npc, Nurgle) and npc.to_be_deleted:
+                state.npcs.remove(npc)
+
+        for npc in state.npcs:
+            if isinstance(npc, SirLeopoldTheHedgeHog) and npc.vanish:
                 state.npcs.remove(npc)
 
         # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
