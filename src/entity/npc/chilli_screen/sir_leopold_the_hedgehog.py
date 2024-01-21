@@ -59,11 +59,14 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.textboxstate = "textbox3"
                 elif state.hedgeMazeScreen.hedge_hog_counter == 4:
                     self.textboxstate = "textbox4"
-                    if self.reward_all_hogs.is_finished():
-                        # Transition to textboxstate 5 after reward_all_hogs is finished
-                        self.textboxstate = "textbox5"
-                elif self.textboxstate == "textbox5":
-                    self.final_message.update(state)
+
+
+
+                #     if self.reward_all_hogs.is_finished():
+                #         # Transition to textboxstate 5 after reward_all_hogs is finished
+                #         self.textboxstate = "textbox5"
+                # elif self.textboxstate == "textbox5":
+                    # self.final_message.update(state)
 
 
 
@@ -169,6 +172,7 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time
+
         elif self.textboxstate == "textbox1":
             self.textbox.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
