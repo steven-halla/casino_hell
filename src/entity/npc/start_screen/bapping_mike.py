@@ -14,7 +14,12 @@ class BappingMike(Npc):
                 "Mike: Money is FINITE, so don't waste it.",
                 "You need money to buy items, gamble, and move on to the next area..",
                 " ammass 2000 coins and  you can play the boss to advance.",
-            "Also, the more you bet, the more stamina you lose, but you gain more EXP, you also gain EXP for losing"],
+                "Also, the more you bet, the more stamina you lose, but you gain more EXP, you also gain EXP for losing",
+                "down here on the 1st floor we all repeat outselves, sometimes the people in the rest area have something new to say",
+                "You'll get a clue when that happens, so don't waste your time re talking to people all the time. Unless you want to go crazy like the others",
+                "You can just look at the eyes an tell which ones are crazy, sometimes they just ramble on and on and on",
+                "Like you would think people would know better than to ramble, but nope, not me I'm not a rambling Randy.",
+                "What about you? Do you like to ramble? Your not saying much, you must be rambling to yourself, yeah, your crazy."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -58,7 +63,7 @@ class BappingMike(Npc):
         player = state.player
         min_distance = math.sqrt(
             (player.collision.x - self.collision.x) ** 2 + (
-                        player.collision.y - self.collision.y) ** 2)
+                    player.collision.y - self.collision.y) ** 2)
 
         if min_distance < 10:
             print("nooo")
@@ -67,7 +72,7 @@ class BappingMike(Npc):
                 pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (
-                            player.collision.y - self.collision.y) ** 2)
+                        player.collision.y - self.collision.y) ** 2)
 
             if distance < 40:
                 self.state = "talking"
@@ -83,8 +88,8 @@ class BappingMike(Npc):
 
     def draw(self, state):
         rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
+            self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+            self.collision.width, self.collision.height)
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "waiting":

@@ -11,7 +11,8 @@ class BobbyBibs(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             ["It's hard to find good clothes down here",
-             "Which is why I always wear a bib"],
+             "Which is why I always wear a bib",
+             "I can't....stand it anymore....god someone....get me out of here , i'm losing my mind"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

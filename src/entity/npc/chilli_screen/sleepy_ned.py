@@ -11,11 +11,13 @@ class SleepyNed(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Ned: I can't remember the last time I has anything good to eat, or had a good nights sleep...",
-                "I don't have a lot of coins either, it's so hard to focus with how tired I am.",
+                "Ned: All Day, everyday, is chilli day....so tired, when was the last time I had.... a good nights sleep...",
+                "I don't have a lot of coins either, it's so hard to focus with how tired I am",
                 "Hero: You should always have a fresh mind when Gambling. Just hang your head up high You'll be ok.",
                 "Justin: That's what we need more of around here. I hope you can hang on to your santiy, somepeople here tend to lost it.",
-                "Hero: I'm afraid I never had any to begin with. I'm just crazy about gambling."],
+                "Justin: We can't even leave....we're all stuck here...and these demons won't listen to reason,",
+            "They treat us like WE'RE the crazy ones, well I'm not crazy, do you hear me , I'm not crazy, your crazy, not me, your all crazy,  not me.....",
+            "Hero: How long has this one been down here.....will I end up like him?"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

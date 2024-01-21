@@ -13,7 +13,11 @@ class ChillyBilly(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.queststart1 = NpcTextBox(
-            ["ChillyBilly: I also want some water", "give me water and I'll reward you."],
+            ["ChillyBilly: I made this batch of chilli myself. Don't forget to eat it with your bare hands.",
+             "Hero: With our bare hands? No spoons or bowls? Isn't that kind of.....eating it like an animal?",
+             "ChillyBilly: To us, eating chilli wiht a spoon and bowl is like to you humans going to a fancy restaruant.",
+             "And eating a fancy dinner in the toilet. It's rather insulting to the cook. So don't insult us and use your bare hands to eat that chilli.",
+             ],
             (50, 450, 50, 45), 30, 500)
         self.questfinish1 = NpcTextBox(
             ["ChillyBilly: Thanks for the hog of hedge I sure am hungry"],
