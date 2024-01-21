@@ -19,7 +19,7 @@ class BappingMike(Npc):
                 "You'll get a clue when that happens, so don't waste your time re talking to people all the time. Unless you want to go crazy like the others",
                 "You can just look at the eyes an tell which ones are crazy, sometimes they just ramble on and on and on",
                 "Like you would think people would know better than to ramble, but nope, not me I'm not a rambling Randy.",
-                "What about you? Do you like to ramble? Your not saying much, you must be rambling to yourself, yeah, your crazy."],
+                "What about you? Do you like to ramble? Your not saying much, you must be rambling to yourself, yeah, your rambling."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

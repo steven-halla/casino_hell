@@ -48,7 +48,12 @@ class CoinFlipTedScreen(Screen):
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
         self.coinFlipTedMoney = 40
+
+
+
+
         self.coinFlipTedDefeated = False
+
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)

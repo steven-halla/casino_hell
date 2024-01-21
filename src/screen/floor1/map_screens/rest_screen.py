@@ -13,6 +13,7 @@ from entity.npc.rest_screen.inn_keeper import InnKeeper
 from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
+from entity.npc.rest_screen.start_screen_teleporter import StartScreenTeleporter
 from entity.npc.rest_screen.suffering_suzy import SufferingSuzy
 from entity.npc.rest_screen.wally_guide import WallyGuide
 from entity.npc.start_screen.inn_guard import InnGuard
@@ -26,7 +27,7 @@ class RestScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame5.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -34,9 +35,12 @@ class RestScreen(Screen):
         self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
+        self.npcs = []  # Initialize the NPCs list as empty
+
 
     def start(self, state: "GameState"):
         super().start(state)
+        state.npcs.clear()
 
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
@@ -66,6 +70,7 @@ class RestScreen(Screen):
             # ShopKeeper(16 * 18, 16 * 26),
             # SufferingSuzy(16 * 26, 16 * 26),
             # WallyGuide(16 * 34, 16 * 26),
+            StartScreenTeleporter(16 * 34, 16 * 26),
         ])
         #
         # if state.quest_giver_janet.find_hog:

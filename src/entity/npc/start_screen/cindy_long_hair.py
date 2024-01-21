@@ -13,8 +13,8 @@ class CindyLongHair(Npc):
                 [
                     "Cindy: Cheating Ted is such a bastard. Because of him my boyfriend is making beer.",
                     "If you can take all his coins I'll reward you with a black jack technique. Pay attention to what his coins land on the most",
-                    "Hero: What technique is that?.",
-                    "Reveal, you'll get a sense of how good their hand is."
+                    "The key to winning is to pay attention to patterns, which can change in the middle of playing",
+                    "Try betting low, and get  a hang for the patterns before you go in for the kill."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
