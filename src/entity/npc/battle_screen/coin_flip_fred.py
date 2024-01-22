@@ -49,7 +49,7 @@ class CoinFlipFred(Npc):
                 self.coin_flip_fred_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.coin_flip_fred_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.coin_flip_fred_messages["welcome_message"]
+        current_message = self.coin_flip_fred_messages["defeated_message"] if state.coinFlipFredScreen.coinFlipFredDefeated else self.coin_flip_fred_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -95,7 +95,7 @@ class CoinFlipFred(Npc):
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.coin_flip_fred_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.coin_flip_fred_messages["welcome_message"]
+            current_message = self.coin_flip_fred_messages["defeated_message"] if state.coinFlipFredScreen.coinFlipFredDefeated else self.coin_flip_fred_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message

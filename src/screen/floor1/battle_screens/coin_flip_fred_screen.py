@@ -36,8 +36,8 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 10
-        self.coinFlipTedDefeated = False
+        self.coinFlipFredMoney = 10
+        self.coinFlipFredDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
@@ -547,7 +547,7 @@ class CoinFlipFredScreen(Screen):
         # Blit the white border (with the black box) onto the state display
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipTedMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipFredMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
         if self.debuff_counter == 0:
