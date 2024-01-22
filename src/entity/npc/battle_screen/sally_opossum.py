@@ -98,7 +98,7 @@ class SallyOpossum(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

@@ -22,9 +22,9 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.nellyOpossumMoney = 10
+        self.sallyOpossumMoney = 10
         self.opossumBite = False
-        self.nellyOpossumIsDefeated = False
+        self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
@@ -111,7 +111,7 @@ class OpossumInACanSallyScreen(Screen):
 
         self.bet_or_flee = ["bet", "flee"]
         self.bet_or_flee_index = 0
-        self.menu_selector = ["grab", "magic", "reshuffle", "quit"]
+        self.menu_selector = ["grab", "magic", "tally"]
 
 
         self.magic_menu_selector = ["Back", "Keen"]
@@ -238,6 +238,9 @@ class OpossumInACanSallyScreen(Screen):
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
+
+        if self.sallyOpossumMoney < 1:
+            self.game_state = "opossum_defeated_screen"
 
 
 
@@ -511,7 +514,7 @@ class OpossumInACanSallyScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.nellyOpossumMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.sallyOpossumMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
 
@@ -601,7 +604,7 @@ class OpossumInACanSallyScreen(Screen):
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
                     state.player.money += self.player_score
-                    self.nellyOpossumMoney -= self.player_score
+                    self.sallyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     self.refresh()
@@ -609,7 +612,7 @@ class OpossumInACanSallyScreen(Screen):
                     self.game_state = "pick_screen"
                 elif self.opossum_index == 3:
                     state.player.money += self.player_score
-                    self.nellyOpossumMoney -= self.player_score
+                    self.sallyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
