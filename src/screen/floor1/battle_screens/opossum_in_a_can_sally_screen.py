@@ -22,7 +22,7 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 10
+        self.sallyOpossumMoney = 1000
         self.opossumBite = False
         self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
@@ -36,8 +36,7 @@ class OpossumInACanSallyScreen(Screen):
                                             "win", "win", "lose",
                                             "lucky_star",
                                             "X3_star", "lose",
-
-                                     ]
+                                    ]
 
         self.opossumInACanMessages = {
             "welcome_message": TextBox(
@@ -89,6 +88,12 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
 
+            "tally_message": TextBox(
+                ["ok its time to tally you up!!! ", "", "" ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -126,6 +131,7 @@ class OpossumInACanSallyScreen(Screen):
         self.opossum_rader = False
 
         self.luck_activated = 0
+        self.total_winnings = 0
 
         self.green_box_index = 0  # Index of the currently green box
         self.initializeGarbageCans()
@@ -175,6 +181,8 @@ class OpossumInACanSallyScreen(Screen):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 200
+        self.total_winnings = 0
+        print("HYou are getting the refresh")
 
     # def giveExp(self, state: "GameState"):
     #     # print("Player exp is: " + str(state.player.exp))
@@ -233,6 +241,9 @@ class OpossumInACanSallyScreen(Screen):
             self.fill_cans = False
             state.player.money -= 200
 
+        if self.sallyOpossumMoney < 0:
+            self.sallyOpossumMoney = 0
+
         if state.controller.isQPressed:
             # Transition to the main screen
             state.currentScreen = state.mainScreen
@@ -241,6 +252,23 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.sallyOpossumMoney < 1:
             self.game_state = "opossum_defeated_screen"
+
+
+
+
+
+        if self.game_state == "tally_screen":
+            self.total_winnings = self.player_score
+            if self.player_score > self.sallyOpossumMoney:
+                self.total_winnings = self.sallyOpossumMoney
+                state.player.money += self.total_winnings
+
+
+            self.opossumInACanMessages["tally_message"].update(state)
+            if self.opossumInACanMessages["tally_message"].message_index == 2:
+
+                self.game_state = "play_again_or_leave_screen"
+
 
 
 
@@ -356,6 +384,8 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "play_again_or_leave_screen":
+            self.refresh()
+
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
 
         if self.game_state == "opossum_defeated_screen":
@@ -543,6 +573,14 @@ class OpossumInACanSallyScreen(Screen):
 
             self.opossumInACanMessages["welcome_message"].draw(state)
 
+        if self.game_state == "tally_screen":
+            # self.opossumInACanMessages["welcome_message"].update(state)
+
+            self.opossumInACanMessages["tally_message"].draw(state)
+            if self.opossumInACanMessages["tally_message"].message_index == 1:
+                state.DISPLAY.blit(self.font.render(f"Your winnings are::{self.total_winnings}", True,
+                                                    (255, 255, 255)), (70, 460))
+
         if self.game_state == "menu_screen":
             bet_box_width = 150
             # Increase the bet box height by an additional 40 pixels
@@ -574,8 +612,7 @@ class OpossumInACanSallyScreen(Screen):
             elif self.debuff_keen_perception == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
 
-            state.DISPLAY.blit(self.font.render(f"Reshuffle ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
-            state.DISPLAY.blit(self.font.render(f"Quit ", True, (255, 255, 255)), (text_x, text_y_yes + 120))
+            state.DISPLAY.blit(self.font.render(f"tally ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
 
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.opossum_index * 40  # Adjust based on the item's height
@@ -609,13 +646,13 @@ class OpossumInACanSallyScreen(Screen):
                     state.controller.isTPressed = False
                     self.refresh()
                     self.initializeGarbageCans()
-                    self.game_state = "pick_screen"
-                elif self.opossum_index == 3:
-                    state.player.money += self.player_score
-                    self.sallyOpossumMoney -= self.player_score
-                    state.controller.isTPressed = False
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
+                    self.game_state = "tally_screen"
+                # elif self.opossum_index == 3:
+                #     state.player.money += self.player_score
+                #     self.sallyOpossumMoney -= self.player_score
+                #     state.controller.isTPressed = False
+                #     state.currentScreen = state.gamblingAreaScreen
+                #     state.gamblingAreaScreen.start(state)
 
 
 
