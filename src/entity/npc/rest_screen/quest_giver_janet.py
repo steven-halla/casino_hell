@@ -57,6 +57,16 @@ class QuestGiverJanet(Npc):
         elif state.restScreen.npc_janet_textbox3 == True:
             self.textboxstate = "textbox3"
 
+        elif state.restScreen.npc_janet_textbox4 == True:
+            self.textboxstate = "textbox4"
+
+        elif state.restScreen.npc_janet_textbox5 == True:
+            self.textboxstate = "textbox5"
+
+
+        elif state.restScreen.npc_janet_textbox6 == True:
+            self.textboxstate = "textbox6"
+
         # if self.find_hog == True:
         #     state.restScreen.rest_screen_npc_janet_find_hog = True
         #
@@ -242,6 +252,8 @@ class QuestGiverJanet(Npc):
                     self.input_time = current_time  # Update last input time
                     # self.talkfirstfivehundred = True
                     self.quest2counter = True
+                    state.restScreen.npc_janet_textbox4 = True
+                    state.restScreen.npc_janet_textbox3 = False
 
 
 
@@ -260,6 +272,8 @@ class QuestGiverJanet(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
                     self.textboxstate = "textbox5"
+                    state.restScreen.npc_janet_textbox5 = True
+                    state.restScreen.npc_janet_textbox4 = False
 
         elif self.textboxstate == "textbox5":
             self.queststart3.update(state)
@@ -270,6 +284,8 @@ class QuestGiverJanet(Npc):
                     self.input_time = current_time  # Update last input time
                     self.find_hog = True
                     self.quest3counter = True
+                    state.restScreen.npc_janet_textbox6 = True
+                    state.restScreen.npc_janet_textbox5 = False
 
         elif self.textboxstate == "textbox6":
             self.questfinish3.update(state)

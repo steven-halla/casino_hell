@@ -46,6 +46,7 @@ class RestScreen(Screen):
         self.npc_janet_textbox2 = False
         self.npc_janet_textbox3 = False
         self.npc_janet_textbox4 = False
+        self.npc_janet_textbox5 = False
         self.npc_janet_textbox6 = False
 
     def start(self, state: "GameState"):
