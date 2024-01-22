@@ -10,7 +10,7 @@ class SallyOpossum(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Sally: I'm a very mean salley, better be careful", "Are you ready to lose?!"],
+                ["Sally: I'm a very mean salley, better be careful", "Are you ready to lose? It's 200 Coins, pay up now and we can get started?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],

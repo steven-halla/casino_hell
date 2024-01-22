@@ -89,7 +89,7 @@ class OpossumInACanSallyScreen(Screen):
             ),
 
             "tally_message": TextBox(
-                ["ok its time to tally you up!!! ", "", "" ],
+                [ "", "" ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -122,6 +122,8 @@ class OpossumInACanSallyScreen(Screen):
         self.magic_menu_selector = ["Back", "Keen"]
         self.magic_menu_index = 0
 
+
+
         self.play_again_or_quit = ["Play Again", "Quit"]
 
         self.play_again_or_quit_index = 0
@@ -147,9 +149,13 @@ class OpossumInACanSallyScreen(Screen):
         self.fill_cans = True
         self.shake = False
 
+        self.tally_money_once = True
+
+
     def initializeGarbageCans(self):
+
         # Randomly shuffle the winner_or_looser list
-        print("yabbba dabbbba dooooooooooo")
+        # print("yabbba dabbbba dooooooooooo")
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
         # Assign a shuffled item to each can and print the content
@@ -182,7 +188,10 @@ class OpossumInACanSallyScreen(Screen):
         self.has_opossum_insurance = True
         self.insurance = 200
         self.total_winnings = 0
-        print("HYou are getting the refresh")
+        self.tally_money_once = True
+        self.player_score = 0
+
+        # print("HYou are getting the refresh")
 
     # def giveExp(self, state: "GameState"):
     #     # print("Player exp is: " + str(state.player.exp))
@@ -232,7 +241,7 @@ class OpossumInACanSallyScreen(Screen):
 
     def update(self, state: "GameState"):
         if self.player_score >= 500:
-            print("you got a opossum")
+            # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
         if self.player_score >= 500:
             self.five_hundred_points = True
@@ -258,14 +267,23 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
-            self.total_winnings = self.player_score
-            if self.player_score > self.sallyOpossumMoney:
-                self.total_winnings = self.sallyOpossumMoney
-                state.player.money += self.total_winnings
+
+            while self.tally_money_once == True:
+                print("yoda la he ho")
+                self.total_winnings = self.player_score
+
+                if self.player_score > self.sallyOpossumMoney:
+                    self.total_winnings = self.sallyOpossumMoney
+                    state.player.money += self.total_winnings
+
+                self.tally_money_once = False
+
+
+
 
 
             self.opossumInACanMessages["tally_message"].update(state)
-            if self.opossumInACanMessages["tally_message"].message_index == 2:
+            if self.opossumInACanMessages["tally_message"].message_index == 1:
 
                 self.game_state = "play_again_or_leave_screen"
 
@@ -402,6 +420,9 @@ class OpossumInACanSallyScreen(Screen):
             if state.controller.isTPressed:
                 if self.play_again_or_quit_index == 0:
                     state.controller.isTPressed = False  # Reset the button state
+                    self.opossumInACanMessages["tally_message"].message_index = 0
+                    print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
+                    state.player.money -= 200
                     self.game_state = "menu_screen"
 
 
@@ -599,8 +620,8 @@ class OpossumInACanSallyScreen(Screen):
             # self.opossumInACanMessages["welcome_message"].update(state)
 
             self.opossumInACanMessages["tally_message"].draw(state)
-            if self.opossumInACanMessages["tally_message"].message_index == 1:
-                state.DISPLAY.blit(self.font.render(f"Your winnings are::{self.total_winnings}", True,
+            if self.opossumInACanMessages["tally_message"].message_index == 0:
+                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings}", True,
                                                     (255, 255, 255)), (70, 460))
 
         if self.game_state == "menu_screen":
@@ -666,7 +687,7 @@ class OpossumInACanSallyScreen(Screen):
                     self.sallyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
-                    self.refresh()
+                    # self.refresh()
                     self.initializeGarbageCans()
                     self.game_state = "tally_screen"
                 # elif self.opossum_index == 3:
@@ -799,6 +820,7 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "play_again_or_leave_screen":
             self.opossumInACanMessages["play_again_or_leave_message"].draw(state)
+            self.tally_money_once = True
 
             bet_box_width = 150
             bet_box_height = 100
