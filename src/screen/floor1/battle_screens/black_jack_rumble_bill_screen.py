@@ -27,7 +27,7 @@ class BlackJackRumbleBillScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 1000
+        self.cheater_bob_money = 10
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -74,12 +74,8 @@ class BlackJackRumbleBillScreen(Screen):
 
         self.messages = {
             "welcome_screen": ["RumbleBill: Press T key for all commands.",
-                               " My name's Cheater Bob, it's not a nickname.",
-                               "I'm what you would call a 'newb stomper'.",
                                "You look pretty fresh to me.", ""],
             "hero_intro_text": [
-                "Hero: Thanks for holding on to those coins for me.",
-                "I'll be sure to take every last one of them from you.",
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": [
@@ -259,14 +255,14 @@ class BlackJackRumbleBillScreen(Screen):
         if self.game_state == "welcome_screen":
             # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
             # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
-            if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
-                self.game_state = "hero_is_desperate_state"
-
-            elif self.cheater_bob_money <= 300 and self.despair == True:
-                self.game_state = "final_strike_screen"
-
-            elif self.cheater_bob_money <= 700 and self.hero_winning_text_state == False:
-                self.game_state = "enemy_is_desperate_state"
+            # if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
+            #     self.game_state = "hero_is_desperate_state"
+            #
+            # elif self.cheater_bob_money <= 300 and self.despair == True:
+            #     self.game_state = "final_strike_screen"
+            #
+            # elif self.cheater_bob_money <= 700 and self.hero_winning_text_state == False:
+            #     self.game_state = "enemy_is_desperate_state"
 
             # if self.cheater_bob_money == 1000 and self.hero_losing_text == False:
             #     self.bet_screen_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
@@ -301,6 +297,8 @@ class BlackJackRumbleBillScreen(Screen):
                 if self.welcome_screen_text_box_hero.is_finished():
 
                     if controller.isUpPressed:
+                        print("Nurgle is here for you ")
+
                         # channel3 = pygame.mixer.Channel(3)
                         # sound3 = pygame.mixer.Sound(
                         #     "audio/Fotstep_Carpet_Right_3.mp3")
@@ -314,7 +312,10 @@ class BlackJackRumbleBillScreen(Screen):
                             self.welcome_screen_choices)
                         controller.isUpPressed = False
 
+
                     elif controller.isDownPressed:
+                        print("Nurgle is here for you ")
+
                         # channel3 = pygame.mixer.Channel(3)
                         # sound3 = pygame.mixer.Sound(
                         #     "audio/Fotstep_Carpet_Right_3.mp3")
@@ -579,6 +580,7 @@ class BlackJackRumbleBillScreen(Screen):
 
 
         elif self.game_state == "menu_screen":
+            # print("at the menu screen")
 
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
@@ -587,6 +589,8 @@ class BlackJackRumbleBillScreen(Screen):
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
+                print("Nurgle is here for you ")
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -599,6 +603,8 @@ class BlackJackRumbleBillScreen(Screen):
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
+                print("Nurgle is here for you ")
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -635,6 +641,7 @@ class BlackJackRumbleBillScreen(Screen):
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
+                print("Nurgle is here for you ")
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -646,6 +653,8 @@ class BlackJackRumbleBillScreen(Screen):
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
+                print("Nurgle is here for you ")
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -1029,6 +1038,8 @@ class BlackJackRumbleBillScreen(Screen):
                     (637, 355))
                 if state.controller.isTPressed:
                     print("Quit")
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
                     state.controller.isTPressed = False
 
             self.welcome_screen_text_box.draw(state)

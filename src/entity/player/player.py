@@ -49,6 +49,8 @@ class Player(Entity):
             print("Your spirit is: " + str(self.spirit))
             print("Your luck is: " + str(self.luck))
             print("Your perception is: " + str(self.perception))
+            print("Your Hp  is: " + str(self.stamina_points) + "/" + str(self.max_stamina_points))
+            print("Your Hp  is: " + str(self.focus_points) + "/" + str(self.max_focus_points))
             controller.isOPressed = False
 
         if self.exp > 1000:

@@ -27,7 +27,7 @@ class BlackJackJaredScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 1000
+        self.cheater_bob_money = 10
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -75,12 +75,9 @@ class BlackJackJaredScreen(Screen):
 
         self.messages = {
             "welcome_screen": ["Jared: I'm the boss you better get ready to have a good WAGGGGGGHH!!!",
-                               " My name's Cheater Bob, it's not a nickname.",
-                               "I'm what you would call a 'newb stomper'.",
+
                                "You look pretty fresh to me.", ""],
             "hero_intro_text": [
-                "Hero: Thanks for holding on to those coins for me.",
-                "I'll be sure to take every last one of them from you.",
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": [
@@ -260,20 +257,21 @@ class BlackJackJaredScreen(Screen):
         if self.game_state == "welcome_screen":
             # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
             # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
-            if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
-                self.game_state = "hero_is_desperate_state"
-
-            elif self.cheater_bob_money <= 300 and self.despair == True:
-                self.game_state = "final_strike_screen"
-
-            elif self.cheater_bob_money <= 700 and self.hero_winning_text_state == False:
-                self.game_state = "enemy_is_desperate_state"
+            # if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
+            #     self.game_state = "hero_is_desperate_state"
+            #
+            # elif self.cheater_bob_money <= 300 and self.despair == True:
+            #     self.game_state = "final_strike_screen"
+            #
+            # elif self.cheater_bob_money <= 700 and self.hero_winning_text_state == False:
+            #     self.game_state = "enemy_is_desperate_state"
 
             # if self.cheater_bob_money == 1000 and self.hero_losing_text == False:
             #     self.bet_screen_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
             #     self.hero_losing_text = True
             if state.player.stamina_points < 1:
                 print("time to leave")
+
 
             self.welcome_screen_text_box.update(state)
 
@@ -1030,6 +1028,8 @@ class BlackJackJaredScreen(Screen):
                     (637, 355))
                 if state.controller.isTPressed:
                     print("Quit")
+                    state.currentScreen = state.bossScreen
+                    state.bossScreen.start(state)
                     state.controller.isTPressed = False
 
             self.welcome_screen_text_box.draw(state)

@@ -36,7 +36,7 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 100
+        self.coinFlipTedMoney = 10
         self.coinFlipTedDefeated = False
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
@@ -243,8 +243,8 @@ class CoinFlipFredScreen(Screen):
 
 
     def update(self, state: "GameState"):
-        if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
-            self.game_state = "enemy_desperate_screen"
+        # if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
+        #     self.game_state = "enemy_desperate_screen"
 
         if self.coinFlipTedMoney < 10:
             self.game_state = "enemy_defeated_screen"

@@ -22,7 +22,7 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.nellyOpossumMoney = 1200
+        self.nellyOpossumMoney = 10
         self.opossumBite = False
         self.nellyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
@@ -360,8 +360,8 @@ class OpossumInACanSallyScreen(Screen):
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
 
         if self.game_state == "hero_defeated_stamina_screen":
@@ -611,8 +611,8 @@ class OpossumInACanSallyScreen(Screen):
                     state.player.money += self.player_score
                     self.nellyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
-                    state.currentScreen = state.restScreen
-                    state.restScreen.start(state)
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
 
 
 
