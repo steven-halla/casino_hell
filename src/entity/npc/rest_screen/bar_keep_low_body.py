@@ -11,7 +11,9 @@ class BarKeepLowBody(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Justin: come back when your body is higher.",
+                "Justin: come back when you have 4000 coins, I'll give you a stat boost potion for your body.",
+                "WIth a body of 1 you'll be able to drink, and unlock more dialog options, and drinking beer has benifits.",
+                "I'll also givve you the boss pass so you can play against the 3 bosses."
                 ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]

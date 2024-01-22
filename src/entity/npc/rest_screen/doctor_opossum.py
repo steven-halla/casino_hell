@@ -23,7 +23,7 @@ class DoctorOpossum(Npc):
                 500  # Delay
             ),
             "cured_message": NpcTextBox(
-                ["thank you for the water glug glug glug.....Why didn't I just cure you? I was thristy! "],
+                ["thank you for the flower....i'll cure you...and here, so you take less damaege! "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -66,8 +66,9 @@ class DoctorOpossum(Npc):
             # self.textbox.reset()
             # self.textbox.message_index = 0
 
-            if "Water Bottle" in state.player.items:
+            if "blue flower" in state.player.items:
                 if self.doctor_messages["cured_message"].message_index == 1:
+                    state.player.items.append("opossum repellent")
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
                         self.input_time = pygame.time.get_ticks()

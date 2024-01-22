@@ -11,9 +11,11 @@ class Guy(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Guy: Talk to me when you have 4000 coins. I have a stat boost potion for your body.",
-                "You'll be able to drink at the bar, and unlock more dialogs, not to mention get bonsuses from drinking beer",
-                "again come bakc to me after you have 4000 coins.",
+                "Guy:Most people here are here to gamble, you can quit a match and go rest if you feel it too mcuh.",
+                "enemy money won't reset, so take it at your own pace.",
+                "You dont' have to take everyone's money?",
+                "For those that beat this area, on average takes them 5 days.",
+                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
