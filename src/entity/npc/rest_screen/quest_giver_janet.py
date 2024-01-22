@@ -44,6 +44,7 @@ class QuestGiverJanet(Npc):
         self.find_hog = False
 
         self.path3 = False
+        self.final_message_check = False
 
     def update(self, state: "GameState"):
         # if state.restScreen.npc_janet_textbox3 == True:
@@ -64,7 +65,7 @@ class QuestGiverJanet(Npc):
             self.textboxstate = "textbox5"
 
 
-        elif state.restScreen.npc_janet_textbox6 == True:
+        elif state.restScreen.npc_janet_textbox6 == True and state.restScreen.rest_screen_npc_janet_find_hog == True:
             self.textboxstate = "textbox6"
 
         # if self.find_hog == True:
@@ -276,8 +277,9 @@ class QuestGiverJanet(Npc):
                     self.input_time = current_time  # Update last input time
                     self.find_hog = True
                     self.quest3counter = True
-                    # state.restScreen.npc_janet_textbox6 = True
+                    state.gamblingAreaScreen.nurgle_the_hedge_hog = True
                     state.restScreen.npc_janet_textbox5 = False
+                    state.restScreen.npc_janet_textbox6 = True
 
         elif self.textboxstate == "textbox6":
             self.questfinish3.update(state)

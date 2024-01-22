@@ -33,7 +33,7 @@ class GamblingAreaScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.five_hundred_opossums = True
-        self.nurgle_the_hedge_hog = True
+        self.nurgle_the_hedge_hog = False
         self.npcs = []  # Initialize the NPCs list as empty
 
 
@@ -55,7 +55,7 @@ class GamblingAreaScreen(Screen):
 
         state.npcs = []
 
-        if self.nurgle_the_hedge_hog == True:
+        if self.nurgle_the_hedge_hog == True and state.restScreen.rest_screen_npc_janet_find_hog == False:
             print("Before appending Nurgle, NPCs:", state.npcs)
             state.npcs.append(Nurgle(16 * 25, 16 * 22))
             print("After appending Nurgle, NPCs:", state.npcs)
@@ -99,6 +99,7 @@ class GamblingAreaScreen(Screen):
             npc.update(state)
             if isinstance(npc, Nurgle) and npc.to_be_deleted:
                 state.npcs.remove(npc)
+                state.restScreen.rest_screen_npc_janet_find_hog = True
 
         # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
         # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]

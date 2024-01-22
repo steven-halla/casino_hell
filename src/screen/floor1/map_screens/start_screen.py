@@ -125,6 +125,7 @@ class StartScreen(Screen):
             npc.update(state)
             if isinstance(npc, Nurgle) and npc.to_be_deleted:
                 state.npcs.remove(npc)
+                print("removed")
 
         # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
         # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
