@@ -43,7 +43,7 @@ class CoinFlipFred(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.blackJackThomasScreen.black_jack_thomas_defeated:
+            if state.coinFlipFredScreen.coinFlipFredDefeated:
                 self.coin_flip_fred_messages["defeated_message"].reset()
             else:
                 self.coin_flip_fred_messages["welcome_message"].reset()
@@ -65,7 +65,7 @@ class CoinFlipFred(Npc):
             state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed:
+        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipFredScreen.coinFlipFredDefeated == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -99,7 +99,7 @@ class CoinFlipFred(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipFredScreen.coinFlipFredDefeated == True:
+            if current_message.is_finished() and state.coinFlipFredScreen.coinFlipFredDefeated == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

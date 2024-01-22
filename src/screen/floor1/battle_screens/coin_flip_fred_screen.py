@@ -54,6 +54,9 @@ class CoinFlipFredScreen(Screen):
 
         self.coinFlipFredDefeated = False
 
+
+
+
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
@@ -309,7 +312,7 @@ class CoinFlipFredScreen(Screen):
         #     self.game_state = "enemy_desperate_screen"
 
         if self.coinFlipFredMoney < 10:
-            self.coinFlipTedDefeated = True
+            self.coinFlipFredDefeated = True
 
 
 
