@@ -7,12 +7,12 @@ from screen.floor1.battle_screens.black_jack_jared_screen import BlackJackJaredS
 from screen.floor1.battle_screens.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
 from screen.examples.black_jack_screen import BlackJackScreen
 from screen.floor1.battle_screens.black_jack_thomas_screen import BlackJackThomasScreen
+from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
 from screen.floor1.map_screens.boss_screen import BossScreen
 from screen.floor1.map_screens.chilli_screen import ChilliScreen
 from screen.floor1.battle_screens.coin_flip_fred_screen import CoinFlipFredScreen
 from screen.floor1.battle_screens.coin_flip_sandy_screen import CoinFlipSandyScreen
 from screen.examples.coin_flip_screen import CoinFlipScreen
-from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
 from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
 from entity.obstacle.obstacle import Obstacle

@@ -21,7 +21,10 @@ class CoinFlipFredScreen(Screen):
         self.third_message_display = ""
         self.magic_player_message_display = ""
         self.magic_enemy_message_display = ""
+
         self.headstailsindex = 0
+
+
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
         self.heads_or_tails_Menu = ["Heads", "Tails"]
@@ -34,15 +37,28 @@ class CoinFlipFredScreen(Screen):
         self.game_reset = False
         self.message_printed = False
 
+        self.flip_screen_initialized = False  # Add this line
+
+
+        self.coin_leaning_counter = 5
+
+        self.coin_leaning_tracker = ""  # Initialize to "none" or similar
+
+
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
         self.coinFlipFredMoney = 10
+
+
+
+
         self.coinFlipFredDefeated = False
+
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
-        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
+        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
         self.enemy_desperate_counter = False
         self.enemy_defeated_counter = False
@@ -56,7 +72,7 @@ class CoinFlipFredScreen(Screen):
 
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["Freddy Fred: Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
+                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll haunt your nightmares!", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -105,8 +121,8 @@ class CoinFlipFredScreen(Screen):
                 500  # Delay
             ),
             "play_again_message": TextBox(
-                ["How are you doing. "
-                 , " Would you like to play again or quit?"
+                [
+                  " Would you like to play again or quit?"
                  ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
@@ -131,7 +147,8 @@ class CoinFlipFredScreen(Screen):
             "enemy_desperate_message": TextBox(
                 ["Enemy: NOOoooooo....Do you know how many years i've spent coin flipping!!! This is impossible! ",
                  "Hero: It's not,  either you've been doing it wrong for years, or you reached you best a long time ago",
-                 "Enemy: You bastard, I'll show you, I'll show you to mess with me you mother fucker!!!", ""
+                 "Enemy: Please...don't take my coins......you don't know what they do to people who lose all their coins!!!",
+                 "Hero: Sadly for you I'm ruthless, I'm taking you out!", ""
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -166,17 +183,41 @@ class CoinFlipFredScreen(Screen):
     def giveExp(self, state: "GameState"):
         # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
-            state.player.exp += 30
-            if self.bet > 60:
+
+            if self.bet < 11:
+                state.player.stamina_points -= 1
+                state.player.exp += 10
+                print(str(state.player.exp))
+
+            elif self.bet >= 50:
+                state.player.stamina_points -= 4
+                state.player.exp += 100
+                print(str(state.player.exp))
+
+
+            elif self.bet < 50:
                 state.player.stamina_points -= 2
+                state.player.exp += 50
+                print(str(state.player.exp))
+
+
 
         elif self.result != self.player_choice:
-            state.player.exp += 15
-            if self.bet > 60:
-                state.player.stamina_points -= 3
+            if self.bet < 11:
+                state.player.stamina_points -= 1
+                state.player.exp += 3
+                print(str(state.player.exp))
 
-        elif self.bet < 60:
-            state.player.stamina_points -= 1
+            elif self.bet >= 50:
+                state.player.stamina_points -= 6
+                state.player.exp += 50
+                print(str(state.player.exp))
+
+
+            elif self.bet < 50:
+                state.player.stamina_points -= 3
+                state.player.exp += 25
+                print(str(state.player.exp))
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -202,52 +243,73 @@ class CoinFlipFredScreen(Screen):
         if self.bet > 100:
             self.bet = 100
 
-        if self.bet > self.coinFlipTedMoney:
-            self.bet = self.coinFlipTedMoney
+        if self.bet > self.coinFlipFredMoney:
+            self.bet = self.coinFlipFredMoney
 
         if controller.isTPressed:
 
             self.game_state = "heads_tails_choose_screen"
             state.controller.isTPressed = False  # Reset the button state
 
-
     def flipCoin(self, state: "GameState"):
-        coin = random.random()
-        if coin < 0.9:
-            print("coin landed on tails")
-            self.result = "tails"
+        # Check if we need to determine a new bias
+        # coin = random.random()
+        # if coin < 0.9:
+        #     print("coin landed on tails")
+        #     self.result = "tails"
+        print("The coin counter is now at the start so what is it?: " + str(self.coin_leaning_counter))
 
-
-
-            if state.player.luck == 1:
-                # Random roll event
-                roll = random.randint(1, 100)  # Random number between 1 and 100
-                if roll < 10:
-                    print("You lucky doggy dog")
-                    self.result = self.player_choice
-
-            self.game_state = "results_screen"
-
+        coin_fate = random.randint(1, 2)
+        print("your coin fate is" + str(coin_fate))
+        print("coin counter at:" + str(self.coin_leaning_counter))
+        if coin_fate == 1:
+            self.coin_leaning_tracker = "tails"
+            # self.coin_leaning_counter -= 1
         else:
-            print("coin landed on heads")
-            self.result = "heads"
+            self.coin_leaning_tracker = "heads"
+            # self.coin_leaning_counter -= 1
 
-            if state.player.luck == 1:
-                # Random roll event
-                roll = random.randint(1, 100)  # Random number between 1 and 100
-                if roll < 10:
-                    print("You lucky doggy dog")
-                    self.result = self.player_choice
-            self.game_state = "results_screen"
+        if self.coin_leaning_tracker == "tails":
+            coin_flip = random.randint(1, 100)
+            print(str(coin_flip))
+            if coin_flip <= 70:
+                self.result = "tails"
+                # self.coin_leaning_counter -= 1
+                print("Your result is " + str(self.result))
+            else:
+                self.result = "heads"
 
 
+        elif self.coin_leaning_tracker == "heads":
+            coin_flip = random.randint(1, 100)
+            print(str(coin_flip))
+
+            if coin_flip <= 70:
+                self.result = "heads"
+                print(self.result)
+            else:
+                self.result = "tails"
+                print(self.result)
+
+
+
+    # Adjust for the player's luck
+
+        self.coin_leaning_counter -= 1  # Decrement the counter after each coin flip
+
+        if self.coin_leaning_counter == 0:
+            self.coin_leaning_counter += 5
+
+        self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
-        # if self.coinFlipTedMoney < 50 and self.enemy_desperate_counter == False:
+
+
+        # if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:
         #     self.game_state = "enemy_desperate_screen"
 
-        if self.coinFlipTedMoney < 10:
-            self.game_state = "enemy_defeated_screen"
+        if self.coinFlipFredMoney < 10:
+            self.coinFlipTedDefeated = True
 
 
 
@@ -336,16 +398,28 @@ class CoinFlipFredScreen(Screen):
 
 
         if self.game_state == "flip_screen":
+            # print("entering flip screen")
 
 
             # Initialize the timer when entering the flip_screen state
-            if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
-                self.flip_timer = 4000  # Duration for the pause
+            # if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
+            #     print("about to flip timer")
+            #     self.flip_timer = 4000  # Duration for the pause
+            #     print("timer flipped")
+            #     self.pause_timer = pygame.time.get_ticks()  # Current time
+            #     self.flip_screen_initialized = True
+            if not self.flip_screen_initialized:
+                # print("Initializing flip timer")
+                self.flip_timer = 2500  # Duration for the pause
                 self.pause_timer = pygame.time.get_ticks()  # Current time
                 self.flip_screen_initialized = True
 
             # Calculate elapsed time since the flip_screen was entered
             elapsed_time = pygame.time.get_ticks() - self.pause_timer
+            # print(f"Elapsed time: {elapsed_time}")
+
+            # if self.coinFlipTedMoney < 10:
+            #     self.game_state = "enemy_defeated_screen"
 
             if elapsed_time >= self.flip_timer:
                 # Timer has elapsed, proceed with flipping the coin
@@ -355,22 +429,30 @@ class CoinFlipFredScreen(Screen):
                 self.pause_timer = 0  # Reset pause timer for the next use
                 # Transition to the next state as needed
                 # ...
+            if elapsed_time >= self.flip_timer:
+                # Logic to transition away from flip_screen
+                # ...
+                self.flip_screen_initialized = False
 
             self.coin_flip_messages["flip_message"].update(state)
+            # if self.coinFlipTedMoney < 10:
+            #     self.game_state = "enemy_defeated_screen"
 
 
         if self.game_state == "results_screen":
+            # if self.coinFlipTedMoney < 10:
+            #     self.game_state = "enemy_defeated_screen"
 
             # Assuming this is part of a class
             if not self.has_run_money_logic:
                 if self.player_choice == self.result:
                     state.player.money += self.bet
-                    self.coinFlipTedMoney -= self.bet
+                    self.coinFlipFredMoney -= self.bet
                 elif self.player_choice != self.result:
 
 
                     state.player.money -= self.bet
-                    self.coinFlipTedMoney += self.bet
+                    self.coinFlipFredMoney += self.bet
                     if self.debuff_vanish == True:
                         import random
                         roll = random.randint(1, 100)
@@ -390,6 +472,7 @@ class CoinFlipFredScreen(Screen):
             # Update the messages in the TextBox
             self.coin_flip_messages["results_message"].messages = [result_message]
 
+
             # if state.controller.isTPressed:
             #     self.game_state = "play_again_screen"
             #     print(str(self.game_state))
@@ -401,6 +484,10 @@ class CoinFlipFredScreen(Screen):
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
+            if self.coinFlipFredMoney < 10:
+                self.coinFlipTedDefeated = True
+                self.game_state = "enemy_defeated_screen"
+
             self.coin_flip_messages["play_again_message"].update(state)
             if not self.message_printed:
                 self.giveExp(state)
@@ -440,8 +527,8 @@ class CoinFlipFredScreen(Screen):
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
-                state.currentScreen = state.startScreen
-                state.startScreen.start(state)
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
 
         controller = state.controller
@@ -815,47 +902,47 @@ class CoinFlipFredScreen(Screen):
             # image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
             # state.DISPLAY.blit(image_to_display, image_rect)
 
+            if self.coinFlipFredDefeated == False:
+                self.coin_flip_messages["play_again_message"].update(state)
+                self.coin_flip_messages["play_again_message"].draw(state)
 
-            self.coin_flip_messages["play_again_message"].update(state)
-            self.coin_flip_messages["play_again_message"].draw(state)
+                bet_box_width = 150
+                bet_box_height = 100
+                border_width = 5
 
-            bet_box_width = 150
-            bet_box_height = 100
-            border_width = 5
+                screen_width, screen_height = state.DISPLAY.get_size()
+                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
 
-            screen_width, screen_height = state.DISPLAY.get_size()
-            bet_box_x = screen_width - bet_box_width - border_width - 30
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+                bet_box = pygame.Surface((bet_box_width, bet_box_height))
+                bet_box.fill((0, 0, 0))
+                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+                white_border.fill((255, 255, 255))
+                white_border.blit(bet_box, (border_width, border_width))
 
-            bet_box = pygame.Surface((bet_box_width, bet_box_height))
-            bet_box.fill((0, 0, 0))
-            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(bet_box, (border_width, border_width))
+                # Calculate text positions
+                text_x = bet_box_x + 40 + border_width
+                text_y_yes = bet_box_y + 20
+                text_y_no = text_y_yes + 40
+                # Draw the box on the screen
+                state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
-            # Calculate text positions
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20
-            text_y_no = text_y_yes + 40
-            # Draw the box on the screen
-            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+                # Draw the text on the screen (over the box)
+                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
+                arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+                # Set the initial arrow position to "Yes"
 
-            # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
-            state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
-            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
-            arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            # Set the initial arrow position to "Yes"
-
-            # Draw the arrow next to the selected option
-            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            #
-            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-            # Here's a simple example using a triangle:
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+                # Draw the arrow next to the selected option
+                # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+                # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+                #
+                # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+                # Here's a simple example using a triangle:
+                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
             if state.controller.isTPressed:
                 if self.arrow_index == 0:
@@ -880,8 +967,10 @@ class CoinFlipFredScreen(Screen):
 
                 else:
                     print("1 index")
-                    state.currentScreen = state.startScreen
-                    state.startScreen.start(state)
+                    self.arrow_index = 0
+                    self.game_state ="bet_screen"
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
 
         if self.game_state == "game_over_screen":
             print("your game state is: " + str(self.game_state))

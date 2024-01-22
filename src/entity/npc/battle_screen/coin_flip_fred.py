@@ -99,7 +99,7 @@ class CoinFlipFred(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.coinFlipFredScreen.coinFlipFredDefeated == True:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
