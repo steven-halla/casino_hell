@@ -26,11 +26,11 @@ class Player(Entity):
         self.level = 1
         self.body = 0
         self.mind = 1
-        self.spirit = 0
+        self.spirit = 1
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = []
+        self.items = ["Nurgle the hedge hog"]
         self.magicinventory = ["reveal"]
         self.canMove = True
 

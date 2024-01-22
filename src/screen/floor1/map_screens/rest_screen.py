@@ -11,6 +11,7 @@ from entity.npc.rest_screen.bar_keep_low_body import BarKeepLowBody
 from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
 from entity.npc.rest_screen.inn_keeper import InnKeeper
 from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
+from entity.npc.rest_screen.new_teleporter import NewTeleporter
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.rest_screen.start_screen_teleporter import StartScreenTeleporter
@@ -36,7 +37,16 @@ class RestScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
+        self.rest_screen_npc_janet_talk_first_five_hundred = False
+        self.rest_screen_npc_janet_quest_2_counter = False
+        self.rest_screen_npc_janet_quest_3_counter = False
+        self.rest_screen_npc_janet_find_hog = False
 
+
+        self.npc_janet_textbox2 = False
+        self.npc_janet_textbox3 = False
+        self.npc_janet_textbox4 = False
+        self.npc_janet_textbox6 = False
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -71,6 +81,7 @@ class RestScreen(Screen):
             SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 34, 16 * 26),
             StartScreenTeleporter(16 * 5, 16 * 25),
+            NewTeleporter(16 * 15, 16 * 35),
         ])
         #
         # if state.quest_giver_janet.find_hog:

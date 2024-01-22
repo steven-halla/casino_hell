@@ -224,6 +224,9 @@ class OpossumInACanNellyScreen(Screen):
 
     def update(self, state: "GameState"):
         if self.player_score >= 500:
+            print("you got a opossum")
+            state.gamblingAreaScreen.five_hundred_opossums = True
+        if self.player_score >= 500:
             self.five_hundred_points = True
         if self.fill_cans == True:
             self.initializeGarbageCans()
@@ -608,8 +611,8 @@ class OpossumInACanNellyScreen(Screen):
                     state.player.money += self.player_score
                     self.nellyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
-                    state.currentScreen = state.mainScreen
-                    state.mainScreen.start(state)
+                    state.currentScreen = state.restScreen
+                    state.restScreen.start(state)
 
 
 

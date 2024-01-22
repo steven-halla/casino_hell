@@ -34,7 +34,6 @@ class QuestGiverJanet(Npc):
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
-        self.find_hog = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
@@ -42,14 +41,62 @@ class QuestGiverJanet(Npc):
         self.talkfirstfivehundred = False
         self.quest2counter = False
         self.quest3counter = False
+        self.find_hog = False
+
+        self.path3 = False
 
     def update(self, state: "GameState"):
+        # if state.restScreen.npc_janet_textbox3 == True:
+        #     self.textboxstate = "textbox3"
+
+
+        if state.restScreen.npc_janet_textbox2 == True:
+            self.textboxstate = "textbox2"
+
+
+        elif state.restScreen.npc_janet_textbox3 == True:
+            self.textboxstate = "textbox3"
+
+        # if self.find_hog == True:
+        #     state.restScreen.rest_screen_npc_janet_find_hog = True
+        #
+        # if state.restScreen.rest_screen_npc_janet_find_hog == True:
+        #     self.find_hog = True
+        #
+        # if self.quest3counter == True:
+        #     state.restScreen.rest_screen_npc_janet_quest_3_counter = True
+        #
+        # if state.restScreen.rest_screen_npc_janet_quest_3_counter == True:
+        #     self.quest3counter = True
+        #
+        # if self.quest2counter == True:
+        #     state.restScreen.rest_screen_npc_janet_quest_2_counter = True
+        #
+        # if state.restScreen.rest_screen_npc_janet_quest_2_counter == True:
+        #     self.quest2counter = True
+
+        # if self.talkfirstfivehundred == True:
+        #     state.restScreen.rest_screen_npc_janet_talk_first_five_hundred = True
+        #
+        # if state.restScreen.rest_screen_npc_janet_talk_first_five_hundred == True:
+        #     self.talkfirstfivehundred = True
+
+
+
+
+
+
         # print("current state is:" + str(self.textboxstate))
+        print("Find_hog boolean is: " + str(self.find_hog))
+        print("talkfirstfivehundred boolean is: " + str(self.talkfirstfivehundred))
+        print("quest2counter boolean is: " + str(self.quest2counter))
+        print("quest3counter boolean is: " + str(self.quest3counter))
 
         if self.state == "waiting":
-            if state.opossumInACanScreen.five_hundred_points == True and self.talkfirstfivehundred == True:
+            if state.gamblingAreaScreen.five_hundred_opossums == True and self.talkfirstfivehundred == True:
                 self.textboxstate = "textbox2"
                 self.talkfirstfivehundred = False
+                state.restScreen.npc_janet_textbox2 = True
                 # print("am I getting reset?")
                 # if self.talkfirstfivehundred == True:
                 #     print("fjasd;fjkdls")
@@ -59,10 +106,14 @@ class QuestGiverJanet(Npc):
                 # print("time for the 2nd quest")
                 self.textboxstate = "textbox4"
                 self.find_hog = True
+                state.restScreen.npc_janet_textbox4 = True
+
 
             if "Nurgle the hedge hog" in state.player.items and self.quest3counter == True:
                 print("Hi")
                 self.textboxstate = "textbox6"
+                state.restScreen.npc_janet_textbox6 = True
+
 
 
 
@@ -130,7 +181,6 @@ class QuestGiverJanet(Npc):
                     # print("Textbox2")
                     self.questfinish1.reset()
                 elif self.textboxstate == "textbox3":
-
                     self.queststart2.reset()
 
                 elif self.textboxstate == "textbox4":
@@ -165,6 +215,10 @@ class QuestGiverJanet(Npc):
                     print(self.textboxstate)
 
                     self.textboxstate = "textbox3"
+                    self.path3 = True
+                    state.restScreen.npc_janet_textbox3 = True
+                    state.restScreen.npc_janet_textbox2 = False
+
                     print(self.textboxstate)
 
                     # self.talkfirstbeforehandoverhog = False

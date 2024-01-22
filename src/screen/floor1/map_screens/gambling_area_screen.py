@@ -32,7 +32,7 @@ class GamblingAreaScreen(Screen):
         self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
-        self.five_hundred_opossums = False
+        self.five_hundred_opossums = True
 
     def start(self, state: "GameState"):
         super().start(state)

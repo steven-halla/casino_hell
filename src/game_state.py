@@ -84,5 +84,5 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.startScreen
+        self.currentScreen = self.restScreen
         # assign a value to currentScreen here

@@ -231,3 +231,5 @@ Teleporters need fixing, selecting NO Still teleports
 Need to update Bar to have a food item, roach burger, lots of protein 
 Items need description when hoovering in shop
 Need to fix it to where player can appear at fixed points on each map
+
+I was worried about this , quest giver janet is not persisting, 
