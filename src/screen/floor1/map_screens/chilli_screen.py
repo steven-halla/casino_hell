@@ -52,6 +52,9 @@ class ChilliScreen(Screen):
 
 
 
+
+
+
             # Add other NPCs to the state.npcs list
         state.npcs.extend([
             BobbyBibs(16 * 36, 16 * 18),

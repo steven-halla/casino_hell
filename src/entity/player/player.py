@@ -30,7 +30,7 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = ["Nurgle the hedge hog"]
+        self.items = []
         self.magicinventory = ["reveal"]
         self.canMove = True
 

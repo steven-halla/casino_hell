@@ -33,6 +33,10 @@ class GamblingAreaScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.five_hundred_opossums = True
+        self.nurgle_the_hedge_hog = True
+        self.npcs = []  # Initialize the NPCs list as empty
+
+
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -49,17 +53,29 @@ class GamblingAreaScreen(Screen):
 
         ]
 
-        # state.npcs = []
-        state.npcs = [
-             BlackJackThomas(16 * 4, 16 * 2),
-             CoinFlipFred(16 * 12, 16 * 2),
-             NellyOpossum(16 * 20, 16 * 2),
-             RumbleBill(16 * 4, 16 * 12),
-             SallyOpossum(16 * 14, 16 * 12),
-             Guy(16 * 26, 16 * 12),
-             RestScreenTeleporter(16 * 11, 16 * 22),
+        state.npcs = []
 
-                      ]
+        if self.nurgle_the_hedge_hog == True:
+            print("Before appending Nurgle, NPCs:", state.npcs)
+            state.npcs.append(Nurgle(16 * 25, 16 * 22))
+            print("After appending Nurgle, NPCs:", state.npcs)
+
+        #
+        # if "Nurgle the hedge hog" in state.player.items:
+        #     state.npcs.remove(Nurgle(16 * 25, 16 * 22))
+
+        # state.npcs = []
+
+
+        state.npcs.extend([
+            BlackJackThomas(16 * 4, 16 * 2),
+            CoinFlipFred(16 * 12, 16 * 2),
+            NellyOpossum(16 * 20, 16 * 2),
+            RumbleBill(16 * 4, 16 * 12),
+            SallyOpossum(16 * 14, 16 * 12),
+            Guy(16 * 26, 16 * 12),
+            RestScreenTeleporter(16 * 11, 16 * 22),
+        ])
 
 
         state.demons = [

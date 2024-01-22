@@ -91,17 +91,6 @@ class QuestGiverJanet(Npc):
         # if state.restScreen.rest_screen_npc_janet_talk_first_five_hundred == True:
         #     self.talkfirstfivehundred = True
 
-
-
-
-
-
-        # print("current state is:" + str(self.textboxstate))
-        print("Find_hog boolean is: " + str(self.find_hog))
-        print("talkfirstfivehundred boolean is: " + str(self.talkfirstfivehundred))
-        print("quest2counter boolean is: " + str(self.quest2counter))
-        print("quest3counter boolean is: " + str(self.quest3counter))
-
         if self.state == "waiting":
             if state.gamblingAreaScreen.five_hundred_opossums == True and self.talkfirstfivehundred == True:
                 self.textboxstate = "textbox2"
@@ -197,6 +186,9 @@ class QuestGiverJanet(Npc):
                     self.questfinish2.reset()
                 elif self.textboxstate == "textbox5":
                     self.queststart3.reset()
+                    print("hi there text box 5 line 200")
+                    state.restScreen.nurgle_the_hedge_hog = True
+                    print("The rest screeen hog from janet class is: " + str(state.restScreen.nurgle_the_hedge_hog))
                 elif self.textboxstate == "textbox6":
                     self.questfinish3.reset()
 
@@ -284,7 +276,7 @@ class QuestGiverJanet(Npc):
                     self.input_time = current_time  # Update last input time
                     self.find_hog = True
                     self.quest3counter = True
-                    state.restScreen.npc_janet_textbox6 = True
+                    # state.restScreen.npc_janet_textbox6 = True
                     state.restScreen.npc_janet_textbox5 = False
 
         elif self.textboxstate == "textbox6":

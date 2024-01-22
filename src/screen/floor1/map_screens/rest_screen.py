@@ -49,6 +49,8 @@ class RestScreen(Screen):
         self.npc_janet_textbox5 = False
         self.npc_janet_textbox6 = False
 
+        self.nurgle_the_hedge_hog = True
+
     def start(self, state: "GameState"):
         super().start(state)
         state.npcs.clear()
@@ -71,6 +73,10 @@ class RestScreen(Screen):
             state.npcs.append(BarKeep(16 * 36, 16 * 18))
         elif state.player.body == 0:
             state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
+
+        # if state.gamblingAreaScreen.nurgle_the_hedge_hog == True:
+        #     print("is there a nurgle here?")
+        #     state.npcs.append(Nurgle(16 * 25, 16 * 22))
 
         # Add other NPCs to the state.npcs list
         state.npcs.extend([
