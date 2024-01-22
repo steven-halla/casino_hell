@@ -80,6 +80,7 @@ class CoinFlipFred(Npc):
                 self.t_pressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
+            self.arrow_index = 0
             state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
