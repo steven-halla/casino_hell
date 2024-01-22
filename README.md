@@ -224,6 +224,13 @@ losing all your money turns you into a hedge hog or a horse
 NOTE:
  change reveal to say low, medium or high score, 
 
+i like this:
+
+you need to give like 4000 coins which are held, if player wins the boss they get the coins back.
+by giving coins player gains + 1 body, and this makes the game a little harder. 
+But the +1 body and its rewards will be pretty tempting to our players.
+
+
 for NPC
 
 GAME BUG FIXES and NEEDED UPDATES:
@@ -231,5 +238,8 @@ Teleporters need fixing, selecting NO Still teleports
 Need to update Bar to have a food item, roach burger, lots of protein 
 Items need description when hoovering in shop
 Need to fix it to where player can appear at fixed points on each map
+need battle screen menus that explain rules and stamina drain and other info
+need general info menu with player exp, leve ,items, 
+no need to tell player how much gold and exp they gain , not like they going to read it, they can alwasy check menu
+if player levels up in battle we could have a special screen pop up or perhaps eject player from battle?
 
-I was worried about this , quest giver janet is not persisting, 

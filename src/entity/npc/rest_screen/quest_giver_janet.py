@@ -16,7 +16,7 @@ class QuestGiverJanet(Npc):
             ["I have a quest for you, get a score of 500 in opossum in a can from nelly OR sandy", "there are two people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them."],
             (50, 450, 50, 45), 30, 500)
         self.questfinish1 = NpcTextBox(
-            ["Janet: Wow you really got hte 500 points!!! Hope you enjoy your reward"],
+            ["Janet: Good job on your bravery now take this reward, the new super special techniq that i learned from the dance floor:: Shake"],
             (50, 450, 50, 45), 30, 500)
         self.queststart2 = NpcTextBox(
             ["Janet: If you want more from me you need to be more suave, get a Spirit of 1 and come back and talk to me."],
@@ -29,7 +29,7 @@ class QuestGiverJanet(Npc):
             (50, 450, 50, 45), 30, 500)
 
         self.questfinish3 = NpcTextBox(
-            ["Janet:Thank you so much for finding my drinking buddy. ", "Hope you enjoy my secret technique"],
+            ["Janet:Thank you so much for finding my drinking buddy, hope you enjoy the extra magic stamina. ", "with a body of 1 you can drink with me."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -42,6 +42,7 @@ class QuestGiverJanet(Npc):
         self.quest2counter = False
         self.quest3counter = False
         self.find_hog = False
+        self.level3reward = True
 
         self.path3 = False
         self.final_message_check = False
@@ -110,7 +111,6 @@ class QuestGiverJanet(Npc):
 
 
             if "Nurgle the hedge hog" in state.player.items and self.quest3counter == True:
-                print("Hi")
                 self.textboxstate = "textbox6"
                 state.restScreen.npc_janet_textbox6 = True
 
@@ -218,6 +218,9 @@ class QuestGiverJanet(Npc):
                     print(self.textboxstate)
 
                     self.textboxstate = "textbox3"
+                    print(state.player.magicinventory)
+                    state.player.magicinventory.append("shake")
+                    print(state.player.magicinventory)
                     self.path3 = True
                     state.restScreen.npc_janet_textbox3 = True
                     state.restScreen.npc_janet_textbox2 = False
@@ -259,8 +262,9 @@ class QuestGiverJanet(Npc):
                     print("we are in textbox4")
                     self.quest2counter = False
 
-
-
+                    print(state.player.items)
+                    state.player.items.append("coin flip glasses")
+                    print(state.player.magicinventory)
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
@@ -288,6 +292,11 @@ class QuestGiverJanet(Npc):
                     self.state = "waiting"
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
+                    if self.level3reward == True:
+                        state.player.max_focus_points += 5
+                        self.level3reward = False
+
+                    print("player body" + str(state.player.body))
                     self.find_hog = True
                     self.quest3counter = True
 

@@ -30,9 +30,11 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = []
+        self.items = [""]
         self.magicinventory = ["reveal"]
         self.canMove = True
+        #conflip glasses gives player + 20 gold
+        # need ingame menus that explain rules, minues to stamina,and other info
 
 
     def update(self, state: "GameState"):
