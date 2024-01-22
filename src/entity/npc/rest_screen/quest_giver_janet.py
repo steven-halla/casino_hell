@@ -29,7 +29,7 @@ class QuestGiverJanet(Npc):
             (50, 450, 50, 45), 30, 500)
 
         self.questfinish3 = NpcTextBox(
-            ["Janet:Thank you so much for finding my drinking buddy. ", "I'll teach you the ultimate black jack technique"],
+            ["Janet:Thank you so much for finding my drinking buddy. ", "Hope you enjoy my secret technique"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
