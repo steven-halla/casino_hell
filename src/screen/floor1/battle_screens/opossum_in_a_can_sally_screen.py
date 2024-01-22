@@ -52,7 +52,7 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
             "play_again_or_leave_message": TextBox(
-                ["Get ready for some fun! "],
+                ["Would you like to play again or leave? "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -387,6 +387,28 @@ class OpossumInACanSallyScreen(Screen):
             self.refresh()
 
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
+
+            if state.controller.isUpPressed:
+                self.play_again_or_quit_index -= 1
+                if self.play_again_or_quit_index < 0:
+                    self.play_again_or_quit_index = len(self.play_again_or_quit) - 1  # Wrap around to the last item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+            elif state.controller.isDownPressed:
+                self.play_again_or_quit_index += 1
+                if self.play_again_or_quit_index >= len(self.play_again_or_quit):
+                    self.play_again_or_quit_index = 0  # Wrap around to the first item
+                pygame.time.delay(200)
+
+            if state.controller.isTPressed:
+                if self.play_again_or_quit_index == 0:
+                    state.controller.isTPressed = False  # Reset the button state
+                    self.game_state = "menu_screen"
+
+
+                elif self.play_again_or_quit_index == 1:
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
+
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumBite = True
@@ -777,6 +799,44 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "play_again_or_leave_screen":
             self.opossumInACanMessages["play_again_or_leave_message"].draw(state)
+
+            bet_box_width = 150
+            bet_box_height = 100
+            border_width = 5
+
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
+
+            # Calculate text positions
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20
+            text_y_no = text_y_yes + 40
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+            state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+            arrow_y = text_y_yes + self.play_again_or_quit_index * 40  # Adjust based on the item's height
+            # Set the initial arrow position to "Yes"
+
+            # Draw the arrow next to the selected option
+            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+            #
+            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumInACanMessages["opossum_defeated_message"].draw(state)
