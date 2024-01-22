@@ -83,6 +83,11 @@ class CindyLongHair(Npc):
         if self.coinFlipTedReward == True:
             current_message = self.cindy_long_hair_messages['final_message']
         elif state.coinFlipTedScreen.coinFlipTedDefeated:
+            if "reveal" not in state.player.magicinventory:
+                state.player.magicinventory.append("reveal")
+            if state.player.mind < 1:
+                state.player.mind += 1
+
             current_message = self.cindy_long_hair_messages['reward_message']
         else:
             current_message = self.cindy_long_hair_messages['textbox']
@@ -110,8 +115,7 @@ class CindyLongHair(Npc):
                 current_message = self.cindy_long_hair_messages['textbox']
             current_message.draw(state)
             while state.coinFlipTedScreen.coinFlipTedDefeated == True and "black jack reveal" not in state.player.magicinventory:
-                state.player.mind += 1
-                state.player.magicinventory.append("black jack reveal")
+
                 print(state.player.magicinventory)
                 print(state.player.mind)
                 # self.coinFlipTedReward = True

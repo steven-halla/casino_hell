@@ -32,7 +32,7 @@ class GamblingAreaScreen(Screen):
         self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
-        self.five_hundred_opossums = True
+        self.five_hundred_opossums = False
         self.nurgle_the_hedge_hog = False
         self.npcs = []  # Initialize the NPCs list as empty
 

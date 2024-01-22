@@ -243,3 +243,7 @@ need general info menu with player exp, leve ,items,
 no need to tell player how much gold and exp they gain , not like they going to read it, they can alwasy check menu
 if player levels up in battle we could have a special screen pop up or perhaps eject player from battle?
 
+I need to do the hotel room, and let the player equip items and magic spells
+
+There is a bug: 
+after winning coin flip you are stuck till you talk one last time.

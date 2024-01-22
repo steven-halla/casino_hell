@@ -25,13 +25,13 @@ class Player(Entity):
         self.inn_badge = False
         self.level = 1
         self.body = 0
-        self.mind = 1
+        self.mind = 0
         self.spirit = 1
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = [""]
-        self.magicinventory = ["reveal"]
+        self.items = []
+        self.magicinventory = []
         self.canMove = True
         #conflip glasses gives player + 20 gold
         # need ingame menus that explain rules, minues to stamina,and other info
@@ -40,6 +40,17 @@ class Player(Entity):
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update()
+
+        if controller.isOPressed:
+            print("Your inventory for items: " + str(self.items))
+            print("Your inventory for magic: " + str(self.magicinventory))
+            print("Your body is: " + str(self.body))
+            print("Your mind is: " + str(self.mind))
+            print("Your spirit is: " + str(self.spirit))
+            print("Your luck is: " + str(self.luck))
+            print("Your perception is: " + str(self.perception))
+            controller.isOPressed = False
+
         if self.exp > 1000:
             print("grats you leveld up to level 2")
             self.level = 2
