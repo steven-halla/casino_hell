@@ -23,14 +23,14 @@ class BlackJackRumbleBillScreen(Screen):
         self.ace_up_sleeve_jack = False
         self.ace_up_sleeve_jack_cheat_mode = False
 
-        self.black_jack_rumble_bill_defeated = True
+        self.black_jack_rumble_bill_defeated = False
 
         self.first_message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 0
+        self.cheater_bob_money = 100
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -241,6 +241,9 @@ class BlackJackRumbleBillScreen(Screen):
 
         if self.bet > 100:
             self.bet = 100
+
+        if self.bet > self.cheater_bob_money:
+            self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
 
