@@ -57,7 +57,7 @@ class OpossumInACanSallyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
-            "rapid_opossum_ message": TextBox(
+            "rapid_opossum_message": TextBox(
                 ["Oh no you got bite!!! Wrong Trash can!!!! ", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size

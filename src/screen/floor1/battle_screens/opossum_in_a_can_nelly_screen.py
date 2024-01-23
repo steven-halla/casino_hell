@@ -22,9 +22,9 @@ class OpossumInACanNellyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.nellyOpossumMoney = 1000
+        self.nellyOpossumMoney = 0
         self.opossumBite = False
-        self.nellyOpossumIsDefeated = False
+        self.nellyOpossumIsDefeated = True
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
@@ -57,14 +57,21 @@ class OpossumInACanNellyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
-            "rapid_opossum_ message": TextBox(
+            "rapid_opossum_message": TextBox(
                 ["Oh no you got bite!!! Wrong Trash can!!!! ", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "opossum_defeated_message": TextBox(
-                ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your lat bit of humanity", ""],
+                ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your humanity while it loast opossum-kun", ""],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "real_opossum_defeated_message": TextBox(
+                ["Stupid Doctor and her shots, hate her I want her to be a opossum soooooo badly ", "",
+    ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -82,7 +89,7 @@ class OpossumInACanNellyScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["something poppped out!!! ", "oh no you just got bit", "chomped", ],
+                ["something poppped out!!! ", "oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -108,6 +115,8 @@ class OpossumInACanNellyScreen(Screen):
         self.game_state = "welcome_screen"
 
         self.box_color = (255, 0, 0)  # Initially red
+
+        self.rabiesStaminaChecker = False
 
         self.has_opossum_insurance = True
 
@@ -151,6 +160,12 @@ class OpossumInACanNellyScreen(Screen):
 
         self.tally_money_once = True
 
+##### what if I try to set a timer so we don't skip?
+    ### or maybe something has to be set to false like the T press?
+
+
+###        self.initialized_message = False  # Add this line to initialize the flag
+#### so I think the above will solve the provlem with messags just getting barfed i"ll hav to see another day
 
     def initializeGarbageCans(self):
 
@@ -252,6 +267,7 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.nellyOpossumMoney < 0:
             self.nellyOpossumMoney = 0
+            self.nellyOpossumIsDefeated = True
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -259,10 +275,14 @@ class OpossumInACanNellyScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if self.nellyOpossumMoney < 1:
+        if self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == False:
             self.nellyOpossumIsDefeated = True
-
             self.game_state = "opossum_defeated_screen"
+
+        elif self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == True:
+            self.nellyOpossumIsDefeated = True
+            self.game_state = "real_opossum_defeated_screen"
+
 
 
 
@@ -359,8 +379,9 @@ class OpossumInACanNellyScreen(Screen):
             self.opossumInACanMessages["pick_message"].update(state)
 
         if self.game_state == "lose_screen":
-            print("WERE ARE HERE AGGHHGHHGHGHGGHFSGHJLSADJFJSFJSDA;FFJAS;LJF;DAFL;SDLFL;A")
             print(str(self.opossumInACanMessages["lose_message"].message_index))
+
+
             # Reset the message index every time you enter the lose_screen
             if not self.initialized_message:
                 self.opossumInACanMessages["lose_message"].message_index = 0
@@ -372,12 +393,28 @@ class OpossumInACanNellyScreen(Screen):
             # Update the lose message after resetting the index
             self.opossumInACanMessages["lose_message"].update(state)
 
+            # while self.rabiesStaminaChecker == False:
+            #     state.player.stamina_points -= 10
+            #     self.rabiesStaminaChecker = True
+
+
+
+
+
+
             # Perform actions based on the message_index
             if self.opossumInACanMessages["lose_message"].message_index == 2:
+                state.player.hasRabies = True
+
                 self.initializeGarbageCans()
                 self.initialized_message = False
 
-                self.game_state = "menu_screen"
+                if state.player.hasRabies == True and state.player.rabiesImmunity == False:
+                    state.player.stamina_points = 1
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
+
+                self.game_state = "play_again_or_leave_screen"
 
             # Reset the flag when you leave the lose_screen state to ensure the message will be reset next time you enter
 
@@ -405,6 +442,7 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "play_again_or_leave_screen":
             self.refresh()
+            self.rabiesStaminaChecker = False
 
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
 
@@ -441,20 +479,28 @@ class OpossumInACanNellyScreen(Screen):
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
+        if self.game_state == "real_opossum_defeated_screen":
+            self.opossumBite = True
+            self.opossumInACanMessages["real_opossum_defeated_message"].update(state)
+            if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
+                # Change the game state to "bet"
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
+
 
         if self.game_state == "hero_defeated_stamina_screen":
             self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
                 # Change the game state to "bet"
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
         if self.game_state == "hero_defeated_money_screen":
             self.opossumInACanMessages["hero_defeated_money_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_money_message"].message_index == 1:
                 # Change the game state to "bet"
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
 
 
@@ -589,7 +635,7 @@ class OpossumInACanNellyScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.sallyOpossumMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.nellyOpossumMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
 
@@ -686,7 +732,7 @@ class OpossumInACanNellyScreen(Screen):
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
                     state.player.money += self.player_score
-                    self.nellyOpossumMoney -= self.player_score
+                    self.sallyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     # self.refresh()
@@ -864,6 +910,9 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumInACanMessages["opossum_defeated_message"].draw(state)
+
+        if self.game_state == "real_opossum_defeated_screen":
+            self.opossumInACanMessages["real_opossum_defeated_message"].draw(state)
 
 
         if self.game_state == "hero_defeated_stamina_screen":

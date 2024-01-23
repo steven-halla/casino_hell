@@ -8,9 +8,9 @@ class NellyOpossum(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
-        self.black_jack_thomas_messages = {
+        self.nelly_opossum_messages = {
             "welcome_message": NpcTextBox(
-                ["Nelly: I'm a very mean salley, better be careful", "Are you ready to lose?!"],
+                ["Nelly: I'm a very mean salley, better be careful", "You need 50 stamina to play and 200 coins.  pay up now and we can get started?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
@@ -21,7 +21,7 @@ class NellyOpossum(Npc):
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
-        self.flipping_ted_defeated = False
+        self.nellyOpossumIsDefeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
@@ -42,13 +42,13 @@ class NellyOpossum(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.blackJackThomasScreen.black_jack_thomas_defeated:
-                self.black_jack_thomas_messages["defeated_message"].reset()
+            if state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
+                self.nelly_opossum_messages["defeated_message"].reset()
             else:
-                self.black_jack_thomas_messages["welcome_message"].reset()
+                self.nelly_opossum_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+        current_message = self.nelly_opossum_messages["defeated_message"] if state.opossumInACanNellyScreen.nellyOpossumIsDefeated else self.nelly_opossum_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -64,15 +64,18 @@ class NellyOpossum(Npc):
             state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed:
+        if current_message.is_finished() and state.controller.isTPressed and state.opossumInACanNellyScreen.nellyOpossumIsDefeated == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
-            # Check if the selected option is "Yes" and execute the code you provided
+            # need to add a check here for the item work
+            ##
+            ##
+            ##look above its imoprtant !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if selected_option == "Yes":
-                state.currentScreen = state.opossumInACanNellyScreen
-                state.opossumInACanNellyScreen.start(state)
+                state.currentScreen = state.opossumInACanSallyScreen
+                state.opossumInACanSallyScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -94,11 +97,12 @@ class NellyOpossum(Npc):
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+            current_message = self.nelly_opossum_messages["defeated_message"] if state.opossumInACanNellyScreen.nellyOpossumIsDefeated else self.nelly_opossum_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.opossumInACanSallyScreen.nellyOpossumIsDefeated == False:
+            if current_message.is_finished() and state.opossumInACanNellyScreen.nellyOpossumIsDefeated == False:
+                print("better not see this shit")
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
