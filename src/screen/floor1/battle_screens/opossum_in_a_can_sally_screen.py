@@ -22,9 +22,9 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 0
+        self.sallyOpossumMoney = 100
         self.opossumBite = False
-        self.sallyOpossumIsDefeated = True
+        self.sallyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0

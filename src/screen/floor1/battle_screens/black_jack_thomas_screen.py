@@ -28,7 +28,7 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 10
+        self.cheater_bob_money = 1000
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -56,7 +56,7 @@ class BlackJackThomasScreen(Screen):
 
         self.despair = False
         # self.despair = True
-        self.black_jack_thomas_defeated = True
+        self.black_jack_thomas_defeated = False
 
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
