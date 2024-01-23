@@ -4,16 +4,16 @@ from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class InnKeeper(Npc):
+class HedgeMazeScreenTeleporter(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Inn Keeper Neddry: Wanna stay at our inn?!"],
+                ["Inn Guard: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["I'm inn keeper nedry wanna stay at my inn??"],
+                ["Do you want to go back to the start screen?, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -21,6 +21,7 @@ class InnKeeper(Npc):
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
+        self.flipping_ted_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
@@ -62,47 +63,24 @@ class InnKeeper(Npc):
 
         elif state.controller.isDownPressed:
             state.controller.isDownPressed = False
+
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            print("Down pressed, arrow_index:", self.arrow_index)
+            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
+        if current_message.is_finished() and state.controller.isTPressed:
+            state.currentScreen = state.hedgeMazeScreen
+            state.hedgeMazeScreen.start(state)
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes":
-                state.controller.isTPressed = False
 
-                if state.player.stamina_points < state.player.max_stamina_points:
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > state.player.max_stamina_points:
-                        state.player.stamina_points = state.player.max_stamina_points
 
-                        print("Yes selected, closing shop.")
-                        self.arrow_index = 0
-                        self.state = "waiting"
-                        self.state_start_time = pygame.time.get_ticks()
-                        state.player.canMove = True
-                        print("nice")
-                        print(str(state.player.hasRabies))
 
-                        if state.player.hasRabies == True:
-                            print("Yee haawww")
-
-                            state.player.stamina_points = 1
-
-            # Reset the flag when the "T" key is released
-            if not state.controller.isTPressed:
-                # print("ya")
-                self.t_pressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
-
-            self.arrow_index = 0
-
             # Exiting the conversation
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
@@ -121,7 +99,7 @@ class InnKeeper(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == True:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

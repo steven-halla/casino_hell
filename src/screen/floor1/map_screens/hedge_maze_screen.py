@@ -13,6 +13,7 @@ from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
 from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
+from entity.treasurechests.blueflower import BlueFlower
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -43,7 +44,7 @@ class HedgeMazeScreen(Screen):
 
         state.treasurechests = [
 
-            # WaterBottle(16 * 36, 16 * 10),
+            BlueFlower(16 * 12, 14 * 55),
 
         ]
 
@@ -90,6 +91,9 @@ class HedgeMazeScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+        if "blue flower" in state.player.items:
+            state.currentScreen = state.restScreen
+            state.restScreen.start(state)
 
         controller = state.controller
         # ... (rest of your update code) ...

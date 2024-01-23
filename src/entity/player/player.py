@@ -16,7 +16,7 @@ class Player(Entity):
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
         # need to put in a max for stamina and focus
-        self.stamina_points = 100
+        self.stamina_points = 1
         self.max_stamina_points = 100
 
         self.focus_points = 0
@@ -30,10 +30,10 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = []
+        self.items = ["blue flower"]
         self.magicinventory = []
         self.canMove = True
-        self.hasRabies = False
+        self.hasRabies = True
         self.rabies1time = False
         self.rabiesImmunity = False
         #conflip glasses gives player + 20 gold

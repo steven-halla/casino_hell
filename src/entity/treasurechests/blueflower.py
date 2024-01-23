@@ -4,18 +4,18 @@ from entity.treasurechests.treasurechests import TreasureChest
 import pygame
 
 
-class WaterBottle(TreasureChest):
+class BlueFlower(TreasureChest):
     def __init__(self, x: float, y: float):
         # Pass the hidden item to the superclass constructor
         super().__init__(x, y, "Water Bottle")
-        self.hidden_item = "Water Bottle"
+        self.hidden_item = "blue flower"
         self.isOpened = False  # Define and initialize 'isOpened' attribute
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
 
 
     def give_item(self, state: "GameState"):
         if state.controller.isTPressed:
-            print("Hi there water")
+            print("Hi there floewr")
             print(f"Received item: {self.hidden_item}")
             state.player.items.append(self.hidden_item)
             print("Your inventory so far: " + str(state.player.items))
