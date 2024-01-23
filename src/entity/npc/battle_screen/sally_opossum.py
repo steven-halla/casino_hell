@@ -8,9 +8,9 @@ class SallyOpossum(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
-        self.black_jack_thomas_messages = {
+        self.sally_opossum_messages = {
             "welcome_message": NpcTextBox(
-                ["Sally: I'm a very mean salley, better be careful", "Are you ready to lose? It's 200 Coins, pay up now and we can get started?!"],
+                ["Sally: I'm a very mean salley, better be careful", "You need 50 stamina to play and 200 coins.  pay up now and we can get started?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
@@ -42,13 +42,13 @@ class SallyOpossum(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.blackJackThomasScreen.black_jack_thomas_defeated:
-                self.black_jack_thomas_messages["defeated_message"].reset()
+            if state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
+                self.sally_opossum_messages["defeated_message"].reset()
             else:
-                self.black_jack_thomas_messages["welcome_message"].reset()
+                self.sally_opossum_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+        current_message = self.sally_opossum_messages["defeated_message"] if state.opossumInACanSallyScreen.sallyOpossumIsDefeated else self.sally_opossum_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -69,8 +69,11 @@ class SallyOpossum(Npc):
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
-            # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes":
+            # need to add a check here for the item work
+            ##
+            ##
+            ##look above its imoprtant !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if selected_option == "Yes" and state.player.stamina_points > 50:
                 state.currentScreen = state.opossumInACanSallyScreen
                 state.opossumInACanSallyScreen.start(state)
 
@@ -94,7 +97,7 @@ class SallyOpossum(Npc):
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+            current_message = self.sally_opossum_messages["defeated_message"] if state.opossumInACanSallyScreen.sallyOpossumIsDefeated else self.sally_opossum_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message

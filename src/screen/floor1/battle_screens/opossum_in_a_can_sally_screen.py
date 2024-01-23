@@ -82,7 +82,7 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["something poppped out!!! ", "oh no you just got bit", "chompy", ],
+                ["something poppped out!!! ", "oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -367,7 +367,8 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "lose_screen":
             print(str(self.opossumInACanMessages["lose_message"].message_index))
-            state.player.hasRabies = True
+
+
             # Reset the message index every time you enter the lose_screen
             if not self.initialized_message:
                 self.opossumInACanMessages["lose_message"].message_index = 0
@@ -379,9 +380,9 @@ class OpossumInACanSallyScreen(Screen):
             # Update the lose message after resetting the index
             self.opossumInACanMessages["lose_message"].update(state)
 
-            while self.rabiesStaminaChecker == False:
-                state.player.stamina_points -= 10
-                self.rabiesStaminaChecker = True
+            # while self.rabiesStaminaChecker == False:
+            #     state.player.stamina_points -= 10
+            #     self.rabiesStaminaChecker = True
 
 
 
@@ -390,9 +391,15 @@ class OpossumInACanSallyScreen(Screen):
 
             # Perform actions based on the message_index
             if self.opossumInACanMessages["lose_message"].message_index == 2:
+                state.player.hasRabies = True
+
                 self.initializeGarbageCans()
                 self.initialized_message = False
 
+                if state.player.hasRabies == True and state.player.rabiesImmunity == False:
+                    state.player.stamina_points = 1
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
 
                 self.game_state = "play_again_or_leave_screen"
 
