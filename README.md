@@ -253,3 +253,9 @@ i need to make an Screen and an NPC to practice messages and make "components"
 have an intro screen "arent' you going to read it?"
 Hero:"WHy it's like 30 pages, thats too much man"
 demon: "Very well we hope you enjoy your stay *smiles*"
+
+STORE SHOP HAS A BUG OF LEAVING AND AREA AND COMING BACK THE ITEMS ARE NO LONGER SOLD OUT
+
+CINDY HAS BUGS WITH HER QUEST LINE TEXTS THEY KEEP PLAYING BACK TO THE START
+NEED TO CHECK ITEM APPENDS AS WELL
+THE OPPOSUMS HAVE A BUG THAT IF YOU GET THE SHOT THEN THE OTHER ONE WONT WANT TO TALK TO YOU

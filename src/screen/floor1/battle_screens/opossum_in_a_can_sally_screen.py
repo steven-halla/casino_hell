@@ -128,7 +128,7 @@ class OpossumInACanSallyScreen(Screen):
         self.menu_selector = ["grab", "magic", "tally"]
 
 
-        self.magic_menu_selector = ["Back", "Keen"]
+        self.magic_menu_selector = ["Back"]
         self.magic_menu_index = 0
 
 
@@ -160,20 +160,13 @@ class OpossumInACanSallyScreen(Screen):
 
         self.tally_money_once = True
 
-##### what if I try to set a timer so we don't skip?
-    ### or maybe something has to be set to false like the T press?
 
-
-###        self.initialized_message = False  # Add this line to initialize the flag
-#### so I think the above will solve the provlem with messags just getting barfed i"ll hav to see another day
 
     def initializeGarbageCans(self):
 
-        # Randomly shuffle the winner_or_looser list
-        # print("yabbba dabbbba dooooooooooo")
+
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
-        # Assign a shuffled item to each can and print the content
         self.can1 = shuffled_items[0]
         # print("Can 1 contains:", self.can1)
 
@@ -275,6 +268,14 @@ class OpossumInACanSallyScreen(Screen):
             state.mainScreen.start(state)
             return
 
+
+
+        if "shake" in state.player.magicinventory:
+            self.magic_menu_selector.append("shake")
+
+
+
+
         if self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == False:
             self.sallyOpossumIsDefeated = True
             self.game_state = "opossum_defeated_screen"
@@ -322,25 +323,43 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "menu_screen":
+            if "shake" in self.magic_menu_selector:
+                if state.controller.isUpPressed:
+                    self.opossum_index -= 1
+                    if self.opossum_index < 0:
+                        self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
+                        print(str(self.opossum_index))
 
-            if state.controller.isUpPressed:
-                self.opossum_index -= 1
-                if self.opossum_index < 0:
-                    self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
-                    print(str(self.opossum_index))
+                    # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
-                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+                elif state.controller.isDownPressed:
+                    self.opossum_index += 1
+                    if self.opossum_index >= len(self.menu_selector):
+                        self.opossum_index = 0  # Wrap around to the first item
+                        print(str(self.opossum_index))
 
-            elif state.controller.isDownPressed:
-                self.opossum_index += 1
-                if self.opossum_index >= len(self.menu_selector):
-                    self.opossum_index = 0  # Wrap around to the first item
-                    print(str(self.opossum_index))
+                    # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
-                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+            elif "shake" not in self.magic_menu_selector:
+                if state.controller.isUpPressed:
+                    self.opossum_index -= 2
+                    if self.opossum_index < 0:
+                        self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
+                        print(str(self.opossum_index))
 
+                    # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+
+                elif state.controller.isDownPressed:
+                    self.opossum_index += 2
+                    if self.opossum_index >= len(self.menu_selector):
+                        self.opossum_index = 0  # Wrap around to the first item
+                        print(str(self.opossum_index))
+
+                    # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
+                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
 
 
@@ -474,6 +493,7 @@ class OpossumInACanSallyScreen(Screen):
         if self.game_state == "opossum_defeated_screen":
             self.opossumBite = True
             state.player.hasRabies = True
+            state.player.stamina_points = 1
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
@@ -699,10 +719,16 @@ class OpossumInACanSallyScreen(Screen):
 
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Grab ", True, (255, 255, 255)), (text_x, text_y_yes))
-            if self.debuff_keen_perception == False:
-                state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            elif self.debuff_keen_perception == True:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+
+            if "shake" in self.magic_menu_selector:
+                if self.debuff_keen_perception == False:
+                    state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+                elif self.debuff_keen_perception == True:
+                    state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+
+            elif "shake" not in self.magic_menu_selector:
+                if self.debuff_keen_perception == False:
+                    state.DISPLAY.blit(self.font.render(f" ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
 
             state.DISPLAY.blit(self.font.render(f"tally ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
 
@@ -815,7 +841,7 @@ class OpossumInACanSallyScreen(Screen):
 
             # Draw text
             # Draw text
-            if "Keen" in self.magic_menu_selector:
+            if "shake" in self.magic_menu_selector:
                 state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
             else:
                 state.DISPLAY.blit(self.font.render(" ", True, (255, 255, 255)), (text_x, text_y_yes))

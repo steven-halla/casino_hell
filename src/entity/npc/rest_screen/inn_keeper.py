@@ -66,7 +66,7 @@ class InnKeeper(Npc):
             print("Down pressed, arrow_index:", self.arrow_index)
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
+        if current_message.is_finished() and state.controller.isTPressed:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
