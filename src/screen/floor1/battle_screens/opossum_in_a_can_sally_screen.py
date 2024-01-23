@@ -109,6 +109,8 @@ class OpossumInACanSallyScreen(Screen):
 
         self.box_color = (255, 0, 0)  # Initially red
 
+        self.rabiesStaminaChecker = False
+
         self.has_opossum_insurance = True
 
         self.choices = ["Grab", "Magic", "Quit"]
@@ -364,8 +366,8 @@ class OpossumInACanSallyScreen(Screen):
             self.opossumInACanMessages["pick_message"].update(state)
 
         if self.game_state == "lose_screen":
-            print("WERE ARE HERE AGGHHGHHGHGHGGHFSGHJLSADJFJSFJSDA;FFJAS;LJF;DAFL;SDLFL;A")
             print(str(self.opossumInACanMessages["lose_message"].message_index))
+            state.player.hasRabies = True
             # Reset the message index every time you enter the lose_screen
             if not self.initialized_message:
                 self.opossumInACanMessages["lose_message"].message_index = 0
@@ -377,10 +379,20 @@ class OpossumInACanSallyScreen(Screen):
             # Update the lose message after resetting the index
             self.opossumInACanMessages["lose_message"].update(state)
 
+            while self.rabiesStaminaChecker == False:
+                state.player.stamina_points -= 10
+                self.rabiesStaminaChecker = True
+
+
+
+
+
+
             # Perform actions based on the message_index
             if self.opossumInACanMessages["lose_message"].message_index == 2:
                 self.initializeGarbageCans()
                 self.initialized_message = False
+
 
                 self.game_state = "play_again_or_leave_screen"
 
@@ -410,6 +422,7 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "play_again_or_leave_screen":
             self.refresh()
+            self.rabiesStaminaChecker = False
 
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
 

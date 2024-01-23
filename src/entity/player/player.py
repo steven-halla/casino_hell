@@ -33,6 +33,8 @@ class Player(Entity):
         self.items = []
         self.magicinventory = []
         self.canMove = True
+        self.hasRabies = False
+        self.rabies1time = False
         #conflip glasses gives player + 20 gold
         # need ingame menus that explain rules, minues to stamina,and other info
 
