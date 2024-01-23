@@ -30,12 +30,12 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = [""]
+        self.items = []
         self.magicinventory = ["reveal"]
         self.canMove = True
-        self.hasRabies = True
+        self.hasRabies = False
         self.rabies1time = False
-        self.rabiesImmunity = True
+        self.rabiesImmunity = False
         #conflip glasses gives player + 20 gold
         # need ingame menus that explain rules, minues to stamina,and other info
 
@@ -53,7 +53,9 @@ class Player(Entity):
             print("Your luck is: " + str(self.luck))
             print("Your perception is: " + str(self.perception))
             print("Your Hp  is: " + str(self.stamina_points) + "/" + str(self.max_stamina_points))
-            print("Your Hp  is: " + str(self.focus_points) + "/" + str(self.max_focus_points))
+            print("Your Mp  is: " + str(self.focus_points) + "/" + str(self.max_focus_points))
+            print("has rabies status: " + str(self.hasRabies))
+
             controller.isOPressed = False
 
         if self.exp > 1000:

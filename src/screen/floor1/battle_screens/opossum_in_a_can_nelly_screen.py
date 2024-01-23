@@ -473,6 +473,8 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumBite = True
+            state.player.hasRabies = True
+
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
