@@ -247,3 +247,5 @@ I need to do the hotel room, and let the player equip items and magic spells
 
 There is a bug: 
 after winning coin flip you are stuck till you talk one last time.
+
+i need to make an Screen and an NPC to practice messages and make "components"
