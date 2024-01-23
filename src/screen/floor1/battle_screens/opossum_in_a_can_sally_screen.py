@@ -22,9 +22,9 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 1000
+        self.sallyOpossumMoney = 0
         self.opossumBite = False
-        self.sallyOpossumIsDefeated = False
+        self.sallyOpossumIsDefeated = True
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
@@ -64,7 +64,14 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
             "opossum_defeated_message": TextBox(
-                ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your lat bit of humanity", ""],
+                ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your humanity while it loast opossum-kun", ""],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "real_opossum_defeated_message": TextBox(
+                ["Stupid Doctor and her shots, hate her I want her to be a opossum soooooo badly ", "",
+    ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -260,6 +267,7 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.sallyOpossumMoney < 0:
             self.sallyOpossumMoney = 0
+            self.sallyOpossumIsDefeated = True
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -267,9 +275,14 @@ class OpossumInACanSallyScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if self.sallyOpossumMoney < 1:
+        if self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == False:
             self.sallyOpossumIsDefeated = True
             self.game_state = "opossum_defeated_screen"
+
+        elif self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == True:
+            self.sallyOpossumIsDefeated = True
+            self.game_state = "real_opossum_defeated_screen"
+
 
 
 
@@ -462,6 +475,14 @@ class OpossumInACanSallyScreen(Screen):
             self.opossumBite = True
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
+                # Change the game state to "bet"
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
+
+        if self.game_state == "real_opossum_defeated_screen":
+            self.opossumBite = True
+            self.opossumInACanMessages["real_opossum_defeated_message"].update(state)
+            if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
                 # Change the game state to "bet"
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
@@ -889,6 +910,9 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumInACanMessages["opossum_defeated_message"].draw(state)
+
+        if self.game_state == "real_opossum_defeated_screen":
+            self.opossumInACanMessages["real_opossum_defeated_message"].draw(state)
 
 
         if self.game_state == "hero_defeated_stamina_screen":
