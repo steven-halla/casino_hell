@@ -82,7 +82,7 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["something poppped out!!! ", "oh no you just got bit", "", ],
+                ["something poppped out!!! ", "oh no you just got bit", "chompy", ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -151,6 +151,12 @@ class OpossumInACanSallyScreen(Screen):
 
         self.tally_money_once = True
 
+##### what if I try to set a timer so we don't skip?
+    ### or maybe something has to be set to false like the T press?
+
+
+###        self.initialized_message = False  # Add this line to initialize the flag
+#### so I think the above will solve the provlem with messags just getting barfed i"ll hav to see another day
 
     def initializeGarbageCans(self):
 
@@ -260,6 +266,7 @@ class OpossumInACanSallyScreen(Screen):
             return
 
         if self.sallyOpossumMoney < 1:
+            self.sallyOpossumIsDefeated = True
             self.game_state = "opossum_defeated_screen"
 
 
@@ -375,7 +382,7 @@ class OpossumInACanSallyScreen(Screen):
                 self.initializeGarbageCans()
                 self.initialized_message = False
 
-                self.game_state = "menu_screen"
+                self.game_state = "play_again_or_leave_screen"
 
             # Reset the flag when you leave the lose_screen state to ensure the message will be reset next time you enter
 

@@ -49,6 +49,13 @@ class TextBox(Entity):
         return self.message_index == len(self.messages) - 1 and \
             pygame.time.get_ticks() - self.time > self.delay
 
+    # def is_finished(self) -> bool:
+    #     is_last_message = self.message_index == len(self.messages) - 1
+    #     is_delay_passed = pygame.time.get_ticks() - self.time > self.delay
+    #     is_all_characters_displayed = self.characters_to_display == len(self.text)
+    #
+    #     return is_last_message and is_delay_passed and is_all_characters_displayed
+
     def reset(self):
         """Resets the TextBox to its initial state."""
         self.message_index = 0

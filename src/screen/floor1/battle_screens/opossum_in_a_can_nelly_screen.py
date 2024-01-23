@@ -22,7 +22,7 @@ class OpossumInACanNellyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.nellyOpossumMoney = 10
+        self.nellyOpossumMoney = 1000
         self.opossumBite = False
         self.nellyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
@@ -36,8 +36,7 @@ class OpossumInACanNellyScreen(Screen):
                                             "win", "win", "lose",
                                             "lucky_star",
                                             "X3_star", "lose",
-
-                                     ]
+                                    ]
 
         self.opossumInACanMessages = {
             "welcome_message": TextBox(
@@ -53,7 +52,7 @@ class OpossumInACanNellyScreen(Screen):
                 500  # Delay
             ),
             "play_again_or_leave_message": TextBox(
-                ["Get ready for some fun! "],
+                ["Would you like to play again or leave? "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -83,12 +82,18 @@ class OpossumInACanNellyScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["something poppped out!!! ", "oh no you just got bit", "", ],
+                ["something poppped out!!! ", "oh no you just got bit", "chomped", ],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
 
+            "tally_message": TextBox(
+                [ "", "" ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -111,11 +116,13 @@ class OpossumInACanNellyScreen(Screen):
 
         self.bet_or_flee = ["bet", "flee"]
         self.bet_or_flee_index = 0
-        self.menu_selector = ["grab", "magic", "reshuffle", "quit"]
+        self.menu_selector = ["grab", "magic", "tally"]
 
 
         self.magic_menu_selector = ["Back", "Keen"]
         self.magic_menu_index = 0
+
+
 
         self.play_again_or_quit = ["Play Again", "Quit"]
 
@@ -126,6 +133,7 @@ class OpossumInACanNellyScreen(Screen):
         self.opossum_rader = False
 
         self.luck_activated = 0
+        self.total_winnings = 0
 
         self.green_box_index = 0  # Index of the currently green box
         self.initializeGarbageCans()
@@ -141,9 +149,13 @@ class OpossumInACanNellyScreen(Screen):
         self.fill_cans = True
         self.shake = False
 
+        self.tally_money_once = True
+
+
     def initializeGarbageCans(self):
+
         # Randomly shuffle the winner_or_looser list
-        print("yabbba dabbbba dooooooooooo")
+        # print("yabbba dabbbba dooooooooooo")
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
         # Assign a shuffled item to each can and print the content
@@ -175,6 +187,11 @@ class OpossumInACanNellyScreen(Screen):
         self.bet = 20
         self.has_opossum_insurance = True
         self.insurance = 200
+        self.total_winnings = 0
+        self.tally_money_once = True
+        self.player_score = 0
+
+        # print("HYou are getting the refresh")
 
     # def giveExp(self, state: "GameState"):
     #     # print("Player exp is: " + str(state.player.exp))
@@ -224,7 +241,7 @@ class OpossumInACanNellyScreen(Screen):
 
     def update(self, state: "GameState"):
         if self.player_score >= 500:
-            print("you got a opossum")
+            # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
         if self.player_score >= 500:
             self.five_hundred_points = True
@@ -233,11 +250,45 @@ class OpossumInACanNellyScreen(Screen):
             self.fill_cans = False
             state.player.money -= 200
 
+        if self.nellyOpossumMoney < 0:
+            self.nellyOpossumMoney = 0
+
         if state.controller.isQPressed:
             # Transition to the main screen
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
+
+        if self.nellyOpossumMoney < 1:
+            self.nellyOpossumIsDefeated = True
+
+            self.game_state = "opossum_defeated_screen"
+
+
+
+
+
+        if self.game_state == "tally_screen":
+
+            while self.tally_money_once == True:
+                print("yoda la he ho")
+                self.total_winnings = self.player_score
+
+                if self.player_score > self.nellyOpossumMoney:
+                    self.total_winnings = self.nellyOpossumMoney
+                    state.player.money += self.total_winnings
+
+                self.tally_money_once = False
+
+
+
+
+
+            self.opossumInACanMessages["tally_message"].update(state)
+            if self.opossumInACanMessages["tally_message"].message_index == 1:
+
+                self.game_state = "play_again_or_leave_screen"
+
 
 
 
@@ -353,7 +404,34 @@ class OpossumInACanNellyScreen(Screen):
 
 
         if self.game_state == "play_again_or_leave_screen":
+            self.refresh()
+
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
+
+            if state.controller.isUpPressed:
+                self.play_again_or_quit_index -= 1
+                if self.play_again_or_quit_index < 0:
+                    self.play_again_or_quit_index = len(self.play_again_or_quit) - 1  # Wrap around to the last item
+                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+            elif state.controller.isDownPressed:
+                self.play_again_or_quit_index += 1
+                if self.play_again_or_quit_index >= len(self.play_again_or_quit):
+                    self.play_again_or_quit_index = 0  # Wrap around to the first item
+                pygame.time.delay(200)
+
+            if state.controller.isTPressed:
+                if self.play_again_or_quit_index == 0:
+                    state.controller.isTPressed = False  # Reset the button state
+                    self.opossumInACanMessages["tally_message"].message_index = 0
+                    print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
+                    state.player.money -= 200
+                    self.game_state = "menu_screen"
+
+
+                elif self.play_again_or_quit_index == 1:
+                    state.currentScreen = state.gamblingAreaScreen
+                    state.gamblingAreaScreen.start(state)
+
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumBite = True
@@ -511,7 +589,7 @@ class OpossumInACanNellyScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.nellyOpossumMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.sallyOpossumMoney}", True,
                                             (255, 255, 255)), (37, 70))
 
 
@@ -539,6 +617,14 @@ class OpossumInACanNellyScreen(Screen):
             # self.opossumInACanMessages["welcome_message"].update(state)
 
             self.opossumInACanMessages["welcome_message"].draw(state)
+
+        if self.game_state == "tally_screen":
+            # self.opossumInACanMessages["welcome_message"].update(state)
+
+            self.opossumInACanMessages["tally_message"].draw(state)
+            if self.opossumInACanMessages["tally_message"].message_index == 0:
+                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings}", True,
+                                                    (255, 255, 255)), (70, 460))
 
         if self.game_state == "menu_screen":
             bet_box_width = 150
@@ -571,8 +657,7 @@ class OpossumInACanNellyScreen(Screen):
             elif self.debuff_keen_perception == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
 
-            state.DISPLAY.blit(self.font.render(f"Reshuffle ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
-            state.DISPLAY.blit(self.font.render(f"Quit ", True, (255, 255, 255)), (text_x, text_y_yes + 120))
+            state.DISPLAY.blit(self.font.render(f"tally ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
 
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.opossum_index * 40  # Adjust based on the item's height
@@ -604,15 +689,15 @@ class OpossumInACanNellyScreen(Screen):
                     self.nellyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
-                    self.refresh()
+                    # self.refresh()
                     self.initializeGarbageCans()
-                    self.game_state = "pick_screen"
-                elif self.opossum_index == 3:
-                    state.player.money += self.player_score
-                    self.nellyOpossumMoney -= self.player_score
-                    state.controller.isTPressed = False
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
+                    self.game_state = "tally_screen"
+                # elif self.opossum_index == 3:
+                #     state.player.money += self.player_score
+                #     self.sallyOpossumMoney -= self.player_score
+                #     state.controller.isTPressed = False
+                #     state.currentScreen = state.gamblingAreaScreen
+                #     state.gamblingAreaScreen.start(state)
 
 
 
@@ -737,6 +822,45 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "play_again_or_leave_screen":
             self.opossumInACanMessages["play_again_or_leave_message"].draw(state)
+            self.tally_money_once = True
+
+            bet_box_width = 150
+            bet_box_height = 100
+            border_width = 5
+
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
+
+            # Calculate text positions
+            text_x = bet_box_x + 40 + border_width
+            text_y_yes = bet_box_y + 20
+            text_y_no = text_y_yes + 40
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+            state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
+            arrow_y = text_y_yes + self.play_again_or_quit_index * 40  # Adjust based on the item's height
+            # Set the initial arrow position to "Yes"
+
+            # Draw the arrow next to the selected option
+            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
+            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+            #
+            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         if self.game_state == "opossum_defeated_screen":
             self.opossumInACanMessages["opossum_defeated_message"].draw(state)
