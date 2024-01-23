@@ -8,9 +8,9 @@ class RumbleBill(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
-        self.black_jack_thomas_messages = {
+        self.black_jack_rumble_bill_messages = {
             "welcome_message": NpcTextBox(
-                ["Thomas: I'fdsfaam a Rumbler Bill and I dont tumbler , better be careful", "Are you ready to lose?!"],
+                ["Rumble bill: I'm a Rumbler Bill and I dont tumbler , better be careful", "Are you ready to lose?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
@@ -21,7 +21,7 @@ class RumbleBill(Npc):
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
-        self.flipping_ted_defeated = False
+        self.rumble_bill_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
@@ -31,6 +31,7 @@ class RumbleBill(Npc):
             self.update_waiting(state)
         elif self.state == "talking":
             self.update_talking(state)
+
 
     def update_waiting(self, state: "GameState"):
         player = state.player
@@ -42,13 +43,13 @@ class RumbleBill(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.blackJackThomasScreen.black_jack_thomas_defeated:
-                self.black_jack_thomas_messages["defeated_message"].reset()
+            if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated:
+                self.black_jack_rumble_bill_messages["defeated_message"].reset()
             else:
-                self.black_jack_thomas_messages["welcome_message"].reset()
+                self.black_jack_rumble_bill_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+        current_message = self.black_jack_rumble_bill_messages["defeated_message"] if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated else self.black_jack_rumble_bill_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -64,7 +65,7 @@ class RumbleBill(Npc):
             state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed:
+        if current_message.is_finished() and state.controller.isTPressed and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -94,11 +95,11 @@ class RumbleBill(Npc):
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+            current_message = self.black_jack_rumble_bill_messages["defeated_message"] if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated else self.black_jack_rumble_bill_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

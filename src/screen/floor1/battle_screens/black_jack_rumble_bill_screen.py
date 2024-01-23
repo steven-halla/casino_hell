@@ -22,12 +22,15 @@ class BlackJackRumbleBillScreen(Screen):
         self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
         self.ace_up_sleeve_jack = False
         self.ace_up_sleeve_jack_cheat_mode = False
+
+        self.black_jack_rumble_bill_defeated = True
+
         self.first_message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 10
+        self.cheater_bob_money = 0
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
