@@ -12,8 +12,6 @@ class NickyHints(Npc):
         self.textbox = NpcTextBox(
             [
                 "Nicky: Every round that you gamble drains your stamina. Betting higher will drain your stamina faster.",
-                "It's always good to start off with low bets till you get the hang of the game.",
-                "Hero: I've been gambling ever since I could walk and talk. My dad never much liked it, but my mom encouraged it.",
                 "NIcky: You havn't played all of these games. Such as Opposum in a can.",
                 "Be careful of everyone."],
             (50, 450, 50, 45), 30, 500)

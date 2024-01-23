@@ -249,3 +249,7 @@ There is a bug:
 after winning coin flip you are stuck till you talk one last time.
 
 i need to make an Screen and an NPC to practice messages and make "components"
+
+have an intro screen "arent' you going to read it?"
+Hero:"WHy it's like 30 pages, thats too much man"
+demon: "Very well we hope you enjoy your stay *smiles*"

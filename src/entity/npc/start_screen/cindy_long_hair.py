@@ -12,7 +12,6 @@ class CindyLongHair(Npc):
             'textbox': NpcTextBox(
                 [
                     "Cindy: Cheating Ted is such a bastard. Because of him my boyfriend is making beer.",
-                    "If you can take all his coins I'll reward you with a black jack technique. Pay attention to what his coins land on the most",
                     "The key to winning is to pay attention to patterns, which can change in the middle of playing",
                     "Try betting low, and get  a hang for the patterns before you go in for the kill."
                 ],
@@ -23,10 +22,6 @@ class CindyLongHair(Npc):
                     "",
                     "Cindy: Oh kool look at you, time for your reward (inn badge). Oh, you want something else too, what a greedy man you are!.",
                     "Ok I know just what you want.....I'll give you this potion bottoms up!",
-                    "Hero: Glug Glug Glug. Whoa....I feel, like, totally smarter! +1 MIND, 1st spell slot unlocked",
-                    "Cindy: Thats not all, I'll also teach you a super secreat black jack technique passed down through generations of my family.",
-                    "Now because your smarter you can count cards and get a  good sense of what your opponet has.",
-                    "Black Jack Technique Reveal learned. Get a good sense of what your opponent has.",
                     "low: 1-9, med 10=15, high 16-21",
 
                 ],

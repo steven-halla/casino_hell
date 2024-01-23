@@ -19,19 +19,19 @@ class Player(Entity):
         self.stamina_points = 100
         self.max_stamina_points = 100
 
-        self.focus_points = 0
-        self.max_focus_points = 0
+        self.focus_points = 100
+        self.max_focus_points = 100
         self.exp = 0
         self.inn_badge = False
         self.level = 1
         self.body = 0
         self.mind = 0
-        self.spirit = 1
+        self.spirit = 0
         self.luck = 0
         self.perception = 0
         self.perks = []
         self.items = ["blue flower"]
-        self.magicinventory = []
+        self.magicinventory = ["reveal"]
         self.canMove = True
         self.hasRabies = True
         self.rabies1time = False

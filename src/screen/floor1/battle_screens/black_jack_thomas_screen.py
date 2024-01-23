@@ -28,7 +28,7 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 1000
+        self.cheater_bob_money = 20
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -39,7 +39,7 @@ class BlackJackThomasScreen(Screen):
         self.current_index = 0
         self.welcome_screen_choices = ["Play", "Magic", "Quit"]
         self.welcome_screen_index = 0
-        self.magic_menu_selector = ["Reveal", "Lucky", "Back"]
+        self.magic_menu_selector = ["Reveal", "Back"]
         self.magic_menu_index = 0
         self.ace_value = 1
         self.bust_protection = False
@@ -690,7 +690,6 @@ class BlackJackThomasScreen(Screen):
                     # channel3 = pygame.mixer.Channel(3)
                     # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
                     # channel3.play(sound3)
-                    pygame.time.delay(300)
                     if state.player.focus_points >= 10:
                         state.player.focus_points -= 10
                         self.reveal_hand = 10
@@ -712,31 +711,20 @@ class BlackJackThomasScreen(Screen):
             ##########################have a message state reserved for buff states
 
             ##### boss enemies will use magic under more strict conditions
+
+
             elif self.magic_menu_index == 1:
-                self.avatar_magic_explain_component.update(state)
-
-                if controller.isTPressed:
-                    # channel3 = pygame.mixer.Channel(3)
-                    # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
-                    # channel3.play(sound3)
-                    pygame.time.delay(300)
-                    print("you cast avatar of luck")
-                    self.luck_of_jack = 6
-                    self.magic_lock = True
-                    self.avatar_of_luck = True
-                    state.player.focus_points -= 20
-                    self.game_state = "welcome_screen"
-                    self.player_status = "Lucky"
-                    state.controller.isTPressed = False
-
-
-            elif self.magic_menu_index == 2:
                 self.back_magic_explain_component.update(state)
 
                 if controller.isTPressed:
-                    pygame.time.delay(300)
+                    print(str(controller.isTPressed))
+                    controller.isTPressed = False
+                    print(str(controller.isTPressed))
+
+
                     self.game_state = "welcome_screen"
                     self.isTPressed = False
+                    print(str(controller.isTPressed))
 
 
 
@@ -1211,18 +1199,19 @@ class BlackJackThomasScreen(Screen):
                 self.reveal_magic_explain_component.draw(state)
 
 
+
+
             elif self.magic_menu_index == 1:
+
                 state.DISPLAY.blit(
+
                     self.font.render(f"->", True, (255, 255, 255)),
+
                     (640, 250))
-                self.avatar_magic_explain_component.draw(state)
 
-
-            elif self.magic_menu_index == 2:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 300))
                 self.back_magic_explain_component.draw(state)
+
+
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[0]}", True,
@@ -1234,10 +1223,7 @@ class BlackJackThomasScreen(Screen):
                                  (255, 255, 255)),
                 (680, 255))
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[2]}", True,
-                                 (255, 255, 255)),
-                (680, 305))
+
 
 
 
