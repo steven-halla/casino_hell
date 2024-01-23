@@ -1,6 +1,7 @@
 import pygame
 
 from constants import DISPLAY
+from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 from deck import Deck
@@ -30,7 +31,7 @@ class BlackJackRumbleBillScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 100
+        self.cheater_bob_money = 0
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -204,8 +205,18 @@ class BlackJackRumbleBillScreen(Screen):
         self.back_magic_explain_component = TextBox(
             self.messages["back_magic_explain"], (50, 450, 50, 45), 30, 500)
 
+
+
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
+
+        self.defeated_textbox = NpcTextBox(
+            [
+                "Guy:Looks like you defeated me.....back to eating chili for days and day and days....",
+
+                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high",
+            ""],
+            (50, 450, 50, 45), 30, 500)
 
         # DO NOT DELETE THIS CODE
         # mixer.init()
@@ -246,6 +257,9 @@ class BlackJackRumbleBillScreen(Screen):
             self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
+        if self.cheater_bob_money < 10:
+            self.black_jack_rumble_bill_defeated = True
+            self.game_state = "defeated"
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
@@ -254,27 +268,21 @@ class BlackJackRumbleBillScreen(Screen):
         controller.update()
         state.player.update(state)
 
+        if self.game_state == "defeated":
+            print("enemy defeated")
+            self.defeated_textbox.update(state)
+
         #
         # print("p: " + self.hand_to_str(self.player_hand))
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-            # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
-            # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
-            # if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
-            #     self.game_state = "hero_is_desperate_state"
-            #
-            # elif self.cheater_bob_money <= 300 and self.despair == True:
-            #     self.game_state = "final_strike_screen"
-            #
-            # elif self.cheater_bob_money <= 700 and self.hero_winning_text_state == False:
-            #     self.game_state = "enemy_is_desperate_state"
 
-            # if self.cheater_bob_money == 1000 and self.hero_losing_text == False:
-            #     self.bet_screen_text = TextBox(self.messages["hero_losing_text"], (50, 400, 50, 45), 30, 500)
-            #     self.hero_losing_text = True
+
+
             if state.player.stamina_points < 1:
                 print("time to leave")
+
 
             self.welcome_screen_text_box.update(state)
 
@@ -1051,6 +1059,15 @@ class BlackJackRumbleBillScreen(Screen):
             self.welcome_screen_text_box.draw(state)
             self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
+
+
+        elif self.game_state == "defeated":
+            print("enemy defeated")
+            self.defeated_textbox.draw(state)
+            if self.defeated_textbox.message_index == 2:
+                print("moogles")
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
         elif self.game_state == "hero_is_desperate_state":
             self.hero_losing_money_text.draw(state)
