@@ -56,7 +56,7 @@ class BlackJackThomasScreen(Screen):
 
         self.despair = False
         # self.despair = True
-        self.black_jack_thomas_defeated = False
+        self.black_jack_thomas_defeated = True
 
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
