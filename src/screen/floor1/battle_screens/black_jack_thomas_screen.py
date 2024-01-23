@@ -1,6 +1,7 @@
 import pygame
 
 from constants import DISPLAY
+from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 from deck import Deck
@@ -207,6 +208,14 @@ class BlackJackThomasScreen(Screen):
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
+        self.defeated_textbox = NpcTextBox(
+            [
+                "Guy:Looks like you defeated me.....back to eating chili for days and day and days....",
+
+                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high",
+            ""],
+            (50, 450, 50, 45), 30, 500)
+
         # DO NOT DELETE THIS CODE
         # mixer.init()
         #
@@ -242,6 +251,9 @@ class BlackJackThomasScreen(Screen):
         if self.bet > 100:
             self.bet = 100
 
+        if self.bet > self.cheater_bob_money:
+            self.bet = self.cheater_bob_money
+
     def update(self, state: "GameState"):
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
@@ -250,6 +262,14 @@ class BlackJackThomasScreen(Screen):
         controller = state.controller
         controller.update()
         state.player.update(state)
+
+        if self.cheater_bob_money < 10:
+            self.black_jack_rumble_bill_defeated = True
+            self.game_state = "defeated"
+
+        if self.game_state == "defeated":
+            print("enemy defeated")
+            self.defeated_textbox.update(state)
 
         #
         # print("p: " + self.hand_to_str(self.player_hand))
@@ -1040,6 +1060,14 @@ class BlackJackThomasScreen(Screen):
             self.welcome_screen_text_box.draw(state)
             self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
+
+        elif self.game_state == "defeated":
+            print("enemy defeated")
+            self.defeated_textbox.draw(state)
+            if self.defeated_textbox.message_index == 2:
+                print("moogles")
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
         elif self.game_state == "hero_is_desperate_state":
             self.hero_losing_money_text.draw(state)
