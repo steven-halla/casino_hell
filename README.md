@@ -227,3 +227,8 @@ BUG HUNT:
 1) For all NPCS need to figure out:
 2) Not letting player move during games
 3) not letting player move during messages
+
+####
+####   BLACK JACK THOMAS NPC IS WORKING AS INTENDED IN REGARDS TO MOVING DRUING MESSAGES DURING TALKIGNA AND AFTER BATTLE
+####
+####

@@ -256,7 +256,7 @@ class BlackJackThomasScreen(Screen):
 
     def update(self, state: "GameState"):
         state.player.canMove = False
-
+        print("black jack thomas defeated is : " + str(self.black_jack_thomas_defeated))
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
@@ -266,7 +266,7 @@ class BlackJackThomasScreen(Screen):
         state.player.update(state)
 
         if self.cheater_bob_money < 10:
-            self.black_jack_rumble_bill_defeated = True
+            self.black_jack_thomas_defeated = True
             self.game_state = "defeated"
 
         if self.game_state == "defeated":
@@ -706,13 +706,6 @@ class BlackJackThomasScreen(Screen):
 
                     elif state.player.focus_points < 10:
                         self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                # elif self.luck_activated > 0:
-                #     self.third_message_display = "sorry but you can't stack magic spells"
-
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
 
 
             elif self.magic_menu_index == 1:

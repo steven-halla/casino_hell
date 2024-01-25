@@ -21,7 +21,7 @@ class BlackJackThomas(Npc):
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
-        self.flipping_ted_defeated = False
+        self.black_jack_thomas_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
@@ -66,7 +66,7 @@ class BlackJackThomas(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False:
-            # Handle the selected option
+
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
