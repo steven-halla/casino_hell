@@ -102,7 +102,7 @@ class NellyOpossum(Npc):
 
             # Draw the "Yes/No" box only on the last message
             if current_message.is_finished() and state.opossumInACanNellyScreen.nellyOpossumIsDefeated == False:
-                print("better not see this shit")
+                # print("better not see this shit")
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

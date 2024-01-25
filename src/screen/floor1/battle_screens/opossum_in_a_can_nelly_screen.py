@@ -265,9 +265,7 @@ class OpossumInACanNellyScreen(Screen):
             self.fill_cans = False
             state.player.money -= 200
 
-        if self.nellyOpossumMoney < 0:
-            self.nellyOpossumMoney = 0
-            self.nellyOpossumIsDefeated = True
+
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -275,14 +273,7 @@ class OpossumInACanNellyScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == False:
-            self.nellyOpossumIsDefeated = True
-            self.game_state = "opossum_defeated_screen"
 
-        elif self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == True:
-            print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
-            self.nellyOpossumIsDefeated = True
-            self.game_state = "real_opossum_defeated_screen"
 
 
 
@@ -290,14 +281,27 @@ class OpossumInACanNellyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
+            print("tally ho")
+            if self.nellyOpossumMoney < 0:
+                self.nellyOpossumMoney = 0
+                self.nellyOpossumIsDefeated = True
+
+
 
             while self.tally_money_once == True:
                 print("yoda la he ho")
-                self.total_winnings = self.player_score
+                if self.player_score <= self.nellyOpossumMoney:
+                    print("your winnings are before" + str(self.total_winnings))
+
+                    self.total_winnings = self.player_score
 
                 if self.player_score > self.nellyOpossumMoney:
+                    print("waffles")
+                    print("your winnings are" + str(self.total_winnings))
+                    print("your nellly monies  are" + str(self.nellyOpossumMoney))
                     self.total_winnings = self.nellyOpossumMoney
                     state.player.money += self.total_winnings
+                    self.nellyOpossumMoney = 0
 
                 self.tally_money_once = False
 
@@ -305,14 +309,22 @@ class OpossumInACanNellyScreen(Screen):
 
 
 
+
+
             self.opossumInACanMessages["tally_message"].update(state)
-            if self.opossumInACanMessages["tally_message"].message_index == 1:
 
+
+            if self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == False and self.opossumInACanMessages["tally_message"].message_index == 1:
+                self.nellyOpossumIsDefeated = True
+                self.game_state = "opossum_defeated_screen"
+
+            elif self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == True and self.opossumInACanMessages["tally_message"].message_index == 1:
+                # print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
+                self.nellyOpossumIsDefeated = True
+                self.game_state = "real_opossum_defeated_screen"
+
+            elif self.opossumInACanMessages["tally_message"].message_index == 1:
                 self.game_state = "play_again_or_leave_screen"
-
-
-
-
 
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
@@ -346,7 +358,7 @@ class OpossumInACanNellyScreen(Screen):
                     self.opossum_index -= 2
                     if self.opossum_index < 0:
                         self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
-                        print(str(self.opossum_index))
+                        # print(str(self.opossum_index))
 
                     # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -355,7 +367,7 @@ class OpossumInACanNellyScreen(Screen):
                     self.opossum_index += 2
                     if self.opossum_index >= len(self.menu_selector):
                         self.opossum_index = 0  # Wrap around to the first item
-                        print(str(self.opossum_index))
+                        # print(str(self.opossum_index))
 
                     # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -395,7 +407,7 @@ class OpossumInACanNellyScreen(Screen):
             self.opossumInACanMessages["pick_message"].update(state)
 
         if self.game_state == "lose_screen":
-            print(str(self.opossumInACanMessages["lose_message"].message_index))
+            # print(str(self.opossumInACanMessages["lose_message"].message_index))
 
 
             # Reset the message index every time you enter the lose_screen
@@ -439,7 +451,7 @@ class OpossumInACanNellyScreen(Screen):
                 self.magic_menu_opossum_index -= 1
                 if self.magic_menu_opossum_index < 0:
                     self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
-                    print(str(self.magic_menu_opossum_index))
+                    # print(str(self.magic_menu_opossum_index))
 
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -448,7 +460,7 @@ class OpossumInACanNellyScreen(Screen):
                 self.magic_menu_opossum_index += 1
                 if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
                     self.magic_menu_opossum_index = 0  # Wrap around to the first item
-                    print(str(self.magic_menu_opossum_index))
+                    # print(str(self.magic_menu_opossum_index))
 
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -477,7 +489,7 @@ class OpossumInACanNellyScreen(Screen):
                 if self.play_again_or_quit_index == 0:
                     state.controller.isTPressed = False  # Reset the button state
                     self.opossumInACanMessages["tally_message"].message_index = 0
-                    print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
+                    # print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 200
                     self.game_state = "menu_screen"
 
@@ -754,8 +766,8 @@ class OpossumInACanNellyScreen(Screen):
                     state.controller.isTPressed = False
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
-                    state.player.money += self.player_score
-                    self.sallyOpossumMoney -= self.player_score
+                    # state.player.money += self.player_score
+                    # self.nellyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     # self.refresh()
