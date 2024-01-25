@@ -85,7 +85,7 @@ class RestScreen(Screen):
             DoctorOpossum(16 * 26, 16 * 18),
             InnKeeper(16 * 18, 16 * 18),
             JustinNoFruit(16 * 10, 16 * 18),
-            QuestGiverJanet(16 * 10, 16 * 26),
+            # QuestGiverJanet(16 * 10, 16 * 26),
 
             SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 34, 16 * 26),
@@ -119,6 +119,12 @@ class RestScreen(Screen):
         # Now, you can interact with the ShopKeeper instance
         # For example, calling its update method:
         shop_keeper_instance.update(state)
+
+        janet_keeper_instance = state.quest_giver_janet
+
+        # Now, you can interact with the ShopKeeper instance
+        # For example, calling its update method:
+        janet_keeper_instance.update(state)
 
 
         for npc in state.npcs:
@@ -281,6 +287,9 @@ class RestScreen(Screen):
 
         shop_keeper_instance = state.shop_keeper
         shop_keeper_instance.draw(state)
+
+        janet_instance = state.quest_giver_janet
+        janet_instance.draw(state)
 
         # Update the display
         pygame.display.update()
