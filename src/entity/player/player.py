@@ -30,7 +30,7 @@ class Player(Entity):
         self.luck = 0
         self.perception = 0
         self.perks = []
-        self.items = []
+        self.items = ["coin flip glasses"]
         self.magicinventory = []
         self.canMove = True
         self.hasRabies = False

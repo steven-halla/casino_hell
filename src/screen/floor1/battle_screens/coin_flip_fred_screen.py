@@ -47,7 +47,7 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 20
+        self.coinFlipFredMoney = 120
 
 
 
@@ -404,13 +404,6 @@ class CoinFlipFredScreen(Screen):
             # print("entering flip screen")
 
 
-            # Initialize the timer when entering the flip_screen state
-            # if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
-            #     print("about to flip timer")
-            #     self.flip_timer = 4000  # Duration for the pause
-            #     print("timer flipped")
-            #     self.pause_timer = pygame.time.get_ticks()  # Current time
-            #     self.flip_screen_initialized = True
             if not self.flip_screen_initialized:
                 # print("Initializing flip timer")
                 self.flip_timer = 2500  # Duration for the pause
@@ -448,10 +441,27 @@ class CoinFlipFredScreen(Screen):
 
             # Assuming this is part of a class
             if not self.has_run_money_logic:
-                if self.player_choice == self.result:
+
+                if "coin flip glasses" in state.player.items and self.player_choice == self.result:
+                    state.player.money += self.bet + 20
+                    self.coinFlipFredMoney -= self.bet + 20
+                    if self.coinFlipFredMoney == -10:
+                        self.coinFlipFredMoney = 0
+                        state.player.money -= 10
+                    elif self.coinFlipFredMoney == -20:
+                        self.coinFlipFredMoney = 0
+                        state.player.money -= 20
+
+
+
+                elif self.player_choice == self.result:
+                    print("better not")
                     state.player.money += self.bet
+
                     self.coinFlipFredMoney -= self.bet
+
                 elif self.player_choice != self.result:
+                    print("better not fucking ssee this")
 
 
                     state.player.money -= self.bet
