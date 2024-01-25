@@ -255,6 +255,8 @@ class BlackJackThomasScreen(Screen):
             self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
+        state.player.canMove = False
+
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
@@ -1041,6 +1043,8 @@ class BlackJackThomasScreen(Screen):
                     (637, 355))
                 if state.controller.isTPressed:
                     print("Quit")
+                    state.player.canMove = True
+
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
                     state.controller.isTPressed = False
@@ -1054,6 +1058,8 @@ class BlackJackThomasScreen(Screen):
             self.defeated_textbox.draw(state)
             if self.defeated_textbox.message_index == 2:
                 print("moogles")
+                state.player.canMove = True
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
