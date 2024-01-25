@@ -7,14 +7,6 @@ from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 
 
-#
-#
-#
-#   ON LOSS OR IF ALL EMPTY BUT LOSE, LOCK OUT GRAB UNTIL PLAYER HITS RESHUFFLE
-#
-
-## PRESS B TO GET OUT FOR OPTIONS
-
 class OpossumInACanSallyScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
@@ -281,6 +273,8 @@ class OpossumInACanSallyScreen(Screen):
             self.game_state = "opossum_defeated_screen"
 
         elif self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == True:
+            print("sally opposum money is at: " + str(self.sallyOpossumMoney))
+
             self.sallyOpossumIsDefeated = True
             self.game_state = "real_opossum_defeated_screen"
 

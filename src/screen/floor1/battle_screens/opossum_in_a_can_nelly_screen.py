@@ -280,6 +280,7 @@ class OpossumInACanNellyScreen(Screen):
             self.game_state = "opossum_defeated_screen"
 
         elif self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == True:
+            print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
             self.nellyOpossumIsDefeated = True
             self.game_state = "real_opossum_defeated_screen"
 

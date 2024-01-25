@@ -42,7 +42,7 @@ class NellyOpossum(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
+            if state.opossumInACanNellyScreen.nellyOpossumIsDefeated:
                 self.nelly_opossum_messages["defeated_message"].reset()
             else:
                 self.nelly_opossum_messages["welcome_message"].reset()
@@ -74,8 +74,8 @@ class NellyOpossum(Npc):
             ##
             ##look above its imoprtant !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if selected_option == "Yes":
-                state.currentScreen = state.opossumInACanSallyScreen
-                state.opossumInACanSallyScreen.start(state)
+                state.currentScreen = state.opossumInACanNellyScreen
+                state.opossumInACanNellyScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
