@@ -31,11 +31,11 @@ class Player(Entity):
         self.perception = 0
         self.perks = []
         self.items = []
-        self.magicinventory = ["shake"]
+        self.magicinventory = []
         self.canMove = True
         self.hasRabies = False
         self.rabies1time = False
-        self.rabiesImmunity = True
+        self.rabiesImmunity = False
         #conflip glasses gives player + 20 gold
         # need ingame menus that explain rules, minues to stamina,and other info
 
