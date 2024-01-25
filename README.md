@@ -218,3 +218,5 @@ THE OPPOSUMS HAVE A BUG THAT IF YOU GET THE SHOT THEN THE OTHER ONE WONT WANT TO
 
 need to update coin flip screens so when magic is not there we simply have a blank space over magic , 
 need to be conisstant 
+
+oppossum in a can needs more messages to reflect all the state

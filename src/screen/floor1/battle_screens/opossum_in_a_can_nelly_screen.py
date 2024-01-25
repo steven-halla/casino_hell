@@ -245,6 +245,12 @@ class OpossumInACanNellyScreen(Screen):
 
             self.player_score = 0
             state.player.exp += 50
+            if state.player.rabiesImmunity == True:
+                state.player.stamina_points -= 30
+
+            elif "opossum guard" in state.player.items:
+                state.player.stamina_points -= 10
+
             self.opossumBite = True
             self.refresh()
             self.initializeGarbageCans()
@@ -273,10 +279,9 @@ class OpossumInACanNellyScreen(Screen):
             state.mainScreen.start(state)
             return
 
-
-
-
-
+        if "shake" in state.player.magicinventory and "shake" not in self.magic_menu_selector:
+            self.magic_menu_selector.append("shake")
+            return
 
 
 

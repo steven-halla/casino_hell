@@ -230,6 +230,12 @@ class OpossumInACanSallyScreen(Screen):
 
             self.player_score = 0
             state.player.exp += 50
+            if state.player.rabiesImmunity == True:
+                state.player.stamina_points -= 30
+
+            elif "opossum guard" in state.player.items:
+                state.player.stamina_points -= 10
+
             self.opossumBite = True
             self.refresh()
             self.initializeGarbageCans()
@@ -250,63 +256,55 @@ class OpossumInACanSallyScreen(Screen):
             self.fill_cans = False
             state.player.money -= 200
 
-        if self.sallyOpossumMoney < 0:
-            self.sallyOpossumMoney = 0
-            self.sallyOpossumIsDefeated = True
-
         if state.controller.isQPressed:
             # Transition to the main screen
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
 
+        print(self.magic_menu_selector)
 
-
-        if "shake" in state.player.magicinventory:
+        if "shake" in state.player.magicinventory and "shake" not in self.magic_menu_selector:
             self.magic_menu_selector.append("shake")
-
-
-
-
-        if self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == False:
-            self.sallyOpossumIsDefeated = True
-            self.game_state = "opossum_defeated_screen"
-
-        elif self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == True:
-            print("sally opposum money is at: " + str(self.sallyOpossumMoney))
-
-            self.sallyOpossumIsDefeated = True
-            self.game_state = "real_opossum_defeated_screen"
-
-
-
-
+            return
 
 
         if self.game_state == "tally_screen":
+            print("tally ho")
+            if self.sallyOpossumMoney < 0:
+                self.sallyOpossumMoney = 0
+                self.sallyOpossumIsDefeated = True
 
             while self.tally_money_once == True:
                 print("yoda la he ho")
-                self.total_winnings = self.player_score
+                if self.player_score <= self.sallyOpossumMoney:
+                    print("your winnings are before" + str(self.total_winnings))
+
+                    self.total_winnings = self.player_score
 
                 if self.player_score > self.sallyOpossumMoney:
+                    print("waffles")
+                    print("your winnings are" + str(self.total_winnings))
+                    print("your nellly monies  are" + str(self.sallyOpossumMoney))
                     self.total_winnings = self.sallyOpossumMoney
                     state.player.money += self.total_winnings
+                    self.sallyOpossumMoney = 0
 
                 self.tally_money_once = False
 
-
-
-
-
             self.opossumInACanMessages["tally_message"].update(state)
-            if self.opossumInACanMessages["tally_message"].message_index == 1:
 
+            if self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == False and self.opossumInACanMessages["tally_message"].message_index == 1:
+                self.nellyOpossumIsDefeated = True
+                self.game_state = "opossum_defeated_screen"
+
+            elif self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == True and self.opossumInACanMessages["tally_message"].message_index == 1:
+                # print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
+                self.sallyOpossumIsDefeated = True
+                self.game_state = "real_opossum_defeated_screen"
+
+            elif self.opossumInACanMessages["tally_message"].message_index == 1:
                 self.game_state = "play_again_or_leave_screen"
-
-
-
-
 
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
@@ -752,8 +750,8 @@ class OpossumInACanSallyScreen(Screen):
                     state.controller.isTPressed = False
                     self.game_state = "magic_menu_screen"
                 elif self.opossum_index == 2:
-                    state.player.money += self.player_score
-                    self.sallyOpossumMoney -= self.player_score
+                    # state.player.money += self.player_score
+                    # self.sallyOpossumMoney -= self.player_score
                     state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     # self.refresh()
