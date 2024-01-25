@@ -7,6 +7,10 @@ from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
 
+#have an item that applies to next day, so that players can either save and go rest and be safe
+# or they can get more stamina and go in for more.
+# this makes save coins more valuable
+
 class BarKeep(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
