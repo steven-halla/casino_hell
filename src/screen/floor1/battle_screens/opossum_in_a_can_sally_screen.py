@@ -15,8 +15,14 @@ class OpossumInACanSallyScreen(Screen):
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 20
+
+
         self.opossumBite = False
+
+
         self.sallyOpossumIsDefeated = False
+
+
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
@@ -246,6 +252,7 @@ class OpossumInACanSallyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+        print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
         if self.player_score >= 500:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
@@ -262,7 +269,6 @@ class OpossumInACanSallyScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        print(self.magic_menu_selector)
 
         if "shake" in state.player.magicinventory and "shake" not in self.magic_menu_selector:
             self.magic_menu_selector.append("shake")
@@ -295,7 +301,7 @@ class OpossumInACanSallyScreen(Screen):
             self.opossumInACanMessages["tally_message"].update(state)
 
             if self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == False and self.opossumInACanMessages["tally_message"].message_index == 1:
-                self.nellyOpossumIsDefeated = True
+                self.sallyOpossumIsDefeated = True
                 self.game_state = "opossum_defeated_screen"
 
             elif self.sallyOpossumMoney < 1 and state.player.rabiesImmunity == True and self.opossumInACanMessages["tally_message"].message_index == 1:
