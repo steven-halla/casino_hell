@@ -252,7 +252,7 @@ class OpossumInACanSallyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
-        print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
+        # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
         if self.player_score >= 500:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
@@ -276,22 +276,22 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
-            print("tally ho")
+            # print("tally ho")
             if self.sallyOpossumMoney < 0:
                 self.sallyOpossumMoney = 0
                 self.sallyOpossumIsDefeated = True
 
             while self.tally_money_once == True:
-                print("yoda la he ho")
+                # print("yoda la he ho")
                 if self.player_score <= self.sallyOpossumMoney:
-                    print("your winnings are before" + str(self.total_winnings))
+                    # print("your winnings are before" + str(self.total_winnings))
 
                     self.total_winnings = self.player_score
 
                 if self.player_score > self.sallyOpossumMoney:
-                    print("waffles")
-                    print("your winnings are" + str(self.total_winnings))
-                    print("your nellly monies  are" + str(self.sallyOpossumMoney))
+                    # print("waffles")
+                    # print("your winnings are" + str(self.total_winnings))
+                    # print("your nellly monies  are" + str(self.sallyOpossumMoney))
                     self.total_winnings = self.sallyOpossumMoney
                     state.player.money += self.total_winnings
                     self.sallyOpossumMoney = 0
@@ -409,10 +409,6 @@ class OpossumInACanSallyScreen(Screen):
 
             # Update the lose message after resetting the index
             self.opossumInACanMessages["lose_message"].update(state)
-
-            # while self.rabiesStaminaChecker == False:
-            #     state.player.stamina_points -= 10
-            #     self.rabiesStaminaChecker = True
 
 
 

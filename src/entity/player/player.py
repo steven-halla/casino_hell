@@ -16,10 +16,10 @@ class Player(Entity):
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
         # need to put in a max for stamina and focus
-        self.stamina_points = 90
+        self.stamina_points = 100
         self.max_stamina_points = 100
 
-        self.focus_points = 90
+        self.focus_points = 100
         self.max_focus_points = 100
         self.exp = 0
         self.inn_badge = False
@@ -32,6 +32,7 @@ class Player(Entity):
         self.perks = []
         self.items = ["sir leopolds paw"]
         self.magicinventory = []
+        self.companions = []
         self.canMove = True
         self.hasRabies = False
         self.rabies1time = False
