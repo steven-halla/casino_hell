@@ -16,11 +16,7 @@ class Player(Entity):
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
         # need to put in a max for stamina and focus
-        self.stamina_points = 100
-        self.max_stamina_points = 100
 
-        self.focus_points = 100
-        self.max_focus_points = 100
         self.exp = 0
         self.inn_badge = False
         self.level = 1
@@ -29,6 +25,14 @@ class Player(Entity):
         self.spirit = 0
         self.luck = 0
         self.perception = 0
+        self.stamina_points = 100
+        self.stamina_increase = self.body * 1 * self.level
+
+        self.max_stamina_points = 100 + self.stamina_increase
+
+
+        self.focus_points = 100
+        self.max_focus_points = 100
         self.perks = []
         self.items = ["sir leopolds paw"]
         self.magicinventory = []
@@ -37,6 +41,9 @@ class Player(Entity):
         self.hasRabies = False
         self.rabies1time = False
         self.rabiesImmunity = False
+        self.level2checker = False
+        self.level3checker = False
+        self.level4checker = False
         #conflip glasses gives player + 20 gold
         # need ingame menus that explain rules, minues to stamina,and other info
 
@@ -59,15 +66,30 @@ class Player(Entity):
 
             controller.isOPressed = False
 
-        if self.exp > 1000:
+        if self.exp > 1000 and self.level2checker == False:
             print("grats you leveld up to level 2")
             self.level = 2
+            self.max_stamina_points += 10 + (self.stamina_increase)
+            self.max_focus_points += 10
+            self.spirit += 1
+            self.level2checker = True
 
-        if self.exp >= 3000:
+        elif self.exp > 2000 and self.level3checker == False:
             self.level = 3
-            print(self.exp)
-            if self.exp > 3000:
-                self.exp = 3000
+            self.max_stamina_points += 10
+            self.max_focus_points += 10
+            self.body += 1
+            self.level3checker = True
+
+        elif self.exp > 3000 and self.level4checker == False:
+            self.level = 4
+            self.max_stamina_points += 10
+            self.max_focus_points += 10
+            self.magicinventory.append("coin eater")
+            self.level4checker = True
+
+
+
 
 
         # Define canMove before the for loop

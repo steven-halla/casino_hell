@@ -232,3 +232,8 @@ BUG HUNT:
 ####   BLACK JACK THOMAS NPC IS WORKING AS INTENDED IN REGARDS TO MOVING DRUING MESSAGES DURING TALKIGNA AND AFTER BATTLE
 ####
 ####
+
+
+if we dont lick our hands and fingers clean they take it as an insult and they add more peppers and other
+awful things, always leave with your hands and fingers clean.
+If you try to leave with dirty hands you'll be licked clean like a cat, please don't make us do it.
