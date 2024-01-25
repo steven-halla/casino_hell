@@ -50,6 +50,8 @@ class BlackJackRumbleBillScreen(Screen):
         self.bust_protection = False
         self.avatar_of_luck_card_redraw_counter = 3
 
+        self.player_lock = False
+
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
@@ -259,6 +261,7 @@ class BlackJackRumbleBillScreen(Screen):
             self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
+        state.player.canMove = False
         if self.cheater_bob_money < 10:
             self.black_jack_rumble_bill_defeated = True
             self.game_state = "defeated"
@@ -1045,6 +1048,8 @@ class BlackJackRumbleBillScreen(Screen):
                     (637, 355))
                 if state.controller.isTPressed:
                     print("Quit")
+                    state.player.canMove = True
+
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
                     state.controller.isTPressed = False
@@ -1059,6 +1064,8 @@ class BlackJackRumbleBillScreen(Screen):
             self.defeated_textbox.draw(state)
             if self.defeated_textbox.message_index == 2:
                 print("moogles")
+                state.player.canMove = True
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
@@ -1177,6 +1184,7 @@ class BlackJackRumbleBillScreen(Screen):
 
                 if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                     pygame.display.update()
+
                     self.game_state = "menu_screen"
 
 

@@ -52,7 +52,6 @@ class FlippinTed(Npc):
         current_message.update(state)
 
         # Lock the player in place while talking
-        state.player.canMove = False
 
         # Check for keypresses only once per frame
         if state.controller.isUpPressed:
@@ -75,7 +74,6 @@ class FlippinTed(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
                 state.controller.isTPressed = False
-
                 state.currentScreen = state.coinFlipTedScreen
                 state.coinFlipTedScreen.start(state)
 

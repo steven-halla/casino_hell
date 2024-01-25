@@ -47,7 +47,7 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 20
+        self.coinFlipTedMoney = 10
 
 
 
@@ -323,11 +323,6 @@ class CoinFlipTedScreen(Screen):
 
         if self.game_state == "welcome_screen":
 
-            if "Shield" in state.player.magicinventory and "Shield"not in self.magic_menu_selector:
-
-                self.magic_menu_selector.append("Shield")
-
-
 
             # Update the welcome screen text box
             self.coin_flip_messages["welcome_message"].update(state)
@@ -343,19 +338,13 @@ class CoinFlipTedScreen(Screen):
             self.has_run_money_logic = False
             self.player_choice = ""
             self.message_printed = False
-            self.entered_shield_screen = False  # Add this flag
 
             self.coin_flip_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
-                # Add other game state updates here
 
         if self.game_state == "heads_tails_choose_screen":
             # print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
-
-            # Append "Magic" to the menu only if "Shield" is in inventory and "Magic" is not already in the menu
-            if "Shield" in state.player.magicinventory and "Magic" not in self.heads_or_tails_Menu:
-                self.heads_or_tails_Menu.append("Magic")
 
             # Handling Up Press
             if state.controller.isUpPressed:
@@ -375,75 +364,34 @@ class CoinFlipTedScreen(Screen):
                 print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
-        if self.game_state == "magic_screen":
 
-            if state.controller.isUpPressed:
-                self.magicindex -= 1
-                if self.magicindex < 0:
-                    self.magicindex = len(self.magic_menu_selector) - 1  # Wrap around to the last item
-                    print(str(self.magicindex))
-
-                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-            elif state.controller.isDownPressed:
-                self.magicindex += 1
-                if self.magicindex >= len(self.magic_menu_selector):
-                    self.magicindex = 0  # Wrap around to the first item
-                    print(str(self.magicindex))
-
-
-                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
 
         if self.game_state == "flip_screen":
-            # print("entering flip screen")
 
 
-            # Initialize the timer when entering the flip_screen state
-            # if not hasattr(self, 'flip_screen_initialized') or not self.flip_screen_initialized:
-            #     print("about to flip timer")
-            #     self.flip_timer = 4000  # Duration for the pause
-            #     print("timer flipped")
-            #     self.pause_timer = pygame.time.get_ticks()  # Current time
-            #     self.flip_screen_initialized = True
+
             if not self.flip_screen_initialized:
                 # print("Initializing flip timer")
                 self.flip_timer = 2500  # Duration for the pause
                 self.pause_timer = pygame.time.get_ticks()  # Current time
                 self.flip_screen_initialized = True
 
-            # Calculate elapsed time since the flip_screen was entered
             elapsed_time = pygame.time.get_ticks() - self.pause_timer
-            # print(f"Elapsed time: {elapsed_time}")
 
-            # if self.coinFlipTedMoney < 10:
-            #     self.game_state = "enemy_defeated_screen"
 
             if elapsed_time >= self.flip_timer:
-                # Timer has elapsed, proceed with flipping the coin
                 self.flipCoin(state)
-                # Reset flip_screen_initialized for next time
                 self.flip_screen_initialized = False
                 self.pause_timer = 0  # Reset pause timer for the next use
-                # Transition to the next state as needed
-                # ...
             if elapsed_time >= self.flip_timer:
-                # Logic to transition away from flip_screen
-                # ...
                 self.flip_screen_initialized = False
 
             self.coin_flip_messages["flip_message"].update(state)
-            # if self.coinFlipTedMoney < 10:
-            #     self.game_state = "enemy_defeated_screen"
 
 
         if self.game_state == "results_screen":
-            # if self.coinFlipTedMoney < 10:
-            #     self.game_state = "enemy_defeated_screen"
 
-            # Assuming this is part of a class
             if not self.has_run_money_logic:
                 if self.player_choice == self.result:
                     state.player.money += self.bet
@@ -473,15 +421,6 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["results_message"].messages = [result_message]
 
 
-            # if state.controller.isTPressed:
-            #     self.game_state = "play_again_screen"
-            #     print(str(self.game_state))
-
-        if self.game_state == "shield_screen":
-            # print("sheild time")
-            if state.controller.isTPressed:
-                self.game_state = "play_again_screen"
-                state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
             if self.coinFlipTedMoney < 10:
@@ -516,13 +455,6 @@ class CoinFlipTedScreen(Screen):
                 self.game_state = "bet_screen"
 
 
-
-        if self.game_state == "hero_desperate_screen":
-            if self.coin_flip_messages["hero_desperate_message"].message_index == 3:
-                self.hero_desperate_counter = True
-
-                self.game_state = "bet_screen"
-
         if self.game_state == "enemy_defeated_screen":
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
@@ -533,12 +465,6 @@ class CoinFlipTedScreen(Screen):
 
         controller = state.controller
         controller.update()
-
-    ########################we want up and down arrows on bet. have arrow disapear when an item is not in use
-
-
-
-
 
 
     def draw(self, state: "GameState"):
@@ -721,16 +647,7 @@ class CoinFlipTedScreen(Screen):
 
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
-            # Set the initial arrow position to "Yes"
 
-
-            # Draw the arrow next to the selected option
-            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            #
-            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-            # Here's a simple example using a triangle:
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
@@ -816,8 +733,7 @@ class CoinFlipTedScreen(Screen):
             # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
             arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
             arrow_y = text_y_shield + self.magicindex * 40  # Update arrow Y position based on selected item
-            # print(str(self.magic_menu_selector))
-            # Draw the arrow using pygame's drawing functions
+
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
@@ -836,8 +752,6 @@ class CoinFlipTedScreen(Screen):
 
                     print(str(self.magic_menu_selector[0]))
                     print(str(self.magic_menu_selector))
-                    self.debuff_vanish = True
-                    self.debuff_counter += 3
                     state.player.focus_points -= 10
                     state.controller.isTPressed = False  # Reset the button state
                     self.game_state = "heads_tails_choose_screen"
@@ -854,9 +768,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["flip_message"].update(state)
             self.coin_flip_messages["flip_message"].draw(state)
 
-        # if self.game_state == "results_screen":
-        #     self.coin_flip_messages["results_message"].update(state)
-        #     self.coin_flip_messages["results_message"].draw(state)
+
         if self.game_state == "results_screen":
             self.coin_flip_messages["results_message"].update(state)
             self.coin_flip_messages["results_message"].draw(state)
@@ -879,28 +791,9 @@ class CoinFlipTedScreen(Screen):
                 self.game_state = "play_again_screen"
                 state.controller.isTPressed = False  # Reset the button state
 
-        if self.game_state == "shield_screen":
-            if not self.entered_shield_screen:
-                # Randomly select one of the shield messages
-                selected_message_key = random.choice(["shield_message1", "shield_message2", "shield_message3"])
-                self.selected_shield_message = self.coin_flip_messages[selected_message_key]
-
-                # Set the flag to True to avoid repeating this in the current state
-                self.entered_shield_screen = True
-
-            # Update and draw the selected TextBox
-            self.selected_shield_message.update(state)
-            self.selected_shield_message.draw(state)
-        else:
-            # Reset the flag when leaving the state to enable a new random message next time
-            self.entered_shield_screen = False
 
         if self.game_state == "play_again_screen":
-            ## this shows the coin
-            # image_to_display = self.heads_image if self.result == "heads" else self.tails_image
-            # image_rect = image_to_display.get_rect()
-            # image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
-            # state.DISPLAY.blit(image_to_display, image_rect)
+
 
             if self.coinFlipTedDefeated == False:
                 self.coin_flip_messages["play_again_message"].update(state)
@@ -932,15 +825,7 @@ class CoinFlipTedScreen(Screen):
                 state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
                 arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
                 arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-                # Set the initial arrow position to "Yes"
 
-                # Draw the arrow next to the selected option
-                # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-                # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-                # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-                #
-                # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-                # Here's a simple example using a triangle:
                 pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                     [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
@@ -949,8 +834,7 @@ class CoinFlipTedScreen(Screen):
 
                     if self.debuff_counter > 0:
                         self.debuff_counter -= 1
-                        print(self.debuff_counter)
-                        print(self.debuff_vanish)
+
                         if self.debuff_counter == 0:
                             self.debuff_vanish = False
                             print(self.debuff_vanish)
@@ -966,7 +850,6 @@ class CoinFlipTedScreen(Screen):
 
 
                 else:
-                    print("1 index")
                     self.arrow_index = 0
                     self.game_state ="bet_screen"
                     state.currentScreen = state.startScreen
@@ -987,14 +870,9 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "enemy_desperate_screen":
-            print("enemy is veyr desperate now")
             self.coin_flip_messages["enemy_desperate_message"].update(state)
             self.coin_flip_messages["enemy_desperate_message"].draw(state)
 
-        if self.game_state == "hero_desperate_screen":
-            print("hero is most desperate now")
-            self.coin_flip_messages["hero_desperate_message"].update(state)
-            self.coin_flip_messages["hero_desperate_message"].draw(state)
 
         if self.game_state == "enemy_defeated_screen":
             print("you won the game")

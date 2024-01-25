@@ -220,3 +220,10 @@ need to update coin flip screens so when magic is not there we simply have a bla
 need to be conisstant 
 
 oppossum in a can needs more messages to reflect all the state
+
+
+BUG HUNT:
+
+1) For all NPCS need to figure out:
+2) Not letting player move during games
+3) not letting player move during messages
