@@ -1,6 +1,7 @@
 import pygame
 
 from entity.demon.demon1 import Demon1
+from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 from screen.floor1.battle_screens.black_jack_jared_screen import BlackJackJaredScreen
@@ -46,6 +47,7 @@ class GameState:
         self.demon_left: Demon1 = Demon1(0,0)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(0,0)
+        self.shop_keeper: ShopKeeper = ShopKeeper(16 * 18, 16 * 26)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.treasurechests = []

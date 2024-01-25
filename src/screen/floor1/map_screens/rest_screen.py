@@ -14,7 +14,7 @@ from entity.npc.rest_screen.inn_keeper import InnKeeper
 from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
 from entity.npc.rest_screen.new_teleporter import NewTeleporter
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
-from entity.npc.rest_screen.shop_keeper import ShopKeeper
+
 from entity.npc.rest_screen.start_screen_teleporter import StartScreenTeleporter
 from entity.npc.rest_screen.suffering_suzy import SufferingSuzy
 from entity.npc.rest_screen.wally_guide import WallyGuide
@@ -23,6 +23,7 @@ from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+
 
 
 class RestScreen(Screen):
@@ -85,7 +86,7 @@ class RestScreen(Screen):
             InnKeeper(16 * 18, 16 * 18),
             JustinNoFruit(16 * 10, 16 * 18),
             QuestGiverJanet(16 * 10, 16 * 26),
-            ShopKeeper(16 * 18, 16 * 26),
+
             SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 34, 16 * 26),
             StartScreenTeleporter(16 * 5, 16 * 25),
@@ -113,6 +114,13 @@ class RestScreen(Screen):
         player = state.player
         obstacle = state.obstacle
         controller.update()
+        shop_keeper_instance = state.shop_keeper
+
+        # Now, you can interact with the ShopKeeper instance
+        # For example, calling its update method:
+        shop_keeper_instance.update(state)
+
+
         for npc in state.npcs:
             npc.update(state)
             if isinstance(npc, Nurgle) and npc.to_be_deleted:
@@ -214,6 +222,7 @@ class RestScreen(Screen):
 
 
     def draw(self, state: "GameState"):
+
         state.DISPLAY.fill(BLUEBLACK)
         state.DISPLAY.blit(state.FONT.render(
             f"player money: {state.player.money}",
@@ -269,6 +278,9 @@ class RestScreen(Screen):
         state.obstacle.draw(state)
 
         state.player.draw(state)
+
+        shop_keeper_instance = state.shop_keeper
+        shop_keeper_instance.draw(state)
 
         # Update the display
         pygame.display.update()
