@@ -227,7 +227,7 @@ class Player(Entity):
 
     def draw_player_stats(self, state):
         # Create a black surface of size 600x600
-        stats_surface = pygame.Surface((600, 600))
+        stats_surface = pygame.Surface((580, 580))
         state.DISPLAY.fill(BLUEBLACK)
 
         # Set the font for the text
@@ -257,10 +257,15 @@ class Player(Entity):
 
         # You can adjust these values to position the box as you like
         box_x = SCREEN_WIDTH / 2 - 300  # Center the box in the middle of the screen width
-        box_y = SCREEN_HEIGHT / 2 - 300  # Center the box in the middle of the screen height
+        box_y = SCREEN_HEIGHT / 2 - 290  # Center the box in the middle of the screen height
 
         # Display the stats surface on the main display
         state.DISPLAY.blit(stats_surface, (box_x, box_y))
+
+        border_color = (255, 255, 255)  # White color
+        border_rect = pygame.Rect(box_x, box_y, 580, 580)  # The rectangle that represents the border
+        border_thickness = 5  # Adjust the thickness as needed
+        pygame.draw.rect(state.DISPLAY, border_color, border_rect, border_thickness)
 
 
 
