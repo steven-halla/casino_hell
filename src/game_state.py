@@ -33,6 +33,7 @@ from screen.floor1.map_screens.start_screen import StartScreen
 
 class GameState:
     def __init__(self):
+
         # shared pygame constructs
         self.DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
         self.FONT = pygame.font.Font('freesansbold.ttf', 24)

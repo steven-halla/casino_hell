@@ -119,8 +119,8 @@ class Controller:
                     self.isWPressed = False
                 elif event.key == pygame.K_1:
                     self.is1Pressed = False
-                elif event.key == pygame.K_p:
-                    self.isPPressed = False
+                # elif event.key == pygame.K_p:
+                #     self.isPPressed = False
                 elif event.key == pygame.K_o:
                     self.isOPressed = False
                 elif event.key == pygame.K_1:

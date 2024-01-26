@@ -2,7 +2,7 @@ from typing import Tuple
 
 import pygame
 
-from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_OFFSET
+from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_OFFSET, BLUEBLACK
 from entity.entity import Entity
 
 
@@ -51,6 +51,10 @@ class Player(Entity):
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update()
+
+        # if controller.isPPressed:
+        #     controller.isPPressed = False
+        #     self.draw_player_stats(state)
 
         if controller.isOPressed:
             print("Your inventory for items: " + str(self.items))
@@ -221,3 +225,33 @@ class Player(Entity):
 
         # Draw the image on the display surface
         state.DISPLAY.blit(scaled_image, PLAYER_OFFSET)
+
+    def draw_player_stats(self, state):
+        # Create a black surface of size 600x600
+        stats_surface = pygame.Surface((600, 600))
+        state.DISPLAY.fill(BLUEBLACK)
+
+        # Set the font for the text
+        font = pygame.font.Font(None, 36)
+
+        # Define the stats to display
+        stats = [
+            f"Items: {self.items}",
+            f"Magic Inventory: {self.magicinventory}",
+            f"Body: {self.body}",
+            f"Mind: {self.mind}",
+            # Add more stats as needed
+        ]
+
+        # Draw each stat on the stats_surface
+        for i, stat in enumerate(stats):
+            text = font.render(stat, True, (255, 255, 255))  # White color for the text
+            stats_surface.blit(text, (50, 30 + i * 40))  # Adjust the position as needed
+
+        # You can adjust these values to position the box as you like
+        box_x = SCREEN_WIDTH / 2 - 300  # Center the box in the middle of the screen width
+        box_y = SCREEN_HEIGHT / 2 - 300  # Center the box in the middle of the screen height
+
+        # Display the stats surface on the main display
+        state.DISPLAY.blit(stats_surface, (box_x, box_y))
+
