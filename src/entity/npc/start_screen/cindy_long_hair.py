@@ -47,6 +47,15 @@ class CindyLongHair(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
+        self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image.png")
+
+    # def draw_npc_text(self, position: tuple[int, int], display: pygame.Surface):
+    #     top_card_position = (self.card_width * 13, 0)
+    #     sprite = self.sprite_sheet.subsurface(pygame.Rect(top_card_position, (self.card_width, self.card_height)))
+    #     sprite.set_colorkey((0, 190, 0))
+    #     display.blit(sprite, position)
+
+
     def update(self, state: "GameState"):
         if self.state == "waiting":
             self.update_waiting(state)
