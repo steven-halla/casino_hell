@@ -240,7 +240,6 @@ class OpossumInACanSallyScreen(Screen):
             self.trash_can_pick = "lose"
 
             self.player_score = 0
-            state.player.exp += 50
             if state.player.rabiesImmunity == True:
                 state.player.stamina_points -= 50
 
@@ -443,8 +442,10 @@ class OpossumInACanSallyScreen(Screen):
         if self.game_state == "lose_screen":
             # this handles our EXP
             print("Your before total exp is: " + str(state.player.exp))
-
-            state.player.exp += 100
+            if self.talley_checker == False:
+                state.player.exp += 100
+                self.talley_checker = True
+                return
             print("you gained: " + str(100) + "exp")
             print("Your after total exp is: " + str(state.player.exp))
 

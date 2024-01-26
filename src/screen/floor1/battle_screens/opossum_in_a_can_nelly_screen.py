@@ -160,6 +160,8 @@ class OpossumInACanNellyScreen(Screen):
 
         self.tally_money_once = True
 
+        self.talley_checker = False
+
 ##### what if I try to set a timer so we don't skip?
     ### or maybe something has to be set to false like the T press?
 
@@ -205,7 +207,7 @@ class OpossumInACanNellyScreen(Screen):
         self.total_winnings = 0
         self.tally_money_once = True
         self.player_score = 0
-
+        self.talley_checker = False
         # print("HYou are getting the refresh")
 
     # def giveExp(self, state: "GameState"):
@@ -244,7 +246,6 @@ class OpossumInACanNellyScreen(Screen):
             self.trash_can_pick = "lose"
 
             self.player_score = 0
-            state.player.exp += 50
             if state.player.rabiesImmunity == True:
                 state.player.stamina_points -= 30
 
@@ -286,6 +287,42 @@ class OpossumInACanNellyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
+            if self.player_score >= 600 and self.talley_checker == False:
+                print("dsjf;ldsajfl;sajfsaj;lfjlsdjf")
+
+                state.player.stamina_points -= 10
+                print("Your before  total exp is: " + str(state.player.exp))
+                state.player.exp += 300
+                print("you gained: " + str(300) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+                return
+
+            elif self.player_score >= 300 and self.talley_checker == False:
+                print("7534975903275934270573945703975930750937593729573405734850")
+
+                state.player.stamina_points -= 5
+
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 200
+                print("you gained: " + str(200) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+
+                return
+
+            elif self.player_score >= 20 and self.talley_checker == False:
+                state.player.stamina_points -= 3
+
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 100
+                print("you gained: " + str(100) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+
+                return
             print("tally ho")
             if self.nellyOpossumMoney < 0:
                 self.nellyOpossumMoney = 0
@@ -413,7 +450,10 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "lose_screen":
             # print(str(self.opossumInACanMessages["lose_message"].message_index))
-
+            if self.talley_checker == False:
+                state.player.exp += 100
+                self.talley_checker = True
+                return
 
             # Reset the message index every time you enter the lose_screen
             if not self.initialized_message:
