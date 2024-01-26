@@ -33,7 +33,9 @@ class BarKeepLowBody(Npc):
         elif self.state == "talking":
             if state.player.money >= 2300 and self.quest_checker == False:
                 state.player.body += 1
+                state.player.mone -= 2000
                 print("your body is now stronger check it out")
+                print("no take backs I just sent the money. Now you can drink.")
                 self.quest_checker = True
                 return
 
