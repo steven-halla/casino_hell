@@ -129,6 +129,8 @@ class OpossumInACanSallyScreen(Screen):
         self.magic_menu_selector = ["Back"]
         self.magic_menu_index = 0
 
+        self.talley_checker = False
+
 
 
         self.play_again_or_quit = ["Play Again", "Quit"]
@@ -198,6 +200,7 @@ class OpossumInACanSallyScreen(Screen):
         self.total_winnings = 0
         self.tally_money_once = True
         self.player_score = 0
+        self.talley_checker = False
 
         # print("HYou are getting the refresh")
 
@@ -278,15 +281,20 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
-            if self.player_score >= 800:
+            if self.player_score >= 600 and self.talley_checker == False:
+                print("dsjf;ldsajfl;sajfsaj;lfjlsdjf")
+
                 state.player.stamina_points -= 10
                 print("Your before  total exp is: " + str(state.player.exp))
-                state.player.stamina_points
                 state.player.exp += 300
                 print("you gained: " + str(300) + "exp")
                 print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+                return
 
-            elif self.player_score >= 500:
+            elif self.player_score >= 300 and self.talley_checker == False:
+                print("7534975903275934270573945703975930750937593729573405734850")
+
                 state.player.stamina_points -= 5
 
                 print("Your before  total exp is: " + str(state.player.exp))
@@ -294,8 +302,11 @@ class OpossumInACanSallyScreen(Screen):
                 state.player.exp += 200
                 print("you gained: " + str(200) + "exp")
                 print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
 
-            elif self.player_score >= 300:
+                return
+
+            elif self.player_score >= 20 and self.talley_checker == False:
                 state.player.stamina_points -= 3
 
                 print("Your before  total exp is: " + str(state.player.exp))
@@ -303,6 +314,10 @@ class OpossumInACanSallyScreen(Screen):
                 state.player.exp += 100
                 print("you gained: " + str(100) + "exp")
                 print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+
+                return
+
 
 
 

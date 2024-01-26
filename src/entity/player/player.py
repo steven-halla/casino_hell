@@ -17,7 +17,7 @@ class Player(Entity):
 
         # need to put in a max for stamina and focus
 
-        self.exp = 0
+        self.exp = 400
         self.inn_badge = False
         self.level = 1
         self.body = 0
@@ -34,7 +34,7 @@ class Player(Entity):
         self.focus_points = 100
         self.max_focus_points = 100
         self.perks = []
-        self.items = ["sir leopolds paw"]
+        self.items = []
         self.magicinventory = []
         self.companions = []
         self.canMove = True

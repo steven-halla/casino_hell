@@ -54,8 +54,7 @@ class CindyLongHair(Npc):
             self.update_talking(state)
 
     def update_waiting(self, state: "GameState"):
-        if state.coinFlipTedScreen.coinFlipTedDefeated and "inn badge" not in state.player.items:
-            state.player.items.append("inn badge")
+
         player = state.player
         min_distance = math.sqrt(
             (player.collision.x - self.collision.x) ** 2 + (
@@ -80,6 +79,7 @@ class CindyLongHair(Npc):
         elif state.coinFlipTedScreen.coinFlipTedDefeated:
             if "reveal" not in state.player.magicinventory:
                 state.player.magicinventory.append("reveal")
+                state.player.items.append("inn badge")
             if state.player.mind < 1:
                 state.player.mind += 1
 
