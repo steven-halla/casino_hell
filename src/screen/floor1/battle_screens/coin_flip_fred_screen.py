@@ -188,39 +188,62 @@ class CoinFlipFredScreen(Screen):
         if self.result == self.player_choice:
 
             if self.bet < 11:
-                state.player.stamina_points -= 1
-                state.player.exp += 10
-                print(str(state.player.exp))
+                state.player.stamina_points -= 2
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 20
+                print("you gained: " + str(10) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
 
             elif self.bet >= 50:
                 state.player.stamina_points -= 4
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 100
-                print(str(state.player.exp))
+                print("you gained: " + str(100) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
 
             elif self.bet < 50:
-                state.player.stamina_points -= 2
+                state.player.stamina_points -= 3
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 50
-                print(str(state.player.exp))
+                print("you gained: " + str(50) + "exp")
+
+                print("Your after  total exp is: " + str(state.player.exp))
 
 
 
         elif self.result != self.player_choice:
             if self.bet < 11:
-                state.player.stamina_points -= 1
-                state.player.exp += 3
-                print(str(state.player.exp))
+                state.player.stamina_points -= 3
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 5
+                print("you gained: " + str(5) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
             elif self.bet >= 50:
                 state.player.stamina_points -= 6
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 50
-                print(str(state.player.exp))
+                print("you gained: " + str(50) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
 
             elif self.bet < 50:
-                state.player.stamina_points -= 3
+                state.player.stamina_points -= 4
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 25
-                print(str(state.player.exp))
+                print("you gained: " + str(25) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -326,9 +349,9 @@ class CoinFlipFredScreen(Screen):
 
         if self.game_state == "welcome_screen":
 
-            if "Shield" in state.player.magicinventory and "Shield"not in self.magic_menu_selector:
+            if "shield" in state.player.magicinventory and "shield"not in self.magic_menu_selector:
 
-                self.magic_menu_selector.append("Shield")
+                self.magic_menu_selector.append("shield")
 
 
 
@@ -357,7 +380,7 @@ class CoinFlipFredScreen(Screen):
             self.coin_flip_messages["heads_tails_message"].update(state)
 
             # Append "Magic" to the menu only if "Shield" is in inventory and "Magic" is not already in the menu
-            if "Shield" in state.player.magicinventory and "Magic" not in self.heads_or_tails_Menu:
+            if "shield" in state.player.magicinventory and "Magic" not in self.heads_or_tails_Menu:
                 self.heads_or_tails_Menu.append("Magic")
 
             # Handling Up Press
@@ -727,7 +750,7 @@ class CoinFlipFredScreen(Screen):
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            if "Shield" in state.player.magicinventory and self.debuff_counter == 0:
+            if "shield" in state.player.magicinventory and self.debuff_counter == 0:
                 state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
             elif self.debuff_counter > 0:
                 state.DISPLAY.blit(self.font.render(f"Locked ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
@@ -819,7 +842,7 @@ class CoinFlipFredScreen(Screen):
 
             # Draw text
             # Draw text
-            if "Shield" in self.magic_menu_selector:
+            if "shield" in self.magic_menu_selector:
                 state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
             # Y position for "Shield" text, using self.magic_menu_selector[1]
@@ -1010,7 +1033,7 @@ class CoinFlipFredScreen(Screen):
             self.coin_flip_messages["hero_desperate_message"].draw(state)
 
         if self.game_state == "enemy_defeated_screen":
-            print("you won the game")
+            # print("you won the game")
             self.coin_flip_messages["enemy_defeated_message"].update(state)
             self.coin_flip_messages["enemy_defeated_message"].draw(state)
 

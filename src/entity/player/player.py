@@ -19,7 +19,7 @@ class Player(Entity):
 
         self.exp = 400
         self.inn_badge = False
-        self.level = 1
+        self.level = 3
         self.body = 0
         self.mind = 0
         self.spirit = 0
@@ -68,21 +68,23 @@ class Player(Entity):
 
             controller.isOPressed = False
 
-        if self.exp > 500 and self.level2checker == False:
-            print("grats you leveld up to level 2")
+        if self.exp > 500 and self.level2checker == False or self.level == 2:
+            # print("grats you leveld up to level 2")
             self.level = 2
             self.max_stamina_points += 10 + (self.stamina_increase)
             self.max_focus_points += 10
             self.spirit += 1
             self.level2checker = True
 
-        elif self.exp > 1000 and self.level3checker == False:
-            print("grats you leveld up to level 3")
+        elif self.exp > 1000 and self.level3checker == False or self.level == 3:
+            # print("grats you leveld up to level 3")
+            if "shield" not in self.magicinventory:
+                self.magicinventory.append("shield")
+                self.max_stamina_points += 10
+                self.max_focus_points += 10
 
+                return
             self.level = 3
-            self.max_stamina_points += 10
-            self.max_focus_points += 10
-            self.magicinventory.append("coin eater")
             self.level3checker = True
 
 
