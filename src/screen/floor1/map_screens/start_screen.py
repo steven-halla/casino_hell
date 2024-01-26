@@ -64,7 +64,7 @@ class StartScreen(Screen):
             JackyBanana(16* 5, 16 * 15),
             BappingMike(16* 15, 16 * 15),
             HungryPatrick(16* 25, 16 * 15),
-            InnGuard(16* 35, 16 * 15),
+            # InnGuard(16* 35, 16 * 15),
             NickyHints(16* 25, 16 * 25),
             MainScreenTeleporter(16 * 1, 16 * 10),
             FlippinTed(16* 35, 16 * 34),
@@ -153,10 +153,10 @@ class StartScreen(Screen):
         if controller.isExitPressed is True:
             state.isRunning = False
 
-        if state.player.inn_badge == True:
-            for npc in state.npcs:
-                if isinstance(npc, InnGuard):
-                    state.npcs.remove(npc)
+        # if state.player.inn_badge == True:
+        #     for npc in state.npcs:
+        #         if isinstance(npc, InnGuard):
+        #             state.npcs.remove(npc)
 
 
 

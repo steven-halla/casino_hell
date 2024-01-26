@@ -83,6 +83,8 @@ class HungryPatrick(Npc):
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
+        state.player.canMove = False
+
         if state.controller.isTPressed and self.textbox.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
@@ -94,6 +96,8 @@ class HungryPatrick(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             # self.textbox.reset()
+            state.player.canMove = True
+
 
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")
