@@ -39,7 +39,7 @@ class CindyLongHair(Npc):
             ),
         }
         self.choices = ["Yes", "No"]
-        self.sprite_sheet = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/cindy_text_talk_image.png").convert_alpha()
+        self.sprite_sheet = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/cindy_text_talk_image_2.png").convert_alpha()
 
         # The size of the entire sprite sheet
         self.sprite_sheet_width = self.sprite_sheet.get_width()
@@ -57,7 +57,7 @@ class CindyLongHair(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
-        self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image.png")
+        self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image_2.png")
 
     # def draw_npc_text(self, position: tuple[int, int], display: pygame.Surface):
     #     top_card_position = (self.card_width * 13, 0)
@@ -126,14 +126,14 @@ class CindyLongHair(Npc):
         pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            sprite_rect = pygame.Rect(0, 0, 36, 76)  # Top left section with width and height of 100 pixels
+            sprite_rect = pygame.Rect(0, 0, 136, 186)  # Top left section with width and height of 100 pixels
 
             # Extract the sprite section
             sprite = self.sprite_sheet.subsurface(sprite_rect)
 
             # Center the sprite section on the screen
-            position_x = 12  # Bottom left corner x position
-            position_y = state.DISPLAY.get_height() - sprite_rect.height - 60  # 30 pixels above the bottom left corner y position
+            position_x = 60  # Bottom left corner x position
+            position_y = state.DISPLAY.get_height() - sprite_rect.height - 155  # 30 pixels above the bottom left corner y position
             position = (position_x, position_y)
 
             # Draw the sprite section
