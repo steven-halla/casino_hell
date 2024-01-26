@@ -17,9 +17,9 @@ class Player(Entity):
 
         # need to put in a max for stamina and focus
 
-        self.exp = 400
+        self.exp = 0
         self.inn_badge = False
-        self.level = 3
+        self.level = 1
         self.body = 0
         self.mind = 0
         self.spirit = 0
@@ -46,6 +46,25 @@ class Player(Entity):
         # need ingame menus that explain rules, minues to stamina,and other info
         self.close_status_screen = False
 
+
+    def to_dict(self):
+        return {
+            "level": self.level,
+            "exp": self.exp,
+            "stamina_points": self.stamina_points,
+            "max_stamina_points": self.max_stamina_points,
+            "focus_points": self.focus_points,
+            "max_focus_points": self.max_focus_points,
+            "companions": self.companions,
+            "items": self.items,
+            "magicinventory": self.magicinventory,
+            "body": self.body,
+            "mind": self.mind,
+            "spirit": self.spirit,
+            "perception": self.perception,
+            "luck": self.luck,
+            # Add more stats as needed
+        }
 
     def update(self, state: "GameState"):
         controller = state.controller

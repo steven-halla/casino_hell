@@ -1,4 +1,6 @@
 import pygame
+import json
+
 
 from entity.demon.demon1 import Demon1
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
@@ -88,6 +90,20 @@ class GameState:
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
         self.currentScreen = self.startScreen
+
+    def save_game(self, player):
+        # Convert player stats to dictionary
+        player_data = player.to_dict()
+
+        # Convert dictionary to JSON string
+        player_json = json.dumps(player_data, indent=4)
+
+        # Define the file path
+        file_path = '/Users/stevenhalla/code/casino_hell/assets/save_data.json'
+
+        # Write JSON string to a file at the specified path
+        with open(file_path, 'w') as file:
+            file.write(player_json)
 
 
         # assign a value to currentScreen here

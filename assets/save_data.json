@@ -1,0 +1,18 @@
+{
+    "level": 3,
+    "exp": 400,
+    "stamina_points": 110,
+    "max_stamina_points": 110,
+    "focus_points": 100,
+    "max_focus_points": 110,
+    "companions": [],
+    "items": [],
+    "magicinventory": [
+        "shield"
+    ],
+    "body": 0,
+    "mind": 0,
+    "spirit": 0,
+    "perception": 0,
+    "luck": 0
+}

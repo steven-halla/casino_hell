@@ -93,6 +93,7 @@ class InnKeeper(Npc):
                             print("Yee haawww")
 
                             state.player.stamina_points = 1
+                state.save_game(state.player)  # Call the save_game function
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
