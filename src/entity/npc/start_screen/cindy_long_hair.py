@@ -74,6 +74,9 @@ class CindyLongHair(Npc):
 
 
     def update_talking(self, state: "GameState"):
+
+        state.player.canMove = False
+
         if self.coinFlipTedReward == True:
             current_message = self.cindy_long_hair_messages['final_message']
         elif state.coinFlipTedScreen.coinFlipTedDefeated:
@@ -89,6 +92,8 @@ class CindyLongHair(Npc):
         current_message.update(state)
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
+            state.player.canMove = True
+
             self.state_start_time = pygame.time.get_ticks()
             current_message.reset()  # Ensure the message is reset for the next interaction
             if "black jack reveal" in state.player.magicinventory:
