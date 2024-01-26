@@ -220,7 +220,11 @@ class StartScreen(Screen):
 
         state.obstacle.draw(state)
 
-        state.player.draw(state)
+
+        # state.player.draw(state)
+        if not any(isinstance(npc, CindyLongHair) and npc.state == "talking" for npc in state.npcs):
+            state.player.draw(state)
+
 
         if state.controller.isPPressed == True:
 
@@ -231,6 +235,8 @@ class StartScreen(Screen):
                     state.controller.isPPressed = False
                     print("Mew")
                     return
+
+
 
 
 
