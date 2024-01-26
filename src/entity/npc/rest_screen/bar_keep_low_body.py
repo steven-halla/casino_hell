@@ -11,24 +11,33 @@ class BarKeepLowBody(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Justin: come back when you have 4000 coins, I'll give you a stat boost potion for your body.",
+                "Justin: come back when you have 2300 coins, I'll give you a stat boost potion for your body.",
                 "I'll also givve you the boss pass so you can play against the 3 bosses."
                 ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.quest_checker = False
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
     def update(self, state: "GameState"):
 
+
         if self.state == "waiting":
             player = state.player
             self.update_waiting(state)
 
         elif self.state == "talking":
+            if state.player.money >= 2300 and self.quest_checker == False:
+                state.player.body += 1
+                print("your body is now stronger check it out")
+                self.quest_checker = True
+                return
+
+
 
             if self.textbox.message_index == 1:
                 if state.controller.isAPressed and \

@@ -62,11 +62,13 @@ class Player(Entity):
             print("Your perception is: " + str(self.perception))
             print("Your Hp  is: " + str(self.stamina_points) + "/" + str(self.max_stamina_points))
             print("Your Mp  is: " + str(self.focus_points) + "/" + str(self.max_focus_points))
+            print("Your EXP is : " + str(self.exp))
+            print("Your Level is : " + str(self.level))
             print("has rabies status: " + str(self.hasRabies))
 
             controller.isOPressed = False
 
-        if self.exp > 1000 and self.level2checker == False:
+        if self.exp > 500 and self.level2checker == False:
             print("grats you leveld up to level 2")
             self.level = 2
             self.max_stamina_points += 10 + (self.stamina_increase)
@@ -74,19 +76,15 @@ class Player(Entity):
             self.spirit += 1
             self.level2checker = True
 
-        elif self.exp > 2000 and self.level3checker == False:
+        elif self.exp > 1000 and self.level3checker == False:
+            print("grats you leveld up to level 3")
+
             self.level = 3
             self.max_stamina_points += 10
             self.max_focus_points += 10
-            self.body += 1
+            self.magicinventory.append("coin eater")
             self.level3checker = True
 
-        elif self.exp > 3000 and self.level4checker == False:
-            self.level = 4
-            self.max_stamina_points += 10
-            self.max_focus_points += 10
-            self.magicinventory.append("coin eater")
-            self.level4checker = True
 
 
 

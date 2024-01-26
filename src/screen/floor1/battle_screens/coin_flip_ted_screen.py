@@ -47,7 +47,7 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 10
+        self.coinFlipTedMoney = 200
 
 
 
@@ -186,38 +186,61 @@ class CoinFlipTedScreen(Screen):
 
             if self.bet < 11:
                 state.player.stamina_points -= 1
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 10
-                print(str(state.player.exp))
+                print("you gained: " + str(10) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
 
             elif self.bet >= 50:
-                state.player.stamina_points -= 4
+                state.player.stamina_points -= 1
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 100
-                print(str(state.player.exp))
+                print("you gained: " + str(100) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
 
             elif self.bet < 50:
-                state.player.stamina_points -= 2
+                state.player.stamina_points -= 1
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 50
-                print(str(state.player.exp))
+                print("you gained: " + str(50) + "exp")
+
+                print("Your after  total exp is: " + str(state.player.exp))
 
 
 
         elif self.result != self.player_choice:
             if self.bet < 11:
-                state.player.stamina_points -= 1
-                state.player.exp += 3
-                print(str(state.player.exp))
+                state.player.stamina_points -= 2
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 5
+                print("you gained: " + str(5) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
             elif self.bet >= 50:
-                state.player.stamina_points -= 6
+                state.player.stamina_points -= 3
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 50
-                print(str(state.player.exp))
+                print("you gained: " + str(50) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
 
             elif self.bet < 50:
-                state.player.stamina_points -= 3
+                state.player.stamina_points -= 2
+                print("Your before  total exp is: " + str(state.player.exp))
+
                 state.player.exp += 25
-                print(str(state.player.exp))
+                print("you gained: " + str(25) + "exp")
+
+                print("Your after total exp is: " + str(state.player.exp))
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
@@ -875,7 +898,7 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "enemy_defeated_screen":
-            print("you won the game")
+            # print("you won the game")
             self.coin_flip_messages["enemy_defeated_message"].update(state)
             self.coin_flip_messages["enemy_defeated_message"].draw(state)
 

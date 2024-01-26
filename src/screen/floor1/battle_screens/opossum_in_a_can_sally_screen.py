@@ -14,7 +14,7 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 20
+        self.sallyOpossumMoney = 500
 
 
         self.opossumBite = False
@@ -160,6 +160,8 @@ class OpossumInACanSallyScreen(Screen):
 
 
 
+
+
     def initializeGarbageCans(self):
 
 
@@ -237,10 +239,10 @@ class OpossumInACanSallyScreen(Screen):
             self.player_score = 0
             state.player.exp += 50
             if state.player.rabiesImmunity == True:
-                state.player.stamina_points -= 30
+                state.player.stamina_points -= 50
 
             elif "opossum guard" in state.player.items:
-                state.player.stamina_points -= 10
+                state.player.stamina_points -= 25
 
             self.opossumBite = True
             self.refresh()
@@ -276,6 +278,34 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
+            if self.player_score >= 800:
+                state.player.stamina_points -= 10
+                print("Your before  total exp is: " + str(state.player.exp))
+                state.player.stamina_points
+                state.player.exp += 300
+                print("you gained: " + str(300) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+
+            elif self.player_score >= 500:
+                state.player.stamina_points -= 5
+
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 200
+                print("you gained: " + str(200) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+
+            elif self.player_score >= 300:
+                state.player.stamina_points -= 3
+
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 100
+                print("you gained: " + str(100) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+
+
+
             # print("tally ho")
             if self.sallyOpossumMoney < 0:
                 self.sallyOpossumMoney = 0
@@ -396,6 +426,13 @@ class OpossumInACanSallyScreen(Screen):
             self.opossumInACanMessages["pick_message"].update(state)
 
         if self.game_state == "lose_screen":
+            # this handles our EXP
+            print("Your before total exp is: " + str(state.player.exp))
+
+            state.player.exp += 100
+            print("you gained: " + str(100) + "exp")
+            print("Your after total exp is: " + str(state.player.exp))
+
             print(str(self.opossumInACanMessages["lose_message"].message_index))
 
 
