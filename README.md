@@ -237,3 +237,16 @@ BUG HUNT:
 if we dont lick our hands and fingers clean they take it as an insult and they add more peppers and other
 awful things, always leave with your hands and fingers clean.
 If you try to leave with dirty hands you'll be licked clean like a cat, please don't make us do it.
+
+Devils DUE README:
+each player is giving 5 cards
+6 community cards are laid out
+each player takes turns having the buck
+whover has buck gets to pick first
+each round player has to either:
+drop out
+swap a card from community pile
+make a bet and push money to devils pile
+if you dont swap, you make a bet and stick with it till the end
+at any phase you can drop out but you lose your monies
+if your bet is in the devils pile you can only make 1 bet , but others can raise you 
