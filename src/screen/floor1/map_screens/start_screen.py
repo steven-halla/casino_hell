@@ -34,15 +34,8 @@ class StartScreen(Screen):
         move_player_down_flag = False
         self.lock_screen = False
 
-        self.sprite_sheet = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/cindy_text_talk_image.png").convert_alpha()
 
-        # The size of the entire sprite sheet
-        self.sprite_sheet_width = self.sprite_sheet.get_width()
-        self.sprite_sheet_height = self.sprite_sheet.get_height()
 
-        # The size of an individual sprite
-        self.sprite_width = self.sprite_sheet_width // 10
-        self.sprite_height = self.sprite_sheet_height
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -239,18 +232,6 @@ class StartScreen(Screen):
                     print("Mew")
                     return
 
-        sprite_rect = pygame.Rect(0, 0, 36, 76)  # Top left section with width and height of 100 pixels
-
-        # Extract the sprite section
-        sprite = self.sprite_sheet.subsurface(sprite_rect)
-
-        # Center the sprite section on the screen
-        screen_center_x = (state.DISPLAY.get_width() - sprite_rect.width) // 2
-        screen_center_y = (state.DISPLAY.get_height() - sprite_rect.height) // 2
-        position = (screen_center_x, screen_center_y)
-
-        # Draw the sprite section
-        state.DISPLAY.blit(sprite, position)
 
 
         # Update the display
