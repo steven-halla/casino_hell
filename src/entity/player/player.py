@@ -29,8 +29,6 @@ class Player(Entity):
         self.stamina_increase = self.body * 1 * self.level
 
         self.max_stamina_points = 100 + self.stamina_increase
-
-
         self.focus_points = 100
         self.max_focus_points = 100
         self.perks = []
@@ -236,10 +234,18 @@ class Player(Entity):
 
         # Define the stats to display
         stats = [
+            f"Level: {self.level}",
+            f"Exp: {self.exp}",
+            f"Stamina: {self.stamina_points}" + "/" f"{self.max_stamina_points}",
+            f"Magic Points: {self.focus_points}" + "/" f"{self.max_focus_points}",
+            f"Companions: {self.companions}",
             f"Items: {self.items}",
-            f"Magic Inventory: {self.magicinventory}",
+            f"Magic spells: {self.magicinventory}",
             f"Body: {self.body}",
             f"Mind: {self.mind}",
+            f"Spirit: {self.spirit}",
+            f"Perception: {self.perception}",
+            f"Luck: {self.luck}",
             # Add more stats as needed
         ]
 
