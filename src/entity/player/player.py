@@ -320,6 +320,9 @@ class Player(Entity):
             state.player.spirit = player_data['spirit']
             state.player.perception = player_data['perception']
             state.player.luck = player_data['luck']
+
+            state.currentScreen = state.restScreen
+            state.restScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")
