@@ -1,3 +1,4 @@
+import json
 from typing import Tuple
 
 import pygame
@@ -285,6 +286,47 @@ class Player(Entity):
         border_rect = pygame.Rect(box_x, box_y, 580, 580)  # The rectangle that represents the border
         border_thickness = 5  # Adjust the thickness as needed
         pygame.draw.rect(state.DISPLAY, border_color, border_rect, border_thickness)
+
+        if state.controller.isLPressed:
+            state.controller.isLPressed = False
+            print("L is pressed")
+            # Call the load_game function when the L key is pressed
+            self.load_game(state)
+
+    def load_game(self, state):
+        # Define the file path
+        file_path = '/Users/stevenhalla/code/casino_hell/assets/save_data.json'
+
+        # Read the JSON string from the file
+        try:
+            with open(file_path, 'r') as file:
+                player_data_json = file.read()
+
+            # Convert JSON string to a dictionary
+            player_data = json.loads(player_data_json)
+
+            # Update player's stats with the loaded data
+            state.player.level = player_data['level']
+            state.player.exp = player_data['exp']
+            state.player.stamina_points = player_data['stamina_points']
+            state.player.max_stamina_points = player_data['max_stamina_points']
+            state.player.focus_points = player_data['focus_points']
+            state.player.max_focus_points = player_data['max_focus_points']
+            state.player.companions = player_data['companions']
+            state.player.items = player_data['items']
+            state.player.magicinventory = player_data['magicinventory']
+            state.player.body = player_data['body']
+            state.player.mind = player_data['mind']
+            state.player.spirit = player_data['spirit']
+            state.player.perception = player_data['perception']
+            state.player.luck = player_data['luck']
+            # ... more stats as needed
+
+            print("Game loaded successfully.")
+
+        except Exception as e:
+            print(f"Failed to load game: {e}")
+
 
 
 
