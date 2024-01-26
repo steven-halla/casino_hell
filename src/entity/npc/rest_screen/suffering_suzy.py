@@ -83,6 +83,8 @@ class SufferingSuzy(Npc):
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
+        state.player.canMove = False
+
         if state.controller.isTPressed and self.textbox.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
@@ -93,6 +95,8 @@ class SufferingSuzy(Npc):
             self.state = "waiting"
 
             self.state_start_time = pygame.time.get_ticks()
+            state.player.canMove = True
+
             # self.textbox.reset()
 
     # def isOverlap(self, entity: "Entity") -> bool:

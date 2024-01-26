@@ -161,6 +161,8 @@ class DoctorOpossum(Npc):
 
 
     def update_talking(self, state: "GameState"):
+        state.player.canMove = False
+
 
         if "blue flower" in state.player.items:
             self.doctor_messages["cured_message"].update(state)
@@ -174,6 +176,8 @@ class DoctorOpossum(Npc):
                 self.state = "waiting"
 
                 self.state_start_time = pygame.time.get_ticks()
+                state.player.canMove = True
+
 
         elif self.hero_rabies == False:
             self.doctor_messages["welcome_message"].update(state)
@@ -187,6 +191,8 @@ class DoctorOpossum(Npc):
                 self.state = "waiting"
 
                 self.state_start_time = pygame.time.get_ticks()
+                state.player.canMove = True
+
         elif self.hero_rabies == True:
             self.doctor_messages["rabies_message"].update(state)
             if state.controller.isTPressed and self.doctor_messages["rabies_message"].is_finished():
@@ -199,6 +205,8 @@ class DoctorOpossum(Npc):
                 self.state = "waiting"
 
                 self.state_start_time = pygame.time.get_ticks()
+                state.player.canMove = True
+
             # self.textbox.reset()
 
     # def isOverlap(self, entity: "Entity") -> bool:

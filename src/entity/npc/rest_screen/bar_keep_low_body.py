@@ -80,10 +80,13 @@ class BarKeepLowBody(Npc):
 
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
+        state.player.canMove = False
+
         if state.controller.isTPressed and self.textbox.is_finished():
             self.state = "waiting"
 
             self.state_start_time = pygame.time.get_ticks()
+            state.player.canMove = True
 
     def draw(self, state):
         rect = (

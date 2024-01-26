@@ -196,6 +196,8 @@ class QuestGiverJanet(Npc):
     def update_talking(self, state: "GameState"):
         current_time = pygame.time.get_ticks()
 
+        state.player.canMove = False
+
         # Update and check the state of the appropriate text box
         if self.textboxstate == "textbox1":
             self.queststart1.update(state)
@@ -205,6 +207,8 @@ class QuestGiverJanet(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
                     self.talkfirstfivehundred = True
+                    state.player.canMove = True
+
 
 
         elif self.textboxstate == "textbox2":
@@ -233,6 +237,8 @@ class QuestGiverJanet(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
                     print(self.textboxstate)
+                    state.player.canMove = True
+
 
 
 
@@ -250,6 +256,8 @@ class QuestGiverJanet(Npc):
                     self.quest2counter = True
                     state.restScreen.npc_janet_textbox4 = True
                     state.restScreen.npc_janet_textbox3 = False
+                    state.player.canMove = True
+
 
 
 
@@ -271,6 +279,8 @@ class QuestGiverJanet(Npc):
                     self.textboxstate = "textbox5"
                     state.restScreen.npc_janet_textbox5 = True
                     state.restScreen.npc_janet_textbox4 = False
+                    state.player.canMove = True
+
 
         elif self.textboxstate == "textbox5":
             self.queststart3.update(state)
@@ -284,6 +294,8 @@ class QuestGiverJanet(Npc):
                     state.gamblingAreaScreen.nurgle_the_hedge_hog = True
                     state.restScreen.npc_janet_textbox5 = False
                     state.restScreen.npc_janet_textbox6 = True
+                    state.player.canMove = True
+
 
         elif self.textboxstate == "textbox6":
             self.questfinish3.update(state)
@@ -299,10 +311,7 @@ class QuestGiverJanet(Npc):
                     print("player body" + str(state.player.body))
                     self.find_hog = True
                     self.quest3counter = True
-
-
-
-
+                    state.player.canMove = True
 
     def draw(self, state):
         rect = (
