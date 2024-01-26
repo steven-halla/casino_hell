@@ -321,6 +321,11 @@ class Player(Entity):
             state.player.perception = player_data['perception']
             state.player.luck = player_data['luck']
 
+            innkeeper_position_x = 16 * 22
+            innkeeper_position_y = 16 * 11
+            state.player.setPosition(innkeeper_position_x, innkeeper_position_y)
+
+            # Switch to the restScreen
             state.currentScreen = state.restScreen
             state.restScreen.start(state)
             # ... more stats as needed
