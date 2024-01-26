@@ -32,7 +32,7 @@ class StartScreen(Screen):
         self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
-        self.lock_screen = True
+        self.lock_screen = False
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -219,9 +219,16 @@ class StartScreen(Screen):
 
         state.player.draw(state)
 
-        if state.controller.isPPressed:
+        if state.controller.isPPressed == True:
 
             state.player.draw_player_stats(state)
+
+            if state.controller.isBPressed == True:
+                if state.controller.isPPressed:
+                    state.controller.isPPressed = False
+                    print("Mew")
+                    return
+
 
 
         # Update the display

@@ -44,6 +44,7 @@ class Player(Entity):
         self.level4checker = False
         #conflip glasses gives player + 20 gold
         # need ingame menus that explain rules, minues to stamina,and other info
+        self.close_status_screen = False
 
 
     def update(self, state: "GameState"):
@@ -260,4 +261,7 @@ class Player(Entity):
 
         # Display the stats surface on the main display
         state.DISPLAY.blit(stats_surface, (box_x, box_y))
+
+
+
 
