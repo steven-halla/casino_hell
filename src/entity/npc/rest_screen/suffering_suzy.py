@@ -17,6 +17,10 @@ class SufferingSuzy(Npc):
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
 
+
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Seed Shop Owner.png").convert_alpha()
+
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
@@ -97,6 +101,7 @@ class SufferingSuzy(Npc):
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
 
+
             # self.textbox.reset()
 
     # def isOverlap(self, entity: "Entity") -> bool:
@@ -104,10 +109,25 @@ class SufferingSuzy(Npc):
     #     return self.collision.isOverlap(entity.collision)
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        # rect = (
+        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        # self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
+
+        sprite_rect = pygame.Rect(5, 6, 18, 26)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "waiting":
             pass
