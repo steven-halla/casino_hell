@@ -261,3 +261,7 @@ https://www.youtube.com/watch?v=PWZOMFFW9_0
 
 demons:
 https://www.spriters-resource.com/snes/demonscrest/
+
+in REST area there are two characters that are not having collisoin because we have them set to GLOBAL state.
+
+86753

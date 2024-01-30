@@ -10,7 +10,7 @@ class InnKeeper(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Inn Keeper Neddry: Wanna stay at our inn?!"],
+                ["Inn Keeper Neddry: Wanna stay at our inn?! Dont' mind the bed bugs, roaches, and rats, theya re very friendly."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["I'm inn keeper nedry wanna stay at my inn??"],
@@ -24,6 +24,8 @@ class InnKeeper(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Fisherman.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -112,10 +114,24 @@ class InnKeeper(Npc):
             state.player.canMove = True
 
     def draw(self, state):
-        rect = (
-            self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-            self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(5, 6, 21, 25)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        # rect = (
+        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        #     self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
             current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]

@@ -24,6 +24,8 @@ class ShopKeeper(Npc):
         self.shop_costs = ["100", "200", "300"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Tool Shop Owner.png").convert_alpha()
         self.selected_money_index = 0  # New attribute to track selected item index
 
 
@@ -142,10 +144,24 @@ class ShopKeeper(Npc):
 
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(5, 6, 18, 25)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        # rect = (
+        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        # self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "waiting":
             pass

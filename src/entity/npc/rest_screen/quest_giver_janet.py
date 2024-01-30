@@ -47,6 +47,9 @@ class QuestGiverJanet(Npc):
         self.path3 = False
         self.final_message_check = False
 
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
+
     def update(self, state: "GameState"):
         # if state.restScreen.npc_janet_textbox3 == True:
         #     self.textboxstate = "textbox3"
@@ -314,10 +317,25 @@ class QuestGiverJanet(Npc):
                     state.player.canMove = True
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        # rect = (
+        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        # self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(5, 6, 20, 25)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+
 
         if self.state == "waiting":
             pass
