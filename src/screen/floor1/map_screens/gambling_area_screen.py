@@ -55,7 +55,7 @@ class GamblingAreaScreen(Screen):
 
         state.npcs = []
 
-        if self.nurgle_the_hedge_hog == True and state.restScreen.rest_screen_npc_janet_find_hog == False:
+        if self.nurgle_the_hedge_hog == True and state.restScreen.rest_screen_npc_janet_find_hog == False and state.player.perception > 0:
             print("Before appending Nurgle, NPCs:", state.npcs)
             state.npcs.append(Nurgle(16 * 25, 16 * 22))
             print("After appending Nurgle, NPCs:", state.npcs)
