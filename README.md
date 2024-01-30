@@ -263,5 +263,5 @@ demons:
 https://www.spriters-resource.com/snes/demonscrest/
 
 in REST area there are two characters that are not having collisoin because we have them set to GLOBAL state.
-
+we can solve this by putting a barrier and not draw it that way they cant walk through the NPC
 86753
