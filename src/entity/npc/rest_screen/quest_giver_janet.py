@@ -25,7 +25,7 @@ class QuestGiverJanet(Npc):
             ["Janet: Your chariasma is magnetic I'll talk to you now and reward you!"],
             (50, 450, 50, 45), 30, 500)
         self.queststart3 = NpcTextBox(
-            ["Janet: Can you find my hedge hog friend Nurgle? We just seperated right before you talked to me. ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly"],
+            ["Janet: Can you find my hedge hog friend Nurgle? We just seperated right before you talked to me. ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly, just make sure your perception is high or you wont find him"],
             (50, 450, 50, 45), 30, 500)
 
         self.questfinish3 = NpcTextBox(
