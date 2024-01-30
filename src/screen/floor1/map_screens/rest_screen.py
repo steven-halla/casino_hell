@@ -90,7 +90,7 @@ class RestScreen(Screen):
             WallyGuide(16 * 34, 16 * 26),
             StartScreenTeleporter(16 * 5, 16 * 25),
             NewTeleporter(16 * 15, 16 * 35),
-            HedgeMazeScreenTeleporter(16 * 6, 16 * 35),
+            HedgeMazeScreenTeleporter(16 * 8, 16 * 45),
         ])
         #
         # if state.quest_giver_janet.find_hog:
@@ -289,6 +289,16 @@ class RestScreen(Screen):
 
         janet_instance = state.quest_giver_janet
         janet_instance.draw(state)
+
+        if state.controller.isPPressed == True:
+
+            state.player.draw_player_stats(state)
+
+            if state.controller.isBPressed == True:
+                if state.controller.isPPressed:
+                    state.controller.isPPressed = False
+                    print("Mew")
+                    return
 
         # Update the display
         pygame.display.update()

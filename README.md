@@ -265,3 +265,13 @@ https://www.spriters-resource.com/snes/demonscrest/
 in REST area there are two characters that are not having collisoin because we have them set to GLOBAL state.
 we can solve this by putting a barrier and not draw it that way they cant walk through the NPC
 86753
+
+
+if I press the P key on any screen it opens up the plaeyr stats when yhou go back to start screen
+but not the current screen
+
+the doctor has a bug that her last message wont play twice you have to leave and enter screen
+
+there is a bug that is giving me infinte spirit, hp and spirit
+
+nelly is bugged she is not reducing player HP to 1

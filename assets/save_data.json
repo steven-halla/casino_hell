@@ -1,15 +1,16 @@
 {
-    "level": 3,
-    "exp": 400,
-    "stamina_points": 110,
-    "max_stamina_points": 110,
+    "level": 1,
+    "exp": 260.0,
+    "stamina_points": 100,
+    "max_stamina_points": 100,
     "focus_points": 100,
-    "max_focus_points": 110,
+    "max_focus_points": 100,
     "companions": [],
-    "items": [],
-    "magicinventory": [
-        "shield"
+    "items": [
+        "blue flower",
+        "opossum guard"
     ],
+    "magicinventory": [],
     "body": 0,
     "mind": 0,
     "spirit": 0,

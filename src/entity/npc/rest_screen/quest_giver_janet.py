@@ -257,8 +257,12 @@ class QuestGiverJanet(Npc):
                     self.input_time = current_time  # Update last input time
                     # self.talkfirstfivehundred = True
                     self.quest2counter = True
-                    state.restScreen.npc_janet_textbox4 = True
-                    state.restScreen.npc_janet_textbox3 = False
+                    if state.player.spirit > 0:
+                        state.restScreen.npc_janet_textbox4 = True
+                        state.restScreen.npc_janet_textbox3 = False
+                    elif state.player.spirit < 1:
+                        state.restScreen.npc_janet_textbox4 = False
+                        state.restScreen.npc_janet_textbox3 = True
                     state.player.canMove = True
 
 

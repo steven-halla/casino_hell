@@ -91,24 +91,26 @@ class Player(Entity):
 
             controller.isOPressed = False
 
-        if self.exp > 500 and self.level2checker == False or self.level == 2:
+        if self.exp > 500 and self.level2checker == False and self.level == 2:
             # print("grats you leveld up to level 2")
             self.level = 2
             self.max_stamina_points += 10 + (self.stamina_increase)
             self.max_focus_points += 10
             self.spirit += 1
             self.level2checker = True
+            return
 
-        elif self.exp > 1000 and self.level3checker == False or self.level == 3:
+        elif self.exp > 1000 and self.level3checker == False and self.level == 3:
             # print("grats you leveld up to level 3")
             if "shield" not in self.magicinventory:
                 self.magicinventory.append("shield")
                 self.max_stamina_points += 10
                 self.max_focus_points += 10
+                self.level3checker = True
+                self.level = 3
 
                 return
-            self.level = 3
-            self.level3checker = True
+
 
 
 

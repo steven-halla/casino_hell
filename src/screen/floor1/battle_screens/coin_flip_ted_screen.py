@@ -47,7 +47,7 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 100
+        self.coinFlipTedMoney = 50
 
 
 
@@ -295,7 +295,7 @@ class CoinFlipTedScreen(Screen):
         if self.coin_leaning_tracker == "tails":
             coin_flip = random.randint(1, 100)
             print(str(coin_flip))
-            if coin_flip <= 70:
+            if coin_flip <= 80:
                 self.result = "tails"
                 # self.coin_leaning_counter -= 1
                 print("Your result is " + str(self.result))
@@ -307,7 +307,7 @@ class CoinFlipTedScreen(Screen):
             coin_flip = random.randint(1, 100)
             print(str(coin_flip))
 
-            if coin_flip <= 70:
+            if coin_flip <= 80:
                 self.result = "heads"
                 print(self.result)
             else:
