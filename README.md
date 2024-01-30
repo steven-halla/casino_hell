@@ -252,3 +252,9 @@ at any phase you can drop out but you lose your monies
 if your bet is in the devils pile you can only make 1 bet , but others can raise you 
 
 maybe have sir leopold during his actions in combat  "I'll show you what real power looks like"
+
+when using gimp be sure to set image to RGB values
+https://graphicdesign.stackexchange.com/questions/39014/pngs-made-in-gimp-not-coming-out-transparent
+
+How to remove background from GIMP
+https://www.youtube.com/watch?v=PWZOMFFW9_0

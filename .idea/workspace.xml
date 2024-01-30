@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now we dont draw image when character is talking this si huge">
-      <change beforePath="$PROJECT_DIR$/outside_resources.md" beforeDir="false" afterPath="$PROJECT_DIR$/outside_resources.md" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now have on screen character images">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +64,7 @@
     &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/src/entity/demon&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/assets/images&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -76,6 +77,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/src/entity/demon" />
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
@@ -296,6 +298,7 @@
       <workItem from="1705123656694" duration="180424000" />
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
+      <workItem from="1706309237437" duration="11605000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -640,7 +643,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="349" />
+    <option name="localTasksCounter" value="350" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -669,7 +672,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed sally opossum battle screen print messages that were annoying" />
     <MESSAGE value="updateed player with exp tables and level ups and added new text to the read me in regards to chili demons" />
     <MESSAGE value="updated leveling for 3 levels total, this is a small area and dont need too many levels, now player can get +1 to body but loses 2000 coins which are held" />
     <MESSAGE value="now minus money for chatting with bar keep" />
@@ -694,7 +696,8 @@
     <MESSAGE value="displaying one image on the screen as she talks" />
     <MESSAGE value="new image" />
     <MESSAGE value="now we dont draw image when character is talking this si huge" />
-    <option name="LAST_COMMIT_MESSAGE" value="now we dont draw image when character is talking this si huge" />
+    <MESSAGE value="now have on screen character images" />
+    <option name="LAST_COMMIT_MESSAGE" value="now have on screen character images" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
