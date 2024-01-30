@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now you need perception of +1 to make nurgle appear">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="nurgle updated with picture">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -299,7 +300,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="15373000" />
+      <workItem from="1706635016180" duration="16277000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -644,7 +645,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="357" />
+    <option name="localTasksCounter" value="358" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -673,7 +674,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="going through and about to fix the issue with being able to move while talking state" />
     <MESSAGE value="bapping mike now cant have player moving when talking to him" />
     <MESSAGE value="candy  now cant have player moving when talking to him" />
     <MESSAGE value="in start screen you cannot move during NPC interactions" />
@@ -698,7 +698,8 @@
     <MESSAGE value="now all npcs for the rest area and the start area are all done" />
     <MESSAGE value="fixed spirit but" />
     <MESSAGE value="now you need perception of +1 to make nurgle appear" />
-    <option name="LAST_COMMIT_MESSAGE" value="now you need perception of +1 to make nurgle appear" />
+    <MESSAGE value="nurgle updated with picture" />
+    <option name="LAST_COMMIT_MESSAGE" value="nurgle updated with picture" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

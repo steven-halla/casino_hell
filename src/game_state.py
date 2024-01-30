@@ -50,6 +50,7 @@ class GameState:
         self.demon_left: Demon1 = Demon1(0,0)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(16 * 10, 16 * 26)
+
         self.shop_keeper: ShopKeeper = ShopKeeper(16 * 18, 16 * 26)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())

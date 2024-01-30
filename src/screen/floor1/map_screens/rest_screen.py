@@ -113,11 +113,12 @@ class RestScreen(Screen):
         player = state.player
         obstacle = state.obstacle
         controller.update()
-        shop_keeper_instance = state.shop_keeper
+        if state.player.perception > 0:
+            shop_keeper_instance = state.shop_keeper
 
         # Now, you can interact with the ShopKeeper instance
         # For example, calling its update method:
-        shop_keeper_instance.update(state)
+            shop_keeper_instance.update(state)
 
         janet_keeper_instance = state.quest_giver_janet
 
@@ -284,8 +285,9 @@ class RestScreen(Screen):
 
         state.player.draw(state)
 
-        shop_keeper_instance = state.shop_keeper
-        shop_keeper_instance.draw(state)
+        if state.player.perception > 0:
+            shop_keeper_instance = state.shop_keeper
+            shop_keeper_instance.draw(state)
 
         janet_instance = state.quest_giver_janet
         janet_instance.draw(state)
