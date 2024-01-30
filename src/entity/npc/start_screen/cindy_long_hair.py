@@ -52,12 +52,18 @@ class CindyLongHair(Npc):
         self.input_time = pygame.time.get_ticks()
         self.coinFlipTedReward = False
 
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/cindy_long_hair_sprites.png")
+
 
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
         self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image_2.png")
+
+        self.character_image = pygame.image.load(
+            "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
     # def draw_npc_text(self, position: tuple[int, int], display: pygame.Surface):
     #     top_card_position = (self.card_width * 13, 0)
@@ -94,6 +100,8 @@ class CindyLongHair(Npc):
 
     def update_talking(self, state: "GameState"):
 
+
+
         state.player.canMove = False
 
         if self.coinFlipTedReward == True:
@@ -120,6 +128,32 @@ class CindyLongHair(Npc):
 
 
     def draw(self, state):
+        original_width, original_height = self.character_image.get_size()
+
+        # Calculate the new dimensions
+        new_width = original_width * 2
+        new_height = original_height * 2
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(self.character_sprite_image, (new_width, new_height))
+
+        sprite_x = self.collision.x + state.camera.x
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        state.DISPLAY.blit(scaled_image, (sprite_x, sprite_y))
+
+        original_width, original_height = self.character_sprite_image.get_size()
+
+        # Calculate the new dimensions of the image
+        new_width = original_width * 1.7
+        new_height = original_height * 1.7
+
+        # Scale the image
+        scaled_image = pygame.transform.scale(self.character_sprite_image,
+                                              (new_width, new_height))
+        # Draw the scaled character sprite
+        state.DISPLAY.blit(scaled_image, (sprite_x, sprite_y))
+
         rect = (
             self.collision.x + state.camera.x, self.collision.y + state.camera.y,
             self.collision.width, self.collision.height)

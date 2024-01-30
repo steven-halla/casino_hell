@@ -250,3 +250,5 @@ make a bet and push money to devils pile
 if you dont swap, you make a bet and stick with it till the end
 at any phase you can drop out but you lose your monies
 if your bet is in the devils pile you can only make 1 bet , but others can raise you 
+
+maybe have sir leopold during his actions in combat  "I'll show you what real power looks like"

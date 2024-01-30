@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="inn keeper almost fin">
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now we dont draw image when character is talking this si huge">
+      <change beforePath="$PROJECT_DIR$/outside_resources.md" beforeDir="false" afterPath="$PROJECT_DIR$/outside_resources.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -295,6 +295,7 @@
       <workItem from="1705119978048" duration="604000" />
       <workItem from="1705123656694" duration="180424000" />
       <workItem from="1705706706573" duration="28431000" />
+      <workItem from="1705790233135" duration="130835000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -639,7 +640,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="246" />
+    <option name="localTasksCounter" value="349" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -668,32 +669,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="light refactored, put maps in a more orginized manner" />
-    <MESSAGE value="text updated" />
-    <MESSAGE value="fixed bug with button presses" />
-    <MESSAGE value="menus is now fixed goes to yes after saying no and talking again" />
-    <MESSAGE value="updating dialog" />
-    <MESSAGE value="reward working" />
-    <MESSAGE value="almsot done with  cindy class" />
-    <MESSAGE value="working now on reveal message" />
-    <MESSAGE value="klose" />
-    <MESSAGE value="opening screen almost done" />
-    <MESSAGE value="fixed dialog box for flipping ted now it wont pop up when he's defeated" />
-    <MESSAGE value="start area finished, all rewards and quest lines working proper and all text working, now moving on to test coin flip for bugs" />
-    <MESSAGE value="fixing minor bugs, as well as fixing how exp is handled so players dont farm exp" />
-    <MESSAGE value="text upddated" />
-    <MESSAGE value="bugs with menu options fixed" />
-    <MESSAGE value="start area finished" />
-    <MESSAGE value="bar keep reset back to older state" />
-    <MESSAGE value="this way wont work go back  1 commit" />
-    <MESSAGE value="this displays the toher text box" />
-    <MESSAGE value="trying to update bar keep trying again this is the best state" />
-    <MESSAGE value="i think i figured it out" />
-    <MESSAGE value="went back" />
-    <MESSAGE value="went a new route to append NPC with a new NPC" />
-    <MESSAGE value="updating inn keeper with a menu" />
-    <MESSAGE value="inn keeper almost fin" />
-    <option name="LAST_COMMIT_MESSAGE" value="inn keeper almost fin" />
+    <MESSAGE value="removed sally opossum battle screen print messages that were annoying" />
+    <MESSAGE value="updateed player with exp tables and level ups and added new text to the read me in regards to chili demons" />
+    <MESSAGE value="updated leveling for 3 levels total, this is a small area and dont need too many levels, now player can get +1 to body but loses 2000 coins which are held" />
+    <MESSAGE value="now minus money for chatting with bar keep" />
+    <MESSAGE value="fixed exp but and now exp is working for sally" />
+    <MESSAGE value="updated nelly with Exp gains for player" />
+    <MESSAGE value="poker variant devils due created in READ ME" />
+    <MESSAGE value="shield tested and works , renamed Shield to shield so its lower case and more consistant with naming conventions" />
+    <MESSAGE value="going through and about to fix the issue with being able to move while talking state" />
+    <MESSAGE value="bapping mike now cant have player moving when talking to him" />
+    <MESSAGE value="candy  now cant have player moving when talking to him" />
+    <MESSAGE value="in start screen you cannot move during NPC interactions" />
+    <MESSAGE value="player now locked during conversations for all NPCs in gamblin area" />
+    <MESSAGE value="player status screen is being built got the position down need to work on it a bit more need to add borders and more details" />
+    <MESSAGE value="status screeen created" />
+    <MESSAGE value="to exit out of screen press B this should be more universal" />
+    <MESSAGE value="drew white border around box and centered it more" />
+    <MESSAGE value="can now save game now need load function" />
+    <MESSAGE value="can now load game as well basic player stats need to include quests in future, as well as set Player position" />
+    <MESSAGE value="load now puts player in rest screen" />
+    <MESSAGE value="load now puts player in position near inn keeper" />
+    <MESSAGE value="displaying one image" />
+    <MESSAGE value="displaying one image on the screen as she talks" />
+    <MESSAGE value="new image" />
+    <MESSAGE value="now we dont draw image when character is talking this si huge" />
+    <option name="LAST_COMMIT_MESSAGE" value="now we dont draw image when character is talking this si huge" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -710,7 +711,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py</url>
-          <line>123</line>
+          <line>131</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
