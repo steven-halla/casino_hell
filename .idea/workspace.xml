@@ -4,9 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now have on screen character images">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="npcs are now having in game sprites">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/inn_guard.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/inn_guard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/jacky_banana.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/jacky_banana.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/main_screen_teleporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/main_screen_teleporter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/nicky_hints.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/nicky_hints.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/examples/main_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/examples/main_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/boss_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/hotel_room_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/hotel_room_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,11 +96,11 @@
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/entity/npc" />
       <recent name="$PROJECT_DIR$/src/screen/examples" />
       <recent name="$PROJECT_DIR$/src/screen/floor1/map_screens" />
       <recent name="$PROJECT_DIR$/src/screen/floor1/battle_screens" />
       <recent name="$PROJECT_DIR$/src/entity/npc/boss_screen" />
-      <recent name="$PROJECT_DIR$/src/screen/floor1" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -299,6 +313,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
+      <workItem from="1706635016180" duration="2811000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -643,7 +658,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="350" />
+    <option name="localTasksCounter" value="351" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -672,7 +687,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updateed player with exp tables and level ups and added new text to the read me in regards to chili demons" />
     <MESSAGE value="updated leveling for 3 levels total, this is a small area and dont need too many levels, now player can get +1 to body but loses 2000 coins which are held" />
     <MESSAGE value="now minus money for chatting with bar keep" />
     <MESSAGE value="fixed exp but and now exp is working for sally" />
@@ -697,7 +711,8 @@
     <MESSAGE value="new image" />
     <MESSAGE value="now we dont draw image when character is talking this si huge" />
     <MESSAGE value="now have on screen character images" />
-    <option name="LAST_COMMIT_MESSAGE" value="now have on screen character images" />
+    <MESSAGE value="npcs are now having in game sprites" />
+    <option name="LAST_COMMIT_MESSAGE" value="npcs are now having in game sprites" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

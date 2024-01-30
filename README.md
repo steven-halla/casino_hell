@@ -258,3 +258,6 @@ https://graphicdesign.stackexchange.com/questions/39014/pngs-made-in-gimp-not-co
 
 How to remove background from GIMP
 https://www.youtube.com/watch?v=PWZOMFFW9_0
+
+demons:
+https://www.spriters-resource.com/snes/demonscrest/

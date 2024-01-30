@@ -1,7 +1,7 @@
 import pygame
 import pytmx
 
-from constants import PLAYER_OFFSET, BLUEBLACK, PURPLE
+from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -10,11 +10,10 @@ from entity.npc.start_screen.bapping_mike import BappingMike
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.start_screen.flippin_ted import FlippinTed
 from entity.npc.start_screen.hungry_patrick import HungryPatrick
-from entity.npc.start_screen.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
-from entity.npc.start_screen.jacky_banana import JackyBanana
+from entity.npc.jacky_banana import JackyBanana
 from entity.npc.start_screen.main_screen_teleporter import MainScreenTeleporter
-from entity.npc.start_screen.nicky_hints import NickyHints
+from entity.npc.nicky_hints import NickyHints
 from entity.player.player import Player
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
@@ -56,11 +55,11 @@ class StartScreen(Screen):
 
         state.npcs = [
 
-            JackyBanana(16* 5, 16 * 15),
+            # JackyBanana(16* 5, 16 * 15),
             BappingMike(16* 15, 16 * 15),
             HungryPatrick(16* 25, 16 * 15),
             # InnGuard(16* 35, 16 * 15),
-            NickyHints(16* 25, 16 * 25),
+            # NickyHints(16* 25, 16 * 25),
             MainScreenTeleporter(16 * 1, 16 * 10),
             FlippinTed(16* 35, 16 * 34),
 

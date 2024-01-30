@@ -13,7 +13,7 @@ from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
 from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
-from entity.npc.start_screen.inn_guard import InnGuard
+from entity.npc.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
 from screen.examples.screen import Screen

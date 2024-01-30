@@ -13,12 +13,11 @@ from entity.npc.rest_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.rest_screen.inn_keeper import InnKeeper
 from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
 from entity.npc.rest_screen.new_teleporter import NewTeleporter
-from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 
 from entity.npc.rest_screen.start_screen_teleporter import StartScreenTeleporter
 from entity.npc.rest_screen.suffering_suzy import SufferingSuzy
 from entity.npc.rest_screen.wally_guide import WallyGuide
-from entity.npc.start_screen.inn_guard import InnGuard
+from entity.npc.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
 from screen.examples.screen import Screen

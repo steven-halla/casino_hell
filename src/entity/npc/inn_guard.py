@@ -11,7 +11,7 @@ class InnGuard(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "InnGuard: Cheatting ted is a real piece of work. Try betting low to see his pattern he picks"],
+                "InnGuard: fdsafsaf ted is a real piece of work. Try betting low to see his pattern he picks"],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -19,6 +19,9 @@ class InnGuard(Npc):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+
+        self.character_sprite_image = pygame.image.load(
+            "/images/SNES - Harvest Moon - Hawker and Peddler.png").convert_alpha()
 
     def update(self, state: "GameState"):
 
@@ -76,6 +79,20 @@ class InnGuard(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
     def draw(self, state):
+        sprite_rect = pygame.Rect(5, 6, 21, 25)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         rect = (
         self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         self.collision.width, self.collision.height)
