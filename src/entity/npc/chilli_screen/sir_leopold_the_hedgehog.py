@@ -29,29 +29,14 @@ class SirLeopoldTheHedgeHog(Npc):
             (50, 450, 50, 45), 30, 500)
         self.reward_all_hogs = NpcTextBox(
             ["you got em all great",
-             "I'll be here to help you now, since you have a Spirit of 1, I'll join you as a companion. Maybe more will join us if you get a higher spirit? ",
-             "I'll reward you with Shake, a super secret technique taught to me by a kung fu ganbling master chef",
-             "This wil shake one  of two opoussums plus a X3 Star.",
              "In addiiton I'll also give you 500 coins, how am I carrying so many for being so small...because I have a high perception",
-             "Hero: Wait what.....how does that even make sense?",
-             "Sir Leopold: The rules of reality as you know them don't apply here, up is waffles and birds are triangles.",
              "Hero: What?",
-             "leopold: this place is like living in a wacky  cartoon universe, which in effect has some different rules, for starters, nobody can die",
-             "Hero: No wonder everything here seems so comimcal.",
-             "leoppold: i used to watch cartoons, watch cartoon characters get flattoned by steam rollers , and air themselves back up",
-             "Hero: me too those were some funny chartoons",
-             "Leoppld: well you wont think so when you experience it first hand, , to you a comical cartoony situation is funny,",
-             " but now that your down here you won't think so. Every wacky situation you can think of, can happen down here",
-             "ANd it does take a toll on your mind and body. And , it does hurt, a lot, even if you don't scream, it always hurts.",
-             "In effect, we're the cartoon characters, and the demons....are the viewers interacting like in virtual reality, and they do love to be entertained.,"
              "enough of this, lets go back to the inn and rest up I'm sure everyone will have something new to say."],
             (50, 450, 50, 45), 30, 500)
 
         self.final_message = NpcTextBox(
             ["", "final message here from sir leopold" ,
              "Since your Spirit is high I'll join you, the higher spirit yo uhave the more companioins will join us",
-             "You can now equpid compaion items for me, sir leopold the hedge hog  ",
-             "I may be small but my perception is quiet high, I can feel the print of cards without even touching them",
              "I hear that Cindy has a special companion item that I can use, can you complete her quest and get it? ",
              ],
             (50, 450, 50, 45), 30, 500)
@@ -67,6 +52,10 @@ class SirLeopoldTheHedgeHog(Npc):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+
+
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
 
     def update(self, state: "GameState"):
 
@@ -242,10 +231,24 @@ class SirLeopoldTheHedgeHog(Npc):
     #     return self.collision.isOverlap(entity.collision)
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        # rect = (
+        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        # self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(5, 6, 56, 35)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "waiting":
             pass

@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now the chili area appears right ad proper when our hero has rabies">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="created way to get to chili area, added NPC models to the chili area">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/brutal_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/brutal_patrick.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sleepy_ned.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sleepy_ned.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sleepy_ned.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/sleepy_ned.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/hedgeMazeTeleporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/hedgeMazeTeleporter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,11 +88,11 @@
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/images" />
+      <recent name="$PROJECT_DIR$/src/entity/npc/chilli_screen" />
       <recent name="$PROJECT_DIR$/src/entity/npc" />
+      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/src/screen/examples" />
       <recent name="$PROJECT_DIR$/src/screen/floor1/map_screens" />
-      <recent name="$PROJECT_DIR$/src/screen/floor1/battle_screens" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -306,7 +305,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="23087000" />
+      <workItem from="1706635016180" duration="26948000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -651,7 +650,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="360" />
+    <option name="localTasksCounter" value="361" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,7 +679,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="in start screen you cannot move during NPC interactions" />
     <MESSAGE value="player now locked during conversations for all NPCs in gamblin area" />
     <MESSAGE value="player status screen is being built got the position down need to work on it a bit more need to add borders and more details" />
     <MESSAGE value="status screeen created" />
@@ -705,7 +703,8 @@
     <MESSAGE value="nurgle updated with picture" />
     <MESSAGE value="now need perception + 1 to get him to appear" />
     <MESSAGE value="now the chili area appears right ad proper when our hero has rabies" />
-    <option name="LAST_COMMIT_MESSAGE" value="now the chili area appears right ad proper when our hero has rabies" />
+    <MESSAGE value="created way to get to chili area, added NPC models to the chili area" />
+    <option name="LAST_COMMIT_MESSAGE" value="created way to get to chili area, added NPC models to the chili area" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

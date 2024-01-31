@@ -29,7 +29,7 @@ class HedgeMazeScreen(Screen):
         self.x_right_move = False
         self.player = Player(333, 555)
         self.hedge_hog_counter = 4
-        self.blue_flower = True
+        self.blue_flower = False
         move_player_down_flag = False
 
 

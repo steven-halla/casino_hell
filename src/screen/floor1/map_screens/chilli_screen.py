@@ -2,12 +2,14 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.battle_screen.rest_area_teleporter import RestScreenTeleporter
 from entity.npc.chilli_screen.bobby_bibs import BobbyBibs
 from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
 from entity.npc.chilli_screen.chilly_billy import ChillyBilly
+from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.chilli_screen.jessica_starving import JessicaStarving
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
-from entity.npc.chilli_screen.sleepy_ned import SleepyNed
+from entity.npc.sleepy_ned import SleepyNed
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -48,8 +50,7 @@ class ChilliScreen(Screen):
 
         ]
 
-        if state.player.perception > 0:
-            state.npcs.append(SirLeopoldTheHedgeHog(16 * 10, 16 * 26))
+
 
         state.npcs = []
 
@@ -59,7 +60,11 @@ class ChilliScreen(Screen):
             BrutalPatrick(16 * 26, 16 * 18),
             ChillyBilly(16 * 18, 16 * 18),
             JessicaStarving(16 * 10, 16 * 18),
-            SleepyNed(16 * 18, 16 * 26),
+            SirLeopoldTheHedgeHog(16 * 18, 16 * 26),
+            HedgeMazeScreenTeleporter(16 * 8, 16 * 5),
+            RestScreenTeleporter(16 * 28, 16 * 5),
+
+            # SleepyNed(16 * 18, 16 * 26),
         ])
 
         # state.npcs = []

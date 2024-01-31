@@ -23,9 +23,9 @@ class Player(Entity):
         self.level = 1
         self.body = 0
         self.mind = 0
-        self.spirit = 1
+        self.spirit = 0
         self.luck = 0
-        self.perception = 1
+        self.perception = 0
         self.stamina_points = 100
         self.stamina_increase = self.body * 1 * self.level
 

@@ -10,7 +10,7 @@ from entity.npc.rest_screen.bar_keep import BarKeep
 from entity.npc.rest_screen.bar_keep_low_body import BarKeepLowBody
 from entity.npc.rest_screen.chili_pit_teleporter import ChiliPitTeleporter
 from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
-from entity.npc.rest_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
+from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.rest_screen.inn_keeper import InnKeeper
 from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
 from entity.npc.rest_screen.new_teleporter import NewTeleporter
@@ -97,7 +97,6 @@ class RestScreen(Screen):
             WallyGuide(16 * 34, 16 * 26),
             StartScreenTeleporter(16 * 5, 16 * 25),
             NewTeleporter(16 * 15, 16 * 35),
-            HedgeMazeScreenTeleporter(16 * 8, 16 * 45),
         ])
         #
         # if state.quest_giver_janet.find_hog:
