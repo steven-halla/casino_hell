@@ -44,7 +44,7 @@ Games:
 2) black jack
 3) oppsum in a can 
 4) hungry starving hippos
-5) poker
+5) poker -devils due
 6) dice fighter
 7) nuke em
 8) slots
@@ -59,17 +59,6 @@ to get players playing games daily have daily rewards. Rewards can be things suc
 
 quest can also be " dont use magic" or anything else that will make the game harder.
 
-quest giver janet has 3 quests:
-one is a simple fetch item quest to give her  a bottle of water
-the second quests is to rescuse hodge podge the hedge hog from the maze (1 of 10 hedge hogs that are hidden)
-the third quest is to defeat one of the bosses,like fully defeat this will unlcok her final convo . 
-
-Rewards:
-first is a spell for black jack
-2nd is a save coin
-3rd is an item that gives a bonus for black jack to help with final boss of the level
-
-lets not forget to add the doctor for fixing opposum status
 
 
 
@@ -77,28 +66,20 @@ How to start program:
 
  python src/main.py 
  
-lets add random messsages that play on the bet screen no reason to see the same text
-over and over again 
-maybe do this via a counter say every 10 games we can change the welcome messge
-this means all games will need to back to the welcome screen
-or we just make a new screen type that only triggers on counter of 10
 
 rib demon slots:
-every time you lose you get plucked, but its hell so it regrows. 
+every time you lose you get plucked, but its hell so it regrows.
+we cna have rib demons do 1/4 player HP damage or something like that
+damage is done if all 3 spins land on a rib demon
 having a high body  can deflect the rib snatchers  or even reduce damage
 
 each game needs 2 stats attached to it
 
 
 
-opossum in a can game states:
-Welcome screen-has welcome message
-THere is no need for a bet screen
 
-pick_screen
-if you are here, subtract money from player pool
 
-play again screen: select play again or quit 
+
 
 opossom guard: this item blocks opposum bites from doing damage
 opossom repellant: 25% chance picking the wrong can wont result in a loss 
@@ -310,3 +291,12 @@ black jack -500 gold
 Horse: we drink beer, then we make beer
 
 have doctor opposum put up 100,000 coins for hero 
+
+
+###
+###
+###
+NOTE:
+If player stamina is below 1: put them in doctors office, but charge 200 coins. 
+if player stamina is below 10% perhaps have their HP Meter be red
+if player coins are below 10: Game over....

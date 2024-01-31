@@ -40,7 +40,7 @@ class Player(Entity):
 
 
 
-        self.hasRabies = True
+        self.hasRabies = False
 
 
         self.rabies1time = False
