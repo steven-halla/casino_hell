@@ -31,6 +31,10 @@ class QuestGiverJanet(Npc):
         self.questfinish3 = NpcTextBox(
             ["Janet:Thank you so much for finding my drinking buddy, hope you enjoy the extra magic stamina. ", "with a body of 1 you can drink with me."],
             (50, 450, 50, 45), 30, 500)
+
+        self.rabies = NpcTextBox(
+            ["Oh no you have rabies......."],
+            (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
@@ -55,7 +59,11 @@ class QuestGiverJanet(Npc):
         #     self.textboxstate = "textbox3"
 
 
-        if state.restScreen.npc_janet_textbox2 == True:
+        if state.player.hasRabies == True:
+            self.textboxstate = "textbox7"
+
+
+        elif state.restScreen.npc_janet_textbox2 == True:
             self.textboxstate = "textbox2"
 
 
@@ -97,7 +105,12 @@ class QuestGiverJanet(Npc):
         #     self.talkfirstfivehundred = True
 
         if self.state == "waiting":
-            if state.gamblingAreaScreen.five_hundred_opossums == True and self.talkfirstfivehundred == True:
+
+            if state.player.hasRabies == True:
+                self.textboxstate = "textbox7"
+
+
+            if state.gamblingAreaScreen.five_hundred_opossums == True and self.talkfirstfivehundred == True and state.player.hasRabies == False:
                 self.textboxstate = "textbox2"
                 self.talkfirstfivehundred = False
                 state.restScreen.npc_janet_textbox2 = True
@@ -106,14 +119,14 @@ class QuestGiverJanet(Npc):
                 #     print("fjasd;fjkdls")
 
 
-            if state.player.spirit == 1 and self.quest2counter == True:
+            if state.player.spirit == 1 and self.quest2counter == True and state.player.hasRabies == False:
                 # print("time for the 2nd quest")
                 self.textboxstate = "textbox4"
                 self.find_hog = True
                 state.restScreen.npc_janet_textbox4 = True
 
 
-            if "Nurgle the hedge hog" in state.player.items and self.quest3counter == True:
+            if "Nurgle the hedge hog" in state.player.items and self.quest3counter == True and state.player.hasRabies == False:
                 self.textboxstate = "textbox6"
                 state.restScreen.npc_janet_textbox6 = True
 
@@ -177,7 +190,10 @@ class QuestGiverJanet(Npc):
 
                 self.state_start_time = pygame.time.get_ticks()
                 # the below is where kenny had it
-                if self.textboxstate == "textbox1":
+                if self.textboxstate == "textbox7":
+                    # print("Textbox1")
+                    self.rabies.reset()
+                elif self.textboxstate == "textbox1":
                     # print("Textbox1")
                     self.queststart1.reset()
                 elif self.textboxstate == "textbox2":
@@ -202,7 +218,16 @@ class QuestGiverJanet(Npc):
         state.player.canMove = False
 
         # Update and check the state of the appropriate text box
-        if self.textboxstate == "textbox1":
+        if self.textboxstate == "textbox7":
+            self.rabies.update(state)
+            if state.controller.isTPressed and (current_time - self.input_time > 500):
+                if self.rabies.is_finished():
+                    self.state = "waiting"
+                    self.state_start_time = current_time
+                    self.input_time = current_time  # Update last input time
+                    state.player.canMove = True
+
+        elif self.textboxstate == "textbox1":
             self.queststart1.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.queststart1.is_finished():
@@ -345,7 +370,9 @@ class QuestGiverJanet(Npc):
             pass
         elif self.state == "talking":
             # print("is talking")
-            if self.textboxstate == "textbox1":
+            if self.textboxstate == "textbox7":
+                self.rabies.draw(state)
+            elif self.textboxstate == "textbox1":
                 self.queststart1.draw(state)
             elif self.textboxstate == "textbox2":
                 self.questfinish1.draw(state)
