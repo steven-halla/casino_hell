@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="npcs in the rest area now respect the opossum status and give messages">
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/bapping_mike.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/bapping_mike.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="most NPCS In game now respect our opossum status and have updated messages">
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -299,7 +299,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="36128000" />
+      <workItem from="1706635016180" duration="36582000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -644,7 +644,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="366" />
+    <option name="localTasksCounter" value="367" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -673,7 +673,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="can now save game now need load function" />
     <MESSAGE value="can now load game as well basic player stats need to include quests in future, as well as set Player position" />
     <MESSAGE value="load now puts player in rest screen" />
     <MESSAGE value="load now puts player in position near inn keeper" />
@@ -698,7 +697,8 @@
     <MESSAGE value="updating NPC with oposum state responses" />
     <MESSAGE value="all NPCS now have rabies message" />
     <MESSAGE value="npcs in the rest area now respect the opossum status and give messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="npcs in the rest area now respect the opossum status and give messages" />
+    <MESSAGE value="most NPCS In game now respect our opossum status and have updated messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="most NPCS In game now respect our opossum status and have updated messages" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

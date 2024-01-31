@@ -14,7 +14,10 @@ class FlippinTed(Npc):
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
-                (50, 450, 700, 130), 36, 500)
+                (50, 450, 700, 130), 36, 500),
+            "rabies_message": NpcTextBox(
+                ["Bro, you look like you have a hankering for trash, get away from me you smelly piece of fuck"],
+                (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -46,13 +49,23 @@ class FlippinTed(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipTedScreen.coinFlipTedDefeated:
+            if state.player.hasRabies == True:
+                self.flipping_ted_messages["rabies_message"].reset()
+            elif state.coinFlipTedScreen.coinFlipTedDefeated:
                 self.flipping_ted_messages["defeated_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+        current_message = (
+            self.flipping_ted_messages["rabies_message"]
+            if state.player.hasRabies
+            else (
+                self.flipping_ted_messages["defeated_message"]
+                if state.coinFlipTedScreen.coinFlipTedDefeated
+                else self.flipping_ted_messages["welcome_message"]
+            )
+        )
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -70,7 +83,7 @@ class FlippinTed(Npc):
             print("Down pressed, arrow_index:", self.arrow_index)
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False:
+        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False and state.player.hasRabies == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -119,11 +132,19 @@ class FlippinTed(Npc):
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+            current_message = (
+                self.flipping_ted_messages["rabies_message"]
+                if state.player.hasRabies
+                else (
+                    self.flipping_ted_messages["defeated_message"]
+                    if state.coinFlipTedScreen.coinFlipTedDefeated
+                    else self.flipping_ted_messages["welcome_message"]
+                )
+            )
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == False:
+            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == False and state.player.hasRabies == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

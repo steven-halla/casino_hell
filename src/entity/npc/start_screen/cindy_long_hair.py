@@ -37,6 +37,13 @@ class CindyLongHair(Npc):
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
+            'rabies_message': NpcTextBox(
+                [
+                    "",
+                    "that bitch Sally took teh doctors blue flower, I just know it.",
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
         }
         self.choices = ["Yes", "No"]
         self.sprite_sheet = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/cindy_text_talk_image_2.png").convert_alpha()
@@ -112,7 +119,10 @@ class CindyLongHair(Npc):
 
         state.player.canMove = False
 
-        if self.coinFlipTedReward == True:
+        if state.player.hasRabies == True:
+            current_message = self.cindy_long_hair_messages['rabies_message']
+
+        elif self.coinFlipTedReward == True:
             current_message = self.cindy_long_hair_messages['final_message']
         elif state.coinFlipTedScreen.coinFlipTedDefeated:
             if "reveal" not in state.player.magicinventory:
@@ -212,7 +222,9 @@ class CindyLongHair(Npc):
             # # Draw the sprite section
             # state.DISPLAY.blit(sprite, position)
 
-            if self.coinFlipTedReward == True:
+            if state.player.hasRabies == True:
+                current_message = self.cindy_long_hair_messages['rabies_message']
+            elif self.coinFlipTedReward == True:
                 current_message = self.cindy_long_hair_messages['final_message']
             elif state.coinFlipTedScreen.coinFlipTedDefeated:
                 current_message = self.cindy_long_hair_messages['reward_message']
