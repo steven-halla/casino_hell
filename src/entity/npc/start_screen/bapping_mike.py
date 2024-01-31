@@ -197,7 +197,7 @@ class BappingMike(Npc):
 
     def draw(self, state):
         # Draw character sprite
-        sprite_rect = pygame.Rect(7, 6, 17.5, 24)
+        sprite_rect = pygame.Rect(5, 6, 18, 25)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
         sprite_x = self.collision.x + state.camera.x - 20

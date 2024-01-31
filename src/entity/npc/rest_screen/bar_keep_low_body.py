@@ -90,32 +90,32 @@
 #
 #             self.state_start_time = pygame.time.get_ticks()
 #             state.player.canMove = True
-#
-#     def draw(self, state):
-#         sprite_rect = pygame.Rect(5, 6, 23, 30)
-#
-#         # Get the subsurface for the area you want
-#         sprite = self.character_sprite_image.subsurface(sprite_rect)
-#
-#         # Scale the subsurface to make it two times bigger
-#         scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-#
-#         # Define the position where you want to draw the sprite
-#         sprite_x = self.collision.x + state.camera.x - 20
-#         sprite_y = self.collision.y + state.camera.y - 10
-#
-#         # Draw the scaled sprite portion on the display
-#         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-#         # rect = (
-#         # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-#         # self.collision.width, self.collision.height)
-#         # pygame.draw.rect(state.DISPLAY, self.color, rect)
-#
-#         if self.state == "waiting":
-#             pass
-#         elif self.state == "talking":
-#             # print("is talking")
-#             self.textbox.draw(state)
+
+    # def draw(self, state):
+    #     sprite_rect = pygame.Rect(5, 6, 23, 30)
+    #
+    #     # Get the subsurface for the area you want
+    #     sprite = self.character_sprite_image.subsurface(sprite_rect)
+    #
+    #     # Scale the subsurface to make it two times bigger
+    #     scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+    #
+    #     # Define the position where you want to draw the sprite
+    #     sprite_x = self.collision.x + state.camera.x - 20
+    #     sprite_y = self.collision.y + state.camera.y - 10
+    #
+    #     # Draw the scaled sprite portion on the display
+    #     state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+    #     # rect = (
+    #     # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+    #     # self.collision.width, self.collision.height)
+    #     # pygame.draw.rect(state.DISPLAY, self.color, rect)
+    #
+    #     if self.state == "waiting":
+    #         pass
+    #     elif self.state == "talking":
+    #         # print("is talking")
+    #         self.textbox.draw(state)
 import math
 import pygame
 from entity.npc.npc import Npc
@@ -210,7 +210,7 @@ class BarKeepLowBody(Npc):
 
     def draw(self, state):
         # Draw character sprite
-        sprite_rect = pygame.Rect(7, 6, 17.5, 24)
+        sprite_rect = pygame.Rect(5, 6, 23, 30)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
         sprite_x = self.collision.x + state.camera.x - 20
