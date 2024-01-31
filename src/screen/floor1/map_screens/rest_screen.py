@@ -91,6 +91,7 @@ class RestScreen(Screen):
             # JustinNoFruit(16 * 10, 16 * 18),
             JustinNoFruit(16 * 10, 16 * 18),
             # QuestGiverJanet(16 * 10, 16 * 26),
+            ChiliPitTeleporter(16 * 36, 16 * 30),
 
             SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 34, 16 * 26),
@@ -110,8 +111,8 @@ class RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
-        if self.chili_pit_flag == True:
-            state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
+        # if self.chili_pit_flag == True:
+        #     state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)

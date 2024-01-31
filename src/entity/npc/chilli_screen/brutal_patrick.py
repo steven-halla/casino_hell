@@ -11,10 +11,10 @@ class BrutalPatrick(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             [
-                "Patrick: You don't want to spend a night in the slammer, we charge 1000 coins a night.",
-                "Just don't cause trouble, no rough housing, no making threats, and no hugging.",
-                "Hero: We're not allowed to hug?",
-                "Patrick: Yes, you can, I just don't want to see it."],
+                "Patrick: People are saying that I stole these clothes from a priest.",
+                "Well it's not true, I was helping him to find his son I swear I didn't take advantage.",
+                "Hero: Why are you wearing his clothes?",
+                "Patrick: .....ummmmmmmmmm."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -22,6 +22,9 @@ class BrutalPatrick(Npc):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Priest.png").convert_alpha()
 
     def update(self, state: "GameState"):
 
@@ -76,10 +79,24 @@ class BrutalPatrick(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(5, 6, 20, 29)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        # rect = (
+        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        # self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "waiting":
             pass

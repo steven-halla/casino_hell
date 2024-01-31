@@ -30,6 +30,7 @@ class ChilliScreen(Screen):
         self.x_right_move = False
         self.player = Player(333, 555)
         self.hedge_hog_counter = 4
+        self.npcs = []
         move_player_down_flag = False
 
     def start(self, state: "GameState"):
@@ -50,12 +51,9 @@ class ChilliScreen(Screen):
         if state.player.perception > 0:
             state.npcs.append(SirLeopoldTheHedgeHog(16 * 10, 16 * 26))
 
+        state.npcs = []
 
-
-
-
-
-            # Add other NPCs to the state.npcs list
+        # Add other NPCs to the state.npcs list
         state.npcs.extend([
             BobbyBibs(16 * 36, 16 * 18),
             BrutalPatrick(16 * 26, 16 * 18),
