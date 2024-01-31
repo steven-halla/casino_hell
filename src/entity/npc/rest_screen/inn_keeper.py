@@ -12,9 +12,9 @@ class InnKeeper(Npc):
             "welcome_message": NpcTextBox(
                 ["Inn Keeper Neddry: Wanna stay at our inn?! Dont' mind the bed bugs, roaches, and rats, theya re very friendly."],
                 (50, 450, 700, 130), 36, 500),
-            "defeated_message": NpcTextBox(
-                ["I'm inn keeper nedry wanna stay at my inn??"],
-                (50, 450, 700, 130), 36, 500)
+            "rabies_message": NpcTextBox(
+                ["I'll allow you to save your game BUT YOU CANNOT SLEEP HERE, sorry."],
+                (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -49,7 +49,7 @@ class InnKeeper(Npc):
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+        current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -134,7 +134,7 @@ class InnKeeper(Npc):
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+            current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
