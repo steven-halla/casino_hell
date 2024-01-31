@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added more teleporters">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added new messages">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/black_jack_thomas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/black_jack_thomas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/nelly_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/nelly_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/rumble_bill.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,7 +301,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="31857000" />
+      <workItem from="1706635016180" duration="33084000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -651,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="362" />
+    <option name="localTasksCounter" value="363" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="player status screen is being built got the position down need to work on it a bit more need to add borders and more details" />
     <MESSAGE value="status screeen created" />
     <MESSAGE value="to exit out of screen press B this should be more universal" />
     <MESSAGE value="drew white border around box and centered it more" />
@@ -705,7 +699,8 @@
     <MESSAGE value="now the chili area appears right ad proper when our hero has rabies" />
     <MESSAGE value="created way to get to chili area, added NPC models to the chili area" />
     <MESSAGE value="added more teleporters" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more teleporters" />
+    <MESSAGE value="added new messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="added new messages" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
