@@ -16,7 +16,7 @@ class SallyOpossum(Npc):
                 ["Looks like you defeated me, how sad :("],
                 (50, 450, 700, 130), 36, 500),
             "money_message": NpcTextBox(
-                ["You need at least 200 coins to play"],
+                ["You need at least 200 coins to play, so stop wasting my time you scum"],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["Oh you don't look so good, it's too bad the doctor 'lost' her blue flower, looks like no antidote for you opossum-kun"],

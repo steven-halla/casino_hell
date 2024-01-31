@@ -14,7 +14,10 @@ class CoinFlipFred(Npc):
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
-                (50, 450, 700, 130), 36, 500)
+                (50, 450, 700, 130), 36, 500),
+            "rabies_message": NpcTextBox(
+                ["Oh my god, your eyes are blood red....GET AWAY FROM ME!!!!"],
+                (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -47,13 +50,32 @@ class CoinFlipFred(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipFredScreen.coinFlipFredDefeated:
+            # if state.player.hasRabies == True:
+            #     self.coin_flip_fred_messages["rabies_message"].reset
+            # elif state.coinFlipFredScreen.coinFlipFredDefeated:
+            #     self.coin_flip_fred_messages["defeated_message"].reset()
+            # else:
+            #     self.coin_flip_fred_messages["welcome_message"].reset()
+
+
+            if state.player.hasRabies == True:
+                self.coin_flip_fred_messages["rabies_message"].reset()
+
+            elif state.opossumInACanNellyScreen.nellyOpossumIsDefeated:
                 self.coin_flip_fred_messages["defeated_message"].reset()
             else:
                 self.coin_flip_fred_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.coin_flip_fred_messages["defeated_message"] if state.coinFlipFredScreen.coinFlipFredDefeated else self.coin_flip_fred_messages["welcome_message"]
+        current_message = (
+            self.coin_flip_fred_messages["rabies_message"]
+            if state.player.hasRabies
+            else (
+                self.coin_flip_fred_messages["defeated_message"]
+                if state.coinFlipFredScreen.coinFlipFredDefeated
+                else self.coin_flip_fred_messages["welcome_message"]
+            )
+        )
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -69,7 +91,7 @@ class CoinFlipFred(Npc):
             state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipFredScreen.coinFlipFredDefeated == False:
+        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -115,11 +137,19 @@ class CoinFlipFred(Npc):
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.coin_flip_fred_messages["defeated_message"] if state.coinFlipFredScreen.coinFlipFredDefeated else self.coin_flip_fred_messages["welcome_message"]
+            current_message = (
+                self.coin_flip_fred_messages["rabies_message"]
+                if state.player.hasRabies
+                else (
+                    self.coin_flip_fred_messages["defeated_message"]
+                    if state.coinFlipFredScreen.coinFlipFredDefeated
+                    else self.coin_flip_fred_messages["welcome_message"]
+                )
+            )
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipFredScreen.coinFlipFredDefeated == False:
+            if current_message.is_finished() and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

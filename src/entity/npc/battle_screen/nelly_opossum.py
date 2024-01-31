@@ -16,7 +16,7 @@ class NellyOpossum(Npc):
                 ["Looks like you defeated me, how sad :("],
                 (50, 450, 700, 130), 36, 500),
             "money_message": NpcTextBox(
-            ["You need at least 200 coins to play"],
+            ["Ewwwwww get away from me you poor bastard and get at least 200 coins, you disgust me!"],
             (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["awwwww are you ok? Don't worry I'll get you a home reaaalllll soon. Do you love garbage? You're gonna."],
@@ -81,7 +81,7 @@ class NellyOpossum(Npc):
                 self.nelly_opossum_messages["defeated_message"]
                 if state.opossumInACanNellyScreen.nellyOpossumIsDefeated
                 else (
-                    self.nelly_opossum_messages["no_play_message"]
+                    self.nelly_opossum_messages["money_message"]
                     if state.player.money < 200
                     else self.nelly_opossum_messages["welcome_message"]
                 )
@@ -158,7 +158,7 @@ class NellyOpossum(Npc):
                     self.nelly_opossum_messages["defeated_message"]
                     if state.opossumInACanNellyScreen.nellyOpossumIsDefeated
                     else (
-                        self.nelly_opossum_messages["no_play_message"]
+                        self.nelly_opossum_messages["money_message"]
                         if state.player.money < 200
                         else self.nelly_opossum_messages["welcome_message"]
                     )

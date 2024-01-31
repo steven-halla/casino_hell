@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 555
+        self.money = 444
         self.image = pygame.image.load(
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
@@ -37,7 +37,12 @@ class Player(Entity):
         self.magicinventory = []
         self.companions = []
         self.canMove = True
-        self.hasRabies = False
+
+
+
+        self.hasRabies = True
+
+
         self.rabies1time = False
         self.rabiesImmunity = False
         self.level2checker = False

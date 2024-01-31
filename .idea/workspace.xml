@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added new messages">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updating NPC with oposum state responses">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/Guy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/Guy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/black_jack_thomas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/black_jack_thomas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/nelly_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/nelly_opossum.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
@@ -301,7 +304,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="33084000" />
+      <workItem from="1706635016180" duration="34850000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -646,7 +649,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="363" />
+    <option name="localTasksCounter" value="364" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -675,7 +678,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="status screeen created" />
     <MESSAGE value="to exit out of screen press B this should be more universal" />
     <MESSAGE value="drew white border around box and centered it more" />
     <MESSAGE value="can now save game now need load function" />
@@ -700,7 +702,8 @@
     <MESSAGE value="created way to get to chili area, added NPC models to the chili area" />
     <MESSAGE value="added more teleporters" />
     <MESSAGE value="added new messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="added new messages" />
+    <MESSAGE value="updating NPC with oposum state responses" />
+    <option name="LAST_COMMIT_MESSAGE" value="updating NPC with oposum state responses" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
