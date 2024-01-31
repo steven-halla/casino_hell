@@ -12,7 +12,7 @@ class BarKeepLowBody(Npc):
         self.textbox = NpcTextBox(
             [
                 "Justin: come back when you have 2300 coins, I'll give you a stat boost potion for your body. Then yOu'll be able to drink and eat here to replenish your magic and stamina",
-                "I'll also givve you the boss pass so you can play against the 3 bosses."
+                "The chilli is quiet strong,I'll give you access to teh chili pit, if you pay me 2000 coins. I'll even give you a body +1"
                 ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]

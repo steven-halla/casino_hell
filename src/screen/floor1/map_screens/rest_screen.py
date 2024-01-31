@@ -8,6 +8,7 @@ from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
 from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
 from entity.npc.rest_screen.bar_keep import BarKeep
 from entity.npc.rest_screen.bar_keep_low_body import BarKeepLowBody
+from entity.npc.rest_screen.chili_pit_teleporter import ChiliPitTeleporter
 from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
 from entity.npc.rest_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.rest_screen.inn_keeper import InnKeeper
@@ -29,6 +30,7 @@ class RestScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
+        self.chili_pit_flag = False
         self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame5.tmx")
         self.y_up_move = False
         self.y_down_move = False
@@ -75,6 +77,9 @@ class RestScreen(Screen):
         elif state.player.body == 0:
             state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
 
+
+
+
         # if state.gamblingAreaScreen.nurgle_the_hedge_hog == True:
         #     print("is there a nurgle here?")
         #     state.npcs.append(Nurgle(16 * 25, 16 * 22))
@@ -83,6 +88,7 @@ class RestScreen(Screen):
         state.npcs.extend([
             DoctorOpossum(16 * 26, 16 * 18),
             InnKeeper(16 * 18, 16 * 18),
+            # JustinNoFruit(16 * 10, 16 * 18),
             JustinNoFruit(16 * 10, 16 * 18),
             # QuestGiverJanet(16 * 10, 16 * 26),
 
@@ -104,6 +110,8 @@ class RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        if self.chili_pit_flag == True:
+            state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)

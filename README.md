@@ -275,3 +275,34 @@ the doctor has a bug that her last message wont play twice you have to leave and
 there is a bug that is giving me infinte spirit, hp and spirit
 
 nelly is bugged she is not reducing player HP to 1
+
+player must play 1 of each game in order to go to the boss.
+
+We can force players to play opossum ina  can because thats where most of the money is.
+THey wont even be able to beat the level without playing the game. 
+the inn room needs to have a save book
+player needs 2000 coins to get the body +1 potion
+
+start gold 300
+Earn 200 gold from coin flip
+after finish start area
+500 gold
+
+gambling area
+black jack - 300 gold
+coin flip - 500 gold
+
+opossum in a can - 1200 gold
+
+-hold 2000 coins to get the TUFFness potion
+
+Expected gold to spend:
+400 for inn
+500 for sir leopolds paw
+200 for save coin
+200 for bar items
+
+chili area:
+Oppossum in a can -1200
+black jack -500 gold
+

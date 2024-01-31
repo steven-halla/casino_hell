@@ -67,6 +67,8 @@ class GamblingAreaScreen(Screen):
         # state.npcs = []
 
 
+
+
         state.npcs.extend([
             BlackJackThomas(16 * 4, 16 * 2),
             CoinFlipFred(16 * 12, 16 * 2),
@@ -89,6 +91,9 @@ class GamblingAreaScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+
+
+
 
 
         controller = state.controller
@@ -305,6 +310,8 @@ class GamblingAreaScreen(Screen):
         state.obstacle.draw(state)
 
         state.player.draw(state)
+
+
 
         # Update the display
         pygame.display.update()

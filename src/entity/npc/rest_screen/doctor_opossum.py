@@ -36,7 +36,6 @@ class DoctorOpossum(Npc):
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.hero_rabies = False
-        self.rabies_reward = False
 
         self.character_sprite_image = pygame.image.load(
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
@@ -46,8 +45,12 @@ class DoctorOpossum(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
     def update(self, state: "GameState"):
+        print(state.restScreen.chili_pit_flag)
+
         if state.player.hasRabies == True:
             self.hero_rabies = True
+
+
 
         if "blue flower" in state.player.items and "opossum guard" not in state.player.items:
             state.player.items.append("opossum guard")
@@ -74,6 +77,11 @@ class DoctorOpossum(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
+
+            if state.player.hasRabies == True:
+                state.restScreen.chili_pit_flag = True
+
+
             # self.textbox.reset()
             # self.textbox.message_index = 0
 
