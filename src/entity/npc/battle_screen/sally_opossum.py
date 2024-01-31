@@ -14,7 +14,14 @@ class SallyOpossum(Npc):
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
-                (50, 450, 700, 130), 36, 500)
+                (50, 450, 700, 130), 36, 500),
+            "no_play_message": NpcTextBox(
+                ["You need at least 200 coins to play"],
+                (50, 450, 700, 130), 36, 500),
+            "rabies_message": NpcTextBox(
+                ["Oh you don't look so good, it's too bad the doctor 'lost' her blue flower, looks like no antidote for you opossum-kun"],
+                (50, 450, 700, 130), 36, 500),
+
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -45,13 +52,28 @@ class SallyOpossum(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
+
+            if state.player.hasRabies == True:
+                self.sally_opossum_messages["rabies_message"].reset()
+            elif state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
                 self.sally_opossum_messages["defeated_message"].reset()
             else:
                 self.sally_opossum_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.sally_opossum_messages["defeated_message"] if state.opossumInACanSallyScreen.sallyOpossumIsDefeated else self.sally_opossum_messages["welcome_message"]
+        current_message = (
+            self.sally_opossum_messages["rabies_message"]
+            if state.player.hasRabies
+            else (
+                self.sally_opossum_messages["defeated_message"]
+                if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
+                else (
+                    self.sally_opossum_messages["no_play_message"]
+                    if state.player.money < 200
+                    else self.sally_opossum_messages["welcome_message"]
+                )
+            )
+        )
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -67,7 +89,7 @@ class SallyOpossum(Npc):
             state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False:
+        if current_message.is_finished() and state.controller.isTPressed and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -115,11 +137,23 @@ class SallyOpossum(Npc):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            current_message = self.sally_opossum_messages["defeated_message"] if state.opossumInACanSallyScreen.sallyOpossumIsDefeated else self.sally_opossum_messages["welcome_message"]
+            current_message = (
+                self.sally_opossum_messages["rabies_message"]
+                if state.player.hasRabies
+                else (
+                    self.sally_opossum_messages["defeated_message"]
+                    if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
+                    else (
+                        self.sally_opossum_messages["no_play_message"]
+                        if state.player.money < 200
+                        else self.sally_opossum_messages["welcome_message"]
+                    )
+                )
+            )
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False:
+            if current_message.is_finished() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False:
                 print("better not see this shit")
                 bet_box_width = 150
                 bet_box_height = 100

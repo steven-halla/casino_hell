@@ -7,7 +7,7 @@ from entity.npc.battle_screen.black_jack_thomas import BlackJackThomas
 from entity.npc.battle_screen.coin_flip_fred import CoinFlipFred
 from entity.npc.battle_screen.nelly_opossum import NellyOpossum
 from entity.npc.battle_screen.rest_area_teleporter import RestScreenTeleporter
-from entity.npc.battle_screen.rumble_bill import RumbleBill
+from entity.npc.chilli_screen.rumble_bill import RumbleBill
 from entity.npc.battle_screen.sally_opossum import SallyOpossum
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
@@ -73,7 +73,6 @@ class GamblingAreaScreen(Screen):
             BlackJackThomas(16 * 4, 16 * 2),
             CoinFlipFred(16 * 12, 16 * 2),
             NellyOpossum(16 * 20, 16 * 2),
-            RumbleBill(16 * 4, 16 * 12),
             SallyOpossum(16 * 14, 16 * 12),
             Guy(16 * 26, 16 * 12),
             RestScreenTeleporter(16 * 11, 16 * 22),

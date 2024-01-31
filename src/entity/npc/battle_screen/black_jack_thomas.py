@@ -14,7 +14,11 @@ class BlackJackThomas(Npc):
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
-                (50, 450, 700, 130), 36, 500)
+                (50, 450, 700, 130), 36, 500),
+            "no_play_message": NpcTextBox(
+                ["You need at least 10 stamina to play"],
+                (50, 450, 700, 130), 36, 500),
+
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -46,15 +50,20 @@ class BlackJackThomas(Npc):
                 (pygame.time.get_ticks() - self.state_start_time) > 500:
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
-            # Reset the message depending on the game state
+
+
             if state.blackJackThomasScreen.black_jack_thomas_defeated:
                 self.black_jack_thomas_messages["defeated_message"].reset()
+            elif state.player.stamina_points < 10:
+                print("you better show yourself")
+                self.black_jack_thomas_messages["no_play_message"].reset()
             else:
                 self.black_jack_thomas_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
         current_message.update(state)
+
 
         # Lock the player in place while talking
         state.player.canMove = False
@@ -115,7 +124,15 @@ class BlackJackThomas(Npc):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+            current_message = (
+                self.black_jack_thomas_messages["defeated_message"]
+                if state.blackJackThomasScreen.black_jack_thomas_defeated
+                else (
+                    self.black_jack_thomas_messages["no_play_message"]
+                    if state.player.stamina_points < 10
+                    else self.black_jack_thomas_messages["welcome_message"]
+                )
+            )
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message

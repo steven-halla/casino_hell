@@ -14,7 +14,10 @@ class NellyOpossum(Npc):
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
-                (50, 450, 700, 130), 36, 500)
+                (50, 450, 700, 130), 36, 500),
+            "no_play_message": NpcTextBox(
+                ["Hero: I  need at least 50 stamina and 200 coins to play, I should come back later"],
+                (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0

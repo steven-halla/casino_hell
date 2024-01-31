@@ -8,6 +8,7 @@ from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
 from entity.npc.chilli_screen.chilly_billy import ChillyBilly
 from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.chilli_screen.jessica_starving import JessicaStarving
+from entity.npc.chilli_screen.rumble_bill import RumbleBill
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
 from entity.npc.sleepy_ned import SleepyNed
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
@@ -63,6 +64,7 @@ class ChilliScreen(Screen):
             SirLeopoldTheHedgeHog(16 * 18, 16 * 26),
             HedgeMazeScreenTeleporter(16 * 8, 16 * 5),
             RestScreenTeleporter(16 * 28, 16 * 5),
+            RumbleBill(16 * 4, 16 * 12),
 
             # SleepyNed(16 * 18, 16 * 26),
         ])

@@ -306,3 +306,7 @@ chili area:
 Oppossum in a can -1200
 black jack -500 gold
 
+
+Horse: we drink beer, then we make beer
+
+have doctor opposum put up 100,000 coins for hero 
