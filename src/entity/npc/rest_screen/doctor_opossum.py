@@ -52,9 +52,6 @@ class DoctorOpossum(Npc):
 
 
 
-        if "blue flower" in state.player.items and "opossum guard" not in state.player.items:
-            state.player.items.append("opossum guard")
-            state.player.rabiesImmunity = True
 
         ###my current idea is to have one more state: blue flower, and have that
 
@@ -87,9 +84,7 @@ class DoctorOpossum(Npc):
 
             if "blue flower" in state.player.items:
                 if self.doctor_messages["cured_message"].message_index == 1:
-                    state.player.hasRabies = False
 
-                    state.player.items.append("opossum repellent")
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
                         self.input_time = pygame.time.get_ticks()
@@ -162,7 +157,7 @@ class DoctorOpossum(Npc):
 
                 if "blue flower" in state.player.items or state.player.rabiesImmunity == True:
                     self.doctor_messages["cured_message"].reset()
-                    state.player.hasRabies = False
+                    # state.player.hasRabies = False
 
                 elif self.hero_rabies == False:
                 # the below is where kenny had it
@@ -180,6 +175,11 @@ class DoctorOpossum(Npc):
             if state.controller.isTPressed and self.doctor_messages["cured_message"].is_finished():
                 # if state.controller.isTPressed and self.textbox.message_index == 0:
                 print("Here we go we're walking here")
+                state.player.items.append("opossum repellent")
+                state.player.hasRabies = False
+
+                state.player.rabiesImmunity = True
+                state.player.items.remove("blue flower")
 
                 # print("start state: waiting")
                 # self.textbox.reset()
