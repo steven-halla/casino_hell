@@ -359,3 +359,4 @@ REFACTOR
 basing dialog boxes based on player state is what i should have done at the start, looking at quest janet for 
 example I could have just made it to where BASED ON ITEMS IN PLAYER inven we could have based choices around that
 
+you should not be able to leave any boss battles, once you in it ,its for the long haul

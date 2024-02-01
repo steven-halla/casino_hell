@@ -28,6 +28,8 @@ class BlackJackJared(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
+        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Hawker and Peddler ALPHA.png").convert_alpha()
+
         self.isWorthy = False
 
 
@@ -102,10 +104,18 @@ class BlackJackJared(Npc):
             state.player.canMove = True
 
     def draw(self, state):
-        rect = (
-            self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-            self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        # rect = (
+        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        #     self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
+
+
+        sprite_rect = pygame.Rect(116, 144, 15, 23)
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
             current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]

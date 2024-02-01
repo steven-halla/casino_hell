@@ -10,7 +10,7 @@ class IchiOpossum(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Ichi: I'm a very mean itch, better be careful", "Are you ready to lose?!"],
+                ["Ichi: I'm a waffle demon,sounds horrifying doesn't it?", "Are you ready to lose?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
@@ -25,6 +25,10 @@ class IchiOpossum(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
+
+
+        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Supernatural Entities.png").convert_alpha()
+
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -88,10 +92,17 @@ class IchiOpossum(Npc):
             state.player.canMove = True
 
     def draw(self, state):
-        rect = (
-            self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-            self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        # rect = (
+        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        #     self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
+
+        sprite_rect = pygame.Rect(5, 6, 15, 16.6)
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
             current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
