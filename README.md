@@ -314,3 +314,5 @@ when player no longer has it
 
 black jack flow needs work, if you busts we dont see the final card,
 also lets addd a score function that we can display for our ease of use.
+
+put in game that Janet (quets giver) Is out fetchign the shop keeper and will be back later

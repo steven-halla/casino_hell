@@ -22,7 +22,7 @@ class OpossumInACanNellyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.nellyOpossumMoney = 20
+        self.nellyOpossumMoney = 300
         self.opossumBite = False
         self.nellyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
@@ -262,10 +262,10 @@ class OpossumInACanNellyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
-        if self.player_score >= 500:
+        if self.player_score >= 300:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
-        if self.player_score >= 500:
+        if self.player_score >= 300:
             self.five_hundred_points = True
         if self.fill_cans == True:
             self.initializeGarbageCans()

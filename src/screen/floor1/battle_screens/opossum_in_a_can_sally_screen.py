@@ -14,7 +14,7 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 500
+        self.sallyOpossumMoney = 300
 
 
         self.opossumBite = False
@@ -257,10 +257,10 @@ class OpossumInACanSallyScreen(Screen):
 
     def update(self, state: "GameState"):
         # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
-        if self.player_score >= 500:
+        if self.player_score >= 300:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
-        if self.player_score >= 500:
+        if self.player_score >= 300:
             self.five_hundred_points = True
         if self.fill_cans == True:
             self.initializeGarbageCans()
