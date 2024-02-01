@@ -141,6 +141,27 @@ class OpossumInACanIchiScreen(Screen):
         self.fill_cans = True
         self.shake = False
 
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/opossum_in_a_can_screen.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        self.initialize_music()
+        self.music_on = True
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
+
     def initializeGarbageCans(self):
         # Randomly shuffle the winner_or_looser list
         print("yabbba dabbbba dooooooooooo")
@@ -223,6 +244,12 @@ class OpossumInACanIchiScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
+
         if self.player_score >= 500:
             self.five_hundred_points = True
         if self.fill_cans == True:
@@ -232,6 +259,8 @@ class OpossumInACanIchiScreen(Screen):
 
         if state.controller.isQPressed:
             # Transition to the main screen
+            self.music_on = True
+
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
@@ -357,6 +386,8 @@ class OpossumInACanIchiScreen(Screen):
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -365,6 +396,8 @@ class OpossumInACanIchiScreen(Screen):
             self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -372,6 +405,8 @@ class OpossumInACanIchiScreen(Screen):
             self.opossumInACanMessages["hero_defeated_money_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_money_message"].message_index == 1:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -608,6 +643,8 @@ class OpossumInACanIchiScreen(Screen):
                     state.player.money += self.player_score
                     self.nellyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
+                    self.music_on = True
+
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 

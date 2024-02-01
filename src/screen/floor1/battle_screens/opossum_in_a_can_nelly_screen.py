@@ -162,12 +162,32 @@ class OpossumInACanNellyScreen(Screen):
 
         self.talley_checker = False
 
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/opossum_in_a_can_screen.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        self.initialize_music()
+        self.music_on = True
+
 ##### what if I try to set a timer so we don't skip?
     ### or maybe something has to be set to false like the T press?
 
 
 ###        self.initialized_message = False  # Add this line to initialize the flag
 #### so I think the above will solve the provlem with messags just getting barfed i"ll hav to see another day
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
 
     def initializeGarbageCans(self):
 
@@ -262,6 +282,12 @@ class OpossumInACanNellyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
+
         if self.player_score >= 300:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
@@ -276,6 +302,8 @@ class OpossumInACanNellyScreen(Screen):
 
         if state.controller.isQPressed:
             # Transition to the main screen
+            self.music_on = True
+
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
@@ -484,6 +512,8 @@ class OpossumInACanNellyScreen(Screen):
 
                 if state.player.hasRabies == True and state.player.rabiesImmunity == False:
                     state.player.stamina_points = 1
+                    self.music_on = True
+
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 
@@ -540,6 +570,8 @@ class OpossumInACanNellyScreen(Screen):
 
 
                 elif self.play_again_or_quit_index == 1:
+                    self.music_on = True
+
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 
@@ -551,6 +583,8 @@ class OpossumInACanNellyScreen(Screen):
             self.opossumInACanMessages["opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
@@ -559,6 +593,8 @@ class OpossumInACanNellyScreen(Screen):
             self.opossumInACanMessages["real_opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
@@ -567,6 +603,8 @@ class OpossumInACanNellyScreen(Screen):
             self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
@@ -574,6 +612,8 @@ class OpossumInACanNellyScreen(Screen):
             self.opossumInACanMessages["hero_defeated_money_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_money_message"].message_index == 1:
                 # Change the game state to "bet"
+                self.music_on = True
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
