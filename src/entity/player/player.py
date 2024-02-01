@@ -53,6 +53,8 @@ class Player(Entity):
         # need ingame menus that explain rules, minues to stamina,and other info
         self.close_status_screen = False
 
+        self.days = 0
+
 
     def to_dict(self):
         return {
@@ -276,6 +278,7 @@ class Player(Entity):
             f"Spirit: {self.spirit}",
             f"Perception: {self.perception}",
             f"Luck: {self.luck}",
+            f"Day: {self.days}",
             # Add more stats as needed
         ]
 

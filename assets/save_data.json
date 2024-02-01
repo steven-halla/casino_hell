@@ -1,21 +1,17 @@
 {
     "level": 1,
-    "exp": 790.0,
+    "exp": 0,
     "stamina_points": 100,
     "max_stamina_points": 100,
-    "focus_points": 90,
+    "focus_points": 100,
     "max_focus_points": 100,
-    "companions": [],
-    "items": [
-        "inn badge",
-        "opossum repellent"
+    "companions": [
+        "sir leopold"
     ],
-    "magicinventory": [
-        "reveal",
-        "shake"
-    ],
+    "items": [],
+    "magicinventory": [],
     "body": 0,
-    "mind": 1,
+    "mind": 0,
     "spirit": 0,
     "perception": 0,
     "luck": 0

@@ -83,6 +83,7 @@ class InnKeeper(Npc):
                 state.player.canMove = True
                 print("Yes selected, closing shop.")
                 self.arrow_index = 0
+                state.player.days += 1
 
                 if state.player.stamina_points < state.player.max_stamina_points:
                     state.player.money -= 100

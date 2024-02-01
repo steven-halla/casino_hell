@@ -11,7 +11,7 @@ class HedgeHog4(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             ["I'm hedge hog number 4",
-             "I used to be a super model I don't belong here, I just wanted to have some fun gambling for once. "],
+             "I'm a Hedge Fund Manager,  I don't belong here, I just wanted to have some fun gambling for once. "],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

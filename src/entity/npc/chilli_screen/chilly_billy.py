@@ -22,7 +22,7 @@ class ChillyBilly(Npc):
             ),
 
             "sir_leopold_message": NpcTextBox(
-                ["I was never afan of putting hedge hogs in teh chilli, I much prefer the taste of goats, they stir it up a lot better and the taste is to die for"],
+                ["I was never a fan of putting hedge hogs in the chilli, I much prefer the taste of goats, they stir it up a lot better and the taste is to die for"],
                 (50, 450, 700, 130), 36, 500
             ),
         }

@@ -4,18 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated start area NPCS wtih new dialog based on player state!!!">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="all NPCS are now (mostly at least) updated with new dialog for having the little hedge hogger">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/Guy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/Guy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/brutal_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/brutal_patrick.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/justin_no_fruit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/justin_no_fruit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/hedgehog4.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/hedgehog4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +301,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="53018000" />
+      <workItem from="1706635016180" duration="54950000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -653,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="383" />
+    <option name="localTasksCounter" value="384" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -682,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now need perception + 1 to get him to appear" />
     <MESSAGE value="now the chili area appears right ad proper when our hero has rabies" />
     <MESSAGE value="created way to get to chili area, added NPC models to the chili area" />
     <MESSAGE value="added more teleporters" />
@@ -707,7 +699,8 @@
     <MESSAGE value="minor chnage to dialog" />
     <MESSAGE value="well that was easy to add new messages based on new state" />
     <MESSAGE value="updated start area NPCS wtih new dialog based on player state!!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated start area NPCS wtih new dialog based on player state!!!" />
+    <MESSAGE value="all NPCS are now (mostly at least) updated with new dialog for having the little hedge hogger" />
+    <option name="LAST_COMMIT_MESSAGE" value="all NPCS are now (mostly at least) updated with new dialog for having the little hedge hogger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
