@@ -61,7 +61,7 @@ class CoinFlipFred(Npc):
             if state.player.hasRabies == True:
                 self.coin_flip_fred_messages["rabies_message"].reset()
 
-            elif state.opossumInACanNellyScreen.nellyOpossumIsDefeated:
+            elif state.coinFlipFredScreen.coinFlipFredDefeated == True:
                 self.coin_flip_fred_messages["defeated_message"].reset()
             else:
                 self.coin_flip_fred_messages["welcome_message"].reset()
