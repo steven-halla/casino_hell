@@ -121,7 +121,7 @@ class JustinNoFruit(Npc):
             "default_message": NpcTextBox(
                 [
                     "Justin: Most folks round here dont move around much, it's very important to conserve energy so you don't go hungry.",
-                    "But once you take a bite you'll know what I mean."
+                    "CHinrog stays for 1 week every decade, he'll be gone in 2 days."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

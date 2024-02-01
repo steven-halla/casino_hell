@@ -126,7 +126,7 @@ class BappingMike(Npc):
             "default_message": NpcTextBox(
                 [
                         "Mike: Money is FINITE, so don't waste it.",
-                        "What about you? Do you like to ramble? Your not saying much, you must be rambling to yourself, yeah, your rambling."
+                        "Chinrog is the head demon of this level."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

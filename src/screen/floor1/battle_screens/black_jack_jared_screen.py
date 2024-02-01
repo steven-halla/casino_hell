@@ -27,7 +27,11 @@ class BlackJackJaredScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
+
         self.cheater_bob_money = 20
+        self.blackJackToken = False
+
+
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -242,6 +246,7 @@ class BlackJackJaredScreen(Screen):
             self.bet = 100
 
     def update(self, state: "GameState"):
+
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)

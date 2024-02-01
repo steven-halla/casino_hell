@@ -24,7 +24,7 @@ class OpossumInACanIchiScreen(Screen):
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.nellyOpossumMoney = 1200
         self.opossumBite = False
-        self.nellyOpossumIsDefeated = False
+        self.ichiOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
