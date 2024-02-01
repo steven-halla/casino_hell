@@ -14,7 +14,12 @@ class RumbleBill(Npc):
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
-                (50, 450, 700, 130), 36, 500)
+                (50, 450, 700, 130), 36, 500),
+
+            "rabies_message": NpcTextBox(
+                ["I'm a black jack master, but I sure as ell don't play with no amn opossums"],
+                (50, 450, 700, 130), 36, 500),
+
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -48,13 +53,23 @@ class RumbleBill(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated:
+            if state.player.hasRabies == True:
+                self.black_jack_rumble_bill_messages["rabies_message"].reset()
+            elif state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated:
                 self.black_jack_rumble_bill_messages["defeated_message"].reset()
             else:
                 self.black_jack_rumble_bill_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.black_jack_rumble_bill_messages["defeated_message"] if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated else self.black_jack_rumble_bill_messages["welcome_message"]
+        current_message = (
+            self.black_jack_rumble_bill_messages["rabies_message"]
+            if state.player.hasRabies
+            else (
+                self.black_jack_rumble_bill_messages["defeated_message"]
+                if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated
+                else self.black_jack_rumble_bill_messages["welcome_message"]
+            )
+        )
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -70,7 +85,7 @@ class RumbleBill(Npc):
             state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False:
+        if current_message.is_finished() and state.controller.isTPressed and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False and state.player.hasRabies == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -113,11 +128,19 @@ class RumbleBill(Npc):
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         if self.state == "talking":
-            current_message = self.black_jack_rumble_bill_messages["defeated_message"] if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated else self.black_jack_rumble_bill_messages["welcome_message"]
+            current_message = (
+                self.black_jack_rumble_bill_messages["rabies_message"]
+                if state.player.hasRabies
+                else (
+                    self.black_jack_rumble_bill_messages["defeated_message"]
+                    if state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated
+                    else self.black_jack_rumble_bill_messages["welcome_message"]
+                )
+            )
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False:
+            if current_message.is_finished() and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False and state.player.hasRabies == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

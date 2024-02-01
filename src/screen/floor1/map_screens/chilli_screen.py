@@ -62,7 +62,7 @@ class ChilliScreen(Screen):
             ChillyBilly(16 * 18, 16 * 18),
             JessicaStarving(16 * 10, 16 * 18),
             SirLeopoldTheHedgeHog(16 * 18, 16 * 26),
-            HedgeMazeScreenTeleporter(16 * 8, 16 * 5),
+            HedgeMazeScreenTeleporter(16 * 4, 16 * 8),
             RestScreenTeleporter(16 * 28, 16 * 5),
             RumbleBill(16 * 4, 16 * 12),
 

@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 444
+        self.money = 2222
         self.image = pygame.image.load(
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
@@ -26,14 +26,14 @@ class Player(Entity):
         self.spirit = 0
         self.luck = 0
         self.perception = 0
-        self.stamina_points = 100
+        self.stamina_points = 55
         self.stamina_increase = self.body * 1 * self.level
 
         self.max_stamina_points = 100 + self.stamina_increase
         self.focus_points = 100
         self.max_focus_points = 100
         self.perks = []
-        self.items = []
+        self.items = ["blue flower"]
         self.magicinventory = []
         self.companions = []
         self.canMove = True

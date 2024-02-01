@@ -43,8 +43,8 @@ class InnKeeper(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipTedScreen.coinFlipTedDefeated:
-                self.flipping_ted_messages["defeated_message"].reset()
+            if state.player.hasRabies == True:
+                self.flipping_ted_messages["rabies_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
@@ -76,6 +76,13 @@ class InnKeeper(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
                 state.controller.isTPressed = False
+                # This code should run regardless of the player's stamina
+                state.save_game(state.player)  # Call the save_game function
+                self.state = "waiting"
+                self.state_start_time = pygame.time.get_ticks()
+                state.player.canMove = True
+                print("Yes selected, closing shop.")
+                self.arrow_index = 0
 
                 if state.player.stamina_points < state.player.max_stamina_points:
                     state.player.money -= 100

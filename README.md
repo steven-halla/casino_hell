@@ -300,3 +300,14 @@ NOTE:
 If player stamina is below 1: put them in doctors office, but charge 200 coins. 
 if player stamina is below 10% perhaps have their HP Meter be red
 if player coins are below 10: Game over....
+
+
+if state.player.rabiesImmunity == True:
+then we need something for each NPC for a new state to handle new messages, maybe a new message box?
+not fully sure on how to handle it.
+
+
+inn keeper needs fixing with his Yes message
+
+lets put Janet in a new location if hero has rabies, and then move her back
+when player no longer has it

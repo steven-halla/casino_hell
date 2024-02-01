@@ -6,7 +6,10 @@
     "focus_points": 100,
     "max_focus_points": 100,
     "companions": [],
-    "items": [],
+    "items": [
+        "blue flower",
+        "opossum guard"
+    ],
     "magicinventory": [],
     "body": 0,
     "mind": 0,

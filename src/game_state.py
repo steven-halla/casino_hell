@@ -90,7 +90,7 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.startScreen
+        self.currentScreen = self.restScreen
 
     def save_game(self, player):
         # Convert player stats to dictionary
