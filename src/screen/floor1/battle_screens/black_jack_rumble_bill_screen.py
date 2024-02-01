@@ -78,6 +78,8 @@ class BlackJackRumbleBillScreen(Screen):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.music_on = True
+
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
         # incldue a double bet spell that is CHR based that player gets for free maybe4
@@ -281,6 +283,12 @@ class BlackJackRumbleBillScreen(Screen):
             self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
+
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
+
         state.player.canMove = False
         if self.cheater_bob_money < 10:
             self.black_jack_rumble_bill_defeated = True
@@ -303,6 +311,8 @@ class BlackJackRumbleBillScreen(Screen):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
+
+
 
 
 
@@ -1160,6 +1170,8 @@ class BlackJackRumbleBillScreen(Screen):
                 if state.controller.isTPressed:
                     print("Quit")
                     state.player.canMove = True
+
+                    self.music_on = True
 
                     state.currentScreen = state.chilliScreen
                     state.chilliScreen.start(state)

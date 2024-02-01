@@ -73,6 +73,8 @@ class BlackJackThomasScreen(Screen):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.music_on = True
+
 
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
@@ -279,6 +281,10 @@ class BlackJackThomasScreen(Screen):
             self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
         state.player.canMove = False
         # print("black jack thomas defeated is : " + str(self.black_jack_thomas_defeated))
 
@@ -1089,6 +1095,7 @@ class BlackJackThomasScreen(Screen):
                 if state.controller.isTPressed:
                     print("Quit")
                     state.player.canMove = True
+                    self.music_on = True
 
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)

@@ -73,6 +73,9 @@ class BlackJackJaredScreen(Screen):
         self.avatar_of_luck = False
         self.redraw_lock = False
 
+        self.music_on = True
+
+
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
@@ -267,6 +270,10 @@ class BlackJackJaredScreen(Screen):
             self.bet = 100
 
     def update(self, state: "GameState"):
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
 
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
@@ -281,6 +288,8 @@ class BlackJackJaredScreen(Screen):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
+
+
             # NOTE NOTE NOTE NOTE NOTE NOTE NOTE
             # if enemy hits 1000 coins, desperate lock needs to go away for future ref so that despiar ends and player can use magic again
             # if self.cheater_bob_money >= 1100 and self.hero_losing_text_state == False:
@@ -1054,6 +1063,9 @@ class BlackJackJaredScreen(Screen):
                     (637, 355))
                 if state.controller.isTPressed:
                     print("Quit")
+
+                    self.music_on = True
+
                     state.currentScreen = state.bossScreen
                     state.bossScreen.start(state)
                     state.controller.isTPressed = False

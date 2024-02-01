@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="moving forward with music, all music is now also credited">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated battle screens with music">
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_jared_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_jared_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_sandy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_sandy_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +301,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="65330000" />
+      <workItem from="1706635016180" duration="65642000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -653,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="389" />
+    <option name="localTasksCounter" value="390" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -682,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="all NPCS now have rabies message" />
     <MESSAGE value="npcs in the rest area now respect the opossum status and give messages" />
     <MESSAGE value="most NPCS In game now respect our opossum status and have updated messages" />
     <MESSAGE value="most NPCS includign quest givesrs are now updated for handling rabies messages" />
@@ -707,7 +699,8 @@
     <MESSAGE value="all npcs now have sprites" />
     <MESSAGE value="music added to all screens" />
     <MESSAGE value="moving forward with music, all music is now also credited" />
-    <option name="LAST_COMMIT_MESSAGE" value="moving forward with music, all music is now also credited" />
+    <MESSAGE value="updated battle screens with music" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated battle screens with music" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
