@@ -33,7 +33,7 @@ class Player(Entity):
         self.focus_points = 100
         self.max_focus_points = 100
         self.perks = []
-        self.items = ["blue flower"]
+        self.items = []
 
         self.magicinventory = []
         self.companions = []
@@ -41,7 +41,7 @@ class Player(Entity):
 
 
 
-        self.hasRabies = True
+        self.hasRabies = False
 
 
         self.rabies1time = False

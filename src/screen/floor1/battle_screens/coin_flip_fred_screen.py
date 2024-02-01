@@ -47,7 +47,7 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 120
+        self.coinFlipFredMoney = 350
 
 
 
@@ -285,46 +285,39 @@ class CoinFlipFredScreen(Screen):
         #     self.result = "tails"
         print("The coin counter is now at the start so what is it?: " + str(self.coin_leaning_counter))
 
-        coin_fate = random.randint(1, 2)
-        print("your coin fate is" + str(coin_fate))
-        print("coin counter at:" + str(self.coin_leaning_counter))
-        if coin_fate == 1:
-            self.coin_leaning_tracker = "tails"
-            # self.coin_leaning_counter -= 1
-        else:
-            self.coin_leaning_tracker = "heads"
-            # self.coin_leaning_counter -= 1
+        if self.coinFlipFredMoney <= 100:
+            self.result = "tails"
+            print("Less than 100")
 
-        if self.coin_leaning_tracker == "tails":
-            coin_flip = random.randint(1, 100)
-            print(str(coin_flip))
-            if coin_flip <= 70:
+
+        elif self.coinFlipFredMoney > 300:
+            coin_fate = random.randint(1, 20)
+            # print("your coin fate is" + str(coin_fate))
+            # print("coin counter at:" + str(self.coin_leaning_counter))
+            print("more than 300")
+
+            if coin_fate > 7:
                 self.result = "tails"
-                # self.coin_leaning_counter -= 1
-                print("Your result is " + str(self.result))
-            else:
+            elif coin_fate <= 7:
                 self.result = "heads"
 
+        elif self.coinFlipFredMoney <= 300:
+            coin_fate = random.randint(1, 20)
+            print("more than 300")
 
-        elif self.coin_leaning_tracker == "heads":
-            coin_flip = random.randint(1, 100)
-            print(str(coin_flip))
-
-            if coin_flip <= 70:
+            # print("your coin fate is" + str(coin_fate))
+            # print("coin counter at:" + str(self.coin_leaning_counter))
+            if coin_fate > 6:
                 self.result = "heads"
-                print(self.result)
-            else:
+            elif coin_fate <= 6:
                 self.result = "tails"
-                print(self.result)
 
 
 
-    # Adjust for the player's luck
 
-        self.coin_leaning_counter -= 1  # Decrement the counter after each coin flip
 
-        if self.coin_leaning_counter == 0:
-            self.coin_leaning_counter += 5
+
+
 
         self.game_state = "results_screen"
 
