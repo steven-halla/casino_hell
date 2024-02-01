@@ -447,6 +447,16 @@ class BlackJackThomasScreen(Screen):
             #################################need to test aces if a player gets multiple aces
 
             # If the player has an ACE, check which value is better for the player
+            aces_to_remove = [
+                ('Ace', 'Hearts', 11),
+                ('Ace', 'Spades', 11),
+                ('Ace', 'Diamonds', 11),
+                ('Ace', 'Clubs', 11),
+                ('Ace', 'Hearts', 1),
+                ('Ace', 'Spades', 1),
+                ('Ace', 'Diamonds', 1),
+                ('Ace', 'Clubs', 1),
+            ]
 
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
@@ -462,6 +472,14 @@ class BlackJackThomasScreen(Screen):
                 # Compute the score of the new hand
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                 print("New enemy score is: " + str(self.enemy_score))
+            if "sir leopold's paw" in state.player.items:
+
+                for card in self.enemy_hand:
+                    if card in aces_to_remove:
+                        self.enemy_hand.remove(card)
+                        print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
+                        self.enemy_hand += self.deck.enemy_draw_hand(1)
+                        break  # Break after removing the card to avoid altering the list during iteration
 
             if self.black_jack_counter > 0:
                 print(

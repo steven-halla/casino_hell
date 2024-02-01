@@ -456,13 +456,23 @@ class BlackJackRumbleBillScreen(Screen):
             ]
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
-
-            for card in self.enemy_hand:
-                if card in aces_to_remove:
-                    self.enemy_hand.remove(card)
-                    print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
-                    self.enemy_hand += self.deck.enemy_draw_hand(1)
-                    break  # Break after removing the card to avoid altering the list during iteration
+            if self.enemy_score > 17:
+                print("Redrawing hand, score too high: " + str(self.enemy_score))
+                # Empty the enemy_hand array
+                self.enemy_hand = []
+                # Draw a new hand
+                self.enemy_hand = self.deck.enemy_draw_hand(2)
+                print("New enemy hand is: " + str(self.enemy_hand))
+                # Compute the score of the new hand
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                print("New enemy score is: " + str(self.enemy_score))
+            if "sir leopold's paw" in state.player.items:
+                for card in self.enemy_hand:
+                    if card in aces_to_remove:
+                        self.enemy_hand.remove(card)
+                        print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
+                        self.enemy_hand += self.deck.enemy_draw_hand(1)
+                        break  # Break after removing the card to avoid altering the list during iteration
 
             print("Enemy hand is" + str(self.enemy_hand))
 
@@ -1131,8 +1141,8 @@ class BlackJackRumbleBillScreen(Screen):
                     print("Quit")
                     state.player.canMove = True
 
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
+                    state.currentScreen = state.chilliScreen
+                    state.chilliScreen.start(state)
                     state.controller.isTPressed = False
 
             self.welcome_screen_text_box.draw(state)
@@ -1147,8 +1157,8 @@ class BlackJackRumbleBillScreen(Screen):
                 print("moogles")
                 state.player.canMove = True
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.chilliScreen
+                state.chilliScreen.start(state)
 
         elif self.game_state == "hero_is_desperate_state":
             self.hero_losing_money_text.draw(state)
