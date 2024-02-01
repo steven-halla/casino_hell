@@ -28,7 +28,7 @@ class HedgeMazeScreen(Screen):
         self.x_left_move = False
         self.x_right_move = False
         self.player = Player(333, 555)
-        self.hedge_hog_counter = 4
+        self.hedge_hog_counter = 0
         self.blue_flower = False
         move_player_down_flag = False
 
@@ -50,6 +50,12 @@ class HedgeMazeScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
+
+            HedgeHog1(16 * 22, 14 * 45),
+            HedgeHog2(16 * 6, 14 * 35),
+            HedgeHog3(16 * 6, 14 * 25),
+            HedgeHog4(16 * 22, 14 * 15),
+
             # make sure to seperate by a factor of 8 for y
             #x, y
             # InnGuard(16 * 36, 16 * 2),
