@@ -347,4 +347,14 @@ need to build out save/load funciton to support quests completed
 as well as money left of enmeies
 need to build out game over for player if money drops below 0
 need dto build out if player goes below 0 stamina
+
+refactor 
+
+refactor 
+
+REFACTOR
 #####
+
+
+basing dialog boxes based on player state is what i should have done at the start, looking at quest janet for 
+example I could have just made it to where BASED ON ITEMS IN PLAYER inven we could have based choices around that

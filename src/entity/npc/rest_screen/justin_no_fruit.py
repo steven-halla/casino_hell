@@ -129,6 +129,13 @@ class JustinNoFruit(Npc):
                 ["Are you ok? You dont look so hot...."],
                 (50, 450, 700, 130), 36, 500
             ),
+            'sir_leopold_message': NpcTextBox(
+                [
+
+                    "I was so scared....you have a knack for defying the odds.....",
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
         }
 
         self.choices = ["Yes", "No"]
@@ -148,7 +155,8 @@ class JustinNoFruit(Npc):
         elif self.state == "talking":
             # Determine which message to use based on player state
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
@@ -179,6 +187,8 @@ class JustinNoFruit(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+                if "sir leopold" in state.player.companions:
+                    current_message = self.guy_messages["sir_leopold_message"]
                 current_message.reset()
 
     def update_talking(self, state: "GameState", current_message):
@@ -202,4 +212,6 @@ class JustinNoFruit(Npc):
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
             current_message.draw(state)

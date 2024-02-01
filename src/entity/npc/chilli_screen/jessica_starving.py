@@ -9,14 +9,20 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class JessicaStarving(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NpcTextBox(
-            [
-                "Jessica: I only eat when the hunger gets to be too much..",
-                "The chilli fills you up but it burns your mouth, stomach, and everything else",
-                "Hero: What about the butthole?",
-                "Jessica: Especially the butt hole",
-                "Hero: Better not eat it."],
-            (50, 450, 50, 45), 30, 500)
+        self.guy_messages = {
+            "default_message": NpcTextBox(
+                [
+                    "no more chili please god not again no no no no no no no no no no no no no god no please no anything but chili please somebody help me!",
+                    "im so hungry i could eat my hand"
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
+
+            "sir_leopold_message": NpcTextBox(
+                ["please....help us......"],
+                (50, 450, 700, 130), 36, 500
+            ),
+        }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
@@ -28,16 +34,17 @@ class JessicaStarving(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
 
     def update(self, state: "GameState"):
-
         if self.state == "waiting":
             player = state.player
             self.update_waiting(state)
 
         elif self.state == "talking":
-
-            if self.textbox.message_index == 1:
-                if state.controller.isAPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
+            # Determine which message to use based on player state
+            current_message = self.guy_messages["default_message"]
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
+            if current_message.message_index == 1:
+                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
@@ -45,40 +52,39 @@ class JessicaStarving(Npc):
                     state.player.stamina_points += 500
                     if state.player.stamina_points > 100:
                         state.player.stamina_points = 100
-                elif state.controller.isBPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
+                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
-            self.update_talking(state)
+            self.update_talking(state, current_message)
 
     def update_waiting(self, state: "GameState"):
         player = state.player
-        min_distance = math.sqrt(
-            (player.collision.x - self.collision.x) ** 2 + (
-                        player.collision.y - self.collision.y) ** 2)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (
-                pygame.time.get_ticks() - self.state_start_time) > 500:
-            distance = math.sqrt(
-                (player.collision.x - self.collision.x) ** 2 + (
-                            player.collision.y - self.collision.y) ** 2)
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40:
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
-                self.textbox.reset()
+                # Reset the message based on player state
+                current_message = self.guy_messages["default_message"]
+                if "sir leopold" in state.player.companions:
+                    current_message = self.guy_messages["sir_leopold_message"]
+                current_message.reset()
 
-    def update_talking(self, state: "GameState"):
-        self.textbox.update(state)
-        if state.controller.isTPressed and self.textbox.is_finished():
+    def update_talking(self, state: "GameState", current_message):
+        current_message.update(state)
+        state.player.canMove = False
+
+        if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
-
             self.state_start_time = pygame.time.get_ticks()
-
+            state.player.canMove = True
     def draw(self, state):
         # rect = (
         # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
@@ -100,8 +106,8 @@ class JessicaStarving(Npc):
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        if self.state == "waiting":
-            pass
-        elif self.state == "talking":
-            # print("is talking")
-            self.textbox.draw(state)
+        if self.state == "talking":
+            current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
+            current_message.draw(state)

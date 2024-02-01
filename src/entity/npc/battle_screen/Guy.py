@@ -24,6 +24,10 @@ class Guy(Npc):
                 ["Bro, you look totally sick, go see the doctor ASAP"],
                 (50, 450, 700, 130), 36, 500
             ),
+            "sir_leopold_message": NpcTextBox(
+                ["bro you look sic go see...oh wait your not longer sic never mind"],
+                (50, 450, 700, 130), 36, 500
+            ),
         }
 
         self.choices = ["Yes", "No"]
@@ -43,7 +47,8 @@ class Guy(Npc):
         elif self.state == "talking":
             # Determine which message to use based on player state
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
@@ -74,6 +79,8 @@ class Guy(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+                if "sir leopold" in state.player.companions:
+                    current_message = self.guy_messages["sir_leopold_message"]
                 current_message.reset()
 
     def update_talking(self, state: "GameState", current_message):
@@ -97,4 +104,6 @@ class Guy(Npc):
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
             current_message.draw(state)

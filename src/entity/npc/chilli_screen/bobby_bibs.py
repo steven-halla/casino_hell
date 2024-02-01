@@ -9,11 +9,21 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class BobbyBibs(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.textbox = NpcTextBox(
-            ["It's hard to find good clothes down here",
-             "Which is why I always wear a bib",
-             "I can't....stand it anymore....god someone....get me out of here , i'm losing my mind"],
-            (50, 450, 50, 45), 30, 500)
+        self.guy_messages = {
+            "default_message": NpcTextBox(
+                [
+                    "It's hard to find good clothes down here",
+                    "Which is why I always wear a bib",
+                    "I can't....stand it anymore....god someone....get me out of here , i'm losing my mind"
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
+
+            "sir_leopold_message": NpcTextBox(
+                ["I'm gooing to miss the little hedge hogger"],
+                (50, 450, 700, 130), 36, 500
+            ),
+        }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
@@ -24,80 +34,57 @@ class BobbyBibs(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Ellens Parents.png").convert_alpha()
 
     def update(self, state: "GameState"):
-
         if self.state == "waiting":
             player = state.player
-
-            # print("waiting")
-            # if value is below 88 it wont activate for some reason
-            min_distance = math.sqrt(
-                (player.collision.x - self.collision.x) ** 2 + (
-                            player.collision.y - self.collision.y) ** 2)
-            #
-            # if min_distance < 25:
-            #     print("nooo")
-
             self.update_waiting(state)
 
         elif self.state == "talking":
-            # self.textbox.reset()
-            # self.textbox.message_index = 0
-            if self.textbox.message_index == 1:
-                if state.controller.isAPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
+            # Determine which message to use based on player state
+            current_message = self.guy_messages["default_message"]
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
+            if current_message.message_index == 1:
+                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
-
-                elif state.controller.isBPressed and \
-                        pygame.time.get_ticks() - self.input_time > 500:
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
-                    print("bye player")
                     self.state = "waiting"
 
-            self.update_talking(state)
+            self.update_talking(state, current_message)
 
     def update_waiting(self, state: "GameState"):
         player = state.player
-        # print(self.state)
-        min_distance = math.sqrt(
-            (player.collision.x - self.collision.x) ** 2 + (
-                        player.collision.y - self.collision.y) ** 2)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (
-                pygame.time.get_ticks() - self.state_start_time) > 500:
-            distance = math.sqrt(
-                (player.collision.x - self.collision.x) ** 2 + (
-                            player.collision.y - self.collision.y) ** 2)
-            # print("distance: " + str(distance))
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40:
-                # print("start state: talking")
-                print("10")
-
                 self.state = "talking"
-
                 self.state_start_time = pygame.time.get_ticks()
-                # the below is where kenny had it
-                self.textbox.reset()
+                # Reset the message based on player state
+                current_message =  self.guy_messages["default_message"]
+                if "sir leopold" in state.player.companions:
+                    current_message = self.guy_messages["sir_leopold_message"]
+                current_message.reset()
 
-    def update_talking(self, state: "GameState"):
-        self.textbox.update(state)
-        if state.controller.isTPressed and self.textbox.is_finished():
-            # if state.controller.isTPressed and self.textbox.message_index == 0:
-            print("Here we go we're walking here")
+    def update_talking(self, state: "GameState", current_message):
+        current_message.update(state)
+        state.player.canMove = False
 
-            # print("start state: waiting")
-            # self.textbox.reset()
-
+        if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
-
             self.state_start_time = pygame.time.get_ticks()
-            # self.textbox.reset()
-
+            state.player.canMove = True
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")
     #     return self.collision.isOverlap(entity.collision)
@@ -122,8 +109,8 @@ class BobbyBibs(Npc):
         # self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        if self.state == "waiting":
-            pass
-        elif self.state == "talking":
-            # print("is talking")
-            self.textbox.draw(state)
+        if self.state == "talking":
+            current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+            if "sir leopold" in state.player.companions:
+                current_message = self.guy_messages["sir_leopold_message"]
+            current_message.draw(state)
