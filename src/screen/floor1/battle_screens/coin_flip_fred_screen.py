@@ -73,6 +73,12 @@ class CoinFlipFredScreen(Screen):
         self.lose_exp = False
         self.game_state = "welcome_screen"
 
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        self.initialize_music()
+        self.music_on = True
+
+
         self.coin_flip_messages = {
             "welcome_message": TextBox(
                 ["Press T to select options and go through T messages", "Welcome to Coin flip I'll haunt your nightmares!", ""],
@@ -182,6 +188,22 @@ class CoinFlipFredScreen(Screen):
 
             # You can add more game state keys and TextBox instances here
         }
+
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
 
     def giveExp(self, state: "GameState"):
         # print("Player exp is: " + str(state.player.exp))
@@ -322,6 +344,11 @@ class CoinFlipFredScreen(Screen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
+
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
 
 
         # if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:
@@ -536,6 +563,8 @@ class CoinFlipFredScreen(Screen):
 
         if self.game_state == "game_over_screen":
             if state.controller.isTPressed:
+                self.music_on = True
+
                 state.currentScreen = state.startScreen
                 state.startScreen.start(state)
 
@@ -998,6 +1027,7 @@ class CoinFlipFredScreen(Screen):
                     print("1 index")
                     self.arrow_index = 0
                     self.game_state ="bet_screen"
+                    self.music_on = True
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 

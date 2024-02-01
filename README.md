@@ -433,3 +433,15 @@ you think we demons are jovial and nice, that we're a joke, well, i'll show you 
 horror looks like, 
 
 new item or companion: 2nd chance, if stamina goes below 1, your stamina is revived to 1/2
+new items: 
+
+stamina guard: if stamina falls below 0, restore up to 1 stamina
+save coin : save anywhre if gold is 300+
+teleport potion: teleport to rest area
+stamina plus : + 5 stamina
+magic plus : + 5 magic
+money bag: 500coins
+
+
+
+players need to have a perception of 1 to use shake

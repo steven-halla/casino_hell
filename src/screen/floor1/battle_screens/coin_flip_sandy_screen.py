@@ -33,6 +33,8 @@ class CoinFlipSandyScreen(Screen):
         self.debuff_counter = 0
         self.game_reset = False
         self.message_printed = False
+        self.music_on = True
+
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
@@ -58,6 +60,10 @@ class CoinFlipSandyScreen(Screen):
         self.shield_triggered = False
 
         self.lose_exp = False
+
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        self.initialize_music()
         self.game_state = "welcome_screen"
         self.coin_flip_messages = {
             "welcome_message": TextBox(
@@ -168,6 +174,22 @@ class CoinFlipSandyScreen(Screen):
             # You can add more game state keys and TextBox instances here
         }
 
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
+
     def giveExp(self, state: "GameState"):
         # print("Player exp is: " + str(state.player.exp))
         if self.result == self.player_choice:
@@ -244,6 +266,11 @@ class CoinFlipSandyScreen(Screen):
 
 
     def update(self, state: "GameState"):
+        if self.music_on == True:
+            self.stop_music()
+            self.initialize_music()
+            self.music_on = False
+
         if self.coinFlipSandyMoney < 50 and self.enemy_desperate_counter == False:
             self.game_state = "enemy_desperate_screen"
 
@@ -421,6 +448,8 @@ class CoinFlipSandyScreen(Screen):
 
         if self.game_state == "game_over_screen":
             if state.controller.isTPressed:
+                self.music_on = True
+
                 state.currentScreen = state.mainScreen
                 state.mainScreen.start(state)
 
@@ -876,6 +905,7 @@ class CoinFlipSandyScreen(Screen):
 
                 else:
                     print("1 index")
+                    self.music_on = True
                     state.currentScreen = state.mainScreen
                     state.mainScreen.start(state)
 
