@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed coin flip bug in ted screen, and added new way to flip coin in the fred screen">
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed bug where coin flip fred defeated was not procing">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -299,7 +300,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="45487000" />
+      <workItem from="1706635016180" duration="48050000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -644,7 +645,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="376" />
+    <option name="localTasksCounter" value="377" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -673,7 +674,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="start screen complete" />
     <MESSAGE value="more npcs updated with images" />
     <MESSAGE value="all npcs added for rest area and the start area" />
     <MESSAGE value="now all npcs for the rest area and the start area are all done" />
@@ -698,7 +698,8 @@
     <MESSAGE value="fixed sir leopold issue, hedge hogs now working with adding to the counter alongw with the flower, and now sir leopold joins our quest" />
     <MESSAGE value="opossum guard now added while talking, as well as rabies immunity and removing rabies negative status from teh player if they talk and have the blue flower , also we now REMOVE the blue flower from player inventory as a way of handling state" />
     <MESSAGE value="fixed coin flip bug in ted screen, and added new way to flip coin in the fred screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed coin flip bug in ted screen, and added new way to flip coin in the fred screen" />
+    <MESSAGE value="fixed bug where coin flip fred defeated was not procing" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bug where coin flip fred defeated was not procing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

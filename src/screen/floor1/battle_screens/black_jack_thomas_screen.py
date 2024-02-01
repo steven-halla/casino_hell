@@ -28,7 +28,7 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 20
+        self.cheater_bob_money = 1020
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -256,7 +256,7 @@ class BlackJackThomasScreen(Screen):
 
     def update(self, state: "GameState"):
         state.player.canMove = False
-        print("black jack thomas defeated is : " + str(self.black_jack_thomas_defeated))
+        # print("black jack thomas defeated is : " + str(self.black_jack_thomas_defeated))
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )
         # pygame.time.wait(100)
@@ -452,6 +452,16 @@ class BlackJackThomasScreen(Screen):
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
+            while self.enemy_score > 17:
+                print("Redrawing hand, score too high: " + str(self.enemy_score))
+                # Empty the enemy_hand array
+                self.enemy_hand = []
+                # Draw a new hand
+                self.enemy_hand = self.deck.enemy_draw_hand(2)
+                print("New enemy hand is: " + str(self.enemy_hand))
+                # Compute the score of the new hand
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                print("New enemy score is: " + str(self.enemy_score))
 
             if self.black_jack_counter > 0:
                 print(
@@ -549,7 +559,7 @@ class BlackJackThomasScreen(Screen):
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
-            while self.enemy_score < 15:  # this is 15 in order to make game a little easier
+            while self.enemy_score < 13:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
                 self.enemy_hand += self.deck.enemy_draw_hand(1)
@@ -573,7 +583,7 @@ class BlackJackThomasScreen(Screen):
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
-            if self.enemy_score > 14 and self.enemy_score < 22:
+            if self.enemy_score > 12 and self.enemy_score < 22:
                 print("stay here")
                 self.game_state = "results_screen"
 

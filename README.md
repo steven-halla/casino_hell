@@ -311,3 +311,6 @@ inn keeper needs fixing with his Yes message
 
 lets put Janet in a new location if hero has rabies, and then move her back
 when player no longer has it
+
+black jack flow needs work, if you busts we dont see the final card,
+also lets addd a score function that we can display for our ease of use.
