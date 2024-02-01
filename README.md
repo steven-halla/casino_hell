@@ -316,3 +316,35 @@ black jack flow needs work, if you busts we dont see the final card,
 also lets addd a score function that we can display for our ease of use.
 
 put in game that Janet (quets giver) Is out fetchign the shop keeper and will be back later
+
+
+####
+####
+BIG BUG:
+state for our magic spells after being casts are still around, at least for opossum in a can .
+#####
+
+#####
+
+Time to collect my thoughts:
+Need the following:
+Test game for bugs in regards to magic
+Test game flow for hardness
+Need everyone dialog change two more times
+one time after we cure rabies
+one time after we go to the inn twice
+need to build out inn dialog
+need to spend a good week buildign out the hedge maze which is going to probably be hard
+need to fix collision as its STILL BROKEN
+need to build out boss area
+need to build demon boss
+need to build out cut scenes
+need to get this done by february and be ready to ship this out no later, thats 28  from now, 
+which is probably 20-24 days of dev time.
+need to fix black jack its still happening too fast
+need graphics for opossum in a can 
+need to build out save/load funciton to support quests completed
+as well as money left of enmeies
+need to build out game over for player if money drops below 0
+need dto build out if player goes below 0 stamina
+#####

@@ -1,16 +1,18 @@
 {
     "level": 1,
-    "exp": 20,
+    "exp": 790.0,
     "stamina_points": 100,
     "max_stamina_points": 100,
-    "focus_points": 100,
+    "focus_points": 90,
     "max_focus_points": 100,
     "companions": [],
     "items": [
-        "inn badge"
+        "inn badge",
+        "opossum repellent"
     ],
     "magicinventory": [
-        "reveal"
+        "reveal",
+        "shake"
     ],
     "body": 0,
     "mind": 1,

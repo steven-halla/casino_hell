@@ -23,7 +23,7 @@ class DoctorOpossum(Npc):
                 500  # Delay
             ),
             "cured_message": NpcTextBox(
-                ["thank you for the flower....i'll cure you...and here, so you take less damaege! "],
+                ["thank you for the flower....i'll cure you...and here, so you take less damaege! Now go and rest up at the Inn, Doctor's orders!!! "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
