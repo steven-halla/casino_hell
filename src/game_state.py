@@ -62,6 +62,7 @@ class GameState:
         self.isPaused: bool = False
         self.delta: float = 0.0
         self.camera = Vector(0.0, 0.0)
+        self.sir_leopold_companion = False
 
 
         self.startScreen = StartScreen()
@@ -91,6 +92,8 @@ class GameState:
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
         self.currentScreen = self.startScreen
+
+
 
     def save_game(self, player):
         # Convert player stats to dictionary

@@ -36,7 +36,7 @@ class Player(Entity):
         self.items = []
 
         self.magicinventory = []
-        self.companions = []
+        self.companions = ["sir leopold"]
         self.canMove = True
 
 
@@ -74,6 +74,7 @@ class Player(Entity):
         }
 
     def update(self, state: "GameState"):
+
         controller = state.controller
         controller.update()
 
