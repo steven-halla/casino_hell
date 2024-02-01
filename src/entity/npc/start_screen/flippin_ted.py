@@ -18,6 +18,7 @@ class FlippinTed(Npc):
             "rabies_message": NpcTextBox(
                 ["Bro, you look like you have a hankering for trash, get away from me you smelly piece of fuck"],
                 (50, 450, 700, 130), 36, 500),
+
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0

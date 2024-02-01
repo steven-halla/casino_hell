@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="minor chnage to dialog">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="well that was easy to add new messages based on new state">
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,7 +299,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="50945000" />
+      <workItem from="1706635016180" duration="51250000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -646,7 +644,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="381" />
+    <option name="localTasksCounter" value="382" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -675,7 +673,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now you need perception of +1 to make nurgle appear" />
     <MESSAGE value="nurgle updated with picture" />
     <MESSAGE value="now need perception + 1 to get him to appear" />
     <MESSAGE value="now the chili area appears right ad proper when our hero has rabies" />
@@ -700,7 +697,8 @@
     <MESSAGE value="added sir leopolds paw functiona, and made games a little easier, with rumble bill being a little harder than thomas, but stil easier overall" />
     <MESSAGE value="reduced queest down to 300 pionts" />
     <MESSAGE value="minor chnage to dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor chnage to dialog" />
+    <MESSAGE value="well that was easy to add new messages based on new state" />
+    <option name="LAST_COMMIT_MESSAGE" value="well that was easy to add new messages based on new state" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

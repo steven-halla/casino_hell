@@ -44,6 +44,13 @@ class CindyLongHair(Npc):
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
+            'sir_leopold_message': NpcTextBox(
+                [
+                    "",
+                    "I was so scared....you have a knack for defying the odds.....",
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
         }
         self.choices = ["Yes", "No"]
         self.sprite_sheet = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/cindy_text_talk_image_2.png").convert_alpha()
@@ -119,7 +126,11 @@ class CindyLongHair(Npc):
 
         state.player.canMove = False
 
-        if state.player.hasRabies == True:
+
+        if "sir leopold" in state.player.companions:
+            current_message = self.cindy_long_hair_messages["sir_leopold_message"]
+
+        elif state.player.hasRabies == True:
             current_message = self.cindy_long_hair_messages['rabies_message']
 
         elif self.coinFlipTedReward == True:
@@ -222,7 +233,10 @@ class CindyLongHair(Npc):
             # # Draw the sprite section
             # state.DISPLAY.blit(sprite, position)
 
-            if state.player.hasRabies == True:
+            if "sir leopold" in state.player.companions:
+                current_message = self.cindy_long_hair_messages["sir_leopold_message"]
+
+            elif state.player.hasRabies == True:
                 current_message = self.cindy_long_hair_messages['rabies_message']
             elif self.coinFlipTedReward == True:
                 current_message = self.cindy_long_hair_messages['final_message']
