@@ -245,6 +245,43 @@ https://www.spriters-resource.com/snes/demonscrest/
 
 music:
 
+bar-cutsscene 2
+inspiring cinematic ambient
+lexin_music
+
+bar-cutscene 1
+Kitchen | Blog | Positive | Travel | Happy
+open music list
+
+opossum in a can 
+spy jazz
+serge quadrado
+
+coin flip
+Time Hurries (Powerful Motivational Sci-Fi Cinematic War Music)
+audiorezout
+
+black jack
+running free long edition
+muzaproduction
+
+maybe battle music
+AUDIOREZOUT
+Shooter Time (Aggressive Powerful Dark Motivational Sci-Fi Music)
+
+
+boss music
+Platinum (Powerful Sci-Fi Cinematic Futuristic Intense War Music)
+AUDIOREZOUT
+
+demon boss:
+horror action
+magnetic_trailer
+
+inn sleep
+are you sleeping jazzb
+music for videos
+
 
 chili area
 life of a wandering wizard
@@ -382,5 +419,17 @@ example I could have just made it to where BASED ON ITEMS IN PLAYER inven we cou
 
 you should not be able to leave any boss battles, once you in it ,its for the long haul
 
+Demon:
+I ccould tell you , that i'll rip your guts out and make you hang by em,
+i could tell you that i'll make you eat giant piles of shit,l
+I could even tell you that I'll bury you alive in crawling ants.
+but you know what....I'll let you use your imagination,when we're done here i"m using
+the orb of see thoughts, 
 
+whatever feears you have deep down, whatever you think isthe worst that can happen,..
+whatever horrifying things you can imagine...IS WHAT I'LL DO TO YOU!!!
 
+you think we demons are jovial and nice, that we're a joke, well, i'll show you what true 
+horror looks like, 
+
+new item or companion: 2nd chance, if stamina goes below 1, your stamina is revived to 1/2
