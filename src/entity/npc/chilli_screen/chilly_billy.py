@@ -15,8 +15,9 @@ class ChillyBilly(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "its like my great great great great cousin used to always say",
-                    "be sure to eat that chilli with your bare hands"
+                    "Music is nice , do you dig it?"
+                    "Go on now and eat that chilli with your hands ",
+
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

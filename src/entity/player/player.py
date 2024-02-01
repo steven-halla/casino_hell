@@ -36,7 +36,7 @@ class Player(Entity):
         self.items = []
 
         self.magicinventory = []
-        self.companions = ["sir leopold"]
+        self.companions = []
         self.canMove = True
 
 

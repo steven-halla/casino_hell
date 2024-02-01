@@ -91,7 +91,7 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.bossScreen
+        self.currentScreen = self.chilliScreen
 
 
 

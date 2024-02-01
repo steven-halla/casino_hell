@@ -243,6 +243,27 @@ https://www.youtube.com/watch?v=PWZOMFFW9_0
 demons:
 https://www.spriters-resource.com/snes/demonscrest/
 
+music:
+
+
+chili area
+life of a wandering wizard
+sergeQuadrado
+
+battle area/start  area/ boss area
+The SPell-dark magic back ground music
+OB-LIX
+
+rest area
+Night Jazz
+Onoychenkomusic
+
+hedge maze
+let the mystery unfold
+geoharvey
+
+https://pixabay.com/music/search/
+
 in REST area there are two characters that are not having collisoin because we have them set to GLOBAL state.
 we can solve this by putting a barrier and not draw it that way they cant walk through the NPC
 86753
@@ -360,3 +381,6 @@ basing dialog boxes based on player state is what i should have done at the star
 example I could have just made it to where BASED ON ITEMS IN PLAYER inven we could have based choices around that
 
 you should not be able to leave any boss battles, once you in it ,its for the long haul
+
+
+
