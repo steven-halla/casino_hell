@@ -36,6 +36,10 @@ class StartScreen(Screen):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.collision_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/collision.mp3")  # Adjust the path as needed
+        self.last_sound_time = 0
+        self.collision_sound.set_volume(0.2)  # Set the volume to 50%
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -165,6 +169,7 @@ class StartScreen(Screen):
             self.x_right_move = False
 
         player.update(state)
+        current_time = pygame.time.get_ticks()  # Get the current time in milliseconds
 
         # check map for collision
         if self.tiled_map.layers:
@@ -172,9 +177,14 @@ class StartScreen(Screen):
             collision_layer = self.tiled_map.get_layer_by_name("collision")
 
             for x, y, image in collision_layer.tiles():
+
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
+                    print("moogles r us")
+                    if current_time - self.last_sound_time > 700:  # 1000 milliseconds = 1 second
+                        self.collision_sound.play()  # Play the sound effect once
+                        self.last_sound_time = current_time  # Play the sound effect once
                     state.player.undoLastMove()
                 for demon in state.demons:
                     if demon.collision.isOverlap(tile_rect):
