@@ -1,6 +1,6 @@
 {
     "level": 1,
-    "exp": 220.0,
+    "exp": 17,
     "stamina_points": 100,
     "max_stamina_points": 100,
     "focus_points": 100,
@@ -13,9 +13,11 @@
     "spirit": 0,
     "perception": 0,
     "luck": 0,
-    "money": 1722,
+    "money": 2122,
     "coinfliptedmoney": 20,
     "coinflipfredmoney": 20,
-    "opossumsnellymoney": 300,
-    "opossumssallymoney": 300
+    "opossumnellymoney": 300,
+    "opossumsallymoney": 300,
+    "blackjackthomasmoney": 30,
+    "blackjackrumblebillmoney": 10
 }

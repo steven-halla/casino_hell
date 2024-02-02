@@ -82,6 +82,10 @@ class Player(Entity):
             "opossumnellymoney": state.opossumInACanNellyScreen.nellyOpossumMoney,
             "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
 
+            "blackjackthomasmoney": state.blackJackThomasScreen.cheater_bob_money,
+            "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
+
+
             # Add more stats as needed
         }
 
@@ -354,6 +358,9 @@ class Player(Entity):
 
             state.opossumInACanNellyScreen.nellyOpossumMoney = player_data['opossumnellymoney']
             state.opossumInACanSallyScreen.sallyOpossumMoney = player_data['opossumsallymoney']
+
+            state.blackJackThomasScreen.cheater_bob_money = player_data['blackjackthomasmoney']
+            state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
 
 
             innkeeper_position_x = 16 * 22
