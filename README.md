@@ -481,7 +481,7 @@ this way , when we save,we can start with brand new state.
 ####
 ###
 BUG FOUND IN BLACK JACK, IF THERE IS A MATCH, BETWEEN BOTH PLAYER AND ENEMY THEN DRAW DOES NOTHING AND ENDS THE ROUND
-
-
+bug found, after we turn in blue flower we can't chat up with the doctor till we leave screen and come back.
+sir leopold re appears even after he in my inventory
 
 ####

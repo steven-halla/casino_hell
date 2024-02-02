@@ -37,7 +37,7 @@ class SirLeopoldTheHedgeHog(Npc):
         self.final_message = NpcTextBox(
             ["", "final message here from sir leopold" ,
              "Since your Spirit is high I'll join you, the higher spirit yo uhave the more companioins will join us",
-             "I hear that Cindy has a special companion item that I can use, can you complete her quest and get it? ",
+             "Here drink this potion it'll make your perception better. Why don't I take it?  Because I'm already maxed out'? ",
              ],
             (50, 450, 50, 45), 30, 500)
 
@@ -206,6 +206,8 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time
                     self.vanish = True
+                    if state.player.perception == 0:
+                        state.player.perception = 1
 
 
 
@@ -262,6 +264,7 @@ class SirLeopoldTheHedgeHog(Npc):
             elif self.textboxstate == "textbox4":
                 self.reward_all_hogs.draw(state)
             elif self.textboxstate == "textbox5":
+
                 self.final_message.draw(state)
             elif self.textboxstate == "textbox1":
                 self.textbox.draw(state)
