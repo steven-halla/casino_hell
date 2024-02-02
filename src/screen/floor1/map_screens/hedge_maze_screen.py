@@ -33,6 +33,7 @@ class HedgeMazeScreen(Screen):
         move_player_down_flag = False
 
 
+
     def start(self, state: "GameState"):
         super().start(state)
 

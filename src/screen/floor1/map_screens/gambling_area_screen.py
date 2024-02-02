@@ -40,6 +40,8 @@ class GamblingAreaScreen(Screen):
         self.initialize_music()
 
 
+
+
     def stop_music(self):
         pygame.mixer.music.stop()
 

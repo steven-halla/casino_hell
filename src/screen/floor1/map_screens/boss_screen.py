@@ -32,6 +32,10 @@ class BossScreen(Screen):
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
 
+        self.collision_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/collision.mp3")  # Adjust the path as needed
+        self.last_sound_time = 0
+        self.collision_sound.set_volume(0.2)  # Set the volume to 50%
+
     def stop_music(self):
         pygame.mixer.music.stop()
 

@@ -55,10 +55,7 @@ class Player(Entity):
 
         self.days = 0
 
-        self.collision_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/collision.mp3")  # Adjust the path as needed
-        self.last_sound_time = 0
 
-        self.music_volume = 0.5  # Adjust as needed
 
 
     def to_dict(self):
@@ -182,14 +179,11 @@ class Player(Entity):
         #         print("collide with npc: " + str(npc.collision.toTuple()))
         #         self.undoLastMove()
         #         break
-        current_time = pygame.time.get_ticks()  # Get the current time in milliseconds
 
         for npc in state.npcs:
             # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
             if self.collision.isOverlap(npc.collision) :
-                if current_time - self.last_sound_time > 700:  # 1000 milliseconds = 1 second
-                    self.collision_sound.play()  # Play the sound effect once
-                    self.last_sound_time = current_time  # Play the sound effect once
+
 
 
                 # print("collide with npc: " + str(npc.collision.toTuple()))

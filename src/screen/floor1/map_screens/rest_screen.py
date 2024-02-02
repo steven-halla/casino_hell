@@ -58,6 +58,8 @@ class RestScreen(Screen):
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+
+
     def stop_music(self):
         pygame.mixer.music.stop()
 

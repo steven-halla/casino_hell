@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="all battle music has been added">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="sound efffects added for collision">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/treasurechests/treasurechests.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/treasurechests/treasurechests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/boss_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/hotel_room_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/hotel_room_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,7 +309,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="67884000" />
+      <workItem from="1706635016180" duration="68909000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -645,7 +654,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="392" />
+    <option name="localTasksCounter" value="393" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -674,7 +683,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="most NPCS includign quest givesrs are now updated for handling rabies messages" />
     <MESSAGE value="updated quest giver janet with rabies messags" />
     <MESSAGE value="all NPCS are updated with rabies messages" />
     <MESSAGE value="updated sprites again after changing by accident," />
@@ -699,7 +707,8 @@
     <MESSAGE value="updated battle screens with music" />
     <MESSAGE value="now music is playing" />
     <MESSAGE value="all battle music has been added" />
-    <option name="LAST_COMMIT_MESSAGE" value="all battle music has been added" />
+    <MESSAGE value="sound efffects added for collision" />
+    <option name="LAST_COMMIT_MESSAGE" value="sound efffects added for collision" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

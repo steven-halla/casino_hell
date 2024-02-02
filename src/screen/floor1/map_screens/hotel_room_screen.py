@@ -26,6 +26,7 @@ class HotelRoomScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
 
+
     def start(self, state: "GameState"):
         super().start(state)
 
