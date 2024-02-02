@@ -357,6 +357,8 @@ class OpossumInACanSallyScreen(Screen):
                     # print("your winnings are before" + str(self.total_winnings))
 
                     self.total_winnings = self.player_score
+                    self.sallyOpossumMoney -= self.player_score
+
 
                 if self.player_score > self.sallyOpossumMoney:
                     # print("waffles")

@@ -75,8 +75,12 @@ class Player(Entity):
             "perception": self.perception,
             "luck": self.luck,
             "money": self.money,
+
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
+
+            "opossumnellymoney": state.opossumInACanNellyScreen.nellyOpossumMoney,
+            "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
 
             # Add more stats as needed
         }
@@ -347,6 +351,9 @@ class Player(Entity):
 
             state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']
             state.coinFlipFredScreen.coinFlipFredMoney = player_data['coinflipfredmoney']
+
+            state.opossumInACanNellyScreen.nellyOpossumMoney = player_data['opossumnellymoney']
+            state.opossumInACanSallyScreen.sallyOpossumMoney = player_data['opossumsallymoney']
 
 
             innkeeper_position_x = 16 * 22

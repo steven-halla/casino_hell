@@ -290,10 +290,10 @@ class OpossumInACanNellyScreen(Screen):
             self.initialize_music()
             self.music_on = False
 
-        if self.player_score >= 300:
+        if self.player_score >= 500:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
-        if self.player_score >= 300:
+        if self.player_score >= 500:
             self.five_hundred_points = True
         if self.fill_cans == True:
             self.initializeGarbageCans()
@@ -353,7 +353,7 @@ class OpossumInACanNellyScreen(Screen):
                 self.talley_checker = True
 
                 return
-            print("tally ho")
+            # print("tally ho")
             if self.nellyOpossumMoney < 0:
                 self.nellyOpossumMoney = 0
                 self.nellyOpossumIsDefeated = True
@@ -366,6 +366,9 @@ class OpossumInACanNellyScreen(Screen):
                     print("your winnings are before" + str(self.total_winnings))
 
                     self.total_winnings = self.player_score
+                    self.nellyOpossumMoney -= self.player_score
+                    print("yo")
+
 
                 if self.player_score > self.nellyOpossumMoney:
                     print("waffles")
@@ -376,11 +379,6 @@ class OpossumInACanNellyScreen(Screen):
                     self.nellyOpossumMoney = 0
 
                 self.tally_money_once = False
-
-
-
-
-
 
 
             self.opossumInACanMessages["tally_message"].update(state)
