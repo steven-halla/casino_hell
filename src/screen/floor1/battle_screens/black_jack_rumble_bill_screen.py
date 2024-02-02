@@ -79,6 +79,8 @@ class BlackJackRumbleBillScreen(Screen):
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.music_on = True
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
 
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
@@ -818,6 +820,8 @@ class BlackJackRumbleBillScreen(Screen):
                     # channel3.play(sound3)
                     if state.player.focus_points >= 10:
                         state.player.focus_points -= 10
+                        self.spell_sound.play()  # Play the sound effect once
+
                         self.reveal_hand = 10
                         self.magic_lock = True
                         self.player_status = "Focus"

@@ -44,6 +44,8 @@ class BlackJackThomasScreen(Screen):
         self.ace_value = 1
         self.bust_protection = False
         self.avatar_of_luck_card_redraw_counter = 3
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
 
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -751,7 +753,10 @@ class BlackJackThomasScreen(Screen):
                     # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
                     # channel3.play(sound3)
                     if state.player.focus_points >= 10:
+
                         state.player.focus_points -= 10
+                        self.spell_sound.play()  # Play the sound effect once
+
                         self.reveal_hand = 10
                         self.magic_lock = True
                         self.player_status = "Focus"

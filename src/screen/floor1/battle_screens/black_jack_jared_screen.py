@@ -30,6 +30,8 @@ class BlackJackJaredScreen(Screen):
 
         self.cheater_bob_money = 20
         self.blackJackToken = False
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
 
 
         self.player_score = 0
@@ -703,6 +705,8 @@ class BlackJackJaredScreen(Screen):
                     pygame.time.delay(300)
                     if state.player.focus_points >= 10:
                         state.player.focus_points -= 10
+                        self.spell_sound.play()  # Play the sound effect once
+
                         self.reveal_hand = 10
                         self.magic_lock = True
                         self.player_status = "Focus"

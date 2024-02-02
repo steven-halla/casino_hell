@@ -234,6 +234,11 @@ if your bet is in the devils pile you can only make 1 bet , but others can raise
 
 maybe have sir leopold during his actions in combat  "I'll show you what real power looks like"
 
+
+#####
+#####
+######
+
 when using gimp be sure to set image to RGB values
 https://graphicdesign.stackexchange.com/questions/39014/pngs-made-in-gimp-not-coming-out-transparent
 
@@ -300,6 +305,19 @@ let the mystery unfold
 geoharvey
 
 https://pixabay.com/music/search/
+
+
+SOUND EFFECCTS:::
+
+https://www.101soundboards.com/boards/10261-dragon-warrior-ii-sounds#goog_rewarded
+
+
+
+
+######
+#####
+#####
+######
 
 in REST area there are two characters that are not having collisoin because we have them set to GLOBAL state.
 we can solve this by putting a barrier and not draw it that way they cant walk through the NPC
