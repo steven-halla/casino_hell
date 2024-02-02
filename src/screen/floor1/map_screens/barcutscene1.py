@@ -41,6 +41,7 @@ class BarCutScene1Screen(Screen):
 
 
         self.display_message1 = False  # Flag to track if the message should be displayed
+        self.display_message2 = False  # Flag to track if the message should be displayed
         self.timer_start = None  # To store the start time of the timer
         self.timer_duration = 2
 
@@ -110,6 +111,11 @@ class BarCutScene1Screen(Screen):
         if self.display_message1:
             self.cut_scene_1_messages["message_1"].update(state)
 
+        current_message = self.cut_scene_1_messages["message_1"]
+
+        if state.controller.isTPressed and current_message.is_finished():
+            print("nununu")
+            self.display_message1 = False  # Set this flag to True to display the message immediately
 
         # state.player.canMove = False
         controller = state.controller
