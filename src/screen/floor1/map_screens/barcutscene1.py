@@ -1,5 +1,6 @@
 import pygame
 import pytmx
+import time  # Import the time module
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.gui.textbox.npc_text_box import NpcTextBox
@@ -33,22 +34,21 @@ class BarCutScene1Screen(Screen):
         self.timer = 0  # Timer to track time since the screen started
         self.player_moved = False  # Flag to track if the player has been moved
         self.move_distance = 30  # Distance to move the player during the cutscene
-
-
-
-
-
+        # Initialize the clock
 
 
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
-        self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+
+        self.display_message1 = False  # Flag to track if the message should be displayed
+        self.timer_start = None  # To store the start time of the timer
+        self.timer_duration = 2
 
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
-                    "Guy: Most people here are here to gamble, you can quit a match and go rest if you feel it too much.",
+                    "Hero: I tell you all what, after a good hard day of gambling I need a stiff drink.",
+                    "Janet: Yeah you've already noticed, that your stamina gets drained from gambling, it takes a tool on the mind and body."
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -63,26 +63,14 @@ class BarCutScene1Screen(Screen):
             ),
         }
 
-    def stop_music(self):
-        pygame.mixer.music.stop()
-
-    def initialize_music(self):
-        # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
-        self.stop_music()
-        self.initialize_music()
+
         super().start(state)
+        self.timer_start = time.time()  # Initialize the timer at the start of the screen
+
+
+
 
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
@@ -102,40 +90,32 @@ class BarCutScene1Screen(Screen):
 
 
 
-
-
-
     def update(self, state: "GameState"):
+        # Increment the timer by the time elapsed since the last frame
+        # Calculate the time elapsed since the screen started
+        if self.timer_start is not None:  # Check if the timer has started
+            elapsed_time = time.time() - self.timer_start  # Calculate elapsed time
+            print(f"Elapsed Time: {elapsed_time:.2f} seconds")  # Print the elapsed time in seconds
+
+            if elapsed_time >= self.timer_duration:  # Check if 2 seconds have passed
+                # 2 seconds have passed, you can proceed with your actions
+
+                print("2 seconds have passed!")  # Print statement indicating 2 seconds have passed
+
+                # Here you can set flags or call methods that should be triggered after 2 seconds
+                # Reset the timer if you want it to be a one-time event
+                self.timer_start = None
+                self.display_message1 = True  # Set this flag to True to display the message immediately
+
+        if self.display_message1:
+            self.cut_scene_1_messages["message_1"].update(state)
+
+
         # state.player.canMove = False
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
         controller.update()
-
-        self.timer += 1 / 60
-
-        # Start moving the player after 2 seconds
-        if self.timer >= 2 and not self.player_moved:
-            print("Starting controlled movement")
-            self.movement_start_time = self.timer  # Store the time when the player starts moving
-            self.player_moved = True  # Indicate that the player has started moving
-
-        # If the player has started moving, check the time elapsed since the movement started
-        if self.player_moved:
-            movement_duration = self.timer - self.movement_start_time
-
-            # If it's been less than 2 seconds since the player started moving, keep moving
-            if movement_duration < 2:
-                state.player.velocity.y = -2  # Move up by setting a negative velocity
-            else:
-                # 2 seconds have passed, stop the movement
-                state.player.velocity.y = 0
-                print("2 seconds have passed, stopping movement")
-
-
-
-
-
 
 
         if controller.isExitPressed is True:
@@ -161,14 +141,13 @@ class BarCutScene1Screen(Screen):
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
+
+
+
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)
-        state.DISPLAY.blit(state.FONT.render(
-            f"player money: {state.player.money}",
-            True, (255, 255, 255)), (333, 333))
-        state.DISPLAY.blit(state.FONT.render(
-            f"player stamina points: {state.player.stamina_points}",
-            True, (255, 255, 255)), (333, 388))
+
+
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
@@ -201,6 +180,9 @@ class BarCutScene1Screen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        if self.display_message1:
+            self.cut_scene_1_messages["message_1"].draw(state)
 
 
         state.obstacle.draw(state)
