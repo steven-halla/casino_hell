@@ -107,7 +107,7 @@ class JessicaStarving(Npc):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
+            current_message =  self.guy_messages["default_message"]
             if "sir leopold" in state.player.companions:
                 current_message = self.guy_messages["sir_leopold_message"]
             current_message.draw(state)

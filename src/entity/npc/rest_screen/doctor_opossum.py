@@ -211,7 +211,7 @@ class DoctorOpossum(Npc):
             if state.controller.isTPressed and self.doctor_messages["cured_message"].is_finished():
                 # if state.controller.isTPressed and self.textbox.message_index == 0:
                 print("Here we go we're walking here")
-                state.player.items.append("opossum repellent")
+                # state.player.items.append("opossum repellent")
                 state.player.hasRabies = False
 
                 state.player.rabiesImmunity = True

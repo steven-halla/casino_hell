@@ -45,7 +45,7 @@ class HedgeMazeScreen(Screen):
 
         state.treasurechests = [
 
-            BlueFlower(16 * 12, 14 * 55),
+            BlueFlower(16 * 7, 14 * 40),
 
         ]
 
@@ -99,8 +99,8 @@ class HedgeMazeScreen(Screen):
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
         if "blue flower" in state.player.items:
-            state.currentScreen = state.restScreen
-            state.restScreen.start(state)
+            state.currentScreen = state.chilliScreen
+            state.chilliScreen.start(state)
 
         controller = state.controller
         # ... (rest of your update code) ...

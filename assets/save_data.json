@@ -1,27 +1,31 @@
 {
     "level": 1,
-    "exp": 0,
+    "exp": 299.0,
     "stamina_points": 100,
     "max_stamina_points": 100,
-    "focus_points": 100,
+    "focus_points": 90,
     "max_focus_points": 100,
-    "companions": ["sir leopold"],
+    "companions": [],
     "items": [
-        "opossum repellent"
+        "inn badge"
     ],
-    "magicinventory": [],
+    "magicinventory": [
+        "reveal",
+        "shake"
+    ],
     "body": 0,
-    "mind": 0,
+    "mind": 1,
     "spirit": 0,
     "perception": 0,
     "luck": 0,
-    "money": 2022,
+    "money": 1782,
     "rabies": false,
     "immunity": true,
-    "coinfliptedmoney": 20,
-    "coinflipfredmoney": 20,
+    "level3reward": false,
+    "coinfliptedmoney": 0,
+    "coinflipfredmoney": 0,
     "opossumnellymoney": 300,
-    "opossumsallymoney": 300,
-    "blackjackthomasmoney": 20,
+    "opossumsallymoney": 0,
+    "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 20
 }

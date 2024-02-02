@@ -468,3 +468,20 @@ NOTE!!!
 save coins should only work at rest area
 unless we make the state checks that we have on rest screeen into a method and pass that method to every screen
 
+after we get nurgle the hedge hog back lets have janet vanish and be replaced by a new NPC to better 
+track state
+
+have a check that when player buys soemthing at store its automatically sold out such as equip items
+maybe have a state for each item, and wehn player buys item we set it to False, and then
+if itemis set to False, its read as "sold out"
+
+if we want to later on down the line we can have differnt save methods, and call them level 1 save etc etc
+this way , when we save,we can start with brand new state. 
+
+####
+###
+BUG FOUND IN BLACK JACK, IF THERE IS A MATCH, BETWEEN BOTH PLAYER AND ENEMY THEN DRAW DOES NOTHING AND ENDS THE ROUND
+
+
+
+####

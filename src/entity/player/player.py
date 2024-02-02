@@ -38,8 +38,7 @@ class Player(Entity):
         self.magicinventory = []
         self.companions = []
         self.canMove = True
-
-
+        self.level3janetreward = False
 
         self.hasRabies = False
 
@@ -77,6 +76,7 @@ class Player(Entity):
             "money": self.money,
             "rabies": self.hasRabies,
             "immunity": self.rabiesImmunity,
+            "level3reward": self.level3janetreward,
 
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
@@ -86,7 +86,6 @@ class Player(Entity):
 
             "blackjackthomasmoney": state.blackJackThomasScreen.cheater_bob_money,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
-
 
             # Add more stats as needed
         }
@@ -119,7 +118,7 @@ class Player(Entity):
 
             controller.isOPressed = False
 
-        if self.exp > 300 and self.level2checker == False and self.level == 2:
+        if self.exp > 300 and self.level2checker == False:
             # print("grats you leveld up to level 2")
             self.level = 2
             self.max_stamina_points += 10 + (self.stamina_increase)
@@ -128,7 +127,7 @@ class Player(Entity):
             self.level2checker = True
             return
 
-        elif self.exp > 500 and self.level3checker == False and self.level == 3:
+        elif self.exp > 500 and self.level3checker == False:
             # print("grats you leveld up to level 3")
             if "shield" not in self.magicinventory:
                 self.magicinventory.append("shield")
@@ -357,6 +356,8 @@ class Player(Entity):
             state.player.money = player_data['money']
             state.player.hasRabies = player_data['rabies']
             state.player.rabiesImmunity = player_data['immunity']
+            state.player.level3janetreward = player_data['level3reward']
+
 
 
             state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']

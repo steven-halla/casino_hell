@@ -20,7 +20,8 @@ class ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["+1 perception", "save coin", "sir leopolds paw"]
+        self.shop_items = ["+10 stamina", "save coin", "opossum repellent"]
+
         self.shop_costs = ["100", "200", "300"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
@@ -50,9 +51,9 @@ class ShopKeeper(Npc):
                 self.state = "waiting"
                 print("Leaving the shop...")
                 self.textbox.reset()
-                if "+1 perception" in state.player.items:
-                    state.player.items.remove("+1 perception")
-                    state.player.perception += 1
+                if "+10 stamina" in state.player.items:
+                    state.player.items.remove(" +10 stamina")
+                    state.player.max_stamina_points += 10
                 return
 
             if self.textbox.message_index == 0:

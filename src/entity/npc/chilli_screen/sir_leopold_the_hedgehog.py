@@ -16,7 +16,7 @@ class SirLeopoldTheHedgeHog(Npc):
         self.textbox = NpcTextBox(
             ["I'm the head hog round these parts",
              "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded ",
-             "If you can find all 4 i'll reward you with a super special technique."],
+             "If you can find all 4 i'll reward you with a super special item , it'll help you in black jack, the enemy won't know what hit em."],
             (50, 450, 50, 45), 30, 500)
         self.reward_no_hogs = NpcTextBox(
             ["wow you reall suckss",
@@ -184,7 +184,7 @@ class SirLeopoldTheHedgeHog(Npc):
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.reward_all_hogs.is_finished():
                     state.player.money += 500
-                    state.player.items.append("save coin")
+                    state.player.items.append("sir leopold's paw")
                     self.textboxstate = "textbox5"
                     self.state_start_time = current_time
                     self.input_time = current_time

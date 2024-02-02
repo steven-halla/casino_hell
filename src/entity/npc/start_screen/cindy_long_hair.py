@@ -21,8 +21,8 @@ class CindyLongHair(Npc):
                 [
                     "",
                     "Cindy: Oh kool look at you, time for your reward (inn badge). Oh, you want something else too, what a greedy man you are!.",
-                    "Ok I know just what you want.....I'll give you this potion bottoms up!",
-                    "low: 1-9, med 10=15, high 16-21",
+                    "This potion will increase your intelligence by one, this will open up your first spell slot!",
+                    "Go play some black jack and try it out",
 
                 ],
 

@@ -51,6 +51,14 @@ class QuestGiverJanet(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
 
     def update(self, state: "GameState"):
+        if "shake" in state.player.magicinventory:
+            self.textboxstate = "textbox3"
+
+        if state.player.spirit > 0 and "shake" in state.player.magicinventory:
+            self.textboxstate = "textbox5"
+
+        if state.player.level3janetreward == True:
+            self.textboxstate = "textbox6"
         # if state.restScreen.npc_janet_textbox3 == True:
         #     self.textboxstate = "textbox3"
 
@@ -312,7 +320,8 @@ class QuestGiverJanet(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time  # Update last input time
                     if self.level3reward == True:
-                        state.player.max_focus_points += 5
+                        state.player.max_focus_points += 10
+                        state.player.level3janetreward = True
                         self.level3reward = False
 
                     print("player body" + str(state.player.body))

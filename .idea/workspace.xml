@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="deleted rogue print statement, also confirmed rabies immunity status stet to true">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="sir leopold quest line finished with savae load">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/brutal_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/brutal_patrick.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -302,7 +312,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="80567000" />
+      <workItem from="1706635016180" duration="86504000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -647,7 +657,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="403" />
+    <option name="localTasksCounter" value="404" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,7 +686,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added sir leopolds paw functiona, and made games a little easier, with rumble bill being a little harder than thomas, but stil easier overall" />
     <MESSAGE value="reduced queest down to 300 pionts" />
     <MESSAGE value="minor chnage to dialog" />
     <MESSAGE value="well that was easy to add new messages based on new state" />
@@ -701,7 +710,8 @@
     <MESSAGE value="now can save all monies" />
     <MESSAGE value="now we keep track of our 6 main guys if they are defeated" />
     <MESSAGE value="deleted rogue print statement, also confirmed rabies immunity status stet to true" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted rogue print statement, also confirmed rabies immunity status stet to true" />
+    <MESSAGE value="sir leopold quest line finished with savae load" />
+    <option name="LAST_COMMIT_MESSAGE" value="sir leopold quest line finished with savae load" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -715,6 +725,11 @@
           <url>file://$PROJECT_DIR$/src/entity/demon/demon.py</url>
           <line>104</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py</url>
+          <line>42</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
