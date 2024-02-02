@@ -11,6 +11,7 @@ from screen.floor1.battle_screens.black_jack_rumble_bill_screen import BlackJack
 from screen.examples.black_jack_screen import BlackJackScreen
 from screen.floor1.battle_screens.black_jack_thomas_screen import BlackJackThomasScreen
 from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
+from screen.floor1.map_screens.barcutscene1 import BarCutScene1Screen
 from screen.floor1.map_screens.boss_screen import BossScreen
 from screen.floor1.map_screens.chilli_screen import ChilliScreen
 from screen.floor1.battle_screens.coin_flip_fred_screen import CoinFlipFredScreen
@@ -74,6 +75,7 @@ class GameState:
         self.bossScreen = BossScreen()
         # self.restScreen = RestScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
+        self.barCutScene1 = BarCutScene1Screen()
         # self.bossScreen = BossScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
@@ -91,7 +93,7 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.startScreen
+        self.currentScreen = self.barCutScene1
 
 
 
