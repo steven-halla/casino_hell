@@ -77,6 +77,13 @@ class RestScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+
+        if state.coinFlipFredScreen.coinFlipFredMoney < 10:
+            state.coinFlipFredScreen.coinFlipFredDefeated = True
+        if state.coinFlipTedScreen.coinFlipTedMoney < 10:
+            state.coinFlipTedScreen.coinFlipTedDefeated = True
+
+
         self.stop_music()
         self.initialize_music()
         super().start(state)

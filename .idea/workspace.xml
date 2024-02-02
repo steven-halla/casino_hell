@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="we're walking here....but about to go ham on this here save file, saving this as a readable save point">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="save is working for money">
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,7 +300,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="74376000" />
+      <workItem from="1706635016180" duration="74716000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -648,7 +645,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="397" />
+    <option name="localTasksCounter" value="398" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -677,7 +674,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed innn keeper error for YES Not closing on select" />
     <MESSAGE value="fixed sir leopold issue, hedge hogs now working with adding to the counter alongw with the flower, and now sir leopold joins our quest" />
     <MESSAGE value="opossum guard now added while talking, as well as rabies immunity and removing rabies negative status from teh player if they talk and have the blue flower , also we now REMOVE the blue flower from player inventory as a way of handling state" />
     <MESSAGE value="fixed coin flip bug in ted screen, and added new way to flip coin in the fred screen" />
@@ -702,7 +698,8 @@
     <MESSAGE value="sound effects for reveal magic spell" />
     <MESSAGE value="now all spells have sound effects" />
     <MESSAGE value="we're walking here....but about to go ham on this here save file, saving this as a readable save point" />
-    <option name="LAST_COMMIT_MESSAGE" value="we're walking here....but about to go ham on this here save file, saving this as a readable save point" />
+    <MESSAGE value="save is working for money" />
+    <option name="LAST_COMMIT_MESSAGE" value="save is working for money" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

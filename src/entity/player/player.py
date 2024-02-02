@@ -76,6 +76,7 @@ class Player(Entity):
             "luck": self.luck,
             "money": self.money,
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
+            "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
 
             # Add more stats as needed
         }
@@ -343,7 +344,10 @@ class Player(Entity):
             state.player.perception = player_data['perception']
             state.player.luck = player_data['luck']
             state.player.money = player_data['money']
+
             state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']
+            state.coinFlipFredScreen.coinFlipFredMoney = player_data['coinflipfredmoney']
+
 
             innkeeper_position_x = 16 * 22
             innkeeper_position_y = 16 * 11
