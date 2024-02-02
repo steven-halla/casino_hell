@@ -21,6 +21,7 @@ from entity.npc.rest_screen.wally_guide import WallyGuide
 from entity.npc.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
+from entity.treasurechests.powerpotion import PowerPotion
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -122,14 +123,17 @@ class RestScreen(Screen):
         ]
         # Check the value of state.player.body
 
-        state.npcs = []
-        if state.player.body > 0:
-            state.npcs.append(BarKeep(16 * 36, 16 * 18))
-        elif state.player.body == 0:
-            state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
+        # state.npcs = []
+        state.npcs = [npc for npc in state.npcs if not isinstance(npc, (BarKeep, BarKeepLowBody))]
+
+        # Add the appropriate NPC based on the player's body value
 
 
+        state.treasurechests = [
 
+            PowerPotion(16 * 27, 14 * 10),
+
+        ]
 
         # if state.gamblingAreaScreen.nurgle_the_hedge_hog == True:
         #     print("is there a nurgle here?")
@@ -167,6 +171,18 @@ class RestScreen(Screen):
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
 
+        if state.player.body > 0:
+            # Check if an instance of BarKeep already exists
+            if not any(isinstance(npc, BarKeep) for npc in state.npcs):
+                state.npcs.append(BarKeep(16 * 36, 16 * 18))
+            # Ensure no instance of BarKeepLowBody is present
+            state.npcs = [npc for npc in state.npcs if not isinstance(npc, BarKeepLowBody)]
+        else:
+            # Check if an instance of BarKeepLowBody already exists
+            if not any(isinstance(npc, BarKeepLowBody) for npc in state.npcs):
+                state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
+            # Ensure no instance of BarKeep is present
+            state.npcs = [npc for npc in state.npcs if not isinstance(npc, BarKeep)]
 
         controller = state.controller
         player = state.player
@@ -191,6 +207,13 @@ class RestScreen(Screen):
             if isinstance(npc, Nurgle) and npc.to_be_deleted:
                 state.npcs.remove(npc)
 
+        for npc in state.npcs:
+            npc.update(state)
+            if isinstance(npc, BarKeepLowBody) and state.player.body > 0:
+                state.npcs.remove(npc)
+
+
+
 
 
         # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
@@ -206,8 +229,9 @@ class RestScreen(Screen):
                 state.npcs.remove(npc)
 
         # Game Update Loop
-        for chest in state.treasurechests:
-            chest.update(state)
+        if state.player.body < 1:
+            for chest in state.treasurechests:
+                chest.update(state)
 
         for demon in state.demons:
             demon.update(state)
@@ -336,8 +360,9 @@ class RestScreen(Screen):
         for demon in state.demons:
             demon.draw(state)
 
-        for treasurechests in state.treasurechests:
-            treasurechests.draw(state)
+        if state.player.body < 1 and state.player.perception > 0:
+            for treasurechests in state.treasurechests:
+                treasurechests.draw(state)
 
         state.obstacle.draw(state)
 

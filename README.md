@@ -485,3 +485,5 @@ bug found, after we turn in blue flower we can't chat up with the doctor till we
 sir leopold re appears even after he in my inventory
 
 ####
+
+need to build out stamina guard feature in all screens....le sigh

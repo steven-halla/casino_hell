@@ -88,7 +88,22 @@ class DoctorOpossum(Npc):
             # self.textbox.reset()
             # self.textbox.message_index = 0
 
-            if "sir leopold" in state.player.companions:
+            if "blue flower" in state.player.items:
+                if self.doctor_messages["cured_message"].message_index == 1:
+
+                    if state.controller.isAPressed and \
+                            pygame.time.get_ticks() - self.input_time > 500:
+                        self.input_time = pygame.time.get_ticks()
+                        self.state = "waiting"
+
+
+                    elif state.controller.isBPressed and \
+                            pygame.time.get_ticks() - self.input_time > 500:
+                        self.input_time = pygame.time.get_ticks()
+                        print("bye player")
+                        self.state = "waiting"
+
+            elif "sir leopold" in state.player.companions:
                 if self.doctor_messages["sir_leopold_message"].message_index == 1:
                     if state.controller.isAPressed and \
                             pygame.time.get_ticks() - self.input_time > 500:
@@ -103,20 +118,6 @@ class DoctorOpossum(Npc):
                         self.state = "waiting"
 
 
-            elif "blue flower" in state.player.items:
-                if self.doctor_messages["cured_message"].message_index == 1:
-
-                    if state.controller.isAPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        self.state = "waiting"
-
-
-                    elif state.controller.isBPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        print("bye player")
-                        self.state = "waiting"
 
             elif self.hero_rabies == False:
                 if self.doctor_messages["welcome_message"].message_index == 1:
@@ -175,13 +176,14 @@ class DoctorOpossum(Npc):
 
                 self.state_start_time = pygame.time.get_ticks()
 
-                if "sir leopold" in state.player.companions:
+                if "blue flower" in state.player.items or state.player.rabiesImmunity == True:
+                    self.doctor_messages["cured_message"].reset()
+                # state.player.hasRabies = False
+                elif "sir leopold" in state.player.companions:
                     self.doctor_messages["sir_leopold_message"].reset()
 
 
-                elif "blue flower" in state.player.items or state.player.rabiesImmunity == True:
-                    self.doctor_messages["cured_message"].reset()
-                    # state.player.hasRabies = False
+
 
                 elif self.hero_rabies == False:
                 # the below is where kenny had it
@@ -193,7 +195,26 @@ class DoctorOpossum(Npc):
     def update_talking(self, state: "GameState"):
         state.player.canMove = False
 
-        if "sir leopold" in state.player.companions:
+        if "blue flower" in state.player.items:
+            self.doctor_messages["cured_message"].update(state)
+            if state.controller.isTPressed and self.doctor_messages["cured_message"].is_finished():
+                # if state.controller.isTPressed and self.textbox.message_index == 0:
+                print("Here we go we're walking here")
+                # state.player.items.append("opossum repellent")
+                state.player.hasRabies = False
+
+                state.player.rabiesImmunity = True
+                state.player.items.remove("blue flower")
+
+                # print("start state: waiting")
+                # self.textbox.reset()
+
+                self.state = "waiting"
+
+                self.state_start_time = pygame.time.get_ticks()
+                state.player.canMove = True
+
+        elif "sir leopold" in state.player.companions:
             self.doctor_messages["sir_leopold_message"].update(state)
             if state.controller.isTPressed and self.doctor_messages["sir_leopold_message"].is_finished():
                 # if state.controller.isTPressed and self.textbox.message_index == 0:
@@ -287,11 +308,12 @@ class DoctorOpossum(Npc):
             # print("is talking")
             #make a new message path
 
-            if "sir leopold" in state.player.companions:
+            if "blue flower" in state.player.items:
+                self.doctor_messages["cured_message"].draw(state)
+
+            elif "sir leopold" in state.player.companions:
                 self.doctor_messages["sir_leopold_message"].draw(state)
 
-            elif "blue flower" in state.player.items:
-                self.doctor_messages["cured_message"].draw(state)
 
             elif self.hero_rabies == False:
                 self.doctor_messages["welcome_message"].draw(state)

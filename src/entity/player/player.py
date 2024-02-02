@@ -25,9 +25,12 @@ class Player(Entity):
         self.mind = 0
         self.spirit = 0
         self.luck = 0
+        self.food = 0
         self.perception = 0
         self.stamina_points = 55
         self.stamina_increase = self.body * 1 * self.level
+
+        self.stamina_guard = False
 
         self.max_stamina_points = 100 + self.stamina_increase
         self.focus_points = 100
@@ -53,6 +56,7 @@ class Player(Entity):
         self.close_status_screen = False
 
         self.days = 0
+        self.realBarKeep = False
 
 
 
@@ -77,6 +81,7 @@ class Player(Entity):
             "rabies": self.hasRabies,
             "immunity": self.rabiesImmunity,
             "level3reward": self.level3janetreward,
+            "food": self.food,
 
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
@@ -93,6 +98,10 @@ class Player(Entity):
 
 
     def update(self, state: "GameState"):
+
+
+
+
 
         controller = state.controller
         controller.update()
@@ -115,6 +124,7 @@ class Player(Entity):
             print("Your Level is : " + str(self.level))
             print("has rabies status: " + str(self.hasRabies))
             print("immune status: " + str(self.rabiesImmunity))
+            print("food: " + str(self.food))
 
             controller.isOPressed = False
 
@@ -357,6 +367,7 @@ class Player(Entity):
             state.player.hasRabies = player_data['rabies']
             state.player.rabiesImmunity = player_data['immunity']
             state.player.level3janetreward = player_data['level3reward']
+            state.player.food = player_data['food']
 
 
 
