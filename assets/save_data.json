@@ -1,12 +1,12 @@
 {
     "level": 1,
-    "exp": 17,
-    "stamina_points": 100,
+    "exp": 0,
+    "stamina_points": 1,
     "max_stamina_points": 100,
     "focus_points": 100,
     "max_focus_points": 100,
     "companions": [],
-    "items": [],
+    "items": ["blue flower"],
     "magicinventory": [],
     "body": 0,
     "mind": 0,
@@ -14,10 +14,11 @@
     "perception": 0,
     "luck": 0,
     "money": 2122,
+    "rabies": true,
     "coinfliptedmoney": 20,
     "coinflipfredmoney": 20,
     "opossumnellymoney": 300,
     "opossumsallymoney": 300,
-    "blackjackthomasmoney": 30,
-    "blackjackrumblebillmoney": 10
+    "blackjackthomasmoney": 20,
+    "blackjackrumblebillmoney": 20
 }

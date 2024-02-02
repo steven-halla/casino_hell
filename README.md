@@ -454,7 +454,7 @@ new item or companion: 2nd chance, if stamina goes below 1, your stamina is revi
 new items: 
 
 stamina guard: if stamina falls below 0, restore up to 1 stamina
-save coin : save anywhre if gold is 300+
+save coin : save for free at rest area if gold is 300+
 teleport potion: teleport to rest area
 stamina plus : + 5 stamina
 magic plus : + 5 magic
@@ -463,3 +463,8 @@ money bag: 500coins
 
 
 players need to have a perception of 1 to use shake
+
+NOTE!!!
+save coins should only work at rest area
+unless we make the state checks that we have on rest screeen into a method and pass that method to every screen
+

@@ -78,6 +78,9 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
 
+        if state.player.hasRabies:
+            state.player.stamina_points = 1
+
         if state.coinFlipFredScreen.coinFlipFredMoney < 10:
             state.coinFlipFredScreen.coinFlipFredDefeated = True
 
@@ -96,6 +99,8 @@ class RestScreen(Screen):
 
         if state.opossumInACanSallyScreen.sallyOpossumMoney < 10:
             state.opossumInACanSallyScreen.sallyOpossumIsDefeated = True
+
+
 
         self.stop_music()
         self.initialize_music()
@@ -196,7 +201,6 @@ class RestScreen(Screen):
             # Check if the npc is any of the hedgehogs
             if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
                 self.hedge_hog_counter += 1
-                print(self.hedge_hog_counter)
                 state.npcs.remove(npc)
 
         # Game Update Loop
@@ -351,7 +355,6 @@ class RestScreen(Screen):
             if state.controller.isBPressed == True:
                 if state.controller.isPPressed:
                     state.controller.isPPressed = False
-                    print("Mew")
                     return
 
         # Update the display

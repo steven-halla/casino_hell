@@ -51,7 +51,7 @@ class DoctorOpossum(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
     def update(self, state: "GameState"):
-        print(state.restScreen.chili_pit_flag)
+        # print(state.restScreen.chili_pit_flag)
 
         if state.player.hasRabies == True:
             self.hero_rabies = True
@@ -170,7 +170,6 @@ class DoctorOpossum(Npc):
 
             if distance < 40:
                 # print("start state: talking")
-                print("10")
 
                 self.state = "talking"
 

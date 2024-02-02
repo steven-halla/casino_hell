@@ -44,7 +44,7 @@ class BarKeep(Npc):
 
 
             cost = int(self.shop_costs[self.selected_item_index])
-            print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
+            # print(f"Selected item index: {self.selected_item_index}, Cost: {cost}")
 
             # Handle 'B' press for leaving the shop
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -59,7 +59,7 @@ class BarKeep(Npc):
 
                 # Transition the state back to "waiting"
                 self.state = "waiting"
-                print("Leaving the shop...")
+                # print("Leaving the shop...")
                 self.textbox.reset()  # Reset the textbox
                 return  # Exit early to ensure no further processing in this update cycle
 
@@ -68,14 +68,14 @@ class BarKeep(Npc):
             elif state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.selected_item_index = (self.selected_item_index - 1) % len(self.shop_items)
-                    print(f"Selected item index: {self.selected_item_index}")
-                    print(f"Selected item index after pressing up: {self.selected_item_index}")
+                    # print(f"Selected item index: {self.selected_item_index}")
+                    # print(f"Selected item index after pressing up: {self.selected_item_index}")
 
 
             elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 self.selected_item_index = (self.selected_item_index + 1) % len(self.shop_items)
-                print(f"Selected item index: {self.selected_item_index}")
+                # print(f"Selected item index: {self.selected_item_index}")
 
             elif state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
@@ -91,8 +91,8 @@ class BarKeep(Npc):
                             state.player.stamina_points = state.player.max_stamina_points
                         selected_item = self.shop_items[self.selected_item_index]
                         state.player.items.append(selected_item)
-                        print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
-                        print("Your inventory as it stands: " + str(state.player.items))
+                        # print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
+                        # print("Your inventory as it stands: " + str(state.player.items))
                     else:
                         print("Not enough money to purchase item.")
 
@@ -139,7 +139,7 @@ class BarKeep(Npc):
             state.player.canMove = False
 
         cost = int(self.shop_costs[self.selected_item_index])
-        print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
+        # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
 
 
     def draw(self, state):

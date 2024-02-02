@@ -75,6 +75,8 @@ class Player(Entity):
             "perception": self.perception,
             "luck": self.luck,
             "money": self.money,
+            "rabies": self.hasRabies,
+            "immunity": self.rabiesImmunity,
 
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
@@ -113,6 +115,7 @@ class Player(Entity):
             print("Your EXP is : " + str(self.exp))
             print("Your Level is : " + str(self.level))
             print("has rabies status: " + str(self.hasRabies))
+            print("immune status: " + str(self.rabiesImmunity))
 
             controller.isOPressed = False
 
@@ -352,6 +355,9 @@ class Player(Entity):
             state.player.perception = player_data['perception']
             state.player.luck = player_data['luck']
             state.player.money = player_data['money']
+            state.player.hasRabies = player_data['rabies']
+            state.player.rabiesImmunity = player_data['immunity']
+
 
             state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']
             state.coinFlipFredScreen.coinFlipFredMoney = player_data['coinflipfredmoney']
