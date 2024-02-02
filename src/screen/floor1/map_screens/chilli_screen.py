@@ -104,63 +104,18 @@ class ChilliScreen(Screen):
 
             # InnKeeper(16 * 36, 16 * 26),
             # DoctorOpossum(16 * 30, 16 * 30),
-            # JackyBanana(16* 5, 16 * 15),
-            # BappingMike(16* 15, 16 * 15),
-            # HungryPatrick(16* 25, 16 * 15),
-            # InnGuard(16* 35, 16 * 15),
-            # NickyHints(16* 25, 16 * 25),
-            # MainScreenTeleporter(16 * 1, 16 * 10),
-            #
-            #
-            #
-            # FlippinTed(16* 35, 16 * 34),
 
-
-            # BobbyBibs(16 * 2, 16 * 2),
-            # BrutalPatrick(16 * 2, 16 * 10),
-            # ChillyBilly(16 * 2, 16 * 18),
-            #  CindyLongHair(16 * 2, 16 * 26),
-             # HungryPatrick(16 * 2, 16 * 34),
-            # JackyBanana(16 * 10, 16 * 2),
-            # JustinNoFruit(16 * 10, 16 * 10),
-            # NickyHints(16 * 10, 16 * 18),
-            # QuestGiverJanet(16 * 10, 16 * 26),
-            # RumbleBill(16 * 18, 16 * 2),
-            # SallyOpossum(16 * 18, 16 * 10),
-            # ShopKeeper(16 * 18, 16 * 18),
-            # SleepyNed(16 * 18, 16 * 26),
-            # SufferingSuzy(16 * 26, 16 * 2),
-            # WallyGuide(16 * 26, 16 * 10),
-            #
-            # CoinFlipFred(16 * 28, 16 * 36),
-            # FlippinTed(16 * 20, 16 * 36),
-            # FlippingSandy(16 * 28, 16 * 36),
-            # NellyOpossum(16 * 12, 16 * 36),
-            # Nurgle(16 * 24, 16 * 34)
-            # HedgeHog1(16 * 24, 16 * 34),
-            # HedgeHog2(16 * 32, 16 * 34),
-            # HedgeHog3(16 * 24, 16 * 20),
-            # HedgeHog4(16 * 24, 16 * 15),
-            # SirLeopoldTheHedgeHog(16 * 24, 16 * 25),
-
-
-
-                      # ]
         #
         # if state.quest_giver_janet.find_hog:
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
             # Demon1(16 * 55, 16 * 3),
-            # Demon2(16 * 55, 16 * 13),
-            # Demon3(16 * 55, 16 * 23),
-            # Demon4(16 * 55, 16 * 33),
+
         ]
 
     def update(self, state: "GameState"):
-        # i dont think npc and demons getting updated
-        # print(state.quest_giver_janet.find_hog)
-        # print(state.quest_giver_janet.quest2counter)
+
         print(str(state.player.items))
         print(str(state.player.money))
 
@@ -178,9 +133,9 @@ class ChilliScreen(Screen):
             if isinstance(npc, SirLeopoldTheHedgeHog) and npc.vanish:
                 state.npcs.remove(npc)
 
-        # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
-        # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
-
+        for npc in state.npcs:
+            if isinstance(npc, SirLeopoldTheHedgeHog) and "sir leopold" in state.player.companions:
+                state.npcs.remove(npc)
 
         ### i can use this to append NPC if i need to , just state.npcs.append(npc)
         for npc in state.npcs:

@@ -58,11 +58,11 @@ class SirLeopoldTheHedgeHog(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
 
     def update(self, state: "GameState"):
-        print("YOur hedge hog counter is now at:" + str(state.hedgeMazeScreen.hedge_hog_counter))
+        # print("YOur hedge hog counter is now at:" + str(state.hedgeMazeScreen.hedge_hog_counter))
 
 
         if self.state == "waiting":
-            print("current state is:" + str(self.textboxstate))
+            # print("current state is:" + str(self.textboxstate))
 
             if "blue flower" in state.player.items:
                 if state.hedgeMazeScreen.hedge_hog_counter == 0:

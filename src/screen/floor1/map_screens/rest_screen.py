@@ -78,6 +78,8 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
 
+
+
         if state.player.hasRabies:
             state.player.stamina_points = 1
 
