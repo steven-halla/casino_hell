@@ -34,6 +34,8 @@ class CoinFlipSandyScreen(Screen):
         self.game_reset = False
         self.message_printed = False
         self.music_on = True
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
 
 
         self.bet = 0
@@ -774,6 +776,8 @@ class CoinFlipSandyScreen(Screen):
 
                     print(str(self.magic_menu_selector[0]))
                     print(str(self.magic_menu_selector))
+                    self.spell_sound.play()  # Play the sound effect once
+
                     self.debuff_vanish = True
                     self.debuff_counter += 3
                     state.player.focus_points -= 10

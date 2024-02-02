@@ -31,6 +31,8 @@ class OpossumInACanIchiScreen(Screen):
         self.opossum_index = 0
         self.five_hundred_points = False
         self.magic_menu_selector_index = 0
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
         self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["win", "win",
                                             "win", "win", "lose",
@@ -747,6 +749,8 @@ class OpossumInACanIchiScreen(Screen):
             print(str(self.debuff_keen_perception))
             if state.controller.isTPressed:
                 if self.magic_menu_opossum_index == 0:
+                    self.spell_sound.play()  # Play the sound effect once
+
                     self.debuff_keen_perception = True
                     state.player.focus_points -= 10
                     self.game_state = "menu_screen"

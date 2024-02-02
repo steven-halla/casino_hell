@@ -19,6 +19,8 @@ class OpossumInACanSallyScreen(Screen):
 
         self.opossumBite = False
 
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
 
         self.sallyOpossumIsDefeated = False
 
@@ -955,6 +957,8 @@ class OpossumInACanSallyScreen(Screen):
             if state.controller.isTPressed:
                 if self.magic_menu_opossum_index == 0:
                     self.debuff_keen_perception = True
+                    self.spell_sound.play()  # Play the sound effect once
+
                     state.player.focus_points -= 10
                     self.game_state = "menu_screen"
                     state.controller.isTPressed = False  # Reset the button state

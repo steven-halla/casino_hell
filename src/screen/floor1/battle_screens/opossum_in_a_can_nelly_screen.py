@@ -28,6 +28,8 @@ class OpossumInACanNellyScreen(Screen):
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
         self.opossum_index = 0
         self.five_hundred_points = False
         self.magic_menu_selector_index = 0
@@ -966,6 +968,8 @@ class OpossumInACanNellyScreen(Screen):
                 if self.magic_menu_opossum_index == 0:
                     self.debuff_keen_perception = True
                     state.player.focus_points -= 10
+                    self.spell_sound.play()  # Play the sound effect once
+
                     self.game_state = "menu_screen"
                     state.controller.isTPressed = False  # Reset the button state
 

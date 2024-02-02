@@ -35,7 +35,7 @@ class Player(Entity):
         self.perks = []
         self.items = []
 
-        self.magicinventory = ["reveal"]
+        self.magicinventory = ["reveal", "shake", "shield"]
         self.companions = []
         self.canMove = True
 

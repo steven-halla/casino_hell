@@ -24,6 +24,9 @@ class CoinFlipTedScreen(Screen):
 
         self.headstailsindex = 0
 
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+
 
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
