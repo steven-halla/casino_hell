@@ -2,33 +2,17 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.npc.battle_screen.Guy import Guy
-from entity.npc.boss_screen.FlippingSandy import FlippingSandy
-from entity.npc.boss_screen.black_jack_jared import BlackJackJared
-from entity.npc.boss_screen.opossum_in_a_can_ichi import IchiOpossum
+
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
-from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
-from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
-from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
-from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
+
 from entity.npc.rest_screen.bar_keep import BarKeep
-from entity.npc.rest_screen.bar_keep_low_body import BarKeepLowBody
-from entity.npc.rest_screen.chili_pit_teleporter import ChiliPitTeleporter
-from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
-from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
-from entity.npc.rest_screen.inn_keeper import InnKeeper
-from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
-from entity.npc.rest_screen.new_teleporter import NewTeleporter
+
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 
-from entity.npc.rest_screen.start_screen_teleporter import StartScreenTeleporter
-from entity.npc.rest_screen.suffering_suzy import SufferingSuzy
-from entity.npc.rest_screen.wally_guide import WallyGuide
-from entity.npc.inn_guard import InnGuard
-from entity.npc.nurgle import Nurgle
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.player.player import Player
-from entity.treasurechests.powerpotion import PowerPotion
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -38,34 +22,46 @@ class BarCutScene1Screen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.chili_pit_flag = False
         self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame5.tmx")
-        self.y_up_move = False
-        self.y_down_move = False
-        self.x_left_move = False
-        self.x_right_move = False
+
         self.player = Player(333, 555)
-        self.hedge_hog_counter = 0
         move_player_down_flag = False
-        self.npcs = []  # Initialize the NPCs list as empty
-        self.rest_screen_npc_janet_talk_first_five_hundred = False
-        self.rest_screen_npc_janet_quest_2_counter = False
-        self.rest_screen_npc_janet_quest_3_counter = False
-        self.rest_screen_npc_janet_find_hog = False
+        self.npcs = []
+        self.initial_player_y = None  # To store the initial Y position of the player
 
 
-        self.npc_janet_textbox2 = False
-        self.npc_janet_textbox3 = False
-        self.npc_janet_textbox4 = False
-        self.npc_janet_textbox5 = False
-        self.npc_janet_textbox6 = False
+        self.timer = 0  # Timer to track time since the screen started
+        self.player_moved = False  # Flag to track if the player has been moved
+        self.move_distance = 30  # Distance to move the player during the cutscene
 
-        self.nurgle_the_hedge_hog = True
+
+
+
+
+
 
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+
+        self.cut_scene_1_messages = {
+            "message_1": NpcTextBox(
+                [
+                    "Guy: Most people here are here to gamble, you can quit a match and go rest if you feel it too much.",
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
+            "message_2": NpcTextBox(
+                ["Bro, you look totally sick, go see the doctor ASAP"],
+                (50, 450, 700, 130), 36, 500
+            ),
+            "message_3": NpcTextBox(
+                ["bro you look sic go see...oh wait your not longer sic never mind"],
+                (50, 450, 700, 130), 36, 500
+            ),
+        }
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -94,8 +90,6 @@ class BarCutScene1Screen(Screen):
             player_start_y = 200
             state.player = Player(player_start_x, player_start_y)
 
-
-        # state.npcs = []
         state.npcs = [
 
             SirLeopoldTheHedgeHog(16 * 11, 16 * 30),
@@ -109,12 +103,36 @@ class BarCutScene1Screen(Screen):
 
 
 
+
+
     def update(self, state: "GameState"):
-        state.player.canMove = False
+        # state.player.canMove = False
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
         controller.update()
+
+        self.timer += 1 / 60
+
+        # Start moving the player after 2 seconds
+        if self.timer >= 2 and not self.player_moved:
+            print("Starting controlled movement")
+            self.movement_start_time = self.timer  # Store the time when the player starts moving
+            self.player_moved = True  # Indicate that the player has started moving
+
+        # If the player has started moving, check the time elapsed since the movement started
+        if self.player_moved:
+            movement_duration = self.timer - self.movement_start_time
+
+            # If it's been less than 2 seconds since the player started moving, keep moving
+            if movement_duration < 2:
+                state.player.velocity.y = -2  # Move up by setting a negative velocity
+            else:
+                # 2 seconds have passed, stop the movement
+                state.player.velocity.y = 0
+                print("2 seconds have passed, stopping movement")
+
+
 
 
 
