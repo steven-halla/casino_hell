@@ -58,7 +58,7 @@ class Player(Entity):
 
 
 
-    def to_dict(self):
+    def to_dict(self, state: "GameState") -> dict:
         return {
             "level": self.level,
             "exp": self.exp,
@@ -74,6 +74,8 @@ class Player(Entity):
             "spirit": self.spirit,
             "perception": self.perception,
             "luck": self.luck,
+            "money": self.money,
+            "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
 
             # Add more stats as needed
         }
@@ -276,9 +278,9 @@ class Player(Entity):
             f"Exp: {self.exp}",
             f"Stamina: {self.stamina_points}" + "/" f"{self.max_stamina_points}",
             f"Magic Points: {self.focus_points}" + "/" f"{self.max_focus_points}",
-            f"Companions: {self.companions}",
-            f"Items: {self.items}",
+            f"Companions: {self.companions}" + "/" f"{self.items}"
             f"Magic spells: {self.magicinventory}",
+            f"money: {self.money}",
             f"Body: {self.body}",
             f"Mind: {self.mind}",
             f"Spirit: {self.spirit}",
@@ -340,6 +342,8 @@ class Player(Entity):
             state.player.spirit = player_data['spirit']
             state.player.perception = player_data['perception']
             state.player.luck = player_data['luck']
+            state.player.money = player_data['money']
+            state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']
 
             innkeeper_position_x = 16 * 22
             innkeeper_position_y = 16 * 11

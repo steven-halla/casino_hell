@@ -77,7 +77,7 @@ class InnKeeper(Npc):
             if selected_option == "Yes":
                 state.controller.isTPressed = False
                 # This code should run regardless of the player's stamina
-                state.save_game(state.player)  # Call the save_game function
+                state.save_game(state.player, state)  # Call the save_game function
                 self.state = "waiting"
                 self.state_start_time = pygame.time.get_ticks()
                 state.player.canMove = True
@@ -103,7 +103,7 @@ class InnKeeper(Npc):
                             print("Yee haawww")
 
                             state.player.stamina_points = 1
-                state.save_game(state.player)  # Call the save_game function
+                state.save_game(state.player, state)  # Call the save_game function
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:

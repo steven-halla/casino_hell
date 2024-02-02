@@ -1,6 +1,6 @@
 {
     "level": 1,
-    "exp": 0,
+    "exp": 5,
     "stamina_points": 100,
     "max_stamina_points": 100,
     "focus_points": 100,
@@ -13,5 +13,6 @@
     "spirit": 0,
     "perception": 0,
     "luck": 0,
-    "poop": "poop"
+    "money": 2012,
+    "coinfliptedmoney": 30
 }

@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now all spells have sound effects">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="we're walking here....but about to go ham on this here save file, saving this as a readable save point">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossumInACanIchi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossumInACanIchi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -301,7 +303,7 @@
       <workItem from="1705706706573" duration="28431000" />
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
-      <workItem from="1706635016180" duration="71308000" />
+      <workItem from="1706635016180" duration="74376000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -646,7 +648,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="396" />
+    <option name="localTasksCounter" value="397" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -675,7 +677,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated text" />
     <MESSAGE value="fixed innn keeper error for YES Not closing on select" />
     <MESSAGE value="fixed sir leopold issue, hedge hogs now working with adding to the counter alongw with the flower, and now sir leopold joins our quest" />
     <MESSAGE value="opossum guard now added while talking, as well as rabies immunity and removing rabies negative status from teh player if they talk and have the blue flower , also we now REMOVE the blue flower from player inventory as a way of handling state" />
@@ -700,7 +701,8 @@
     <MESSAGE value="sound effects are in place for t chest" />
     <MESSAGE value="sound effects for reveal magic spell" />
     <MESSAGE value="now all spells have sound effects" />
-    <option name="LAST_COMMIT_MESSAGE" value="now all spells have sound effects" />
+    <MESSAGE value="we're walking here....but about to go ham on this here save file, saving this as a readable save point" />
+    <option name="LAST_COMMIT_MESSAGE" value="we're walking here....but about to go ham on this here save file, saving this as a readable save point" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

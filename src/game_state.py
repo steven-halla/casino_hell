@@ -97,9 +97,9 @@ class GameState:
 
 
 
-    def save_game(self, player):
+    def save_game(self, player, state: "GameState"):
         # Convert player stats to dictionary
-        player_data = player.to_dict()
+        player_data = player.to_dict(state)
 
         # Convert dictionary to JSON string
         player_json = json.dumps(player_data, indent=4)
