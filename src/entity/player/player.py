@@ -35,7 +35,7 @@ class Player(Entity):
         self.perks = []
         self.items = []
 
-        self.magicinventory = ["reveal", "shake", "shield"]
+        self.magicinventory = []
         self.companions = []
         self.canMove = True
 
@@ -74,6 +74,7 @@ class Player(Entity):
             "spirit": self.spirit,
             "perception": self.perception,
             "luck": self.luck,
+
             # Add more stats as needed
         }
 
@@ -104,7 +105,7 @@ class Player(Entity):
 
             controller.isOPressed = False
 
-        if self.exp > 500 and self.level2checker == False and self.level == 2:
+        if self.exp > 300 and self.level2checker == False and self.level == 2:
             # print("grats you leveld up to level 2")
             self.level = 2
             self.max_stamina_points += 10 + (self.stamina_increase)
@@ -113,7 +114,7 @@ class Player(Entity):
             self.level2checker = True
             return
 
-        elif self.exp > 1000 and self.level3checker == False and self.level == 3:
+        elif self.exp > 500 and self.level3checker == False and self.level == 3:
             # print("grats you leveld up to level 3")
             if "shield" not in self.magicinventory:
                 self.magicinventory.append("shield")
@@ -284,6 +285,8 @@ class Player(Entity):
             f"Perception: {self.perception}",
             f"Luck: {self.luck}",
             f"Day: {self.days}",
+            f"Press L to Load",
+
             # Add more stats as needed
         ]
 

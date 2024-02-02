@@ -5,14 +5,13 @@
     "max_stamina_points": 100,
     "focus_points": 100,
     "max_focus_points": 100,
-    "companions": [
-        "sir leopold"
-    ],
+    "companions": [],
     "items": [],
     "magicinventory": [],
     "body": 0,
     "mind": 0,
     "spirit": 0,
     "perception": 0,
-    "luck": 0
+    "luck": 0,
+    "poop": "poop"
 }

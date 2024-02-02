@@ -38,7 +38,6 @@ class OpossumInACanIchiScreen(Screen):
                                             "win", "win", "lose",
                                             "lucky_star",
                                             "X3_star", "lose",
-
                                      ]
 
         self.opossumInACanMessages = {
