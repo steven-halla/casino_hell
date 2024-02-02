@@ -110,6 +110,7 @@ class BarCutScene1Screen(Screen):
 
 
     def update(self, state: "GameState"):
+        state.player.canMove = False
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
