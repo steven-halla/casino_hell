@@ -80,9 +80,22 @@ class RestScreen(Screen):
 
         if state.coinFlipFredScreen.coinFlipFredMoney < 10:
             state.coinFlipFredScreen.coinFlipFredDefeated = True
+
         if state.coinFlipTedScreen.coinFlipTedMoney < 10:
             state.coinFlipTedScreen.coinFlipTedDefeated = True
 
+        if state.blackJackThomasScreen.cheater_bob_money < 10:
+            state.blackJackThomasScreen.black_jack_thomas_defeated = True
+
+        if state.blackJackRumbleBillScreen.cheater_bob_money < 10:
+            state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated = True
+
+
+        if state.opossumInACanNellyScreen.nellyOpossumMoney < 10:
+            state.opossumInACanNellyScreen.nellyOpossumIsDefeated = True
+
+        if state.opossumInACanSallyScreen.sallyOpossumMoney < 10:
+            state.opossumInACanSallyScreen.sallyOpossumIsDefeated = True
 
         self.stop_music()
         self.initialize_music()
