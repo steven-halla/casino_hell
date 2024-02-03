@@ -24,6 +24,9 @@ class BarKeep(Npc):
 
         self.shop_costs = ["100", "200", "2000"]
 
+        self.barcutscene1 = False
+        self.barcutscene2 = False
+
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
@@ -37,6 +40,8 @@ class BarKeep(Npc):
 
 
     def update(self, state: "GameState"):
+        if state.restScreen.barscene1 == True:
+            self.barcutscene1 = True
 
 
         if self.state == "waiting":
@@ -90,6 +95,9 @@ class BarKeep(Npc):
                         state.player.food -= 1
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
+                            if self.barcutscene1 == False:
+                                state.currentScreen = state.barCutScene1
+                                state.barCutScene1.start(state)
                     elif self.selected_money_index == 1:
                         state.player.money -= 100
 
@@ -100,6 +108,9 @@ class BarKeep(Npc):
 
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
+                            if self.barcutscene1 == False:
+                                state.currentScreen = state.barCutScene1
+                                state.barCutScene1.start(state)
                     elif self.selected_money_index == 2:
                         print("Its boss time")
 

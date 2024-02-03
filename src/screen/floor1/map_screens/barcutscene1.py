@@ -28,7 +28,9 @@ class BarCutScene1Screen(Screen):
         self.player = Player(333, 555)
         move_player_down_flag = False
         self.npcs = []
-        self.initial_player_y = None  # To store the initial Y position of the player
+        self.initial_player_y = None
+
+
 
 
         self.timer = 0  # Timer to track time since the screen started
@@ -66,6 +68,7 @@ class BarCutScene1Screen(Screen):
 
 
     def start(self, state: "GameState"):
+        state.restScreen.barscene1 = True
 
         super().start(state)
         self.timer_start = time.time()  # Initialize the timer at the start of the screen
@@ -80,13 +83,11 @@ class BarCutScene1Screen(Screen):
             state.player = Player(player_start_x, player_start_y)
 
         state.npcs = [
-
             SirLeopoldTheHedgeHog(16 * 11, 16 * 30),
             QuestGiverJanet(16 * 21, 16 * 20),
             BarKeep(16 * 31, 16 * 10),
             CindyLongHair(16 * 31, 16 * 20),
             Guy(16 * 31, 16 * 28)
-
         ]
 
 

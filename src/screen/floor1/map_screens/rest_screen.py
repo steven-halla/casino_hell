@@ -45,6 +45,7 @@ class RestScreen(Screen):
         self.rest_screen_npc_janet_quest_2_counter = False
         self.rest_screen_npc_janet_quest_3_counter = False
         self.rest_screen_npc_janet_find_hog = False
+        self.barscene1 = False
 
 
         self.npc_janet_textbox2 = False
@@ -78,7 +79,6 @@ class RestScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
-
 
 
         if state.player.hasRabies:

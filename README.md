@@ -487,3 +487,6 @@ sir leopold re appears even after he in my inventory
 ####
 
 need to build out stamina guard feature in all screens....le sigh
+
+
+imagine random encounters with random game screens that pop up like a  Turn based JRGP.
