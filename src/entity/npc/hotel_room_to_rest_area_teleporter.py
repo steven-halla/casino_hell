@@ -4,28 +4,30 @@ from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class InnKeeper(Npc):
+class HotelRoomToRestAreaTeleporter(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Inn Keeper Neddry: Wanna stay at our inn?! Dont' mind the bed bugs, roaches, and rats, theya re very friendly."],
+                ["Demon: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
                 (50, 450, 700, 130), 36, 500),
-            "rabies_message": NpcTextBox(
-                ["I'll allow you to save your game BUT YOU CANNOT SLEEP HERE, sorry."],
-                (50, 450, 700, 130), 36, 500),
+            "defeated_message": NpcTextBox(
+                ["Good job on that take down, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
+                (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
+        self.flipping_ted_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
+
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Fisherman.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -43,13 +45,13 @@ class InnKeeper(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.player.hasRabies == True:
-                self.flipping_ted_messages["rabies_message"].reset()
+            if state.coinFlipTedScreen.coinFlipTedDefeated:
+                self.flipping_ted_messages["defeated_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
+        current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -64,58 +66,24 @@ class InnKeeper(Npc):
 
         elif state.controller.isDownPressed:
             state.controller.isDownPressed = False
+
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            print("Down pressed, arrow_index:", self.arrow_index)
+            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:
+            state.currentScreen = state.restScreen
+            state.restScreen.start(state)
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes":
-                state.controller.isTPressed = False
-                # This code should run regardless of the player's stamina
-                state.save_game(state.player, state)  # Call the save_game function
-                self.state = "waiting"
-                self.state_start_time = pygame.time.get_ticks()
-                state.player.canMove = True
-                print("Yes selected, closing shop.")
-                self.arrow_index = 0
-                state.player.days += 1
-                state.currentScreen = state.hotelRoomScreen
-                state.hotelRoomScreen.start(state)
 
-                if state.player.stamina_points < state.player.max_stamina_points:
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > state.player.max_stamina_points:
-                        state.player.stamina_points = state.player.max_stamina_points
 
-                        print("Yes selected, closing shop.")
-                        self.arrow_index = 0
-                        self.state = "waiting"
-                        self.state_start_time = pygame.time.get_ticks()
-                        state.player.canMove = True
-                        print("nice")
-                        print(str(state.player.hasRabies))
 
-                        if state.player.hasRabies == True:
-                            print("Yee haawww")
-
-                            state.player.stamina_points = 1
-                state.save_game(state.player, state)  # Call the save_game function
-
-            # Reset the flag when the "T" key is released
-            if not state.controller.isTPressed:
-                # print("ya")
-                self.t_pressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
-
-            self.arrow_index = 0
-
             # Exiting the conversation
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
@@ -124,6 +92,7 @@ class InnKeeper(Npc):
             state.player.canMove = True
 
     def draw(self, state):
+
         sprite_rect = pygame.Rect(5, 6, 21, 25)
 
         # Get the subsurface for the area you want
@@ -144,11 +113,11 @@ class InnKeeper(Npc):
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
+            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == True:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

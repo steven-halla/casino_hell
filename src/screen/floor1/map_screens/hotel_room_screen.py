@@ -6,6 +6,7 @@ from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
 from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
+from entity.npc.hotel_room_to_rest_area_teleporter import HotelRoomToRestAreaTeleporter
 from entity.npc.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
@@ -44,7 +45,7 @@ class HotelRoomScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-
+            HotelRoomToRestAreaTeleporter(16 * 10, 16 * 10)
 
 
                       ]
