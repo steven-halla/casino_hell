@@ -169,6 +169,10 @@ class OpossumInACanNellyScreen(Screen):
         self.initialize_music()
         self.music_on = True
 
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
 ##### what if I try to set a timer so we don't skip?
     ### or maybe something has to be set to false like the T press?
 

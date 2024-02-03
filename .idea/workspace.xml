@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added graphics for opossum in a can, also added sound effects for coin flip">
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="black jack screens now have sound effects for menus" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -301,7 +298,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="15013000" />
+      <workItem from="1706926189767" duration="15453000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -646,7 +643,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="422" />
+    <option name="localTasksCounter" value="423" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -675,7 +672,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="save is working for money" />
     <MESSAGE value="save is working for money for our coin flps" />
     <MESSAGE value="fixed opossum in a can bug where noney was not getting subtracted" />
     <MESSAGE value="now can save all monies" />
@@ -700,7 +696,8 @@
     <MESSAGE value="for now I'll allow max magic and items for the player may chnge in future" />
     <MESSAGE value="going through fixing bugs, QOL , quality issues with games: Just fixed issue with player vaniashing when chatting with cindy long hair" />
     <MESSAGE value="added graphics for opossum in a can, also added sound effects for coin flip" />
-    <option name="LAST_COMMIT_MESSAGE" value="added graphics for opossum in a can, also added sound effects for coin flip" />
+    <MESSAGE value="black jack screens now have sound effects for menus" />
+    <option name="LAST_COMMIT_MESSAGE" value="black jack screens now have sound effects for menus" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

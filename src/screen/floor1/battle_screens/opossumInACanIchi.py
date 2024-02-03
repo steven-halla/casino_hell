@@ -147,6 +147,10 @@ class OpossumInACanIchiScreen(Screen):
         self.initialize_music()
         self.music_on = True
 
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
     def stop_music(self):
         pygame.mixer.music.stop()
 

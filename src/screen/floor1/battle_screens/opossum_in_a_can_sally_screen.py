@@ -171,6 +171,10 @@ class OpossumInACanSallyScreen(Screen):
         self.initialize_music()
         self.music_on = True
 
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
     def stop_music(self):
         pygame.mixer.music.stop()
 
@@ -400,6 +404,8 @@ class OpossumInACanSallyScreen(Screen):
             if "shake" in self.magic_menu_selector:
                 if state.controller.isUpPressed:
                     self.opossum_index -= 1
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index < 0:
                         self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
                         print(str(self.opossum_index))
@@ -409,6 +415,8 @@ class OpossumInACanSallyScreen(Screen):
 
                 elif state.controller.isDownPressed:
                     self.opossum_index += 1
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index >= len(self.menu_selector):
                         self.opossum_index = 0  # Wrap around to the first item
                         print(str(self.opossum_index))
@@ -419,6 +427,8 @@ class OpossumInACanSallyScreen(Screen):
             elif "shake" not in self.magic_menu_selector:
                 if state.controller.isUpPressed:
                     self.opossum_index -= 2
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index < 0:
                         self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
                         print(str(self.opossum_index))
@@ -428,6 +438,8 @@ class OpossumInACanSallyScreen(Screen):
 
                 elif state.controller.isDownPressed:
                     self.opossum_index += 2
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index >= len(self.menu_selector):
                         self.opossum_index = 0  # Wrap around to the first item
                         print(str(self.opossum_index))
@@ -450,6 +462,8 @@ class OpossumInACanSallyScreen(Screen):
 
             # Check if enough time has passed since the last right key press
             if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 # Move to the next box
                 self.green_box_index = (self.green_box_index + 1) % 8
 
@@ -521,6 +535,8 @@ class OpossumInACanSallyScreen(Screen):
         if self.game_state == "magic_menu_screen":
             if state.controller.isUpPressed:
                 self.magic_menu_opossum_index -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magic_menu_opossum_index < 0:
                     self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
                     print(str(self.magic_menu_opossum_index))
@@ -530,6 +546,8 @@ class OpossumInACanSallyScreen(Screen):
 
             elif state.controller.isDownPressed:
                 self.magic_menu_opossum_index += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
                     self.magic_menu_opossum_index = 0  # Wrap around to the first item
                     print(str(self.magic_menu_opossum_index))
@@ -548,6 +566,8 @@ class OpossumInACanSallyScreen(Screen):
 
             if state.controller.isUpPressed:
                 self.play_again_or_quit_index -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.play_again_or_quit_index < 0:
                     self.play_again_or_quit_index = len(self.play_again_or_quit) - 1  # Wrap around to the last item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -559,6 +579,8 @@ class OpossumInACanSallyScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.play_again_or_quit_index == 0:
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     state.controller.isTPressed = False  # Reset the button state
                     self.opossumInACanMessages["tally_message"].message_index = 0
                     print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
