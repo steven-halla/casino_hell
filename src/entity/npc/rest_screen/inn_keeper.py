@@ -84,8 +84,6 @@ class InnKeeper(Npc):
                 print("Yes selected, closing shop.")
                 self.arrow_index = 0
                 state.player.days += 1
-                state.currentScreen = state.hotelRoomScreen
-                state.hotelRoomScreen.start(state)
 
                 if state.player.stamina_points < state.player.max_stamina_points:
                     state.player.money -= 100
