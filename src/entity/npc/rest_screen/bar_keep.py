@@ -40,8 +40,12 @@ class BarKeep(Npc):
 
 
     def update(self, state: "GameState"):
-        if state.restScreen.barscene1 == True:
+
+        if state.restScreen.barscene2 == True:
+            self.barcutscene2 = True
+        elif state.restScreen.barscene1 == True:
             self.barcutscene1 = True
+
 
 
         if self.state == "waiting":
@@ -95,9 +99,15 @@ class BarKeep(Npc):
                         state.player.food -= 1
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
-                            if self.barcutscene1 == False:
+
+                            if self.barcutscene2 == False:
+                                state.currentScreen = state.barCutScene2
+                                state.barCutScene2.start(state)
+
+                            elif self.barcutscene1 == False:
                                 state.currentScreen = state.barCutScene1
                                 state.barCutScene1.start(state)
+
                     elif self.selected_money_index == 1:
                         state.player.money -= 100
 
@@ -108,7 +118,11 @@ class BarKeep(Npc):
 
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
-                            if self.barcutscene1 == False:
+                            if self.barcutscene2 == False:
+                                state.currentScreen = state.barCutScene2
+                                state.barCutScene2.start(state)
+
+                            elif self.barcutscene1 == False:
                                 state.currentScreen = state.barCutScene1
                                 state.barCutScene1.start(state)
                     elif self.selected_money_index == 2:

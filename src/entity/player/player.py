@@ -83,6 +83,7 @@ class Player(Entity):
             "level3reward": self.level3janetreward,
             "food": self.food,
             "cutscene1": state.restScreen.barscene1,
+            "cutscene2": state.restScreen.barscene2,
 
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
@@ -370,6 +371,7 @@ class Player(Entity):
             state.player.level3janetreward = player_data['level3reward']
             state.player.food = player_data['food']
             state.restScreen.barscene1 = player_data['cutscene1']
+            state.restScreen.barscene2 = player_data['cutscene2']
 
 
 
