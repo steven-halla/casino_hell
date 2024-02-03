@@ -8,6 +8,7 @@ from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
 from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
 from entity.npc.rest_screen.bar_keep import BarKeep
 from entity.npc.rest_screen.bar_keep_low_body import BarKeepLowBody
+from entity.npc.rest_screen.boss_teleporter import BossTeleporter
 from entity.npc.rest_screen.chili_pit_teleporter import ChiliPitTeleporter
 from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
 from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
@@ -153,6 +154,7 @@ class RestScreen(Screen):
             WallyGuide(16 * 34, 16 * 26),
             StartScreenTeleporter(16 * 5, 16 * 25),
             NewTeleporter(16 * 15, 16 * 35),
+            BossTeleporter(16 * 25, 16 * 35),
         ])
         #
         # if state.quest_giver_janet.find_hog:

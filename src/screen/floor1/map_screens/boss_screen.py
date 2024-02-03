@@ -5,6 +5,7 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.boss_screen.FlippingSandy import FlippingSandy
 from entity.npc.boss_screen.black_jack_jared import BlackJackJared
 from entity.npc.boss_screen.opossum_in_a_can_ichi import IchiOpossum
+from entity.npc.boss_screen.rest_teleporter_from_boss import RestTeleporterFromBoss
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -71,36 +72,16 @@ class BossScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-            # make sure to seperate by a factor of 8 for y
-            #x, y
-            # InnGuard(16 * 36, 16 * 2),
-            # BappingMike(16 * 36, 16 * 10),
-            # BarKeep(16 * 36, 16 * 18),
-            # InnKeeper(16 * 36, 16 * 26),
-            # # DoctorOpossum(16 * 30, 16 * 30),
-            # BlackJackJared(16 * 30, 16 * 30),
-            # FlippingSandy(16 * 22, 16 * 30),
+
             IchiOpossum(16 * 11, 16 * 30),
             FlippingSandy(16 * 21, 16 * 20),
             BlackJackJared(16 * 31, 16 * 10),
+            RestTeleporterFromBoss(16 * 15, 16 * 10),
 
 
 
             # BobbyBibs(16 * 2, 16 * 2),
-            # BrutalPatrick(16 * 2, 16 * 10),
-            # ChillyBilly(16 * 2, 16 * 18),
-            #  CindyLongHair(16 * 2, 16 * 26),
-             # HungryPatrick(16 * 2, 16 * 34),
-            # JackyBanana(16 * 10, 16 * 2),
-            # JustinNoFruit(16 * 10, 16 * 10),
-            # NickyHints(16 * 10, 16 * 18),
-            # QuestGiverJanet(16 * 10, 16 * 26),
-            # RumbleBill(16 * 18, 16 * 2),
-            # SallyOpossum(16 * 18, 16 * 10),
-            # ShopKeeper(16 * 18, 16 * 18),
-            # SleepyNed(16 * 18, 16 * 26),
-            # SufferingSuzy(16 * 26, 16 * 2),
-            # WallyGuide(16 * 26, 16 * 10),
+
             #
             # CoinFlipFred(16 * 28, 16 * 36),
             # FlippinTed(16 * 20, 16 * 36),
