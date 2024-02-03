@@ -66,27 +66,29 @@ class BarKeep(Npc):
                 return
 
             if self.textbox.message_index == 0:
-                if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    # Decrement the index but prevent it from going below 0
-                    if self.selected_item_index > 0:
-                        self.selected_item_index -= 1
-                        self.selected_money_index -= 1
-                    print(f"shop_items: {self.shop_items}")
-                    print(f"shop_costs: {self.shop_costs}")
-                    print(f"selected_item_index: {self.selected_item_index}")
-                    print(f"selected_money_index: {self.selected_money_index}")
+                if self.textbox.is_finished():
 
-                elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    # Increment the index but prevent it from exceeding the length of the list - 1
-                    if self.selected_item_index < len(self.shop_items) - 1:
-                        self.selected_item_index += 1
-                        self.selected_money_index += 1
-                    print(f"shop_items: {self.shop_items}")
-                    print(f"shop_costs: {self.shop_costs}")
-                    print(f"selected_item_index: {self.selected_item_index}")
-                    print(f"selected_money_index: {self.selected_money_index}")
+                    if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
+                        self.input_time = pygame.time.get_ticks()
+                        # Decrement the index but prevent it from going below 0
+                        if self.selected_item_index > 0:
+                            self.selected_item_index -= 1
+                            self.selected_money_index -= 1
+                        print(f"shop_items: {self.shop_items}")
+                        print(f"shop_costs: {self.shop_costs}")
+                        print(f"selected_item_index: {self.selected_item_index}")
+                        print(f"selected_money_index: {self.selected_money_index}")
+
+                    elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
+                        self.input_time = pygame.time.get_ticks()
+                        # Increment the index but prevent it from exceeding the length of the list - 1
+                        if self.selected_item_index < len(self.shop_items) - 1:
+                            self.selected_item_index += 1
+                            self.selected_money_index += 1
+                        print(f"shop_items: {self.shop_items}")
+                        print(f"shop_costs: {self.shop_costs}")
+                        print(f"selected_item_index: {self.selected_item_index}")
+                        print(f"selected_money_index: {self.selected_money_index}")
 
             if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()

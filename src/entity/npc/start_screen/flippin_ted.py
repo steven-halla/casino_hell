@@ -36,8 +36,10 @@ class FlippinTed(Npc):
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
+            state.player.canMove = True
             self.update_waiting(state)
         elif self.state == "talking":
+            state.player.canMove = False
             self.update_talking(state)
 
     def update_waiting(self, state: "GameState"):
@@ -72,20 +74,24 @@ class FlippinTed(Npc):
         # Lock the player in place while talking
 
         # Check for keypresses only once per frame
-        if state.controller.isUpPressed:
-            state.controller.isUpPressed = False
+        if current_message.is_finished():
+            if state.controller.isUpPressed:
+                state.controller.isUpPressed = False
 
-            self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-            print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
+                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
 
-        elif state.controller.isDownPressed:
-            state.controller.isDownPressed = False
-            self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            print("Down pressed, arrow_index:", self.arrow_index)
+            elif state.controller.isDownPressed:
+                state.controller.isDownPressed = False
+                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                print("Down pressed, arrow_index:", self.arrow_index)
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and state.coinFlipTedScreen.coinFlipTedDefeated == False and state.player.hasRabies == False:
             # Handle the selected option
+
+
+
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 

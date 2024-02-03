@@ -78,14 +78,16 @@ class BlackJackThomas(Npc):
         state.player.canMove = False
 
         # Check for keypresses only once per frame
-        if state.controller.isUpPressed:
-            self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-            state.controller.isUpPressed = False
+        if current_message.is_finished():
+
+            if state.controller.isUpPressed:
+                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                state.controller.isUpPressed = False
 
 
-        elif state.controller.isDownPressed:
-            self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            state.controller.isDownPressed = False
+            elif state.controller.isDownPressed:
+                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:

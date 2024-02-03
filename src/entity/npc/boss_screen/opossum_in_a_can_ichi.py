@@ -59,13 +59,15 @@ class IchiOpossum(Npc):
         state.player.canMove = False
 
         # Check for keypresses only once per frame
-        if state.controller.isUpPressed:
-            self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-            state.controller.isUpPressed = False
+        if current_message.is_finished():
 
-        elif state.controller.isDownPressed:
-            self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            state.controller.isDownPressed = False
+            if state.controller.isUpPressed:
+                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                state.controller.isUpPressed = False
+
+            elif state.controller.isDownPressed:
+                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:

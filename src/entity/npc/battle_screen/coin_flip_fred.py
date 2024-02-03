@@ -80,15 +80,16 @@ class CoinFlipFred(Npc):
 
         # Lock the player in place while talking
         state.player.canMove = False
+        if current_message.is_finished():
 
-        # Check for keypresses only once per frame
-        if state.controller.isUpPressed:
-            self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-            state.controller.isUpPressed = False
+            # Check for keypresses only once per frame
+            if state.controller.isUpPressed:
+                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                state.controller.isUpPressed = False
 
-        elif state.controller.isDownPressed:
-            self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            state.controller.isDownPressed = False
+            elif state.controller.isDownPressed:
+                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
