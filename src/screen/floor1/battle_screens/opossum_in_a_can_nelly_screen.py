@@ -411,6 +411,8 @@ class OpossumInACanNellyScreen(Screen):
             if "shake" in self.magic_menu_selector:
                 if state.controller.isUpPressed:
                     self.opossum_index -= 1
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index < 0:
                         self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
                         print(str(self.opossum_index))
@@ -420,6 +422,8 @@ class OpossumInACanNellyScreen(Screen):
 
                 elif state.controller.isDownPressed:
                     self.opossum_index += 1
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index >= len(self.menu_selector):
                         self.opossum_index = 0  # Wrap around to the first item
                         print(str(self.opossum_index))
@@ -430,6 +434,8 @@ class OpossumInACanNellyScreen(Screen):
             elif "shake" not in self.magic_menu_selector:
                 if state.controller.isUpPressed:
                     self.opossum_index -= 2
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index < 0:
                         self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
                         # print(str(self.opossum_index))
@@ -439,6 +445,8 @@ class OpossumInACanNellyScreen(Screen):
 
                 elif state.controller.isDownPressed:
                     self.opossum_index += 2
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     if self.opossum_index >= len(self.menu_selector):
                         self.opossum_index = 0  # Wrap around to the first item
                         # print(str(self.opossum_index))
@@ -461,6 +469,7 @@ class OpossumInACanNellyScreen(Screen):
             if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
                 # Move to the next box
                 self.green_box_index = (self.green_box_index + 1) % 8
+                self.menu_movement_sound.play()  # Play the sound effect once
 
                 # Print the current green box index and its content
                 current_can_content = getattr(self, f'can{self.green_box_index + 1}')
@@ -528,6 +537,8 @@ class OpossumInACanNellyScreen(Screen):
         if self.game_state == "magic_menu_screen":
             if state.controller.isUpPressed:
                 self.magic_menu_opossum_index -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magic_menu_opossum_index < 0:
                     self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
                     # print(str(self.magic_menu_opossum_index))
@@ -537,6 +548,8 @@ class OpossumInACanNellyScreen(Screen):
 
             elif state.controller.isDownPressed:
                 self.magic_menu_opossum_index += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
                     self.magic_menu_opossum_index = 0  # Wrap around to the first item
                     # print(str(self.magic_menu_opossum_index))
