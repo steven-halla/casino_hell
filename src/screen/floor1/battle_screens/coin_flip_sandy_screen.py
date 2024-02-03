@@ -46,6 +46,9 @@ class CoinFlipSandyScreen(Screen):
 
         self.coinFlipSandyToken = False
 
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
 
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
@@ -212,6 +215,8 @@ class CoinFlipSandyScreen(Screen):
 
         if controller.isUpPressed:
             self.bet += 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(200)
             self.isUpPressed = False
             print(self.bet)
@@ -219,6 +224,8 @@ class CoinFlipSandyScreen(Screen):
 
         elif controller.isDownPressed:
             self.bet -= 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(200)
             self.isDownPressed = False
             print(self.bet)
@@ -328,6 +335,8 @@ class CoinFlipSandyScreen(Screen):
             # Handling Up Press
             if state.controller.isUpPressed:
                 self.headstailsindex -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.headstailsindex < 0:
                     self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
 
@@ -337,6 +346,8 @@ class CoinFlipSandyScreen(Screen):
             # Handling Down Press
             elif state.controller.isDownPressed:
                 self.headstailsindex += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.headstailsindex >= len(self.heads_or_tails_Menu):
                     self.headstailsindex = 0  # Wrap around to the first item
 
@@ -347,6 +358,8 @@ class CoinFlipSandyScreen(Screen):
 
             if state.controller.isUpPressed:
                 self.magicindex -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magicindex < 0:
                     self.magicindex = len(self.magic_menu_selector) - 1  # Wrap around to the last item
                     print(str(self.magicindex))
@@ -356,6 +369,8 @@ class CoinFlipSandyScreen(Screen):
 
             elif state.controller.isDownPressed:
                 self.magicindex += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magicindex >= len(self.magic_menu_selector):
                     self.magicindex = 0  # Wrap around to the first item
                     print(str(self.magicindex))
@@ -439,11 +454,15 @@ class CoinFlipSandyScreen(Screen):
 
             if state.controller.isUpPressed:
                 self.arrow_index -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.arrow_index < 0:
                     self.arrow_index = len(self.yes_or_no_menu) - 1  # Wrap around to the last item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
             elif state.controller.isDownPressed:
                 self.arrow_index += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.arrow_index >= len(self.yes_or_no_menu):
                     self.arrow_index = 0  # Wrap around to the first item
                 pygame.time.delay(200)

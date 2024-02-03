@@ -39,6 +39,9 @@ class CoinFlipFredScreen(Screen):
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
         self.flip_screen_initialized = False  # Add this line
 
 
@@ -275,6 +278,8 @@ class CoinFlipFredScreen(Screen):
 
         if controller.isUpPressed:
             self.bet += 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(200)
             self.isUpPressed = False
             print(self.bet)
@@ -282,6 +287,8 @@ class CoinFlipFredScreen(Screen):
 
         elif controller.isDownPressed:
             self.bet -= 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(200)
             self.isDownPressed = False
             print(self.bet)
@@ -408,6 +415,8 @@ class CoinFlipFredScreen(Screen):
             # Handling Up Press
             if state.controller.isUpPressed:
                 self.headstailsindex -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.headstailsindex < 0:
                     self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
 
@@ -417,6 +426,8 @@ class CoinFlipFredScreen(Screen):
             # Handling Down Press
             elif state.controller.isDownPressed:
                 self.headstailsindex += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.headstailsindex >= len(self.heads_or_tails_Menu):
                     self.headstailsindex = 0  # Wrap around to the first item
 
@@ -427,6 +438,8 @@ class CoinFlipFredScreen(Screen):
 
             if state.controller.isUpPressed:
                 self.magicindex -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magicindex < 0:
                     self.magicindex = len(self.magic_menu_selector) - 1  # Wrap around to the last item
                     print(str(self.magicindex))
@@ -436,6 +449,8 @@ class CoinFlipFredScreen(Screen):
 
             elif state.controller.isDownPressed:
                 self.magicindex += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.magicindex >= len(self.magic_menu_selector):
                     self.magicindex = 0  # Wrap around to the first item
                     print(str(self.magicindex))

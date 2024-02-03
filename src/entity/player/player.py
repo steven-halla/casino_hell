@@ -38,7 +38,7 @@ class Player(Entity):
         self.perks = []
         self.items = []
 
-        self.magicinventory = []
+        self.magicinventory = ["shake", "shield"]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -289,7 +289,7 @@ class Player(Entity):
 
     def draw_player_stats(self, state):
         # Create a black surface of size 600x600
-        stats_surface = pygame.Surface((580, 580))
+        stats_surface = pygame.Surface((620, 580))
         state.DISPLAY.fill(BLUEBLACK)
 
         # Set the font for the text
@@ -301,14 +301,12 @@ class Player(Entity):
             f"Exp: {self.exp}",
             f"Stamina: {self.stamina_points}" + "/" f"{self.max_stamina_points}",
             f"Magic Points: {self.focus_points}" + "/" f"{self.max_focus_points}",
-            f"Companions: {self.companions}" + "/" f"{self.items}"
+            f"Companions: {self.companions}",
+            f"items: {self.items}",
             f"Magic spells: {self.magicinventory}",
             f"money: {self.money}",
-            f"Body: {self.body}",
-            f"Mind: {self.mind}",
-            f"Spirit: {self.spirit}",
-            f"Perception: {self.perception}",
-            f"Luck: {self.luck}",
+            f"Body: {self.body}" + f"Mind: {self.mind}" + f"Spirit: {self.spirit}"
+            + f"Perception: {self.perception}" +f"Luck: {self.luck}",
             f"Day: {self.days}",
             f"Press L to Load",
 

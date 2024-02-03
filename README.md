@@ -493,13 +493,11 @@ imagine random encounters with random game screens that pop up like a  Turn base
 ######
 ######
 MASTER FIXER LIST: GOING THROUGH GAME REAL TIME TO FIX ALL BUGS, GOING TO GET ALL THE WAY TO THE END ON THIS ONE.
-2) fix status screen , put stats together on one line to make room
 3) fix screen speed for messages so they are all consistant
 4) add sound effects for menu when selecting new items
 5) add sound effects when confirming something via button press such as with yes/no menus
 6) need to fix it to where the player has to wait .5 seconds before they can select something from a menu
 7) menu keeps fixiting on no option
-8) opossum in a can need to add trash can and opposum graphics
 9) tallly is not showing total when winning its showing winnings as 0
 10) lets fix cindy , you shouldn't have to talk to her twice to get  a reward if you havn't before.
 11) when ipicked up potion the bar tender vanished, adn came back after I talked to opposum doctor

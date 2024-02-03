@@ -28,6 +28,10 @@ class CoinFlipTedScreen(Screen):
         self.spell_sound.set_volume(0.3)
 
 
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
+
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
         self.heads_or_tails_Menu = ["Heads", "Tails"]
@@ -51,9 +55,6 @@ class CoinFlipTedScreen(Screen):
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
         self.coinFlipTedMoney = 20
-
-
-
 
         self.coinFlipTedDefeated = False
 
@@ -277,6 +278,8 @@ class CoinFlipTedScreen(Screen):
 
         if controller.isUpPressed:
             self.bet += 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(200)
             self.isUpPressed = False
             print(self.bet)
@@ -284,6 +287,8 @@ class CoinFlipTedScreen(Screen):
 
         elif controller.isDownPressed:
             self.bet -= 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(200)
             self.isDownPressed = False
             print(self.bet)
@@ -406,6 +411,8 @@ class CoinFlipTedScreen(Screen):
             # Handling Up Press
             if state.controller.isUpPressed:
                 self.headstailsindex -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.headstailsindex < 0:
                     self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
 
@@ -415,6 +422,8 @@ class CoinFlipTedScreen(Screen):
             # Handling Down Press
             elif state.controller.isDownPressed:
                 self.headstailsindex += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.headstailsindex >= len(self.heads_or_tails_Menu):
                     self.headstailsindex = 0  # Wrap around to the first item
 
@@ -492,11 +501,15 @@ class CoinFlipTedScreen(Screen):
 
             if state.controller.isUpPressed:
                 self.arrow_index -= 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.arrow_index < 0:
                     self.arrow_index = len(self.yes_or_no_menu) - 1  # Wrap around to the last item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
             elif state.controller.isDownPressed:
                 self.arrow_index += 1
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 if self.arrow_index >= len(self.yes_or_no_menu):
                     self.arrow_index = 0  # Wrap around to the first item
                 pygame.time.delay(200)
