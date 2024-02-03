@@ -112,8 +112,8 @@ class BarKeep(Npc):
                         state.player.money -= 100
 
                         print("hey 1")
-                        state.player.stamina_guard = True
-                        state.player.stamina_points += 50
+                        # this will go above the max which is ok for this item
+                        state.player.focus_points += 50
                         state.player.food -= 1
 
                         if state.player.stamina_points > state.player.max_stamina_points:

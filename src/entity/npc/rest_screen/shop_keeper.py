@@ -52,7 +52,7 @@ class ShopKeeper(Npc):
                 print("Leaving the shop...")
                 self.textbox.reset()
                 if "+10 stamina" in state.player.items:
-                    state.player.items.remove(" +10 stamina")
+                    state.player.items.remove("+10 stamina")
                     state.player.max_stamina_points += 10
                 return
 

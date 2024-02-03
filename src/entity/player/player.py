@@ -36,12 +36,9 @@ class Player(Entity):
         self.focus_points = 100
         self.max_focus_points = 100
         self.perks = []
-        self.consumableitems = []
-
         self.items = []
-        self.itemsContainer = []
-        self.magicinventoryContainer = []
 
+        self.magicinventory = []
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -85,12 +82,6 @@ class Player(Entity):
             "immunity": self.rabiesImmunity,
             "level3reward": self.level3janetreward,
             "food": self.food,
-            "consumableitems": self.consumableitems,
-            "itemscontainer": self.itemsContainer,
-            "magicinventorycontainer": self.magicinventoryContainer,
-
-
-
             "cutscene1": state.restScreen.barscene1,
             "cutscene2": state.restScreen.barscene2,
 
@@ -379,11 +370,6 @@ class Player(Entity):
             state.player.rabiesImmunity = player_data['immunity']
             state.player.level3janetreward = player_data['level3reward']
             state.player.food = player_data['food']
-            state.player.consumableitems = player_data['consumableitems']
-            state.player.itemsContainer = player_data['itemscontainer']
-            state.player.magicinventoryContainer = player_data['magicinventorycontainer']
-
-
             state.restScreen.barscene1 = player_data['cutscene1']
             state.restScreen.barscene2 = player_data['cutscene2']
 

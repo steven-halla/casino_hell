@@ -80,14 +80,6 @@ class CindyLongHair(Npc):
 
         self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image_2.png")
 
-        # self.character_image = pygame.image.load(
-        #     "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
-
-    # def draw_npc_text(self, position: tuple[int, int], display: pygame.Surface):
-    #     top_card_position = (self.card_width * 13, 0)
-    #     sprite = self.sprite_sheet.subsurface(pygame.Rect(top_card_position, (self.card_width, self.card_height)))
-    #     sprite.set_colorkey((0, 190, 0))
-    #     display.blit(sprite, position)
 
 
     def update(self, state: "GameState"):
@@ -118,11 +110,6 @@ class CindyLongHair(Npc):
 
 
     def update_talking(self, state: "GameState"):
-   # This will print the color of the pixel (R, G, B, A)
-
-        # Don't forget to quit Pygame if you're done
-
-
 
         state.player.canMove = False
 
@@ -152,7 +139,7 @@ class CindyLongHair(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             current_message.reset()  # Ensure the message is reset for the next interaction
-            if "black jack reveal" in state.player.magicinventory:
+            if "reveal" in state.player.magicinventory:
                 self.coinFlipTedReward = True
 
 
@@ -172,66 +159,15 @@ class CindyLongHair(Npc):
 
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-        #
-        # sprite_rect = pygame.Rect(5, 5, 22, 22)
-        #
-        # # Get the subsurface for the area you want
-        # sprite = self.character_sprite_image.subsurface(sprite_rect)
-        #
-        # # Scale the subsurface to make it two times bigger
-        # scaled_sprite = pygame.transform.scale(sprite, (88, 88))  # 44*2 = 88
-        #
-        # # Define the position where you want to draw the sprite
-        # sprite_x = self.collision.x + state.camera.x
-        # sprite_y = self.collision.y + state.camera.y - 10
-        #
-        # # Draw the scaled sprite portion on the display
-        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        # original_width, original_height = self.character_image.get_size()
 
-        # # Calculate the new dimensions
-        # new_width = original_width * 2
-        # new_height = original_height * 2
 
-        # Scale the image
-        # scaled_image = pygame.transform.scale(self.character_sprite_image, (new_width, new_height))
-        #
-        # sprite_x = self.collision.x + state.camera.x
-        # sprite_y = self.collision.y + state.camera.y - 10
 
-        # state.DISPLAY.blit(scaled_image, (sprite_x, sprite_y))
-
-        # original_width, original_height = self.character_sprite_image.get_size()
-        #
-        # # Calculate the new dimensions of the image
-        # new_width = original_width * 1.7
-        # new_height = original_height * 1.7
-        #
-        # # Scale the image
-        # scaled_image = pygame.transform.scale(self.character_sprite_image,
-        #                                       (new_width, new_height))
-        # # Draw the scaled character sprite
-        # state.DISPLAY.blit(scaled_image, (sprite_x, sprite_y))
-
-        # rect = (
-        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        #     self.collision.width, self.collision.height)
-        # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
             sprite_rect = pygame.Rect(0, 0, 136, 186)  # Top left section with width and height of 100 pixels
 
-            # Extract the sprite section
-            # sprite = self.sprite_sheet.subsurface(sprite_rect)
 
-            # Center the sprite section on the screen
-            # position_x = 60  # Bottom left corner x position
-            # position_y = state.DISPLAY.get_height() - sprite_rect.height - 155  # 30 pixels above the bottom left corner y position
-            # position = (position_x, position_y)
-            #
-            # # Draw the sprite section
-            # state.DISPLAY.blit(sprite, position)
 
             if "sir leopold" in state.player.companions:
                 current_message = self.cindy_long_hair_messages["sir_leopold_message"]
