@@ -63,6 +63,9 @@ class RestScreen(Screen):
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
 
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -168,11 +171,16 @@ class RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
-        # if self.chili_pit_flag == True:
-        #     state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
-        # i dont think npc and demons getting updated
-        # print(state.quest_giver_janet.find_hog)
-        # print(state.quest_giver_janet.quest2counter)
+
+        start_time = pygame.time.get_ticks()
+
+        # ... [your game update logic]
+
+        self.clock.tick(60)
+        end_time = pygame.time.get_ticks()
+        print(f"Update duration: {end_time - start_time} ms")
+
+
 
         if state.player.body > 0 and state.player.hasRabies == False:
             # Check if an instance of BarKeep already exists

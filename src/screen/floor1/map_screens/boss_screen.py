@@ -78,24 +78,6 @@ class BossScreen(Screen):
             BlackJackJared(16 * 31, 16 * 10),
             RestTeleporterFromBoss(16 * 15, 16 * 10),
 
-
-
-            # BobbyBibs(16 * 2, 16 * 2),
-
-            #
-            # CoinFlipFred(16 * 28, 16 * 36),
-            # FlippinTed(16 * 20, 16 * 36),
-            # FlippingSandy(16 * 28, 16 * 36),
-            # NellyOpossum(16 * 12, 16 * 36),
-            # Nurgle(16 * 24, 16 * 34)
-            # HedgeHog1(16 * 24, 16 * 34),
-            # HedgeHog2(16 * 32, 16 * 34),
-            # HedgeHog3(16 * 24, 16 * 20),
-            # HedgeHog4(16 * 24, 16 * 15),
-            # SirLeopoldTheHedgeHog(16 * 24, 16 * 25),
-
-
-
                       ]
         #
         # if state.quest_giver_janet.find_hog:
@@ -214,66 +196,6 @@ class BossScreen(Screen):
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
-    # def draw(self, state: "GameState"):
-    #     state.DISPLAY.fill(BLUEBLACK)
-    #     state.DISPLAY.blit(state.FONT.render(
-    #         f"player money: {state.player.money}",
-    #         True, (255, 255, 255)), (333, 333))
-    #     state.DISPLAY.blit(state.FONT.render(
-    #         f"player stamina points: {state.player.stamina_points}",
-    #         True, (255, 255, 255)), (333, 388))
-    #
-    #     if self.tiled_map.layers:
-    #         tile_width = self.tiled_map.tilewidth
-    #         tile_height = self.tiled_map.tileheight
-    #
-    #         # Get the background layer
-    #         bg_layer = self.tiled_map.get_layer_by_name("bg")
-    #         # Iterate over the tiles in the background layer
-    #         for x, y, image in bg_layer.tiles():
-    #             # Calculate the position of the tile in pixels
-    #             pos_x = x * tile_width + state.camera.x
-    #             pos_y = y * tile_height + state.camera.y
-    #
-    #             scaled_image = pygame.transform.scale(image, (
-    #                 tile_width * 1.3, tile_height * 1.3))
-    #
-    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-    #
-    #         # Get the collision layer
-    #         collision_layer = self.tiled_map.get_layer_by_name("collision")
-    #         for x, y, image in collision_layer.tiles():
-    #             # Calculate the position of the tile in pixels
-    #             pos_x = x * tile_width + state.camera.x
-    #             pos_y = y * tile_height + state.camera.y
-    #
-    #             scaled_image = pygame.transform.scale(image, (
-    #                 tile_width * 1.3, tile_height * 1.3))
-    #
-    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-    #
-    #     for npc in state.npcs:
-    #         npc.draw(state)
-    #         if isinstance(npc, WallyGuide):
-    #             # Assuming npc.collision has x, y, width, and height attributes
-    #             rect = (npc.collision.x, npc.collision.y, npc.collision.width, npc.collision.height)
-    #             pygame.draw.rect(state.DISPLAY, (0, 255, 0), rect, 2)
-    #
-    #     for demon in state.demons:
-    #         demon.draw(state)
-    #
-    #     for treasurechests in state.treasurechests:
-    #         treasurechests.draw(state)
-    #
-    #     state.obstacle.draw(state)
-    #
-    #     state.player.draw(state)
-    #
-    #     # Draw Player's collision box in red
-    #     pygame.draw.rect(state.DISPLAY, (255, 0, 0), state.player.collision.toTuple(), 2)
-    #
-    #     # ... (rest of your drawing code, like updating the display) ...
-    #     pygame.display.update()
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)

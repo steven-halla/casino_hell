@@ -80,29 +80,7 @@ class QuestGiverJanet(Npc):
         elif state.restScreen.npc_janet_textbox6 == True and state.restScreen.rest_screen_npc_janet_find_hog == True:
             self.textboxstate = "textbox6"
 
-        # if self.find_hog == True:
-        #     state.restScreen.rest_screen_npc_janet_find_hog = True
-        #
-        # if state.restScreen.rest_screen_npc_janet_find_hog == True:
-        #     self.find_hog = True
-        #
-        # if self.quest3counter == True:
-        #     state.restScreen.rest_screen_npc_janet_quest_3_counter = True
-        #
-        # if state.restScreen.rest_screen_npc_janet_quest_3_counter == True:
-        #     self.quest3counter = True
-        #
-        # if self.quest2counter == True:
-        #     state.restScreen.rest_screen_npc_janet_quest_2_counter = True
-        #
-        # if state.restScreen.rest_screen_npc_janet_quest_2_counter == True:
-        #     self.quest2counter = True
 
-        # if self.talkfirstfivehundred == True:
-        #     state.restScreen.rest_screen_npc_janet_talk_first_five_hundred = True
-        #
-        # if state.restScreen.rest_screen_npc_janet_talk_first_five_hundred == True:
-        #     self.talkfirstfivehundred = True
 
         if self.state == "waiting":
             if state.gamblingAreaScreen.five_hundred_opossums == True and self.talkfirstfivehundred == True:
@@ -126,21 +104,6 @@ class QuestGiverJanet(Npc):
                 state.restScreen.npc_janet_textbox6 = True
 
 
-
-
-
-
-
-
-            # if "Nurgle the hedge hog" in state.player.items and self.talkfirstbeforehandoverhog == True:
-            #
-            #     self.textboxstate = "textbox2"
-            #     print(self.textboxstate)
-            #
-            # if "Water Bottle" in state.player.items and self.talkfirstbeforehandoverwater == True:
-            #     self.textboxstate = "textbox4"
-            #     print(self.textboxstate)
-
             player = state.player
 
             # print("waiting")
@@ -148,9 +111,6 @@ class QuestGiverJanet(Npc):
             min_distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (
                             player.collision.y - self.collision.y) ** 2)
-            #
-            # if min_distance < 25:
-            #     print("nooo")
 
             self.update_waiting(state)
 

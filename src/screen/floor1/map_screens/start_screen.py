@@ -37,6 +37,9 @@ class StartScreen(Screen):
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
 
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
+
     def stop_music(self):
         pygame.mixer.music.stop()
 
@@ -75,7 +78,6 @@ class StartScreen(Screen):
 
         state.npcs = [
 
-            # JackyBanana(16* 5, 16 * 15),
             BappingMike(16* 15, 16 * 15),
             HungryPatrick(16* 25, 16 * 15),
             # InnGuard(16* 35, 16 * 15),
@@ -84,16 +86,22 @@ class StartScreen(Screen):
             FlippinTed(16* 35, 16 * 34),
 
 
-            # BobbyBibs(16 * 2, 16 * 2),
-            # BrutalPatrick(16 * 2, 16 * 10),
-            # ChillyBilly(16 * 2, 16 * 18),
-             CindyLongHair(16 * 2, 16 * 26),
 
+             CindyLongHair(16 * 2, 16 * 26),
 
                       ]
 
 
     def update(self, state: "GameState"):
+
+        start_time = pygame.time.get_ticks()
+
+        # ... [your game update logic]
+
+        self.clock.tick(60)
+        end_time = pygame.time.get_ticks()
+        print(f"Update duration: {end_time - start_time} ms")
+
 
         controller = state.controller
         player = state.player

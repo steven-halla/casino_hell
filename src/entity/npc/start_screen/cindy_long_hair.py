@@ -11,7 +11,7 @@ class CindyLongHair(Npc):
         self.cindy_long_hair_messages = {
             'textbox': NpcTextBox(
                 [
-                    "Cindy: Cheating Ted is such a bastard. Because of him my boyfriend is making beer.",
+                    "Cindy: Cheating Ted is such a b.",
                     "The key to winning is to pay attention to patterns, which can change in the middle of playing",
                     "Try betting low, and get  a hang for the patterns before you go in for the kill."
                 ],
