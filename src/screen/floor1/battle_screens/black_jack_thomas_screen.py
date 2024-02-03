@@ -78,6 +78,10 @@ class BlackJackThomasScreen(Screen):
         self.music_on = True
 
 
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
+
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
         # incldue a double bet spell that is CHR based that player gets for free maybe4
@@ -265,11 +269,15 @@ class BlackJackThomasScreen(Screen):
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
             self.bet += 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(100)
             state.controller.isUpPressed = False
 
         elif state.controller.isDownPressed:
             self.bet -= 10
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             pygame.time.delay(100)
             state.controller.isDownPressed = False
 
@@ -359,6 +367,8 @@ class BlackJackThomasScreen(Screen):
                 if self.welcome_screen_text_box_hero.is_finished():
 
                     if controller.isUpPressed:
+                        self.menu_movement_sound.play()  # Play the sound effect once
+
                         # channel3 = pygame.mixer.Channel(3)
                         # sound3 = pygame.mixer.Sound(
                         #     "audio/Fotstep_Carpet_Right_3.mp3")
@@ -373,6 +383,8 @@ class BlackJackThomasScreen(Screen):
                         controller.isUpPressed = False
 
                     elif controller.isDownPressed:
+                        self.menu_movement_sound.play()  # Play the sound effect once
+
                         # channel3 = pygame.mixer.Channel(3)
                         # sound3 = pygame.mixer.Sound(
                         #     "audio/Fotstep_Carpet_Right_3.mp3")
@@ -382,6 +394,7 @@ class BlackJackThomasScreen(Screen):
                                 self.welcome_screen_choices) + 1
                         else:
                             self.welcome_screen_index += 1
+
                         self.welcome_screen_index %= len(
                             self.welcome_screen_choices)
                         controller.isDownPressed = False
@@ -673,6 +686,8 @@ class BlackJackThomasScreen(Screen):
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -685,6 +700,8 @@ class BlackJackThomasScreen(Screen):
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -721,6 +738,8 @@ class BlackJackThomasScreen(Screen):
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
@@ -732,6 +751,8 @@ class BlackJackThomasScreen(Screen):
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 # channel3 = pygame.mixer.Channel(3)
                 # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
                 # channel3.play(sound3)
