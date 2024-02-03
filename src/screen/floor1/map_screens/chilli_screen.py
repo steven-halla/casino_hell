@@ -165,13 +165,6 @@ class ChilliScreen(Screen):
                     state.npcs.remove(npc)
 
 
-
-
-        #
-        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
-        #     coinMonicle = "coin monicle"
-        #     state.player.items.append(coinMonicle)
-
         if controller.isUpPressed:
 
             self.y_up_move = True
@@ -224,66 +217,7 @@ class ChilliScreen(Screen):
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
-    # def draw(self, state: "GameState"):
-    #     state.DISPLAY.fill(BLUEBLACK)
-    #     state.DISPLAY.blit(state.FONT.render(
-    #         f"player money: {state.player.money}",
-    #         True, (255, 255, 255)), (333, 333))
-    #     state.DISPLAY.blit(state.FONT.render(
-    #         f"player stamina points: {state.player.stamina_points}",
-    #         True, (255, 255, 255)), (333, 388))
-    #
-    #     if self.tiled_map.layers:
-    #         tile_width = self.tiled_map.tilewidth
-    #         tile_height = self.tiled_map.tileheight
-    #
-    #         # Get the background layer
-    #         bg_layer = self.tiled_map.get_layer_by_name("bg")
-    #         # Iterate over the tiles in the background layer
-    #         for x, y, image in bg_layer.tiles():
-    #             # Calculate the position of the tile in pixels
-    #             pos_x = x * tile_width + state.camera.x
-    #             pos_y = y * tile_height + state.camera.y
-    #
-    #             scaled_image = pygame.transform.scale(image, (
-    #                 tile_width * 1.3, tile_height * 1.3))
-    #
-    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-    #
-    #         # Get the collision layer
-    #         collision_layer = self.tiled_map.get_layer_by_name("collision")
-    #         for x, y, image in collision_layer.tiles():
-    #             # Calculate the position of the tile in pixels
-    #             pos_x = x * tile_width + state.camera.x
-    #             pos_y = y * tile_height + state.camera.y
-    #
-    #             scaled_image = pygame.transform.scale(image, (
-    #                 tile_width * 1.3, tile_height * 1.3))
-    #
-    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-    #
-    #     for npc in state.npcs:
-    #         npc.draw(state)
-    #         if isinstance(npc, WallyGuide):
-    #             # Assuming npc.collision has x, y, width, and height attributes
-    #             rect = (npc.collision.x, npc.collision.y, npc.collision.width, npc.collision.height)
-    #             pygame.draw.rect(state.DISPLAY, (0, 255, 0), rect, 2)
-    #
-    #     for demon in state.demons:
-    #         demon.draw(state)
-    #
-    #     for treasurechests in state.treasurechests:
-    #         treasurechests.draw(state)
-    #
-    #     state.obstacle.draw(state)
-    #
-    #     state.player.draw(state)
-    #
-    #     # Draw Player's collision box in red
-    #     pygame.draw.rect(state.DISPLAY, (255, 0, 0), state.player.collision.toTuple(), 2)
-    #
-    #     # ... (rest of your drawing code, like updating the display) ...
-    #     pygame.display.update()
+
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)

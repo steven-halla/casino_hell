@@ -75,8 +75,10 @@ class GameState:
         self.bossScreen = BossScreen()
         # self.restScreen = RestScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
+
+
+
         self.barCutScene1 = BarCutScene1Screen()
-        # self.bossScreen = BossScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()
