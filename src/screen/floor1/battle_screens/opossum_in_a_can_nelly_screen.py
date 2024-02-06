@@ -369,12 +369,15 @@ class OpossumInACanNellyScreen(Screen):
                 if self.player_score <= self.nellyOpossumMoney:
                     print("your winnings are before" + str(self.total_winnings))
 
+                    # self.total_winnings = self.player_score
+                    # self.nellyOpossumMoney -= self.player_score
+                    # print("yo")
                     self.total_winnings = self.player_score
+                    state.player.money += self.player_score
                     self.nellyOpossumMoney -= self.player_score
-                    print("yo")
 
 
-                if self.player_score > self.nellyOpossumMoney:
+                elif self.player_score > self.nellyOpossumMoney:
                     print("waffles")
                     print("your winnings are" + str(self.total_winnings))
                     print("your nellly monies  are" + str(self.nellyOpossumMoney))

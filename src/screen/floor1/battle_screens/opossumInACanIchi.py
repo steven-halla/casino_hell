@@ -270,8 +270,88 @@ class OpossumInACanIchiScreen(Screen):
             state.mainScreen.start(state)
             return
 
+        if "shake" in state.player.magicinventory and "shake" not in self.magic_menu_selector:
+            self.magic_menu_selector.append("shake")
+            return
+
+        if self.game_state == "tally_screen":
+            if self.player_score >= 600 and self.talley_checker == False:
+                print("dsjf;ldsajfl;sajfsaj;lfjlsdjf")
+
+                state.player.stamina_points -= 10
+                print("Your before  total exp is: " + str(state.player.exp))
+                state.player.exp += 300
+                print("you gained: " + str(300) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+                return
+
+            elif self.player_score >= 300 and self.talley_checker == False:
+                print("7534975903275934270573945703975930750937593729573405734850")
+
+                state.player.stamina_points -= 5
+
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 200
+                print("you gained: " + str(200) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+
+                return
+
+            elif self.player_score >= 20 and self.talley_checker == False:
+                state.player.stamina_points -= 3
+
+                print("Your before  total exp is: " + str(state.player.exp))
+
+                state.player.exp += 100
+                print("you gained: " + str(100) + "exp")
+                print("Your after total exp is: " + str(state.player.exp))
+                self.talley_checker = True
+
+                return
+            # print("tally ho")
+            if self.nellyOpossumMoney < 0:
+                self.nellyOpossumMoney = 0
+                self.ichiOpossumIsDefeated = True
+
+            while self.tally_money_once == True:
+                print("yoda la he ho")
+                if self.player_score <= self.nellyOpossumMoney:
+                    print("your winnings are before" + str(self.total_winnings))
+
+                    # self.total_winnings = self.player_score
+                    # self.nellyOpossumMoney -= self.player_score
+                    # print("yo")
+                    self.total_winnings = self.player_score
+                    state.player.money += self.player_score
+                    self.nellyOpossumMoney -= self.player_score
 
 
+                elif self.player_score > self.nellyOpossumMoney:
+                    print("waffles")
+                    print("your winnings are" + str(self.total_winnings))
+                    print("your nellly monies  are" + str(self.nellyOpossumMoney))
+                    self.total_winnings = self.nellyOpossumMoney
+                    state.player.money += self.total_winnings
+                    self.nellyOpossumMoney = 0
+
+                self.tally_money_once = False
+
+            self.opossumInACanMessages["tally_message"].update(state)
+
+            if self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == False and self.opossumInACanMessages["tally_message"].message_index == 1:
+                self.ichiOpossumIsDefeated = True
+                self.game_state = "opossum_defeated_screen"
+
+            elif self.nellyOpossumMoney < 1 and state.player.rabiesImmunity == True and self.opossumInACanMessages["tally_message"].message_index == 1:
+                # print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
+                self.ichiOpossumIsDefeated = True
+                self.game_state = "real_opossum_defeated_screen"
+
+            elif self.opossumInACanMessages["tally_message"].message_index == 1:
+                self.game_state = "play_again_or_leave_screen"
 
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
