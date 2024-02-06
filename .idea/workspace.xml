@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed bug with can quest and fixed xhop keeper bug that ws due to moving error while talking">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed issue with shop keeper selectoin going haywire when picking also fixed opossom in a can nelly so that she displays messages properly" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -305,7 +298,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="45487000" />
+      <workItem from="1706926189767" duration="45817000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -650,7 +643,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="433" />
+    <option name="localTasksCounter" value="434" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -679,7 +672,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ripping out unneeded fluff" />
     <MESSAGE value="no player moving" />
     <MESSAGE value="creating cut scene" />
     <MESSAGE value="now we display message after two seconds" />
@@ -704,7 +696,8 @@
     <MESSAGE value="took out L key press we do not want player loading from status screen as that caues staet issues now load is handled fro start screen" />
     <MESSAGE value="fixed bug with bar keeper eating potion when you talk to him" />
     <MESSAGE value="fixed bug with can quest and fixed xhop keeper bug that ws due to moving error while talking" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug with can quest and fixed xhop keeper bug that ws due to moving error while talking" />
+    <MESSAGE value="fixed issue with shop keeper selectoin going haywire when picking also fixed opossom in a can nelly so that she displays messages properly" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed issue with shop keeper selectoin going haywire when picking also fixed opossom in a can nelly so that she displays messages properly" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

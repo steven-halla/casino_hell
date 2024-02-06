@@ -95,6 +95,13 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
 
+            "immune_lose_message": TextBox(
+                [""],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+
             "tally_message": TextBox(
                 [ "", "" ],
                 (50, 450, 700, 130),  # Position and size
@@ -252,16 +259,22 @@ class OpossumInACanSallyScreen(Screen):
 
             self.player_score = 0
             if state.player.rabiesImmunity == True:
-                state.player.stamina_points -= 50
+                if "opossum repellent" in state.player.items:
+                    state.player.stamina_points -= 25
+                elif "opossum repellent" not in state.player.items:
+                    state.player.stamina_points -= 50
 
-            elif "opossum guard" in state.player.items:
-                state.player.stamina_points -= 25
+                print("are we gong???")
+                self.refresh()
+                self.initializeGarbageCans()
+                self.game_state = "immune_lose_screen"
 
-            self.opossumBite = True
-            self.refresh()
-            self.initializeGarbageCans()
-            self.game_state = "lose_screen"
 
+            elif state.player.rabiesImmunity == False:
+                self.opossumBite = True
+                self.refresh()
+                self.initializeGarbageCans()
+                self.game_state = "lose_screen"
 
         # Remove the item from the can (set it to an empty string)
         setattr(self, selected_can_attribute, "")
@@ -480,6 +493,25 @@ class OpossumInACanSallyScreen(Screen):
                 self.reveal_selected_box_content(state)
 
             self.opossumInACanMessages["pick_message"].update(state)
+
+        if self.game_state == "immune_lose_screen":
+            print("This is the immune lose screen")
+            if self.talley_checker == False:
+                state.player.exp += 100
+                self.talley_checker = True
+            self.opossumInACanMessages["immune_lose_message"].message_index = 0
+
+            self.opossumInACanMessages["immune_lose_message"].update(state)
+
+            if state.player.stamina_points < 0:
+                print("hmmmmmdfkjdsa;fjlsajf;lsfjsalfjsa")
+                # state.currentScreen = state.gamblingAreaScreen
+                # state.gamblingAreaScreen.start(state)
+            elif state.player.stamina_points > 0:
+
+                if self.opossumInACanMessages["immune_lose_message"].message_index == 1:
+                    self.game_state = "play_again_or_leave_screen"
+                    self.opossumInACanMessages["immune_lose_message"].reset()
 
         if self.game_state == "lose_screen":
             # this handles our EXP
@@ -1010,6 +1042,17 @@ class OpossumInACanSallyScreen(Screen):
             #         print(str(self.magic_menu_selector[1]))
             #         self.game_state = "heads_tails_choose_screen"
             #         state.controller.isTPressed = False  # Reset the button state
+
+        if self.game_state == "immune_lose_screen":
+            print("here we go again ")
+            # self.opossumInACanMessages["welcome_message"].update(state)
+
+            self.opossumInACanMessages["immune_lose_message"].draw(state)
+            state.DISPLAY.blit(self.font.render(f"Opossum Chomp", True,
+                                                (255, 255, 255)), (70, 460))
+            if state.controller.isTPressed:
+                state.controller.isTPressed = False
+                self.game_state = "play_again_or_leave_screen"
 
         if self.game_state == "lose_screen":
             # self.opossumInACanMessages["welcome_message"].update(state)
