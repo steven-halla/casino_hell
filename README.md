@@ -499,10 +499,14 @@ MASTER FIXER LIST: GOING THROUGH GAME REAL TIME TO FIX ALL BUGS, GOING TO GET AL
 * still need to work on hedge maze
 
 5) add sound effects when confirming something via button press such as with yes/no menus
-9) tallly is not showing total when winning its showing winnings as 0
-13) i just got 200 points and it took away 300 points, opossum in the can is totally fucked
+
 
 18) need to go through black jack , fix the card displays, make them slower,
 19) black jack bug for drawing cards on bust it not showing card
 20) need to build out demon boss encounter
+
+21) coin flip shield needs work , with freddy if hes below he alays flips tails and I think that is where
+22) the issue lies
+
+23) need to fix opossum in a can nelly for some reason even after the quest i am sitll gettig rabies
 

@@ -58,6 +58,7 @@ class TextBox(Entity):
 
     def reset(self):
         """Resets the TextBox to its initial state."""
+        print("Time to reset")
         self.message_index = 0
         self.text = self.messages[self.message_index]
         self.characters_to_display = 0
