@@ -330,11 +330,11 @@ class Player(Entity):
         border_thickness = 5  # Adjust the thickness as needed
         pygame.draw.rect(state.DISPLAY, border_color, border_rect, border_thickness)
 
-        if state.controller.isLPressed:
-            state.controller.isLPressed = False
-            print("L is pressed")
-            # Call the load_game function when the L key is pressed
-            self.load_game(state)
+        # if state.controller.isLPressed:
+        #     state.controller.isLPressed = False
+        #     print("L is pressed")
+        #     # Call the load_game function when the L key is pressed
+        #     self.load_game(state)
 
     def load_game(self, state):
 
