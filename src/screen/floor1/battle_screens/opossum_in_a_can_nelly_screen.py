@@ -120,7 +120,8 @@ class OpossumInACanNellyScreen(Screen):
         self.trash_can_pick = ""
         self.magic_menu_opossum_index = 0
         self.initialized_message = False  # Add this line to initialize the flag
-
+        self.trash_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.hand_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
         self.game_state = "welcome_screen"
 
         self.box_color = (255, 0, 0)  # Initially red
@@ -699,58 +700,63 @@ class OpossumInACanNellyScreen(Screen):
         shake_duration = 1000  # 1 second in milliseconds
         shake_interval = 3000  # 3 seconds in milliseconds
 
+        sprite_rect = pygame.Rect(1, 255, 133.5, 211)
+        sprite = self.trash_sprite_image.subsurface(sprite_rect)
+        # hand_sprite = self.hand_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (156, 156))
+
         box_size = 64
-        margin = 30
+        margin = 50
 
-        # Calculate positions for the boxes
-        positions = []
-        for row in range(2):
-            for col in range(4):
-                x = col * (box_size + margin) + margin + 270
-                y = row * (box_size + margin) + margin + 70
-                positions.append((x, y))
-
-        # Draw the boxes
         # Initialize flags to track if a "lose" can and "X3_star" can have already been shaken
         shaken_lose = False
         shaken_x3_star = False
 
-        # ...
+        # Calculate positions for the trash cans
+        positions = []
+        for row in range(2):
+            for col in range(4):
+                x = col * (box_size + margin) + margin + 222
+                y = row * (box_size + margin) + margin + 111
+                positions.append((x, y))
 
-        # Draw the boxes
-        # ... [your previous code for setup and calculating positions]
+                # Determine the content of the current trash can
+                current_can_content = getattr(self, f'can{len(positions)}')
 
-        # Draw the boxes
-        for i, pos in enumerate(positions):
-            # Determine the color based on the green box index
-            box_color = (0, 255, 0) if i == self.green_box_index else (255, 0, 0)
+                # Apply the shaking effect if debuff is active
+                if self.debuff_keen_perception == True:
+                    shake_effect = (0, 0)  # Default to no shake
 
-            # Check if the current box contains an opossum
-            current_can_content = getattr(self, f'can{i + 1}')
+                    # Check and apply shake for "lose" cans
+                    if current_can_content == 'lose' and not shaken_lose:
+                        shaken_lose = True
+                        time_since_last_shake = current_time % shake_interval
+                        if time_since_last_shake < shake_duration:
+                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
 
-            # If debuff is active, apply the shaking effect
-            if self.debuff_keen_perception == True:
-                # Check if the current can is of type "lose" and has not been shaken yet
-                if current_can_content == 'lose' and not shaken_lose:
-                    shaken_lose = True
-                    time_since_last_shake = current_time % shake_interval
-                    if time_since_last_shake < shake_duration:
-                        shake_effect = random.randint(-2, 2)  # Small random offset for shaking
-                        pos = (pos[0] + shake_effect, pos[1] + shake_effect)
+                    # Check and apply shake for "X3_star" cans
+                    elif current_can_content == 'X3_star' and not shaken_x3_star:
+                        shaken_x3_star = True
+                        time_since_last_shake = current_time % shake_interval
+                        if time_since_last_shake < shake_duration:
+                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
 
-                # Check if the current can is of type "X3_star" and has not been shaken yet
-                if current_can_content == 'X3_star' and not shaken_x3_star:
-                    shaken_x3_star = True
-                    time_since_last_shake = current_time % shake_interval
-                    if time_since_last_shake < shake_duration:
-                        shake_effect = random.randint(-2, 2)  # Small random offset for shaking
-                        pos = (pos[0] + shake_effect, pos[1] + shake_effect)
+                    # Apply the shake effect to the position
+                    x += shake_effect[0]
+                    y += shake_effect[1]
 
-            # Draw the box with the determined color
-            pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))
+                # Draw the scaled_sprite (trash can) at each position with potential shake effect
+                state.DISPLAY.blit(scaled_sprite, (x, y))
+        # hand sprite code
+        hand_sprite_rect = pygame.Rect(1, 1, 58.5, 58)  # Update these values as needed
+        hand_sprite = self.hand_sprite_image.subsurface(hand_sprite_rect)
+        scaled_hand_sprite = pygame.transform.scale(hand_sprite, (33, 33))
 
-            # Draw the box with the determined color
-            pygame.draw.rect(state.DISPLAY, box_color, (*pos, box_size, box_size))
+        if 0 <= self.green_box_index < len(positions):
+            hand_x, hand_y = positions[self.green_box_index]
+            hand_y += 82  # 10 pixels below the top-left of the selected trash can
+            hand_x += 54  # 10 pixels below the top-left of the selected trash can
+            state.DISPLAY.blit(scaled_hand_sprite, (hand_x, hand_y))
 
         #this box is for hero info
         box_width = 200 - 10
