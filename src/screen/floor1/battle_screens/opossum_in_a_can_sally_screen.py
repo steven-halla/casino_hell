@@ -229,22 +229,6 @@ class OpossumInACanSallyScreen(Screen):
         self.player_score = 0
         self.talley_checker = False
 
-        # print("HYou are getting the refresh")
-
-    # def giveExp(self, state: "GameState"):
-    #     # print("Player exp is: " + str(state.player.exp))
-    #     if self.result == self.player_choice:
-    #         state.player.exp += 30
-    #         if self.bet > 60:
-    #             state.player.stamina_points -= 1
-    #
-    #     elif self.result != self.player_choice:
-    #         state.player.exp += 20
-    #         if self.bet > 60:
-    #             state.player.stamina_points -= 2
-
-
-
     def reveal_selected_box_content(self, state):
         selected_can_attribute = f'can{self.green_box_index + 1}'
         selected_box_content = getattr(self, selected_can_attribute)
@@ -283,6 +267,7 @@ class OpossumInACanSallyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+
 
         if self.music_on == True:
             self.stop_music()
@@ -362,13 +347,20 @@ class OpossumInACanSallyScreen(Screen):
             while self.tally_money_once == True:
                 # print("yoda la he ho")
                 if self.player_score <= self.sallyOpossumMoney:
-                    # print("your winnings are before" + str(self.total_winnings))
-
+                    print("this your player score playa" + str(self.player_score))
+                    print("your winnings are before" + str(self.total_winnings))
+                    # print("your play are before" + str(self.player_score))
                     self.total_winnings = self.player_score
+                    state.player.money += self.player_score
                     self.sallyOpossumMoney -= self.player_score
 
+                    # self.total_winnings = self.player_score
+                    # state.player.money += self.total_winnings
+                    # self.sallyOpossumMoney -= self.player_score
 
-                if self.player_score > self.sallyOpossumMoney:
+
+
+                elif self.player_score > self.sallyOpossumMoney:
                     # print("waffles")
                     # print("your winnings are" + str(self.total_winnings))
                     # print("your nellly monies  are" + str(self.sallyOpossumMoney))
@@ -559,7 +551,6 @@ class OpossumInACanSallyScreen(Screen):
 
 
         if self.game_state == "play_again_or_leave_screen":
-            self.refresh()
             self.rabiesStaminaChecker = False
 
             self.opossumInACanMessages["play_again_or_leave_message"].update(state)
@@ -579,6 +570,10 @@ class OpossumInACanSallyScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.play_again_or_quit_index == 0:
+                    self.refresh()
+                    print("Hey there you")
+
+
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     state.controller.isTPressed = False  # Reset the button state
@@ -808,6 +803,11 @@ class OpossumInACanSallyScreen(Screen):
 
             self.opossumInACanMessages["tally_message"].draw(state)
             if self.opossumInACanMessages["tally_message"].message_index == 0:
+                # print("These are your total winnings: " + str(self.total_winnings))
+                # print("part 2: " + str(self.player_score))
+                # print("total winnings are part 2: " + str(self.total_winnings))
+
+
                 state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings}", True,
                                                     (255, 255, 255)), (70, 460))
 

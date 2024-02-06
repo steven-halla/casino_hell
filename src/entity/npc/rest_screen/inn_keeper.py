@@ -10,7 +10,7 @@ class InnKeeper(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Inn Keeper Neddry: Wanna stay at our inn?! Dont' mind the bed bugs, roaches, and rats, theya re very friendly."],
+                ["Inn Keeper Neddry: Wanna stay at our inn and save your game?! Dont' mind the bed bugs, roaches, and rats, theya re very friendly.", "100 gold stay"],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["I'll allow you to save your game BUT YOU CANNOT SLEEP HERE, sorry."],

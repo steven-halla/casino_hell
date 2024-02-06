@@ -21,7 +21,7 @@ class FlippingSandy(Npc):
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
-        self.flipping_ted_defeated = False
+        self.sandy_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
@@ -51,7 +51,7 @@ class FlippingSandy(Npc):
                 self.black_jack_thomas_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+        current_message = self.black_jack_thomas_messages["defeated_message"] if state.coinFlipSandyScreen.coinFlipSandyDefeated else self.black_jack_thomas_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -83,7 +83,7 @@ class FlippingSandy(Npc):
             if not state.controller.isTPressed:
                 self.t_pressed = False
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if state.controller.isTPressed and current_message.is_finished() and state.coinFlipSandyScreen.coinFlipSandyDefeated == False:
             state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
@@ -106,7 +106,7 @@ class FlippingSandy(Npc):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+            current_message = self.black_jack_thomas_messages["defeated_message"] if state.coinFlipSandyScreen.coinFlipSandyDefeated else self.black_jack_thomas_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message

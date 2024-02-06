@@ -35,6 +35,7 @@ class RestScreen(Screen):
         self.chili_pit_flag = False
         self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame5.tmx")
         self.y_up_move = False
+        self.powerpotiongotten = False
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
@@ -62,9 +63,6 @@ class RestScreen(Screen):
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
-
-        self.clock = pygame.time.Clock()  # Initialize the clock
-
 
 
     def stop_music(self):
@@ -133,12 +131,10 @@ class RestScreen(Screen):
 
         # Add the appropriate NPC based on the player's body value
 
+        state.treasurechests = []
 
-        state.treasurechests = [
-
-            PowerPotion(16 * 27, 14 * 10),
-
-        ]
+        if state.player.perception > 0 and self.powerpotiongotten == False:
+            state.treasurechests.append(PowerPotion(16 * 27, 14 * 10))
 
         # if state.gamblingAreaScreen.nurgle_the_hedge_hog == True:
         #     print("is there a nurgle here?")
@@ -171,16 +167,11 @@ class RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
-
-        start_time = pygame.time.get_ticks()
-
-        # ... [your game update logic]
-
-        self.clock.tick(60)
-        end_time = pygame.time.get_ticks()
-        print(f"Update duration: {end_time - start_time} ms")
-
-
+        # if self.chili_pit_flag == True:
+        #     state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
+        # i dont think npc and demons getting updated
+        # print(state.quest_giver_janet.find_hog)
+        # print(state.quest_giver_janet.quest2counter)
 
         if state.player.body > 0 and state.player.hasRabies == False:
             # Check if an instance of BarKeep already exists
@@ -232,23 +223,23 @@ class RestScreen(Screen):
 
 
         ### i can use this to append NPC if i need to , just state.npcs.append(npc)
-        for npc in state.npcs:
-            npc.update(state)
-            # Check if the npc is any of the hedgehogs
-            if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
-                self.hedge_hog_counter += 1
-                state.npcs.remove(npc)
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     # Check if the npc is any of the hedgehogs
+        #     if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
+        #         self.hedge_hog_counter += 1
+        #         state.npcs.remove(npc)
 
         # Game Update Loop
         if state.player.body < 1:
             for chest in state.treasurechests:
                 chest.update(state)
 
-        for demon in state.demons:
-            demon.update(state)
-            if demon.move_player_down:
-                state.player.collision.y += 100  # Move player down by 100 pixels
-                demon.move_player_down = False
+        # for demon in state.demons:
+        #     demon.update(state)
+        #     if demon.move_player_down:
+        #         state.player.collision.y += 100  # Move player down by 100 pixels
+        #         demon.move_player_down = False
 
         if controller.isExitPressed is True:
             state.isRunning = False

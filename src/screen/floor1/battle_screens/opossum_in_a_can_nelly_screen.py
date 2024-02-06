@@ -294,10 +294,10 @@ class OpossumInACanNellyScreen(Screen):
             self.initialize_music()
             self.music_on = False
 
-        if self.player_score >= 500:
+        if self.player_score >= 300:
             # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
-        if self.player_score >= 500:
+        if self.player_score >= 300:
             self.five_hundred_points = True
         if self.fill_cans == True:
             self.initializeGarbageCans()

@@ -42,6 +42,7 @@ class GameState:
         self.DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
         self.FONT = pygame.font.Font('freesansbold.ttf', 24)
 
+
         # Use in NPC only TODO remove
         self.TEXT_SURFACE = self.FONT.render('Casino', True, GREEN, BLUE)
         self.TEXT_SURFACE_RECT = self.TEXT_SURFACE.get_rect()
@@ -97,7 +98,7 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.restScreen
+        self.currentScreen = self.gamblingAreaScreen
 
 
 

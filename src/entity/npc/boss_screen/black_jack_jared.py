@@ -61,7 +61,7 @@ class BlackJackJared(Npc):
                 self.black_jack_thomas_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackJaredScreen.black_jack_jared_defeated else self.black_jack_thomas_messages["welcome_message"]
         if self.isWorthy == False:
             current_message = self.black_jack_thomas_messages["not_worthy_message"]
 
@@ -82,7 +82,7 @@ class BlackJackJared(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and self.isWorthy == True:
+        if current_message.is_finished() and state.controller.isTPressed and self.isWorthy == True and state.blackJackJaredScreen.black_jack_jared_defeated == False:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -120,7 +120,7 @@ class BlackJackJared(Npc):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackThomasScreen.black_jack_thomas_defeated else self.black_jack_thomas_messages["welcome_message"]
+            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackJaredScreen.black_jack_jared_defeated else self.black_jack_thomas_messages["welcome_message"]
             if self.isWorthy == False:
                 current_message = self.black_jack_thomas_messages["not_worthy_message"]
             current_message.draw(state)

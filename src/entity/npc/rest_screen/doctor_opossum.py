@@ -29,6 +29,8 @@ class DoctorOpossum(Npc):
                 500  # Delay
             ),
 
+
+
             "sir_leopold_message": NpcTextBox(
                 ["You have a companion...now he'll be safe!, As long as you have  money.... "],
                 (50, 450, 700, 130),  # Position and size
@@ -88,7 +90,21 @@ class DoctorOpossum(Npc):
             # self.textbox.reset()
             # self.textbox.message_index = 0
 
-            if "blue flower" in state.player.items:
+            if "sir leopold" in state.player.companions and "blue flower" not in state.player.items:
+                if self.doctor_messages["sir_leopold_message"].message_index == 1:
+                    if state.controller.isAPressed and \
+                            pygame.time.get_ticks() - self.input_time > 500:
+                        self.input_time = pygame.time.get_ticks()
+                        self.state = "waiting"
+
+
+                    elif state.controller.isBPressed and \
+                            pygame.time.get_ticks() - self.input_time > 500:
+                        self.input_time = pygame.time.get_ticks()
+                        print("bye player")
+                        self.state = "waiting"
+
+            elif "blue flower" in state.player.items:
                 if self.doctor_messages["cured_message"].message_index == 1:
 
                     if state.controller.isAPressed and \
@@ -103,19 +119,7 @@ class DoctorOpossum(Npc):
                         print("bye player")
                         self.state = "waiting"
 
-            elif "sir leopold" in state.player.companions:
-                if self.doctor_messages["sir_leopold_message"].message_index == 1:
-                    if state.controller.isAPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        self.state = "waiting"
 
-
-                    elif state.controller.isBPressed and \
-                            pygame.time.get_ticks() - self.input_time > 500:
-                        self.input_time = pygame.time.get_ticks()
-                        print("bye player")
-                        self.state = "waiting"
 
 
 
@@ -176,11 +180,16 @@ class DoctorOpossum(Npc):
 
                 self.state_start_time = pygame.time.get_ticks()
 
-                if "blue flower" in state.player.items or state.player.rabiesImmunity == True:
-                    self.doctor_messages["cured_message"].reset()
+
                 # state.player.hasRabies = False
-                elif "sir leopold" in state.player.companions:
+                if "sir leopold" in state.player.companions and "blue flower" not in state.player.items:
+                    print("sir leopold ")
                     self.doctor_messages["sir_leopold_message"].reset()
+                elif "blue flower" in state.player.items:
+                    print("blue flower ")
+
+                    self.doctor_messages["cured_message"].reset()
+
 
 
 
@@ -194,6 +203,7 @@ class DoctorOpossum(Npc):
 
     def update_talking(self, state: "GameState"):
         state.player.canMove = False
+
 
         if "blue flower" in state.player.items:
             self.doctor_messages["cured_message"].update(state)

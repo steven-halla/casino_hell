@@ -93,8 +93,9 @@ class BlackJackThomasScreen(Screen):
 
                                "You look pretty fresh to me.", ""],
             "hero_intro_text": [
+                "am I in trouble?",
 
-                "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
+                "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", ""],
 
             "bet_intro_text": [
                 "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],

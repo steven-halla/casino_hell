@@ -24,6 +24,7 @@ class PowerPotion(TreasureChest):
                 state.player.body += 1
                 state.player.food += 1
             state.player.items.remove("power potion")
+            state.restScreen.powerpotiongotten = True
             state.treasurechests.remove(self)  # Remove the chest from the game
             self.isOpened = True  #
 

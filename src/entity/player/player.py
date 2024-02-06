@@ -38,7 +38,7 @@ class Player(Entity):
         self.perks = []
         self.items = []
 
-        self.magicinventory = ["shake", "shield"]
+        self.magicinventory = [ ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -131,7 +131,7 @@ class Player(Entity):
             controller.isOPressed = False
 
         if self.exp > 300 and self.level2checker == False:
-            # print("grats you leveld up to level 2")
+            print("grats you leveld up to level 2")
             self.level = 2
             self.max_stamina_points += 10 + (self.stamina_increase)
             self.max_focus_points += 10
@@ -139,16 +139,16 @@ class Player(Entity):
             self.level2checker = True
             return
 
-        elif self.exp > 500 and self.level3checker == False:
-            # print("grats you leveld up to level 3")
-            if "shield" not in self.magicinventory:
-                self.magicinventory.append("shield")
-                self.max_stamina_points += 10
-                self.max_focus_points += 10
-                self.level3checker = True
-                self.level = 3
+        if self.exp > 320 and self.level3checker == False:
+            print("grats you leveld up to level 3")
+            # if "shield" not in self.magicinventory:
+            self.magicinventory.append("shield")
+            self.max_stamina_points += 10
+            self.max_focus_points += 10
+            self.level3checker = True
+            self.level = 3
 
-                return
+            return
 
 
         # Define canMove before the for loop
@@ -337,6 +337,7 @@ class Player(Entity):
             self.load_game(state)
 
     def load_game(self, state):
+
         # Define the file path
         file_path = '/Users/stevenhalla/code/casino_hell/assets/save_data.json'
 
