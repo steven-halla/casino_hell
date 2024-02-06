@@ -32,6 +32,7 @@ from screen.examples.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
 from screen.floor1.map_screens.rest_screen import RestScreen
+from screen.floor1.map_screens.start_load_screen import StartLoadScreen
 from screen.floor1.map_screens.start_screen import StartScreen
 
 
@@ -77,6 +78,7 @@ class GameState:
         self.bossScreen = BossScreen()
         # self.restScreen = RestScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
+        self.startLoadScreen = StartLoadScreen()
 
 
 
@@ -98,7 +100,7 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.gamblingAreaScreen
+        self.currentScreen = self.startLoadScreen
 
 
 

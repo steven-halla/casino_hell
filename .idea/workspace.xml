@@ -4,23 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="investiagint screen speed messages">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="other opossum in a can screens upd ated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/boss_screen/FlippingSandy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/boss_screen/FlippingSandy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/boss_screen/black_jack_jared.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/boss_screen/black_jack_jared.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/boss_screen/opossum_in_a_can_ichi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/boss_screen/opossum_in_a_can_ichi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/treasurechests/powerpotion.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/treasurechests/powerpotion.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_jared_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_jared_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -315,7 +302,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="32669000" />
+      <workItem from="1706926189767" duration="36065000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -660,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="427" />
+    <option name="localTasksCounter" value="429" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -689,8 +676,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="deleted rogue print statement, also confirmed rabies immunity status stet to true" />
-    <MESSAGE value="sir leopold quest line finished with savae load" />
     <MESSAGE value="lots of updates, treasure now spawns player in chilli screen, new text , new rewards, state improved for save features" />
     <MESSAGE value="updated sir leopold to incread player perception" />
     <MESSAGE value="fixed quest line for doctor opossum" />
@@ -714,7 +699,9 @@
     <MESSAGE value="sound effects for  opossum screen" />
     <MESSAGE value="fixed bug with no being displayed as plaeyr could change message index while NPC was talking" />
     <MESSAGE value="investiagint screen speed messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="investiagint screen speed messages" />
+    <MESSAGE value="fixed huge opossum in a can bug, i had a rogue if statement that should have been an ELIF statement." />
+    <MESSAGE value="other opossum in a can screens upd ated" />
+    <option name="LAST_COMMIT_MESSAGE" value="other opossum in a can screens upd ated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

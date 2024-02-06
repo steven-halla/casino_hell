@@ -1,9 +1,9 @@
 {
     "level": 1,
-    "exp": 80,
+    "exp": 65,
     "stamina_points": 100,
     "max_stamina_points": 100,
-    "focus_points": 90,
+    "focus_points": 100,
     "max_focus_points": 100,
     "companions": [],
     "items": [
@@ -17,7 +17,7 @@
     "spirit": 0,
     "perception": 0,
     "luck": 0,
-    "money": 2062,
+    "money": 2142,
     "rabies": false,
     "immunity": false,
     "level3reward": false,
@@ -28,6 +28,6 @@
     "coinflipfredmoney": 20,
     "opossumnellymoney": 300,
     "opossumsallymoney": 300,
-    "blackjackthomasmoney": 0,
+    "blackjackthomasmoney": 20,
     "blackjackrumblebillmoney": 20
 }
