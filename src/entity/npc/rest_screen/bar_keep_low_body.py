@@ -27,6 +27,7 @@ class BarKeepLowBody(Npc):
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.quest_checker = False
 
         self.character_sprite_image = pygame.image.load(
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
@@ -40,13 +41,13 @@ class BarKeepLowBody(Npc):
 
         elif self.state == "talking":
             # Determine which message to use based on player state
-            if state.player.money >= 2300 and self.quest_checker == False:
-                state.player.body += 1
-                state.player.mone -= 2000
-                # print("your body is now stronger check it out")
-                # print("no take backs I just sent the money. Now you can drink.")
-                self.quest_checker = True
-                return
+            # if state.player.money >= 2300 and self.quest_checker == False:
+            #     state.player.body += 1
+            #     state.player.money -= 2000
+            #     # print("your body is now stronger check it out")
+            #     # print("no take backs I just sent the money. Now you can drink.")
+            #     self.quest_checker = True
+            #     return
 
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
 

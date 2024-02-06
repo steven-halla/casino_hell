@@ -1,25 +1,28 @@
 {
-    "level": 1,
-    "exp": 65,
-    "stamina_points": 100,
-    "max_stamina_points": 100,
-    "focus_points": 100,
-    "max_focus_points": 100,
-    "companions": [],
+    "level": 3,
+    "exp": 450.0,
+    "stamina_points": 120,
+    "max_stamina_points": 120,
+    "focus_points": 90,
+    "max_focus_points": 120,
+    "companions": [
+        "sir leopold"
+    ],
     "items": [
         "inn badge"
     ],
     "magicinventory": [
-        "reveal"
+        "reveal",
+        "shield"
     ],
     "body": 0,
     "mind": 1,
-    "spirit": 0,
-    "perception": 0,
+    "spirit": 1,
+    "perception": 1,
     "luck": 0,
-    "money": 2142,
+    "money": 2562,
     "rabies": false,
-    "immunity": false,
+    "immunity": true,
     "level3reward": false,
     "food": 0,
     "cutscene1": false,
@@ -27,7 +30,7 @@
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 20,
     "opossumnellymoney": 300,
-    "opossumsallymoney": 300,
-    "blackjackthomasmoney": 20,
+    "opossumsallymoney": 0,
+    "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 20
 }
