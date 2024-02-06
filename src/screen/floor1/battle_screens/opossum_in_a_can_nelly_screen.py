@@ -242,6 +242,8 @@ class OpossumInACanNellyScreen(Screen):
         self.tally_money_once = True
         self.player_score = 0
         self.talley_checker = False
+        self.debuff_keen_perception = False
+
         # print("HYou are getting the refresh")
 
     # def giveExp(self, state: "GameState"):
@@ -278,6 +280,7 @@ class OpossumInACanNellyScreen(Screen):
 
         if selected_box_content == "lose":
             self.trash_can_pick = "lose"
+            self.debuff_keen_perception = False
 
             self.player_score = 0
             if state.player.rabiesImmunity == True:
@@ -626,6 +629,8 @@ class OpossumInACanNellyScreen(Screen):
             if state.controller.isTPressed:
                 if self.play_again_or_quit_index == 0:
                     state.controller.isTPressed = False  # Reset the button state
+                    self.debuff_keen_perception = False
+
                     self.opossumInACanMessages["tally_message"].message_index = 0
                     # print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 200
@@ -634,6 +639,7 @@ class OpossumInACanNellyScreen(Screen):
 
                 elif self.play_again_or_quit_index == 1:
                     self.music_on = True
+                    self.debuff_keen_perception = False
 
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)

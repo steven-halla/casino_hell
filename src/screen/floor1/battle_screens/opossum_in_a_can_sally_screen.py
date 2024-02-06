@@ -229,6 +229,8 @@ class OpossumInACanSallyScreen(Screen):
 
     def refresh(self):
         self.bet = 20
+        self.debuff_keen_perception = False
+
         self.has_opossum_insurance = True
         self.insurance = 200
         self.total_winnings = 0
@@ -256,6 +258,7 @@ class OpossumInACanSallyScreen(Screen):
 
         if selected_box_content == "lose":
             self.trash_can_pick = "lose"
+            self.debuff_keen_perception = False
 
             self.player_score = 0
             if state.player.rabiesImmunity == True:
@@ -606,6 +609,8 @@ class OpossumInACanSallyScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.play_again_or_quit_index == 0:
+                    self.debuff_keen_perception = False
+
                     self.refresh()
                     print("Hey there you")
 
@@ -621,6 +626,7 @@ class OpossumInACanSallyScreen(Screen):
 
                 elif self.play_again_or_quit_index == 1:
                     self.music_on = True
+                    self.debuff_keen_perception = False
 
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
