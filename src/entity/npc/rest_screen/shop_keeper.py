@@ -12,7 +12,7 @@ class ShopKeeper(Npc):
         super().__init__(x, y)
         self.textbox = ShopNpcTextBox(
             [
-             "Welcome to my humble shop. Feel free to browse my humble weares. Press B to leave, T to buy"],
+             "Hurry up and buy something. Press B to leave, T to buy"],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_time = pygame.time.get_ticks()
@@ -20,7 +20,7 @@ class ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["+10 stamina", "save coin", "opossum repellent"]
+        self.shop_items = ["+10 potion", "save coin", "opossum repellent"]
 
         self.shop_costs = ["100", "200", "300"]
 
@@ -56,7 +56,7 @@ class ShopKeeper(Npc):
                     state.player.max_stamina_points += 10
                 return
 
-            if self.textbox.message_index == 0:
+            if self.textbox.message_index == 0 and self.textbox.is_finished():
                 if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     # Decrement the index but prevent it from going below 0
@@ -80,6 +80,7 @@ class ShopKeeper(Npc):
                     print(f"selected_money_index: {self.selected_money_index}")
 
             if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
                 if state.player.money >= cost and selected_item != "sold out" and self.textbox.is_finished():
@@ -98,6 +99,12 @@ class ShopKeeper(Npc):
                         print("This item is sold out.")
                     else:
                         print("Not enough money to purchase item.")
+
+                if "+10 potion" in state.player.items:
+                    state.player.items.remove("+10 potion")
+                    state.player.max_stamina_points += 20
+                    state.player.max_focus_points += 20
+                    print("taste yum yum")
             self.update_talking(state)
 
     def sold_out(self, item_index: int):

@@ -82,6 +82,7 @@ class Player(Entity):
             "immunity": self.rabiesImmunity,
             "level3reward": self.level3janetreward,
             "food": self.food,
+            "days": self.days,
             "cutscene1": state.restScreen.barscene1,
             "cutscene2": state.restScreen.barscene2,
 
@@ -133,18 +134,21 @@ class Player(Entity):
         if self.exp > 300 and self.level2checker == False:
             print("grats you leveld up to level 2")
             self.level = 2
-            self.max_stamina_points += 10 + (self.stamina_increase)
-            self.max_focus_points += 10
-            self.spirit += 1
+
+            if self.spirit < 1:
+                self.max_stamina_points += 10 + (self.stamina_increase)
+                self.max_focus_points += 10
+                self.spirit += 1
             self.level2checker = True
             return
 
         if self.exp > 320 and self.level3checker == False:
             print("grats you leveld up to level 3")
             # if "shield" not in self.magicinventory:
-            self.magicinventory.append("shield")
-            self.max_stamina_points += 10
-            self.max_focus_points += 10
+            if "shield" not in state.player.magicinventory:
+                self.magicinventory.append("shield")
+                self.max_stamina_points += 10
+                self.max_focus_points += 10
             self.level3checker = True
             self.level = 3
 
@@ -308,7 +312,8 @@ class Player(Entity):
             f"Body: {self.body}" + f"Mind: {self.mind}" + f"Spirit: {self.spirit}"
             + f"Perception: {self.perception}" +f"Luck: {self.luck}",
             f"Day: {self.days}",
-            f"Press L to Load",
+            f"Food: {self.food}",
+
 
             # Add more stats as needed
         ]
@@ -369,6 +374,7 @@ class Player(Entity):
             state.player.rabiesImmunity = player_data['immunity']
             state.player.level3janetreward = player_data['level3reward']
             state.player.food = player_data['food']
+            state.player.days = player_data['days']
             state.restScreen.barscene1 = player_data['cutscene1']
             state.restScreen.barscene2 = player_data['cutscene2']
 

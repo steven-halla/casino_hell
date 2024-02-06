@@ -276,8 +276,12 @@ class OpossumInACanSallyScreen(Screen):
         # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
         if self.player_score >= 300:
             # print("you got a opossum")
+            # print("get that opossum")
+
             state.gamblingAreaScreen.five_hundred_opossums = True
         if self.player_score >= 300:
+            # print("get that opossum you bum")
+
             self.five_hundred_points = True
         if self.fill_cans == True:
             self.initializeGarbageCans()
