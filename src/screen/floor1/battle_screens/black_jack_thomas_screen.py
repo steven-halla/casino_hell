@@ -71,6 +71,8 @@ class BlackJackThomasScreen(Screen):
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
+        self.next_draw_time = pygame.time.get_ticks() + 2000  # Set initial delay for first draw
+
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
@@ -80,7 +82,8 @@ class BlackJackThomasScreen(Screen):
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
-
+        self.flip_timer = pygame.time.get_ticks() + 2000
+        self.pause_timer = 0
 
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
@@ -233,6 +236,9 @@ class BlackJackThomasScreen(Screen):
 
         self.reveal_debuff = False
         self.reveal_debuff_counter = 0
+
+
+
 
     pygame.init()
     def stop_music(self):
@@ -564,8 +570,12 @@ class BlackJackThomasScreen(Screen):
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
-            while self.enemy_score < 13:  # this is 15 in order to make game a little easier
+            current_time = pygame.time.get_ticks()
+
+            while self.enemy_score < 19:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
+
+
 
                 self.enemy_hand += self.deck.enemy_draw_hand(1)
                 self.deck.compute_hand_value(self.enemy_hand)
@@ -588,7 +598,7 @@ class BlackJackThomasScreen(Screen):
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
-            if self.enemy_score > 12 and self.enemy_score < 22:
+            if self.enemy_score > 18 and self.enemy_score < 22:
                 print("stay here")
                 self.game_state = "results_screen"
 

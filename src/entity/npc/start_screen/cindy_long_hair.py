@@ -120,7 +120,7 @@ class CindyLongHair(Npc):
         elif state.player.hasRabies == True:
             current_message = self.cindy_long_hair_messages['rabies_message']
 
-        elif self.coinFlipTedReward == True:
+        elif self.coinFlipTedReward == True or state.restScreen.inn_badge_recieved_tracker == True:
             current_message = self.cindy_long_hair_messages['final_message']
         elif state.coinFlipTedScreen.coinFlipTedDefeated:
             if "reveal" not in state.player.magicinventory:
@@ -174,7 +174,8 @@ class CindyLongHair(Npc):
 
             elif state.player.hasRabies == True:
                 current_message = self.cindy_long_hair_messages['rabies_message']
-            elif self.coinFlipTedReward == True:
+            elif self.coinFlipTedReward == True or state.restScreen.inn_badge_recieved_tracker == True:
+
                 current_message = self.cindy_long_hair_messages['final_message']
             elif state.coinFlipTedScreen.coinFlipTedDefeated:
                 current_message = self.cindy_long_hair_messages['reward_message']

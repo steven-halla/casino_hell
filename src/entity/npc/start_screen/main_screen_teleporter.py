@@ -8,6 +8,7 @@ class MainScreenTeleporter(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
+        self.inn_badge_recieved = False
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
                 ["Demon: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
@@ -72,8 +73,19 @@ class MainScreenTeleporter(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:
-            state.currentScreen = state.restScreen
-            state.restScreen.start(state)
+
+            if "inn badge" in state.player.items:
+                self.inn_badge_recieved = True
+
+            if self.inn_badge_recieved == True:
+                state.currentScreen = state.restScreen
+                state.restScreen.start(state)
+                state.player.items.remove("inn badge")
+
+            if state.restScreen.inn_badge_recieved_tracker == True:
+                state.currentScreen = state.restScreen
+                state.restScreen.start(state)
+
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")

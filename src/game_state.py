@@ -75,7 +75,6 @@ class GameState:
         self.hotelRoomScreen = HotelRoomScreen()
         self.bossScreen = BossScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
-        self.startLoadScreen = StartLoadScreen()
 
         self.barCutScene1 = BarCutScene1Screen()
         self.barCutScene2 = BarCutScene2Screen()
@@ -95,7 +94,11 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.blackJackThomasScreen
+        self.startLoadScreen = StartLoadScreen()
+
+
+        self.currentScreen = self.startLoadScreen
+
 
 
 
