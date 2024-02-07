@@ -34,7 +34,7 @@ class ShopNpcTextBox(Entity):
     def update(self, state: "GameState"):
         # print("textbox update")
         current_time = pygame.time.get_ticks()
-        key_scroll_delay = 500  # Time in milliseconds before recognizing another key press
+        key_scroll_delay = 550  # Time in milliseconds before recognizing another key press
         if self.is_finished():
 
 

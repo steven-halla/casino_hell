@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="debuff shake now ends after a turn and the staet will not persist when leaving and coming back">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now potion shows up correctly and now bar keep doesn't vanish bug">
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,7 +300,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="47359000" />
+      <workItem from="1706926189767" duration="47668000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -649,7 +645,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="437" />
+    <option name="localTasksCounter" value="438" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -678,7 +674,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now can close text box" />
     <MESSAGE value="cut scene created" />
     <MESSAGE value="now can get to 1st cut scene at the bar" />
     <MESSAGE value="bar scenes now set up" />
@@ -703,7 +698,8 @@
     <MESSAGE value="updated salley screen for nelly screen with new message and bug updaets" />
     <MESSAGE value="updated oppossum in a can with new images for nelly screen" />
     <MESSAGE value="debuff shake now ends after a turn and the staet will not persist when leaving and coming back" />
-    <option name="LAST_COMMIT_MESSAGE" value="debuff shake now ends after a turn and the staet will not persist when leaving and coming back" />
+    <MESSAGE value="now potion shows up correctly and now bar keep doesn't vanish bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="now potion shows up correctly and now bar keep doesn't vanish bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
