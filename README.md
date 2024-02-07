@@ -509,4 +509,5 @@ MASTER FIXER LIST: GOING THROUGH GAME REAL TIME TO FIX ALL BUGS, GOING TO GET AL
 22) the issue lies
 
 23) need to fix opossum in a can nelly for some reason even after the quest i am sitll gettig rabies
+24) if you have rabies and grab the potion the bar man goes away 
 

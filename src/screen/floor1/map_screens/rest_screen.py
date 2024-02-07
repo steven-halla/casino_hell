@@ -133,8 +133,8 @@ class RestScreen(Screen):
 
         state.treasurechests = []
 
-        if state.player.perception > 0 and self.powerpotiongotten == False:
-            state.treasurechests.append(PowerPotion(16 * 27, 14 * 10))
+        # if state.player.perception > 0 and self.powerpotiongotten == False and:
+        #     state.treasurechests.append(PowerPotion(16 * 27, 14 * 10))
 
         # if state.gamblingAreaScreen.nurgle_the_hedge_hog == True:
         #     print("is there a nurgle here?")
@@ -167,6 +167,8 @@ class RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        if state.player.perception > 0 and self.powerpotiongotten == False and state.player.hasRabies == False:
+            state.treasurechests.append(PowerPotion(16 * 27, 14 * 10))
         # if self.chili_pit_flag == True:
         #     state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
         # i dont think npc and demons getting updated
