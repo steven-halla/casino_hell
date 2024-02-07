@@ -17,6 +17,7 @@ from entity.gui.textbox.bordered_box import BorderedBox
 class BlackJackThomasScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
+
         self.deck = Deck()
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
@@ -27,7 +28,7 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 220
+        self.cheater_bob_money = 20
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -75,8 +76,16 @@ class BlackJackThomasScreen(Screen):
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.music_on = True
+
+
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
+
+
+
+        # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
+        # incldue a double bet spell that is CHR based that player gets for free maybe4
+
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
@@ -86,7 +95,7 @@ class BlackJackThomasScreen(Screen):
             "hero_intro_text": [
                 "am I in trouble?",
 
-                "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", "Good luck"],
+                "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", ""],
 
             "bet_intro_text": [
                 "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
@@ -159,6 +168,7 @@ class BlackJackThomasScreen(Screen):
             "avatar_magic_explain": [
                 "Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned.Magic lock 5 turns 25MP"],
             "back_magic_explain": ["Back to previous gui"],
+
         }
 
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"],
@@ -221,6 +231,9 @@ class BlackJackThomasScreen(Screen):
             ""],
             (50, 450, 50, 45), 30, 500)
 
+        self.reveal_debuff = False
+        self.reveal_debuff_counter = 0
+
     pygame.init()
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -282,6 +295,8 @@ class BlackJackThomasScreen(Screen):
             print("enemy defeated")
             self.defeated_textbox.update(state)
 
+
+
         if self.game_state == "welcome_screen":
 
             if state.player.stamina_points < 1:
@@ -296,6 +311,8 @@ class BlackJackThomasScreen(Screen):
 
             self.npc_speaking = True
             self.hero_speaking = False
+
+
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
             self.bust_protection = False
@@ -306,33 +323,33 @@ class BlackJackThomasScreen(Screen):
             if self.welcome_screen_text_box.is_finished():
                 self.npc_speaking = False
                 self.hero_speaking = True
-                # self.welcome_screen_text_box_hero.update(state)
+                self.welcome_screen_text_box_hero.update(state)
 
-                # if self.welcome_screen_text_box_hero.is_finished():
+                if self.welcome_screen_text_box_hero.is_finished():
 
-                if controller.isUpPressed:
-                    self.menu_movement_sound.play()  # Play the sound effect once
+                    if controller.isUpPressed:
+                        self.menu_movement_sound.play()  # Play the sound effect once
 
-                    if not hasattr(self, "welcome_screen_index"):
-                        self.welcome_screen_index = len(
-                            self.welcome_screen_choices) - 1
-                    else:
-                        self.welcome_screen_index -= 1
-                    self.welcome_screen_index %= len(
-                        self.welcome_screen_choices)
-                    controller.isUpPressed = False
+                        if not hasattr(self, "welcome_screen_index"):
+                            self.welcome_screen_index = len(
+                                self.welcome_screen_choices) - 1
+                        else:
+                            self.welcome_screen_index -= 1
+                        self.welcome_screen_index %= len(
+                            self.welcome_screen_choices)
+                        controller.isUpPressed = False
 
-                elif controller.isDownPressed:
-                    self.menu_movement_sound.play()
-                    if not hasattr(self, "welcome_screen_index"):
-                        self.welcome_screen_index = len(
-                            self.welcome_screen_choices) + 1
-                    else:
-                        self.welcome_screen_index += 1
+                    elif controller.isDownPressed:
+                        self.menu_movement_sound.play()
+                        if not hasattr(self, "welcome_screen_index"):
+                            self.welcome_screen_index = len(
+                                self.welcome_screen_choices) + 1
+                        else:
+                            self.welcome_screen_index += 1
 
-                    self.welcome_screen_index %= len(
-                        self.welcome_screen_choices)
-                    controller.isDownPressed = False
+                        self.welcome_screen_index %= len(
+                            self.welcome_screen_choices)
+                        controller.isDownPressed = False
 
         elif self.game_state == "hero_is_desperate_state":
             self.npc_speaking = False
@@ -515,7 +532,7 @@ class BlackJackThomasScreen(Screen):
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
-            if self.player_score > 21 and self.reveal_hand > 10:
+            if self.player_score > 21:
                 state.player.money -= self.bet
                 self.cheater_bob_money += self.bet
 
@@ -688,8 +705,6 @@ class BlackJackThomasScreen(Screen):
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
 
-            # we need to make this work right after a black jack
-            # set a counter to minus 1 this is the counter is above 0
 
             if self.magic_menu_index == 0:
                 self.reveal_magic_explain_component.update(state)
@@ -703,7 +718,10 @@ class BlackJackThomasScreen(Screen):
                         state.player.focus_points -= 10
                         self.spell_sound.play()  # Play the sound effect once
 
-                        self.reveal_hand = 10
+
+                        # self.reveal_hand = 10
+                        self.reveal_debuff = True
+                        self.reveal_debuff_counter = 10
                         self.magic_lock = True
                         self.player_status = "Focus"
                         self.enemy_status = "Reveal"
@@ -788,10 +806,7 @@ class BlackJackThomasScreen(Screen):
 
             if controller.isTPressed:
 
-                # Load audio file
-                # channel2 = pygame.mixer.Channel(1)
-                # sound2 = pygame.mixer.Sound("audio/Coins1.mp3")
-                # channel2.play(sound2)
+
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                     state.player.money += self.bet * 2
@@ -1080,6 +1095,12 @@ class BlackJackThomasScreen(Screen):
 
         elif self.game_state == "bet_phase":
             self.bet_screen_text.draw(state)
+
+            # self.current_speaker = "cheater bob"
+
+            # state.DISPLAY.blit(character_image, (23, 245))
+            # state.DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
+
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
                                           (255, 255, 255)), (50, 530))
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
@@ -1101,6 +1122,10 @@ class BlackJackThomasScreen(Screen):
                 self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
 
                 player_card_x += 75
+
+                # pygame.display.update()
+
+            # pygame.display.update()
 
             for index, card in enumerate(self.enemy_hand):
                 if index == 0:
@@ -1162,6 +1187,8 @@ class BlackJackThomasScreen(Screen):
                     self.game_state = "player_draw_one_card"
                     self.isTPressed = False
 
+
+
             elif self.current_index == 2:
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
@@ -1171,10 +1198,13 @@ class BlackJackThomasScreen(Screen):
                     pygame.display.update()
                     self.game_state = "menu_screen"
 
+
+
         elif self.game_state == "magic_menu":
 
             black_box = pygame.Surface((255, 215))
             black_box.fill((0, 0, 0))
+            # Create the white border
             border_width = 5
             white_border = pygame.Surface(
                 (170 + 2 * border_width, 215 + 2 * border_width))
@@ -1187,9 +1217,13 @@ class BlackJackThomasScreen(Screen):
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (640, 200))
-
-
+                # state.DISPLAY.blit(
+                #     self.font.render("Bluff status. When enemy ", True, (255, 255, 255)),
+                #     (40, 445))
                 self.reveal_magic_explain_component.draw(state)
+
+
+
 
             elif self.magic_menu_index == 1:
 
@@ -1201,6 +1235,8 @@ class BlackJackThomasScreen(Screen):
 
                 self.back_magic_explain_component.draw(state)
 
+
+
             state.DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[0]}", True,
                                  (255, 255, 255)),
@@ -1210,6 +1246,13 @@ class BlackJackThomasScreen(Screen):
                 self.font.render(f"{self.magic_menu_selector[1]}", True,
                                  (255, 255, 255)),
                 (680, 255))
+
+
+
+
+
+
+
 
         elif self.game_state == "results_screen":
             player_card_x = 235
@@ -1224,6 +1267,10 @@ class BlackJackThomasScreen(Screen):
                 self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
 
                 player_card_x += 75
+
+                # pygame.display.update()
+
+            # pygame.display.update()
 
             for index, card in enumerate(self.enemy_hand):
                 self.deck.draw_card_face_up(card[1], card[0], (enemy_card_x, enemy_card_y), DISPLAY)
