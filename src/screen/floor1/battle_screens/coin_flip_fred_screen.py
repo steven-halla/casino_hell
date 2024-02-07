@@ -193,6 +193,30 @@ class CoinFlipFredScreen(Screen):
 
             # You can add more game state keys and TextBox instances here
         }
+        self.coin_flip_fred_messages = {}  # Prepare the dictionary but don't fill it yet
+
+        self.coin_flip_messages_initialized = False  # Add an initialization flag
+
+    def initialize_text_boxes(self):
+        # Initialize and store TextBox instances in self.coin_flip_messages
+        self.coin_flip_fred_messages = {
+            "welcome_message": TextBox(
+                ["praying that this works", "We", ""],
+                (50, 450, 700, 130),  # Position and size as a tuple: (x_position, y_position, width, height)
+                36,  # Font size
+                500  # Delay in milliseconds
+            ),
+            # Example for another message
+            "bet_message": TextBox(
+                ["Min Bet is 10 and Max Bet is 100. The more you bet, the more your stamina is drained."],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            # You can continue adding other TextBox instances as needed...
+        }
+
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -385,10 +409,18 @@ class CoinFlipFredScreen(Screen):
 
 
             # Update the welcome screen text box
-            self.coin_flip_messages["welcome_message"].update(state)
+            # self.coin_flip_messages["welcome_message"].update(state)
+            print("Heyo")
 
-            # Check if the text box message index is at the second element (index 1)
-            if self.coin_flip_messages["welcome_message"].message_index == 2:
+            if not self.coin_flip_messages_initialized:
+                self.initialize_text_boxes()
+                self.coin_flip_messages_initialized = True
+            self.coin_flip_fred_messages["welcome_message"].update(state)
+
+                # Check if the text box message index is at the second element (index 1)
+            if self.coin_flip_fred_messages["welcome_message"].message_index == 2:
+                self.coin_flip_messages_initialized = False
+
                 # Change the game state to "bet"
                 self.game_state = "bet_screen"
 
@@ -400,11 +432,17 @@ class CoinFlipFredScreen(Screen):
             self.message_printed = False
             self.entered_shield_screen = False  # Add this flag
 
-            self.coin_flip_messages["bet_message"].update(state)
+            # self.coin_flip_messages["bet_message"].update(state)
+            if not self.coin_flip_messages_initialized:
+                self.initialize_text_boxes()
+                self.coin_flip_messages_initialized = True
+            self.coin_flip_fred_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
                 # Add other game state updates here
 
         if self.game_state == "heads_tails_choose_screen":
+            self.coin_flip_fred_messages["bet_message"].reset()
+
             # print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
 
@@ -743,15 +781,14 @@ class CoinFlipFredScreen(Screen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
         if self.game_state == "welcome_screen":
+            # self.coin_flip_fred_messages["welcome_message"].update(state)
 
-            self.coin_flip_messages["welcome_message"].update(state)
-            self.coin_flip_messages["welcome_message"].draw(state)
-
+            self.coin_flip_fred_messages["welcome_message"].draw(state)
 
         if self.game_state == "bet_screen":
             # print("Game state is 'bet'")  # Debugging
-            self.coin_flip_messages["bet_message"].update(state)
-            self.coin_flip_messages["bet_message"].draw(state)
+            # self.coin_flip_messages["bet_message"].update(state)
+            self.coin_flip_fred_messages["bet_message"].draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
                                                 (255, 255, 255)), (50, 530))
 

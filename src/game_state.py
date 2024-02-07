@@ -50,24 +50,22 @@ class GameState:
 
         # core game state
         self.controller: Controller = Controller()
+
         self.player: Player = Player(16 * 15, 16 * 22)
         self.demon_left: Demon1 = Demon1(0,0)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(16 * 10, 16 * 26)
-
         self.shop_keeper: ShopKeeper = ShopKeeper(16 * 18, 16 * 26)
         self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.treasurechests = []
-        # self.npcs = [CoinFlipFred(175, 138), SalleyOpossum(65, 28), ChiliWilley(311, 28)]
-        self.obstacle = Obstacle(444, 999)
 
+        self.obstacle = Obstacle(444, 999)
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0
         self.camera = Vector(0.0, 0.0)
         self.sir_leopold_companion = False
-
 
         self.startScreen = StartScreen()
         self.chilliScreen = ChilliScreen()
@@ -76,11 +74,8 @@ class GameState:
         self.gamblingAreaScreen = GamblingAreaScreen()
         self.hotelRoomScreen = HotelRoomScreen()
         self.bossScreen = BossScreen()
-        # self.restScreen = RestScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
         self.startLoadScreen = StartLoadScreen()
-
-
 
         self.barCutScene1 = BarCutScene1Screen()
         self.barCutScene2 = BarCutScene2Screen()
@@ -100,7 +95,7 @@ class GameState:
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
 
-        self.currentScreen = self.startLoadScreen
+        self.currentScreen = self.coinFlipFredScreen
 
 
 
