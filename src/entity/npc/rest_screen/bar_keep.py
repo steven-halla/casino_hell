@@ -41,6 +41,9 @@ class BarKeep(Npc):
 
     def update(self, state: "GameState"):
 
+        if "b key" in state.player.items:
+            self.shop_items[2] = "sold out"
+
         if state.restScreen.barscene2 == True:
             self.barcutscene2 = True
         elif state.restScreen.barscene1 == True:
@@ -128,7 +131,9 @@ class BarKeep(Npc):
                                 state.currentScreen = state.barCutScene1
                                 state.barCutScene1.start(state)
                     elif self.selected_money_index == 2:
+
                         if "b key" not in state.player.items:
+                            state.player.money -= 500
                             state.player.items.append("b key")
                         print("Its boss time")
 

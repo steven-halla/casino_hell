@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed sally screen now we have double chompys">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/boss_teleporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/boss_teleporter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="b key added" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -305,7 +298,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="70793000" />
+      <workItem from="1706926189767" duration="71102000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -650,7 +643,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="452" />
+    <option name="localTasksCounter" value="453" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -679,7 +672,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed huge opossum in a can bug, i had a rogue if statement that should have been an ELIF statement." />
     <MESSAGE value="other opossum in a can screens upd ated" />
     <MESSAGE value="now created a new game screen this way we dont have to worry about state anymore" />
     <MESSAGE value="took out L key press we do not want player loading from status screen as that caues staet issues now load is handled fro start screen" />
@@ -704,7 +696,8 @@
     <MESSAGE value="nurgle the hedge hog is now removed after we talk to Janet" />
     <MESSAGE value="fixed immune bite chompy message bug" />
     <MESSAGE value="fixed sally screen now we have double chompys" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed sally screen now we have double chompys" />
+    <MESSAGE value="b key added" />
+    <option name="LAST_COMMIT_MESSAGE" value="b key added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
