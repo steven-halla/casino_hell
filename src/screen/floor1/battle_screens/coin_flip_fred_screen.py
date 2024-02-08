@@ -369,11 +369,6 @@ class CoinFlipFredScreen(Screen):
 
 
 
-
-
-
-
-
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
@@ -416,6 +411,7 @@ class CoinFlipFredScreen(Screen):
                 self.initialize_text_boxes()
                 self.coin_flip_messages_initialized = True
             self.coin_flip_fred_messages["welcome_message"].update(state)
+            print("bjladjfl;safjds;afjsal;fas")
 
                 # Check if the text box message index is at the second element (index 1)
             if self.coin_flip_fred_messages["welcome_message"].message_index == 2:
@@ -441,7 +437,7 @@ class CoinFlipFredScreen(Screen):
                 # Add other game state updates here
 
         if self.game_state == "heads_tails_choose_screen":
-            self.coin_flip_fred_messages["bet_message"].reset()
+            self.coin_flip_fred_messages["bet_message"].update(state)
 
             # print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
@@ -451,26 +447,27 @@ class CoinFlipFredScreen(Screen):
                 self.heads_or_tails_Menu.append("Magic")
 
             # Handling Up Press
-            if state.controller.isUpPressed:
-                self.headstailsindex -= 1
-                self.menu_movement_sound.play()  # Play the sound effect once
+            if self.coin_flip_fred_messages["bet_message"].is_finished():
+                if state.controller.isUpPressed:
+                    self.headstailsindex -= 1
+                    self.menu_movement_sound.play()  # Play the sound effect once
 
-                if self.headstailsindex < 0:
-                    self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
+                    if self.headstailsindex < 0:
+                        self.headstailsindex = len(self.heads_or_tails_Menu) - 1  # Wrap around to the last item
 
-                print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+                    print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
+                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
-            # Handling Down Press
-            elif state.controller.isDownPressed:
-                self.headstailsindex += 1
-                self.menu_movement_sound.play()  # Play the sound effect once
+                # Handling Down Press
+                elif state.controller.isDownPressed:
+                    self.headstailsindex += 1
+                    self.menu_movement_sound.play()  # Play the sound effect once
 
-                if self.headstailsindex >= len(self.heads_or_tails_Menu):
-                    self.headstailsindex = 0  # Wrap around to the first item
+                    if self.headstailsindex >= len(self.heads_or_tails_Menu):
+                        self.headstailsindex = 0  # Wrap around to the first item
 
-                print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
+                    print(self.heads_or_tails_Menu[self.headstailsindex])  # Print the current menu item
+                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
 
@@ -559,8 +556,6 @@ class CoinFlipFredScreen(Screen):
                     self.coinFlipFredMoney -= self.bet
 
                 elif self.player_choice != self.result:
-                    print("better not fucking ssee this")
-
 
                     state.player.money -= self.bet
                     self.coinFlipFredMoney += self.bet
@@ -570,6 +565,7 @@ class CoinFlipFredScreen(Screen):
                         if roll > 10:
                             print("gotcha")
                             state.player.money += self.bet
+                            self.coinFlipFredMoney -= self.bet
                             self.game_state = "shield_screen"
 
                 self.has_run_money_logic = True
@@ -782,7 +778,9 @@ class CoinFlipFredScreen(Screen):
 
         if self.game_state == "welcome_screen":
             # self.coin_flip_fred_messages["welcome_message"].update(state)
-
+            if not self.coin_flip_messages_initialized:
+                self.initialize_text_boxes()
+                self.coin_flip_messages_initialized = True
             self.coin_flip_fred_messages["welcome_message"].draw(state)
 
         if self.game_state == "bet_screen":
@@ -1001,6 +999,8 @@ class CoinFlipFredScreen(Screen):
 
                 # Set the flag to True to avoid repeating this in the current state
                 self.entered_shield_screen = True
+                # state.player.money += self.bet
+                # self.coinFlipFredMoney -= self.bet
 
             # Update and draw the selected TextBox
             self.selected_shield_message.update(state)

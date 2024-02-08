@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed black jack bug with drawing cards, nerfed revela so that bust protection is no longer there">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="light  blackjack reformat, updated cindy long hair and the interactions with inn badge we now remove it from inventory and set state as needd to handled">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/main_screen_teleporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/main_screen_teleporter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,7 +303,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="59511000" />
+      <workItem from="1706926189767" duration="62336000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -649,7 +648,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="441" />
+    <option name="localTasksCounter" value="442" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -678,7 +677,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="all rooms now connected" />
     <MESSAGE value="all rooms created, and connected, this iteration was focused on teh hotel room" />
     <MESSAGE value="save point: about to terror form" />
     <MESSAGE value="for now I'll allow max magic and items for the player may chnge in future" />
@@ -703,7 +701,8 @@
     <MESSAGE value="fixed issue with arrow select now its slow so there is no mixing of indexes" />
     <MESSAGE value="display of messages has been vastly improved saving this for the pattern will need to use this coinflipfredscreen pattern across the board for all NPCS and SCREEN" />
     <MESSAGE value="fixed black jack bug with drawing cards, nerfed revela so that bust protection is no longer there" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed black jack bug with drawing cards, nerfed revela so that bust protection is no longer there" />
+    <MESSAGE value="light  blackjack reformat, updated cindy long hair and the interactions with inn badge we now remove it from inventory and set state as needd to handled" />
+    <option name="LAST_COMMIT_MESSAGE" value="light  blackjack reformat, updated cindy long hair and the interactions with inn badge we now remove it from inventory and set state as needd to handled" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

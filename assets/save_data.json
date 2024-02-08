@@ -1,32 +1,37 @@
 {
-    "level": 1,
-    "exp": 150,
-    "stamina_points": 100,
-    "max_stamina_points": 100,
-    "focus_points": 100,
-    "max_focus_points": 100,
-    "companions": [],
-    "items": [],
-    "magicinventory": [
-        "reveal"
+    "level": 3,
+    "exp": 775.0,
+    "stamina_points": 120,
+    "max_stamina_points": 120,
+    "focus_points": 90,
+    "max_focus_points": 120,
+    "companions": [
+        "sir leopold"
     ],
-    "body": 0,
+    "items": [
+        "sir leopold's paw"
+    ],
+    "magicinventory": [
+        "reveal",
+        "shield"
+    ],
+    "body": 23,
     "mind": 1,
-    "spirit": 0,
-    "perception": 0,
+    "spirit": 1,
+    "perception": 1,
     "luck": 0,
-    "money": 2142,
+    "money": 2582,
     "rabies": false,
-    "immunity": false,
+    "immunity": true,
     "level3reward": false,
-    "food": 0,
-    "days": 1,
+    "food": 23,
+    "days": 6,
     "cutscene1": false,
     "cutscene2": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 20,
-    "opossumnellymoney": 300,
-    "opossumsallymoney": 300,
-    "blackjackthomasmoney": 20,
+    "opossumnellymoney": 0,
+    "opossumsallymoney": 0,
+    "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 20
 }
