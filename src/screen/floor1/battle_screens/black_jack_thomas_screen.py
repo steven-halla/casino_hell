@@ -729,7 +729,7 @@ class BlackJackThomasScreen(Screen):
                         self.spell_sound.play()  # Play the sound effect once
 
 
-                        # self.reveal_hand = 10
+                        self.reveal_hand = 10
                         self.reveal_debuff = True
                         self.reveal_debuff_counter = 10
                         self.magic_lock = True
