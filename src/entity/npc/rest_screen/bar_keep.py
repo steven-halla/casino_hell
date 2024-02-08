@@ -44,6 +44,14 @@ class BarKeep(Npc):
         if "b key" in state.player.items:
             self.shop_items[2] = "sold out"
 
+        if state.player.food < 1:
+            self.shop_items[0] = "Your stomach can't handle more"
+            self.shop_items[1] = "Your stomach can't handle more"
+        elif state.player.food > 0:
+            self.shop_items[0] = "beer"
+            self.shop_items[1] = "moldy sandwich"
+
+
         if state.restScreen.barscene2 == True:
             self.barcutscene2 = True
         elif state.restScreen.barscene1 == True:
