@@ -96,7 +96,7 @@ class OpossumInACanSallyScreen(Screen):
             ),
 
             "immune_lose_message": TextBox(
-                [""],
+                ["", ""],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
