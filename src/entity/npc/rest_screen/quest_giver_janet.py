@@ -284,9 +284,13 @@ class QuestGiverJanet(Npc):
                         state.player.level3janetreward = True
                         self.level3reward = False
 
+
                     print("player body" + str(state.player.body))
                     self.find_hog = True
                     self.quest3counter = True
+                    if "Nurgle the hedge hog" in state.player.items:
+                        state.player.items.remove("Nurgle the hedge hog")
+                    state.restScreen.nurgle_found = True
                     state.player.canMove = True
 
     def draw(self, state):

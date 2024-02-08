@@ -49,6 +49,7 @@ class RestScreen(Screen):
         self.rest_screen_npc_janet_find_hog = False
         self.barscene1 = False
         self.barscene2 = False
+        self.nurgle_turned_in = False
 
 
         self.npc_janet_textbox2 = False
@@ -64,6 +65,7 @@ class RestScreen(Screen):
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.inn_badge_recieved_tracker = False
+        self.nurgle_found = False
 
 
     def stop_music(self):
@@ -85,6 +87,8 @@ class RestScreen(Screen):
     def start(self, state: "GameState"):
 
         self.inn_badge_recieved_tracker = True
+
+
 
 
 
