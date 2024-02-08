@@ -54,10 +54,10 @@ class QuestGiverJanet(Npc):
         if "shake" in state.player.magicinventory:
             self.textboxstate = "textbox3"
 
-        if state.player.spirit > 0 and "shake" in state.player.magicinventory:
+        if state.player.spirit > 0 and "shake" in state.player.magicinventory and "Nurgle the hedge hog" not in state.player.items:
             self.textboxstate = "textbox5"
 
-        if state.player.level3janetreward == True:
+        if state.player.level3janetreward == True or "Nurgle the hedge hog" in state.player.items:
             self.textboxstate = "textbox6"
         # if state.restScreen.npc_janet_textbox3 == True:
         #     self.textboxstate = "textbox3"
@@ -74,7 +74,7 @@ class QuestGiverJanet(Npc):
         elif state.restScreen.npc_janet_textbox4 == True:
             self.textboxstate = "textbox4"
 
-        elif state.restScreen.npc_janet_textbox5 == True:
+        elif state.restScreen.npc_janet_textbox5 == True and "Nurgle the hedge hog" not in state.player.items:
             self.textboxstate = "textbox5"
 
 
