@@ -4,6 +4,7 @@ import pytmx
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.boss_screen.FlippingSandy import FlippingSandy
 from entity.npc.boss_screen.black_jack_jared import BlackJackJared
+from entity.npc.boss_screen.demon_boss import DemonBoss
 from entity.npc.boss_screen.opossum_in_a_can_ichi import IchiOpossum
 from entity.npc.boss_screen.rest_teleporter_from_boss import RestTeleporterFromBoss
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
@@ -58,6 +59,8 @@ class BossScreen(Screen):
         # self.initialize_music()
         super().start(state)
 
+
+
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
             player_start_x = 300
@@ -79,6 +82,9 @@ class BossScreen(Screen):
             RestTeleporterFromBoss(16 * 15, 16 * 10),
 
                       ]
+
+        if state.player.days < 11:
+            state.npcs.append(DemonBoss(16 * 4, 16 * 10))
         #
         # if state.quest_giver_janet.find_hog:
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))

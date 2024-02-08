@@ -99,7 +99,7 @@ class GameState:
         self.startLoadScreen = StartLoadScreen()
 
 
-        self.currentScreen = self.blackJackDemonBossScreen
+        self.currentScreen = self.bossScreen
 
 
 
