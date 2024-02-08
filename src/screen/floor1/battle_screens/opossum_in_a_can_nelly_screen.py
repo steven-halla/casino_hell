@@ -1026,20 +1026,12 @@ class OpossumInACanNellyScreen(Screen):
                     self.debuff_keen_perception = True
                     state.player.focus_points -= 10
                     self.spell_sound.play()  # Play the sound effect once
-
                     self.game_state = "menu_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
                 elif self.magic_menu_opossum_index == 1:
                     state.controller.isTPressed = False  # Reset the button state
-
                     self.game_state = "menu_screen"
-
-
-            #     elif self.magicindex == 1:
-            #         print(str(self.magic_menu_selector[1]))
-            #         self.game_state = "heads_tails_choose_screen"
-            #         state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "immune_lose_screen":
             print("here we go again ")

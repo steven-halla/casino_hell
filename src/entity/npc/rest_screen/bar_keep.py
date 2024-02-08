@@ -20,9 +20,9 @@ class BarKeep(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["beer", "moldy sandwich", "boss pass"]
+        self.shop_items = ["beer", "moldy sandwich", "b key"]
 
-        self.shop_costs = ["100", "200", "2000"]
+        self.shop_costs = ["100", "200", "500"]
 
         self.barcutscene1 = False
         self.barcutscene2 = False
@@ -128,6 +128,8 @@ class BarKeep(Npc):
                                 state.currentScreen = state.barCutScene1
                                 state.barCutScene1.start(state)
                     elif self.selected_money_index == 2:
+                        if "b key" not in state.player.items:
+                            state.player.items.append("b key")
                         print("Its boss time")
 
 

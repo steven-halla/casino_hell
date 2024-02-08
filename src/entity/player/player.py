@@ -56,6 +56,8 @@ class Player(Entity):
         self.close_status_screen = False
 
         self.days = 0
+
+        self.isBossWorthy = False
         self.realBarKeep = False
 
 
