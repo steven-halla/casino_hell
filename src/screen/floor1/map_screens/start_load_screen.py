@@ -28,6 +28,13 @@ class StartLoadScreen(Screen):
         self.spell_sound.set_volume(0.3)
         self.timer_start_time = None  # New attribute for timer start time
 
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/behind-dark-shadows-dark-ambient-music-for-horror-and-mystery-153820.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        self.initialize_music()
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
     def start_timer(self, duration_ms):
         """Start the timer with a specified delay in milliseconds."""
         self.timer_start_time = pygame.time.get_ticks() + duration_ms
@@ -41,9 +48,26 @@ class StartLoadScreen(Screen):
             return True
         return False
 
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState") -> None:
         super().start(state)
+        self.stop_music()
+        self.initialize_music()
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -51,12 +75,16 @@ class StartLoadScreen(Screen):
 
         if state.controller.isUpPressed:
             state.controller.isUpPressed = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+
 
             self.arrow_index = (self.arrow_index - 1) % len(self.choices)
             print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         elif state.controller.isDownPressed:
             state.controller.isDownPressed = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
             print("Down pressed, arrow_index:", self.arrow_index)
 
