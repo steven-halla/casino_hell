@@ -174,6 +174,13 @@ class RestScreen(Screen):
     def update(self, state: "GameState"):
         if state.player.perception > 0 and self.powerpotiongotten == False and state.player.hasRabies == False:
             state.treasurechests.append(PowerPotion(16 * 27, 14 * 10))
+
+        if state.player.body > 0:
+            state.treasurechests = [item for item in state.treasurechests if not isinstance(item, PowerPotion)]
+
+
+
+
         # if self.chili_pit_flag == True:
         #     state.npcs.append(ChiliPitTeleporter(16 * 30, 16 * 18))
         # i dont think npc and demons getting updated
@@ -225,28 +232,13 @@ class RestScreen(Screen):
 
 
 
-        # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
-        # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
-
-
-        ### i can use this to append NPC if i need to , just state.npcs.append(npc)
-        # for npc in state.npcs:
-        #     npc.update(state)
-        #     # Check if the npc is any of the hedgehogs
-        #     if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
-        #         self.hedge_hog_counter += 1
-        #         state.npcs.remove(npc)
 
         # Game Update Loop
         if state.player.body < 1:
             for chest in state.treasurechests:
                 chest.update(state)
 
-        # for demon in state.demons:
-        #     demon.update(state)
-        #     if demon.move_player_down:
-        #         state.player.collision.y += 100  # Move player down by 100 pixels
-        #         demon.move_player_down = False
+
 
         if controller.isExitPressed is True:
             state.isRunning = False
