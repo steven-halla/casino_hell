@@ -585,7 +585,7 @@ class BlackJackRumbleBillScreen(Screen):
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
-            if self.player_score > 21 and self.reveal_hand > 10:
+            if self.player_score > 21:
                 state.player.money -= self.bet
                 self.cheater_bob_money += self.bet
 
@@ -622,63 +622,6 @@ class BlackJackRumbleBillScreen(Screen):
                 # if "sir leopolds paw" in state.player.items:
                 print("Meowwwwwwwwwwwwwwwwwwwwww")
                 self.enemy_hand += self.deck.enemy_draw_hand(1)
-
-                    # Define the cards you want to remove
-                    # dont delte this ever, this code works but makes teh item too strong
-                    # cards_to_remove = [
-                    #     ('Ace', 'Hearts', 11),
-                    #     ('Ace', 'Spades', 11),
-                    #     ('Ace', 'Diamonds', 11),
-                    #     ('Ace', 'Clubs', 11),
-                    #     ('Ace', 'Hearts', 1),
-                    #     ('Ace', 'Spades', 1),
-                    #     ('Ace', 'Diamonds', 1),
-                    #     ('Ace', 'Clubs', 1),
-                    # ]
-                    #
-                    # for idx, card in enumerate(self.enemy_hand):
-                    #     if card in cards_to_remove and idx > 1:
-                    #         self.enemy_hand.remove(card)
-                    #         print(f"ndjfsl;jfsajflfj;lsajfdsa;flsjfl;jasfjas;fjlsjf;lsajflks;ajfl; Swiper go swiping, removed card: {card}")  # Print the specific card that was removed
-                    #         break  # Break after removing the card to avoid altering the list during iteration
-
-
-
-                # if "sir leopolds paw" in state.player.items:
-                #     print("Meowwwwwwwwwwwwwwwwwwwwww")
-                #     self.enemy_hand += self.deck.enemy_draw_hand(1)
-                #     if ('Ace', 'Hearts', 11) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Hearts', 11))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Spades', 11) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Spades', 11))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Diamonds', 11) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Diamonds', 11))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Clubs', 11) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Clubs', 11))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Hearts', 1) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Hearts', 1))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Spades', 1) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Spades', 1))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Diamonds', 1) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Diamonds', 1))
-                #         print("Swiper go swiping")
-                #     elif ('Ace', 'Clubs', 1) in self.enemy_hand:
-                #         self.enemy_hand.remove(('Ace', 'Clubs', 1))
-                #         print("Swiper go swiping")
-
-
-
-                self.enemy_hand += self.deck.enemy_draw_hand(1)
-
-
-
-
                 self.deck.compute_hand_value(self.enemy_hand)
 
 

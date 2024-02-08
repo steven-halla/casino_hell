@@ -572,7 +572,7 @@ class BlackJackThomasScreen(Screen):
             print("this is the start of enemy draw one card")
             current_time = pygame.time.get_ticks()
 
-            while self.enemy_score < 19:  # this is 15 in order to make game a little easier
+            while self.enemy_score < 13:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
 
@@ -598,7 +598,7 @@ class BlackJackThomasScreen(Screen):
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
-            if self.enemy_score > 18 and self.enemy_score < 22:
+            if self.enemy_score > 12 and self.enemy_score < 22:
                 print("stay here")
                 self.game_state = "results_screen"
 
