@@ -4,8 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new sound effects added for start load screen">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated start screen with sound effects">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_jared_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_jared_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_sandy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_sandy_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,7 +312,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="79849000" />
+      <workItem from="1706926189767" duration="83128000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -645,7 +657,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="459" />
+    <option name="localTasksCounter" value="460" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -674,7 +686,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated salley screen for nelly screen with new message and bug updaets" />
     <MESSAGE value="updated oppossum in a can with new images for nelly screen" />
     <MESSAGE value="debuff shake now ends after a turn and the staet will not persist when leaving and coming back" />
     <MESSAGE value="now potion shows up correctly and now bar keep doesn't vanish bug" />
@@ -699,7 +710,8 @@
     <MESSAGE value="demon boss npc created will only show up if days less than 10" />
     <MESSAGE value="rename class to avoid confusion and collisions" />
     <MESSAGE value="new sound effects added for start load screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="new sound effects added for start load screen" />
+    <MESSAGE value="updated start screen with sound effects" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated start screen with sound effects" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -22,7 +22,7 @@ class OpossumInACanNellyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.nellyOpossumMoney = 300
+        self.nellyOpossumMoney = 500
         self.opossumBite = False
         self.nellyOpossumIsDefeated = False
         self.opossum_font = pygame.font.Font(None, 36)

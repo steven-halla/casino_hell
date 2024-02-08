@@ -54,7 +54,7 @@ class CoinFlipTedScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 20
+        self.coinFlipTedMoney = 100
 
         self.coinFlipTedDefeated = False
 

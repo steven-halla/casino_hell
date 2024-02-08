@@ -64,10 +64,11 @@ class QuestGiverJanet(Npc):
 
 
         if state.restScreen.npc_janet_textbox2 == True:
+
             self.textboxstate = "textbox2"
 
 
-        elif state.restScreen.npc_janet_textbox3 == True:
+        elif state.restScreen.npc_janet_textbox3 and state.player.spirit < 1:
             self.textboxstate = "textbox3"
 
         elif state.restScreen.npc_janet_textbox4 == True:
@@ -83,7 +84,7 @@ class QuestGiverJanet(Npc):
 
 
         if self.state == "waiting":
-            if state.gamblingAreaScreen.five_hundred_opossums == True and self.talkfirstfivehundred == True:
+            if state.gamblingAreaScreen.five_hundred_opossums == True and "shake" not in state.player.magicinventory:
                 self.textboxstate = "textbox2"
                 self.talkfirstfivehundred = False
                 state.restScreen.npc_janet_textbox2 = True
@@ -92,7 +93,7 @@ class QuestGiverJanet(Npc):
                 #     print("fjasd;fjkdls")
 
 
-            if state.player.spirit == 1 and self.quest2counter == True:
+            if state.player.spirit == 1 and "coin flip glasses" not in state.player.items and "shake" in state.player.magicinventory:
                 # print("time for the 2nd quest")
                 self.textboxstate = "textbox4"
                 self.find_hog = True
@@ -294,25 +295,12 @@ class QuestGiverJanet(Npc):
                     state.player.canMove = True
 
     def draw(self, state):
-        # rect = (
-        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        # self.collision.width, self.collision.height)
-        # pygame.draw.rect(state.DISPLAY, self.color, rect)
         sprite_rect = pygame.Rect(5, 6, 20, 25)
-
-        # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-
 
         if self.state == "waiting":
             pass

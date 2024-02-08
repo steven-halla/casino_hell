@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 2222
+        self.money = 500
         self.image = pygame.image.load(
             "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
 
@@ -87,6 +87,8 @@ class Player(Entity):
             "days": self.days,
             "cutscene1": state.restScreen.barscene1,
             "cutscene2": state.restScreen.barscene2,
+
+            "quest1complete": state.gamblingAreaScreen.five_hundred_opossums,
 
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
@@ -205,12 +207,6 @@ class Player(Entity):
 
 
 
-        # for npc in state.npcs:
-        #     # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
-        #     if self.collision.isOverlap(npc.collision) or self.isOutOfBounds():
-        #         print("collide with npc: " + str(npc.collision.toTuple()))
-        #         self.undoLastMove()
-        #         break
 
         for npc in state.npcs:
             # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
@@ -239,36 +235,6 @@ class Player(Entity):
                 self.undoLastMove()
                 break
 
-        ###
-        ### DO NOT DELETE ANY OF THIS CODE, THIS IS FOR SCREEN BOUNDRYS SOMETHING IS WRONG WITH MY
-        ### BOX I'LL HAVE TO GET KENNY HELP LATER
-        ###
-
-        # for treasurechests in state.treasurechests:
-        #     # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
-        #     if self.collision.isOverlap(treasurechests.collision) or self.isOutOfBounds():
-        #         print("collide with chests: " + str(treasurechests.collision.toTuple()))
-        #         self.undoLastMove()
-        #         break
-        #
-        # for demon in state.demons:
-        #     # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
-        #     if self.collision.isOverlap(
-        #             demon.collision) or self.isOutOfBounds():
-        #         print("collide with npc: " + str(demon.collision.toTuple()))
-        #         self.undoLastMove()
-        #         break
-
-        # if controller.isQPressed:
-        #     state.currentScreen = state.coinFlipScreen
-        #     state.coinFlipScreen.start(state)
-        #
-        # elif controller.isPPressed:
-        #     state.currentScreen = state.opossumInACanScreen
-        #     state.opossumInACanScreen.start(state)
-
-    # def isOutOfBounds(self) -> bool:
-    #     return self.collision.x + self.collision.width > SCREEN_WIDTH or self.collision.x < 0 or self.collision.y + self.collision.height > SCREEN_HEIGHT or self.collision.y < 0
 
     def draw(self, state):
         # Get the current dimensions of the image
@@ -315,6 +281,7 @@ class Player(Entity):
             + f"Perception: {self.perception}" +f"Luck: {self.luck}",
             f"Day: {self.days}",
             f"Food: {self.food}",
+            f"quest 1 complete: {state.gamblingAreaScreen.five_hundred_opossums}",
 
 
             # Add more stats as needed
@@ -379,6 +346,9 @@ class Player(Entity):
             state.player.days = player_data['days']
             state.restScreen.barscene1 = player_data['cutscene1']
             state.restScreen.barscene2 = player_data['cutscene2']
+
+            state.gamblingAreaScreen.five_hundred_opossums = player_data['quest1complete']
+
 
 
 

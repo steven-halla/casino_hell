@@ -519,3 +519,11 @@ i think you can win double bet if you get black jack will need to investigate th
 "costumes!!! brother man your perception sucks, you need my help more than i thought. "
 
 black jack demons crest, this means -20 gold each round for both parties
+
+imrpove start load screen maybe have title flash wait 2 seconds then allow load/start
+
+opossum in a can need to add money each time to the enemy money pool
+
+need to fix salley 
+
+am i getting money from opossum in a can nelly????

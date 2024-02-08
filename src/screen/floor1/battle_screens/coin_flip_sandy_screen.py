@@ -40,7 +40,7 @@ class CoinFlipSandyScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipSandyMoney = 100
+        self.coinFlipSandyMoney = 300
 
         self.coinFlipSandyDefeated = False
 
