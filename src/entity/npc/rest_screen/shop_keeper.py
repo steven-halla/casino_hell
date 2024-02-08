@@ -10,9 +10,11 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
+        self.font = pygame.font.Font(None, 36)
+
         self.textbox = ShopNpcTextBox(
             [
-             "Hurry up and buy something. Press B to leave, T to buy"],
+             ""],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_time = pygame.time.get_ticks()
@@ -57,7 +59,7 @@ class ShopKeeper(Npc):
                 return
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
-                if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 550:
+                if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 111:
                     self.input_time = pygame.time.get_ticks()
                     # Decrement the index but prevent it from going below 0
                     if self.selected_item_index > 0:
@@ -68,7 +70,7 @@ class ShopKeeper(Npc):
                     print(f"selected_item_index: {self.selected_item_index}")
                     print(f"selected_money_index: {self.selected_money_index}")
 
-                elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 550:
+                elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 111:
                     self.input_time = pygame.time.get_ticks()
                     # Increment the index but prevent it from exceeding the length of the list - 1
                     if self.selected_item_index < len(self.shop_items) - 1:
@@ -166,6 +168,7 @@ class ShopKeeper(Npc):
 
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+
         # rect = (
         # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         # self.collision.width, self.collision.height)
@@ -176,3 +179,6 @@ class ShopKeeper(Npc):
         elif self.state == "talking":
             # print("is talking")
             self.textbox.draw(state)
+            if self.state == "talking":
+                state.DISPLAY.blit(self.font.render(f"Hurry and buy something", True,
+                                                    (255, 255, 255)), (70, 460))
