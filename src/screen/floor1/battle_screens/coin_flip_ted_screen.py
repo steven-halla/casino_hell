@@ -473,6 +473,8 @@ class CoinFlipTedScreen(Screen):
                         if roll > 10:
                             print("gotcha")
                             state.player.money += self.bet
+                            self.coinFlipTedMoney -= self.bet
+
                             self.game_state = "shield_screen"
 
                 self.has_run_money_logic = True
