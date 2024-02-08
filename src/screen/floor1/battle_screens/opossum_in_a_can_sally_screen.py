@@ -96,7 +96,7 @@ class OpossumInACanSallyScreen(Screen):
             ),
 
             "immune_lose_message": TextBox(
-                ["", ""],
+                ["chompy"],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -502,7 +502,6 @@ class OpossumInACanSallyScreen(Screen):
             if self.talley_checker == False:
                 state.player.exp += 100
                 self.talley_checker = True
-            self.opossumInACanMessages["immune_lose_message"].message_index = 0
 
             self.opossumInACanMessages["immune_lose_message"].update(state)
 
@@ -511,10 +510,10 @@ class OpossumInACanSallyScreen(Screen):
                 # state.currentScreen = state.gamblingAreaScreen
                 # state.gamblingAreaScreen.start(state)
             elif state.player.stamina_points > 0:
+                if state.controller.isTPressed == True:
+                    state.controller.isTPressed = False
 
-                if self.opossumInACanMessages["immune_lose_message"].message_index == 1:
-                    self.game_state = "play_again_or_leave_screen"
-                    self.opossumInACanMessages["immune_lose_message"].reset()
+
 
         if self.game_state == "lose_screen":
             # this handles our EXP
@@ -1054,8 +1053,7 @@ class OpossumInACanSallyScreen(Screen):
             # self.opossumInACanMessages["welcome_message"].update(state)
 
             self.opossumInACanMessages["immune_lose_message"].draw(state)
-            state.DISPLAY.blit(self.font.render(f"Opossum Chomp", True,
-                                                (255, 255, 255)), (70, 460))
+
             if state.controller.isTPressed:
                 state.controller.isTPressed = False
                 self.game_state = "play_again_or_leave_screen"
