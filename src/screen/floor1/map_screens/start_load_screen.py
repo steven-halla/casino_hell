@@ -24,11 +24,22 @@ class StartLoadScreen(Screen):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.choices = ["Yes", "No"]
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+        self.timer_start_time = None  # New attribute for timer start time
 
+    def start_timer(self, duration_ms):
+        """Start the timer with a specified delay in milliseconds."""
+        self.timer_start_time = pygame.time.get_ticks() + duration_ms
 
-
-
-
+    def timer_finished(self):
+        """Check if the timer has finished."""
+        if self.timer_start_time is None:
+            return False  # Timer was not started
+        if pygame.time.get_ticks() >= self.timer_start_time:
+            self.timer_start_time = None  # Reset timer for future use
+            return True
+        return False
 
 
     def start(self, state: "GameState") -> None:
@@ -52,14 +63,31 @@ class StartLoadScreen(Screen):
         selected_option = self.choices[self.arrow_index]
 
         if selected_option == "Yes" and state.controller.isTPressed:
+            pygame.mixer.music.stop()
             state.controller.isTPressed = False
-            state.currentScreen = state.startScreen
-            state.startScreen.start(state)
-            print("start game")
+            if self.timer_start_time is None:
+                self.start_timer(1200)  # Start a 1.2-second delay
+                self.spell_sound.play()  # Play the sound effect
+
         elif selected_option == "No" and state.controller.isTPressed:
             state.controller.isTPressed = False
-            state.player.load_game(state)
-            print("Load")
+            if self.timer_start_time is None:
+                self.start_timer(2000)  # Start a 2-second delay
+                self.spell_sound.play()  # Play the sound effect
+
+        # Outside your conditional blocks for handling "Yes" or "No" selection
+        # Ensure this check happens every update cycle, not just when a key is pressed
+        if self.timer_start_time is not None and self.timer_finished():
+            # Now that the timer has finished, check which option was selected and proceed
+            if selected_option == "Yes":
+                # Actions to take if "Yes" was selected and the timer has elapsed
+                state.currentScreen = state.startScreen
+                state.startScreen.start(state)
+                print("Transitioning to start screen after delay")
+            elif selected_option == "No":
+                # Actions to take if "No" was selected and the timer has elapsed
+                state.player.load_game(state)
+                print("Loading game after delay")
 
     def draw(self, state):
         state.DISPLAY.fill(BLUEBLACK)

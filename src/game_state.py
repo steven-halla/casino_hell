@@ -11,7 +11,7 @@ from screen.floor1.battle_screens.black_jack_rumble_bill_screen import BlackJack
 from screen.examples.black_jack_screen import BlackJackScreen
 from screen.floor1.battle_screens.black_jack_thomas_screen import BlackJackThomasScreen
 from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
-from screen.floor1.battle_screens.demon_boss import DemonBossScreen
+from screen.floor1.battle_screens.demon_boss_screen import DemonBossScreen
 from screen.floor1.map_screens.barcutscene1 import BarCutScene1Screen
 from screen.floor1.map_screens.barcutscene2 import BarCutScene2Screen
 from screen.floor1.map_screens.boss_screen import BossScreen
@@ -99,7 +99,7 @@ class GameState:
         self.startLoadScreen = StartLoadScreen()
 
 
-        self.currentScreen = self.bossScreen
+        self.currentScreen = self.startLoadScreen
 
 
 

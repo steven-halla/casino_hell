@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="demon boss npc created will only show up if days less than 10">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="rename class to avoid confusion and collisions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/demon_boss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/demon_boss_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_load_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_load_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +65,7 @@
     "Python.playground.executor": "Debug",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/assets/images",
+    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/assets/music",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -78,8 +78,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/assets/music" />
+      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/src/entity/demon" />
       <recent name="$PROJECT_DIR$/assets/map" />
     </key>
@@ -302,7 +302,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="77621000" />
+      <workItem from="1706926189767" duration="79302000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -647,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="457" />
+    <option name="localTasksCounter" value="458" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,7 +676,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed bug with can quest and fixed xhop keeper bug that ws due to moving error while talking" />
     <MESSAGE value="fixed issue with shop keeper selectoin going haywire when picking also fixed opossom in a can nelly so that she displays messages properly" />
     <MESSAGE value="updated salley screen for nelly screen with new message and bug updaets" />
     <MESSAGE value="updated oppossum in a can with new images for nelly screen" />
@@ -701,7 +700,8 @@
     <MESSAGE value="updated inn, food is now restored, inn keeper now sells b key and it cant be fought ando now food cant be double ate" />
     <MESSAGE value="demon boss created screen" />
     <MESSAGE value="demon boss npc created will only show up if days less than 10" />
-    <option name="LAST_COMMIT_MESSAGE" value="demon boss npc created will only show up if days less than 10" />
+    <MESSAGE value="rename class to avoid confusion and collisions" />
+    <option name="LAST_COMMIT_MESSAGE" value="rename class to avoid confusion and collisions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
