@@ -16,11 +16,13 @@ class PowerPotion(TreasureChest):
 
     def give_item(self, state: "GameState"):
         if state.controller.isTPressed:
+            state.controller.isTPressed = False
             print("Hi there potion")
             print(f"Received item: {self.hidden_item}")
             state.player.items.append(self.hidden_item)
             print("Your inventory so far: " + str(state.player.items))
             if "power potion" in state.player.items:
+                print("you have the power")
                 state.player.body += 1
                 state.player.food += 1
             state.player.items.remove("power potion")
