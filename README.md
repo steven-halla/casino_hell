@@ -508,3 +508,9 @@ MASTER FIXER LIST: GOING THROUGH GAME REAL TIME TO FIX ALL BUGS, GOING TO GET AL
 27) need to make sure there are never empty dialog anywhere need to fine tooth comb and fix with blits
 
 i think you can win double bet if you get black jack will need to investigate this
+
+"i thought they were costumes"
+
+"costumes!!! brother man your perception sucks, you need my help more than i thought. "
+
+black jack demons crest, this means -20 gold each round for both parties
