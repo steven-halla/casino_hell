@@ -208,6 +208,7 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.vanish = True
                     if state.player.perception == 0:
                         state.player.companions.append("sir leopold")
+                        state.player.items.append("sir leopold's paw")
                         state.player.perception = 1
 
 

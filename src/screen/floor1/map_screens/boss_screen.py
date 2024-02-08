@@ -31,7 +31,7 @@ class BossScreen(Screen):
         move_player_down_flag = False
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.initialize_music()
 
         self.collision_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/collision.mp3")  # Adjust the path as needed
         self.last_sound_time = 0
@@ -40,22 +40,22 @@ class BossScreen(Screen):
     def stop_music(self):
         pygame.mixer.music.stop()
 
-    def initialize_music(self):
-        # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
+    # def initialize_music(self):
+    #     # Initialize the mixer
+    #     pygame.mixer.init()
+    #
+    #     # Load the music file
+    #     pygame.mixer.music.load(self.music_file)
+    #
+    #     # Set the volume for the music (0.0 to 1.0)
+    #     pygame.mixer.music.set_volume(self.music_volume)
+    #
+    #     # Play the music, -1 means the music will loop indefinitely
+    #     pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
         self.stop_music()
-        self.initialize_music()
+        # self.initialize_music()
         super().start(state)
 
         # Check if a player instance already exists

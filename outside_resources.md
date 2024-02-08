@@ -13,3 +13,8 @@ https://images.vexels.com/media/users/3/264574/isolated/lists/867659657ab17bb312
 
 tails image:
 https://images.vexels.com/media/users/3/264559/isolated/lists/e282e4681d6569956343c94094781fe0-coin-illustration-nickel-tail-usa.png
+
+
+hedge hog images:
+https://elthen.itch.io/2d-pixel-art-hedgehog-sprites
+https://www.patreon.com/posts/27430241

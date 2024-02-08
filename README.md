@@ -507,3 +507,4 @@ MASTER FIXER LIST: GOING THROUGH GAME REAL TIME TO FIX ALL BUGS, GOING TO GET AL
 
 27) need to make sure there are never empty dialog anywhere need to fine tooth comb and fix with blits
 
+i think you can win double bet if you get black jack will need to investigate this
