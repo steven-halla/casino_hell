@@ -79,7 +79,7 @@ class BarKeep(Npc):
             if self.textbox.message_index == 0:
                 if self.textbox.is_finished():
 
-                    if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
                         self.input_time = pygame.time.get_ticks()
                         # Decrement the index but prevent it from going below 0
                         if self.selected_item_index > 0:
@@ -90,7 +90,7 @@ class BarKeep(Npc):
                         print(f"selected_item_index: {self.selected_item_index}")
                         print(f"selected_money_index: {self.selected_money_index}")
 
-                    elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
                         self.input_time = pygame.time.get_ticks()
                         # Increment the index but prevent it from exceeding the length of the list - 1
                         if self.selected_item_index < len(self.shop_items) - 1:
