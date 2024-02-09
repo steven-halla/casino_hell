@@ -98,6 +98,8 @@ class StartLoadScreen(Screen):
                 self.spell_sound.play()  # Play the sound effect
 
         elif selected_option == "No" and state.controller.isTPressed:
+            pygame.mixer.music.stop()
+
             state.controller.isTPressed = False
             if self.timer_start_time is None:
                 self.start_timer(2000)  # Start a 2-second delay

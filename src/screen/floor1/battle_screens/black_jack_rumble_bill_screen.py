@@ -19,6 +19,8 @@ class BlackJackRumbleBillScreen(Screen):
         Screen.__init__(self, " Black Jack Game")
 
         self.deck = Deck()
+
+
         self.last_t_press_time = 0  # Initialize the last T press time
         self.t_debounce_threshold = 0.5
         self.font = pygame.font.Font(None, 36)
@@ -33,7 +35,7 @@ class BlackJackRumbleBillScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 200
+        self.cheater_bob_money = 1000
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -68,6 +70,8 @@ class BlackJackRumbleBillScreen(Screen):
         self.hero_winning_text_state = False
         self.player_status = ""
         self.enemy_status = ""
+        self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.sir_leopold_ace_attack.set_volume(0.6)
 
         self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
@@ -83,7 +87,7 @@ class BlackJackRumbleBillScreen(Screen):
         self.spell_sound.set_volume(0.3)
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
-        self.menu_movement_sound.set_volume(0.2)
+        self.menu_movement_sound.set_volume(0.5)
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
         # incldue a double bet spell that is CHR based that player gets for free maybe4
@@ -232,21 +236,7 @@ class BlackJackRumbleBillScreen(Screen):
             ""],
             (50, 450, 50, 45), 30, 500)
 
-        # DO NOT DELETE THIS CODE
-        # mixer.init()
-        #
-        # # Load audio file
-        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-        #
-        # print("music started playing....")
-        #
-        # # Set preferred volume
-        # mixer.music.set_volume(0.2)
-        #
-        # # Play the music
-        # pygame.mixer.music.play(-1, 0.0, 5000)
-        #
-        # pygame.init()
+
 
     pygame.init()
 
@@ -303,10 +293,6 @@ class BlackJackRumbleBillScreen(Screen):
             self.black_jack_rumble_bill_defeated = True
             self.game_state = "defeated"
 
-        # print("update() - state: " + str(self.game_state) + ", start at: " )
-        # pygame.time.wait(100)
-        # print("Your game state is: " + str(self.game_state))
-
         controller = state.controller
         controller.update()
         state.player.update(state)
@@ -320,10 +306,6 @@ class BlackJackRumbleBillScreen(Screen):
         # print("e: " + self.hand_to_str(self.enemy_hand))
 
         if self.game_state == "welcome_screen":
-
-
-
-
 
             if state.player.stamina_points < 1:
                 print("time to leave")
@@ -351,45 +333,44 @@ class BlackJackRumbleBillScreen(Screen):
             if self.welcome_screen_text_box.is_finished():
                 self.npc_speaking = False
                 self.hero_speaking = True
-                self.welcome_screen_text_box_hero.update(state)
-
-                if self.welcome_screen_text_box_hero.is_finished():
-
-                    if controller.isUpPressed:
-                        print("Nurgle is here for you ")
-                        self.menu_movement_sound.play()  # Play the sound effect once
-
-                        # channel3 = pygame.mixer.Channel(3)
-                        # sound3 = pygame.mixer.Sound(
-                        #     "audio/Fotstep_Carpet_Right_3.mp3")
-                        # channel3.play(sound3)
-                        if not hasattr(self, "welcome_screen_index"):
-                            self.welcome_screen_index = len(
-                                self.welcome_screen_choices) - 1
-                        else:
-                            self.welcome_screen_index -= 1
-                        self.welcome_screen_index %= len(
-                            self.welcome_screen_choices)
-                        controller.isUpPressed = False
+                # self.welcome_screen_text_box_hero.update(state)
 
 
-                    elif controller.isDownPressed:
-                        self.menu_movement_sound.play()  # Play the sound effect once
+                if controller.isUpPressed:
+                    print("Nurgle is here for you ")
+                    self.menu_movement_sound.play()  # Play the sound effect once
 
-                        print("Nurgle is here for you ")
+                    # channel3 = pygame.mixer.Channel(3)
+                    # sound3 = pygame.mixer.Sound(
+                    #     "audio/Fotstep_Carpet_Right_3.mp3")
+                    # channel3.play(sound3)
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(
+                            self.welcome_screen_choices) - 1
+                    else:
+                        self.welcome_screen_index -= 1
+                    self.welcome_screen_index %= len(
+                        self.welcome_screen_choices)
+                    controller.isUpPressed = False
 
-                        # channel3 = pygame.mixer.Channel(3)
-                        # sound3 = pygame.mixer.Sound(
-                        #     "audio/Fotstep_Carpet_Right_3.mp3")
-                        # channel3.play(sound3)
-                        if not hasattr(self, "welcome_screen_index"):
-                            self.welcome_screen_index = len(
-                                self.welcome_screen_choices) + 1
-                        else:
-                            self.welcome_screen_index += 1
-                        self.welcome_screen_index %= len(
-                            self.welcome_screen_choices)
-                        controller.isDownPressed = False
+
+                elif controller.isDownPressed:
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
+                    print("Nurgle is here for you ")
+
+                    # channel3 = pygame.mixer.Channel(3)
+                    # sound3 = pygame.mixer.Sound(
+                    #     "audio/Fotstep_Carpet_Right_3.mp3")
+                    # channel3.play(sound3)
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(
+                            self.welcome_screen_choices) + 1
+                    else:
+                        self.welcome_screen_index += 1
+                    self.welcome_screen_index %= len(
+                        self.welcome_screen_choices)
+                    controller.isDownPressed = False
 
         elif self.game_state == "hero_is_desperate_state":
             self.npc_speaking = False
@@ -513,6 +494,8 @@ class BlackJackRumbleBillScreen(Screen):
                     if card in aces_to_remove:
                         self.enemy_hand.remove(card)
                         print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
+                        self.sir_leopold_ace_attack.play()  # Play the sound effect once
+
                         self.enemy_hand += self.deck.enemy_draw_hand(1)
                         break  # Break after removing the card to avoid altering the list during iteration
 
@@ -1141,7 +1124,7 @@ class BlackJackRumbleBillScreen(Screen):
                     state.controller.isTPressed = False
 
             self.welcome_screen_text_box.draw(state)
-            self.welcome_screen_text_box_hero.draw(state)
+            # self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
 
 

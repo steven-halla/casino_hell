@@ -527,3 +527,18 @@ opossum in a can need to add money each time to the enemy money pool
 need to fix salley 
 
 am i getting money from opossum in a can nelly????
+-ansewr to above yes, i need to fix how money works in that game
+
+Here is my current TODO list:
+fix NPCS messages, they are giving message based on either sir leopold or the blue flower when itshould
+be based on rabies immunity.
+
+I need to make sure that each game is a little unique
+i like the final boss, that idea was a lot of fun. 
+I need to update hedge hog sprites
+I"ll have to think on demon sprites
+
+
+I need to fix black jack messages so you cant select while talking, easy fix, 
+need to fix magic menu
+need to make sure all enemies have desperation state
