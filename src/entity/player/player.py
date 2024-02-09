@@ -254,7 +254,7 @@ class Player(Entity):
         # sprite_y = self.collision.y + state.camera.y - 10
         # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        #left image
+        # left image
         # sprite_rect = pygame.Rect(22, 146, 24, 26)
         # sprite = self.character_sprite_left_image.subsurface(sprite_rect)
         # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
@@ -262,15 +262,20 @@ class Player(Entity):
         # sprite_y = self.collision.y + state.camera.y - 10
         # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        #up image
-        sprite_rect = pygame.Rect(22, 172, 24, 26)
-        sprite = self.character_sprite_up_image.subsurface(sprite_rect)
+        # #up image
+        # sprite_rect = pygame.Rect(22, 172, 24, 26)
+        # sprite = self.character_sprite_up_image.subsurface(sprite_rect)
+        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        # sprite_x = self.collision.x + state.camera.x - 20
+        # sprite_y = self.collision.y + state.camera.y - 10
+        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        sprite_rect = pygame.Rect(22, 146, 24, 26)
+        sprite = self.character_sprite_left_image.subsurface(sprite_rect)
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        flipped_sprite = pygame.transform.flip(scaled_sprite, True, False)
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-
-
+        state.DISPLAY.blit(flipped_sprite, (sprite_x, sprite_y))
 
     def draw_player_stats(self, state):
         # Create a black surface of size 600x600
