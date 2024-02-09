@@ -13,8 +13,10 @@ class Player(Entity):
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
         self.money = 500
-        self.image = pygame.image.load(
-            "/Users/stevenhalla/code/nfeGame/images/player_walk_0.png")
+        # self.image = pygame.image.load(
+        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png")
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
 
         # need to put in a max for stamina and focus
 
@@ -238,26 +240,33 @@ class Player(Entity):
 
     def draw(self, state):
         # Get the current dimensions of the image
-        original_width, original_height = self.image.get_size()
+        # original_width, original_height = self.image.get_size()
+        #
+        # # Calculate the new dimensions of the image
+        # new_width = original_width * 1.7
+        # new_height = original_height * 1.7
+        #
+        # # Scale the image
+        # scaled_image = pygame.transform.scale(self.image,
+        #                                       (new_width, new_height))
 
-        # Calculate the new dimensions of the image
-        new_width = original_width * 1.7
-        new_height = original_height * 1.7
-
-        # Scale the image
-        scaled_image = pygame.transform.scale(self.image,
-                                              (new_width, new_height))
+        sprite_rect = pygame.Rect(22, 120, 24, 26)
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         # Calculate the center of the image
-        image_center_x = new_width // 2
-        image_center_y = new_height // 2
+        # image_center_x = new_width // 2
+        # image_center_y = new_height // 2
 
         # Define an offset that will be used to draw the image at the center of the player
         # offset_x = self.collision.x + self.collision.width // 2 - image_center_x
         # offset_y = self.collision.y + self.collision.height // 2 - image_center_y
 
         # Draw the image on the display surface
-        state.DISPLAY.blit(scaled_image, PLAYER_OFFSET)
+        # state.DISPLAY.blit(scaled_image, PLAYER_OFFSET)
 
     def draw_player_stats(self, state):
         # Create a black surface of size 600x600
