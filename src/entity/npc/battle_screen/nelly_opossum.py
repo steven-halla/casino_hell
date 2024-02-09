@@ -65,7 +65,7 @@ class NellyOpossum(Npc):
 
             if state.player.hasRabies == True:
                 self.nelly_opossum_messages["rabies_message"].reset()
-            elif state.player.money < 200:
+            elif state.player.money < 150:
                 self.nelly_opossum_messages["money_message"].reset()
             elif state.opossumInACanNellyScreen.nellyOpossumIsDefeated:
                 self.nelly_opossum_messages["defeated_message"].reset()
@@ -82,7 +82,7 @@ class NellyOpossum(Npc):
                 if state.opossumInACanNellyScreen.nellyOpossumIsDefeated
                 else (
                     self.nelly_opossum_messages["money_message"]
-                    if state.player.money < 200
+                    if state.player.money < 150
                     else self.nelly_opossum_messages["welcome_message"]
                 )
             )
@@ -161,7 +161,7 @@ class NellyOpossum(Npc):
                     if state.opossumInACanNellyScreen.nellyOpossumIsDefeated
                     else (
                         self.nelly_opossum_messages["money_message"]
-                        if state.player.money < 200
+                        if state.player.money < 150
                         else self.nelly_opossum_messages["welcome_message"]
                     )
                 )

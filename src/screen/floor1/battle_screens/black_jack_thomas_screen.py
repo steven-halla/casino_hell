@@ -96,14 +96,14 @@ class BlackJackThomasScreen(Screen):
         self.messages = {
             "welcome_screen": ["Thomas: Press T key for all commands.",
 
-                               "You look pretty fresh to me.", ""],
+                               "You look pretty fresh to me.","" ],
             "hero_intro_text": [
                 "am I in trouble?",
 
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", ""],
 
             "bet_intro_text": [
-                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained.f"],
+                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained."],
 
             "hero_losing_text": [
                 "Hero: This isn't good, I'll need to get serious if I want to make a comeback.",

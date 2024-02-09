@@ -14,7 +14,7 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 1000
+        self.sallyOpossumMoney = 1500
 
 
         self.opossumBite = False
@@ -619,7 +619,7 @@ class OpossumInACanSallyScreen(Screen):
                     state.controller.isTPressed = False  # Reset the button state
                     self.opossumInACanMessages["tally_message"].message_index = 0
                     print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
-                    state.player.money -= 200
+                    state.player.money -= 150
                     self.game_state = "menu_screen"
 
 

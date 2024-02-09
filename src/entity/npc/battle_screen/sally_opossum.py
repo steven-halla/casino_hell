@@ -55,7 +55,7 @@ class SallyOpossum(Npc):
 
             if state.player.hasRabies == True:
                 self.sally_opossum_messages["rabies_message"].reset()
-            elif state.player.money < 200:
+            elif state.player.money < 150:
                 self.sally_opossum_messages["money_message"].reset()
             elif state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
                 self.sally_opossum_messages["defeated_message"].reset()
@@ -68,13 +68,13 @@ class SallyOpossum(Npc):
             if state.player.hasRabies
             else(
                 self.sally_opossum_messages["money_message"]
-                if state.player.money < 200
+                if state.player.money < 150
                 else (
                     self.sally_opossum_messages["defeated_message"]
                     if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
                     else (
                         self.sally_opossum_messages["no_play_message"]
-                        if state.player.money < 200
+                        if state.player.money < 150
                         else self.sally_opossum_messages["welcome_message"]
                 )
             )

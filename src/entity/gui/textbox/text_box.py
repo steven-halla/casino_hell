@@ -35,6 +35,28 @@ class TextBox(Entity):
             self.characters_to_display = 0
             state.controller.isTPressed = False
 
+        # def update(self, state: "GameState"):
+        #     controller = state.controller
+        #
+        #     # First, update characters_to_display to gradually reveal the text
+        #     if self.characters_to_display < len(self.text):
+        #         self.characters_to_display += 1
+        #
+        #     # Check if "T" is pressed and the delay after the last press is adequate
+        #     if controller.isTPressed and pygame.time.get_ticks() - self.time > self.delay:
+        #         # If the entire current message hasn't been displayed, display it all immediately
+        #         if self.characters_to_display < len(self.text):
+        #             self.characters_to_display = len(self.text)
+        #         # Otherwise, if we're already showing the entire message, move to the next one
+        #         elif self.message_index < len(self.messages) - 1:
+        #             self.time = pygame.time.get_ticks()
+        #             self.message_index += 1
+        #             self.text = self.messages[self.message_index]
+        #             self.characters_to_display = 0
+        #
+        #         # Reset the T pressed state to prevent immediate repetition
+        #         state.controller.isTPressed = False
+
         # print("is finished? " + str(self.is_finished()))
 
     def draw(self, state: "GameState"):
