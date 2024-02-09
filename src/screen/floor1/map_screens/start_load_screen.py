@@ -34,6 +34,8 @@ class StartLoadScreen(Screen):
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
+        self.t_key_pressed = False  # Add this line
+
 
     def start_timer(self, duration_ms):
         """Start the timer with a specified delay in milliseconds."""
@@ -73,7 +75,7 @@ class StartLoadScreen(Screen):
         controller = state.controller
         controller.update()
 
-        if state.controller.isUpPressed:
+        if state.controller.isUpPressed and self.t_key_pressed == False:
             state.controller.isUpPressed = False
             self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -81,7 +83,7 @@ class StartLoadScreen(Screen):
             self.arrow_index = (self.arrow_index - 1) % len(self.choices)
             print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
 
-        elif state.controller.isDownPressed:
+        elif state.controller.isDownPressed and self.t_key_pressed == False:
             state.controller.isDownPressed = False
             self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -91,6 +93,8 @@ class StartLoadScreen(Screen):
         selected_option = self.choices[self.arrow_index]
 
         if selected_option == "Yes" and state.controller.isTPressed:
+            self.t_key_pressed = True  # Add this line
+
             pygame.mixer.music.stop()
             state.controller.isTPressed = False
             if self.timer_start_time is None:
@@ -98,6 +102,8 @@ class StartLoadScreen(Screen):
                 self.spell_sound.play()  # Play the sound effect
 
         elif selected_option == "No" and state.controller.isTPressed:
+            self.t_key_pressed = True  # Add this line
+
             pygame.mixer.music.stop()
 
             state.controller.isTPressed = False

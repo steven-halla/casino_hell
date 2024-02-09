@@ -274,7 +274,6 @@ class Player(Entity):
             f"money: {self.money}",
             f"Stamina: {self.stamina_points}/{self.max_stamina_points}",
             f"Magic Points: {self.focus_points}/{self.max_focus_points}",
-            f"Companions: {self.companions}",
             f"Magic spells: {self.magicinventory}",
             f"Mind: {self.mind} Body: {self.body} Spirit: {self.spirit}",
             f"Perception:" f" {self.perception} Luck: {self.luck}",
@@ -283,8 +282,12 @@ class Player(Entity):
         ]
 
         # Add Items to the stats list, one item per line
+        for companion in self.companions:
+            stats.append(f"Companions: {companion}")
         for item in self.items:
             stats.append(f"Item: {item}")
+
+
         # Draw each stat on the stats_surface
         for i, stat in enumerate(stats):
             text = font.render(stat, True, (255, 255, 255))  # White color for the text
