@@ -40,6 +40,11 @@ class BarKeep(Npc):
 
 
     def update(self, state: "GameState"):
+        if state.restScreen.barscene1 == True:
+            self.barcutscene1 = True
+        if state.restScreen.barscene2 == True:
+            self.barcutscene2 = True
+
 
         if "b key" in state.player.items:
             self.shop_items[2] = "sold out"
@@ -112,32 +117,34 @@ class BarKeep(Npc):
                         state.player.food -= 1
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
-
-                            if self.barcutscene2 == False:
-                                state.currentScreen = state.barCutScene2
-                                state.barCutScene2.start(state)
-
-                            elif self.barcutscene1 == False:
+                            if self.barcutscene1 == False:
                                 state.currentScreen = state.barCutScene1
                                 state.barCutScene1.start(state)
+                            elif self.barcutscene2 == False:
+                                state.currentScreen = state.barCutScene2
+                                state.barCutScene2.start(state)
+                            elif self.barcutscene1 == True and self.barcutscene2 == True:
+                                print("yay")
+
+
 
                     elif self.selected_money_index == 1:
                         state.player.money -= 100
-
                         print("hey 1")
                         # this will go above the max which is ok for this item
                         state.player.focus_points += 50
                         state.player.food -= 1
-
-                        if state.player.stamina_points > state.player.max_stamina_points:
-                            state.player.stamina_points = state.player.max_stamina_points
-                            if self.barcutscene2 == False:
-                                state.currentScreen = state.barCutScene2
-                                state.barCutScene2.start(state)
-
-                            elif self.barcutscene1 == False:
+                        if state.player.focus_points > state.player.max_focus_points:
+                            state.player.focus_points = state.player.max_focus_points
+                            if self.barcutscene1 == False:
                                 state.currentScreen = state.barCutScene1
                                 state.barCutScene1.start(state)
+                            elif self.barcutscene2 == False:
+                                state.currentScreen = state.barCutScene2
+                                state.barCutScene2.start(state)
+                            elif self.barcutscene1 == True and self.barcutscene2 == True:
+                                print("yay")
+
                     elif self.selected_money_index == 2:
 
                         if "b key" not in state.player.items:

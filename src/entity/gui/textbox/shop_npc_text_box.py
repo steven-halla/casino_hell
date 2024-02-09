@@ -22,15 +22,6 @@ class ShopNpcTextBox(Entity):
         self.selected_item_index = 0  # New attribute to track selected item index
         self.last_key_time = 0  # Track the time of the last key press for scrolling
 
-
-
-    # def populate_with_dummy_data(self):
-    #     # Dummy data: a simple array of items
-    #     dummy_items = ["Dummy Item 1", "Dummy Item 2", "Dummy Item 3"]
-    #     self.set_shop_items(dummy_items)
-    #     self.show_shop_menu = True
-
-
     def update(self, state: "GameState"):
         # print("textbox update")
         current_time = pygame.time.get_ticks()

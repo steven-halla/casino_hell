@@ -47,9 +47,13 @@ class RestScreen(Screen):
         self.rest_screen_npc_janet_quest_2_counter = False
         self.rest_screen_npc_janet_quest_3_counter = False
         self.rest_screen_npc_janet_find_hog = False
+
         self.barscene1 = False
         self.barscene2 = False
+
+
         self.nurgle_turned_in = False
+
 
 
         self.npc_janet_textbox2 = False
@@ -89,6 +93,8 @@ class RestScreen(Screen):
         self.inn_badge_recieved_tracker = True
 
 
+        print(self.barscene1)
+        print(self.barscene2)
 
 
 
