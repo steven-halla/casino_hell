@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated with new player sprite good ducking luck with new animations">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fliped for right">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -300,7 +301,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="100668000" />
+      <workItem from="1706926189767" duration="102525000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -645,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="475" />
+    <option name="localTasksCounter" value="477" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -674,8 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="nurgle the hedge hog is now removed after we talk to Janet" />
-    <MESSAGE value="fixed immune bite chompy message bug" />
     <MESSAGE value="fixed sally screen now we have double chompys" />
     <MESSAGE value="b key added" />
     <MESSAGE value="boss keey can now be bought and its sold out once bought" />
@@ -699,7 +698,9 @@
     <MESSAGE value="improved status screen" />
     <MESSAGE value="fixed bug at start load screen of playing being able to move arrow up and down after hitting T key to confirm choice" />
     <MESSAGE value="updated with new player sprite good ducking luck with new animations" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated with new player sprite good ducking luck with new animations" />
+    <MESSAGE value="new images added" />
+    <MESSAGE value="fliped for right" />
+    <option name="LAST_COMMIT_MESSAGE" value="fliped for right" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

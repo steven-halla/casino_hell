@@ -15,15 +15,37 @@ class Player(Entity):
         self.money = 500
         # self.image = pygame.image.load(
         #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png")
-        self.character_sprite_down_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
+        # self.character_sprite_down_image = pygame.image.load(
+        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
+        #
+        # self.character_sprite_left_image= pygame.image.load(
+        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
+        #
+        # self.character_sprite_up_image= pygame.image.load(
+        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
+        self.sprites_up = []
+        self.sprites_down = []
+        self.sprites_left = []
+        self.sprites_right = []
 
-        self.character_sprite_left_image= pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
+        # Load the sprite images. Replace 'path_to_sprite' with the actual paths to your sprite images.
+        # For simplicity, I'm assuming these are single frames. You'd expand these lists with more frames for animation.
+        self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
 
-        self.character_sprite_up_image= pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
+        # Add the loaded images to their respective lists.
+        self.sprites_up.append(self.up_sprite)
+        self.sprites_down.append(self.down_sprite)
+        self.sprites_left.append(self.left_sprite)
 
+        # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
+        right_sprite = pygame.transform.flip(self.left_sprite, True, False)  # Flip horizontally
+        self.sprites_right.append(right_sprite)
+
+        # Set the initial direction and frame index.
+        self.current_direction = 'down'  # Default direction
+        self.current_frame_index = 0
         # need to put in a max for stamina and focus
 
         self.exp = 0
@@ -121,27 +143,6 @@ class Player(Entity):
         controller = state.controller
         controller.update()
 
-        # if controller.isPPressed:
-        #     controller.isPPressed = False
-        #     self.draw_player_stats(state)
-
-        if controller.isOPressed:
-            print("Your inventory for items: " + str(self.items))
-            print("Your inventory for magic: " + str(self.magicinventory))
-            print("Your body is: " + str(self.body))
-            print("Your mind is: " + str(self.mind))
-            print("Your spirit is: " + str(self.spirit))
-            print("Your luck is: " + str(self.luck))
-            print("Your perception is: " + str(self.perception))
-            print("Your Hp  is: " + str(self.stamina_points) + "/" + str(self.max_stamina_points))
-            print("Your Mp  is: " + str(self.focus_points) + "/" + str(self.max_focus_points))
-            print("Your EXP is : " + str(self.exp))
-            print("Your Level is : " + str(self.level))
-            print("has rabies status: " + str(self.hasRabies))
-            print("immune status: " + str(self.rabiesImmunity))
-            print("food: " + str(self.food))
-
-            controller.isOPressed = False
 
         if self.exp > 300 and self.level2checker == False:
             print("grats you leveld up to level 2")
@@ -176,8 +177,12 @@ class Player(Entity):
         if self.canMove:
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
+                self.current_direction = 'left'
+
             elif controller.isRightPressed:
                 self.velocity.x = self.walk_speed
+                self.current_direction = 'right'
+
             else:
                 # hard stop
                 # self.velocity.x = 0  # default velocity to zero unless key pressed
@@ -188,8 +193,13 @@ class Player(Entity):
 
             if controller.isUpPressed:
                 self.velocity.y = -self.walk_speed
+                self.current_direction = 'up'
+
+
             elif controller.isDownPressed:
                 self.velocity.y = self.walk_speed
+                self.current_direction = 'down'
+
             else:
                 # hard stop
                 # self.velocity.y = 0  # default velocity to zero unless key pressed
@@ -246,13 +256,39 @@ class Player(Entity):
 
     def draw(self, state):
 
-        # down image
+
+        # # down image
         # sprite_rect = pygame.Rect(22, 120, 24, 26)
-        # sprite = self.character_sprite_down_image.subsurface(sprite_rect)
+        # sprite = self.down_sprite.subsurface(sprite_rect)
         # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
         # sprite_x = self.collision.x + state.camera.x - 20
         # sprite_y = self.collision.y + state.camera.y - 10
         # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        if self.current_direction == 'up':
+            # Define the rectangle for the up sprite
+            sprite_rect = pygame.Rect(22, 172, 24, 26)  # Adjusted values for the 'up' sprite
+            sprite = self.up_sprite.subsurface(sprite_rect)
+        elif self.current_direction == 'down':
+            # Define the rectangle for the down sprite
+            sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
+            sprite = self.down_sprite.subsurface(sprite_rect)
+        elif self.current_direction == 'left':
+            sprite_rect = pygame.Rect(22, 146, 24, 26)
+            sprite = self.left_sprite.subsurface(sprite_rect)
+        elif self.current_direction == 'right':
+            sprite_rect = pygame.Rect(22, 146, 24, 26)
+            sprite = self.left_sprite.subsurface(sprite_rect)
+            sprite = pygame.transform.flip(sprite, True, False)
+
+            # Scale the selected sprite
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+
+        # Calculate the position to draw the sprite, adjusting for the camera
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the sprite on the screen
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         # left image
         # sprite_rect = pygame.Rect(22, 146, 24, 26)
@@ -262,6 +298,15 @@ class Player(Entity):
         # sprite_y = self.collision.y + state.camera.y - 10
         # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
+        #right image
+        # sprite_rect = pygame.Rect(22, 146, 24, 26)
+        # sprite = self.character_sprite_left_image.subsurface(sprite_rect)
+        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        # flipped_sprite = pygame.transform.flip(scaled_sprite, True, False)
+        # sprite_x = self.collision.x + state.camera.x - 20
+        # sprite_y = self.collision.y + state.camera.y - 10
+        # state.DISPLAY.blit(flipped_sprite, (sprite_x, sprite_y))
+
         # #up image
         # sprite_rect = pygame.Rect(22, 172, 24, 26)
         # sprite = self.character_sprite_up_image.subsurface(sprite_rect)
@@ -269,13 +314,8 @@ class Player(Entity):
         # sprite_x = self.collision.x + state.camera.x - 20
         # sprite_y = self.collision.y + state.camera.y - 10
         # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-        sprite_rect = pygame.Rect(22, 146, 24, 26)
-        sprite = self.character_sprite_left_image.subsurface(sprite_rect)
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
-        flipped_sprite = pygame.transform.flip(scaled_sprite, True, False)
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-        state.DISPLAY.blit(flipped_sprite, (sprite_x, sprite_y))
+
+
 
     def draw_player_stats(self, state):
         # Create a black surface of size 600x600
