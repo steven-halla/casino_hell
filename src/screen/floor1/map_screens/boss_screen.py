@@ -83,7 +83,7 @@ class BossScreen(Screen):
 
                       ]
 
-        if state.player.days < 11:
+        if state.player.days < 11 and state.restScreen.barscene1 == True and state.restScreen.barscene2 == True:
             state.npcs.append(DemonBoss(16 * 4, 16 * 10))
         #
         # if state.quest_giver_janet.find_hog:
