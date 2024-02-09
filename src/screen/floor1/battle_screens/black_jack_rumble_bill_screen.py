@@ -330,7 +330,7 @@ class BlackJackRumbleBillScreen(Screen):
             # self.player_hand.clear() # todo shouldn't need to do because we override the self.player_hand/enemy_hand when we call: self.xyz_hand = self.deck.draw_hand()
             # self.enemy_hand.clear()
 
-            if self.welcome_screen_text_box.is_finished():
+            if self.welcome_screen_text_box.message_index == 2:
                 self.npc_speaking = False
                 self.hero_speaking = True
                 # self.welcome_screen_text_box_hero.update(state)
@@ -1091,7 +1091,7 @@ class BlackJackRumbleBillScreen(Screen):
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 255))
-                if state.controller.isTPressed:
+                if state.controller.isTPressed and self.welcome_screen_text_box.is_finished():
                     self.deck.shuffle()
 
                     self.game_state = "bet_phase"

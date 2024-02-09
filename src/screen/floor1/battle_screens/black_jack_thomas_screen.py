@@ -1054,7 +1054,8 @@ class BlackJackThomasScreen(Screen):
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 255))
-                if state.controller.isTPressed:
+
+                if state.controller.isTPressed and self.welcome_screen_text_box.is_finished():
                     self.deck.shuffle()
 
                     self.game_state = "bet_phase"
