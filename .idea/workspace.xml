@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fliped for right">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now we face directions based on key movements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
     </list>
@@ -301,7 +301,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="102525000" />
+      <workItem from="1706926189767" duration="103211000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -646,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="477" />
+    <option name="localTasksCounter" value="478" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -675,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed sally screen now we have double chompys" />
     <MESSAGE value="b key added" />
     <MESSAGE value="boss keey can now be bought and its sold out once bought" />
     <MESSAGE value="updated inn, food is now restored, inn keeper now sells b key and it cant be fought ando now food cant be double ate" />
@@ -700,7 +699,8 @@
     <MESSAGE value="updated with new player sprite good ducking luck with new animations" />
     <MESSAGE value="new images added" />
     <MESSAGE value="fliped for right" />
-    <option name="LAST_COMMIT_MESSAGE" value="fliped for right" />
+    <MESSAGE value="now we face directions based on key movements" />
+    <option name="LAST_COMMIT_MESSAGE" value="now we face directions based on key movements" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

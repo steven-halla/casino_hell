@@ -272,9 +272,16 @@ class Player(Entity):
             # Define the rectangle for the down sprite
             sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
             sprite = self.down_sprite.subsurface(sprite_rect)
-        elif self.current_direction == 'left':
-            sprite_rect = pygame.Rect(22, 146, 24, 26)
-            sprite = self.left_sprite.subsurface(sprite_rect)
+
+        # elif self.current_direction == 'left':
+        #     sprite_rect = pygame.Rect(22, 146, 18, 26)
+        #     sprite = self.left_sprite.subsurface(sprite_rect)
+        # elif self.current_direction == 'left':
+        #     sprite_rect = pygame.Rect(46, 146, 24, 26)
+        #     sprite = self.left_sprite.subsurface(sprite_rect)
+        # elif self.current_direction == 'left':
+        #     sprite_rect = pygame.Rect(64, 146, 18, 26)
+        #     sprite = self.left_sprite.subsurface(sprite_rect)
         elif self.current_direction == 'right':
             sprite_rect = pygame.Rect(22, 146, 24, 26)
             sprite = self.left_sprite.subsurface(sprite_rect)
