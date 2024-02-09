@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed cut scene but i had to update barkeep state to have  a boolean check based on varibale state from rest screen that si set from loading from player" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="the new conditions to get demon boss to show up based on cut scenes is now working">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -298,7 +301,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="97386000" />
+      <workItem from="1706926189767" duration="98001000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -643,7 +646,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="471" />
+    <option name="localTasksCounter" value="472" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -672,7 +675,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="bug fixes with reveal" />
     <MESSAGE value="fixed power potion bug" />
     <MESSAGE value="power potion bug fixed ( it was not being remoed right away )" />
     <MESSAGE value="shop keeper fixed" />
@@ -697,7 +699,8 @@
     <MESSAGE value="fixed shop keeper item select bug just needed to have all input times align from both the npc text box class and the shop keeper class" />
     <MESSAGE value="fixed same issue with bar keeper class his input times did not allign with the textboxnpc class" />
     <MESSAGE value="fixed cut scene but i had to update barkeep state to have  a boolean check based on varibale state from rest screen that si set from loading from player" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed cut scene but i had to update barkeep state to have  a boolean check based on varibale state from rest screen that si set from loading from player" />
+    <MESSAGE value="the new conditions to get demon boss to show up based on cut scenes is now working" />
+    <option name="LAST_COMMIT_MESSAGE" value="the new conditions to get demon boss to show up based on cut scenes is now working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
