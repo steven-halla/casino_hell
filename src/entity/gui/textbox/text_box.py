@@ -64,3 +64,9 @@ class TextBox(Entity):
         self.characters_to_display = 0
         self.time = pygame.time.get_ticks()  # Reset the timer as well
 
+    def current_message_finished(self):
+        """Checks if the current message is displaying its last letter."""
+        return self.characters_to_display == len(self.text)
+
+
+

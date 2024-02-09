@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added a sound effect, sir leopolds paw is working as needed">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="improved messaging during matches">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/text_box.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -302,7 +302,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="88465000" />
+      <workItem from="1706926189767" duration="89698000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -647,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="463" />
+    <option name="localTasksCounter" value="465" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,8 +676,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now potion shows up correctly and now bar keep doesn't vanish bug" />
-    <MESSAGE value="fixed issue with arrow select now its slow so there is no mixing of indexes" />
     <MESSAGE value="display of messages has been vastly improved saving this for the pattern will need to use this coinflipfredscreen pattern across the board for all NPCS and SCREEN" />
     <MESSAGE value="fixed black jack bug with drawing cards, nerfed revela so that bust protection is no longer there" />
     <MESSAGE value="light  blackjack reformat, updated cindy long hair and the interactions with inn badge we now remove it from inventory and set state as needd to handled" />
@@ -701,7 +699,9 @@
     <MESSAGE value="updated start screen with sound effects" />
     <MESSAGE value="made lots of improvements, now janet at least talks to you proper when you complete queests" />
     <MESSAGE value="added a sound effect, sir leopolds paw is working as needed" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a sound effect, sir leopolds paw is working as needed" />
+    <MESSAGE value="fixed issue with player moving curser during messages" />
+    <MESSAGE value="improved messaging during matches" />
+    <option name="LAST_COMMIT_MESSAGE" value="improved messaging during matches" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

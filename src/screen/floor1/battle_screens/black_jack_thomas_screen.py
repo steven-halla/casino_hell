@@ -103,7 +103,7 @@ class BlackJackThomasScreen(Screen):
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", ""],
 
             "bet_intro_text": [
-                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
+                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained.f"],
 
             "hero_losing_text": [
                 "Hero: This isn't good, I'll need to get serious if I want to make a comeback.",
@@ -408,22 +408,25 @@ class BlackJackThomasScreen(Screen):
 
             self.third_message_display = " "
             self.place_bet(state)
-            if controller.isTPressed:
-                if self.bet > 70:
-                    state.player.stamina_points -= 3
-                    print("-3")
-                elif self.bet < 30:
+            if self.bet_screen_text.current_message_finished():
+                print("done")
 
-                    state.player.stamina_points -= 1
+                if controller.isTPressed:
+                    if self.bet > 70:
+                        state.player.stamina_points -= 3
+                        print("-3")
+                    elif self.bet < 30:
 
-                    print("-1")
-                elif self.bet < 70 or self.bet > 20:
-                    state.player.stamina_points -= 2
-                    print("-2")
+                        state.player.stamina_points -= 1
 
-                pygame.time.wait(300)
-                self.game_state = "draw_phase"
-                controller.isTPressed = False
+                        print("-1")
+                    elif self.bet < 70 or self.bet > 20:
+                        state.player.stamina_points -= 2
+                        print("-2")
+
+                    pygame.time.wait(300)
+                    self.game_state = "draw_phase"
+                    controller.isTPressed = False
 
         elif self.game_state == "draw_phase":
             self.first_message_display = ""
