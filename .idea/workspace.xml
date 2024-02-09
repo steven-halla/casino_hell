@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="made lots of improvements, now janet at least talks to you proper when you complete queests">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="added a sound effect, sir leopolds paw is working as needed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/hotel_room/sir_leopold_the_hedge_hog_hotel_room.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hotel_room/sir_leopold_the_hedge_hog_hotel_room.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_load_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/start_load_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -305,7 +302,7 @@
       <workItem from="1705790233135" duration="130835000" />
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
-      <workItem from="1706926189767" duration="87177000" />
+      <workItem from="1706926189767" duration="88465000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -650,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="462" />
+    <option name="localTasksCounter" value="463" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -679,7 +676,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="debuff shake now ends after a turn and the staet will not persist when leaving and coming back" />
     <MESSAGE value="now potion shows up correctly and now bar keep doesn't vanish bug" />
     <MESSAGE value="fixed issue with arrow select now its slow so there is no mixing of indexes" />
     <MESSAGE value="display of messages has been vastly improved saving this for the pattern will need to use this coinflipfredscreen pattern across the board for all NPCS and SCREEN" />
@@ -704,7 +700,8 @@
     <MESSAGE value="new sound effects added for start load screen" />
     <MESSAGE value="updated start screen with sound effects" />
     <MESSAGE value="made lots of improvements, now janet at least talks to you proper when you complete queests" />
-    <option name="LAST_COMMIT_MESSAGE" value="made lots of improvements, now janet at least talks to you proper when you complete queests" />
+    <MESSAGE value="added a sound effect, sir leopolds paw is working as needed" />
+    <option name="LAST_COMMIT_MESSAGE" value="added a sound effect, sir leopolds paw is working as needed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

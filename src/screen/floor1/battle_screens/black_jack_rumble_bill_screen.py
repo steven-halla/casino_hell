@@ -497,6 +497,7 @@ class BlackJackRumbleBillScreen(Screen):
                         self.sir_leopold_ace_attack.play()  # Play the sound effect once
 
                         self.enemy_hand += self.deck.enemy_draw_hand(1)
+
                         break  # Break after removing the card to avoid altering the list during iteration
 
             print("Enemy hand is" + str(self.enemy_hand))

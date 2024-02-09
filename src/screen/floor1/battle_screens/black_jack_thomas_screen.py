@@ -28,7 +28,9 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 100
+        self.cheater_bob_money = 1000
+        self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.sir_leopold_ace_attack.set_volume(0.6)
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -326,36 +328,40 @@ class BlackJackThomasScreen(Screen):
             self.current_index = 0
             self.enemy_score = 0
 
-            if self.welcome_screen_text_box.is_finished():
+
+
+            if self.welcome_screen_text_box.message_index == 2:
+
+                print("naw naw naw")
                 self.npc_speaking = False
                 self.hero_speaking = True
-                self.welcome_screen_text_box_hero.update(state)
+                # self.welcome_screen_text_box_hero.update(state)
 
-                if self.welcome_screen_text_box_hero.is_finished():
+                # if self.welcome_screen_text_box_hero.is_finished():
 
-                    if controller.isUpPressed:
-                        self.menu_movement_sound.play()  # Play the sound effect once
+                if controller.isUpPressed:
+                    self.menu_movement_sound.play()  # Play the sound effect once
 
-                        if not hasattr(self, "welcome_screen_index"):
-                            self.welcome_screen_index = len(
-                                self.welcome_screen_choices) - 1
-                        else:
-                            self.welcome_screen_index -= 1
-                        self.welcome_screen_index %= len(
-                            self.welcome_screen_choices)
-                        controller.isUpPressed = False
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(
+                            self.welcome_screen_choices) - 1
+                    else:
+                        self.welcome_screen_index -= 1
+                    self.welcome_screen_index %= len(
+                        self.welcome_screen_choices)
+                    controller.isUpPressed = False
 
-                    elif controller.isDownPressed:
-                        self.menu_movement_sound.play()
-                        if not hasattr(self, "welcome_screen_index"):
-                            self.welcome_screen_index = len(
-                                self.welcome_screen_choices) + 1
-                        else:
-                            self.welcome_screen_index += 1
+                elif controller.isDownPressed:
+                    self.menu_movement_sound.play()
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(
+                            self.welcome_screen_choices) + 1
+                    else:
+                        self.welcome_screen_index += 1
 
-                        self.welcome_screen_index %= len(
-                            self.welcome_screen_choices)
-                        controller.isDownPressed = False
+                    self.welcome_screen_index %= len(
+                        self.welcome_screen_choices)
+                    controller.isDownPressed = False
 
         elif self.game_state == "hero_is_desperate_state":
             self.npc_speaking = False
@@ -471,7 +477,10 @@ class BlackJackThomasScreen(Screen):
                     if card in aces_to_remove:
                         self.enemy_hand.remove(card)
                         print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
+                        self.sir_leopold_ace_attack.play()  # Play the sound effect once
+
                         self.enemy_hand += self.deck.enemy_draw_hand(1)
+
                         break
 
             if self.black_jack_counter > 0:
@@ -1078,7 +1087,7 @@ class BlackJackThomasScreen(Screen):
                     state.controller.isTPressed = False
 
             self.welcome_screen_text_box.draw(state)
-            self.welcome_screen_text_box_hero.draw(state)
+            # self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
 
         elif self.game_state == "defeated":
