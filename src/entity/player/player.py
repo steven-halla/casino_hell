@@ -27,16 +27,7 @@ class Player(Entity):
 
         # Load the sprite images. Replace 'path_to_sprite' with the actual paths to your sprite images.
         # For simplicity, I'm assuming these are single frames. You'd expand these lists with more frames for animation.
-        self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
-        self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
-        self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
 
-
-
-        # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
-
-        # Set the initial direction and frame index.
-        self.current_direction = 'down'  # Default direction
         self.current_frame_index = 0
         # need to put in a max for stamina and focus
 
@@ -83,6 +74,28 @@ class Player(Entity):
         self.realBarKeep = False
 
         self.shop_keep_potion = False
+
+        self.current_frame_index = 0  # Current index in the sprite list
+
+        # Timer for sprite animation
+        self.sprite_animation_timer = 0
+        self.sprite_animation_interval = 500  # 500 milliseconds (0.5 seconds) per frame
+
+        self.left_animation_frames = []  # Holds frames for left movement animation
+
+        # More attributes as in your original class...åç
+
+        # Initialize pygame's clock to manage the animation timer
+        self.clock = pygame.time.Clock()
+        self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (64, 146, 18, 26)]
+
+        # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
+
+        # Set the initial direction and frame index.
+        self.current_direction = 'down'  # Default direction
 
 
 
@@ -175,6 +188,14 @@ class Player(Entity):
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
                 self.current_direction = 'left'
+                current_time = pygame.time.get_ticks()
+
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
 
             elif controller.isRightPressed:
                 self.velocity.x = self.walk_speed
@@ -252,7 +273,7 @@ class Player(Entity):
 
 
     def draw(self, state):
-
+        sprite = None  # Initialize sprite to None
 
         # # down image
         # sprite_rect = pygame.Rect(22, 120, 24, 26)
@@ -270,15 +291,34 @@ class Player(Entity):
             sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
             sprite = self.down_sprite.subsurface(sprite_rect)
 
+        if self.current_direction == 'left':
+            # Get the current frame rectangle based on self.current_frame_index
+            frame_rect = self.left_frames[self.current_frame_index]
+
+            # Create a pygame.Rect object from the frame_rect tuple
+            sprite_rect = pygame.Rect(*frame_rect)
+
+            # Use subsurface to get the specific frame from the sprite sheet
+            current_frame_sprite = self.left_sprite.subsurface(sprite_rect)
+
+            # Calculate the position to draw the sprite (adjust as necessary for your game's coordinates)
+            sprite_x = self.position.x
+            sprite_y = self.position.y
+            sprite = self.left_sprite.subsurface(sprite_rect)
+
+            # Draw the current frame to the screen
+            state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
+
+        #
         # elif self.current_direction == 'left':
         #     sprite_rect = pygame.Rect(22, 146, 24, 26)
         #     sprite = self.left_sprite.subsurface(sprite_rect)
         # elif self.current_direction == 'left':
         #     sprite_rect = pygame.Rect(46, 146, 24, 26)
         #     sprite = self.left_sprite.subsurface(sprite_rect)
-        elif self.current_direction == 'left':
-            sprite_rect = pygame.Rect(64, 146, 24, 26)
-            sprite = self.left_sprite.subsurface(sprite_rect)
+        # elif self.current_direction == 'left':
+        #     sprite_rect = pygame.Rect(64, 146, 24, 26)
+        #     sprite = self.left_sprite.subsurface(sprite_rect)
         elif self.current_direction == 'right':
             sprite_rect = pygame.Rect(22, 146, 24, 26)
             sprite = self.left_sprite.subsurface(sprite_rect)
@@ -442,8 +482,3 @@ class Player(Entity):
 
         except Exception as e:
             print(f"Failed to load game: {e}")
-
-
-
-
-
