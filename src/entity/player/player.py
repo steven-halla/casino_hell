@@ -288,8 +288,8 @@ class Player(Entity):
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
 
         # Calculate the position to draw the sprite, adjusting for the camera
-        sprite_x = self.collision.x + state.camera.x
-        sprite_y = self.collision.y + state.camera.y
+        sprite_x = self.collision.x + state.camera.x - 10
+        sprite_y = self.collision.y + state.camera.y - 10
 
         # Draw the sprite on the screen
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
