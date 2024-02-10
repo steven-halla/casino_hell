@@ -93,7 +93,7 @@ class Player(Entity):
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (63, 146, 17.9, 26)]
         self.down_frames = [(28, 120, 18, 26), (45, 120, 18, 26), (63, 120, 17.9, 26)]
-        self.up_frames = [  (47, 172, 18, 26), (65, 172, 17.9, 26)]
+
         self.up_frames = [(29, 172, 18, 26), (47, 172, 18, 26), (64, 172, 17.9, 26)]
 
         # sprite_rect = pygame.Rect(22, 172, 24, 26)  # Adjusted values for the 'up' sprite
@@ -330,7 +330,7 @@ class Player(Entity):
             sprite = self.up_sprite.subsurface(sprite_rect)
 
             # Draw the current frame to the screen
-            state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
+            # state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
         elif self.current_direction == 'down':
             frame_rect = self.down_frames[self.current_frame_index]
 
@@ -346,7 +346,7 @@ class Player(Entity):
             sprite = self.left_sprite.subsurface(sprite_rect)
 
             # Draw the current frame to the screen
-            state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
+            # state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
             # Define the rectangle for the down sprite
             # sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
             # sprite = self.down_sprite.subsurface(sprite_rect)
@@ -367,7 +367,7 @@ class Player(Entity):
             sprite = self.left_sprite.subsurface(sprite_rect)
 
             # Draw the current frame to the screen
-            state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
+            # state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
 
         elif self.current_direction == 'right':
             frame_rect = self.left_frames[self.current_frame_index]
@@ -390,7 +390,7 @@ class Player(Entity):
             sprite_y = self.collision.y + state.camera.y - 10
 
             # Draw the sprite on the screen
-            state.DISPLAY.blit(sprite, (sprite_x, sprite_y))
+            # state.DISPLAY.blit(sprite, (sprite_x, sprite_y))
 
             # Scale the selected sprite
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
