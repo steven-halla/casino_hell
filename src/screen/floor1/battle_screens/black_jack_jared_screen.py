@@ -223,21 +223,7 @@ class BlackJackJaredScreen(Screen):
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
-        # DO NOT DELETE THIS CODE
-        # mixer.init()
-        #
-        # # Load audio file
-        # mixer.music.load('audio/8-Bit-Espionage_Looping.mp3')
-        #
-        # print("music started playing....")
-        #
-        # # Set preferred volume
-        # mixer.music.set_volume(0.2)
-        #
-        # # Play the music
-        # pygame.mixer.music.play(-1, 0.0, 5000)
-        #
-        # pygame.init()
+
 
     pygame.init()
 

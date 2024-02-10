@@ -23,10 +23,7 @@ class Player(Entity):
         #
         # self.character_sprite_up_image= pygame.image.load(
         #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
-        self.sprites_up = []
-        self.sprites_down = []
-        self.sprites_left = []
-        self.sprites_right = []
+
 
         # Load the sprite images. Replace 'path_to_sprite' with the actual paths to your sprite images.
         # For simplicity, I'm assuming these are single frames. You'd expand these lists with more frames for animation.
@@ -34,14 +31,9 @@ class Player(Entity):
         self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
 
-        # Add the loaded images to their respective lists.
-        self.sprites_up.append(self.up_sprite)
-        self.sprites_down.append(self.down_sprite)
-        self.sprites_left.append(self.left_sprite)
+
 
         # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
-        right_sprite = pygame.transform.flip(self.left_sprite, True, False)  # Flip horizontally
-        self.sprites_right.append(right_sprite)
 
         # Set the initial direction and frame index.
         self.current_direction = 'down'  # Default direction
@@ -274,14 +266,14 @@ class Player(Entity):
             sprite = self.down_sprite.subsurface(sprite_rect)
 
         # elif self.current_direction == 'left':
-        #     sprite_rect = pygame.Rect(22, 146, 18, 26)
+        #     sprite_rect = pygame.Rect(22, 146, 24, 26)
         #     sprite = self.left_sprite.subsurface(sprite_rect)
         # elif self.current_direction == 'left':
         #     sprite_rect = pygame.Rect(46, 146, 24, 26)
         #     sprite = self.left_sprite.subsurface(sprite_rect)
-        # elif self.current_direction == 'left':
-        #     sprite_rect = pygame.Rect(64, 146, 18, 26)
-        #     sprite = self.left_sprite.subsurface(sprite_rect)
+        elif self.current_direction == 'left':
+            sprite_rect = pygame.Rect(64, 146, 24, 26)
+            sprite = self.left_sprite.subsurface(sprite_rect)
         elif self.current_direction == 'right':
             sprite_rect = pygame.Rect(22, 146, 24, 26)
             sprite = self.left_sprite.subsurface(sprite_rect)

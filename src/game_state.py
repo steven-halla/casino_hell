@@ -61,6 +61,9 @@ class GameState:
         self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
         self.treasurechests = []
 
+        self.entryPoint = None  # Track the current entry point
+
+
         self.obstacle = Obstacle(444, 999)
         self.isRunning: bool = True
         self.isPaused: bool = False
@@ -101,7 +104,8 @@ class GameState:
 
         self.currentScreen = self.startLoadScreen
 
-
+        self.start_new_game_entry_point = False
+        self.rest_area_to_start_area_entry_point = False
 
 
 

@@ -23,15 +23,16 @@ class StartScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/startscreen1.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
-        self.player = Player(333, 555)
+        self.player = Player(1555, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.lock_screen = False
+
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
@@ -61,6 +62,17 @@ class StartScreen(Screen):
         self.stop_music()
         self.initialize_music()
         super().start(state)
+
+        if state.start_new_game_entry_point == True:
+            player_start_x = 16 * 44  # Desired X coordinate
+            player_start_y = 16 * 22  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.start_new_game_entry_point = False
+        elif state.rest_area_to_start_area_entry_point == True:
+            player_start_x = 16 * 10  # Desired X coordinate
+            player_start_y = 16 * 1  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.rest_area_to_start_area_entry_point = False
 
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
