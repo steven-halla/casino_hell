@@ -93,7 +93,12 @@ class Player(Entity):
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (63, 146, 17.9, 26)]
         self.down_frames = [(28, 120, 18, 26), (45, 120, 18, 26), (63, 120, 17.9, 26)]
-        self.up_frames = []
+        self.up_frames = [  (47, 172, 18, 26), (65, 172, 17.9, 26)]
+        self.up_frames = [(29, 172, 18, 26), (47, 172, 18, 26), (64, 172, 17.9, 26)]
+
+        # sprite_rect = pygame.Rect(22, 172, 24, 26)  # Adjusted values for the 'up' sprite
+
+        # self.up_frames = []
 
         # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
 
@@ -210,7 +215,7 @@ class Player(Entity):
                     self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
 
                     # Update the frame index, looping back to 0 if at the end of the list
-                    self.current_frame_index = (self.current_frame_index + 1) % len(self.right_frames)
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
 
             else:
                 # hard stop
@@ -223,6 +228,14 @@ class Player(Entity):
             if controller.isUpPressed:
                 self.velocity.y = -self.walk_speed
                 self.current_direction = 'up'
+                current_time = pygame.time.get_ticks()
+
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.up_frames)
 
 
             elif controller.isDownPressed:
@@ -303,8 +316,21 @@ class Player(Entity):
         # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         if self.current_direction == 'up':
             # Define the rectangle for the up sprite
-            sprite_rect = pygame.Rect(22, 172, 24, 26)  # Adjusted values for the 'up' sprite
+            frame_rect = self.up_frames[self.current_frame_index]
+
+            # Create a pygame.Rect object from the frame_rect tuple
+            sprite_rect = pygame.Rect(*frame_rect)
+
+            # Use subsurface to get the specific frame from the sprite sheet
+            current_frame_sprite = self.up_sprite.subsurface(sprite_rect)
+
+            # Calculate the position to draw the sprite (adjust as necessary for your game's coordinates)
+            sprite_x = self.position.x
+            sprite_y = self.position.y
             sprite = self.up_sprite.subsurface(sprite_rect)
+
+            # Draw the current frame to the screen
+            state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
         elif self.current_direction == 'down':
             frame_rect = self.down_frames[self.current_frame_index]
 

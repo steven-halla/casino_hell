@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="animation left is finished">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="up right down animations done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
     </list>
@@ -302,7 +302,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="7552000" />
+      <workItem from="1707589099832" duration="8232000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -647,7 +647,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="486" />
+    <option name="localTasksCounter" value="487" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,7 +676,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new sound effects added for start load screen" />
     <MESSAGE value="updated start screen with sound effects" />
     <MESSAGE value="made lots of improvements, now janet at least talks to you proper when you complete queests" />
     <MESSAGE value="added a sound effect, sir leopolds paw is working as needed" />
@@ -701,7 +700,8 @@
     <MESSAGE value="player pos fixed" />
     <MESSAGE value="start screen updated with new map new positoins new fixed everything this map is GOOD TO GO" />
     <MESSAGE value="animation left is finished" />
-    <option name="LAST_COMMIT_MESSAGE" value="animation left is finished" />
+    <MESSAGE value="up right down animations done" />
+    <option name="LAST_COMMIT_MESSAGE" value="up right down animations done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
