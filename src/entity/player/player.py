@@ -288,8 +288,8 @@ class Player(Entity):
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
 
         # Calculate the position to draw the sprite, adjusting for the camera
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
+        sprite_x = self.collision.x + state.camera.x
+        sprite_y = self.collision.y + state.camera.y
 
         # Draw the sprite on the screen
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
@@ -339,8 +339,7 @@ class Player(Entity):
             f"Magic spells: {self.magicinventory}",
             f"Mind: {self.mind} Body: {self.body} Spirit: {self.spirit}",
             f"Perception:" f" {self.perception} Luck: {self.luck}",
-            # f"Day: {self.days}  Food: {self.food}",
-            f"shop potion: {self.shop_keep_potion}"
+            f"Day: {self.days}  Food: {self.food}",
         ]
 
         # Add Items to the stats list, one item per line

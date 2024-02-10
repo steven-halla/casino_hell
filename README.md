@@ -542,3 +542,6 @@ I"ll have to think on demon sprites
 I need to fix black jack messages so you cant select while talking, easy fix, 
 need to fix magic menu
 need to make sure all enemies have desperation state
+ 
+
+need to set player postion more in middle need to figure that out but it wil be based on screen size

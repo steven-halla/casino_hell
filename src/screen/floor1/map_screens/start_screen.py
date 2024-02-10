@@ -1,7 +1,7 @@
 import pygame
 import pytmx
 
-from constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK, SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -74,6 +74,12 @@ class StartScreen(Screen):
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_start_area_entry_point = False
 
+        player_start_x = SCREEN_WIDTH / 3 - TILE_SIZE / 2
+        player_start_y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2
+
+        # Update the player's position to be centered on the screen
+        state.player.setPosition(player_start_x, player_start_y)
+
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
             player_start_x = 300
@@ -95,7 +101,7 @@ class StartScreen(Screen):
             # InnGuard(16* 35, 16 * 15),
             # NickyHints(16* 25, 16 * 25),
             MainScreenTeleporter(16 * 1, 16 * 10),
-            FlippinTed(16* 35, 16 * 34),
+            FlippinTed(16* 1, 16 * 1),
 
 
 
@@ -201,7 +207,7 @@ class StartScreen(Screen):
                     if demon.collision.isOverlap(tile_rect):
                         demon.undoLastMove()
 
-
+        #player position
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
