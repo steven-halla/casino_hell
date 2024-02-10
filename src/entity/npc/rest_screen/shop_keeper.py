@@ -44,6 +44,11 @@ class ShopKeeper(Npc):
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
+            if "opossum repellent" in state.player.items:
+                self.shop_items[2] = "sold out"
+            if state.player.shop_keep_potion == True:
+                self.shop_items[0] = "sold out"
+
             cost = int(self.shop_costs[self.selected_item_index])
 
 
@@ -106,6 +111,8 @@ class ShopKeeper(Npc):
                     state.player.items.remove("+10 potion")
                     state.player.max_stamina_points += 20
                     state.player.max_focus_points += 20
+                    state.player.shop_keep_potion = True
+
                     print("taste yum yum")
             self.update_talking(state)
 

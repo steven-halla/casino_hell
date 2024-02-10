@@ -82,6 +82,8 @@ class Player(Entity):
         self.isBossWorthy = False
         self.realBarKeep = False
 
+        self.shop_keep_potion = False
+
 
 
 
@@ -107,6 +109,7 @@ class Player(Entity):
             "level3reward": self.level3janetreward,
             "food": self.food,
             "days": self.days,
+
             "cutscene1": state.restScreen.barscene1,
             "cutscene2": state.restScreen.barscene2,
 
@@ -120,6 +123,8 @@ class Player(Entity):
 
             "blackjackthomasmoney": state.blackJackThomasScreen.cheater_bob_money,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
+
+            "shopkeeperpotion": self.shop_keep_potion,
 
             # Add more stats as needed
         }
@@ -334,8 +339,8 @@ class Player(Entity):
             f"Magic spells: {self.magicinventory}",
             f"Mind: {self.mind} Body: {self.body} Spirit: {self.spirit}",
             f"Perception:" f" {self.perception} Luck: {self.luck}",
-            f"Day: {self.days}",
-            f"Food: {self.food}",
+            # f"Day: {self.days}  Food: {self.food}",
+            f"shop potion: {self.shop_keep_potion}"
         ]
 
         # Add Items to the stats list, one item per line
@@ -419,6 +424,10 @@ class Player(Entity):
 
             state.blackJackThomasScreen.cheater_bob_money = player_data['blackjackthomasmoney']
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
+
+            state.player.shop_keep_potion = player_data['shopkeeperpotion']
+
+
 
 
             innkeeper_position_x = 16 * 22
