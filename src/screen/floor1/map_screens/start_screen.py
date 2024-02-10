@@ -28,7 +28,7 @@ class StartScreen(Screen):
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
-        self.player = Player(1555, 555)
+        self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.lock_screen = False
@@ -64,18 +64,18 @@ class StartScreen(Screen):
         super().start(state)
 
         if state.start_new_game_entry_point == True:
-            player_start_x = 16 * 44  # Desired X coordinate
-            player_start_y = 16 * 22  # Desired Y coordinate
+            player_start_x = 16 * 28  # Desired X coordinate
+            player_start_y = 16 * 57  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.start_new_game_entry_point = False
         elif state.rest_area_to_start_area_entry_point == True:
-            player_start_x = 16 * 10  # Desired X coordinate
+            player_start_x = 44 * 10  # Desired X coordinate
             player_start_y = 16 * 1  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_start_area_entry_point = False
 
-        player_start_x = SCREEN_WIDTH / 3 - TILE_SIZE / 2
-        player_start_y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2
+        # player_start_x = SCREEN_WIDTH / 1 - TILE_SIZE / 2
+        # player_start_y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2
 
         # Update the player's position to be centered on the screen
         state.player.setPosition(player_start_x, player_start_y)
@@ -96,16 +96,16 @@ class StartScreen(Screen):
 
         state.npcs = [
 
-            BappingMike(16* 15, 16 * 15),
-            HungryPatrick(16* 25, 16 * 15),
+            BappingMike(16* 18, 16 * 22),
+            HungryPatrick(16* 41, 16 * 30),
             # InnGuard(16* 35, 16 * 15),
             # NickyHints(16* 25, 16 * 25),
-            MainScreenTeleporter(16 * 1, 16 * 10),
-            FlippinTed(16* 1, 16 * 1),
+            MainScreenTeleporter(16 * 57, 16 * 10),
+            FlippinTed(16* 5, 16 * 5),
 
 
 
-             CindyLongHair(16 * 2, 16 * 26),
+             CindyLongHair(16 * 36, 16 * 44),
 
                       ]
 

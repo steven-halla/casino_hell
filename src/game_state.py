@@ -52,7 +52,7 @@ class GameState:
         # core game state
         self.controller: Controller = Controller()
 
-        self.player: Player = Player(16 * 111, 16 * 22)
+        self.player: Player = Player(16 * 555, 16 * 22)
         self.demon_left: Demon1 = Demon1(0,0)
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(16 * 10, 16 * 26)
