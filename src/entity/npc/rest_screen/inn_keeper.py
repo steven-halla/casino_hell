@@ -38,7 +38,7 @@ class InnKeeper(Npc):
         distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
                              (player.collision.y - self.collision.y) ** 2)
 
-        if distance < 40 and state.controller.isTPressed and \
+        if distance < 70 and state.controller.isTPressed and \
                 (pygame.time.get_ticks() - self.state_start_time) > 500:
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()

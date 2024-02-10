@@ -97,7 +97,7 @@ class StartScreen(Screen):
         state.npcs = [
 
             BappingMike(16* 18, 16 * 22),
-            HungryPatrick(16* 41, 16 * 30),
+            HungryPatrick(16* 41, 16 * 20),
             # InnGuard(16* 35, 16 * 15),
             # NickyHints(16* 25, 16 * 25),
             MainScreenTeleporter(16 * 57, 16 * 10),

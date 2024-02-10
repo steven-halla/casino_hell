@@ -138,7 +138,7 @@ class QuestGiverJanet(Npc):
                             player.collision.y - self.collision.y) ** 2)
             # print("distance: " + str(distance))
 
-            if distance < 40:
+            if distance < 70:
                 # print("start state: talking")
                 # print("10")
 
