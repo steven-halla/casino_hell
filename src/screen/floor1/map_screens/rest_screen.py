@@ -54,6 +54,8 @@ class RestScreen(Screen):
 
         self.nurgle_turned_in = False
 
+        self.bar_keeper_talking = False
+
 
 
         self.npc_janet_textbox2 = False
@@ -160,11 +162,11 @@ class RestScreen(Screen):
             DoctorOpossum(16 * 26, 16 * 20),
             InnKeeper(16 * 101, 16 * 33),
             # JustinNoFruit(16 * 10, 16 * 18),
-            JustinNoFruit(16 * 28, 16 * 13),
+            JustinNoFruit(16 * 52, 16 * 13),
             # QuestGiverJanet(16 * 10, 16 * 26),
             ChiliPitTeleporter(16 * 36, 16 * 30),
 
-            SufferingSuzy(16 * 26, 16 * 26),
+            SufferingSuzy(16 * 25, 16 * 26),
             WallyGuide(16 * 34, 16 * 27),
             StartScreenTeleporter(16 * 5, 16 * 25),
             NewTeleporter(16 * 15, 16 * 35),
@@ -200,7 +202,7 @@ class RestScreen(Screen):
         if state.player.body > 0 and state.player.hasRabies == False:
             # Check if an instance of BarKeep already exists
             if not any(isinstance(npc, BarKeep) for npc in state.npcs):
-                state.npcs.append(BarKeep(16 * 33, 16 * 16))
+                state.npcs.append(BarKeep(16 * 36, 16 * 16))
             # Ensure no instance of BarKeepLowBody is present
             state.npcs = [npc for npc in state.npcs if not isinstance(npc, BarKeepLowBody)]
         else:

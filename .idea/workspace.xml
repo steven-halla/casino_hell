@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="had two sprites on screen i was double blitting">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="map updated, updating positions of NPCS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/map/restarea.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/restarea.tmx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/rest_screen.py" afterDir="false" />
     </list>
@@ -306,7 +306,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="13884000" />
+      <workItem from="1707589099832" duration="15243000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -651,7 +651,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="489" />
+    <option name="localTasksCounter" value="490" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,7 +680,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added a sound effect, sir leopolds paw is working as needed" />
     <MESSAGE value="fixed issue with player moving curser during messages" />
     <MESSAGE value="improved messaging during matches" />
     <MESSAGE value="improved text box interaction now the whole message will dispaly and there is no more skipping" />
@@ -705,7 +704,8 @@
     <MESSAGE value="up right down animations done" />
     <MESSAGE value="all animations are done" />
     <MESSAGE value="had two sprites on screen i was double blitting" />
-    <option name="LAST_COMMIT_MESSAGE" value="had two sprites on screen i was double blitting" />
+    <MESSAGE value="map updated, updating positions of NPCS" />
+    <option name="LAST_COMMIT_MESSAGE" value="map updated, updating positions of NPCS" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

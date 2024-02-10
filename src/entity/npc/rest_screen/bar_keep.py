@@ -37,6 +37,8 @@ class BarKeep(Npc):
         # This method passes the shop items to the textbox
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
+        print("showing shop")
+
 
 
     def update(self, state: "GameState"):
@@ -76,9 +78,8 @@ class BarKeep(Npc):
                 self.state = "waiting"
                 print("Leaving the shop...")
                 self.textbox.reset()
-                if "+10 stamina" in state.player.items:
-                    state.player.items.remove(" +10 stamina")
-                    state.player.max_stamina_points += 10
+                state.restScreen.bar_keeper_talking = False
+
                 return
 
             if self.textbox.message_index == 0:
@@ -181,6 +182,7 @@ class BarKeep(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         self.show_shop(state)
+        state.restScreen.bar_keeper_talking = True
 
         if state.controller.isTPressed and self.textbox.is_finished():
             # Exiting the shop conversation

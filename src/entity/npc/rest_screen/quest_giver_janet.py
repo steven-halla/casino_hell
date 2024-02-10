@@ -300,7 +300,8 @@ class QuestGiverJanet(Npc):
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        if state.restScreen.bar_keeper_talking == False:
+            state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "waiting":
             pass
