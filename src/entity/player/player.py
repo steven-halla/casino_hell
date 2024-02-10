@@ -84,13 +84,16 @@ class Player(Entity):
         self.left_animation_frames = []  # Holds frames for left movement animation
 
         # More attributes as in your original class...åç
+        # sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
 
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
         self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
-        self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (64, 146, 18, 26)]
+        self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (63, 146, 17.9, 26)]
+        self.down_frames = [(28, 120, 18, 26), (45, 120, 18, 26), (63, 120, 17.9, 26)]
+        self.up_frames = []
 
         # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
 
@@ -200,6 +203,14 @@ class Player(Entity):
             elif controller.isRightPressed:
                 self.velocity.x = self.walk_speed
                 self.current_direction = 'right'
+                current_time = pygame.time.get_ticks()
+
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.right_frames)
 
             else:
                 # hard stop
@@ -217,6 +228,14 @@ class Player(Entity):
             elif controller.isDownPressed:
                 self.velocity.y = self.walk_speed
                 self.current_direction = 'down'
+                current_time = pygame.time.get_ticks()
+
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.down_frames)
 
             else:
                 # hard stop
@@ -287,9 +306,24 @@ class Player(Entity):
             sprite_rect = pygame.Rect(22, 172, 24, 26)  # Adjusted values for the 'up' sprite
             sprite = self.up_sprite.subsurface(sprite_rect)
         elif self.current_direction == 'down':
+            frame_rect = self.down_frames[self.current_frame_index]
+
+            # Create a pygame.Rect object from the frame_rect tuple
+            sprite_rect = pygame.Rect(*frame_rect)
+
+            # Use subsurface to get the specific frame from the sprite sheet
+            current_frame_sprite = self.down_sprite.subsurface(sprite_rect)
+
+            # Calculate the position to draw the sprite (adjust as necessary for your game's coordinates)
+            sprite_x = self.position.x
+            sprite_y = self.position.y
+            sprite = self.left_sprite.subsurface(sprite_rect)
+
+            # Draw the current frame to the screen
+            state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
             # Define the rectangle for the down sprite
-            sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
-            sprite = self.down_sprite.subsurface(sprite_rect)
+            # sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
+            # sprite = self.down_sprite.subsurface(sprite_rect)
 
         if self.current_direction == 'left':
             # Get the current frame rectangle based on self.current_frame_index
@@ -309,20 +343,28 @@ class Player(Entity):
             # Draw the current frame to the screen
             state.DISPLAY.blit(current_frame_sprite, (sprite_x, sprite_y))
 
-        #
-        # elif self.current_direction == 'left':
-        #     sprite_rect = pygame.Rect(22, 146, 24, 26)
-        #     sprite = self.left_sprite.subsurface(sprite_rect)
-        # elif self.current_direction == 'left':
-        #     sprite_rect = pygame.Rect(46, 146, 24, 26)
-        #     sprite = self.left_sprite.subsurface(sprite_rect)
-        # elif self.current_direction == 'left':
-        #     sprite_rect = pygame.Rect(64, 146, 24, 26)
-        #     sprite = self.left_sprite.subsurface(sprite_rect)
         elif self.current_direction == 'right':
-            sprite_rect = pygame.Rect(22, 146, 24, 26)
-            sprite = self.left_sprite.subsurface(sprite_rect)
-            sprite = pygame.transform.flip(sprite, True, False)
+            frame_rect = self.left_frames[self.current_frame_index]
+
+            # Create a pygame.Rect object from the frame_rect tuple
+            sprite_rect = pygame.Rect(*frame_rect)
+
+            # Use subsurface to get the specific frame from the sprite sheet
+            current_frame_sprite = self.left_sprite.subsurface(sprite_rect)
+            current_frame_sprite = pygame.transform.flip(current_frame_sprite, True, False)
+
+            # Scale the selected sprite
+            scaled_sprite = pygame.transform.scale(current_frame_sprite, (50, 50))
+
+            # Assign the scaled sprite to the sprite variable
+            sprite = scaled_sprite
+
+            # Calculate the position to draw the sprite, adjusting for the camera
+            sprite_x = self.collision.x + state.camera.x - 10
+            sprite_y = self.collision.y + state.camera.y - 10
+
+            # Draw the sprite on the screen
+            state.DISPLAY.blit(sprite, (sprite_x, sprite_y))
 
             # Scale the selected sprite
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))
