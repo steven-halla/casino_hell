@@ -54,7 +54,7 @@ class SufferingSuzy(Npc):
         elif self.state == "talking":
             # Determine which message to use based on player state
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-            if "sir leopold" in state.player.companions:
+            if state.player.rabiesImmunity == True:
                 current_message = self.guy_messages["sir_leopold_message"]
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -86,7 +86,7 @@ class SufferingSuzy(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-                if "sir leopold" in state.player.companions:
+                if state.player.rabiesImmunity == True:
                     current_message = self.guy_messages["sir_leopold_message"]
                 current_message.reset()
 
@@ -111,7 +111,7 @@ class SufferingSuzy(Npc):
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-            if "sir leopold" in state.player.companions:
+            if state.player.rabiesImmunity == True:
                 current_message = self.guy_messages["sir_leopold_message"]
             current_message.draw(state)
 

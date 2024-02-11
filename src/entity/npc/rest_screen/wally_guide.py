@@ -52,7 +52,7 @@ class WallyGuide(Npc):
             # Determine which message to use based on player state
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
 
-            if "sir leopold" in state.player.companions:
+            if state.player.rabiesImmunity == True:
                 current_message = self.guy_messages["sir_leopold_message"]
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -85,7 +85,7 @@ class WallyGuide(Npc):
                 # Reset the message based on player state
                 current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
 
-                if "sir leopold" in state.player.companions:
+                if state.player.rabiesImmunity == True:
                     current_message = self.guy_messages["sir_leopold_message"]
                 current_message.reset()
 
@@ -111,7 +111,7 @@ class WallyGuide(Npc):
         if self.state == "talking":
             current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
 
-            if "sir leopold" in state.player.companions:
+            if state.player.rabiesImmunity == True:
                 current_message = self.guy_messages["sir_leopold_message"]
             current_message.draw(state)
 
