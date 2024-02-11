@@ -126,7 +126,7 @@ class RestScreen(Screen):
 
 
         self.stop_music()
-        self.initialize_music()
+        # self.initialize_music()
         super().start(state)
         state.npcs.clear()
 

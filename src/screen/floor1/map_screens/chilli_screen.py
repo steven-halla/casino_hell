@@ -26,7 +26,7 @@ class ChilliScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/chilli.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -61,7 +61,7 @@ class ChilliScreen(Screen):
 
     def start(self, state: "GameState"):
         self.stop_music()
-        self.initialize_music()
+        # self.initialize_music()
         super().start(state)
 
         # Check if a player instance already exists
@@ -82,14 +82,14 @@ class ChilliScreen(Screen):
 
         # Add other NPCs to the state.npcs list
         state.npcs.extend([
-            BobbyBibs(16 * 36, 16 * 18),
-            BrutalPatrick(16 * 26, 16 * 18),
-            ChillyBilly(16 * 18, 16 * 18),
-            JessicaStarving(16 * 10, 16 * 18),
+            BobbyBibs(16 * 37, 16 * 18),
+            BrutalPatrick(16 * 30, 16 * 5),
+            ChillyBilly(16 * 12, 16 * 23),
+            JessicaStarving(16 * 4, 16 * 30),
             SirLeopoldTheHedgeHog(16 * 18, 16 * 26),
             HedgeMazeScreenTeleporter(16 * 4, 16 * 8),
-            RestScreenTeleporter(16 * 28, 16 * 5),
-            RumbleBill(16 * 4, 16 * 12),
+            RestScreenTeleporter(16 * 10, 16 * 5),
+            RumbleBill(16 * 12, 16 * 12),
 
             # SleepyNed(16 * 18, 16 * 26),
         ])

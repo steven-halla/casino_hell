@@ -78,7 +78,7 @@ class StartScreen(Screen):
         # player_start_y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2
 
         # Update the player's position to be centered on the screen
-        state.player.setPosition(player_start_x, player_start_y)
+        # state.player.setPosition(player_start_x, player_start_y)
 
         # Check if a player instance already exists
         if not hasattr(state, 'player') or state.player is None:
@@ -97,7 +97,7 @@ class StartScreen(Screen):
         state.npcs = [
 
             BappingMike(16* 18, 16 * 22),
-            HungryPatrick(16* 41, 16 * 20),
+            HungryPatrick(16* 41, 16 * 30),
             # InnGuard(16* 35, 16 * 15),
             # NickyHints(16* 25, 16 * 25),
             MainScreenTeleporter(16 * 57, 16 * 10),
