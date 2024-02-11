@@ -122,7 +122,7 @@ class CindyLongHair(Npc):
         state.player.canMove = False
 
 
-        if "sir leopold" in state.player.companions:
+        if state.player.rabiesImmunity == True:
             current_message = self.cindy_long_hair_messages["sir_leopold_message"]
 
         elif state.player.hasRabies == True:
@@ -175,9 +175,7 @@ class CindyLongHair(Npc):
         if self.state == "talking":
             sprite_rect = pygame.Rect(0, 0, 136, 186)  # Top left section with width and height of 100 pixels
 
-
-
-            if "sir leopold" in state.player.companions:
+            if state.player.rabiesImmunity == True:
                 current_message = self.cindy_long_hair_messages["sir_leopold_message"]
 
             elif state.player.hasRabies == True:

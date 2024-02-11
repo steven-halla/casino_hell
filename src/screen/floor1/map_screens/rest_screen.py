@@ -167,7 +167,7 @@ class RestScreen(Screen):
             ChiliPitTeleporter(16 * 36, 16 * 30),
 
             SufferingSuzy(16 * 26, 16 * 26),
-            WallyGuide(16 * 34, 16 * 27),
+            WallyGuide(16 * 75, 16 * 46),
             StartScreenTeleporter(16 * 5, 16 * 25),
             NewTeleporter(16 * 15, 16 * 35),
             BossTeleporter(16 * 25, 16 * 35),

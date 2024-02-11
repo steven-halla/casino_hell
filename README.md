@@ -549,8 +549,6 @@ need to set player postion more in middle need to figure that out but it wil be 
 
 
 %%%%%%The below is the master bug list: %%%%%%%
-need to fix NPC talking and moving
-also START Scren has collision squres on it to the right in the red squares
 check sir leopld messages
 gambling area need to space out characters more having collision of text boxes with npcs 
 fix bobby bibs messages they are too long

@@ -15,7 +15,8 @@ class JustinNoFruit(Npc):
             "default_message": NpcTextBox(
                 [
                     "Justin: The beer taste awful, but it's all we have to drink.","We all have a rule here, don't ask or talk about where the beer comes from. We rather not think about it.",
-                    "Chinrog doesn't like to say long, and he comes by every decade or so. He's the head chef."
+                    "Chinrog doesn't like to say long, and he comes by every decade or so. He's the head chef.",
+                    "The head chef is the reason why the tables are so small, nothing about this place makes sense."
                     ,
                 ],
                 (50, 450, 50, 45), 30, 500

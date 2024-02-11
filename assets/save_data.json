@@ -9,7 +9,8 @@
         "sir leopold"
     ],
     "items": [
-        "sir leopold's paw"
+        "sir leopold's paw",
+        "blue flower"
     ],
     "magicinventory": [
         "reveal"
@@ -20,8 +21,8 @@
     "perception": 1,
     "luck": 0,
     "money": 600,
-    "rabies": false,
-    "immunity": true,
+    "rabies": true,
+    "immunity": false,
     "level3reward": false,
     "food": 0,
     "days": 3,

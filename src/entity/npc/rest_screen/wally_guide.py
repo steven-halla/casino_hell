@@ -22,13 +22,13 @@ class WallyGuide(Npc):
                 (50, 450, 50, 45), 30, 500
             ),
             "rabies_message": NpcTextBox(
-                ["It was pre ordained that the opossum king would save us from this hell. All hail opossum king ha ha haha HAHAHHA no wait I AM THE OPOSSUM KING!!!"],
+                ["Wally: It was pre ordained that the opossum king would save us from this hell. All hail opossum king ha ha haha HAHAHHA no wait I AM THE OPOSSUM KING!!!"],
                 (50, 450, 700, 130), 36, 500
             ),
             'sir_leopold_message': NpcTextBox(
                 [
 
-                    "Wally: God please i'm so god damn sick of this place , I want my family, hahha hahah HAHAHHHHHHAHHHAAHAH...",
+                    "Wally: God please I'm so god sick of this place , I want my family, hahha hahah HAHAHH HAAHAH...",
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

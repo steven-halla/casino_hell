@@ -30,7 +30,8 @@ class SufferingSuzy(Npc):
                 [
 
                     "I liked you better with rabies, when the antidote wears off you should go get rabies again... what is with that look?",
-                "I heard that the head chili demon Chinrog might still be in the boss area. Can you reach him in time?"],
+                "I heard that the head chili demon Chinrog might still be in the boss area. Can you reach him in time? ",
+                ],
                 (50, 450, 50, 45), 30, 500
             ),
         }
