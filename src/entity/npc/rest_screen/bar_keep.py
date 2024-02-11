@@ -53,12 +53,12 @@ class BarKeep(Npc):
         if "b key" in state.player.items:
             self.shop_items[2] = "sold out"
 
-        # if state.player.food < 1:
-        #     self.shop_items[0] = "Your stomach can't handle more"
-        #     self.shop_items[1] = "Your stomach can't handle more"
-        # elif state.player.food > 0:
-        #     self.shop_items[0] = "beer"
-        #     self.shop_items[1] = "moldy sandwich"
+        if state.player.food < 1:
+            self.shop_items[0] = "Your Full"
+            self.shop_items[1] = "Your Full"
+        elif state.player.food > 0:
+            self.shop_items[0] = "Stallion Brew"
+            self.shop_items[1] = "Moldy Sandwich"
 
 
         if state.restScreen.barscene2 == True:
@@ -230,10 +230,10 @@ class BarKeep(Npc):
         elif self.state == "talking":
             self.textbox.draw(state)
             if self.selected_item_index == 0:
-                state.DISPLAY.blit(self.font.render(f"Kinda smells like peedes", True,
+                state.DISPLAY.blit(self.font.render(f"Kinda smells like pee. Restores 75 Stamina", True,
                                                     (255, 255, 255)), (70, 460))
             if self.selected_item_index == 1:
-                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich", True,
+                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restore 75 Magic  ", True,
                                                     (255, 255, 255)), (70, 460))
             if self.selected_item_index == 2:
                 state.DISPLAY.blit(self.font.render(f"Key for boss area. Min hold of 2300 coins to buy ", True,

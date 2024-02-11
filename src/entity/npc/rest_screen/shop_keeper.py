@@ -187,5 +187,14 @@ class ShopKeeper(Npc):
             # print("is talking")
             self.textbox.draw(state)
             if self.state == "talking":
-                state.DISPLAY.blit(self.font.render(f"Hurry and buy something", True,
-                                                    (255, 255, 255)), (70, 460))
+                # state.DISPLAY.blit(self.font.render(f"Hurry and buy something", True,
+                #                                     (255, 255, 255)), (70, 460))
+                if self.selected_item_index == 0:
+                    state.DISPLAY.blit(self.font.render(f"Health and Magic max + 20", True,
+                                                        (255, 255, 255)), (70, 460))
+                if self.selected_item_index == 1:
+                    state.DISPLAY.blit(self.font.render(f"Save your game at the phone  ", True,
+                                                        (255, 255, 255)), (70, 460))
+                if self.selected_item_index == 2:
+                    state.DISPLAY.blit(self.font.render(f"Halves damage of opossum bites in opossum in a can. ", True,
+                                                        (255, 255, 255)), (70, 460))
