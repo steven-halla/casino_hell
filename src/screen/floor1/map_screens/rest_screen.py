@@ -208,7 +208,7 @@ class RestScreen(Screen):
         else:
             # Check if an instance of BarKeepLowBody already exists
             if not any(isinstance(npc, BarKeepLowBody) for npc in state.npcs):
-                state.npcs.append(BarKeepLowBody(16 * 36, 16 * 18))
+                state.npcs.append(BarKeepLowBody(16 * 36, 16 * 16))
             # Ensure no instance of BarKeep is present
             state.npcs = [npc for npc in state.npcs if not isinstance(npc, BarKeep)]
 

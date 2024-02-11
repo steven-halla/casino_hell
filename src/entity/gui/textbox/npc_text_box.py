@@ -61,32 +61,30 @@ class NpcTextBox(Entity):
         if self.is_finished():
             self.show_shop_menu = True
 
-
-
     def draw(self, state: "GameState"):
         text = self.messages[self.message_index]
         text_to_display = text[:self.characters_to_display]
-        wrapped_text = textwrap.wrap(text_to_display, 60)
+        # Wrap text to a maximum of 40 characters per line
+        wrapped_text = textwrap.wrap(text_to_display, 55)
 
         # Fixed dimensions for the text box
-        box_width = 700  # Set the width of the text box
-        box_height = 120  # Set the height of the text box
+        box_width = 700  # Width of the text box
+        box_height = 120  # Height of the text box
 
         # Position of the text box
-        box_x = self.position.x
-        box_y = self.position.y
+        box_x, box_y = self.position.x, self.position.y
 
         # Draw the black background rectangle
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
 
         # Draw the text within the text box
-        line_height = 40  # Adjust as needed
+        line_height = 40  # Adjust line height as needed
+        padding = 10  # Padding for top, left, and right
         for i, line in enumerate(wrapped_text):
-            # Calculate the Y position of each line within the box
-            text_line_y = box_y + (i * line_height) + 10  # Adding 10 for padding from the top
+            text_line_y = box_y + (i * line_height) + padding  # Apply top padding
             text_surface = state.FONT.render(line, True, (255, 255, 255))
-            state.DISPLAY.blit(text_surface, (box_x + 10, text_line_y))  # Adding 10 for padding from the left
-
+            # Render text with left padding
+            state.DISPLAY.blit(text_surface, (box_x + padding, text_line_y))
 
         # Adjust the number '60' in the textwrap.wrap function and the padding values as needed
 

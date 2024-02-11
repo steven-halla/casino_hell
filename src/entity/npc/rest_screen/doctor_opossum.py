@@ -11,19 +11,20 @@ class DoctorOpossum(Npc):
         super().__init__(x, y)
         self.doctor_messages = {
             "welcome_message": NpcTextBox(
-                ["I'm a rabies doctor, i used to be a heart surgeon", "If you need any help in the future let me know", "Hero: If i need to swing by I will"],
+                ["Alice: I'm a rabies doctor, i used to be a heart surgeon", "If you need any help in the future let me know", "Hero: If i need to swing by I will"],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "rabies_message": NpcTextBox(
-                ["Sorry to hear you have rabies......go to the hedge maze and look for a bottle of water"],
+                ["Alice: I can tell by looking at you...sorry but my blue flower, which is part of the antidote was stolen",
+                 "You'll need to go to the hedge maze, there you will find a new blue flower, just be aware of the demons."],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "cured_message": NpcTextBox(
-                ["thank you for the flower....i'll cure you...and here, so you take less damaege! Now go and rest up at the Inn, Doctor's orders!!! "],
+                ["Alice: Thank you for the flower....I'll cure you...and here, so you take less damage! Now go and rest up at the Inn, Doctor's orders!!! "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -32,7 +33,7 @@ class DoctorOpossum(Npc):
 
 
             "sir_leopold_message": NpcTextBox(
-                ["You have a companion...now he'll be safe!, As long as you have  money.... "],
+                ["Your actions not only saved yourself, but others as well, I'll never forget you."],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -297,7 +298,7 @@ class DoctorOpossum(Npc):
         # self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        sprite_rect = pygame.Rect(194, 5, 18, 24)
+        sprite_rect = pygame.Rect(193.5, 5, 18, 24)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)

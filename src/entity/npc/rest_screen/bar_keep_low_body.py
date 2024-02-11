@@ -13,13 +13,13 @@ class BarKeepLowBody(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Justin: Bar is closed right now, your free to hang out and chill. Even I need time off you know.",
+                    "Bar Keep: Bar is closed right now, your free to hang out and chill. Even I need time off you know.",
 
                 ],
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 700, 45), 36, 500
             ),
             "rabies_message": NpcTextBox(
-                ["Bro, you look totally sick, go see the doctor ASAP"],
+                ["My guy, you look totally sick, go see the doctor ASAP"],
                 (50, 450, 700, 130), 36, 500
             ),
         }
@@ -76,7 +76,7 @@ class BarKeepLowBody(Npc):
         if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
-            if distance < 40:
+            if distance < 70:
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
