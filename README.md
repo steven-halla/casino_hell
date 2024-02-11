@@ -549,10 +549,6 @@ need to set player postion more in middle need to figure that out but it wil be 
 
 
 %%%%%%The below is the master bug list: %%%%%%%
-gambling area need to space out characters more having collision of text boxes with npcs 
-fix bobby bibs messages they are too long
-rest screen after you get blue flower their dialog changes, this should be based on if hero immunity == True
-talk to all npcs AFTER you rescuse sir leopold
 sir leopold should be the exit condition
 need descriptions for items in shop
 need to set shop limits that you cannot buy items if your gold falls below 100

@@ -12,10 +12,12 @@ class BarKeep(Npc):
         super().__init__(x, y)
         self.textbox = ShopNpcTextBox(
             [
-             "Welcome, take a look at my stuff"],
+             ""],
             (50, 450, 50, 45), 30, 500)
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.input_time = pygame.time.get_ticks()
+        self.font = pygame.font.Font(None, 36)
+
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
@@ -51,12 +53,12 @@ class BarKeep(Npc):
         if "b key" in state.player.items:
             self.shop_items[2] = "sold out"
 
-        if state.player.food < 1:
-            self.shop_items[0] = "Your stomach can't handle more"
-            self.shop_items[1] = "Your stomach can't handle more"
-        elif state.player.food > 0:
-            self.shop_items[0] = "beer"
-            self.shop_items[1] = "moldy sandwich"
+        # if state.player.food < 1:
+        #     self.shop_items[0] = "Your stomach can't handle more"
+        #     self.shop_items[1] = "Your stomach can't handle more"
+        # elif state.player.food > 0:
+        #     self.shop_items[0] = "beer"
+        #     self.shop_items[1] = "moldy sandwich"
 
 
         if state.restScreen.barscene2 == True:
@@ -70,6 +72,8 @@ class BarKeep(Npc):
             self.update_waiting(state)
         elif self.state == "talking":
             cost = int(self.shop_costs[self.selected_item_index])
+
+
 
 
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -200,6 +204,7 @@ class BarKeep(Npc):
 
 
     def draw(self, state):
+
         sprite_rect = pygame.Rect(5, 6, 23, 30)
 
 
@@ -223,5 +228,15 @@ class BarKeep(Npc):
         if self.state == "waiting":
             pass
         elif self.state == "talking":
-            # print("is talking")
             self.textbox.draw(state)
+            if self.selected_item_index == 0:
+                state.DISPLAY.blit(self.font.render(f"Kinda smells like peedes", True,
+                                                    (255, 255, 255)), (70, 460))
+            if self.selected_item_index == 1:
+                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich", True,
+                                                    (255, 255, 255)), (70, 460))
+            if self.selected_item_index == 2:
+                state.DISPLAY.blit(self.font.render(f"Key for boss area. Min hold of 2300 coins to buy ", True,
+                                                    (255, 255, 255)), (70, 460))
+
+            # print("is talking")

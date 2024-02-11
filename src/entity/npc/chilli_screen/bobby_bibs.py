@@ -13,8 +13,9 @@ class BobbyBibs(Npc):
             "default_message": NpcTextBox(
                 [
                     "It's hard to find good clothes down here which is why I always wear a bib when I eat",
-                    "Every day is chili day, mixed with lots of hedge hogs. And....nothing....else....."
-                    "I can't....stand it anymore....god someone....get me out of here , I'll stop skipping church, just help...me..."
+                    "Every day is chili day, mixed with lots of hedge hogs. And....everything....else....."
+                    "I can't....stand it anymore....someone....get me out of here",
+                    "I'll stop skipping church, I'll treat my wife and kids better, I'll stop drinking, please help me god."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

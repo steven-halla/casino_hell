@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="for start area fixed bug wtih messges not displaying based on currenrt story state">
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/justin_no_fruit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/justin_no_fruit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="messages for all npcs now display after you turn in blue flower">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/gambling_area_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,7 +306,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="33691000" />
+      <workItem from="1707589099832" duration="36308000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -648,7 +651,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="498" />
+    <option name="localTasksCounter" value="499" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -677,7 +680,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="the new conditions to get demon boss to show up based on cut scenes is now working" />
     <MESSAGE value="improved status screen" />
     <MESSAGE value="fixed bug at start load screen of playing being able to move arrow up and down after hitting T key to confirm choice" />
     <MESSAGE value="updated with new player sprite good ducking luck with new animations" />
@@ -702,7 +704,8 @@
     <MESSAGE value="fixed opossum doctor rogue pixel also fixed text box so messages are limited by 55 characters per line to ensure  messags dont spill out of the box" />
     <MESSAGE value="fixed bug with NPCS not being able to move" />
     <MESSAGE value="for start area fixed bug wtih messges not displaying based on currenrt story state" />
-    <option name="LAST_COMMIT_MESSAGE" value="for start area fixed bug wtih messges not displaying based on currenrt story state" />
+    <MESSAGE value="messages for all npcs now display after you turn in blue flower" />
+    <option name="LAST_COMMIT_MESSAGE" value="messages for all npcs now display after you turn in blue flower" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -95,10 +95,10 @@ class GamblingAreaScreen(Screen):
 
         state.npcs.extend([
             BlackJackThomas(16 * 30, 16 * 22),
-            CoinFlipFred(16 * 12, 16 * 32),
+            CoinFlipFred(16 * 12, 16 * 28),
             NellyOpossum(16 * 30, 16 * 5),
             SallyOpossum(16 * 5, 16 * 5),
-            Guy(16 * 12, 16 * 44),
+            Guy(16 * 42, 16 * 44),
             RestScreenTeleporter(16 * 11, 16 * 22),
         ])
 
