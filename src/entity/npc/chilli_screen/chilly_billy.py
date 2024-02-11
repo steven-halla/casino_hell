@@ -16,12 +16,11 @@ class ChillyBilly(Npc):
             "default_message": NpcTextBox(
                 [
                     "Music is nice , do you dig it?"
-                    "Go on now and eat that chilli with your hands ",
-
+                    "Go on now and eat that chilli with your hands, we better not catch you using a bowl and spoon or else you'll get it good",
+                    "The last guy we caught trying to use a bowl , we hooked him up for weeks to the chili funnel."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
-
             "sir_leopold_message": NpcTextBox(
                 ["I was never a fan of putting hedge hogs in the chilli, I much prefer the taste of goats, they stir it up a lot better and the taste is to die for"],
                 (50, 450, 700, 130), 36, 500

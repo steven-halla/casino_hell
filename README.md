@@ -545,3 +545,23 @@ need to make sure all enemies have desperation state
  
 
 need to set player postion more in middle need to figure that out but it wil be based on screen size
+
+
+
+%%%%%%The below is the master bug list: %%%%%%%
+need to fix NPC talking and moving
+also START Scren has collision squres on it to the right in the red squares
+check sir leopld messages
+gambling area need to space out characters more having collision of text boxes with npcs 
+fix bobby bibs messages they are too long
+rest screen after you get blue flower their dialog changes, this should be based on if hero immunity == True
+talk to all npcs AFTER you rescuse sir leopold
+sir leopold should be the exit condition
+need descriptions for items in shop
+need to set shop limits that you cannot buy items if your gold falls below 100
+I need to fix things, when hero stamina hits 0 or lower, put him to the doctor office charge 100 coins for rescue
+kick player out if their gold is below a threshold, game over if its 0 or lower. Need a game over screen state as
+a global
+
+opossum in a can goes through chompy messsages to fast for sally maybe nelly too need to check
+there is a bug I htink the last can you picked isn't being reset in the list on refresh 

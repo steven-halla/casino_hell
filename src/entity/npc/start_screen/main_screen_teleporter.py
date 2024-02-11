@@ -61,15 +61,17 @@ class MainScreenTeleporter(Npc):
         # Check for keypresses only once per frame
         if state.controller.isUpPressed:
             state.controller.isUpPressed = False
+        if state.controller.isLeftPressed:
+            state.controller.isLeftPressed = False
 
-            self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-            print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
+        if state.controller.isRightPressed:
+            state.controller.isRightPressed = False
 
-        elif state.controller.isDownPressed:
+
+        if state.controller.isDownPressed:
             state.controller.isDownPressed = False
 
-            self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
+
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:

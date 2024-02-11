@@ -57,11 +57,11 @@ class GameState:
         self.cindy_long_hair: CindyLongHair = CindyLongHair(0,0)
         self.quest_giver_janet: QuestGiverJanet = QuestGiverJanet(16 * 45, 16 * 16)
         self.shop_keeper: ShopKeeper = ShopKeeper(16 * 71, 16 * 7)
-        self.npcs = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
-        self.demons = []  # load npcs based on which screen (do not do here, but do in map load function (screen start())
+        self.npcs = []
+        self.demons = []
         self.treasurechests = []
 
-        self.entryPoint = None  # Track the current entry point
+        self.entryPoint = None
 
 
         self.obstacle = Obstacle(444, 999)
@@ -106,8 +106,6 @@ class GameState:
 
         self.start_new_game_entry_point = False
         self.rest_area_to_start_area_entry_point = False
-
-
 
 
     def save_game(self, player, state: "GameState"):

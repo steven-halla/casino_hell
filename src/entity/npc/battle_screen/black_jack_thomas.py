@@ -10,10 +10,10 @@ class BlackJackThomas(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Thomas: I'fdsfaam a Thomas , better be careful", "Are you ready to lose?!"],
+                ["Thomas: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Looks like you defeated me, how sad :("],
+                ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
                 (50, 450, 700, 130), 36, 500),
 
             "rabies_message": NpcTextBox(

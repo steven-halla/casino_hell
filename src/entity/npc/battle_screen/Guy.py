@@ -12,11 +12,10 @@ class Guy(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Guy: Most people here are here to gamble, you can quit a match and go rest if you feel it too much.",
+                    "Guy: Most people in this area are here to gamble, you can quit a match and go rest if you feel it too much.",
                     "Enemy money won't reset, so take it at your own pace.",
-                    "You don't have to take everyone's money?",
-                    "For those that beat this area, on average it takes them 5 days.",
-                    "Pro tip, for some reason the boss is scared of BUST, those demons sure do lick their chops when his cards get high."
+                    "You don't have to take everyone's money, you should just take what you need and try and get through this area.",
+                    "For those that beat this area, on average it takes them 5-10 days. Try and beat this area before your 10th day if you can.",
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

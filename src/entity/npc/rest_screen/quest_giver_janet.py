@@ -13,7 +13,7 @@ class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.queststart1 = NpcTextBox(
-            ["I have a quest for you, get a score of 300 in opossum in a can from nelly OR sandy", "there are two people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them."],
+            ["I have a quest for you, get a score of 300 in opossum in a can from Nelly, Sandy, or Ichi", "These are the three people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them."],
             (50, 450, 50, 45), 30, 500)
         self.questfinish1 = NpcTextBox(
             ["Janet: Good job on your bravery now take this reward, the new super special techniq that i learned from the dance floor:: Shake"],

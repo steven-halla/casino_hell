@@ -14,19 +14,21 @@ class WallyGuide(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Wally: There are no opponets in the rest area, come here to relax , kick back and see if anything is new."
-                    "dreams in my nightmares "
+                    "Wally: I'm the last one, everyone I came here with... it's like my friend here always says.",
+                    "Opossum in a can is very dangerous, if you can get Cindy to teach you.....it will be less so.",
+                    "Hero:  Where is your friend, I dont' see anyone here but you???",
+                    "Wally: What are you blind, he's standing  right next to you right now, why do you keep ignoring him, are you crazy or just rude, or deaf and blind?"
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "rabies_message": NpcTextBox(
-                ["Bro, you look totally sick, go see the doctor ASAP"],
+                ["It was pre ordained that the opossum king would save us from this hell. All hail opossum king ha ha haha HAHAHHA no wait I AM THE OPOSSUM KING!!!"],
                 (50, 450, 700, 130), 36, 500
             ),
             'sir_leopold_message': NpcTextBox(
                 [
 
-                    "Wally: God please i'm so god damn fucking sick of this place hahha hahah HAHAHHHHHHAHHHAAHAH....",
+                    "Wally: God please i'm so god damn sick of this place , I want my family, hahha hahah HAHAHHHHHHAHHHAAHAH...",
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

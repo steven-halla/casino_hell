@@ -10,13 +10,13 @@ class SallyOpossum(Npc):
         self.selected_item_index = 0
         self.sally_opossum_messages = {
             "welcome_message": NpcTextBox(
-                ["Sally: I'm a very mean salley, better be careful", "You need 50 stamina to play and 200 coins.  pay up now and we can get started?!"],
+                ["Sally: This game is super easy and chill, go ahead and play yeah, just 150 coins."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Looks like you defeated me, how sad :("],
+                ["You must have cheated somehow."],
                 (50, 450, 700, 130), 36, 500),
             "money_message": NpcTextBox(
-                ["You need at least 200 coins to play, so stop wasting my time you scum"],
+                ["You need at least 150 coins to play, so stop wasting my time you scum"],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["Oh you don't look so good, it's too bad the doctor 'lost' her blue flower, looks like no antidote for you opossum-kun"],

@@ -14,30 +14,33 @@ class SirLeopoldTheHedgeHog(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
-            ["I'm the head hog round these parts",
-             "Oh hero wont you pretty please help my friends, they are hdiing out in the hedge maze, please help you'll get rewarded ",
-             "If you can find all 4 i'll reward you with a super special item , it'll help you in black jack, the enemy won't know what hit em."],
+            ["I'm the head hog round these parts and I can use your help!",
+             "Oh hero won't you pretty please help my friends, they are hiding out in the hedge maze, I'll reward you real good if you can help. ",
+             "There are 4 of them, good luck and don't let the demons catch you. And don't trust the cat, she's evil."],
             (50, 450, 50, 45), 30, 500)
         self.reward_no_hogs = NpcTextBox(
-            ["wow you reall suckss",
-             "YOur hopeless.......I guess I have noi choice but to join you, by the looks of it you can use a helping paw."],
+            ["Wow you really suck",
+             "Your hopeless.......I guess I have noi choice but to join you, by the looks of it you can use a helping paw."],
             (50, 450, 50, 45), 30, 500)
         self.reward_some_hogs = NpcTextBox(
-            ["well at least you triedss",
-             "Oh hero got some of dem hoggy hoggers out in the hedge maze, please help you'll get rewarded ",
-             "Since you tried I'll give you 500 coins"],
+            ["Well at least you tried",
+             "Take these 200 coins."],
             (50, 450, 50, 45), 30, 500)
         self.reward_all_hogs = NpcTextBox(
-            ["you got em all great",
-             "In addiiton I'll also give you 500 coins, how am I carrying so many for being so small...because I have a high perception",
+            ["You actually got them all! I was expecting like one or two, maybe 3 tops, but all 4, you are the man!!!",
+             "I'll give you 500 coins, it's all that I have. I stole them from the opossum girls.'",
              "Hero: What?",
-             "enough of this, lets go back to the inn and rest up I'm sure everyone will have something new to say."],
+             "Sir Leopold: Yeah you can say I'm pretty good at stealing. There is something else I need to tell you."],
             (50, 450, 50, 45), 30, 500)
 
         self.final_message = NpcTextBox(
-            ["", "final message here from sir leopold" ,
-             "Since your Spirit is high I'll join you, the higher spirit yo uhave the more companioins will join us",
-             "I hear that Cindy has a special companion item that I can use, can you complete her quest and get it? ",
+            ["", "As long as your wearing this I can help you in black jack. (You received sir leopold's paw)" ,
+             "Since your Spirit is high I'll join you, the higher spirit you have the more companions will join us",
+             "Hero: If I don't hurry up and get to the Doctor I'll be joining the trash cans.",
+             "Sir Leopold: Right you are, as for that item I gave you, whenever you hear the 'ting' noise that means I stole something",
+             "Hero: Wait you can steal cards? That's allowed?",
+             "Sir Leopold: That's right it's allowed as long as your wearing that, rules and all of this place. Welcome to hell as they say, nothing makes sense here.",
+
              ],
             (50, 450, 50, 45), 30, 500)
 

@@ -10,16 +10,16 @@ class NellyOpossum(Npc):
         self.selected_item_index = 0
         self.nelly_opossum_messages = {
             "welcome_message": NpcTextBox(
-                ["Nelly: I'm a very mean nelly, better be careful", "You need  200 coins.  pay up now and we can get started?!"],
+                ["Nelly: Hi there new guy, I swear to you my opossums are the sweetest things you ever did see. You can play with them for 150 coins."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Looks like you defeated me, how sad :("],
+                ["I didn't like playing with you anyway."],
                 (50, 450, 700, 130), 36, 500),
             "money_message": NpcTextBox(
-            ["Ewwwwww get away from me you poor bastard and get at least 200 coins, you disgust me!"],
+            ["Ewwwwww get away from me you poor bastard and get at least 150 coins, you disgust me!"],
             (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
-                ["awwwww are you ok? Don't worry I'll get you a home reaaalllll soon. Do you love garbage? You're gonna."],
+                ["Awwwww are you ok? Don't worry I'll get you a home reaaalllll soon. Do you love garbage? You're gonna."],
                 (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]

@@ -12,9 +12,9 @@ class BobbyBibs(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "It's hard to find good clothes down here",
-                    "Which is why I always wear a bib",
-                    "I can't....stand it anymore....god someone....get me out of here , i'm losing my mind"
+                    "It's hard to find good clothes down here which is why I always wear a bib when I eat",
+                    "Every day is chili day, mixed with lots of hedge hogs. And....nothing....else....."
+                    "I can't....stand it anymore....god someone....get me out of here , I'll stop skipping church, just help...me..."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

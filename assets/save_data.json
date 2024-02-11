@@ -1,26 +1,30 @@
 {
     "level": 1,
-    "exp": 5,
+    "exp": 210,
     "stamina_points": 100,
     "max_stamina_points": 100,
     "focus_points": 100,
     "max_focus_points": 100,
-    "companions": [],
-    "items": [],
+    "companions": [
+        "sir leopold"
+    ],
+    "items": [
+        "sir leopold's paw"
+    ],
     "magicinventory": [
         "reveal"
     ],
     "body": 0,
     "mind": 1,
     "spirit": 0,
-    "perception": 0,
+    "perception": 1,
     "luck": 0,
-    "money": 400,
+    "money": 600,
     "rabies": false,
-    "immunity": false,
+    "immunity": true,
     "level3reward": false,
     "food": 0,
-    "days": 1,
+    "days": 3,
     "cutscene1": false,
     "cutscene2": false,
     "quest1complete": false,

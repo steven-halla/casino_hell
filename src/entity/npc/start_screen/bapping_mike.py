@@ -90,6 +90,16 @@ class BappingMike(Npc):
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False
+        if state.controller.isUpPressed:
+            state.controller.isUpPressed = False
+        if state.controller.isLeftPressed:
+            state.controller.isLeftPressed = False
+
+        if state.controller.isRightPressed:
+            state.controller.isRightPressed = False
+
+        if state.controller.isDownPressed:
+            state.controller.isDownPressed = False
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"

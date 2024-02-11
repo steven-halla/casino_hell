@@ -14,6 +14,8 @@ class BarKeepLowBody(Npc):
             "default_message": NpcTextBox(
                 [
                     "Bar Keep: Bar is closed right now, your free to hang out and chill. Even I need time off you know.",
+                    "Funny that I took vacation the same day you got here, but don't worry I'll tell you something good",
+                    "Sometimes , based on certain events what people say can change."
 
                 ],
                 (50, 450, 700, 45), 36, 500

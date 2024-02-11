@@ -14,19 +14,22 @@ class JustinNoFruit(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Justin: I have a quest for you, get a score of 300 in opossum in a can from nelly OR sandy", "there are two people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them.",
-                    "CHinrog stays for 1 week every decade, he'll be gone in 2 days."
+                    "Justin: The beer taste awful, but it's all we have to drink.","We all have a rule here, don't ask or talk about where the beer comes from. We rather not think about it.",
+                    "Chinrog doesn't like to say long, and he comes by every decade or so. He's the head chef."
+                    ,
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "rabies_message": NpcTextBox(
-                ["Are you ok? You dont look so hot...."],
+                ["Justin: Are you ok? You dont look so hot..."],
                 (50, 450, 700, 130), 36, 500
             ),
             'sir_leopold_message': NpcTextBox(
                 [
 
-                    "I was so scared....you have a knack for defying the odds.....",
+                    "Justin: I was so scared...you have a knack for defying the odds.....",
+                    "Hero: I guess you can say I was born lucky. That's what my mom always told me."
+                    ,
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

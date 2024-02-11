@@ -12,14 +12,15 @@ class BrutalPatrick(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "why am i so brutal",
-                    "I can't....stand it anymore....god someone....get me out of here , i'm losing my mind"
+                    "I didn't steal these clothes, they were giving to me by a priest.",
+                    "They sure are comfy though, nice and soft.....and dirty and smelly , we can't wash our clothes, "
+                    "the demons, why would they do this to us?",
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
 
             "sir_leopold_message": NpcTextBox(
-                ["You wnt me to stop wearing these clothes. No."],
+                ["You think I should  stop wearing these clothes? I'm going to keep wearing them."],
                 (50, 450, 700, 130), 36, 500
             ),
         }
