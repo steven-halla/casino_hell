@@ -550,7 +550,6 @@ need to set player postion more in middle need to figure that out but it wil be 
 
 %%%%%%The below is the master bug list: %%%%%%%
 sir leopold should be the exit condition
-need descriptions for items in shop
 need to set shop limits that you cannot buy items if your gold falls below 100
 I need to fix things, when hero stamina hits 0 or lower, put him to the doctor office charge 100 coins for rescue
 kick player out if their gold is below a threshold, game over if its 0 or lower. Need a game over screen state as

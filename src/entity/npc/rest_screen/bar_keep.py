@@ -53,12 +53,22 @@ class BarKeep(Npc):
         if "b key" in state.player.items:
             self.shop_items[2] = "sold out"
 
-        if state.player.food < 1:
+
+        if state.player.money < 200:
+            self.shop_items[0] = "Money can't fall below 100 post purchase"
+        elif state.player.money < 300:
+            self.shop_items[1] = "Money can't fall below 100 post purchase"
+
+        elif state.player.money < 600:
+            self.shop_items[2] = "Money can't fall below 100 post purchase"
+
+        elif state.player.food < 1:
             self.shop_items[0] = "Your Full"
             self.shop_items[1] = "Your Full"
         elif state.player.food > 0:
             self.shop_items[0] = "Stallion Brew"
             self.shop_items[1] = "Moldy Sandwich"
+
 
 
         if state.restScreen.barscene2 == True:
@@ -115,7 +125,7 @@ class BarKeep(Npc):
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
                 if state.player.money >= cost and state.player.food > 0 and self.textbox.is_finished():
-                    if self.selected_money_index == 0:
+                    if self.selected_money_index == 0 and state.player.money > 300:
                         print("hey 0")
                         state.player.money -= 100
                         state.player.stamina_points += 75
@@ -131,9 +141,7 @@ class BarKeep(Npc):
                             elif self.barcutscene1 == True and self.barcutscene2 == True:
                                 print("yay")
 
-
-
-                    elif self.selected_money_index == 1:
+                    elif self.selected_money_index == 1 and state.player.money > 300:
                         state.player.money -= 100
                         print("hey 1")
                         # this will go above the max which is ok for this item
@@ -150,7 +158,7 @@ class BarKeep(Npc):
                             elif self.barcutscene1 == True and self.barcutscene2 == True:
                                 print("yay")
 
-                    elif self.selected_money_index == 2:
+                    elif self.selected_money_index == 2 and state.player.money > 600:
 
                         if "b key" not in state.player.items:
                             state.player.money -= 500
