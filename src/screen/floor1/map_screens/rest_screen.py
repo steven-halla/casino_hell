@@ -166,7 +166,7 @@ class RestScreen(Screen):
             # QuestGiverJanet(16 * 10, 16 * 26),
             ChiliPitTeleporter(16 * 36, 16 * 30),
 
-            SufferingSuzy(16 * 25, 16 * 26),
+            SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 34, 16 * 27),
             StartScreenTeleporter(16 * 5, 16 * 25),
             NewTeleporter(16 * 15, 16 * 35),

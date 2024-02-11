@@ -24,7 +24,7 @@ class GamblingAreaScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame3.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/gamblingarea.tmx")
         self.y_up_move = False
         self.y_down_move = False
         self.x_left_move = False
@@ -94,11 +94,11 @@ class GamblingAreaScreen(Screen):
 
 
         state.npcs.extend([
-            BlackJackThomas(16 * 4, 16 * 2),
-            CoinFlipFred(16 * 12, 16 * 2),
-            NellyOpossum(16 * 20, 16 * 2),
-            SallyOpossum(16 * 14, 16 * 12),
-            Guy(16 * 26, 16 * 12),
+            BlackJackThomas(16 * 30, 16 * 22),
+            CoinFlipFred(16 * 12, 16 * 32),
+            NellyOpossum(16 * 30, 16 * 5),
+            SallyOpossum(16 * 5, 16 * 5),
+            Guy(16 * 12, 16 * 44),
             RestScreenTeleporter(16 * 11, 16 * 22),
         ])
 
