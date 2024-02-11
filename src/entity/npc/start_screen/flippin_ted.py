@@ -13,10 +13,10 @@ class FlippinTed(Npc):
                 ["Ted: I'm a newb stomper, better be careful", "Are you ready to lose?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Looks like you defeated me, how sad :("],
+                ["You took my coins you....you.....I'll never forgive you!!!"],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
-                ["Bro, you look like you have a hankering for trash, get away from me you smelly piece of fuck"],
+                ["I see you got bit, you deserve it you trash. I hope you suffer!"],
                 (50, 450, 700, 130), 36, 500),
 
         }

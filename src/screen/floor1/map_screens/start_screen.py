@@ -60,7 +60,7 @@ class StartScreen(Screen):
 
     def start(self, state: "GameState"):
         self.stop_music()
-        self.initialize_music()
+        # self.initialize_music()
         super().start(state)
 
         if state.start_new_game_entry_point == True:
@@ -118,7 +118,6 @@ class StartScreen(Screen):
 
         self.clock.tick(60)
         end_time = pygame.time.get_ticks()
-        print(f"Update duration: {end_time - start_time} ms")
 
 
         controller = state.controller

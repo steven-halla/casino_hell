@@ -14,17 +14,18 @@ class BappingMike(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                        "Mike: Money is FINITE, so don't waste it.",
-                        "Chinrog is the head demon of this level."
+                        "Mike: Money is FINITE, so don't waste it. You'll need it for gambling, sleeping, eating, as well as buying items.",
+                        "Chinrog is the head demon of this level. He'll be gone in 10 days.",
+                    "Hero: Demon???"
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "rabies_message": NpcTextBox(
-                ["You should go see a doctor, sadly for you I'm not a doctor."],
+                ["You should go see a doctor, sadly for you I'm not a doctor.There is a doctor, very far away from me."],
                 (50, 450, 700, 130), 36, 500
             ),
             "sir_leopold_message": NpcTextBox(
-                ["HOw are you doing now? Remember to guard your moeny from these knaves....."],
+                ["How are you doing now? You'll need 2000 coins to get access to the boss area, from there you can go down to level 2. I believe in you."],
                 (50, 450, 700, 130), 36, 500
             ),
         }

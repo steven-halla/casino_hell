@@ -11,22 +11,27 @@ class CindyLongHair(Npc):
         self.cindy_long_hair_messages = {
             'textbox': NpcTextBox(
                 [
-                    "Cindy: Cheating Ted is such a b.",
-                    "The key to winning is to pay attention to patterns, which can change in the middle of playing",
-                    "Try betting low, and get  a hang for the patterns before you go in for the kill."
+                    "Cindy: Cheating Ted is such a bastard ass.",
+                    "Because of him my boyfriend making beer",
+                    "Hero: That sounds like a fun job",
+                    "Cindy: Fun?... Oh that's right your still new here...let me teach you something useful."
+                    "The key to winning coin flip is to pay attention to patterns.",
+                    "This can change based on certain conditions.",
+                    "Try betting low, and get a hang for the patterns.",
+                    "If you brute force it you'll more than likely lose."
                 ],
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 50, 45), 36, 500
             ),
             'reward_message': NpcTextBox(
                 [
                     "",
                     "Cindy: Oh kool look at you, time for your reward (inn badge). Oh, you want something else too, what a greedy man you are!.",
-                    "This potion will increase your intelligence by one, this will open up your first spell slot!",
-                    "Go play some black jack and try it out",
+                    "This potion will increase your intelligence by one, this will open up 3 spell slots. More Mind means you can hold on to more spells!",
+                    "Go play some black jack and try it out. It'll give you the advantage you need to win.",
 
                 ],
 
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 50, 45), 36, 500
             ),
             'final_message': NpcTextBox(
                 [
@@ -35,21 +40,24 @@ class CindyLongHair(Npc):
                     "Black Jack Technique Reveal: Get a good sense of what your opponent has.",
                     "low: 1-9, med 10=15, high 16-21",
                 ],
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 50, 45), 36, 500
             ),
             'rabies_message': NpcTextBox(
                 [
                     "",
-                    "that bitch Sally took teh doctors blue flower, I just know it.",
+                    "That bitch Sally took teh doctors blue flower, I just know it.",
+                    "Why else was she snooping around her office?"
                 ],
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 50, 45), 36, 500
             ),
             'sir_leopold_message': NpcTextBox(
                 [
                     "",
-                    "I was so scared....you have a knack for defying the odds.....",
+                    "I was so scared...you have a knack for defying the odds.",
+                    "Hero: What can I say, I guess Lady Luck is on my side.",
+                    "It seems so, everyone is starting to talk about you, we...believe in you."
                 ],
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 50, 45), 36, 500
             ),
         }
         self.choices = ["Yes", "No"]
