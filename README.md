@@ -557,3 +557,4 @@ a global
 
 opossum in a can goes through chompy messsages to fast for sally maybe nelly too need to check
 there is a bug I htink the last can you picked isn't being reset in the list on refresh 
+need sound effects for items that you cant buy like in ff6

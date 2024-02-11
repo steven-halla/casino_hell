@@ -44,6 +44,7 @@ class ShopKeeper(Npc):
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
+
             if "opossum repellent" in state.player.items:
                 self.shop_items[2] = "sold out"
             if state.player.shop_keep_potion == True:
@@ -90,7 +91,7 @@ class ShopKeeper(Npc):
 
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
-                if state.player.money >= cost and selected_item != "sold out" and self.textbox.is_finished():
+                if state.player.money >= cost and (state.player.money - cost >= 100) and selected_item != "sold out" and self.textbox.is_finished():
                     state.player.money -= cost
                     if selected_item not in state.player.items:
                         state.player.items.append(selected_item)  # Append the selected item to the player's inventory only if it's not already there
@@ -189,12 +190,23 @@ class ShopKeeper(Npc):
             if self.state == "talking":
                 # state.DISPLAY.blit(self.font.render(f"Hurry and buy something", True,
                 #                                     (255, 255, 255)), (70, 460))
-                if self.selected_item_index == 0:
+                if self.selected_item_index == 0 and state.player.money < 200:
+                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                        (255, 255, 255)), (70, 460))
+                elif self.selected_item_index == 0:
                     state.DISPLAY.blit(self.font.render(f"Health and Magic max + 20", True,
                                                         (255, 255, 255)), (70, 460))
-                if self.selected_item_index == 1:
+
+                if self.selected_item_index == 1 and state.player.money < 300:
+                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                        (255, 255, 255)), (70, 460))
+                elif self.selected_item_index == 1:
                     state.DISPLAY.blit(self.font.render(f"Save your game at the phone  ", True,
                                                         (255, 255, 255)), (70, 460))
-                if self.selected_item_index == 2:
+
+                if self.selected_item_index == 2 and state.player.money < 400:
+                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                        (255, 255, 255)), (70, 460))
+                elif self.selected_item_index == 2:
                     state.DISPLAY.blit(self.font.render(f"Halves damage of opossum bites in opossum in a can. ", True,
                                                         (255, 255, 255)), (70, 460))

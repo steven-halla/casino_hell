@@ -54,20 +54,11 @@ class BarKeep(Npc):
             self.shop_items[2] = "sold out"
 
 
-        if state.player.money < 200:
-            self.shop_items[0] = "Money can't fall below 100 post purchase"
-        elif state.player.money < 300:
-            self.shop_items[1] = "Money can't fall below 100 post purchase"
 
-        elif state.player.money < 600:
-            self.shop_items[2] = "Money can't fall below 100 post purchase"
 
-        elif state.player.food < 1:
-            self.shop_items[0] = "Your Full"
-            self.shop_items[1] = "Your Full"
-        elif state.player.food > 0:
-            self.shop_items[0] = "Stallion Brew"
-            self.shop_items[1] = "Moldy Sandwich"
+
+        self.shop_items[0] = "Stallion Brew"
+        self.shop_items[1] = "Moldy Sandwich"
 
 
 
@@ -237,14 +228,30 @@ class BarKeep(Npc):
             pass
         elif self.state == "talking":
             self.textbox.draw(state)
-            if self.selected_item_index == 0:
+            if self.selected_item_index == 0 and state.player.money < 200:
+                state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                    (255, 255, 255)), (70, 460))
+            elif self.selected_item_index == 0 and state.player.food < 1:
+                state.DISPLAY.blit(self.font.render(f"Your food is at 0, rest at inn to restore.", True,
+                                                    (255, 255, 255)), (70, 460))
+            elif self.selected_item_index == 0:
+
                 state.DISPLAY.blit(self.font.render(f"Kinda smells like pee. Restores 75 Stamina", True,
                                                     (255, 255, 255)), (70, 460))
-            if self.selected_item_index == 1:
+            if self.selected_item_index == 1 and state.player.money < 300:
+                state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                    (255, 255, 255)), (70, 460))
+            elif self.selected_item_index == 1 and state.player.food < 1:
+                state.DISPLAY.blit(self.font.render(f"Your food is at 0, rest at inn to restore.", True,
+                                                    (255, 255, 255)), (70, 460))
+            elif self.selected_item_index == 1:
                 state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restore 75 Magic  ", True,
                                                     (255, 255, 255)), (70, 460))
-            if self.selected_item_index == 2:
-                state.DISPLAY.blit(self.font.render(f"Key for boss area. Min hold of 2300 coins to buy ", True,
+            if self.selected_item_index == 2 and state.player.money < 600:
+                state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                    (255, 255, 255)), (70, 460))
+            elif self.selected_item_index == 2:
+                state.DISPLAY.blit(self.font.render(f"Key for boss area. ", True,
                                                     (255, 255, 255)), (70, 460))
 
             # print("is talking")

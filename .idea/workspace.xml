@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="descrptions for items">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="guard against player spending too much money in shops">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/shop_keeper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -302,7 +305,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="36972000" />
+      <workItem from="1707589099832" duration="37980000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -647,7 +650,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="501" />
+    <option name="localTasksCounter" value="502" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,7 +679,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed bug at start load screen of playing being able to move arrow up and down after hitting T key to confirm choice" />
     <MESSAGE value="updated with new player sprite good ducking luck with new animations" />
     <MESSAGE value="new images added" />
     <MESSAGE value="fliped for right" />
@@ -701,7 +703,8 @@
     <MESSAGE value="for start area fixed bug wtih messges not displaying based on currenrt story state" />
     <MESSAGE value="messages for all npcs now display after you turn in blue flower" />
     <MESSAGE value="descrptions for items" />
-    <option name="LAST_COMMIT_MESSAGE" value="descrptions for items" />
+    <MESSAGE value="guard against player spending too much money in shops" />
+    <option name="LAST_COMMIT_MESSAGE" value="guard against player spending too much money in shops" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
