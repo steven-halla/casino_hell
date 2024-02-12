@@ -52,7 +52,7 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 200
+        self.coinFlipFredMoney = 100
 
 
 
@@ -372,6 +372,9 @@ class CoinFlipFredScreen(Screen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
+        # if state.player.money < 0:
+        #     state.currentScreen = state.gameOverScreen
+        #     state.gameOverScreen.start(state)
 
         if self.music_on == True:
             self.stop_music()
@@ -411,7 +414,6 @@ class CoinFlipFredScreen(Screen):
                 self.initialize_text_boxes()
                 self.coin_flip_messages_initialized = True
             self.coin_flip_fred_messages["welcome_message"].update(state)
-            print("bjladjfl;safjds;afjsal;fas")
 
                 # Check if the text box message index is at the second element (index 1)
             if self.coin_flip_fred_messages["welcome_message"].message_index == 2:
@@ -538,6 +540,8 @@ class CoinFlipFredScreen(Screen):
             if not self.has_run_money_logic:
 
                 if "coin flip glasses" in state.player.items and self.player_choice == self.result:
+                    print("Coin flip")
+
                     state.player.money += self.bet + 20
                     self.coinFlipFredMoney -= self.bet + 20
                     if self.coinFlipFredMoney == -10:

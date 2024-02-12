@@ -23,6 +23,7 @@ from constants import WINDOWS_SIZE, GREEN, BLUE
 from controller import Controller
 from entity.obstacle.obstacle import Obstacle
 from screen.floor1.map_screens.gambling_area_screen import GamblingAreaScreen
+from screen.floor1.map_screens.game_over_screen import GameOverScreen
 from screen.floor1.map_screens.hedge_maze_screen import HedgeMazeScreen
 from screen.floor1.map_screens.hotel_room_screen import HotelRoomScreen
 from screen.examples.main_screen import MainScreen
@@ -82,6 +83,7 @@ class GameState:
 
         self.barCutScene1 = BarCutScene1Screen()
         self.barCutScene2 = BarCutScene2Screen()
+        self.gameOverScreen = GameOverScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()

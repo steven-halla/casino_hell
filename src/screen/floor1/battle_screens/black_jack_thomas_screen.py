@@ -173,6 +173,12 @@ class BlackJackThomasScreen(Screen):
             "avatar_magic_explain": [
                 "Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned.Magic lock 5 turns 25MP"],
             "back_magic_explain": ["Back to previous gui"],
+            "player_no_money_explain": [
+                "HOoooo boooooy your in for it now, hope you enjoy your new form.",
+                "You can feel darkness start to surround you....."],
+            "player_no_stamina_explain": [
+                "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..",
+                ],
 
         }
 
@@ -224,6 +230,10 @@ class BlackJackThomasScreen(Screen):
             self.messages["avatar_magic_explain"], (50, 450, 50, 45), 30, 500)
         self.back_magic_explain_component = TextBox(
             self.messages["back_magic_explain"], (50, 450, 50, 45), 30, 500)
+        self.player_no_money = TextBox(
+            self.messages["player_no_money_explain"], (50, 450, 50, 45), 30, 500)
+        self.player_no_stamina = TextBox(
+            self.messages["player_no_stamina_explain"], (50, 450, 50, 45), 30, 500)
 
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
@@ -1023,6 +1033,11 @@ class BlackJackThomasScreen(Screen):
         # self.face_down_card((0,0))
 
         if self.game_state == "welcome_screen":
+
+            if state.player.money < 1:
+                self.game_state = "game_over_no_money"
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
             #
             black_box = pygame.Surface((160 - 10, 180 - 10))
             black_box.fill((0, 0, 0))
@@ -1274,7 +1289,41 @@ class BlackJackThomasScreen(Screen):
 
 
 
+        elif self.game_state == "game_over_no_money":
 
+            self.player_no_money.update(state)
+            self.player_no_money.draw(state)
+            if self.player_no_money.is_finished():
+                if state.controller.isTPressed:
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+
+
+
+
+
+
+
+
+        elif self.game_state == "game_over_no_stamina":
+            self.player_no_stamina.update(state)
+            self.player_no_stamina.draw(state)
+            if self.player_no_stamina.is_finished():
+                if state.controller.isTPressed:
+                    state.player.money -= 100
+                    if state.player.money < 1:
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
+                    else:
+                        state.currentScreen = state.restScreen
+                        state.restScreen.start(state)
+
+
+
+            if state.player.money < 1:
+                self.game_state = "game_over_no_money"
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
 
 
         elif self.game_state == "results_screen":

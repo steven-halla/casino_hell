@@ -154,6 +154,12 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
 
+        # if self.money < 1:
+        #     state.currentScreen = state.gameOverScreen
+        #     state.gameOverScreen.start(state)
+
+
+
 
 
 
