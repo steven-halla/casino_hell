@@ -1299,12 +1299,6 @@ class BlackJackThomasScreen(Screen):
                     state.gameOverScreen.start(state)
 
 
-
-
-
-
-
-
         elif self.game_state == "game_over_no_stamina":
             self.player_no_stamina.update(state)
             self.player_no_stamina.draw(state)
@@ -1315,6 +1309,7 @@ class BlackJackThomasScreen(Screen):
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)
                     else:
+                        state.player.canMove = True
                         state.currentScreen = state.restScreen
                         state.restScreen.start(state)
 
