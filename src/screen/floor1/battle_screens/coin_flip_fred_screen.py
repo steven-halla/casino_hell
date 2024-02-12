@@ -143,7 +143,7 @@ class CoinFlipFredScreen(Screen):
                 500  # Delay
             ),
             "game_over_no_money": TextBox(
-                ["Looks like your out of money, sorry time for you to go. "
+                ["Looks like your out of money, sorry time for you to go...foreverrrrrrrrrr hahhaha HAHHAHAHHAHAHAHAHA. "
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -151,7 +151,7 @@ class CoinFlipFredScreen(Screen):
                 500  # Delay
             ),
             "game_over_no_stamina": TextBox(
-                ["Hero: I'm so tired, if I keep gambling i'll pass out at the dealer table. "
+                ["Hero: I'm so tired, I'm....passing....out....... "
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -595,6 +595,12 @@ class CoinFlipFredScreen(Screen):
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
+
+            if state.player.money < 1:
+                self.game_state = "game_over_no_money"
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
+
             if self.coinFlipFredMoney < 10:
                 self.coinFlipTedDefeated = True
                 self.game_state = "enemy_defeated_screen"
@@ -1091,18 +1097,18 @@ class CoinFlipFredScreen(Screen):
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 
-        if self.game_state == "game_over_screen":
-            print("your game state is: " + str(self.game_state))
-            if state.player.stamina_points < 2:
-                print("no stamina")
-                self.coin_flip_messages["game_over_no_stamina"].update(state)
-                self.coin_flip_messages["game_over_no_stamina"].draw(state)
-
-
-            elif state.player.money < 10:
-                print("no money")
-                self.coin_flip_messages["game_over_no_money"].update(state)
-                self.coin_flip_messages["game_over_no_money"].draw(state)
+        # if self.game_state == "game_over_screen":
+        #     print("your game state is: " + str(self.game_state))
+        #     if state.player.stamina_points < 2:
+        #         print("no stamina")
+        #         self.coin_flip_messages["game_over_no_stamina"].update(state)
+        #         self.coin_flip_messages["game_over_no_stamina"].draw(state)
+        #
+        #
+        #     elif state.player.money < 10:
+        #         print("no money")
+        #         self.coin_flip_messages["game_over_no_money"].update(state)
+        #         self.coin_flip_messages["game_over_no_money"].draw(state)
 
 
         if self.game_state == "enemy_desperate_screen":
@@ -1119,6 +1125,30 @@ class CoinFlipFredScreen(Screen):
             # print("you won the game")
             self.coin_flip_messages["enemy_defeated_message"].update(state)
             self.coin_flip_messages["enemy_defeated_message"].draw(state)
+
+
+        if self.game_state == "game_over_no_money":
+
+            self.coin_flip_messages["game_over_no_money"].update(state)
+            self.coin_flip_messages["game_over_no_money"].draw(state)
+            if self.coin_flip_messages["game_over_no_money"].is_finished():
+                if state.controller.isTPressed:
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+
+        if self.game_state == "game_over_no_stamina":
+            self.coin_flip_messages["game_over_no_stamina"].update(state)
+            self.coin_flip_messages["game_over_no_stamina"].draw(state)
+            if self.coin_flip_messages["game_over_no_stamina"].is_finished():
+                if state.controller.isTPressed:
+                    state.player.money -= 100
+                    if state.player.money < 1:
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
+                    else:
+                        state.player.canMove = True
+                        state.currentScreen = state.restScreen
+                        state.restScreen.start(state)
 
 
         pygame.display.flip()
