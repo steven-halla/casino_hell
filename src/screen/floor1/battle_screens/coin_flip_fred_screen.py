@@ -151,7 +151,7 @@ class CoinFlipFredScreen(Screen):
                 500  # Delay
             ),
             "game_over_no_stamina": TextBox(
-                ["Hero: I'm so tired, I'm....passing....out....... "
+                ["Hero: I'm so tired, I'm....passing....out.......(-100 golds) "
 
                  ],
                 (50, 450, 700, 130),  # Position and size

@@ -177,7 +177,7 @@ class BlackJackThomasScreen(Screen):
                 "HOoooo boooooy your in for it now, hope you enjoy your new form.",
                 "You can feel darkness start to surround you....."],
             "player_no_stamina_explain": [
-                "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..",
+                "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..(-100 golds)",
                 ],
 
         }

@@ -149,7 +149,7 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "game_over_no_stamina": TextBox(
-                ["Hero: I'm so tired, if I keep gambling i'll pass out at the dealer table. "
+                ["Hero: Oh crap... I screwed up, I'm going to pass out...(-100 golds) "
 
                  ],
                 (50, 450, 700, 130),  # Position and size
@@ -187,6 +187,7 @@ class CoinFlipTedScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+
 
 
             # You can add more game state keys and TextBox instances here
@@ -491,6 +492,12 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "play_again_screen":
+
+            if state.player.money < 1:
+                self.game_state = "game_over_no_money"
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
+
             if self.coinFlipTedMoney < 10:
                 self.coinFlipTedDefeated = True
                 self.game_state = "enemy_defeated_screen"
@@ -954,6 +961,29 @@ class CoinFlipTedScreen(Screen):
             # print("you won the game")
             self.coin_flip_messages["enemy_defeated_message"].update(state)
             self.coin_flip_messages["enemy_defeated_message"].draw(state)
+
+        if self.game_state == "game_over_no_money":
+
+            self.coin_flip_messages["game_over_no_money"].update(state)
+            self.coin_flip_messages["game_over_no_money"].draw(state)
+            if self.coin_flip_messages["game_over_no_money"].is_finished():
+                if state.controller.isTPressed:
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+
+        if self.game_state == "game_over_no_stamina":
+            self.coin_flip_messages["game_over_no_stamina"].update(state)
+            self.coin_flip_messages["game_over_no_stamina"].draw(state)
+            if self.coin_flip_messages["game_over_no_stamina"].is_finished():
+                if state.controller.isTPressed:
+                    state.player.money -= 100
+                    if state.player.money < 1:
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
+                    else:
+                        state.player.canMove = True
+                        state.currentScreen = state.restScreen
+                        state.restScreen.start(state)
 
 
         pygame.display.flip()
