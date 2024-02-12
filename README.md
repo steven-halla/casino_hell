@@ -558,3 +558,6 @@ need sound effects for items that you cant buy like in ff6
 need to set life to red when low on all screens 
 
 fix TEXTBOX class similiar to NPC textz box for wrapping
+
+i need magic descriptions 
+need to fix magic text box selector in one of hte games 

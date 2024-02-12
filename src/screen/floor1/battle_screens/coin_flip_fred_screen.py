@@ -699,12 +699,23 @@ class CoinFlipFredScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 195 - 40))  # Moved up by 40 pixels
 
-        # Adjusting text positions accordingly
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
-                                            (255, 255, 255)), (37, 250 - 40))
+        if state.player.money < 100:
+            text_color = (255, 0, 0)  # Red color
+        else:
+            text_color = (255, 255, 255)  # White color
+
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
+
+        # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
+        #                               (255, 255, 255)), (37, 250))
+        if state.player.stamina_points < 20:
+            text_color = (255, 0, 0)  # Red color
+        else:
+            text_color = (255, 255, 255)  # White color
+
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             (255, 255, 255)), (37, 290 - 40))
+                             text_color), (37, 290))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                             (255, 255, 255)), (37, 330 - 40))
