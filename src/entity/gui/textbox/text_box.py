@@ -60,12 +60,29 @@ class TextBox(Entity):
         # print("is finished? " + str(self.is_finished()))
 
     def draw(self, state: "GameState"):
-        text_to_display = self.text[:self.characters_to_display]
-        wrapped_text = textwrap.wrap(text_to_display, 58)
+        text = self.messages[self.message_index]
+        text_to_display = text[:self.characters_to_display]
+        # Wrap text to a maximum of 40 characters per line
+        wrapped_text = textwrap.wrap(text_to_display, 55)
+
+        # Fixed dimensions for the text box
+        box_width = 700  # Width of the text box
+        box_height = 120  # Height of the text box
+
+        # Position of the text box
+        box_x, box_y = self.position.x, self.position.y
+
+        # Draw the black background rectangle
+        pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
+
+        # Draw the text within the text box
+        line_height = 40  # Adjust line height as needed
+        padding = 10  # Padding for top, left, and right
         for i, line in enumerate(wrapped_text):
-            text_surface = self.font.render(line, True, (255, 255, 255))
-            state.DISPLAY.blit(text_surface,
-                         (self.position.x, self.position.y + (i * 40)))
+            text_line_y = box_y + (i * line_height) + padding  # Apply top padding
+            text_surface = state.FONT.render(line, True, (255, 255, 255))
+            # Render text with left padding
+            state.DISPLAY.blit(text_surface, (box_x + padding, text_line_y))
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and \

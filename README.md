@@ -555,7 +555,6 @@ sir leopold should be the exit condition
 there is a bug I htink the last can you picked isn't being reset in the list on refresh 
 need sound effects for items that you cant buy like in ff6
 
-need to set life to red when low on all screens 
 
 fix TEXTBOX class similiar to NPC textz box for wrapping
 

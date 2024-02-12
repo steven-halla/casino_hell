@@ -126,6 +126,15 @@ class OpossumInACanSallyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "less_than_150_money": TextBox(
+                ["Chomp",
+                 "Sally: You disgusting piece of crap get out of here till you get more money. Go on Git! ", ""
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -348,7 +357,6 @@ class OpossumInACanSallyScreen(Screen):
 
 
             if self.player_score >= 600 and self.talley_checker == False:
-                print("dsjf;ldsajfl;sajfsaj;lfjlsdjf")
 
                 # state.player.stamina_points -= 10
                 print("Your before  total exp is: " + str(state.player.exp))
@@ -359,7 +367,6 @@ class OpossumInACanSallyScreen(Screen):
                 return
 
             elif self.player_score >= 300 and self.talley_checker == False:
-                print("7534975903275934270573945703975930750937593729573405734850")
 
                 # state.player.stamina_points -= 5
 
@@ -384,17 +391,6 @@ class OpossumInACanSallyScreen(Screen):
 
                 return
 
-            # if self.opossumInACanMessages["tally_message"].message_index == 1 and state.player.money < 1:
-            #     print("No money ")
-            #     self.game_state = "game_over_no_money"
-            #
-            # if self.opossumInACanMessages["tally_message"].message_index == 1 and state.player.stamina < 1:
-            #     self.game_state = "game_over_no_stamina"
-
-
-
-
-            # print("tally ho")
             if self.sallyOpossumMoney < 0:
                 self.sallyOpossumMoney = 0
                 self.sallyOpossumIsDefeated = True
@@ -409,16 +405,9 @@ class OpossumInACanSallyScreen(Screen):
                     state.player.money += self.player_score
                     self.sallyOpossumMoney -= self.player_score
 
-                    # self.total_winnings = self.player_score
-                    # state.player.money += self.total_winnings
-                    # self.sallyOpossumMoney -= self.player_score
-
-
 
                 elif self.player_score > self.sallyOpossumMoney:
-                    # print("waffles")
-                    # print("your winnings are" + str(self.total_winnings))
-                    # print("your nellly monies  are" + str(self.sallyOpossumMoney))
+
                     self.total_winnings = self.sallyOpossumMoney
                     state.player.money += self.total_winnings
                     self.sallyOpossumMoney = 0
@@ -439,7 +428,20 @@ class OpossumInACanSallyScreen(Screen):
                 self.game_state = "real_opossum_defeated_screen"
 
             elif self.opossumInACanMessages["tally_message"].message_index == 1:
-                self.game_state = "play_again_or_leave_screen"
+
+                if state.player.money < 150:
+                    print("Leave")
+                    self.game_state = "no_money_you_leave"
+                else:
+                    self.game_state = "play_again_or_leave_screen"
+
+        if self.game_state == "no_money_you_leave":
+            print("Hi")
+            self.opossumInACanMessages["less_than_150_money"].update(state)
+            if self.opossumInACanMessages["less_than_150_money"].is_finished():
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
+
 
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
@@ -536,11 +538,14 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "immune_lose_screen":
             print("This is the immune lose screen")
+
             if self.talley_checker == False:
                 state.player.exp += 100
                 self.talley_checker = True
 
             self.opossumInACanMessages["immune_lose_message"].update(state)
+
+
 
             if state.player.money < 1:
                 print("No money ")
@@ -548,6 +553,10 @@ class OpossumInACanSallyScreen(Screen):
 
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"
+
+            elif state.player.money < 150:
+                print("Leave")
+                self.game_state = "no_money_you_leave"
 
             # state.currentScreen = state.gamblingAreaScreen
                 # state.gamblingAreaScreen.start(state)
@@ -824,7 +833,7 @@ class OpossumInACanSallyScreen(Screen):
         else:
             text_color = (255, 255, 255)  # White color
 
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 210))
 
         # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
         #                               (255, 255, 255)), (37, 250))
@@ -835,7 +844,7 @@ class OpossumInACanSallyScreen(Screen):
 
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             text_color), (37, 290))
+                             text_color), (37, 250))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                             (255, 255, 255)), (37, 330 - 40))
@@ -1178,6 +1187,10 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.game_state == "hero_defeated_money_screen":
             self.opossumInACanMessages["hero_defeated_stamina_screen"].draw(state)
+
+        if self.game_state == "no_money_you_leave":
+            print("draw me")
+            self.opossumInACanMessages["less_than_150_money"].draw(state)
 
         if self.game_state == "game_over_no_money":
 

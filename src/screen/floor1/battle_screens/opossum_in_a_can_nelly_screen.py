@@ -127,6 +127,16 @@ class OpossumInACanNellyScreen(Screen):
                 500  # Delay
             ),
 
+            "less_than_150_money": TextBox(
+                ["Chomp",
+                 "Nelly: I'm sorry but you dont' have enough money to keep playing, do come back.! ", "",
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+
             # You can add more game state keys and TextBox instances here
         }
         self.result = "win"
@@ -447,7 +457,20 @@ class OpossumInACanNellyScreen(Screen):
                 self.game_state = "real_opossum_defeated_screen"
 
             elif self.opossumInACanMessages["tally_message"].message_index == 1:
-                self.game_state = "play_again_or_leave_screen"
+                if state.player.money < 150:
+                    print("Hi")
+                    self.game_state = "no_money_you_leave"
+                else:
+                    print("Ni")
+                    self.game_state = "play_again_or_leave_screen"
+
+
+        if self.game_state == "no_money_you_leave":
+            print("Hi")
+            self.opossumInACanMessages["less_than_150_money"].update(state)
+            if self.opossumInACanMessages["less_than_150_money"].is_finished():
+                state.currentScreen = state.gamblingAreaScreen
+                state.gamblingAreaScreen.start(state)
 
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
@@ -554,6 +577,12 @@ class OpossumInACanNellyScreen(Screen):
                 self.game_state = "game_over_no_stamina"
                 # state.currentScreen = state.gamblingAreaScreen
                 # state.gamblingAreaScreen.start(state)
+
+            elif state.player.money < 150:
+
+                print("Leave")
+
+                self.game_state = "no_money_you_leave"
             elif state.player.stamina_points > 0:
 
                 if state.controller.isTPressed == True:
@@ -817,7 +846,7 @@ class OpossumInACanNellyScreen(Screen):
         else:
             text_color = (255, 255, 255)  # White color
 
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 210))
 
         # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
         #                               (255, 255, 255)), (37, 250))
@@ -828,7 +857,7 @@ class OpossumInACanNellyScreen(Screen):
 
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             text_color), (37, 290))
+                             text_color), (37, 250))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                             (255, 255, 255)), (37, 330 - 40))
@@ -1156,6 +1185,10 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "hero_defeated_money_screen":
             self.opossumInACanMessages["hero_defeated_stamina_screen"].draw(state)
+
+        if self.game_state == "no_money_you_leave":
+            print("draw me")
+            self.opossumInACanMessages["less_than_150_money"].draw(state)
 
         if self.game_state == "game_over_no_money":
 
