@@ -136,6 +136,22 @@ class OpossumInACanNellyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "magic_description_reveal": TextBox(
+                [
+                    "reveal: Your perception is increased. You can now detect subtle shakings of the trash cans. 1 can is X3 star, the other is 1 of 2 rabid opossums"
+                ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "magic_description_back": TextBox(
+                [
+                    "back: go back to previous menu"
+                ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -164,7 +180,7 @@ class OpossumInACanNellyScreen(Screen):
         self.menu_selector = ["grab", "magic", "tally"]
 
 
-        self.magic_menu_selector = ["Back", "Keen"]
+        self.magic_menu_selector = ["Back"]
         self.magic_menu_index = 0
 
 
@@ -1076,7 +1092,7 @@ class OpossumInACanNellyScreen(Screen):
 
             # Draw text
             # Draw text
-            if "Keen" in self.magic_menu_selector:
+            if "shake" in self.magic_menu_selector:
                 state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
             else:
                 state.DISPLAY.blit(self.font.render(" ", True, (255, 255, 255)), (text_x, text_y_yes))
@@ -1095,7 +1111,7 @@ class OpossumInACanNellyScreen(Screen):
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
             magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
-            text_margin = 10  # Margin from the left edge of the top box for the text
+            text_margin = 44  # Margin from the left edge of the top box for the text
 
             # Position for the "Magic" text inside the top box
             magic_text_x = new_box_x + text_margin
@@ -1104,6 +1120,13 @@ class OpossumInACanNellyScreen(Screen):
             # Blit the "Magic" text onto the screen
             state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
             print(str(self.debuff_keen_perception))
+
+            if self.magic_menu_opossum_index == 0:
+                self.opossumInACanMessages["magic_description_reveal"].update(state)
+                self.opossumInACanMessages["magic_description_reveal"].draw(state)
+            elif self.magic_menu_opossum_index == 1:
+                self.opossumInACanMessages["magic_description_back"].update(state)
+                self.opossumInACanMessages["magic_description_back"].draw(state)
             if state.controller.isTPressed:
                 if self.magic_menu_opossum_index == 0:
                     self.debuff_keen_perception = True

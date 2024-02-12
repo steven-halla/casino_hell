@@ -12,14 +12,16 @@
         "sir leopold's paw"
     ],
     "magicinventory": [
-        "reveal"
+        "reveal",
+        "shake",
+        "shield"
     ],
     "body": 1,
     "mind": 1,
     "spirit": 0,
     "perception": 1,
     "luck": 0,
-    "money": 160,
+    "money": 1610,
     "rabies": false,
     "immunity": true,
     "level3reward": false,

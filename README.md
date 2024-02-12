@@ -556,7 +556,6 @@ there is a bug I htink the last can you picked isn't being reset in the list on 
 need sound effects for items that you cant buy like in ff6
 
 
-fix TEXTBOX class similiar to NPC textz box for wrapping
 
 i need magic descriptions 
 need to fix magic text box selector in one of hte games 

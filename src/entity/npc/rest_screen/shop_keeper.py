@@ -11,6 +11,8 @@ class ShopKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.font = pygame.font.Font(None, 36)
+        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound.set_volume(0.3)
 
         self.textbox = ShopNpcTextBox(
             [
@@ -92,6 +94,8 @@ class ShopKeeper(Npc):
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
                 if state.player.money >= cost and (state.player.money - cost >= 100) and selected_item != "sold out" and self.textbox.is_finished():
+                    self.buy_sound.play()  # Play the sound effect once
+
                     state.player.money -= cost
                     if selected_item not in state.player.items:
                         state.player.items.append(selected_item)  # Append the selected item to the player's inventory only if it's not already there

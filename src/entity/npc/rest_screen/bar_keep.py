@@ -10,6 +10,8 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class BarKeep(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
+        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound.set_volume(0.3)
         self.textbox = ShopNpcTextBox(
             [
              ""],
@@ -117,6 +119,8 @@ class BarKeep(Npc):
                 selected_item = self.shop_items[self.selected_item_index]
                 if state.player.money >= cost and state.player.food > 0 and self.textbox.is_finished():
                     if self.selected_money_index == 0 and state.player.money > 300:
+                        self.buy_sound.play()  # Play the sound effect once
+
                         print("hey 0")
                         state.player.money -= 100
                         state.player.stamina_points += 75
@@ -133,6 +137,8 @@ class BarKeep(Npc):
                                 print("yay")
 
                     elif self.selected_money_index == 1 and state.player.money > 300:
+                        self.buy_sound.play()  # Play the sound effect once
+
                         state.player.money -= 100
                         print("hey 1")
                         # this will go above the max which is ok for this item
@@ -150,6 +156,8 @@ class BarKeep(Npc):
                                 print("yay")
 
                     elif self.selected_money_index == 2 and state.player.money > 600:
+                        self.buy_sound.play()  # Play the sound effect once
+
 
                         if "b key" not in state.player.items:
                             state.player.money -= 500
