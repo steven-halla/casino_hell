@@ -1,7 +1,7 @@
 {
     "level": 1,
     "exp": 210,
-    "stamina_points": 1000,
+    "stamina_points": 15,
     "max_stamina_points": 100,
     "focus_points": 100,
     "max_focus_points": 100,
@@ -19,7 +19,7 @@
     "spirit": 0,
     "perception": 1,
     "luck": 0,
-    "money": 1220,
+    "money": 177,
     "rabies": false,
     "immunity": true,
     "level3reward": false,
