@@ -110,6 +110,22 @@ class OpossumInACanNellyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "game_over_no_money": TextBox(
+                ["Oh yes your out of money OH GOD YES I CANT WAIT TO SEE WHAT THE DEMONS DO TO YOU.. "
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "game_over_no_stamina": TextBox(
+                ["Hero: someone, I can't....focus....blacking out..(-100 golds) "
+
+                 ],
+                (50, 450, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
             # You can add more game state keys and TextBox instances here
         }
@@ -311,7 +327,7 @@ class OpossumInACanNellyScreen(Screen):
         if self.fill_cans == True:
             self.initializeGarbageCans()
             self.fill_cans = False
-            state.player.money -= 200
+            state.player.money -= 150
 
 
 
@@ -333,7 +349,7 @@ class OpossumInACanNellyScreen(Screen):
             if self.player_score >= 600 and self.talley_checker == False:
                 print("dsjf;ldsajfl;sajfsaj;lfjlsdjf")
 
-                state.player.stamina_points -= 10
+                # state.player.stamina_points -= 10
                 print("Your before  total exp is: " + str(state.player.exp))
                 state.player.exp += 300
                 print("you gained: " + str(300) + "exp")
@@ -344,7 +360,7 @@ class OpossumInACanNellyScreen(Screen):
             elif self.player_score >= 300 and self.talley_checker == False:
                 print("7534975903275934270573945703975930750937593729573405734850")
 
-                state.player.stamina_points -= 5
+                # state.player.stamina_points -= 5
 
                 print("Your before  total exp is: " + str(state.player.exp))
 
@@ -356,7 +372,7 @@ class OpossumInACanNellyScreen(Screen):
                 return
 
             elif self.player_score >= 20 and self.talley_checker == False:
-                state.player.stamina_points -= 3
+                # state.player.stamina_points -= 3
 
                 print("Your before  total exp is: " + str(state.player.exp))
 
@@ -512,8 +528,12 @@ class OpossumInACanNellyScreen(Screen):
             print("Helooooooofdosafodsaofasosdoao")
             self.opossumInACanMessages["immune_lose_message"].update(state)
 
-            if state.player.stamina_points < 0:
-                print("hmmmmmdfkjdsa;fjlsajf;lsfjsalfjsa")
+            if state.player.money < 1:
+                print("No money ")
+                self.game_state = "game_over_no_money"
+
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
                 # state.currentScreen = state.gamblingAreaScreen
                 # state.gamblingAreaScreen.start(state)
             elif state.player.stamina_points > 0:
@@ -524,6 +544,9 @@ class OpossumInACanNellyScreen(Screen):
                     # self.opossumInACanMessages["immune_lose_message"].reset()
 
         if self.game_state == "lose_screen":
+            if state.player.money < 1:
+                print("No money ")
+                self.game_state = "game_over_no_money"
             # print(str(self.opossumInACanMessages["lose_message"].message_index))
             if self.talley_checker == False:
                 state.player.exp += 100
@@ -1104,6 +1127,29 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "hero_defeated_money_screen":
             self.opossumInACanMessages["hero_defeated_stamina_screen"].draw(state)
+
+        if self.game_state == "game_over_no_money":
+
+            self.opossumInACanMessages["game_over_no_money"].update(state)
+            self.opossumInACanMessages["game_over_no_money"].draw(state)
+            if self.opossumInACanMessages["game_over_no_money"].is_finished():
+                if state.controller.isTPressed:
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+
+        if self.game_state == "game_over_no_stamina":
+            self.opossumInACanMessages["game_over_no_stamina"].update(state)
+            self.opossumInACanMessages["game_over_no_stamina"].draw(state)
+            if self.opossumInACanMessages["game_over_no_stamina"].is_finished():
+                if state.controller.isTPressed:
+                    state.player.money -= 100
+                    if state.player.money < 1:
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
+                    else:
+                        state.player.canMove = True
+                        state.currentScreen = state.restScreen
+                        state.restScreen.start(state)
 
 
 

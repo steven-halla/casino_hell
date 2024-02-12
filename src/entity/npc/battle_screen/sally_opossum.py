@@ -97,7 +97,7 @@ class SallyOpossum(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 199:
+        if current_message.is_finished() and state.controller.isTPressed and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 149:
             # Handle the selected option
 
             # with that many condditions i should make a variable set to true/false
@@ -152,13 +152,13 @@ class SallyOpossum(Npc):
                 if state.player.hasRabies
                 else (
                     self.sally_opossum_messages["money_message"]
-                    if state.player.money < 200
+                    if state.player.money < 150
                     else (
                         self.sally_opossum_messages["defeated_message"]
                         if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
                         else (
                             self.sally_opossum_messages["no_play_message"]
-                            if state.player.money < 200
+                            if state.player.money < 150
                             else self.sally_opossum_messages["welcome_message"]
                         )
                     )
@@ -167,7 +167,7 @@ class SallyOpossum(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 199:
+            if current_message.is_finished() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 149:
                 print("better not see this shit")
                 bet_box_width = 150
                 bet_box_height = 100
