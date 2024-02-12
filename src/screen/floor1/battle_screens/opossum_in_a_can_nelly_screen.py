@@ -220,35 +220,60 @@ class OpossumInACanNellyScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def initializeGarbageCans(self):
-
         # Randomly shuffle the winner_or_looser list
-        # print("yabbba dabbbba dooooooooooo")
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
-        # Assign a shuffled item to each can and print the content
-        self.can1 = shuffled_items[0]
-        # print("Can 1 contains:", self.can1)
+        # Assign shuffled items to each can
+        self.can1, self.can2, self.can3, self.can4, self.can5, self.can6, self.can7, self.can8 = shuffled_items
 
-        self.can2 = shuffled_items[1]
-        # print("Can 2 contains:", self.can2)
+        # Check if any cans are empty and fill them recursively
+        for i in range(1, 9):
+            can_attribute = getattr(self, f"can{i}")
+            if can_attribute == "":
+                # If a can is empty, assign a random item from the list to it
+                setattr(self, f"can{i}", random.choice([item for item in self.winner_or_looser if item != ""]))
+                # Check if any cans are still empty after filling
+                if "" in [getattr(self, f"can{j}") for j in range(1, 9)]:
+                    self.initializeGarbageCans()
+                    break
 
-        self.can3 = shuffled_items[2]
-        # print("Can 3 contains:", self.can3)
+        # Print the contents of each can
+        for i in range(1, 9):
+            print(f"Can {i} contains: {getattr(self, f'can{i}')}")
 
-        self.can4 = shuffled_items[3]
-        # print("Can 4 contains:", self.can4)
 
-        self.can5 = shuffled_items[4]
-        # print("Can 5 contains:", self.can5)
+    # def initializeGarbageCans(self):
+    #
+    #
+    #     # Randomly shuffle the winner_or_looser list
+    #     # print("yabbba dabbbba dooooooooooo")
+    #     shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
+    #
+    #     # Assign a shuffled item to each can and print the content
+    #     self.can1 = shuffled_items[0]
+    #     # print("Can 1 contains:", self.can1)
+    #
+    #     self.can2 = shuffled_items[1]
+    #     # print("Can 2 contains:", self.can2)
+    #
+    #     self.can3 = shuffled_items[2]
+    #     # print("Can 3 contains:", self.can3)
+    #
+    #     self.can4 = shuffled_items[3]
+    #     # print("Can 4 contains:", self.can4)
+    #
+    #     self.can5 = shuffled_items[4]
+    #     # print("Can 5 contains:", self.can5)
+    #
+    #     self.can6 = shuffled_items[5]
+    #     # print("Can 6 contains:", self.can6)
+    #
+    #     self.can7 = shuffled_items[6]
+    #     # print("Can 7 contains:", self.can7)
+    #
+    #     self.can8 = shuffled_items[7]
+    #     # print("Can 8 contains:", self.can8)
 
-        self.can6 = shuffled_items[5]
-        # print("Can 6 contains:", self.can6)
-
-        self.can7 = shuffled_items[6]
-        # print("Can 7 contains:", self.can7)
-
-        self.can8 = shuffled_items[7]
-        # print("Can 8 contains:", self.can8)
 
     def refresh(self):
         self.bet = 20
@@ -291,7 +316,6 @@ class OpossumInACanNellyScreen(Screen):
                     state.player.stamina_points -= 50
 
 
-                print("are we gong???")
                 self.refresh()
                 self.initializeGarbageCans()
                 self.game_state = "immune_lose_screen"
@@ -300,6 +324,7 @@ class OpossumInACanNellyScreen(Screen):
             elif state.player.rabiesImmunity == False:
                 self.opossumBite = True
                 self.refresh()
+                # self.initializeGarbageCans()
                 self.initializeGarbageCans()
                 self.game_state = "lose_screen"
 
@@ -347,7 +372,6 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "tally_screen":
             if self.player_score >= 600 and self.talley_checker == False:
-                print("dsjf;ldsajfl;sajfsaj;lfjlsdjf")
 
                 # state.player.stamina_points -= 10
                 print("Your before  total exp is: " + str(state.player.exp))
@@ -358,7 +382,6 @@ class OpossumInACanNellyScreen(Screen):
                 return
 
             elif self.player_score >= 300 and self.talley_checker == False:
-                print("7534975903275934270573945703975930750937593729573405734850")
 
                 # state.player.stamina_points -= 5
 
@@ -390,7 +413,6 @@ class OpossumInACanNellyScreen(Screen):
 
 
             while self.tally_money_once == True:
-                print("yoda la he ho")
                 if self.player_score <= self.nellyOpossumMoney:
                     print("your winnings are before" + str(self.total_winnings))
 
@@ -403,7 +425,6 @@ class OpossumInACanNellyScreen(Screen):
 
 
                 elif self.player_score > self.nellyOpossumMoney:
-                    print("waffles")
                     print("your winnings are" + str(self.total_winnings))
                     print("your nellly monies  are" + str(self.nellyOpossumMoney))
                     self.total_winnings = self.nellyOpossumMoney
@@ -520,16 +541,13 @@ class OpossumInACanNellyScreen(Screen):
 
 
         if self.game_state == "immune_lose_screen":
-            print("This is the immune lose screen")
             if self.talley_checker == False:
                 state.player.exp += 100
                 self.talley_checker = True
             # self.opossumInACanMessages["immune_lose_message"].message_index = 0
-            print("Helooooooofdosafodsaofasosdoao")
             self.opossumInACanMessages["immune_lose_message"].update(state)
 
             if state.player.money < 1:
-                print("No money ")
                 self.game_state = "game_over_no_money"
 
             elif state.player.stamina_points < 1:
@@ -545,7 +563,6 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.game_state == "lose_screen":
             if state.player.money < 1:
-                print("No money ")
                 self.game_state = "game_over_no_money"
             # print(str(self.opossumInACanMessages["lose_message"].message_index))
             if self.talley_checker == False:
@@ -643,6 +660,7 @@ class OpossumInACanNellyScreen(Screen):
                     # print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 150
                     self.nellyOpossumMoney += 150
+                    self.initializeGarbageCans()
                     self.game_state = "menu_screen"
 
 
@@ -1058,7 +1076,6 @@ class OpossumInACanNellyScreen(Screen):
                     self.game_state = "menu_screen"
 
         if self.game_state == "immune_lose_screen":
-            print("here we go again ")
             # self.opossumInACanMessages["welcome_message"].update(state)
             self.opossumInACanMessages["immune_lose_message"].draw(state)
             # state.DISPLAY.blit(self.font.render(f"Opossum Chomp", True,

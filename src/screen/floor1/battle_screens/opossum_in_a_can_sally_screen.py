@@ -666,6 +666,8 @@ class OpossumInACanSallyScreen(Screen):
                     print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 150
                     self.sallyOpossumMoney += 150
+                    self.initializeGarbageCans()
+
                     self.game_state = "menu_screen"
 
 

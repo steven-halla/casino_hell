@@ -550,11 +550,8 @@ need to set player postion more in middle need to figure that out but it wil be 
 
 %%%%%%The below is the master bug list: %%%%%%%
 sir leopold should be the exit condition
-I need to fix things, when hero stamina hits 0 or lower, put him to the doctor office charge 100 coins for rescue
-kick player out if their gold is below a threshold, game over if its 0 or lower. Need a game over screen state as
-a global
 
-opossum in a can goes through chompy messsages to fast for sally maybe nelly too need to check
+
 there is a bug I htink the last can you picked isn't being reset in the list on refresh 
 need sound effects for items that you cant buy like in ff6
 
