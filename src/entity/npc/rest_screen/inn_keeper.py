@@ -12,6 +12,9 @@ class InnKeeper(Npc):
             "welcome_message": NpcTextBox(
                 ["Inn Keeper Neddry: Wanna stay at our inn and save your game?! Dont' mind the bed bugs, roaches, and rats,  they're very friendly.", "100 gold stay"],
                 (50, 450, 700, 130), 36, 500),
+            "low_money_message": NpcTextBox(
+                ["Inn Keeper Neddry: I'm sorry but you need at least 400 gold to stay, can't have you saving with a low amount and all. ."],
+                (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["I'll allow you to save your game, BUT YOU CANNOT SLEEP HERE, sorry."],
                 (50, 450, 700, 130), 36, 500),
@@ -45,11 +48,17 @@ class InnKeeper(Npc):
             # Reset the message depending on the game state
             if state.player.hasRabies == True:
                 self.flipping_ted_messages["rabies_message"].reset()
+            elif state.player.money < 400:
+                self.flipping_ted_messages["low_money_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
+
     def update_talking(self, state: "GameState"):
         current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
+        if state.player.money < 400:
+            current_message = self.flipping_ted_messages["low_money_message"]
+
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -57,6 +66,7 @@ class InnKeeper(Npc):
 
         # Check for keypresses only once per frame
         if current_message.is_finished():
+
             if state.controller.isUpPressed:
                 state.controller.isUpPressed = False
 
@@ -146,10 +156,12 @@ class InnKeeper(Npc):
 
         if self.state == "talking":
             current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
+            if state.player.money < 400:
+                current_message = self.flipping_ted_messages["low_money_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
+            if current_message.is_finished() and state.player.money > 400:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

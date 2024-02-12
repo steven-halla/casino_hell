@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new exit conditiosn for lack of stmaina or money on coin flip screens">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="opossum in a can fully updated with both screens, now all battle screens have exit conditions for players that dont have enough money or stamina">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/inn_keeper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,7 +303,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="47182000" />
+      <workItem from="1707589099832" duration="48394000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -651,7 +648,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="507" />
+    <option name="localTasksCounter" value="508" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,7 +677,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="I now have patterns for entry points based on from where you come from" />
     <MESSAGE value="shop state is now saved like a good doggo" />
     <MESSAGE value="player pos fixed" />
     <MESSAGE value="start screen updated with new map new positoins new fixed everything this map is GOOD TO GO" />
@@ -705,7 +701,8 @@
     <MESSAGE value="exit conditions now exist for black jack" />
     <MESSAGE value="coin flip fred exit condition now works" />
     <MESSAGE value="new exit conditiosn for lack of stmaina or money on coin flip screens" />
-    <option name="LAST_COMMIT_MESSAGE" value="new exit conditiosn for lack of stmaina or money on coin flip screens" />
+    <MESSAGE value="opossum in a can fully updated with both screens, now all battle screens have exit conditions for players that dont have enough money or stamina" />
+    <option name="LAST_COMMIT_MESSAGE" value="opossum in a can fully updated with both screens, now all battle screens have exit conditions for players that dont have enough money or stamina" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
