@@ -14,7 +14,7 @@ class OpossumInACanSallyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 1500
+        self.sallyOpossumMoney = 1000
 
 
         self.opossumBite = False

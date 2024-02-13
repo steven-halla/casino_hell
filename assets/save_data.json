@@ -8,7 +8,8 @@
     "companions": [],
     "items": [],
     "magicinventory": [
-        "reveal"
+        "reveal",
+        "shake"
     ],
     "body": 0,
     "mind": 1,
