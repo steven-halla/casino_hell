@@ -12,6 +12,8 @@ class BarKeep(Npc):
         super().__init__(x, y)
         self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
         self.buy_sound.set_volume(0.3)
+        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy1.wav")  # Adjust the path as needed
+        self.cant_buy_sound.set_volume(0.5)
         self.textbox = ShopNpcTextBox(
             [
              ""],
@@ -117,8 +119,12 @@ class BarKeep(Npc):
             if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
-                if state.player.money >= cost and state.player.food > 0 and self.textbox.is_finished():
-                    if self.selected_money_index == 0 and state.player.money > 300:
+                if state.player.money < cost or state.player.food == 0 and self.textbox.is_finished():
+                    self.cant_buy_sound.play()  # Play the sound effect once
+                    # pass
+
+                elif state.player.money >= cost and state.player.food > 0 and self.textbox.is_finished():
+                    if self.selected_money_index == 0 and state.player.money > 200:
                         self.buy_sound.play()  # Play the sound effect once
 
                         print("hey 0")
@@ -137,6 +143,8 @@ class BarKeep(Npc):
                                 state.barCutScene2.start(state)
                             elif self.barcutscene1 == True and self.barcutscene2 == True:
                                 print("yay")
+
+
 
                     elif self.selected_money_index == 1 and state.player.money > 300:
                         self.buy_sound.play()  # Play the sound effect once
@@ -260,7 +268,7 @@ class BarKeep(Npc):
                 state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restore 75 Magic. +10 max magic(160 max)  ", True,
                                                     (255, 255, 255)), (70, 460))
             if self.selected_item_index == 2 and state.player.money < 600:
-                state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                state.DISPLAY.blit(self.font.render(f"Money cannot fall below 300 post purchase", True,
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 2:
                 state.DISPLAY.blit(self.font.render(f"Key for boss area. ", True,

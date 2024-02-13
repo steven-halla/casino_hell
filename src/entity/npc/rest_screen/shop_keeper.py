@@ -14,6 +14,9 @@ class ShopKeeper(Npc):
         self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
         self.buy_sound.set_volume(0.3)
 
+        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy1.wav")  # Adjust the path as needed
+        self.cant_buy_sound.set_volume(0.5)
+
         self.textbox = ShopNpcTextBox(
             [
              ""],
@@ -91,7 +94,7 @@ class ShopKeeper(Npc):
                     print(f"selected_item_index: {self.selected_item_index}")
                     print(f"selected_money_index: {self.selected_money_index}")
 
-            if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 550:
+            if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
 
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
@@ -111,6 +114,7 @@ class ShopKeeper(Npc):
                 else:
                     if selected_item == "sold out":
                         print("This item is sold out.")
+
                     else:
                         print("Not enough money to purchase item.")
 
@@ -205,20 +209,58 @@ class ShopKeeper(Npc):
                 if self.selected_item_index == 0 and state.player.money < 200:
                     state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
                                                         (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+                if self.shop_items[0] == "sold out":
+                    state.DISPLAY.blit(self.font.render(f"Potion is Sold out", True,
+                                                        (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+                elif self.selected_item_index == 0 and state.player.money < 200:
+                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                                                        (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
                 elif self.selected_item_index == 0:
                     state.DISPLAY.blit(self.font.render(f"Health and Magic max + 20", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 1 and state.player.money < 500:
+                if self.shop_items[1] == "sold out":
+                    state.DISPLAY.blit(self.font.render(f"Save Coin is Sold out", True,
+                                                        (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+                elif self.selected_item_index == 1 and state.player.money < 500:
                     state.DISPLAY.blit(self.font.render(f"Money cannot fall below 300 post purchase", True,
                                                         (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
                 elif self.selected_item_index == 1:
                     state.DISPLAY.blit(self.font.render(f"There is only one. It saves your game now upon purchase.  ", True,
                                                         (255, 255, 255)), (70, 460))
 
+                if self.shop_items[2] == "sold out":
+                    state.DISPLAY.blit(self.font.render(f"Opossum Repelliant is Sold out", True,
+                                                        (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
                 if self.selected_item_index == 2 and state.player.money < 400:
                     state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
                                                         (255, 255, 255)), (70, 460))
+                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
                 elif self.selected_item_index == 2:
                     state.DISPLAY.blit(self.font.render(f"Halves damage of opossum bites in opossum in a can. ", True,
                                                         (255, 255, 255)), (70, 460))
