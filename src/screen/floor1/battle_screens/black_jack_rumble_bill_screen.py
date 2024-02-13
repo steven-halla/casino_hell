@@ -172,7 +172,7 @@ class BlackJackRumbleBillScreen(Screen):
                 "Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned.Magic lock 5 turns 25MP"],
             "back_magic_explain": ["Back to previous gui"],
             "player_no_money_explain": [
-                "Boooooohoooooooooooo boooooy your in for it now, some hero you turned out tobe.",
+                "Booooooh boy your in for it now, some hero you turned out tobe.",
                 "You can feel darkness start to surround you....."],
             "player_no_stamina_explain": [
                 "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..(-100 golds)",

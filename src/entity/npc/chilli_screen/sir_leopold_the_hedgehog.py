@@ -20,11 +20,11 @@ class SirLeopoldTheHedgeHog(Npc):
             (50, 450, 50, 45), 30, 500)
         self.reward_no_hogs = NpcTextBox(
             ["Wow you really suck",
-             "Your hopeless.......I guess I have noi choice but to join you, by the looks of it you can use a helping paw."],
+             "Your hopeless.......I guess I have no choice but to join you, by the looks of it you can use a helping paw.Though I'm not giving you coins"],
             (50, 450, 50, 45), 30, 500)
         self.reward_some_hogs = NpcTextBox(
             ["Well at least you tried",
-             "Take these 200 coins."],
+             "Take these 250 coins."],
             (50, 450, 50, 45), 30, 500)
         self.reward_all_hogs = NpcTextBox(
             ["You actually got them all! I was expecting like one or two, maybe 3 tops, but all 4, you are the man!!!",
@@ -178,7 +178,7 @@ class SirLeopoldTheHedgeHog(Npc):
             self.reward_some_hogs.update(state)
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.reward_some_hogs.is_finished():
-                    state.player.money += 500
+                    state.player.money += 250
                     self.textboxstate = "textbox5"
                     self.state_start_time = current_time
                     self.input_time = current_time
@@ -211,7 +211,6 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.vanish = True
                     if state.player.perception == 0:
                         state.player.companions.append("sir leopold")
-                        state.player.items.append("sir leopold's paw")
                         state.player.perception = 1
 
 

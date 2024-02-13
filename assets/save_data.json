@@ -1,43 +1,39 @@
 {
-    "level": 3,
-    "exp": 760.0,
-    "stamina_points": 44,
-    "max_stamina_points": 140,
-    "focus_points": 150,
-    "max_focus_points": 150,
+    "level": 2,
+    "exp": 320.0,
+    "stamina_points": 110,
+    "max_stamina_points": 110,
+    "focus_points": 110,
+    "max_focus_points": 110,
     "companions": [
         "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
-        "opossum repellent",
-        "coin flip glasses",
-        "blue flower"
+        "sir leopold's paw"
     ],
     "magicinventory": [
-        "reveal",
-        "shield",
-        "shake"
+        "reveal"
     ],
     "body": 1,
     "mind": 1,
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 100,
+    "money": 650,
     "rabies": false,
     "immunity": true,
-    "level3reward": true,
+    "level3reward": false,
     "food": 1,
-    "days": 10,
-    "cutscene1": true,
+    "days": 2,
+    "cutscene1": false,
     "cutscene2": false,
-    "quest1complete": true,
+    "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 100,
     "opossumnellymoney": 1000,
-    "opossumsallymoney": 900,
+    "opossumsallymoney": 1600,
     "blackjackthomasmoney": 1000,
-    "blackjackrumblebillmoney": 300,
-    "shopkeeperpotion": true
+    "blackjackrumblebillmoney": 1000,
+    "shopkeeperpotion": false
 }

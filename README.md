@@ -565,5 +565,3 @@ set canMove= True after cut scene
 
 sir leopold gives you two paws
 fix black jack magic menu
-magic is not refillign at inn keeper
-need to set stamina to 1 after a game over for low stamina
