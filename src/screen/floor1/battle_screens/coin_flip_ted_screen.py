@@ -592,7 +592,7 @@ class CoinFlipTedScreen(Screen):
         else:
             text_color = (255, 255, 255)  # White color
 
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 210))
 
         # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
         #                               (255, 255, 255)), (37, 250))
@@ -603,7 +603,7 @@ class CoinFlipTedScreen(Screen):
 
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             text_color), (37, 290))
+                             text_color), (37, 250))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                             (255, 255, 255)), (37, 330 - 40))

@@ -110,7 +110,7 @@ class OpossumInACanSallyScreen(Screen):
             ),
 
             "game_over_no_money": TextBox(
-                ["Welp sucks to be you, this is what happens when you try to be the hero. "
+                ["This is what happens when you try to be the hero. You deserve everything your about to get. "
 
                  ],
                 (50, 450, 700, 130),  # Position and size

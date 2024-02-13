@@ -559,3 +559,11 @@ need sound effects for items that you cant buy like in ff6
 
 i need magic descriptions 
 need to fix magic text box selector in one of hte games 
+
+after cut scene in bar you are stuck and need to press t again and exit menu
+set canMove= True after cut scene
+
+sir leopold gives you two paws
+fix black jack magic menu
+magic is not refillign at inn keeper
+need to set stamina to 1 after a game over for low stamina

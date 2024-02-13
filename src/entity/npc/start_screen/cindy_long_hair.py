@@ -37,8 +37,8 @@ class CindyLongHair(Npc):
                 [
                     "",
                     "Cindy: Watching you take him down was so satisfying thank you.",
-                    "Black Jack Technique Reveal: Get a good sense of what your opponent has.",
-                    "low: 1-9, med 10=15, high 16-21",
+                    "This will make me feel better when I go to sleep tonight.",
+                    "Good luck in this place, it will eat you alive if your not careful.",
                 ],
                 (50, 450, 50, 45), 36, 500
             ),

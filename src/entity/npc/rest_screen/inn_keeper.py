@@ -7,13 +7,15 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
+        self.sleep_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/02WhiteMagic.wav")  # Adjust the path as needed
+        self.sleep_sound.set_volume(0.3)
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
                 ["Inn Keeper Neddry: Wanna stay at our inn and save your game?! Dont' mind the bed bugs, roaches, and rats,  they're very friendly.", "100 gold stay"],
                 (50, 450, 700, 130), 36, 500),
             "low_money_message": NpcTextBox(
-                ["Inn Keeper Neddry: I'm sorry but you need at least 400 gold to stay, can't have you saving with a low amount and all. ."],
+                ["Inn Keeper Neddry: I can let you sleep here but no saving, sorry don't want to brick your game You need to hold 400 coins min to save. ."],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["I'll allow you to save your game, BUT YOU CANNOT SLEEP HERE, sorry."],
@@ -86,9 +88,14 @@ class InnKeeper(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
+                self.sleep_sound.play()  # Play the sound effect once
+
+                state.player.money -= 100
+
+
+
                 state.controller.isTPressed = False
                 # This code should run regardless of the player's stamina
-                state.save_game(state.player, state)  # Call the save_game function
                 self.state = "waiting"
                 self.state_start_time = pygame.time.get_ticks()
                 state.player.canMove = True
@@ -98,25 +105,34 @@ class InnKeeper(Npc):
                 if state.player.body > 0:
                     state.player.food = 1
 
-                if state.player.stamina_points < state.player.max_stamina_points:
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > state.player.max_stamina_points:
-                        state.player.stamina_points = state.player.max_stamina_points
 
-                        print("Yes selected, closing shop.")
-                        self.arrow_index = 0
-                        self.state = "waiting"
-                        self.state_start_time = pygame.time.get_ticks()
-                        state.player.canMove = True
-                        print("nice")
-                        print(str(state.player.hasRabies))
+                state.player.stamina_points += 500
+                if state.player.stamina_points > state.player.max_stamina_points:
+                    state.player.stamina_points = state.player.max_stamina_points
+                state.player.focus_points += 500
+                if state.player.focus_points > state.player.max_focus_points:
+                    state.player.focus_points = state.player.max_focus_points
 
-                        if state.player.hasRabies == True:
-                            print("Yee haawww")
 
-                            state.player.stamina_points = 1
-                state.save_game(state.player, state)  # Call the save_game function
+                    print("Yes selected, closing shop.")
+                    self.arrow_index = 0
+                    self.state = "waiting"
+                    self.state_start_time = pygame.time.get_ticks()
+                    state.player.canMove = True
+                    print("nice")
+                    print(str(state.player.hasRabies))
+
+                    if state.player.hasRabies == True:
+                        print("Yee haawww")
+
+                if state.player.money < 1:
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+
+                if state.player.money > 399:
+                    state.save_game(state.player, state)  # Call the save_game function
+
+            # Call the save_game function
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -161,7 +177,7 @@ class InnKeeper(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.player.money > 400:
+            if current_message.is_finished():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
