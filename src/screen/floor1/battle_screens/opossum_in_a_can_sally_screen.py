@@ -35,7 +35,7 @@ class OpossumInACanSallyScreen(Screen):
         self.winner_or_looser: List[str] = ["win", "win",
                                             "win", "win", "lose",
                                             "lucky_star",
-                                            "X3_star", "lose",
+                                            "X3_star", "lose", "lucky_star"
                                     ]
 
         self.opossumInACanMessages = {
