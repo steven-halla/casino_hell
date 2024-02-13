@@ -85,50 +85,50 @@ class CoinFlipTedScreen(Screen):
         self.coin_flip_messages = {
             "welcome_message": TextBox(
                 ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "bet_message": TextBox(
-                ["Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
-                (50, 450, 700, 130),  # Position and size
+                ["Min Bet is 10 and Max Bet is 100. Press Up/Down keys to change your bet. "],
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "heads_tails_message": TextBox(
                 ["Choose heads or tails. "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "magic_message": TextBox(
                 ["Choose your spell . "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "flip_message": TextBox(
                 ["Flipping the coin now hold your breath. "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
             "shield_message1": TextBox(
                 ["A bird came down and stole the coin, who knows who won now. "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "shield_message2": TextBox(
                 ["someone just took the coin "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "shield_message3": TextBox(
                 ["now the coin is gone :(. "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -136,7 +136,7 @@ class CoinFlipTedScreen(Screen):
                 [
                   " Would you like to play again or quit?"
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -144,7 +144,7 @@ class CoinFlipTedScreen(Screen):
                 ["Looks like your out of money, sorry time for you to go. "
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -152,7 +152,7 @@ class CoinFlipTedScreen(Screen):
                 ["Hero: Oh crap... I screwed up, I'm going to pass out...(-100 golds) "
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -163,7 +163,7 @@ class CoinFlipTedScreen(Screen):
                  "Hero: Sadly for you I'm ruthless, I'm taking you out!", ""
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -173,7 +173,7 @@ class CoinFlipTedScreen(Screen):
                  "Should I leave, or stay with it and trust in my luck?", ""
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -183,7 +183,7 @@ class CoinFlipTedScreen(Screen):
                  "Enemy: I bet Cindy will be happy to  hear that I lost my standing.....", ""
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -712,12 +712,12 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["bet_message"].update(state)
             self.coin_flip_messages["bet_message"].draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
-                                                (255, 255, 255)), (50, 530))
+                                                (255, 255, 255)), (65, 550))
 
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
-                               (260, 550))
+                               (300, 555))
             state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
-                               (257, 510))
+                               (300, 545))
 
 
 
@@ -781,97 +781,6 @@ class CoinFlipTedScreen(Screen):
                     elif self.debuff_counter > 0:
                         print("stay here")
 
-        if self.game_state == "magic_screen":
-            self.coin_flip_messages["magic_message"].update(state)
-            self.coin_flip_messages["magic_message"].draw(state)
-
-            # Define new_box_x
-
-            # Updated dimensions
-            bet_box_width = 150  # Width for both boxes
-            top_box_height = 50  # Height for top box
-            bet_box_height = 100 + 40 - 50  # Height for bottom box, now 50 pixels shorter
-            border_width = 5
-
-            # Screen dimensions
-            screen_width, screen_height = state.DISPLAY.get_size()
-
-            # Positions for the top and bottom boxes
-            new_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
-            magic_box_y = 320 - 40
-            new_box_y = magic_box_y - top_box_height - border_width + 50  # Adjusted Y position for top box
-
-            # Create the top box (black box with white border but no bottom border)
-            black_box_top = pygame.Surface((bet_box_width, top_box_height))
-            black_box_top.fill((0, 0, 0))
-            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))
-            white_border_top.fill((255, 255, 255))
-            white_border_top.blit(black_box_top, (border_width, border_width))
-            state.DISPLAY.blit(white_border_top, (new_box_x, new_box_y))
-
-            # Adjusted bottom box positions
-            bet_box_x = new_box_x  # Aligning with the top box
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 40  # Raised by 40 pixels, accounting for borders
-
-            # Create the bottom box (now shorter)
-            bottom_box = pygame.Surface((bet_box_width, bet_box_height))
-            bottom_box.fill((0, 0, 0))
-            white_border_bottom = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border_bottom.fill((255, 255, 255))
-            white_border_bottom.blit(bottom_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border_bottom, (bet_box_x, bet_box_y))
-
-            # Adjust text and arrow positions relative to the bottom box
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20  # Adjusted back to the original position
-            text_y_no = text_y_yes + 40
-            # Adjust arrow positions relative to the bottom box
-            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_yes + self.headstailsindex * 40  # Arrow position adjusted based on selected menu item
-
-            # Draw text
-            # Draw text
-            if "Shield" in self.magic_menu_selector:
-                state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
-            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            # Y position for "Shield" text, using self.magic_menu_selector[1]
-            text_y_shield = text_y_yes  # Assuming "Shield" is rendered at this position
-
-            # Draw the arrow on the same Y coordinate as "Shield"
-            # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
-            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_shield + self.magicindex * 40  # Update arrow Y position based on selected item
-
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
-            magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
-            text_margin = 10  # Margin from the left edge of the top box for the text
-
-            # Position for the "Magic" text inside the top box
-            magic_text_x = new_box_x + text_margin
-            magic_text_y = new_box_y + (top_box_height - magic_text.get_height()) // 2  # Vertically center inside the top box
-
-            # Blit the "Magic" text onto the screen
-            state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
-
-            if state.controller.isTPressed:
-                if self.magicindex == 0:
-
-                    print(str(self.magic_menu_selector[0]))
-                    print(str(self.magic_menu_selector))
-                    state.player.focus_points -= 10
-                    state.controller.isTPressed = False  # Reset the button state
-                    self.game_state = "heads_tails_choose_screen"
-
-
-
-                elif self.magicindex == 1:
-                    print(str(self.magic_menu_selector[1]))
-                    self.game_state = "heads_tails_choose_screen"
-                    state.controller.isTPressed = False  # Reset the button state
-
-
         if self.game_state == "flip_screen":
             self.coin_flip_messages["flip_message"].update(state)
             self.coin_flip_messages["flip_message"].draw(state)
@@ -889,7 +798,7 @@ class CoinFlipTedScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"The coin landed on:{self.result}", True,
                                                 (255, 255, 255)), (70, 460))
 
-            state.DISPLAY.blit(self.font.render(f"You gained:{self.exp_gain} experience points", True,
+            state.DISPLAY.blit(self.font.render(f"You gained: {self.exp_gain} experience points", True,
                                                 (255, 255, 255)), (70, 510))
 
             # Call the update method for the results_message TextBox

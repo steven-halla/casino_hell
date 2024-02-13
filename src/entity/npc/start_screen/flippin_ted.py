@@ -167,7 +167,7 @@ class FlippinTed(Npc):
                 white_border.blit(bet_box, (border_width, border_width))
 
                 # Calculate text positions
-                text_x = bet_box_x + 40 + border_width
+                text_x = bet_box_x + 50 + border_width
                 text_y_yes = bet_box_y + 20
                 text_y_no = text_y_yes + 40
                 # Draw the box on the screen
@@ -176,7 +176,7 @@ class FlippinTed(Npc):
                 # Draw the text on the screen (over the box)
                 state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
                 state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
                 arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
 
                 # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)

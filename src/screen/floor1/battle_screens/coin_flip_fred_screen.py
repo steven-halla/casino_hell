@@ -1016,7 +1016,7 @@ class CoinFlipFredScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"The coin landed on :{self.result}", True,
                                                 (255, 255, 255)), (70, 460))
 
-            state.DISPLAY.blit(self.font.render(f"You gained:{self.exp_gain} experience points", True,
+            state.DISPLAY.blit(self.font.render(f"You gained: {self.exp_gain} experience points", True,
                                                 (255, 255, 255)), (70, 510))
 
             # Call the update method for the results_message TextBox
