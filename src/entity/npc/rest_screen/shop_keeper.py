@@ -55,7 +55,7 @@ class ShopKeeper(Npc):
             if state.player.shop_keep_potion == True:
                 self.shop_items[0] = "sold out"
             if state.player.shop_keep_save_coin == True:
-                self.shop_items[0] = "sold out"
+                self.shop_items[1] = "sold out"
 
             cost = int(self.shop_costs[self.selected_item_index])
 

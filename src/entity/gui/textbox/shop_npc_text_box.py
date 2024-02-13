@@ -91,6 +91,7 @@ class ShopNpcTextBox(Entity):
         self.shop_inventory_costs = inventoryCosts
 
     def draw_shop_menu(self, state: "GameState"):
+
         # Set the dimensions for the shop menu text box
         box_width = 700
         box_height = 400
@@ -126,7 +127,9 @@ class ShopNpcTextBox(Entity):
             item_surface = state.FONT.render(item, True, (255, 255, 255))
             price_surface = state.FONT.render(self.shop_inventory_costs[i], True, (255, 255, 255))  # Use shop_inventory_costs
             state.DISPLAY.blit(item_surface, (box_x + item_x_offset, box_y + item_y_offset))
-            state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 200, box_y + item_y_offset))  # Adjust X offset
+            # state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 200, box_y + item_y_offset))  # Adjust X offset
+            state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 250, box_y + item_y_offset))
+
             item_y_offset += 40
 
     def is_finished(self) -> bool:
