@@ -193,6 +193,9 @@ class CoinFlipTedScreen(Screen):
             # You can add more game state keys and TextBox instances here
         }
 
+        self.exp_gain = 0
+
+
 
 
     def stop_music(self):
@@ -219,7 +222,8 @@ class CoinFlipTedScreen(Screen):
                 state.player.stamina_points -= 1
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 10
+                state.player.exp += 3
+                self.exp_gain = 3
                 print("you gained: " + str(10) + "exp")
                 print("Your after total exp is: " + str(state.player.exp))
 
@@ -227,7 +231,9 @@ class CoinFlipTedScreen(Screen):
                 state.player.stamina_points -= 1
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 100
+                state.player.exp += 10
+                self.exp_gain = 10
+
                 print("you gained: " + str(100) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -237,7 +243,9 @@ class CoinFlipTedScreen(Screen):
                 state.player.stamina_points -= 1
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 50
+                state.player.exp += 5
+                self.exp_gain = 5
+
                 print("you gained: " + str(50) + "exp")
 
                 print("Your after  total exp is: " + str(state.player.exp))
@@ -249,7 +257,9 @@ class CoinFlipTedScreen(Screen):
                 state.player.stamina_points -= 2
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 5
+                state.player.exp += 1
+                self.exp_gain = 1
+
                 print("you gained: " + str(5) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -258,7 +268,9 @@ class CoinFlipTedScreen(Screen):
                 state.player.stamina_points -= 3
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 50
+                state.player.exp += 3
+                self.exp_gain = 3
+
                 print("you gained: " + str(50) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -268,7 +280,9 @@ class CoinFlipTedScreen(Screen):
                 state.player.stamina_points -= 2
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 25
+                state.player.exp += 2
+                self.exp_gain = 2
+
                 print("you gained: " + str(25) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -460,6 +474,8 @@ class CoinFlipTedScreen(Screen):
         if self.game_state == "results_screen":
 
             if not self.has_run_money_logic:
+                self.giveExp(state)
+
                 if self.player_choice == self.result:
                     state.player.money += self.bet
                     self.coinFlipTedMoney -= self.bet
@@ -504,7 +520,7 @@ class CoinFlipTedScreen(Screen):
 
             self.coin_flip_messages["play_again_message"].update(state)
             if not self.message_printed:
-                self.giveExp(state)
+                # self.giveExp(state)
                 # Set the flag to True after printing the message
                 self.message_printed = True
 
@@ -872,6 +888,9 @@ class CoinFlipTedScreen(Screen):
             state.DISPLAY.blit(image_to_display, image_rect)
             state.DISPLAY.blit(self.font.render(f"The coin landed on:{self.result}", True,
                                                 (255, 255, 255)), (70, 460))
+
+            state.DISPLAY.blit(self.font.render(f"You gained:{self.exp_gain} experience points", True,
+                                                (255, 255, 255)), (70, 510))
 
             # Call the update method for the results_message TextBox
             self.coin_flip_messages["results_message"].update(state)

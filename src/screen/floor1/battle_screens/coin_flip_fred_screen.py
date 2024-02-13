@@ -197,6 +197,8 @@ class CoinFlipFredScreen(Screen):
 
         self.coin_flip_messages_initialized = False  # Add an initialization flag
 
+        self.exp_gain = 0
+
     def initialize_text_boxes(self):
         # Initialize and store TextBox instances in self.coin_flip_messages
         self.coin_flip_fred_messages = {
@@ -240,9 +242,12 @@ class CoinFlipFredScreen(Screen):
 
             if self.bet < 11:
                 state.player.stamina_points -= 2
+
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 20
+                state.player.exp += 5
+                self.exp_gain = 5
+
                 print("you gained: " + str(10) + "exp")
                 print("Your after total exp is: " + str(state.player.exp))
 
@@ -250,7 +255,9 @@ class CoinFlipFredScreen(Screen):
                 state.player.stamina_points -= 4
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 100
+                state.player.exp += 15
+                self.exp_gain = 15
+
                 print("you gained: " + str(100) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -260,7 +267,9 @@ class CoinFlipFredScreen(Screen):
                 state.player.stamina_points -= 3
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 50
+                state.player.exp += 10
+                self.exp_gain = 10
+
                 print("you gained: " + str(50) + "exp")
 
                 print("Your after  total exp is: " + str(state.player.exp))
@@ -269,10 +278,12 @@ class CoinFlipFredScreen(Screen):
 
         elif self.result != self.player_choice:
             if self.bet < 11:
-                state.player.stamina_points -= 3
+                state.player.stamina_points -= 2
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 5
+                state.player.exp += 3
+                self.exp_gain = 3
+
                 print("you gained: " + str(5) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -281,7 +292,9 @@ class CoinFlipFredScreen(Screen):
                 state.player.stamina_points -= 6
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 50
+                state.player.exp += 5
+                self.exp_gain = 5
+
                 print("you gained: " + str(50) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -291,7 +304,9 @@ class CoinFlipFredScreen(Screen):
                 state.player.stamina_points -= 4
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 25
+                state.player.exp += 4
+                self.exp_gain = 4
+
                 print("you gained: " + str(25) + "exp")
 
                 print("Your after total exp is: " + str(state.player.exp))
@@ -346,15 +361,17 @@ class CoinFlipFredScreen(Screen):
 
 
         elif self.coinFlipFredMoney > 300:
-            coin_fate = random.randint(1, 20)
+            # coin_fate = random.randint(1, 20)
             # print("your coin fate is" + str(coin_fate))
             # print("coin counter at:" + str(self.coin_leaning_counter))
             print("more than 300")
+            self.result = "tails"
 
-            if coin_fate > 7:
-                self.result = "tails"
-            elif coin_fate <= 7:
-                self.result = "heads"
+
+            # if coin_fate > 6:
+            #     self.result = "tails"
+            # elif coin_fate <= 6:
+            #     self.result = "heads"
 
         elif self.coinFlipFredMoney <= 300:
             coin_fate = random.randint(1, 20)
@@ -362,12 +379,7 @@ class CoinFlipFredScreen(Screen):
 
             # print("your coin fate is" + str(coin_fate))
             # print("coin counter at:" + str(self.coin_leaning_counter))
-            if coin_fate > 6:
-                self.result = "heads"
-            elif coin_fate <= 6:
-                self.result = "tails"
-
-
+            self.result = "heads"
 
         self.game_state = "results_screen"
 
@@ -538,6 +550,8 @@ class CoinFlipFredScreen(Screen):
 
             # Assuming this is part of a class
             if not self.has_run_money_logic:
+                self.giveExp(state)
+
 
                 if "coin flip glasses" in state.player.items and self.player_choice == self.result:
                     print("Coin flip")
@@ -607,7 +621,7 @@ class CoinFlipFredScreen(Screen):
 
             self.coin_flip_messages["play_again_message"].update(state)
             if not self.message_printed:
-                self.giveExp(state)
+                # self.giveExp(state)
                 # Set the flag to True after printing the message
                 self.message_printed = True
 
@@ -1001,6 +1015,9 @@ class CoinFlipFredScreen(Screen):
             state.DISPLAY.blit(image_to_display, image_rect)
             state.DISPLAY.blit(self.font.render(f"The coin landed on :{self.result}", True,
                                                 (255, 255, 255)), (70, 460))
+
+            state.DISPLAY.blit(self.font.render(f"You gained:{self.exp_gain} experience points", True,
+                                                (255, 255, 255)), (70, 510))
 
             # Call the update method for the results_message TextBox
             self.coin_flip_messages["results_message"].update(state)

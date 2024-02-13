@@ -246,6 +246,8 @@ class BlackJackRumbleBillScreen(Screen):
             ""],
             (50, 450, 50, 45), 30, 500)
 
+        self.exp_gain = 0
+
 
 
     pygame.init()
