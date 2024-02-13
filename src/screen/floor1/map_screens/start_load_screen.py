@@ -31,6 +31,14 @@ class StartLoadScreen(Screen):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/behind-dark-shadows-dark-ambient-music-for-horror-and-mystery-153820.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.title_colors = [(0, 0, 51),(120, 0, 0), (160, 0, 0), (200, 0, 0), (255, 0, 0)]  # Deeper shades of red
+
+        # self.title_colors = [(255, 100, 100), (255, 50, 50), (200, 0, 0)]  # Different shades of red
+        self.current_color_index = 0  # Start with the first color
+        self.color_change_interval = 2000  # 2 seconds in milliseconds
+        self.last_color_change_time = pygame.time.get_ticks()  # Record the start time
+        self.title_font = pygame.font.SysFont('Times New Roman', 100, bold=True, italic=True)
+        self.last_color = False
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
@@ -74,6 +82,29 @@ class StartLoadScreen(Screen):
     def update(self, state: "GameState"):
         controller = state.controller
         controller.update()
+
+        if state.controller.isTPressed:
+            # Set the current color index to the last index in the title_colors array
+            self.current_color_index = len(self.title_colors) - 1
+            # Indicate that the last color has been reached
+            self.last_color = True
+            # Reset the T pressed state
+            state.controller.isTPressed = False
+
+        # Check if it's time to change the title color
+        current_time = pygame.time.get_ticks()
+        if (current_time - self.last_color_change_time) >= self.color_change_interval:
+            # Check if the current index is less than the last index in the array
+            if self.current_color_index < len(self.title_colors) - 1:
+                # Only update the color index if we haven't reached the last color
+                self.current_color_index += 1
+            else:
+                # We've reached the last color, so set last_color to True
+                self.last_color = True
+            # Reset the timer
+            self.last_color_change_time = current_time
+
+        # Additional update logic...
 
         if state.controller.isUpPressed and self.t_key_pressed == False:
             state.controller.isUpPressed = False
@@ -133,52 +164,57 @@ class StartLoadScreen(Screen):
 
         title_font = pygame.font.Font(None, 100)  # Use None for default font
 
-        # Render the title text
-        title_text = title_font.render("Hell's Casino", True, (255, 255, 255))
+        # Get the current color based on the index
+        # Get the current color based on the index
+        current_color = self.title_colors[self.current_color_index]
 
-        # Calculate the X and Y positions to center the title and set a 40-pixel top margin
+        # Render the title text with the current color
+        title_text = self.title_font.render("Hell's Casino", True, current_color)
+
+        # Calculate the X and Y positions to center the title and set a top margin
         screen_width, screen_height = state.DISPLAY.get_size()
         title_x = (screen_width - title_text.get_width()) // 2
-        title_y = -  60  # 40 pixels from the top
+        title_y = 160  # 40 pixels from the top
 
         # Draw the title text on the screen
         state.DISPLAY.blit(title_text, (title_x, title_y))
 
+
         # this is for hte box down below
+        if self.last_color == True:
+            bet_box_width = 180
+            bet_box_height = 100
+            border_width = 5
 
-        bet_box_width = 180
-        bet_box_height = 100
-        border_width = 5
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30 - 285  # Shift left by 300
+            bet_box_y = screen_height - 130 - bet_box_height - border_width + 15
 
-        screen_width, screen_height = state.DISPLAY.get_size()
-        bet_box_x = screen_width - bet_box_width - border_width - 30 - 275  # Shift left by 300
-        bet_box_y = screen_height - 130 - bet_box_height - border_width + 15
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
 
-        bet_box = pygame.Surface((bet_box_width, bet_box_height))
-        bet_box.fill((0, 0, 0))
-        white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(bet_box, (border_width, border_width))
+            # Calculate text positions relative to the bet_box_x
+            text_x = bet_box_x + 40 + border_width  # Position based on bet_box_x
+            text_y_start_game = bet_box_y + 20
+            text_y_load = text_y_start_game + 40
 
-        # Calculate text positions relative to the bet_box_x
-        text_x = bet_box_x + 40 + border_width  # Position based on bet_box_x
-        text_y_start_game = bet_box_y + 20
-        text_y_load = text_y_start_game + 40
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
-        # Draw the box on the screen
-        state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
+            state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_load))
 
-        # Draw the text on the screen (over the box)
-        state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
-        state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_load))
+            arrow_x = text_x - 25  # Adjust the position of the arrow based on your preference
+            arrow_y = text_y_start_game + self.arrow_index * 40  # Adjust based on the item's height
 
-        arrow_x = text_x - 25  # Adjust the position of the arrow based on your preference
-        arrow_y = text_y_start_game + self.arrow_index * 40  # Adjust based on the item's height
-
-        # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-        # Here's a simple example using a triangle:
-        pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                            [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+            # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         pygame.display.update()
 
