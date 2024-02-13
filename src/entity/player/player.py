@@ -74,6 +74,7 @@ class Player(Entity):
         self.realBarKeep = False
 
         self.shop_keep_potion = False
+        self.shop_keep_save_coin = False
 
         self.current_frame_index = 0  # Current index in the sprite list
 
@@ -146,6 +147,7 @@ class Player(Entity):
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
 
             "shopkeeperpotion": self.shop_keep_potion,
+            "shopkeepersavecoin": self.shop_keep_save_coin,
 
             # Add more stats as needed
         }
@@ -539,6 +541,7 @@ class Player(Entity):
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
 
             state.player.shop_keep_potion = player_data['shopkeeperpotion']
+            state.player.shop_keep_save_coin = player_data['shopkeepersavecoin']
 
 
 

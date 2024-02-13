@@ -51,6 +51,8 @@ class ShopKeeper(Npc):
                 self.shop_items[2] = "sold out"
             if state.player.shop_keep_potion == True:
                 self.shop_items[0] = "sold out"
+            if state.player.shop_keep_save_coin == True:
+                self.shop_items[0] = "sold out"
 
             cost = int(self.shop_costs[self.selected_item_index])
 
@@ -111,6 +113,12 @@ class ShopKeeper(Npc):
                         print("This item is sold out.")
                     else:
                         print("Not enough money to purchase item.")
+
+                if "save coin" in state.player.items:
+                    state.player.items.remove("save coin")
+                    state.player.shop_keep_save_coin = True
+                    state.save_game(state.player, state)  # Call the save_game function
+
 
                 if "+10 potion" in state.player.items:
                     state.player.items.remove("+10 potion")
@@ -201,11 +209,11 @@ class ShopKeeper(Npc):
                     state.DISPLAY.blit(self.font.render(f"Health and Magic max + 20", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 1 and state.player.money < 300:
-                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
+                if self.selected_item_index == 1 and state.player.money < 500:
+                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 300 post purchase", True,
                                                         (255, 255, 255)), (70, 460))
                 elif self.selected_item_index == 1:
-                    state.DISPLAY.blit(self.font.render(f"Save your game at the phone  ", True,
+                    state.DISPLAY.blit(self.font.render(f"There is only one. It saves your game now upon purchase.  ", True,
                                                         (255, 255, 255)), (70, 460))
 
                 if self.selected_item_index == 2 and state.player.money < 400:

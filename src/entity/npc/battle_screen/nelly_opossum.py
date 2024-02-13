@@ -13,13 +13,13 @@ class NellyOpossum(Npc):
                 ["Nelly: Hi there new guy, I swear to you my opossums are the sweetest things you ever did see. You can play with them for 150 coins."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["I didn't like playing with you anyway."],
+                ["I didn't like playing with you anyway, hmmmp."],
                 (50, 450, 700, 130), 36, 500),
             "money_message": NpcTextBox(
             ["Ewwwwww get away from me you poor bastard and get at least 150 coins, you disgust me!"],
             (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
-                ["Awwwww are you ok? Don't worry I'll get you a home reaaalllll soon. Do you love garbage? You're gonna."],
+                ["Awwwww are you ok? Don't you worry your pretty little head I'll give you home, real soon like. Do you love garbage? Your gonna."],
                 (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
@@ -82,7 +82,7 @@ class NellyOpossum(Npc):
                 if state.player.money < 150
                 else (
                     self.nelly_opossum_messages["defeated_message"]
-                    if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
+                    if state.opossumInACanNellyScreen.nellyOpossumIsDefeated
                     else (
                         self.nelly_opossum_messages["no_play_message"]
                         if state.player.money < 150
