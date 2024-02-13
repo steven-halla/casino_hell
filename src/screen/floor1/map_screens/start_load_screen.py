@@ -126,16 +126,33 @@ class StartLoadScreen(Screen):
                 state.player.load_game(state)
                 print("Loading game after delay")
 
+    # this is the best implementation of a box
+
     def draw(self, state):
         state.DISPLAY.fill(BLUEBLACK)
 
-        bet_box_width = 150
+        title_font = pygame.font.Font(None, 100)  # Use None for default font
+
+        # Render the title text
+        title_text = title_font.render("Hell's Casino", True, (255, 255, 255))
+
+        # Calculate the X and Y positions to center the title and set a 40-pixel top margin
+        screen_width, screen_height = state.DISPLAY.get_size()
+        title_x = (screen_width - title_text.get_width()) // 2
+        title_y = -  60  # 40 pixels from the top
+
+        # Draw the title text on the screen
+        state.DISPLAY.blit(title_text, (title_x, title_y))
+
+        # this is for hte box down below
+
+        bet_box_width = 180
         bet_box_height = 100
         border_width = 5
 
         screen_width, screen_height = state.DISPLAY.get_size()
-        bet_box_x = screen_width - bet_box_width - border_width - 30 - 300  # Shift left by 300
-        bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+        bet_box_x = screen_width - bet_box_width - border_width - 30 - 275  # Shift left by 300
+        bet_box_y = screen_height - 130 - bet_box_height - border_width + 15
 
         bet_box = pygame.Surface((bet_box_width, bet_box_height))
         bet_box.fill((0, 0, 0))
@@ -152,10 +169,10 @@ class StartLoadScreen(Screen):
         state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
         # Draw the text on the screen (over the box)
-        state.DISPLAY.blit(self.font.render("Start New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
+        state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
         state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_load))
 
-        arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+        arrow_x = text_x - 25  # Adjust the position of the arrow based on your preference
         arrow_y = text_y_start_game + self.arrow_index * 40  # Adjust based on the item's height
 
         # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
