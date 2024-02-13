@@ -338,7 +338,7 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.music_on == True:
             self.stop_music()
-            self.initialize_music()
+            # self.initialize_music()
             self.music_on = False
         # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
         if self.player_score >= 300:
@@ -727,14 +727,18 @@ class OpossumInACanSallyScreen(Screen):
                 state.gamblingAreaScreen.start(state)
 
 
+
         if self.game_state == "hero_defeated_stamina_screen":
             self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
                 # Change the game state to "bet"
                 self.music_on = True
 
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.restScreen
+                state.restScreen.start(state)
+                state.player.stamina_points = 1
+
+
 
         if self.game_state == "hero_defeated_money_screen":
             self.opossumInACanMessages["hero_defeated_money_message"].update(state)
@@ -742,8 +746,8 @@ class OpossumInACanSallyScreen(Screen):
                 # Change the game state to "bet"
                 self.music_on = True
 
-                state.currentScreen = state.mainScreen
-                state.mainScreen.start(state)
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
 
 
 
@@ -1236,8 +1240,10 @@ class OpossumInACanSallyScreen(Screen):
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)
                     else:
+                        self.game_state = "welcome_screen"
                         state.player.canMove = True
                         state.currentScreen = state.restScreen
                         state.restScreen.start(state)
+                        state.player.stamina_points = 1
 
         pygame.display.flip()

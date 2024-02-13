@@ -363,7 +363,7 @@ class CoinFlipTedScreen(Screen):
 
         if self.music_on == True:
             self.stop_music()
-            self.initialize_music()
+            # self.initialize_music()
             self.music_on = False
 
 
@@ -870,7 +870,7 @@ class CoinFlipTedScreen(Screen):
             image_rect = image_to_display.get_rect()
             image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
             state.DISPLAY.blit(image_to_display, image_rect)
-            state.DISPLAY.blit(self.font.render(f"Your Current hand :{self.result}", True,
+            state.DISPLAY.blit(self.font.render(f"The coin landed on:{self.result}", True,
                                                 (255, 255, 255)), (70, 460))
 
             # Call the update method for the results_message TextBox
@@ -992,10 +992,8 @@ class CoinFlipTedScreen(Screen):
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)
                     else:
-                        state.player.canMove = True
-                        state.currentScreen = state.restScreen
-                        state.restScreen.start(state)
-
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
 
         pygame.display.flip()
 

@@ -170,7 +170,7 @@ class Player(Entity):
         controller.update()
 
 
-        if self.exp > 300 and self.level2checker == False:
+        if self.exp > 500 and self.level2checker == False:
             print("grats you leveld up to level 2")
             self.level = 2
 
@@ -181,7 +181,7 @@ class Player(Entity):
             self.level2checker = True
             return
 
-        if self.exp > 320 and self.level3checker == False:
+        if self.exp > 1200 and self.level3checker == False:
             print("grats you leveld up to level 3")
             # if "shield" not in self.magicinventory:
             if "shield" not in state.player.magicinventory:

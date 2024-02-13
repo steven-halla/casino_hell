@@ -216,7 +216,7 @@ class OpossumInACanNellyScreen(Screen):
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/opossum_in_a_can_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.initialize_music()
         self.music_on = True
 
 
@@ -367,7 +367,7 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.music_on == True:
             self.stop_music()
-            self.initialize_music()
+            # self.initialize_music()
             self.music_on = False
 
         if self.player_score >= 300:
@@ -746,8 +746,9 @@ class OpossumInACanNellyScreen(Screen):
                 # Change the game state to "bet"
                 self.music_on = True
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.restScreen
+                state.restScreen.start(state)
+                state.player.stamina_points = 1
 
         if self.game_state == "hero_defeated_money_screen":
             self.opossumInACanMessages["hero_defeated_money_message"].update(state)
@@ -1204,6 +1205,7 @@ class OpossumInACanNellyScreen(Screen):
 
 
         if self.game_state == "hero_defeated_stamina_screen":
+
             self.opossumInACanMessages["hero_defeated_stamina_message"].draw(state)
 
         if self.game_state == "hero_defeated_money_screen":
@@ -1232,17 +1234,11 @@ class OpossumInACanNellyScreen(Screen):
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)
                     else:
+                        self.game_state = "welcome_screen"
+
                         state.player.canMove = True
                         state.currentScreen = state.restScreen
                         state.restScreen.start(state)
-
-
-
-
-
-
-
-
-
+                        state.player.stamina_points = 1
 
         pygame.display.flip()

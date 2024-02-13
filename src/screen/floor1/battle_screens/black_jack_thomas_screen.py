@@ -28,7 +28,7 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 1000
+        self.cheater_bob_money = 300
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
         self.player_score = 0
@@ -296,7 +296,7 @@ class BlackJackThomasScreen(Screen):
     def update(self, state: "GameState"):
         if self.music_on == True:
             self.stop_music()
-            self.initialize_music()
+            # self.initialize_music()
             self.music_on = False
         state.player.canMove = False
 
@@ -1321,11 +1321,12 @@ class BlackJackThomasScreen(Screen):
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)
                     else:
+                        self.game_state = "welcome_screen"
+
                         state.player.canMove = True
                         state.currentScreen = state.restScreen
                         state.restScreen.start(state)
-
-
+                        state.player.stamina_points = 1
 
             if state.player.money < 1:
                 self.game_state = "game_over_no_money"
