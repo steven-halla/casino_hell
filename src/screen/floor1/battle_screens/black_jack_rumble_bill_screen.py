@@ -1289,47 +1289,70 @@ class BlackJackRumbleBillScreen(Screen):
 
 
         elif self.game_state == "magic_menu":
-
             black_box = pygame.Surface((255, 215))
-            black_box.fill((0, 0, 0))
-            # Create the white border
+            black_box_width = 160
+            black_box_height = 110
             border_width = 5
-            white_border = pygame.Surface(
-                (170 + 2 * border_width, 215 + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            black_box = pygame.Surface((170, 215))
+
+            # Calculate the size of the white border based on the black box size and border width
+            white_border_width = black_box_width + 2 * border_width
+            white_border_height = black_box_height + 2 * border_width
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
             black_box.fill((0, 0, 0))
+
+            # Create the white border
+            white_border = pygame.Surface((white_border_width, white_border_height))
+            white_border.fill((255, 255, 255))
+
+            # Blit the black box onto the white border, positioned by the border width
             white_border.blit(black_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border, (620 - 20, 190))
+
+            # Determine the position on the screen
+            position_x = 620 - 20  # Adjust the position as needed
+            position_y = 300  # Adjust the position as needed
+
+            # Blit the white-bordered black box onto the display
+            state.DISPLAY.blit(white_border, (position_x, position_y))
+            # black_box.fill((0, 0, 0))
+            # # Create the white border
+            # border_width = 5
+            # white_border = pygame.Surface(
+            #     (170 + 2 * border_width, 215 + 2 * border_width))
+            # white_border.fill((255, 255, 255))
+            # black_box = pygame.Surface((170, 215))
+            # black_box.fill((0, 0, 0))
+            # white_border.blit(black_box, (border_width, border_width))
+            # state.DISPLAY.blit(white_border, (620 - 20, 190))
+
+            # Use the provided position variables
+            position_x = 620 - 20  # Adjust the position as needed
+            position_y = 300  # Adjust the position as needed
+
+            # Now, position the menu items relative to these coordinates
             if self.magic_menu_index == 0:
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 200))
-                # state.DISPLAY.blit(
-                #     self.font.render("Bluff status. When enemy ", True, (255, 255, 255)),
-                #     (40, 445))
-                self.reveal_magic_explain_component.draw(state)
+                    (position_x + 20, position_y + 10))  # Adjust offsets as needed
 
+                self.reveal_magic_explain_component.draw(state)
 
             elif self.magic_menu_index == 1:
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
-                    (640, 250))
+                    (position_x + 20, position_y + 60))  # Adjust offsets as needed
+
                 self.back_magic_explain_component.draw(state)
 
-
-
+            # Position the magic menu selectors relative to the black box
+            state.DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                (position_x + 60, position_y + 15))  # Adjust offsets as needed
 
             state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True,
-                                 (255, 255, 255)),
-                (680, 205))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True,
-                                 (255, 255, 255)),
-                (680, 255))
-
+                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+                (position_x + 60, position_y + 65))  # Adjust offsets as needed
 
 
         elif self.game_state == "game_over_no_money":
