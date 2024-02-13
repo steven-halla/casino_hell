@@ -169,7 +169,7 @@ class StartLoadScreen(Screen):
         current_color = self.title_colors[self.current_color_index]
 
         # Render the title text with the current color
-        title_text = self.title_font.render("Hell's Casino", True, current_color)
+        title_text = self.title_font.render("Hell Casino", True, current_color)
 
         # Calculate the X and Y positions to center the title and set a top margin
         screen_width, screen_height = state.DISPLAY.get_size()

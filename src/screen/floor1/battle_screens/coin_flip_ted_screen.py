@@ -715,9 +715,9 @@ class CoinFlipTedScreen(Screen):
                                                 (255, 255, 255)), (65, 550))
 
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
-                               (300, 555))
+                               (312, 555))
             state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
-                               (300, 545))
+                               (312, 545))
 
 
 
