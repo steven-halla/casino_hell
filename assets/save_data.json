@@ -16,11 +16,11 @@
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 555,
+    "money": 355,
     "rabies": false,
     "immunity": true,
     "level3reward": false,
-    "food": 0,
+    "food": 1,
     "days": 1,
     "cutscene1": false,
     "cutscene2": false,
@@ -32,5 +32,5 @@
     "blackjackthomasmoney": 300,
     "blackjackrumblebillmoney": 500,
     "shopkeeperpotion": true,
-    "shopkeepersavecoin": false
+    "shopkeepersavecoin": true
 }
