@@ -1073,7 +1073,7 @@ class BlackJackThomasScreen(Screen):
                     (687, 310))
             elif self.magic_lock == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (680, 315))
+                             (680, 310))
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[2]}", True,
