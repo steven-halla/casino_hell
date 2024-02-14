@@ -1,4 +1,4 @@
-# Casino Hell
+******# Casino Hell
 
 A 2D Casino game written in Pygame.
 
@@ -557,11 +557,12 @@ need sound effects for items that you cant buy like in ff6
 
 
 
-i need magic descriptions 
-need to fix magic text box selector in one of hte games 
 
 after cut scene in bar you are stuck and need to press t again and exit menu
 set canMove= True after cut scene
 
-sir leopold gives you two paws
-fix black jack magic menu
+
+opossum in a can needs many fixes:
+positoin of text in battle meu
+need magic description
+need to fix box positions with text

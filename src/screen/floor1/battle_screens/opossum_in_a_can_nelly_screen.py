@@ -824,8 +824,10 @@ class OpossumInACanNellyScreen(Screen):
                     x += shake_effect[0]
                     y += shake_effect[1]
 
-                # Draw the scaled_sprite (trash can) at each position with potential shake effect
-                state.DISPLAY.blit(scaled_sprite, (x, y))
+
+                if current_can_content:
+
+                    state.DISPLAY.blit(scaled_sprite, (x, y))
         # hand sprite code
         hand_sprite_rect = pygame.Rect(1, 1, 58.5, 58)  # Update these values as needed
         hand_sprite = self.hand_sprite_image.subsurface(hand_sprite_rect)

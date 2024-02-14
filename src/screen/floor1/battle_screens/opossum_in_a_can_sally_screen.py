@@ -7,6 +7,7 @@ from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 
 
+
 class OpossumInACanSallyScreen(Screen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
@@ -185,6 +186,7 @@ class OpossumInACanSallyScreen(Screen):
 
 
 
+
         self.play_again_or_quit = ["Play Again", "Quit"]
 
         self.play_again_or_quit_index = 0
@@ -224,6 +226,16 @@ class OpossumInACanSallyScreen(Screen):
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
+
+    def convert_to_grayscale(image):
+        """Convert a Pygame image to grayscale."""
+        arr = pygame.surfarray.array3d(image)
+        # Calculate the grayscale values using the luminosity method
+        grayscale_arr = np.dot(arr[..., :3], [0.2989, 0.5870, 0.1140])
+        # Stack the grayscale values into a three-channel array
+        grayscale_arr = np.stack((grayscale_arr,) * 3, axis=-1)
+        grayscale_image = pygame.surfarray.make_surface(grayscale_arr.transpose((1, 0, 2)))
+        return grayscale_image
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -792,6 +804,8 @@ class OpossumInACanSallyScreen(Screen):
                 # Determine the content of the current trash can
                 current_can_content = getattr(self, f'can{len(positions)}')
 
+
+
                 # Apply the shaking effect if debuff is active
                 if self.debuff_keen_perception == True:
                     shake_effect = (0, 0)  # Default to no shake
@@ -814,8 +828,10 @@ class OpossumInACanSallyScreen(Screen):
                     x += shake_effect[0]
                     y += shake_effect[1]
 
+
                 # Draw the scaled_sprite (trash can) at each position with potential shake effect
-                state.DISPLAY.blit(scaled_sprite, (x, y))
+                if current_can_content:
+                    state.DISPLAY.blit(scaled_sprite, (x, y))
         # hand sprite code
         hand_sprite_rect = pygame.Rect(1, 1, 58.5, 58)  # Update these values as needed
         hand_sprite = self.hand_sprite_image.subsurface(hand_sprite_rect)
@@ -826,6 +842,8 @@ class OpossumInACanSallyScreen(Screen):
             hand_y += 82  # 10 pixels below the top-left of the selected trash can
             hand_x += 54  # 10 pixels below the top-left of the selected trash can
             state.DISPLAY.blit(scaled_hand_sprite, (hand_x, hand_y))
+
+
 
         #this box is for hero info
         box_width = 200 - 10
