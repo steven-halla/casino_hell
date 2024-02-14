@@ -1195,11 +1195,11 @@ class BlackJackThomasScreen(Screen):
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (687, 260))
+                (674, 260))
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (687, 310))
+                (674, 310))
 
             if self.avatar_of_luck == True and self.redraw_lock == False:
                 state.DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)),
@@ -1207,10 +1207,10 @@ class BlackJackThomasScreen(Screen):
 
             elif self.avatar_of_luck == False or self.redraw_lock == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (687, 360))
+                             (674, 360))
             else:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (687, 360))
+                             (674, 360))
 
             if self.current_index == 0:
                 state.DISPLAY.blit(
@@ -1279,16 +1279,7 @@ class BlackJackThomasScreen(Screen):
 
             # Blit the white-bordered black box onto the display
             state.DISPLAY.blit(white_border, (position_x, position_y))
-            # black_box.fill((0, 0, 0))
-            # # Create the white border
-            # border_width = 5
-            # white_border = pygame.Surface(
-            #     (170 + 2 * border_width, 215 + 2 * border_width))
-            # white_border.fill((255, 255, 255))
-            # black_box = pygame.Surface((170, 215))
-            # black_box.fill((0, 0, 0))
-            # white_border.blit(black_box, (border_width, border_width))
-            # state.DISPLAY.blit(white_border, (620 - 20, 190))
+
 
             # Use the provided position variables
             position_x = 620 - 20  # Adjust the position as needed
@@ -1317,42 +1308,6 @@ class BlackJackThomasScreen(Screen):
             state.DISPLAY.blit(
                 self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
                 (position_x + 60, position_y + 65))  # Adjust offsets as needed
-
-            #
-            # if self.magic_menu_index == 0:
-            #     state.DISPLAY.blit(
-            #         self.font.render(f"->", True, (255, 255, 255)),
-            #         (640, 200))
-            #     # state.DISPLAY.blit(
-            #     #     self.font.render("Bluff status. When enemy ", True, (255, 255, 255)),
-            #     #     (40, 445))
-            #     self.reveal_magic_explain_component.draw(state)
-            #
-            #
-            #
-            #
-            # elif self.magic_menu_index == 1:
-            #
-            #     state.DISPLAY.blit(
-            #
-            #         self.font.render(f"->", True, (255, 255, 255)),
-            #
-            #         (640, 250))
-            #
-            #     self.back_magic_explain_component.draw(state)
-            #
-            #
-            #
-            # state.DISPLAY.blit(
-            #     self.font.render(f"{self.magic_menu_selector[0]}", True,
-            #                      (255, 255, 255)),
-            #     (680, 205))
-            #
-            # state.DISPLAY.blit(
-            #     self.font.render(f"{self.magic_menu_selector[1]}", True,
-            #                      (255, 255, 255)),
-            #     (680, 255))
-
 
 
 

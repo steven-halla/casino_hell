@@ -1232,22 +1232,22 @@ class BlackJackRumbleBillScreen(Screen):
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (687, 260))
+                (674, 260))
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (687, 310))
+                (674, 310))
 
             if self.avatar_of_luck == True and self.redraw_lock == False:
                 state.DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)),
-                             (687, 360))
+                                   (687, 360))
 
             elif self.avatar_of_luck == False or self.redraw_lock == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (687, 360))
+                                   (674, 360))
             else:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (687, 360))
+                                   (674, 360))
 
             if self.current_index == 0:
                 state.DISPLAY.blit(
