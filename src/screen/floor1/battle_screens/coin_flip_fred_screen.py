@@ -190,6 +190,23 @@ class CoinFlipFredScreen(Screen):
                 500  # Delay
             ),
 
+            "magic_description_shield": TextBox(
+                [
+                    "shield: reality warps in such a way to attract animals to coins when they would land in the enmies favor."
+                ],
+                (65, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "magic_description_back": TextBox(
+                [
+                    "back: go back to previous menu"
+                ],
+                (65, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+
 
             # You can add more game state keys and TextBox instances here
         }
@@ -836,7 +853,7 @@ class CoinFlipFredScreen(Screen):
             self.coin_flip_messages["heads_tails_message"].update(state)
             self.coin_flip_messages["heads_tails_message"].draw(state)
             bet_box_width = 150
-            bet_box_height = 100   # Increased height by 40 pixels
+            bet_box_height = 100 + 40  # Increased height by 40 pixels
             border_width = 5
 
             screen_width, screen_height = state.DISPLAY.get_size()
@@ -905,6 +922,13 @@ class CoinFlipFredScreen(Screen):
             self.coin_flip_messages["magic_message"].update(state)
             self.coin_flip_messages["magic_message"].draw(state)
 
+            if self.magicindex == 0:
+                self.coin_flip_messages["magic_description_shield"].update(state)
+                self.coin_flip_messages["magic_description_shield"].draw(state)
+            elif self.magicindex == 1:
+                self.coin_flip_messages["magic_description_back"].update(state)
+                self.coin_flip_messages["magic_description_back"].draw(state)
+
             # Define new_box_x
 
             # Updated dimensions
@@ -931,7 +955,7 @@ class CoinFlipFredScreen(Screen):
 
             # Adjusted bottom box positions
             bet_box_x = new_box_x  # Aligning with the top box
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 40  # Raised by 40 pixels, accounting for borders
+            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 50  # Raised by 40 pixels, accounting for borders
 
             # Create the bottom box (now shorter)
             bottom_box = pygame.Surface((bet_box_width, bet_box_height))
@@ -967,7 +991,7 @@ class CoinFlipFredScreen(Screen):
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
             magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
-            text_margin = 10  # Margin from the left edge of the top box for the text
+            text_margin = 47  # Margin from the left edge of the top box for the text
 
             # Position for the "Magic" text inside the top box
             magic_text_x = new_box_x + text_margin
