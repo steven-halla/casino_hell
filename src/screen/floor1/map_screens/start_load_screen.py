@@ -173,7 +173,7 @@ class StartLoadScreen(Screen):
 
         # Calculate the X and Y positions to center the title and set a top margin
         screen_width, screen_height = state.DISPLAY.get_size()
-        title_x = (screen_width - title_text.get_width()) // 2
+        title_x = (screen_width - title_text.get_width()) // 2 + 10
         title_y = 160  # 40 pixels from the top
 
         # Draw the title text on the screen
@@ -187,7 +187,7 @@ class StartLoadScreen(Screen):
         border_width = 5
 
         screen_width, screen_height = state.DISPLAY.get_size()
-        bet_box_x = screen_width - bet_box_width - border_width - 30 - 285  # Shift left by 300
+        bet_box_x = screen_width - bet_box_width - border_width - 30 - 295  # Shift left by 300
         bet_box_y = screen_height - 130 - bet_box_height - border_width + 15
 
         bet_box = pygame.Surface((bet_box_width, bet_box_height))
