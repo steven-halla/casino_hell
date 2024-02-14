@@ -246,6 +246,8 @@ class OpossumInACanNellyScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def initializeGarbageCans(self):
+        self.trash_can_pick = ""
+
         # Randomly shuffle the winner_or_looser list
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
