@@ -41,7 +41,7 @@ class DemonBossScreen(Screen):
         self.bust_protection = False
         self.avatar_of_luck_card_redraw_counter = 3
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
-        self.spell_sound.set_volume(0.3)
+        self.spell_sound.set_volume(0.5)
 
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -70,7 +70,7 @@ class DemonBossScreen(Screen):
         self.next_draw_time = pygame.time.get_ticks() + 2000  # Set initial delay for first draw
 
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/demonboss.mp3"
         self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.music_on = True
@@ -237,18 +237,18 @@ class DemonBossScreen(Screen):
     def stop_music(self):
         pygame.mixer.music.stop()
 
-    # def initialize_music(self):
-    #     # Initialize the mixer
-    #     pygame.mixer.init()
-    #
-    #     # Load the music file
-    #     pygame.mixer.music.load(self.music_file)
-    #
-    #     # Set the volume for the music (0.0 to 1.0)
-    #     pygame.mixer.music.set_volume(self.music_volume)
-    #
-    #     # Play the music, -1 means the music will loop indefinitely
-    #     pygame.mixer.music.play(-1)
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
 
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
@@ -277,7 +277,7 @@ class DemonBossScreen(Screen):
     def update(self, state: "GameState"):
         if self.music_on == True:
             self.stop_music()
-            # self.initialize_music()
+            self.initialize_music()
             self.music_on = False
         state.player.canMove = False
 

@@ -14,8 +14,6 @@
         "Nurgle the hedge hog"
     ],
     "magicinventory": [
-        "reveal",
-        "shake",
         "shield"
     ],
     "body": 1,
@@ -34,8 +32,8 @@
     "quest1complete": true,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "opossumnellymoney": 50,
-    "opossumsallymoney": 750,
+    "opossumnellymoney": 2250,
+    "opossumsallymoney": 2750,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 500,
     "shopkeeperpotion": false,

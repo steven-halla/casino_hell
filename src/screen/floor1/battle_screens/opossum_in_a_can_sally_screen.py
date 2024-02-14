@@ -42,70 +42,70 @@ class OpossumInACanSallyScreen(Screen):
         self.opossumInACanMessages = {
             "welcome_message": TextBox(
                 ["Sally here, good luck to you", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "pick_message": TextBox(
                 ["Keep picking boxes I believe in you......Dont forget that B opens the menu ", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "play_again_or_leave_message": TextBox(
                 ["Would you like to play again or leave? "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "rapid_opossum_message": TextBox(
                 ["Oh no you got bite!!! Wrong Trash can!!!! ", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "opossum_defeated_message": TextBox(
                 ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your humanity while it loast opossum-kun", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "real_opossum_defeated_message": TextBox(
                 ["Stupid Doctor and her shots, hate her I want her to be a opossum soooooo badly ", "",
     ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "hero_defeated_stamina_message": TextBox(
                 ["if i gamble anymore i'll pass out right in front of the dealer", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "hero_defeated_money_message": TextBox(
                 ["i need more money to play i should leave ", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "lose_message": TextBox(
                 ["something poppped out!!! ", "oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
 
             "immune_lose_message": TextBox(
                 ["chompy"],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
 
             "tally_message": TextBox(
                 [ "", "" ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -114,7 +114,7 @@ class OpossumInACanSallyScreen(Screen):
                 ["This is what happens when you try to be the hero. You deserve everything your about to get. "
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -123,7 +123,7 @@ class OpossumInACanSallyScreen(Screen):
                     "Hero: Oh crap, everything is dizzy and spinning, I need to sleep.(-100 golds) "
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -132,7 +132,7 @@ class OpossumInACanSallyScreen(Screen):
                  "Sally: You disgusting piece of crap get out of here till you get more money. Go on Git! ", ""
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -140,7 +140,7 @@ class OpossumInACanSallyScreen(Screen):
                 [
                  "reveal: Your perception is increased. You can now detect subtle shakings of the trash cans. 1 can is X3 star, the other is 1 of 2 rabid opossums"
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -148,7 +148,7 @@ class OpossumInACanSallyScreen(Screen):
                 [
                     "back: go back to previous menu"
                 ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -227,15 +227,7 @@ class OpossumInACanSallyScreen(Screen):
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
-    def convert_to_grayscale(image):
-        """Convert a Pygame image to grayscale."""
-        arr = pygame.surfarray.array3d(image)
-        # Calculate the grayscale values using the luminosity method
-        grayscale_arr = np.dot(arr[..., :3], [0.2989, 0.5870, 0.1140])
-        # Stack the grayscale values into a three-channel array
-        grayscale_arr = np.stack((grayscale_arr,) * 3, axis=-1)
-        grayscale_image = pygame.surfarray.make_surface(grayscale_arr.transpose((1, 0, 2)))
-        return grayscale_image
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -962,7 +954,7 @@ class OpossumInACanSallyScreen(Screen):
         if self.game_state == "menu_screen":
             bet_box_width = 150
             # Increase the bet box height by an additional 40 pixels
-            bet_box_height = 100 + 40 + 40  # Increased height by 40 pixels initially and 40 more now
+            bet_box_height = 100 + 40   # Increased height by 40 pixels initially and 40 more now
             border_width = 5
 
             screen_width, screen_height = state.DISPLAY.get_size()
@@ -1207,15 +1199,7 @@ class OpossumInACanSallyScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.play_again_or_quit_index * 40  # Adjust based on the item's height
-            # Set the initial arrow position to "Yes"
 
-            # Draw the arrow next to the selected option
-            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            #
-            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-            # Here's a simple example using a triangle:
             pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 

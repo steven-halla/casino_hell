@@ -43,70 +43,70 @@ class OpossumInACanNellyScreen(Screen):
         self.opossumInACanMessages = {
             "welcome_message": TextBox(
                 ["Nelly here, good luck to you", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "pick_message": TextBox(
                 ["Keep picking boxes I believe in you......Dont forget that B opens the menu ", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "play_again_or_leave_message": TextBox(
                 ["Would you like to play again or leave? "],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "rapid_opossum_message": TextBox(
                 ["Oh no you got bite!!! Wrong Trash can!!!! ", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "opossum_defeated_message": TextBox(
                 ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your humanity while it loast opossum-kun", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "real_opossum_defeated_message": TextBox(
                 ["Stupid Doctor and her shots, hate her I want her to be a opossum soooooo badly ", "",
     ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "hero_defeated_stamina_message": TextBox(
                 ["if i gamble anymore i'll pass out right in front of the dealer", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "hero_defeated_money_message": TextBox(
                 ["i need more money to play i should leave ", ""],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "lose_message": TextBox(
                 ["something poppped out!!! ", "oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
 
             "immune_lose_message": TextBox(
                 ["chompy" , ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
 
             "tally_message": TextBox(
                 [ "", "" ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -114,7 +114,7 @@ class OpossumInACanNellyScreen(Screen):
                 ["Oh yes your out of money OH GOD YES I CANT WAIT TO SEE WHAT THE DEMONS DO TO YOU.. "
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -122,7 +122,7 @@ class OpossumInACanNellyScreen(Screen):
                 ["Hero: someone, I can't....focus....blacking out..(-100 golds) "
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -132,7 +132,7 @@ class OpossumInACanNellyScreen(Screen):
                  "Nelly: I'm sorry but you dont' have enough money to keep playing, do come back.! ", "",
 
                  ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -140,7 +140,7 @@ class OpossumInACanNellyScreen(Screen):
                 [
                     "reveal: Your perception is increased. You can now detect subtle shakings of the trash cans. 1 can is X3 star, the other is 1 of 2 rabid opossums"
                 ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -148,7 +148,7 @@ class OpossumInACanNellyScreen(Screen):
                 [
                     "back: go back to previous menu"
                 ],
-                (50, 450, 700, 130),  # Position and size
+                (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -826,8 +826,8 @@ class OpossumInACanNellyScreen(Screen):
 
 
                 if current_can_content:
-
                     state.DISPLAY.blit(scaled_sprite, (x, y))
+
         # hand sprite code
         hand_sprite_rect = pygame.Rect(1, 1, 58.5, 58)  # Update these values as needed
         hand_sprite = self.hand_sprite_image.subsurface(hand_sprite_rect)
@@ -951,7 +951,7 @@ class OpossumInACanNellyScreen(Screen):
         if self.game_state == "menu_screen":
             bet_box_width = 150
             # Increase the bet box height by an additional 40 pixels
-            bet_box_height = 100 + 40 + 40  # Increased height by 40 pixels initially and 40 more now
+            bet_box_height = 100 + 40   # Increased height by 40 pixels initially and 40 more now
             border_width = 5
 
             screen_width, screen_height = state.DISPLAY.get_size()

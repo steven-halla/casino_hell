@@ -566,3 +566,5 @@ opossum in a can needs many fixes:
 positoin of text in battle meu
 need magic description
 need to fix box positions with text
+
+for final boss lets up the stamina losss a little
