@@ -1274,8 +1274,8 @@ class BlackJackThomasScreen(Screen):
             white_border.blit(black_box, (border_width, border_width))
 
             # Determine the position on the screen
-            position_x = 620 - 20  # Adjust the position as needed
-            position_y = 300  # Adjust the position as needed
+            position_x = 620 - 10  # Adjust the position as needed
+            position_y = 300 - 5   # Adjust the position as needed
 
             # Blit the white-bordered black box onto the display
             state.DISPLAY.blit(white_border, (position_x, position_y))

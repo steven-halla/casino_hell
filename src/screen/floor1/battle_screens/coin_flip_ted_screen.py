@@ -725,7 +725,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["heads_tails_message"].update(state)
             self.coin_flip_messages["heads_tails_message"].draw(state)
             bet_box_width = 150
-            bet_box_height = 100 + 40  # Increased height by 40 pixels
+            bet_box_height = 100   # Increased height by 40 pixels
             border_width = 5
 
             screen_width, screen_height = state.DISPLAY.get_size()

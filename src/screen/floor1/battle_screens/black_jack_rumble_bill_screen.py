@@ -1327,8 +1327,9 @@ class BlackJackRumbleBillScreen(Screen):
             # state.DISPLAY.blit(white_border, (620 - 20, 190))
 
             # Use the provided position variables
-            position_x = 620 - 20  # Adjust the position as needed
-            position_y = 300  # Adjust the position as needed
+            # Determine the position on the screen
+            position_x = 620 - 10  # Adjust the position as needed
+            position_y = 300 - 5
 
             # Now, position the menu items relative to these coordinates
             if self.magic_menu_index == 0:
