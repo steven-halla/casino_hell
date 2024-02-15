@@ -1105,6 +1105,8 @@ class BlackJackThomasScreen(Screen):
                     print("Quit")
                     state.player.canMove = True
                     self.music_on = True
+                    self.reveal_hand = 11
+                    self.magic_lock = False
 
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)

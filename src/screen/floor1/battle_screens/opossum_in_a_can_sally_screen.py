@@ -1000,12 +1000,7 @@ class OpossumInACanSallyScreen(Screen):
                     # self.refresh()
                     self.initializeGarbageCans()
                     self.game_state = "tally_screen"
-                # elif self.opossum_index == 3:
-                #     state.player.money += self.player_score
-                #     self.sallyOpossumMoney -= self.player_score
-                #     state.controller.isTPressed = False
-                #     state.currentScreen = state.gamblingAreaScreen
-                #     state.gamblingAreaScreen.start(state)
+
 
 
 

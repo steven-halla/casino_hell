@@ -1146,6 +1146,9 @@ class CoinFlipFredScreen(Screen):
                     self.arrow_index = 0
                     self.game_state ="bet_screen"
                     self.music_on = True
+                    self.debuff_vanish = False
+                    self.debuff_counter = 0
+
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 

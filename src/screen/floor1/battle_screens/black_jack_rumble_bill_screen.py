@@ -1135,6 +1135,8 @@ class BlackJackRumbleBillScreen(Screen):
                 if state.controller.isTPressed:
                     print("Quit")
                     state.player.canMove = True
+                    self.reveal_hand = 11
+
 
                     self.music_on = True
 
