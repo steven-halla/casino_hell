@@ -819,140 +819,129 @@ class BlackJackRumbleBillScreen(Screen):
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 50 exp and {self.bet * 2} gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 25 exp and {self.bet * 2} gold "
+                self.first_message_display = f"You gain 100 exp and {self.bet * 3} gold "
+                print("<<<<????????????>>>>" + str(state.player.exp))
+
+
 
 
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.second_message_display = "It's a draw press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 50 exp and 0 gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 25 exp and 0 gold "
+                self.first_message_display = f"You gain 25 exp and 0 gold "
+                print("nd;>>>>>>>>>>>>>>;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+
+
 
 
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.second_message_display = "Enemy gets blackjack you lose "
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 100 exp and 0 gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 50 exp and 0 gold "
+                self.first_message_display = f"You gain 30 exp and 0 gold "
+                print("nd;asasasasasasasss;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+
 
 
 
             elif self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 25 exp and {self.bet} gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 12 exp and {self.bet} gold "
+                self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+                print("nd;3fefefefefefefeefefe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
 
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 50 exp and lose {self.bet} gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+                self.first_message_display = f"You gain 5 experience and lose {self.bet} gold "
+                print("nd;OIJJJLJLJJJKJKJKJJJJKJIJIJIJIJJ;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+
 
 
 
 
             elif self.player_score == self.enemy_score:
+
                 self.second_message_display = "It's a draw nobody wins press T when Ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 25 exp and 0 gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 12 exp and 0 gold "
+                self.first_message_display = f"You gain 25 exp and 0 gold "
+                print("nd;3434343434343;aaaaaaaaaaaaa;fnlsnfsanf;" + str(state.player.exp))
 
             if controller.isTPressed:
 
-                # Load audio file
-                # channel2 = pygame.mixer.Channel(1)
-                # sound2 = pygame.mixer.Sound("audio/Coins1.mp3")
-                # channel2.play(sound2)
-
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-                    state.player.money += self.bet * 2
-                    self.cheater_bob_money -= self.bet * 2
-                    if state.player.level == 1:
-                        state.player.exp += 50
+                    state.player.exp += 100
 
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 12 exp and {self.bet * 2} gold "
+                    self.first_message_display = f"You gain 100 exp and win {self.bet * 3} gold "
+                    self.second_message_display = "You win player press T when ready"
+                    state.player.money += self.bet * 3
+                    self.cheater_bob_money -= self.bet * 3
+                    print("nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
-                        state.player.exp += 25
+
 
 
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 50 exp and 0 gold "
+                    state.player.exp += 50
 
-                        state.player.exp += 75
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 25 exp and 0 gold "
+                    self.first_message_display = f"You gain 50 exp and 0 gold "
+                    self.second_message_display = "You tie player press T when ready"
+                    print("nd;LLLLLLLLLLlllll;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
-                        state.player.exp += 33
+
 
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                    state.player.money -= self.bet * 2
-                    self.cheater_bob_money += self.bet * 2
-                    if state.player.level == 1:
-                        state.player.exp += 100
+                    state.player.exp += 25
+                    state.player.stamina_points -= 25
 
-                    elif state.player.level == 2:
-                        state.player.exp += 50
+                    self.second_message_display = "You lose player press T when ready"
+                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+
+                    state.player.money -= self.bet * 3
+                    self.cheater_bob_money += self.bet * 3
+
+                    print("nd;3434343434343;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+
 
 
 
                 elif self.player_score > self.enemy_score and self.player_score < 22:
+                    state.player.exp += 25
+
                     self.second_message_display = "You win player press T when ready"
 
                     state.player.money += self.bet
                     self.cheater_bob_money -= self.bet
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+                    self.first_message_display = f"You gain 25 exp and {self.bet} gold "
 
-                        state.player.exp += 25
+                    print("nd;lsnjfl;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 12 exp and {self.bet} gold "
-
-                        state.player.exp += 12
 
 
                 elif self.player_score < self.enemy_score and self.enemy_score < 22:
+                    state.player.exp += 10
+                    state.player.stamina_points -= 5
+
                     self.second_message_display = "You lose player press T when ready"
                     state.player.money -= self.bet
                     self.cheater_bob_money += self.bet
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 50 exp and lose {self.bet} gold "
+                    self.first_message_display = f"You gain 10 exp and lose {self.bet} gold "
+                    print("nd;bbbbbababab;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
-                        state.player.exp += 50
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
-
-                        state.player.exp += 25
 
 
 
                 elif self.player_score == self.enemy_score:
+                    state.player.exp += 8
+
                     self.second_message_display = "It's a draw nobody wins press T when Ready"
 
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 25 exp and 0 gold "
+                    self.first_message_display = f"You gain 8 exp "
 
-                        state.player.exp += 25
-
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 12 exp and 0 gold "
-
-                        state.player.exp += 12
+                    self.first_message_display = f"You gain 8 exp and 0 gold "
+                    print("adffdfeafe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
                 if self.reveal_hand < 11:
                     self.reveal_hand -= 1
@@ -1328,8 +1317,8 @@ class BlackJackRumbleBillScreen(Screen):
 
             # Use the provided position variables
             # Determine the position on the screen
-            position_x = 620 - 10  # Adjust the position as needed
-            position_y = 300 - 5
+            position_x = 620 - 20  # Adjust the position as needed
+            position_y = 300
 
             # Now, position the menu items relative to these coordinates
             if self.magic_menu_index == 0:
