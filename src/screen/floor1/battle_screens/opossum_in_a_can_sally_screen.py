@@ -37,6 +37,7 @@ class OpossumInACanSallyScreen(Screen):
                                             "win", "win", "lose",
                                             "lucky_star",
                                             "X3_star", "lose", "lucky_star"
+
                                     ]
 
         self.opossumInACanMessages = {
@@ -97,7 +98,7 @@ class OpossumInACanSallyScreen(Screen):
             ),
 
             "immune_lose_message": TextBox(
-                ["chompy"],
+                ["chompy! You Gain 10 exp"],
                 (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -378,36 +379,14 @@ class OpossumInACanSallyScreen(Screen):
         if self.game_state == "tally_screen":
 
 
-            if self.player_score >= 600 and self.talley_checker == False:
 
-                # state.player.stamina_points -= 10
-                print("Your before  total exp is: " + str(state.player.exp))
-                state.player.exp += 300
-                print("you gained: " + str(300) + "exp")
-                print("Your after total exp is: " + str(state.player.exp))
-                self.talley_checker = True
-                return
 
-            elif self.player_score >= 300 and self.talley_checker == False:
-
-                # state.player.stamina_points -= 5
-
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 200
-                print("you gained: " + str(200) + "exp")
-                print("Your after total exp is: " + str(state.player.exp))
-                self.talley_checker = True
-
-                return
-
-            elif self.player_score >= 20 and self.talley_checker == False:
+            if self.player_score >= 0 and self.talley_checker == False:
                 # state.player.stamina_points -= 3
 
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 100
-                print("you gained: " + str(100) + "exp")
+                state.player.exp += 10
                 print("Your after total exp is: " + str(state.player.exp))
                 self.talley_checker = True
 
@@ -562,7 +541,6 @@ class OpossumInACanSallyScreen(Screen):
             print("This is the immune lose screen")
 
             if self.talley_checker == False:
-                state.player.exp += 100
                 self.talley_checker = True
 
             self.opossumInACanMessages["immune_lose_message"].update(state)
@@ -595,7 +573,6 @@ class OpossumInACanSallyScreen(Screen):
             # this handles our EXP
             print("Your before total exp is: " + str(state.player.exp))
             if self.talley_checker == False:
-                state.player.exp += 100
                 self.talley_checker = True
                 return
             print("you gained: " + str(100) + "exp")
@@ -949,8 +926,7 @@ class OpossumInACanSallyScreen(Screen):
                 # print("part 2: " + str(self.player_score))
                 # print("total winnings are part 2: " + str(self.total_winnings))
 
-
-                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings}", True,
+                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings} and 10 exp", True,
                                                     (255, 255, 255)), (70, 460))
 
         if self.game_state == "menu_screen":
@@ -1020,7 +996,6 @@ class OpossumInACanSallyScreen(Screen):
                 elif self.opossum_index == 2:
                     # state.player.money += self.player_score
                     # self.sallyOpossumMoney -= self.player_score
-                    state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     # self.refresh()
                     self.initializeGarbageCans()

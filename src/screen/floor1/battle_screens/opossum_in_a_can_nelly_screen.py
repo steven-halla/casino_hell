@@ -98,7 +98,7 @@ class OpossumInACanNellyScreen(Screen):
             ),
 
             "immune_lose_message": TextBox(
-                ["chompy" , ],
+                ["chompy, you gain 10 experience" , ],
                 (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -270,39 +270,6 @@ class OpossumInACanNellyScreen(Screen):
             print(f"Can {i} contains: {getattr(self, f'can{i}')}")
 
 
-    # def initializeGarbageCans(self):
-    #
-    #
-    #     # Randomly shuffle the winner_or_looser list
-    #     # print("yabbba dabbbba dooooooooooo")
-    #     shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
-    #
-    #     # Assign a shuffled item to each can and print the content
-    #     self.can1 = shuffled_items[0]
-    #     # print("Can 1 contains:", self.can1)
-    #
-    #     self.can2 = shuffled_items[1]
-    #     # print("Can 2 contains:", self.can2)
-    #
-    #     self.can3 = shuffled_items[2]
-    #     # print("Can 3 contains:", self.can3)
-    #
-    #     self.can4 = shuffled_items[3]
-    #     # print("Can 4 contains:", self.can4)
-    #
-    #     self.can5 = shuffled_items[4]
-    #     # print("Can 5 contains:", self.can5)
-    #
-    #     self.can6 = shuffled_items[5]
-    #     # print("Can 6 contains:", self.can6)
-    #
-    #     self.can7 = shuffled_items[6]
-    #     # print("Can 7 contains:", self.can7)
-    #
-    #     self.can8 = shuffled_items[7]
-    #     # print("Can 8 contains:", self.can8)
-
-
     def refresh(self):
         self.bet = 20
         self.has_opossum_insurance = True
@@ -399,37 +366,16 @@ class OpossumInACanNellyScreen(Screen):
 
 
         if self.game_state == "tally_screen":
-            if self.player_score >= 600 and self.talley_checker == False:
 
-                # state.player.stamina_points -= 10
-                print("Your before  total exp is: " + str(state.player.exp))
-                state.player.exp += 300
-                print("you gained: " + str(300) + "exp")
-                print("Your after total exp is: " + str(state.player.exp))
-                self.talley_checker = True
-                return
 
-            elif self.player_score >= 300 and self.talley_checker == False:
-
-                # state.player.stamina_points -= 5
-
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 200
-                print("you gained: " + str(200) + "exp")
-                print("Your after total exp is: " + str(state.player.exp))
-                self.talley_checker = True
-
-                return
-
-            elif self.player_score >= 20 and self.talley_checker == False:
+            if self.player_score >= 0 and self.talley_checker == False:
                 # state.player.stamina_points -= 3
 
                 print("Your before  total exp is: " + str(state.player.exp))
 
-                state.player.exp += 100
-                print("you gained: " + str(100) + "exp")
-                print("Your after total exp is: " + str(state.player.exp))
+                state.player.exp += 10
+
+
                 self.talley_checker = True
 
                 return
@@ -947,7 +893,7 @@ class OpossumInACanNellyScreen(Screen):
 
             self.opossumInACanMessages["tally_message"].draw(state)
             if self.opossumInACanMessages["tally_message"].message_index == 0:
-                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings}", True,
+                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings} and 10 exp", True,
                                                     (255, 255, 255)), (70, 460))
 
         if self.game_state == "menu_screen":
@@ -1016,7 +962,6 @@ class OpossumInACanNellyScreen(Screen):
                 elif self.opossum_index == 2:
                     # state.player.money += self.player_score
                     # self.nellyOpossumMoney -= self.player_score
-                    state.player.exp += self.player_score / 5
                     state.controller.isTPressed = False
                     # self.refresh()
                     self.initializeGarbageCans()
