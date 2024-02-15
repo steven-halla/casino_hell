@@ -104,7 +104,7 @@ class GameState:
         self.startLoadScreen = StartLoadScreen()
 
 
-        self.currentScreen = self.blackJackDemonBossScreen
+        self.currentScreen = self.startLoadScreen
 
 
         self.start_new_game_entry_point = False

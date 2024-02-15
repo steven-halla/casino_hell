@@ -52,10 +52,10 @@ class HedgeMazeScreen(Screen):
         # state.npcs = []
         state.npcs = [
 
-            HedgeHog1(16 * 22, 14 * 45),
-            HedgeHog2(16 * 6, 14 * 35),
-            HedgeHog3(16 * 6, 14 * 25),
-            HedgeHog4(16 * 22, 14 * 15),
+            HedgeHog1(16 * 43, 14 * 100),
+            HedgeHog2(16 * 63, 14 * 118),
+            HedgeHog3(16 * 52, 14 * 154),
+            HedgeHog4(16 * 53, 14 * 180),
 
             # make sure to seperate by a factor of 8 for y
             #x, y
@@ -84,9 +84,9 @@ class HedgeMazeScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            Demon1(16 * 22, 14 * 91),
-            Demon2(16 * 20, 14 * 79),
-            Demon3(16 * 20, 14 * 85),
+            # Demon1(16 * 22, 14 * 91),
+            # Demon2(16 * 20, 14 * 79),
+            # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
             # Demon2(16 * 55, 16 * 13),

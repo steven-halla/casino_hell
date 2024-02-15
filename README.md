@@ -574,3 +574,6 @@ and have the magic still active
 new black jack item/spell idea: Every 3 black jacks triple your current bet or something like that.
 make a special game over boss screen 
 make a speical you beat the game screen
+
+game is almost finished after we finish chilli screen we need to do the doors and pathing
+and after that should be good to go!
