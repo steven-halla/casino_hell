@@ -49,10 +49,10 @@ class Player(Entity):
         self.focus_points = 100
         self.max_focus_points = 100
         self.perks = []
-        self.items = []
+        self.items = ["sir leopold's paw"]
 
-        self.magicinventory = [ ]
-        self.companions = []
+        self.magicinventory = ["reveal" ]
+        self.companions = ["sir leopold the hedge hog"]
         self.canMove = True
         self.level3janetreward = False
 

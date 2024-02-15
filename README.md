@@ -572,3 +572,5 @@ for final boss lets up the stamina losss a little
 handle state for magic so that players dont leave and come back
 and have the magic still active
 new black jack item/spell idea: Every 3 black jacks triple your current bet or something like that.
+make a special game over boss screen 
+make a speical you beat the game screen

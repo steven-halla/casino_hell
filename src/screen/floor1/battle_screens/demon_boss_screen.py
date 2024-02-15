@@ -6,8 +6,15 @@ from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
+import random  # Make sure to import the random module at the beginning of your script
 
 
+# if a player has 3 cards, then an ace value is equal to one
+# ace should be set that if a value is less than 10, then at least one of them should be
+# set to 11
+# need to set up test cases for many up to having 4 aces in hand
+
+# betting is also broken, a black jack should net X 2 winnings
 
 class DemonBossScreen(Screen):
     def __init__(self):
@@ -21,10 +28,11 @@ class DemonBossScreen(Screen):
         self.first_message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
-        self.game_state = "welcome_screen"
+        self.game_state = "intro_demon_message"
         self.bet = 10
-        self.demon_boss_money = 660
-        self.player_chips = 660
+        self.cheater_bob_money = 300
+        self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.sir_leopold_ace_attack.set_volume(0.6)
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -41,7 +49,7 @@ class DemonBossScreen(Screen):
         self.bust_protection = False
         self.avatar_of_luck_card_redraw_counter = 3
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
-        self.spell_sound.set_volume(0.5)
+        self.spell_sound.set_volume(0.3)
 
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -54,7 +62,7 @@ class DemonBossScreen(Screen):
 
         self.despair = False
         # self.despair = True
-        self.demon_boss__defeated = False
+        self.black_jack_thomas_defeated = False
 
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
@@ -63,7 +71,7 @@ class DemonBossScreen(Screen):
 
         self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
-        self.magic_lock = True
+        self.magic_lock = False
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
@@ -72,7 +80,7 @@ class DemonBossScreen(Screen):
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/demonboss.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        # self.initialize_music()
+        self.initialize_music()
         self.music_on = True
 
 
@@ -88,16 +96,23 @@ class DemonBossScreen(Screen):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["Demon: Press T key for all commands.",
+            "demon_introduction_screen": ["Chinrog: hehehe. I will make you regret the day you were born.",
 
-                               "You look pretty fresh to me, in the chilli you go bro.", ""],
+                               "Forgotten corpse king rotting in a cell of eternal torment, bless this match so that we may eat of your agony...Poison Purse",
+                               ""],
+            "welcome_screen": ["Hero: This....what is this I feel....sick.",
+
+                               "Sir Leopold: Be careful I've seen this before, every round your oponnent will lose 5 coins, but you lose 10 coins per round",
+                               "Hero: What your saying sounds impossible, Even when the odds arent in my favor, I never back down" ,
+                               "Sir Leopold: It gets worse...It'll be harder for me to steal his aces, 70/30 split, our favor",
+                               "Hero: I like those odds....lets do this and save the people of this floor. "],
             "hero_intro_text": [
                 "am I in trouble?",
 
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", ""],
 
             "bet_intro_text": [
-                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
+                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained."],
 
             "hero_losing_text": [
                 "Hero: This isn't good, I'll need to get serious if I want to make a comeback.",
@@ -167,9 +182,16 @@ class DemonBossScreen(Screen):
             "avatar_magic_explain": [
                 "Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned.Magic lock 5 turns 25MP"],
             "back_magic_explain": ["Back to previous gui"],
+            "player_no_money_explain": [
+                "HOoooo boooooy your in for it now, hope you enjoy your new form.",
+                "You can feel darkness start to surround you....."],
+            "player_no_stamina_explain": [
+                "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..(-100 golds)",
+                ],
 
         }
-
+        self.intro_demon_screen_text_box = TextBox(self.messages["demon_introduction_screen"],
+                                               (50, 450, 50, 45), 30, 500)
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"],
                                                (50, 450, 50, 45), 30, 500)
         self.welcome_screen_text_box_hero = TextBox(
@@ -218,6 +240,10 @@ class DemonBossScreen(Screen):
             self.messages["avatar_magic_explain"], (50, 450, 50, 45), 30, 500)
         self.back_magic_explain_component = TextBox(
             self.messages["back_magic_explain"], (50, 450, 50, 45), 30, 500)
+        self.player_no_money = TextBox(
+            self.messages["player_no_money_explain"], (50, 450, 50, 45), 30, 500)
+        self.player_no_stamina = TextBox(
+            self.messages["player_no_stamina_explain"], (50, 450, 50, 45), 30, 500)
 
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
@@ -232,6 +258,12 @@ class DemonBossScreen(Screen):
 
         self.reveal_debuff = False
         self.reveal_debuff_counter = 0
+
+        self.exp_gain = 0
+        self.hero_coin_drain = 5
+
+
+
 
     pygame.init()
     def stop_music(self):
@@ -268,11 +300,12 @@ class DemonBossScreen(Screen):
         if self.bet < 50:
             self.bet = 50
 
+
         if self.bet > 100:
             self.bet = 100
 
-        if self.bet > self.demon_boss_money:
-            self.bet = self.demon_boss_money
+        if self.bet > self.cheater_bob_money:
+            self.bet = self.cheater_bob_money
 
     def update(self, state: "GameState"):
         if self.music_on == True:
@@ -286,8 +319,8 @@ class DemonBossScreen(Screen):
         controller.update()
         state.player.update(state)
 
-        if self.demon_boss_money < 10:
-            self.demon_boss__defeated = True
+        if self.cheater_bob_money < 10:
+            self.black_jack_thomas_defeated = True
             self.game_state = "defeated"
 
         if self.game_state == "defeated":
@@ -295,14 +328,24 @@ class DemonBossScreen(Screen):
             self.defeated_textbox.update(state)
 
 
+        if self.game_state == "intro_demon_message":
+            self.intro_demon_screen_text_box.update(state)
+            if self.intro_demon_screen_text_box.is_finished():
+                print("demonn ham")
+                self.spell_sound.play()  # Play the sound effect once
+
+                self.game_state = "welcome_screen"
+
 
         if self.game_state == "welcome_screen":
 
+            # if self.messages.[welcome_screen] = indexof 3:
+
             if state.player.stamina_points < 1:
                 print("time to leave")
-            if self.demon_boss_money < 10:
+            if self.cheater_bob_money < 10:
                 print("time to be gone wit you")
-                self.demon_boss__defeated = True
+                self.black_jack_thomas_defeated = True
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
@@ -319,36 +362,40 @@ class DemonBossScreen(Screen):
             self.current_index = 0
             self.enemy_score = 0
 
-            if self.welcome_screen_text_box.is_finished():
+
+
+
+            if self.welcome_screen_text_box.message_index == 2:
+
                 self.npc_speaking = False
                 self.hero_speaking = True
-                self.welcome_screen_text_box_hero.update(state)
+                # self.welcome_screen_text_box_hero.update(state)
 
-                if self.welcome_screen_text_box_hero.is_finished():
+                # if self.welcome_screen_text_box_hero.is_finished():
 
-                    if controller.isUpPressed:
-                        self.menu_movement_sound.play()  # Play the sound effect once
+                if controller.isUpPressed:
+                    self.menu_movement_sound.play()  # Play the sound effect once
 
-                        if not hasattr(self, "welcome_screen_index"):
-                            self.welcome_screen_index = len(
-                                self.welcome_screen_choices) - 1
-                        else:
-                            self.welcome_screen_index -= 1
-                        self.welcome_screen_index %= len(
-                            self.welcome_screen_choices)
-                        controller.isUpPressed = False
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(
+                            self.welcome_screen_choices) - 1
+                    else:
+                        self.welcome_screen_index -= 1
+                    self.welcome_screen_index %= len(
+                        self.welcome_screen_choices)
+                    controller.isUpPressed = False
 
-                    elif controller.isDownPressed:
-                        self.menu_movement_sound.play()
-                        if not hasattr(self, "welcome_screen_index"):
-                            self.welcome_screen_index = len(
-                                self.welcome_screen_choices) + 1
-                        else:
-                            self.welcome_screen_index += 1
+                elif controller.isDownPressed:
+                    self.menu_movement_sound.play()
+                    if not hasattr(self, "welcome_screen_index"):
+                        self.welcome_screen_index = len(
+                            self.welcome_screen_choices) + 1
+                    else:
+                        self.welcome_screen_index += 1
 
-                        self.welcome_screen_index %= len(
-                            self.welcome_screen_choices)
-                        controller.isDownPressed = False
+                    self.welcome_screen_index %= len(
+                        self.welcome_screen_choices)
+                    controller.isDownPressed = False
 
         elif self.game_state == "hero_is_desperate_state":
             self.npc_speaking = False
@@ -395,22 +442,24 @@ class DemonBossScreen(Screen):
 
             self.third_message_display = " "
             self.place_bet(state)
-            if controller.isTPressed:
-                if self.bet > 70:
-                    state.player.stamina_points -= 3
-                    print("-3")
-                elif self.bet < 30:
+            if self.bet_screen_text.current_message_finished():
 
-                    state.player.stamina_points -= 1
+                if controller.isTPressed:
+                    if self.bet > 70:
+                        state.player.stamina_points -= 2
+                        print("-3")
+                    elif self.bet <= 70:
 
-                    print("-1")
-                elif self.bet < 70 or self.bet > 20:
-                    state.player.stamina_points -= 2
-                    print("-2")
+                        state.player.stamina_points -= 1
 
-                pygame.time.wait(300)
-                self.game_state = "draw_phase"
-                controller.isTPressed = False
+                        print("-1")
+                    elif self.bet < 70 or self.bet > 20:
+                        state.player.stamina_points -= 2
+                        print("-2")
+
+                    pygame.time.wait(300)
+                    self.game_state = "draw_phase"
+                    controller.isTPressed = False
 
         elif self.game_state == "draw_phase":
             self.first_message_display = ""
@@ -458,14 +507,21 @@ class DemonBossScreen(Screen):
                 # Compute the score of the new hand
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                 print("New enemy score is: " + str(self.enemy_score))
-            if "sir leopold's paw" in state.player.items:
 
-                for card in self.enemy_hand:
-                    if card in aces_to_remove:
-                        self.enemy_hand.remove(card)
-                        print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
-                        self.enemy_hand += self.deck.enemy_draw_hand(1)
-                        break
+            # Assuming other parts of your code are already defined
+            if "sir leopold's paw" in state.player.items:
+                roll = random.randint(1, 100)  # Get a random number between 1 and 100
+                if roll >= 30:  # Check if the roll is less than or equal to 30
+                    for card in self.enemy_hand:
+                        if card in aces_to_remove:
+                            self.enemy_hand.remove(card)
+                            print(f"Hedgehog swiped an Ace! Removed card: {card}")
+                            print("Your roll is: " + str(roll))
+                            self.sir_leopold_ace_attack.play()  # Play the sound effect once
+                            self.enemy_hand += self.deck.enemy_draw_hand(1)
+                            break
+            else:
+                pass  # If "sir leopold's paw" is not in the player's items, or the roll is greater than 30, do nothing
 
             if self.black_jack_counter > 0:
                 print(
@@ -532,17 +588,14 @@ class DemonBossScreen(Screen):
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21:
-                self.player_chips -= self.bet
-                self.demon_boss_money += self.bet
+                state.player.money -= self.bet
+                self.cheater_bob_money += self.bet
 
-                if state.player.level == 1:
-                    state.player.exp += 5
-                    self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
-                elif state.player.level == 2:
-                    state.player.exp += 2
-                    self.first_message_display = f"You gain 2 exp and lose {self.bet} gold "
-                self.second_message_display = "player bust you lose"
-                self.game_state = "results_screen"
+                state.player.exp += 5
+
+                self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
+                    # self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
+
 
             elif self.player_score > 21 and self.reveal_hand < 11:
                 print("you almost busted")
@@ -565,7 +618,7 @@ class DemonBossScreen(Screen):
             print("this is the start of enemy draw one card")
             current_time = pygame.time.get_ticks()
 
-            while self.enemy_score < 13:  # this is 15 in order to make game a little easier
+            while self.enemy_score < 16:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
 
@@ -579,19 +632,16 @@ class DemonBossScreen(Screen):
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
-                    self.player_chips += self.bet
-                    self.demon_boss_money -= self.bet
+                    state.player.money += self.bet
+                    self.cheater_bob_money -= self.bet
                     print("enemy bust")
-                    if state.player.level == 1:
-                        state.player.exp += 12
-                        self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
-                    elif state.player.level == 2:
-                        state.player.exp += 6
-                        self.first_message_display = f"You gain 6 exp and lose {self.bet} gold "
+                    state.player.exp += 12
+                    self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
+
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
-            if self.enemy_score > 12 and self.enemy_score < 22:
+            if self.enemy_score > 15 and self.enemy_score < 22:
                 print("stay here")
                 self.game_state = "results_screen"
 
@@ -609,8 +659,8 @@ class DemonBossScreen(Screen):
 
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
-                    self.player_chips += self.bet
-                    self.demon_boss_money -= self.bet
+                    state.player.money += self.bet
+                    self.cheater_bob_money -= self.bet
                     print("enemy bust")
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
@@ -678,129 +728,209 @@ class DemonBossScreen(Screen):
 
                 # 534534543535353525532535353354
 
+        elif self.game_state == "magic_menu":
+
+            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
+
+            if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) - 1
+                else:
+                    self.magic_menu_index -= 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
+                if not hasattr(self, "magic_menu_index"):
+                    self.magic_menu_index = len(self.magic_menu_selector) + 1
+                else:
+                    self.magic_menu_index += 1
+                self.magic_menu_index %= len(self.magic_menu_selector)
+                controller.isDownPressed = False
+
+
+            if self.magic_menu_index == 0:
+                self.reveal_magic_explain_component.update(state)
+
+                if controller.isTPressed:
+                    # channel3 = pygame.mixer.Channel(3)
+                    # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
+                    # channel3.play(sound3)
+                    if state.player.focus_points >= 10:
+
+                        state.player.focus_points -= 10
+                        self.spell_sound.play()  # Play the sound effect once
+
+
+                        self.reveal_hand = 10
+                        self.reveal_debuff = True
+                        self.reveal_debuff_counter = 10
+                        self.magic_lock = True
+                        self.player_status = "Focus"
+                        self.enemy_status = "Reveal"
+                        self.isTPressed = False
+
+                        print("You cast reveal")
+                        self.game_state = "welcome_screen"
+
+
+                    elif state.player.focus_points < 10:
+                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
+
+
+            elif self.magic_menu_index == 1:
+                self.back_magic_explain_component.update(state)
+
+                if controller.isTPressed:
+                    print(str(controller.isTPressed))
+                    controller.isTPressed = False
+                    print(str(controller.isTPressed))
+
+
+                    self.game_state = "welcome_screen"
+                    self.isTPressed = False
+                    print(str(controller.isTPressed))
+
+
 
         elif self.game_state == "results_screen":
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 50 exp and {self.bet * 2} gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 25 exp and {self.bet * 2} gold "
+                self.first_message_display = f"You gain 100 exp and {self.bet * 3} gold "
+
+
+
 
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.second_message_display = "It's a draw press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 50 exp and 0 gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 25 exp and 0 gold "
+                self.first_message_display = f"You gain 25 exp and 0 gold "
+
+
+
 
 
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.second_message_display = "Enemy gets blackjack you lose "
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 100 exp and 0 gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 50 exp and 0 gold "
+                self.first_message_display = f"You gain 30 exp and 0 gold "
+
+
+
+
 
             elif self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 25 exp and {self.bet} gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 12 exp and {self.bet} gold "
+                self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+
+
+
 
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player press T when ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 50 exp and lose {self.bet} gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+                self.first_message_display = f"You gain 5 experience and lose {self.bet} gold "
+
+
+
+
+
 
             elif self.player_score == self.enemy_score:
+
                 self.second_message_display = "It's a draw nobody wins press T when Ready"
-                if state.player.level == 1:
-                    self.first_message_display = f"You gain 25 exp and 0 gold "
-                elif state.player.level == 2:
-                    self.first_message_display = f"You gain 12 exp and 0 gold "
+                self.first_message_display = f"You gain 25 exp and 0 gold "
 
             if controller.isTPressed:
-                if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-                    self.player_chips+= self.bet * 2
-                    self.demon_boss_money -= self.bet * 2
-                    if state.player.level == 1:
-                        state.player.exp += 50
 
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 12 exp and {self.bet * 2} gold "
-                        state.player.exp += 25
+
+
+                if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
+                    state.player.exp += 100
+
+
+                    self.first_message_display = f"You gain 100 exp and win {self.bet * 3} gold "
+                    self.second_message_display = "You win player press T when ready"
+                    state.player.money += self.bet * 3
+                    self.cheater_bob_money -= self.bet * 3
+                    self.cheater_bob_money -= 5
+                    state.player.money -= 10
+
+
 
 
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 50 exp and 0 gold "
+                    state.player.exp += 50
+                    self.cheater_bob_money -= 5
+                    state.player.money -= 10
+                    self.first_message_display = f"You gain 50 exp and 0 gold "
+                    self.second_message_display = "You tie player press T when ready"
 
-                        state.player.exp += 75
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 25 exp and 0 gold "
 
-                        state.player.exp += 33
 
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                    self.player_chips -= self.bet * 2
-                    self.demon_boss_money += self.bet * 2
-                    if state.player.level == 1:
-                        state.player.exp += 100
+                    state.player.exp += 25
+                    state.player.stamina_points -= 25
 
-                    elif state.player.level == 2:
-                        state.player.exp += 50
+                    self.second_message_display = "You lose player press T when ready"
+                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+
+                    state.player.money -= self.bet * 3
+                    self.cheater_bob_money += self.bet * 3
+                    self.cheater_bob_money -= 5
+                    state.player.money -= 10
+
+
 
 
 
                 elif self.player_score > self.enemy_score and self.player_score < 22:
+                    state.player.exp += 25
+
                     self.second_message_display = "You win player press T when ready"
 
-                    self.player_chips += self.bet
-                    self.demon_boss_money -= self.bet
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+                    state.player.money += self.bet
+                    self.cheater_bob_money -= self.bet
+                    self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+                    self.cheater_bob_money -= 5
+                    state.player.money -= 10
 
-                        state.player.exp += 25
-
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 12 exp and {self.bet} gold "
-
-                        state.player.exp += 12
 
 
                 elif self.player_score < self.enemy_score and self.enemy_score < 22:
+                    state.player.exp += 10
+                    state.player.stamina_points -= 5
+                    self.cheater_bob_money -= 5
+                    state.player.money -= 10
+
+
                     self.second_message_display = "You lose player press T when ready"
-                    self.player_chips -= self.bet
-                    self.demon_boss_money += self.bet
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 50 exp and lose {self.bet} gold "
+                    state.player.money -= self.bet
+                    self.cheater_bob_money += self.bet
+                    self.first_message_display = f"You gain 10 exp and lose {self.bet} gold "
 
-                        state.player.exp += 50
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
-
-                        state.player.exp += 25
 
 
 
                 elif self.player_score == self.enemy_score:
+                    state.player.exp += 8
+
                     self.second_message_display = "It's a draw nobody wins press T when Ready"
 
-                    if state.player.level == 1:
-                        self.first_message_display = f"You gain 25 exp and 0 gold "
+                    self.first_message_display = f"You gain 8 exp "
 
-                        state.player.exp += 25
-
-                    elif state.player.level == 2:
-                        self.first_message_display = f"You gain 12 exp and 0 gold "
-
-                        state.player.exp += 12
+                    self.first_message_display = f"You gain 8 exp and 0 gold "
+                    self.cheater_bob_money -= 5
+                    state.player.money -= 10
 
                 if self.reveal_hand < 11:
                     self.reveal_hand -= 1
@@ -822,9 +952,6 @@ class DemonBossScreen(Screen):
                 pygame.time.wait(300)
                 print("Hey there going to the welcome_screen")
 
-                print("better only see this one time")
-                self.player_chips -= 20
-                self.demon_boss_money -= 20
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
@@ -863,11 +990,23 @@ class DemonBossScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 195))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.player_chips}", True,
-                                      (255, 255, 255)), (37, 250))
+        if state.player.money < 100:
+            text_color = (255, 0, 0)  # Red color
+        else:
+            text_color = (255, 255, 255)  # White color
+
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
+
+        # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
+        #                               (255, 255, 255)), (37, 250))
+        if state.player.stamina_points < 20:
+            text_color = (255, 0, 0)  # Red color
+        else:
+            text_color = (255, 255, 255)  # White color
+
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             (255, 255, 255)), (37, 290))
+                             text_color), (37, 290))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                       (255, 255, 255)), (37, 330))
@@ -896,7 +1035,7 @@ class DemonBossScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.demon_boss_money}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.cheater_bob_money}", True,
                                       (255, 255, 255)), (37, 70))
         state.DISPLAY.blit(self.font.render(f"Status: {self.enemy_status}", True,
                                       (255, 255, 255)), (37, 110))
@@ -913,11 +1052,23 @@ class DemonBossScreen(Screen):
                      (37, 30))
 
         self.main_bordered_box.draw(state)
+        # state.DISPLAY.blit(character_image, (633, 15))
         state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
                      (625, 145))
 
+        # self.face_down_card((0,0))
+
+        if self.game_state == "intro_demon_message":
+            self.intro_demon_screen_text_box.draw(state)
+
+
 
         if self.game_state == "welcome_screen":
+
+            if state.player.money < 1:
+                self.game_state = "game_over_no_money"
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
             #
             black_box = pygame.Surface((160 - 10, 180 - 10))
             black_box.fill((0, 0, 0))
@@ -941,18 +1092,19 @@ class DemonBossScreen(Screen):
                     (687, 310))
             elif self.magic_lock == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (680, 315))
+                             (680, 310))
 
             state.DISPLAY.blit(
-                self.font.render(f"{self.welcome_screen_choices[2]}", True,
+                self.font.render("Locked", True,
                                  (255, 255, 255)),
-                (687, 360))
+                (685, 360))
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 255))
-                if state.controller.isTPressed:
+
+                if state.controller.isTPressed and self.welcome_screen_text_box.is_finished():
                     self.deck.shuffle()
 
                     self.game_state = "bet_phase"
@@ -979,13 +1131,15 @@ class DemonBossScreen(Screen):
                     print("Quit")
                     state.player.canMove = True
                     self.music_on = True
+                    self.reveal_hand = 11
+                    self.magic_lock = False
 
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
                     state.controller.isTPressed = False
 
             self.welcome_screen_text_box.draw(state)
-            self.welcome_screen_text_box_hero.draw(state)
+            # self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
 
         elif self.game_state == "defeated":
@@ -1062,12 +1216,22 @@ class DemonBossScreen(Screen):
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (687, 260))
+                (674, 260))
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (687, 310))
+                (674, 310))
 
+            if self.avatar_of_luck == True and self.redraw_lock == False:
+                state.DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)),
+                             (687, 360))
+
+            elif self.avatar_of_luck == False or self.redraw_lock == True:
+                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
+                             (674, 360))
+            else:
+                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
+                             (674, 360))
 
             if self.current_index == 0:
                 state.DISPLAY.blit(
@@ -1104,6 +1268,103 @@ class DemonBossScreen(Screen):
                 if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
                     pygame.display.update()
                     self.game_state = "menu_screen"
+
+
+
+        elif self.game_state == "magic_menu":
+
+
+            black_box = pygame.Surface((255, 215))
+            black_box_width = 160
+            black_box_height = 110
+            border_width = 5
+
+            # Calculate the size of the white border based on the black box size and border width
+            white_border_width = black_box_width + 2 * border_width
+            white_border_height = black_box_height + 2 * border_width
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create the white border
+            white_border = pygame.Surface((white_border_width, white_border_height))
+            white_border.fill((255, 255, 255))
+
+            # Blit the black box onto the white border, positioned by the border width
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position on the screen
+            position_x = 620 - 10  # Adjust the position as needed
+            position_y = 300 - 5   # Adjust the position as needed
+
+            # Blit the white-bordered black box onto the display
+            state.DISPLAY.blit(white_border, (position_x, position_y))
+
+
+            # Use the provided position variables
+            position_x = 620 - 20  # Adjust the position as needed
+            position_y = 300  # Adjust the position as needed
+
+            # Now, position the menu items relative to these coordinates
+            if self.magic_menu_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (position_x + 20, position_y + 10))  # Adjust offsets as needed
+
+                self.reveal_magic_explain_component.draw(state)
+
+            elif self.magic_menu_index == 1:
+                state.DISPLAY.blit(
+                    self.font.render(f"->", True, (255, 255, 255)),
+                    (position_x + 20, position_y + 60))  # Adjust offsets as needed
+
+                self.back_magic_explain_component.draw(state)
+
+            # Position the magic menu selectors relative to the black box
+            state.DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
+                (position_x + 60, position_y + 15))  # Adjust offsets as needed
+
+            state.DISPLAY.blit(
+                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
+                (position_x + 60, position_y + 65))  # Adjust offsets as needed
+
+
+
+
+        elif self.game_state == "game_over_no_money":
+
+            self.player_no_money.update(state)
+            self.player_no_money.draw(state)
+            if self.player_no_money.is_finished():
+                if state.controller.isTPressed:
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+
+
+        elif self.game_state == "game_over_no_stamina":
+            self.player_no_stamina.update(state)
+            self.player_no_stamina.draw(state)
+            if self.player_no_stamina.is_finished():
+                if state.controller.isTPressed:
+                    state.player.money -= 100
+                    if state.player.money < 1:
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
+                    else:
+                        self.game_state = "welcome_screen"
+
+                        state.player.canMove = True
+                        state.currentScreen = state.restScreen
+                        state.currentScreen = state.gameOverScreen
+                        state.gameOverScreen.start(state)
+
+            if state.player.money < 1:
+                self.game_state = "game_over_no_money"
+            elif state.player.stamina_points < 1:
+                self.game_state = "game_over_no_stamina"
+
 
         elif self.game_state == "results_screen":
             player_card_x = 235
