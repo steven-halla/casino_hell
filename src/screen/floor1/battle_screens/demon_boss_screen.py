@@ -332,6 +332,7 @@ class DemonBossScreen(Screen):
             self.intro_demon_screen_text_box.update(state)
             if self.intro_demon_screen_text_box.is_finished():
                 print("demonn ham")
+                state.player.luck += 1
                 self.spell_sound.play()  # Play the sound effect once
 
                 self.game_state = "welcome_screen"
@@ -469,6 +470,7 @@ class DemonBossScreen(Screen):
             self.player_black_jack_win = False
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
+
             self.player_hand = self.deck.player_draw_hand(2)
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.deck.compute_hand_value(self.player_hand)
@@ -507,6 +509,16 @@ class DemonBossScreen(Screen):
                 # Compute the score of the new hand
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                 print("New enemy score is: " + str(self.enemy_score))
+
+            if state.player.luck > 0:
+                if self.player_score > 12 and self.player_score < 17:
+                    lucky_roll = random.randint(1, 100)  # Get a random number between 1 and 100
+                    if lucky_roll >= 50:
+                        self.player_hand = self.deck.player_draw_hand(2)
+                        print("New Player hand is" + str(self.player_hand))
+                        self.player_score = self.deck.compute_hand_value(self.player_hand)
+                        print(" New Player score is: " + str(self.player_score))
+
 
             # Assuming other parts of your code are already defined
             if "sir leopold's paw" in state.player.items:
