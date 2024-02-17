@@ -18,7 +18,6 @@ class Demon1(Demon):
         self.textbox = NpcTextBox(
             [
                 "Demon: Hey human, what are you doing here, get out !,"
-                ,
                 ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
@@ -38,6 +37,8 @@ class Demon1(Demon):
 
         # print("updating")
         super().update(state)
+
+
         distance = math.sqrt(
             (state.player.collision.x - self.collision.x) ** 2 + (
                         state.player.collision.y - self.collision.y) ** 2)
@@ -48,17 +49,21 @@ class Demon1(Demon):
             self.move_player_down = True  # S
 
 
-            if state.controller.isTPressed:
-                self.isSpeaking = False
+        if self.player_spotted == True:
+            print("Player spot detected")
+
+            self.isSpeaking = True
+            if self.textbox.is_finished() and state.controller.isTPressed:
+
+                # self.isSpeaking = False
                 self.move_player_down = True  # This is the flag to indicate the player needs to move down.
                 state.controller.isTPressed = False
+                self.isSpeaking = False
+                self.player_spotted = False
                 state.player.setPosition(100, 500)  # Set the player's position to fixed coordinates
-
-
-
             # Update the textbox visibility based on the demon's speaking state
-        if self.isSpeaking:
-            self.textbox.update(state)
+        self.textbox.update(state)
+        print("do we break the loop")
 
     def draw(self, state):
         if self.isSpeaking:

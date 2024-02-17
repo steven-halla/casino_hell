@@ -45,7 +45,7 @@ class HedgeMazeScreen(Screen):
 
         state.treasurechests = [
 
-            BlueFlower(16 * 7, 14 * 37),
+            BlueFlower(16 * 7, 14 * 42),
 
         ]
 
@@ -55,36 +55,15 @@ class HedgeMazeScreen(Screen):
             HedgeHog1(16 * 43, 14 * 100),
             HedgeHog2(16 * 63, 14 * 118),
             HedgeHog3(16 * 52, 14 * 154),
-            HedgeHog4(16 * 53, 14 * 180),
+            # HedgeHog4(16 * 53, 14 * 180), #THIS POSITION IS SET TO 1ST ENEMY
+            # HedgeHog4(16 * 23, 14 * 198), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
+            HedgeHog4(16 * 2, 14 * 10),
 
-            # make sure to seperate by a factor of 8 for y
-            #x, y
-            # InnGuard(16 * 36, 16 * 2),
-            # BappingMike(16 * 36, 16 * 10),
-
-            # InnKeeper(16 * 36, 16 * 26),
-            # DoctorOpossum(16 * 30, 16 * 30),
-            # JackyBanana(16* 5, 16 * 15),
-            # BappingMike(16* 15, 16 * 15),
-            # HungryPatrick(16* 25, 16 * 15),
-            # InnGuard(16* 35, 16 * 15),
-            # NickyHints(16* 25, 16 * 25),
-            # MainScreenTeleporter(16 * 1, 16 * 10),
-            #
-            #
-            #
-            # FlippinTed(16* 35, 16 * 34),
-
-
-
-
-                      ]
-        #
-        # if state.quest_giver_janet.find_hog:
-        #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
+            ]
 
         state.demons = [
-            # Demon1(16 * 22, 14 * 91),
+            Demon1(16 * 53, 14 * 180),
+            Demon1(16 * 20, 14 * 19),
             # Demon2(16 * 20, 14 * 79),
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),

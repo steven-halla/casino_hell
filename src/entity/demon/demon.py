@@ -24,6 +24,7 @@ class Demon(Entity):
         self.last_fast_move_time = pygame.time.get_ticks()  # Initialize with the current time
         self.fast_move_interval = 55  # Time interval between fast moves, in milliseconds
         self.fast_move_distance = 15
+        self.player_spotted = False
 
 
     def move_randomly(self, state):
@@ -139,6 +140,7 @@ class Demon(Entity):
                         state.player.collision.x > los_left_boundary and \
                         state.player.collision.y > los_upper_boundary and \
                         state.player.collision.y < los_lower_boundary:
+                    self.player_spotted = True
                     print("Player is in LOS!")
                     self.LOScounter += 1
                     print(self.LOScounter)
