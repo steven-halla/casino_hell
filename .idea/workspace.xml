@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed demon bug">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="sir leopold is now the teleporter">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/gui/textbox/npc_text_box.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/textbox/npc_text_box.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/demon/demon1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/demon/demon7.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon7.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/demon_boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/demon_boss_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/chilli_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/hedge_maze_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,7 +308,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="160493000" />
+      <workItem from="1707589099832" duration="161394000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -648,7 +653,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="555" />
+    <option name="localTasksCounter" value="556" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -677,7 +682,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updates to shop now we can  hear the ting when we cannot buy stuff" />
     <MESSAGE value="FIXED BUG With shop keeper save coin not showing as sold out" />
     <MESSAGE value="improved graphics that now look better for messages" />
     <MESSAGE value="fixed magic box position for black jack" />
@@ -702,7 +706,8 @@
     <MESSAGE value="new teleporter set up" />
     <MESSAGE value="teleporters all set up" />
     <MESSAGE value="fixed demon bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed demon bug" />
+    <MESSAGE value="sir leopold is now the teleporter" />
+    <option name="LAST_COMMIT_MESSAGE" value="sir leopold is now the teleporter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

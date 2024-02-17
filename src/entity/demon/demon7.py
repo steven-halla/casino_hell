@@ -30,7 +30,7 @@ class Demon7(Demon):
 
 
         #the below is for testing never delete this
-        self.show_los = True  # LOS visibility flag
+        self.show_los = False  # LOS visibility flag
 
     def update(self, state):
 

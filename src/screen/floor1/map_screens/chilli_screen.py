@@ -84,6 +84,7 @@ class ChilliScreen(Screen):
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_chili_area_entry_point = False
 
+
         # Check if a player instance already exists
         # if not hasattr(state, 'player') or state.player is None:
         #     player_start_x = 300

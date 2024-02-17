@@ -84,6 +84,7 @@ class DemonBossScreen(Screen):
         self.music_on = True
 
 
+
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.flip_timer = pygame.time.get_ticks() + 2000
@@ -329,6 +330,7 @@ class DemonBossScreen(Screen):
 
 
         if self.game_state == "intro_demon_message":
+            state.player.money = 660
             self.intro_demon_screen_text_box.update(state)
             if self.intro_demon_screen_text_box.is_finished():
                 print("demonn ham")
@@ -366,7 +368,7 @@ class DemonBossScreen(Screen):
 
 
 
-            if self.welcome_screen_text_box.message_index == 2:
+            if self.welcome_screen_text_box.message_index == 4:
 
                 self.npc_speaking = False
                 self.hero_speaking = True
@@ -1094,14 +1096,14 @@ class DemonBossScreen(Screen):
             state.DISPLAY.blit(
                 self.font.render(f"{self.welcome_screen_choices[0]}", True,
                                  (255, 255, 255)),
-                (687, 260))
+                (680, 260))
 
             if self.magic_lock == False:
 
                 state.DISPLAY.blit(
                     self.font.render(f"{self.welcome_screen_choices[1]}", True,
                                      (255, 255, 255)),
-                    (687, 310))
+                    (680, 310))
             elif self.magic_lock == True:
                 state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
                              (680, 310))
@@ -1109,7 +1111,7 @@ class DemonBossScreen(Screen):
             state.DISPLAY.blit(
                 self.font.render("Locked", True,
                                  (255, 255, 255)),
-                (685, 360))
+                (680, 360))
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(

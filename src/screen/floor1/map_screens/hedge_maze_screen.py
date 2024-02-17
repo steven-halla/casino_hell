@@ -39,11 +39,17 @@ class HedgeMazeScreen(Screen):
     def start(self, state: "GameState"):
         super().start(state)
 
+        if state.chili_area_to_maze_area_entry_point == True:
+            player_start_x = 16 * 45  # Desired X coordinate
+            player_start_y = 16 * 176  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.chili_area_to_maze_area_entry_point = False
+
         # Check if a player instance already exists
-        if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 300
-            player_start_y = 200
-            state.player = Player(player_start_x, player_start_y)
+        # if not hasattr(state, 'player') or state.player is None:
+        #     player_start_x = 300
+        #     player_start_y = 200
+        #     state.player = Player(player_start_x, player_start_y)
 
         state.treasurechests = [
 
@@ -79,6 +85,8 @@ class HedgeMazeScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+
+
         if "blue flower" in state.player.items:
             state.demons.clear()
 

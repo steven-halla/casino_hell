@@ -16,7 +16,7 @@ class SirLeopoldTheHedgeHog(Npc):
         self.textbox = NpcTextBox(
             ["I'm the head hog round these parts and I can use your help!",
              "Oh hero won't you pretty please help my friends, they are hiding out in the hedge maze, I'll reward you real good if you can help. ",
-             "There are 4 of them, good luck and don't let the demons catch you. And don't trust the cat, she's evil."],
+             "Would you like to go now I can show you the way?"],
             (50, 450, 50, 45), 30, 500)
         self.reward_no_hogs = NpcTextBox(
             ["Wow you really suck",
@@ -111,7 +111,7 @@ class SirLeopoldTheHedgeHog(Npc):
         elif self.state == "talking":
             state.player.canMove = False
 
-            if self.textbox.is_finished():
+            if self.textbox.is_finished() and "blue flower" not in state.player.items:
                 if state.controller.isUpPressed:
                     state.controller.isUpPressed = False
 
@@ -126,6 +126,9 @@ class SirLeopoldTheHedgeHog(Npc):
 
                 if state.controller.isTPressed and self.arrow_index == 0:
                     print("yes")
+                    state.player.canMove = True
+                    state.chili_area_to_maze_area_entry_point = True
+
                     state.currentScreen = state.hedgeMazeScreen
                     state.hedgeMazeScreen.start(state)
                     # Handle the selected option

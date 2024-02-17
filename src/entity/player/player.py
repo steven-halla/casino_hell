@@ -40,13 +40,13 @@ class Player(Entity):
         self.luck = 0
         self.food = 0
         self.perception = 0
-        self.stamina_points = 55
+        self.stamina_points = 140
         self.stamina_increase = self.body * 1 * self.level
 
         self.stamina_guard = False
 
         self.max_stamina_points = 100 + self.stamina_increase
-        self.focus_points = 100
+        self.focus_points = 140
         self.max_focus_points = 100
         self.perks = []
         self.items = ["sir leopold's paw"]
