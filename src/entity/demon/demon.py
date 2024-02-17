@@ -26,7 +26,8 @@ class Demon(Entity):
         self.fast_move_distance = 15
         self.player_spotted = False
         self.los_horizontal_range = 410
-        self.los_vertical_range = 32
+        self.right_los_horizontal_range = 100
+        self.los_vertical_range = 30
 
 
     def move_randomly(self, state):
@@ -104,6 +105,47 @@ class Demon(Entity):
 
             # You can break here if you want to change colors of only the first pair of colliding demons
                 # break
+
+    def LOSRight(self, state):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_color_change_time > self.color_change_interval:
+            self.last_color_change_time = current_time
+            # This method does not need to toggle the color; it acts based on the current color state
+
+        # LOS to the right is active when the demon is in GREEN state
+        if self.color == GREEN:
+            # Calculate the right-side LOS boundaries based on the demon's position
+            los_right_boundary = self.collision.x + self.collision.width + self.right_los_horizontal_range + 100
+            los_upper_boundary = self.collision.y - self.right_los_horizontal_range + 55
+            los_lower_boundary = self.collision.y + self.collision.height + self.right_los_horizontal_range - 150
+
+            los_blocked = False
+            for demon in state.demons:
+                if demon != self:
+                    distance_to_right_demon = demon.collision.x - (self.collision.x + self.collision.width)
+                    y_distance = abs(self.collision.y - demon.collision.y)
+
+                    # Check if another demon is within the LOS to the right and within vertical range
+                    if 0 < distance_to_right_demon <= self.right_los_horizontal_range and y_distance <= self.right_los_horizontal_range:
+                        self.color = BLUE  # Optional: Indicate LOS is blocked/engaged
+                        print(f"Demon {self} detects another demon to the right within LOS")
+                        los_blocked = True
+                        break  # A demon is found within the range, no need to check further
+
+            # Check if the player is in LOS to the right and not blocked
+            if not los_blocked:
+                if state.player.collision.x > self.collision.x and \
+                        state.player.collision.x < los_right_boundary and \
+                        state.player.collision.y > los_upper_boundary and \
+                        state.player.collision.y < los_lower_boundary:
+                    self.player_spotted = True
+                    print("Player is in LOS to the right!")
+                    self.LOScounter += 1
+                    print(self.LOScounter)
+                    return False  # Player is in LOS and not shielded
+
+        # LOS is blocked by a demon or LOS is not towards the player
+        return True  # Safe, either LOS is blocked or player is not in LOS
 
     def LOSLeft(self, state):
         current_time = pygame.time.get_ticks()

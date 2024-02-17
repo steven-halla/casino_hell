@@ -90,6 +90,7 @@ class HedgeHog4(Npc):
             print("Here we go we're walking here")
 
 
+
             # print("start state: waiting")
             # self.textbox.reset()
 

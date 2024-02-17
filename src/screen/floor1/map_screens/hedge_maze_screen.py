@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
+from entity.demon.demon7 import Demon7
 from entity.demon.demon2 import Demon2
 from entity.demon.demon3 import Demon3
 from entity.demon.demon4 import Demon4
@@ -31,8 +32,7 @@ class HedgeMazeScreen(Screen):
         self.hedge_hog_counter = 0
         self.blue_flower = False
         move_player_down_flag = False
-
-
+        self.hog4_replaced_with_demon = False  # Set a flag to prevent repeated additions
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -57,17 +57,15 @@ class HedgeMazeScreen(Screen):
 
             HedgeHog3(16 * 63, 14 * 118),
             HedgeHog1(16 * 79, 14 * 184), # this position is set for our 1st hoggy hog hog hog bottom right of screen
-            # HedgeHog4(16 * 53, 14 * 180), #THIS POSITION IS SET TO 1ST ENEMY
-            # HedgeHog4(16 * 23, 14 * 198), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
-            # HedgeHog4(16 * 2, 14 * 10),
+
 
             ]
 
         state.demons = [
-            Demon1(16 * 53, 14 * 180),#THIS POSITION IS SET TO 1ST ENEMY
-            Demon1(16 * 26, 14 * 2), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
-            Demon1(16 * 52, 14 * 154), #this position is set to 2nd enemy
-            Demon1(16 * 31, 14 * 178), #this position is set to 2nd enemy
+            # Demon1(16 * 53, 14 * 180),#THIS POSITION IS SET TO 1ST ENEMY
+            # Demon1(16 * 26, 14 * 2), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
+            # Demon1(16 * 52, 14 * 154), #this position is set to 2nd enemy
+            # Demon1(16 * 31, 14 * 178), #this position is set to 2nd enemy
             # Demon2(16 * 20, 14 * 79),
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
@@ -84,6 +82,17 @@ class HedgeMazeScreen(Screen):
         if "blue flower" in state.player.items:
             state.currentScreen = state.chilliScreen
             state.chilliScreen.start(state)
+
+        hedgehog4_present = any(isinstance(npc, HedgeHog4) for npc in state.npcs)
+        if not hedgehog4_present and self.hog4_replaced_with_demon == False:
+            print("no hoggy")
+            new_demon = Demon7(16 * 18, 16 * 17)  # You can set the position as needed
+            state.demons.append(new_demon)
+            self.hog4_replaced_with_demon = True  # Set a flag to prevent repeated additions
+
+            # Ensure not to append Demon1 repeatedly after HedgeHog4 is deleted
+            # You can use a flag or condition to make sure this happens only once
+
 
         controller = state.controller
         # ... (rest of your update code) ...
