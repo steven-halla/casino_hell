@@ -455,10 +455,7 @@ class DemonBossScreen(Screen):
 
                         state.player.stamina_points -= 1
 
-                        print("-1")
-                    elif self.bet < 70 or self.bet > 20:
-                        state.player.stamina_points -= 2
-                        print("-2")
+
 
                     pygame.time.wait(300)
                     self.game_state = "draw_phase"
@@ -501,16 +498,16 @@ class DemonBossScreen(Screen):
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
-            while self.enemy_score > 17:
-                print("Redrawing hand, score too high: " + str(self.enemy_score))
-                # Empty the enemy_hand array
-                self.enemy_hand = []
-                # Draw a new hand
-                self.enemy_hand = self.deck.enemy_draw_hand(2)
-                print("New enemy hand is: " + str(self.enemy_hand))
-                # Compute the score of the new hand
-                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print("New enemy score is: " + str(self.enemy_score))
+            # while self.enemy_score > 17:
+            #     print("Redrawing hand, score too high: " + str(self.enemy_score))
+            #     # Empty the enemy_hand array
+            #     self.enemy_hand = []
+            #     # Draw a new hand
+            #     self.enemy_hand = self.deck.enemy_draw_hand(2)
+            #     print("New enemy hand is: " + str(self.enemy_hand))
+            #     # Compute the score of the new hand
+            #     self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            #     print("New enemy score is: " + str(self.enemy_score))
 
             if state.player.luck > 0:
                 if self.player_score > 12 and self.player_score < 17:
@@ -571,17 +568,10 @@ class DemonBossScreen(Screen):
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
 
                 print("its time for you to have double winnings")
-                # state.player.money += self.bet
-                # state.player.money += self.bet
-                # self.cheater_bob_money -= self.bet
-                # self.cheater_bob_money -= self.bet
+
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
-                # state.player.money -= self.bet
-                # state.player.money -= self.bet
-                # self.cheater_bob_money += self.bet
-                # self.cheater_bob_money += self.bet
+
 
                 self.game_state = "results_screen"
 
@@ -607,7 +597,7 @@ class DemonBossScreen(Screen):
 
                 state.player.exp += 5
 
-                self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
+                self.first_message_display = f"You busted! You Gain 5 exp and lose {self.bet} gold "
                     # self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
 
 
@@ -632,7 +622,7 @@ class DemonBossScreen(Screen):
             print("this is the start of enemy draw one card")
             current_time = pygame.time.get_ticks()
 
-            while self.enemy_score < 16:  # this is 15 in order to make game a little easier
+            while self.enemy_score < self.player_score:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
 
 
