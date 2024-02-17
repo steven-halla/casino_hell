@@ -32,7 +32,9 @@ class DemonBossScreen(Screen):
         self.bet = 10
         self.cheater_bob_money = 660
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
+        self.lucky_strike.set_volume(0.6)
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -99,7 +101,7 @@ class DemonBossScreen(Screen):
         self.messages = {
             "demon_introduction_screen": ["Chinrog: hehehe. I will make you regret the day you were born.",
 
-                               "Forgotten corpse king rotting in a cell of eternal torment, bless this match so that we may eat of your agony...Poison Purse",
+                               "Forgotten corpse king rotting in a cell of eternal agony, ...Poison Purse",
                                ""],
             "welcome_screen": ["Hero: This....what is this I feel....sick.",
 
@@ -513,6 +515,8 @@ class DemonBossScreen(Screen):
                 if self.player_score > 12 and self.player_score < 17:
                     lucky_roll = random.randint(1, 100)  # Get a random number between 1 and 100
                     if lucky_roll >= 50:
+                        self.lucky_strike.play()  # Play the sound effect once
+
                         self.player_hand = self.deck.player_draw_hand(2)
                         print("New Player hand is" + str(self.player_hand))
                         self.player_score = self.deck.compute_hand_value(self.player_hand)
@@ -647,6 +651,8 @@ class DemonBossScreen(Screen):
 
             if self.enemy_score > 15 and self.enemy_score < 22:
                 print("stay here")
+                self.game_state = "results_screen"
+            else:
                 self.game_state = "results_screen"
 
         elif self.game_state == "enemy_despair_draw_one_card":
