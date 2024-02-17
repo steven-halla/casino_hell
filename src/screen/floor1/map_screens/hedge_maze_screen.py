@@ -47,7 +47,7 @@ class HedgeMazeScreen(Screen):
 
         state.treasurechests = [
 
-            BlueFlower(16 * 7, 14 * 42),
+            BlueFlower(16 * 72, 14 * 122),
 
         ]
 
