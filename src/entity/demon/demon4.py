@@ -41,27 +41,23 @@ class Demon4(Demon):
             (state.player.collision.x - self.collision.x) ** 2 + (
                         state.player.collision.y - self.collision.y) ** 2)
         # print("distance: " + str(distance))
-        if state.player.collision.x - self.collision.x < 0 and distance < 30:
-            self.isSpeaking = True
+        if state.player.collision.x - self.collision.x < 0 and distance < 40:
+            # self.isSpeaking = True
             print("Demon bumped, starting conversation...")
             self.move_player_down = True  # S
+            state.player.setPosition(660, 2800)  # Set the player's position to fixed coordinates
+            self.move_player_down = True  # This is the flag to indicate the player needs to move down.
 
-
-            if state.controller.isTPressed:
-                self.isSpeaking = False
-                self.move_player_down = True  # This is the flag to indicate the player needs to move down.
-                state.controller.isTPressed = False
-                state.player.setPosition(100, 500)  # Set the player's position to fixed coordinates
 
 
 
             # Update the textbox visibility based on the demon's speaking state
-        if self.isSpeaking:
-            self.textbox.update(state)
+        # if self.isSpeaking:
+        #     self.textbox.update(state)
 
     def draw(self, state):
-        if self.isSpeaking:
-            self.textbox.draw(state)
+        # if self.isSpeaking:
+        #     self.textbox.draw(state)
         rect = (
         self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         self.collision.width, self.collision.height)

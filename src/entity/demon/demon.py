@@ -25,7 +25,7 @@ class Demon(Entity):
         self.fast_move_interval = 55  # Time interval between fast moves, in milliseconds
         self.fast_move_distance = 15
         self.player_spotted = False
-        self.los_horizontal_range = 220
+        self.los_horizontal_range = 410
         self.los_vertical_range = 32
 
 

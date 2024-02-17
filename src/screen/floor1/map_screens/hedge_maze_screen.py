@@ -52,9 +52,11 @@ class HedgeMazeScreen(Screen):
         # state.npcs = []
         state.npcs = [
 
-            HedgeHog1(16 * 43, 14 * 100),
-            HedgeHog2(16 * 63, 14 * 118),
-            HedgeHog3(16 * 52, 14 * 154),
+            HedgeHog4(16 * 3, 14 * 6),
+            HedgeHog2(16 * 10, 14 * 160),  # this is our 2nd hogger to the far left bottom of screen
+
+            HedgeHog3(16 * 63, 14 * 118),
+            HedgeHog1(16 * 79, 14 * 184), # this position is set for our 1st hoggy hog hog hog bottom right of screen
             # HedgeHog4(16 * 53, 14 * 180), #THIS POSITION IS SET TO 1ST ENEMY
             # HedgeHog4(16 * 23, 14 * 198), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
             # HedgeHog4(16 * 2, 14 * 10),
@@ -62,8 +64,10 @@ class HedgeMazeScreen(Screen):
             ]
 
         state.demons = [
-            Demon1(16 * 53, 14 * 180),
-            Demon1(16 * 20, 14 * 19),
+            Demon1(16 * 53, 14 * 180),#THIS POSITION IS SET TO 1ST ENEMY
+            Demon1(16 * 26, 14 * 2), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
+            Demon1(16 * 52, 14 * 154), #this position is set to 2nd enemy
+            Demon1(16 * 31, 14 * 178), #this position is set to 2nd enemy
             # Demon2(16 * 20, 14 * 79),
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
@@ -87,7 +91,7 @@ class HedgeMazeScreen(Screen):
         # Check if 'A' key is pressed
         if controller.isAPressed:
             # Instantiate Demon4 at a specific position (x, y)
-            new_demon = Demon4(16 * 20, 16 * 10)  # You can set the position as needed
+            new_demon = Demon4(16 * 80, 16 * 1)  # You can set the position as needed
             # Add the new demon to the state.demons list
             state.demons.append(new_demon)
 

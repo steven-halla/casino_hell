@@ -307,7 +307,7 @@ class Player(Entity):
             # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
             if self.collision.isOverlap(
                     demon.collision) :
-                print("collide with npc: " + str(demon.collision.toTuple()))
+                # print("collide with npc: " + str(demon.collision.toTuple()))
                 self.undoLastMove()
                 break
 

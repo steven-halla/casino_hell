@@ -15,9 +15,9 @@ class ChillyBilly(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Music is nice , do you dig it?"
-                    "Go on now and eat that chilli with your hands, we better not catch you using a bowl and spoon or else you'll get it good",
-                    "The last guy we caught trying to use a bowl , we hooked him up for weeks to the chili funnel."
+                    "People keep complaining that the hedge hogs are pooping in teh chilli"
+                    "It doesn't make any sense, I mean you humans eat canned food which has an acceptable amount of feces",
+                    "We demons have studied you humans closely, we know what you like."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

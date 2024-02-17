@@ -27,6 +27,9 @@ class Demon1(Demon):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
+
+
+        #the below is for testing never delete this
         self.show_los = True  # LOS visibility flag
 
     def update(self, state):
@@ -66,7 +69,6 @@ class Demon1(Demon):
 
             # Update the textbox visibility based on the demon's speaking state
         self.textbox.update(state)
-        print("do we break the loop")
 
     def draw(self, state):
         # Existing drawing code for the demon and the textbox
