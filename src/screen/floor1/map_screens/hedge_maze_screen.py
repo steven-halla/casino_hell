@@ -53,15 +53,11 @@ class HedgeMazeScreen(Screen):
 
         # state.npcs = []
         state.npcs = [
-
             HedgeHog4(16 * 3, 14 * 6),
             EvilCat(16 * 82, 14 * 35),
             HedgeHog2(16 * 10, 14 * 160),  # this is our 2nd hogger to the far left bottom of screen
-
             HedgeHog3(16 * 63, 14 * 118),
             HedgeHog1(16 * 79, 14 * 184), # this position is set for our 1st hoggy hog hog hog bottom right of screen
-
-
             ]
 
         state.demons = [

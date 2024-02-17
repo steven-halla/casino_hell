@@ -549,31 +549,7 @@ need to set player postion more in middle need to figure that out but it wil be 
 
 
 %%%%%%The below is the master bug list: %%%%%%%
-sir leopold should be the exit condition
-
-
-there is a bug I htink the last can you picked isn't being reset in the list on refresh 
-need sound effects for items that you cant buy like in ff6
-
-
-
-
-after cut scene in bar you are stuck and need to press t again and exit menu
-set canMove= True after cut scene
-
-
-opossum in a can needs many fixes:
-positoin of text in battle meu
-need magic description
-need to fix box positions with text
-
-for final boss lets up the stamina losss a little
-
-handle state for magic so that players dont leave and come back
-and have the magic still active
-new black jack item/spell idea: Every 3 black jacks triple your current bet or something like that.
-make a special game over boss screen 
-make a speical you beat the game screen
-
-game is almost finished after we finish chilli screen we need to do the doors and pathing
-and after that should be good to go!
+So far we are in the final stretch, most of the pieces are together.
+I need to next work on locations positions, and after that the rest should be smooth sailing
+need to create that if the player beats the game in 10 days or less we give them a cute scene, otherwise
+they have to fight the other two bosses.

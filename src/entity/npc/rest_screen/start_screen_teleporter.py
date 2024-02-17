@@ -10,7 +10,7 @@ class StartScreenTeleporter(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Inn Guard: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
+                ["Gambling teleporter: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Do you want to go back to the start screen?, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
@@ -46,10 +46,7 @@ class StartScreenTeleporter(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipTedScreen.coinFlipTedDefeated:
-                self.flipping_ted_messages["defeated_message"].reset()
-            else:
-                self.flipping_ted_messages["welcome_message"].reset()
+
 
     def update_talking(self, state: "GameState"):
         current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
@@ -73,6 +70,7 @@ class StartScreenTeleporter(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:
+
             state.currentScreen = state.gamblingAreaScreen
             state.gamblingAreaScreen.start(state)
             # Handle the selected option

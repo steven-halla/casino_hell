@@ -69,8 +69,8 @@ class StartScreen(Screen):
             state.player.setPosition(player_start_x, player_start_y)
             state.start_new_game_entry_point = False
         elif state.rest_area_to_start_area_entry_point == True:
-            player_start_x = 44 * 10  # Desired X coordinate
-            player_start_y = 16 * 1  # Desired Y coordinate
+            player_start_x = 44 * 18 # Desired X coordinate
+            player_start_y = 16 * 3  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_start_area_entry_point = False
 
