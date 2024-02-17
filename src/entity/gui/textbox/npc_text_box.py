@@ -92,6 +92,7 @@ class NpcTextBox(Entity):
 
 
     def is_finished(self) -> bool:
+        self.delay = 600
         return self.message_index == len(self.messages) - 1 and \
             pygame.time.get_ticks() - self.time > self.delay
 

@@ -52,6 +52,10 @@ class SirLeopoldTheHedgeHog(Npc):
         self.vanish = False
         self.reward1 = False
         self.reward2 = False
+        self.font = pygame.font.Font(None, 36)
+        self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
+        self.t_pressed = False
+
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
@@ -65,6 +69,8 @@ class SirLeopoldTheHedgeHog(Npc):
 
 
         if self.state == "waiting":
+            state.player.canMove = True
+
             # print("current state is:" + str(self.textboxstate))
 
             if "blue flower" in state.player.items:
@@ -103,6 +109,31 @@ class SirLeopoldTheHedgeHog(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
+            state.player.canMove = False
+
+            if self.textbox.is_finished():
+                if state.controller.isUpPressed:
+                    state.controller.isUpPressed = False
+
+                    self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                    print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
+
+                elif state.controller.isDownPressed:
+                    state.controller.isDownPressed = False
+
+                    self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                    print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
+
+                if state.controller.isTPressed and self.arrow_index == 0:
+                    print("yes")
+                    state.currentScreen = state.hedgeMazeScreen
+                    state.hedgeMazeScreen.start(state)
+                    # Handle the selected option
+                    selected_option = self.choices[self.arrow_index]
+                    print(f"Selected option: {selected_option}")
+
+                else:
+                    print("no")
 
 
             # self.textbox.reset()
@@ -272,4 +303,39 @@ class SirLeopoldTheHedgeHog(Npc):
                 self.final_message.draw(state)
             elif self.textboxstate == "textbox1":
                 self.textbox.draw(state)
+
+        if self.state == "talking" and "blue flower" not in state.player.items:
+            # Draw the "Yes/No" box only on the last message
+            if self.textbox.is_finished():
+                bet_box_width = 150
+                bet_box_height = 100
+                border_width = 5
+
+                screen_width, screen_height = state.DISPLAY.get_size()
+                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+                bet_box = pygame.Surface((bet_box_width, bet_box_height))
+                bet_box.fill((0, 0, 0))
+                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+                white_border.fill((255, 255, 255))
+                white_border.blit(bet_box, (border_width, border_width))
+
+                # Calculate text positions
+                text_x = bet_box_x + 40 + border_width
+                text_y_yes = bet_box_y + 20
+                text_y_no = text_y_yes + 40
+                # Draw the box on the screen
+                state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+                # Draw the text on the screen (over the box)
+                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+
+                # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+                # Here's a simple example using a triangle:
+                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
