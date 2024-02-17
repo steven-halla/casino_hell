@@ -4,13 +4,13 @@ from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class RestScreenTeleporter(Npc):
+class RestScreenFromChilliScreenTeleporter(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Demon: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
+                ["chili hog demon: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Good job on that take down, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
@@ -72,6 +72,9 @@ class RestScreenTeleporter(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:
+            print("Hi there you ")
+            state.chili_area_to_rest_area_entry_point = True
+
             state.currentScreen = state.restScreen
             state.restScreen.start(state)
             # Handle the selected option

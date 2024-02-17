@@ -73,6 +73,8 @@ class ChiliPitTeleporter(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed:
+            state.rest_area_to_chili_area_entry_point = True
+
             state.currentScreen = state.chilliScreen
             state.chilliScreen.start(state)
             # Handle the selected option

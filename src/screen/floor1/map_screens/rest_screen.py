@@ -98,11 +98,16 @@ class RestScreen(Screen):
             player_start_y = 16 * 3  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.start_area_to_rest_area_entry_point = False
-        # elif state.rest_area_to_start_area_entry_point == True:
-        #     player_start_x = 44 * 19  # Desired X coordinate
-        #     player_start_y = 16 * 3  # Desired Y coordinate
-        #     state.player.setPosition(player_start_x, player_start_y)
-        #     state.rest_area_to_start_area_entry_point = False
+        elif state.gambling_area_to_rest_area_entry_point == True:
+            player_start_x = 44 * 6 # Desired X coordinate
+            player_start_y = 16 * 3  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.gambling_area_to_rest_area_entry_point = False
+        elif state.chili_area_to_rest_area_entry_point == True:
+            player_start_x = 16 * 14  # Desired X coordinate
+            player_start_y = 16 * 46  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.chili_area_to_rest_area_entry_point = False
 
         self.inn_badge_recieved_tracker = True
 
@@ -172,13 +177,13 @@ class RestScreen(Screen):
             # JustinNoFruit(16 * 10, 16 * 18),
             JustinNoFruit(16 * 52, 16 * 13),
             # QuestGiverJanet(16 * 10, 16 * 26),
-            ChiliPitTeleporter(16 * 36, 16 * 30),
+            ChiliPitTeleporter(16 * 15, 16 * 49),
 
             SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 75, 16 * 46),
-            StartScreenTeleporter(16 * 5, 16 * 25),
+            StartScreenTeleporter(16 * 17, 16 * 0),
             NewTeleporter(16 * 95, 16 * 0),
-            BossTeleporter(16 * 25, 16 * 35),
+            BossTeleporter(16 * 64, 16 * 49),
         ])
         #
         # if state.quest_giver_janet.find_hog:

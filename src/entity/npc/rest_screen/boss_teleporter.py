@@ -73,6 +73,8 @@ class BossTeleporter(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if current_message.is_finished() and state.controller.isTPressed and "b key" in state.player.items:
+            state.rest_area_to_boss_area_entry_point = True
+
             state.currentScreen = state.bossScreen
             state.bossScreen.start(state)
             # Handle the selected option

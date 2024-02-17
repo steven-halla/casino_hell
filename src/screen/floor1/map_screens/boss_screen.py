@@ -60,12 +60,19 @@ class BossScreen(Screen):
         super().start(state)
 
 
+        if state.rest_area_to_boss_area_entry_point == True:
+            player_start_x = 16 * 27  # Desired X coordinate
+            player_start_y = 16 * 34  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.rest_area_to_boss_area_entry_point = False
+
+
 
         # Check if a player instance already exists
-        if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 300
-            player_start_y = 200
-            state.player = Player(player_start_x, player_start_y)
+        # if not hasattr(state, 'player') or state.player is None:
+        #     player_start_x = 300
+        #     player_start_y = 200
+        #     state.player = Player(player_start_x, player_start_y)
 
         state.treasurechests = [
 

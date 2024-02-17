@@ -6,17 +6,14 @@
     "focus_points": 120,
     "max_focus_points": 120,
     "companions": [
-        "sir leopold"
+
     ],
     "items": [
-        "sir leopold's paw",
-        "coin flip glasses",
-        "Nurgle the hedge hog"
+
     ],
     "magicinventory": [
-        "reveal",
-        "shake",
-        "shield"
+        "reveal"
+
     ],
     "body": 1,
     "mind": 1,

@@ -17,18 +17,18 @@ class WallyGuide(Npc):
                     "Wally: I'm the last one, everyone I came here with... it's like my friend here always says.",
                     "Opossum in a can is very dangerous, if you can get Cindy to teach you.....it will be less so.",
                     "Hero:  Where is your friend, I dont' see anyone here but you???",
-                    "Wally: What are you blind, he's standing  right next to you right now, why do you keep ignoring him, are you crazy or just rude, or deaf and blind?"
+                    "Wally: How can you not see the giant rat on your shoulder, or do you hate rats so much that you can't see or hear them?"
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "rabies_message": NpcTextBox(
-                ["Wally: It was pre ordained that the opossum king would save us from this hell. All hail opossum king ha ha haha HAHAHHA no wait I AM THE OPOSSUM KING!!!"],
+                ["Wally: It was pre ordained that I, the rat king would save us, but perhaps it was you, the opossum king that will save us all."],
                 (50, 450, 700, 130), 36, 500
             ),
             'sir_leopold_message': NpcTextBox(
                 [
 
-                    "Wally: God please I'm so god sick of this place , I want my family, hahha hahah HAHAHH HAAHAH...",
+                    "Wally: The rats are my family now. I am in search of the rat queen, have you seen her?",
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

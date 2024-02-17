@@ -65,11 +65,12 @@ class GamblingAreaScreen(Screen):
         self.initialize_music()
         super().start(state)
 
-        # Check if a player instance already exists
-        if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 300
-            player_start_y = 200
-            state.player = Player(player_start_x, player_start_y)
+        if state.rest_area_to_gambling_area_entry_point == True:
+            player_start_x = 16 * 18  # Desired X coordinate
+            player_start_y = 16 * 51  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.rest_area_to_gambling_area_entry_point = False
+
 
         state.treasurechests = [
 
@@ -99,7 +100,7 @@ class GamblingAreaScreen(Screen):
             NellyOpossum(16 * 30, 16 * 7),
             SallyOpossum(16 * 5, 16 * 5),
             Guy(16 * 42, 16 * 44),
-            RestScreenTeleporter(16 * 11, 16 * 22),
+            RestScreenTeleporter(16 * 19, 16 * 54),
         ])
 
 

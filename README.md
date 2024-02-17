@@ -553,3 +553,7 @@ So far we are in the final stretch, most of the pieces are together.
 I need to next work on locations positions, and after that the rest should be smooth sailing
 need to create that if the player beats the game in 10 days or less we give them a cute scene, otherwise
 they have to fight the other two bosses.
+
+wally reads a letter from his past self before he went insane
+
+need to fix boss screen

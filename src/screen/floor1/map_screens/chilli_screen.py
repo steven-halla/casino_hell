@@ -8,6 +8,7 @@ from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
 from entity.npc.chilli_screen.chilly_billy import ChillyBilly
 from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.chilli_screen.jessica_starving import JessicaStarving
+from entity.npc.chilli_screen.rest_screen_teleporter import RestScreenFromChilliScreenTeleporter
 from entity.npc.chilli_screen.rumble_bill import RumbleBill
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
 from entity.npc.sleepy_ned import SleepyNed
@@ -64,11 +65,17 @@ class ChilliScreen(Screen):
         # self.initialize_music()
         super().start(state)
 
+        if state.rest_area_to_chili_area_entry_point == True:
+            player_start_x = 16 * 34  # Desired X coordinate
+            player_start_y = 16 * 31  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.rest_area_to_chili_area_entry_point = False
+
         # Check if a player instance already exists
-        if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 300
-            player_start_y = 200
-            state.player = Player(player_start_x, player_start_y)
+        # if not hasattr(state, 'player') or state.player is None:
+        #     player_start_x = 300
+        #     player_start_y = 200
+        #     state.player = Player(player_start_x, player_start_y)
 
         state.treasurechests = [
 
@@ -88,7 +95,7 @@ class ChilliScreen(Screen):
             JessicaStarving(16 * 4, 16 * 30),
             SirLeopoldTheHedgeHog(16 * 18, 16 * 26),
             HedgeMazeScreenTeleporter(16 * 4, 16 * 8),
-            RestScreenTeleporter(16 * 10, 16 * 5),
+            RestScreenFromChilliScreenTeleporter(16 * 35, 16 * 34),
             RumbleBill(16 * 12, 16 * 12),
 
             # SleepyNed(16 * 18, 16 * 26),
