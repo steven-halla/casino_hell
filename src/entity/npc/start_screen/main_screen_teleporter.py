@@ -11,10 +11,10 @@ class MainScreenTeleporter(Npc):
         self.inn_badge_recieved = False
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Demon: You need to get prove yourself first. Go take down Ted, that ugly rat faced bastard has it coming.`"],
+                ["Hero: The door won't open. Everything about this place seems...surreal.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Good job on that take down, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
+                ["Going to rest area"],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -27,8 +27,8 @@ class MainScreenTeleporter(Npc):
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
 
-        self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
+        # self.character_sprite_image = pygame.image.load(
+        #     "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -80,13 +80,18 @@ class MainScreenTeleporter(Npc):
                 self.inn_badge_recieved = True
 
             if self.inn_badge_recieved == True:
+                state.start_area_to_rest_area_entry_point = True
+
                 state.currentScreen = state.restScreen
                 state.restScreen.start(state)
                 state.player.items.remove("inn badge")
 
             if state.restScreen.inn_badge_recieved_tracker == True:
+                state.start_area_to_rest_area_entry_point = True
+
                 state.currentScreen = state.restScreen
                 state.restScreen.start(state)
+                # state.player.items.remove("inn badge")
 
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
@@ -110,17 +115,17 @@ class MainScreenTeleporter(Npc):
         sprite_rect = pygame.Rect(5, 6, 21, 25)
 
         # Get the subsurface for the area you want
-        sprite = self.character_sprite_image.subsurface(sprite_rect)
+        # sprite = self.character_sprite_image.subsurface(sprite_rect)
 
         # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
 
         # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        # sprite_x = self.collision.x + state.camera.x - 20
+        # sprite_y = self.collision.y + state.camera.y - 10
+        #
+        # # Draw the scaled sprite portion on the display
+        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         # rect = (
         #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         #     self.collision.width, self.collision.height)

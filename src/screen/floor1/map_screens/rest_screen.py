@@ -92,11 +92,19 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
 
+
+        if state.start_area_to_rest_area_entry_point == True:
+            player_start_x = 16 * 94  # Desired X coordinate
+            player_start_y = 16 * 3  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.start_area_to_rest_area_entry_point = False
+        # elif state.rest_area_to_start_area_entry_point == True:
+        #     player_start_x = 44 * 19  # Desired X coordinate
+        #     player_start_y = 16 * 3  # Desired Y coordinate
+        #     state.player.setPosition(player_start_x, player_start_y)
+        #     state.rest_area_to_start_area_entry_point = False
+
         self.inn_badge_recieved_tracker = True
-
-
-        print(self.barscene1)
-        print(self.barscene2)
 
 
 
@@ -131,10 +139,10 @@ class RestScreen(Screen):
         state.npcs.clear()
 
         # Check if a player instance already exists
-        if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 300
-            player_start_y = 200
-            state.player = Player(player_start_x, player_start_y)
+        # if not hasattr(state, 'player') or state.player is None:
+        #     player_start_x = 300
+        #     player_start_y = 200
+        #     state.player = Player(player_start_x, player_start_y)
 
         state.treasurechests = [
 
@@ -169,7 +177,7 @@ class RestScreen(Screen):
             SufferingSuzy(16 * 26, 16 * 26),
             WallyGuide(16 * 75, 16 * 46),
             StartScreenTeleporter(16 * 5, 16 * 25),
-            NewTeleporter(16 * 15, 16 * 35),
+            NewTeleporter(16 * 95, 16 * 0),
             BossTeleporter(16 * 25, 16 * 35),
         ])
         #

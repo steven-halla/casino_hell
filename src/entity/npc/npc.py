@@ -43,11 +43,10 @@ class Npc(Entity):
 
 
     def draw(self, state):
-        print("drawing")
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        # rect = (
+        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        # self.collision.width, self.collision.height)
+        # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.isSpeaking:
             pygame.display.get_surface().blit(state.TEXT_SURFACE, (

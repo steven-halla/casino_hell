@@ -64,13 +64,13 @@ class StartScreen(Screen):
         super().start(state)
 
         if state.start_new_game_entry_point == True:
-            player_start_x = 16 * 28  # Desired X coordinate
+            player_start_x = 16 * 88  # Desired X coordinate
             player_start_y = 16 * 57  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.start_new_game_entry_point = False
         elif state.rest_area_to_start_area_entry_point == True:
-            player_start_x = 44 * 18 # Desired X coordinate
-            player_start_y = 16 * 3  # Desired Y coordinate
+            player_start_x = 44 * 18.5 # Desired X coordinate
+            player_start_y = 16 * 4  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_start_area_entry_point = False
 
@@ -100,7 +100,7 @@ class StartScreen(Screen):
             HungryPatrick(16* 41, 16 * 22),
             # InnGuard(16* 35, 16 * 15),
             # NickyHints(16* 25, 16 * 25),
-            MainScreenTeleporter(16 * 57, 16 * 10),
+            MainScreenTeleporter(16 * 52, 16 * 0),
             FlippinTed(16* 5, 16 * 5),
 
 
