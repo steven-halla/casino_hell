@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.demon.demon7 import Demon7
 from entity.npc.battle_screen.rest_area_teleporter import RestScreenTeleporter
 from entity.npc.chilli_screen.bobby_bibs import BobbyBibs
 from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
@@ -64,10 +65,22 @@ class ChilliScreen(Screen):
         self.stop_music()
         # self.initialize_music()
         super().start(state)
+        # state.npcs.clear()
+        # state.demons.clear()
+        print("The demons are: " + str(state.demons))
+
+        if "blue flower" in state.player.items:
+            # Loop through the demons to find Demon7 by its position or a unique identifier
+            for demon in list(state.demons):  # Make a copy of the list to modify it while iterating
+                if isinstance(demon, Demon7):
+                    state.demons.remove(demon)
+                    break  # Exit the loop once the Demon7 instance is found and removed
+        # state.demons = []
+
 
         if state.rest_area_to_chili_area_entry_point == True:
-            player_start_x = 16 * 34  # Desired X coordinate
-            player_start_y = 16 * 31  # Desired Y coordinate
+            player_start_x = 16 * 5  # Desired X coordinate
+            player_start_y = 16 * 5  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_chili_area_entry_point = False
 
@@ -76,6 +89,9 @@ class ChilliScreen(Screen):
         #     player_start_x = 300
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
+
+        state.npcs.clear()
+        state.demons.clear()
 
         state.treasurechests = [
 
@@ -101,20 +117,7 @@ class ChilliScreen(Screen):
             # SleepyNed(16 * 18, 16 * 26),
         ])
 
-        # state.npcs = []
-        # state.npcs = [
-            # make sure to seperate by a factor of 8 for y
-            #x, y
-            # InnGuard(16 * 36, 16 * 2),
-            # BappingMike(16 * 36, 16 * 10),
 
-
-            # InnKeeper(16 * 36, 16 * 26),
-            # DoctorOpossum(16 * 30, 16 * 30),
-
-        #
-        # if state.quest_giver_janet.find_hog:
-        #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
             # Demon1(16 * 55, 16 * 3),
@@ -122,10 +125,26 @@ class ChilliScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        state.demons.clear()
 
-        print(str(state.player.items))
-        print(str(state.player.money))
+        # print("The demons are: " + str(state.demons))
+        #
+        # print(str(state.player.items))
+        # print(str(state.player.money))
 
+        if state.maze_area_to_chili_area_entry_point == True:
+            player_start_x = 16 * 5  # Desired X coordinate
+            player_start_y = 16 * 5  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.maze_area_to_chili_area_entry_point = False
+
+        if "blue flower" in state.player.items:
+            # Loop through the NPCs to find SirLeopoldTheHedgeHog and update his position
+            for npc in state.npcs:
+                if isinstance(npc, SirLeopoldTheHedgeHog):
+                    # Update SirLeopoldTheHedgeHog's position to the new coordinates
+                    npc.setPosition(16 * 35, 16 * 32)
+                    break  # Break the loop once SirLeopoldTheHedgeHog is found and moved
 
         controller = state.controller
         player = state.player

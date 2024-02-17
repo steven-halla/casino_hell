@@ -112,6 +112,7 @@ class GameState:
         self.gambling_area_to_rest_area_entry_point = False
         self.start_area_to_rest_area_entry_point = False
         self.chili_area_to_rest_area_entry_point = False
+        self.maze_area_to_chili_area_entry_point = False
 
         self.rest_area_to_boss_area_entry_point = False
         self.rest_area_to_start_area_entry_point = False

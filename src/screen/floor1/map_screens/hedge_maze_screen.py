@@ -48,6 +48,7 @@ class HedgeMazeScreen(Screen):
         state.treasurechests = [
 
             BlueFlower(16 * 72, 14 * 122),
+            BlueFlower(16 * 5, 14 * 5),
 
         ]
 
@@ -79,10 +80,19 @@ class HedgeMazeScreen(Screen):
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
         if "blue flower" in state.player.items:
+            state.demons.clear()
+
+            state.maze_area_to_chili_area_entry_point = True
+
             state.currentScreen = state.chilliScreen
             state.chilliScreen.start(state)
 
-
+        if "blue flower" in state.player.items:
+            # Loop through the demons to find Demon7 by its position or a unique identifier
+            for demon in list(state.demons):  # Make a copy of the list to modify it while iterating
+                if isinstance(demon, Demon7):
+                    state.demons.remove(demon)
+                    break  # Exit the loop once the Demon7 instance is found and removed
 
         hedgehog4_present = any(isinstance(npc, HedgeHog4) for npc in state.npcs)
         if not hedgehog4_present and self.hog4_replaced_with_demon == False:
