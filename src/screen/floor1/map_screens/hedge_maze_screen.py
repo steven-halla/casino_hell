@@ -7,6 +7,7 @@ from entity.demon.demon7 import Demon7
 from entity.demon.demon2 import Demon2
 from entity.demon.demon3 import Demon3
 from entity.demon.demon4 import Demon4
+from entity.npc.hedge_maze_screen.evilcat import EvilCat
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -33,6 +34,7 @@ class HedgeMazeScreen(Screen):
         self.blue_flower = False
         move_player_down_flag = False
         self.hog4_replaced_with_demon = False  # Set a flag to prevent repeated additions
+        self.add_demon = False
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -53,6 +55,7 @@ class HedgeMazeScreen(Screen):
         state.npcs = [
 
             HedgeHog4(16 * 3, 14 * 6),
+            EvilCat(16 * 82, 14 * 35),
             HedgeHog2(16 * 10, 14 * 160),  # this is our 2nd hogger to the far left bottom of screen
 
             HedgeHog3(16 * 63, 14 * 118),
@@ -62,10 +65,10 @@ class HedgeMazeScreen(Screen):
             ]
 
         state.demons = [
-            # Demon1(16 * 53, 14 * 180),#THIS POSITION IS SET TO 1ST ENEMY
-            # Demon1(16 * 26, 14 * 2), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
-            # Demon1(16 * 52, 14 * 154), #this position is set to 2nd enemy
-            # Demon1(16 * 31, 14 * 178), #this position is set to 2nd enemy
+            Demon1(16 * 53, 14 * 180),#THIS POSITION IS SET TO 1ST ENEMY
+            Demon1(16 * 26, 14 * 2), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
+            Demon1(16 * 52, 14 * 154), #this position is set to 2nd enemy
+            Demon1(16 * 31, 14 * 178), #this position is set to 2nd enemy
             # Demon2(16 * 20, 14 * 79),
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
@@ -83,6 +86,8 @@ class HedgeMazeScreen(Screen):
             state.currentScreen = state.chilliScreen
             state.chilliScreen.start(state)
 
+
+
         hedgehog4_present = any(isinstance(npc, HedgeHog4) for npc in state.npcs)
         if not hedgehog4_present and self.hog4_replaced_with_demon == False:
             print("no hoggy")
@@ -93,6 +98,12 @@ class HedgeMazeScreen(Screen):
             # Ensure not to append Demon1 repeatedly after HedgeHog4 is deleted
             # You can use a flag or condition to make sure this happens only once
 
+        if self.add_demon == True:
+            new_demon = Demon4(16 * 80, 16 * 1)  # You can set the position as needed
+            # Add the new demon to the state.demons list
+            state.demons.append(new_demon)
+            self.add_demon = False
+            state.npcs = [npc for npc in state.npcs if not isinstance(npc, EvilCat)]
 
         controller = state.controller
         # ... (rest of your update code) ...
