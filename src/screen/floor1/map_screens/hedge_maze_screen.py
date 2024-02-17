@@ -57,7 +57,7 @@ class HedgeMazeScreen(Screen):
             HedgeHog3(16 * 52, 14 * 154),
             # HedgeHog4(16 * 53, 14 * 180), #THIS POSITION IS SET TO 1ST ENEMY
             # HedgeHog4(16 * 23, 14 * 198), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
-            HedgeHog4(16 * 2, 14 * 10),
+            # HedgeHog4(16 * 2, 14 * 10),
 
             ]
 

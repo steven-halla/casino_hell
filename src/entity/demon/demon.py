@@ -25,6 +25,8 @@ class Demon(Entity):
         self.fast_move_interval = 55  # Time interval between fast moves, in milliseconds
         self.fast_move_distance = 15
         self.player_spotted = False
+        self.los_horizontal_range = 220
+        self.los_vertical_range = 32
 
 
     def move_randomly(self, state):
@@ -110,13 +112,13 @@ class Demon(Entity):
             self.color = PURPLE if self.color == GREEN else GREEN
 
         # Define the LOS horizontal and vertical range
-        los_horizontal_range = 150
-        los_vertical_range = 16
+        # los_horizontal_range = 220
+        # los_vertical_range = 32
 
         if self.color == PURPLE:  # Demon facing left
-            los_left_boundary = self.collision.x - los_horizontal_range
-            los_upper_boundary = self.collision.y - los_vertical_range
-            los_lower_boundary = self.collision.y + self.collision.height + los_vertical_range
+            los_left_boundary = self.collision.x - self.los_horizontal_range
+            los_upper_boundary = self.collision.y - self.los_vertical_range
+            los_lower_boundary = self.collision.y +  self.los_vertical_range
 
             # Flag to indicate if LOS is blocked by a shielding demon
             los_blocked = False

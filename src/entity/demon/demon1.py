@@ -17,7 +17,7 @@ class Demon1(Demon):
         self.isSpeaking: bool = False
         self.textbox = NpcTextBox(
             [
-                "Demon: Hey human, what are you doing here, get out !,"
+                "Demon: Your not a hedge hog, git on out of here human.!,"
                 ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
@@ -27,7 +27,7 @@ class Demon1(Demon):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
-
+        self.show_los = True  # LOS visibility flag
 
     def update(self, state):
 
@@ -53,6 +53,7 @@ class Demon1(Demon):
             print("Player spot detected")
 
             self.isSpeaking = True
+            state.player.canMove = False
             if self.textbox.is_finished() and state.controller.isTPressed:
 
                 # self.isSpeaking = False
@@ -60,18 +61,44 @@ class Demon1(Demon):
                 state.controller.isTPressed = False
                 self.isSpeaking = False
                 self.player_spotted = False
-                state.player.setPosition(100, 500)  # Set the player's position to fixed coordinates
+                state.player.setPosition(660, 2800)  # Set the player's position to fixed coordinates
+                state.player.canMove = True
+
             # Update the textbox visibility based on the demon's speaking state
         self.textbox.update(state)
         print("do we break the loop")
 
     def draw(self, state):
+        # Existing drawing code for the demon and the textbox
         if self.isSpeaking:
             self.textbox.draw(state)
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
+
+        # Draw the demon itself
+        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+                self.collision.width, self.collision.height)
         pygame.draw.rect(state.DISPLAY, self.color, rect)
-        distance = math.sqrt(
-            (state.player.collision.x - self.collision.x) ** 2 + (
-                        state.player.collision.y - self.collision.y) ** 2)
+
+        # Draw LOS if enabled
+        if self.show_los:
+            # Horizontal Line (already working)
+            start_pos_h = (self.collision.x + state.camera.x, self.collision.y + state.camera.y + self.collision.height // 2)
+            end_pos_h = (start_pos_h[0] - self.los_horizontal_range, start_pos_h[1])  # Extend to the left
+
+            # Vertical Line
+            start_pos_v = (start_pos_h[0] - self.los_horizontal_range // 2, start_pos_h[1] - self.los_vertical_range // 2)  # Midpoint of horizontal line
+            end_pos_v = (start_pos_v[0], start_pos_v[1] + self.los_vertical_range)  # Extend vertically
+
+            # Draw the LOS lines in white
+            pygame.draw.line(state.DISPLAY, (255, 255, 255), start_pos_h, end_pos_h, 1)  # Horizontal
+            pygame.draw.line(state.DISPLAY, (255, 255, 255), start_pos_v, end_pos_v, 1)  # Vertical
+
+    # def draw(self, state):
+    #     if self.isSpeaking:
+    #         self.textbox.draw(state)
+    #     rect = (
+    #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+    #     self.collision.width, self.collision.height)
+    #     pygame.draw.rect(state.DISPLAY, self.color, rect)
+    #     distance = math.sqrt(
+    #         (state.player.collision.x - self.collision.x) ** 2 + (
+    #                     state.player.collision.y - self.collision.y) ** 2)

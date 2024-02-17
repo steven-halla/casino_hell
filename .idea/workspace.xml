@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="placement of hogs to mark demon positions">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed demon now it affects player correctly">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/demon/demon.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/demon/demon1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon1.py" afterDir="false" />
@@ -304,7 +304,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="132659000" />
+      <workItem from="1707589099832" duration="135784000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -649,7 +649,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="545" />
+    <option name="localTasksCounter" value="546" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -678,7 +678,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed talking bug with nell opossum, also added save coin and it now functions" />
     <MESSAGE value="updated bar keep so he rewards you for eating" />
     <MESSAGE value="lots of minor updates" />
     <MESSAGE value="updated coin flip fred coin flip method, as well as the exp methods" />
@@ -703,7 +702,8 @@
     <MESSAGE value="boss is finsihed" />
     <MESSAGE value="updaetd all bosses" />
     <MESSAGE value="placement of hogs to mark demon positions" />
-    <option name="LAST_COMMIT_MESSAGE" value="placement of hogs to mark demon positions" />
+    <MESSAGE value="fixed demon now it affects player correctly" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed demon now it affects player correctly" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
