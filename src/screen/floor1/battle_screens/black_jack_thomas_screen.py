@@ -298,7 +298,7 @@ class BlackJackThomasScreen(Screen):
     def update(self, state: "GameState"):
         if self.music_on == True:
             self.stop_music()
-            # self.initialize_music()
+            self.initialize_music()
             self.music_on = False
         state.player.canMove = False
 

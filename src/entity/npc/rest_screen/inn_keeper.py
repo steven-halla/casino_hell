@@ -105,13 +105,13 @@ class InnKeeper(Npc):
                 if state.player.body > 0:
                     state.player.food = 1
 
-
-                state.player.stamina_points += 500
-                if state.player.stamina_points > state.player.max_stamina_points:
-                    state.player.stamina_points = state.player.max_stamina_points
-                state.player.focus_points += 500
-                if state.player.focus_points > state.player.max_focus_points:
-                    state.player.focus_points = state.player.max_focus_points
+                if state.player.hasRabies == False:
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > state.player.max_stamina_points:
+                        state.player.stamina_points = state.player.max_stamina_points
+                    state.player.focus_points += 500
+                    if state.player.focus_points > state.player.max_focus_points:
+                        state.player.focus_points = state.player.max_focus_points
 
 
                     print("Yes selected, closing shop.")

@@ -38,10 +38,12 @@ class BobbyBibs(Npc):
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
+
             player = state.player
             self.update_waiting(state)
 
         elif self.state == "talking":
+
             # Determine which message to use based on player state
             current_message = self.guy_messages["default_message"]
             if "sir leopold" in state.player.companions:
@@ -62,6 +64,7 @@ class BobbyBibs(Npc):
             self.update_talking(state, current_message)
 
     def update_waiting(self, state: "GameState"):
+
         player = state.player
         min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
@@ -73,6 +76,7 @@ class BobbyBibs(Npc):
 
             if distance < 40:
                 self.state = "talking"
+
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message =  self.guy_messages["default_message"]
@@ -82,12 +86,10 @@ class BobbyBibs(Npc):
 
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
-        state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
-            state.player.canMove = True
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")
     #     return self.collision.isOverlap(entity.collision)

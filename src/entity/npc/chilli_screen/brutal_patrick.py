@@ -36,6 +36,8 @@ class BrutalPatrick(Npc):
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
+            # state.player.canMove = True
+
             player = state.player
             self.update_waiting(state)
 
@@ -80,12 +82,11 @@ class BrutalPatrick(Npc):
 
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
-        state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
-            state.player.canMove = True
+            # state.player.canMove = True
 
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")

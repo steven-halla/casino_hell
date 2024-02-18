@@ -55,7 +55,6 @@ class RestScreenFromChilliScreenTeleporter(Npc):
         current_message.update(state)
 
         # Lock the player in place while talking
-        state.player.canMove = False
 
         # Check for keypresses only once per frame
         if state.controller.isUpPressed:
@@ -92,7 +91,7 @@ class RestScreenFromChilliScreenTeleporter(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
             # Unlock the player to allow movement
-            state.player.canMove = True
+            # state.player.canMove = True
 
     def draw(self, state):
 

@@ -35,30 +35,23 @@ class JessicaStarving(Npc):
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
+            # state.player.canMove = True
+
             player = state.player
             self.update_waiting(state)
 
         elif self.state == "talking":
+
             # Determine which message to use based on player state
             current_message = self.guy_messages["default_message"]
             if "sir leopold" in state.player.companions:
                 current_message = self.guy_messages["sir_leopold_message"]
-            if current_message.message_index == 1:
-                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
 
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > 100:
-                        state.player.stamina_points = 100
-                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
 
             self.update_talking(state, current_message)
 
     def update_waiting(self, state: "GameState"):
+
         player = state.player
         min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
@@ -70,6 +63,7 @@ class JessicaStarving(Npc):
 
             if distance < 40:
                 self.state = "talking"
+
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.guy_messages["default_message"]
@@ -79,12 +73,10 @@ class JessicaStarving(Npc):
 
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
-        state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
-            state.player.canMove = True
     def draw(self, state):
         # rect = (
         # self.collision.x + state.camera.x, self.collision.y + state.camera.y,

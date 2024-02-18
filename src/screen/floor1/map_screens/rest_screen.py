@@ -11,7 +11,6 @@ from entity.npc.rest_screen.bar_keep_low_body import BarKeepLowBody
 from entity.npc.rest_screen.boss_teleporter import BossTeleporter
 from entity.npc.rest_screen.chili_pit_teleporter import ChiliPitTeleporter
 from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
-from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.rest_screen.inn_keeper import InnKeeper
 from entity.npc.rest_screen.justin_no_fruit import JustinNoFruit
 from entity.npc.rest_screen.new_teleporter import NewTeleporter

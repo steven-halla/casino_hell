@@ -69,7 +69,7 @@ class SirLeopoldTheHedgeHog(Npc):
 
 
         if self.state == "waiting":
-            state.player.canMove = True
+            # state.player.canMove = True
 
             # print("current state is:" + str(self.textboxstate))
 

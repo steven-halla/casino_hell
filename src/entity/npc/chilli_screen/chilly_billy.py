@@ -15,7 +15,7 @@ class ChillyBilly(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "People keep complaining that the hedge hogs are pooping in teh chilli"
+                    "People keep complaining that the hedge hogs are pooping in teh chilli",
                     "It doesn't make any sense, I mean you humans eat canned food which has an acceptable amount of feces",
                     "We demons have studied you humans closely, we know what you like."
                 ],
@@ -41,11 +41,16 @@ class ChillyBilly(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state: "GameState"):
+        print("can player move: " + str(state.player.canMove))
+
         if self.state == "waiting":
+            # state.player.canMove = True
+
             player = state.player
             self.update_waiting(state)
 
         elif self.state == "talking":
+
             # Determine which message to use based on player state
             current_message = self.guy_messages["default_message"]
             if "sir leopold" in state.player.companions:
@@ -86,12 +91,11 @@ class ChillyBilly(Npc):
 
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
-        state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
-            state.player.canMove = True
+            # state.player.canMove = True
 
 
     def draw(self, state):

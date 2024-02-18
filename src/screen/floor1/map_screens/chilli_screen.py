@@ -7,7 +7,6 @@ from entity.npc.battle_screen.rest_area_teleporter import RestScreenTeleporter
 from entity.npc.chilli_screen.bobby_bibs import BobbyBibs
 from entity.npc.chilli_screen.brutal_patrick import BrutalPatrick
 from entity.npc.chilli_screen.chilly_billy import ChillyBilly
-from entity.npc.chilli_screen.hedgeMazeTeleporter import HedgeMazeScreenTeleporter
 from entity.npc.chilli_screen.jessica_starving import JessicaStarving
 from entity.npc.chilli_screen.rest_screen_teleporter import RestScreenFromChilliScreenTeleporter
 from entity.npc.chilli_screen.rumble_bill import RumbleBill
@@ -63,7 +62,7 @@ class ChilliScreen(Screen):
 
     def start(self, state: "GameState"):
         self.stop_music()
-        # self.initialize_music()
+        self.initialize_music()
         super().start(state)
         # state.npcs.clear()
         # state.demons.clear()
@@ -106,12 +105,13 @@ class ChilliScreen(Screen):
 
         # Add other NPCs to the state.npcs list
         state.npcs.extend([
+
             BobbyBibs(16 * 37, 16 * 18),
-            BrutalPatrick(16 * 30, 16 * 5),
-            ChillyBilly(16 * 12, 16 * 23),
+            BrutalPatrick(16 * 30, 16 * 3),
+            ChillyBilly(16 * 12, 16 * 26),
             JessicaStarving(16 * 4, 16 * 30),
             SirLeopoldTheHedgeHog(16 * 18, 16 * 26),
-            HedgeMazeScreenTeleporter(16 * 4, 16 * 8),
+            # HedgeMazeScreenTeleporter(16 * 4, 16 * 8),
             RestScreenFromChilliScreenTeleporter(16 * 35, 16 * 34),
             RumbleBill(16 * 12, 16 * 12),
 

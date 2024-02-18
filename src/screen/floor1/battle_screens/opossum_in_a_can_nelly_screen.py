@@ -336,7 +336,7 @@ class OpossumInACanNellyScreen(Screen):
 
         if self.music_on == True:
             self.stop_music()
-            # self.initialize_music()
+            self.initialize_music()
             self.music_on = False
 
         if self.player_score >= 300:
