@@ -71,7 +71,7 @@ class HedgeMazeScreen(Screen):
             Demon1(16 * 53, 14 * 180),#THIS POSITION IS SET TO 1ST ENEMY
             Demon1(16 * 26, 14 * 2), # THIS POSITION IS BOTTOM LEFT CORNER OF SCREEN
             Demon1(16 * 52, 14 * 154), #this position is set to 2nd enemy
-            Demon1(16 * 31, 14 * 178), #this position is set to 2nd enemy
+            Demon1(16 * 37, 14 * 178), #this position is set to 2nd enemy
             # Demon2(16 * 20, 14 * 79),
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),

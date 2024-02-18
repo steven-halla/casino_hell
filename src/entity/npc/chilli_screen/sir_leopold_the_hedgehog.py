@@ -245,9 +245,12 @@ class SirLeopoldTheHedgeHog(Npc):
                     self.state_start_time = current_time
                     self.input_time = current_time
                     self.vanish = True
+                    state.player.canMove = True
+
                     if state.player.perception == 0:
                         state.player.companions.append("sir leopold")
                         state.player.perception = 1
+
 
 
 
