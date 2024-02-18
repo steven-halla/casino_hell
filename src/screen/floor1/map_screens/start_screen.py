@@ -29,7 +29,7 @@ class StartScreen(Screen):
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
-        self.player = Player(333, 555)
+        # self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.lock_screen = False
@@ -72,8 +72,8 @@ class StartScreen(Screen):
         # self.show_loading_screen(state)
 
         if state.start_new_game_entry_point == True:
-            player_start_x = 16 * 52  # Desired X coordinate
-            player_start_y = 16 * 54  # Desired Y coordinate
+            player_start_x = 16 * 33  # Desired X coordinate
+            player_start_y = 16 * 26  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.start_new_game_entry_point = False
         elif state.rest_area_to_start_area_entry_point == True:
@@ -91,11 +91,7 @@ class StartScreen(Screen):
         # Check if a player instance already exists
 
 
-        state.treasurechests = [
 
-            # WaterBottle(16 * 36, 16 * 10),
-
-        ]
 
 
 
@@ -140,23 +136,23 @@ class StartScreen(Screen):
 
 
         ### i can use this to append NPC if i need to , just state.npcs.append(npc)
-        for npc in state.npcs:
-            npc.update(state)
-            # Check if the npc is any of the hedgehogs
-            if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
-                self.hedge_hog_counter += 1
-                print(self.hedge_hog_counter)
-                state.npcs.remove(npc)
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     # Check if the npc is any of the hedgehogs
+        #     if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
+        #         self.hedge_hog_counter += 1
+        #         print(self.hedge_hog_counter)
+        #         state.npcs.remove(npc)
 
         # Game Update Loop
-        for chest in state.treasurechests:
-            chest.update(state)
+        # for chest in state.treasurechests:
+        #     chest.update(state)
 
-        for demon in state.demons:
-            demon.update(state)
-            if demon.move_player_down:
-                state.player.collision.y += 100  # Move player down by 100 pixels
-                demon.move_player_down = False
+        # for demon in state.demons:
+        #     demon.update(state)
+        #     if demon.move_player_down:
+        #         state.player.collision.y += 100  # Move player down by 100 pixels
+        #         demon.move_player_down = False
 
         if controller.isExitPressed is True:
             state.isRunning = False
@@ -264,13 +260,13 @@ class StartScreen(Screen):
         for npc in state.npcs:
             npc.draw(state)
 
-        for demon in state.demons:
-            demon.draw(state)
+        # for demon in state.demons:
+        #     demon.draw(state)
+        #
+        # for treasurechests in state.treasurechests:
+        #     treasurechests.draw(state)
 
-        for treasurechests in state.treasurechests:
-            treasurechests.draw(state)
-
-        state.obstacle.draw(state)
+        # state.obstacle.draw(state)
 
 
         # state.player.draw(state)

@@ -74,7 +74,9 @@ class GameState:
         self.camera = Vector(0.0, 0.0)
         self.sir_leopold_companion = False
 
+        self.startLoadScreen = StartLoadScreen()
         self.startScreen = StartScreen()
+
         self.chilliScreen = ChilliScreen()
         # self.mainScreen = MainScreen()
 
@@ -105,7 +107,6 @@ class GameState:
         self.blackJackJaredScreen = BlackJackJaredScreen()
         self.blackJackDemonBossScreen = DemonBossScreen()
 
-        self.startLoadScreen = StartLoadScreen()
 
 
         self.currentScreen = self.startLoadScreen

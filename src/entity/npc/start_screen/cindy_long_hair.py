@@ -86,7 +86,7 @@ class CindyLongHair(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
-        self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image_2.png")
+        # self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image_2.png")
 
 
 
