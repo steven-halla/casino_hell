@@ -266,8 +266,8 @@ class OpossumInACanNellyScreen(Screen):
                     break
 
         # Print the contents of each can
-        for i in range(1, 9):
-            print(f"Can {i} contains: {getattr(self, f'can{i}')}")
+        # for i in range(1, 9):
+        #     print(f"Can {i} contains: {getattr(self, f'can{i}')}")
 
 
     def refresh(self):

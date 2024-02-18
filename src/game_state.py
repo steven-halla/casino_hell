@@ -12,6 +12,8 @@ from screen.examples.black_jack_screen import BlackJackScreen
 from screen.floor1.battle_screens.black_jack_thomas_screen import BlackJackThomasScreen
 from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
 from screen.floor1.battle_screens.demon_boss_screen import DemonBossScreen
+from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
+from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.floor1.map_screens.barcutscene1 import BarCutScene1Screen
 from screen.floor1.map_screens.barcutscene2 import BarCutScene2Screen
 from screen.floor1.map_screens.boss_screen import BossScreen
@@ -28,9 +30,9 @@ from screen.floor1.map_screens.hedge_maze_screen import HedgeMazeScreen
 from screen.floor1.map_screens.hotel_room_screen import HotelRoomScreen
 from screen.examples.main_screen import MainScreen
 from screen.floor1.battle_screens.opossumInACanIchi import OpossumInACanIchiScreen
-from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
-from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
-from screen.examples.opossum_in_a_can_screen import OpossumInACanScreen
+# from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
+# from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
+# from screen.examples.opossum_in_a_can_screen import OpossumInACanScreen
 from entity.player.player import Player
 from physics.vector import Vector
 from screen.floor1.map_screens.rest_screen import RestScreen
@@ -74,13 +76,15 @@ class GameState:
 
         self.startScreen = StartScreen()
         self.chilliScreen = ChilliScreen()
-        self.mainScreen = MainScreen()
+        # self.mainScreen = MainScreen()
+
+
         self.restScreen = RestScreen()
         self.gamblingAreaScreen = GamblingAreaScreen()
         self.hotelRoomScreen = HotelRoomScreen()
         self.bossScreen = BossScreen()
         self.hedgeMazeScreen = HedgeMazeScreen()
-
+        #
         self.barCutScene1 = BarCutScene1Screen()
         self.barCutScene2 = BarCutScene2Screen()
         self.gameOverScreen = GameOverScreen()
@@ -90,7 +94,7 @@ class GameState:
         self.coinFlipFredScreen = CoinFlipFredScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
 
-        self.opossumInACanScreen = OpossumInACanScreen()
+        # self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
         self.opossumInACanSallyScreen = OpossumInACanSallyScreen()
         self.opossumInACanIchiScreen = OpossumInACanIchiScreen()
@@ -104,7 +108,7 @@ class GameState:
         self.startLoadScreen = StartLoadScreen()
 
 
-        self.currentScreen = self.blackJackDemonBossScreen
+        self.currentScreen = self.startLoadScreen
 
 
         self.start_new_game_entry_point = False

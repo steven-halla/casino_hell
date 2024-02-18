@@ -144,7 +144,7 @@ class OpossumInACanScreen(Screen):
 
     def initializeGarbageCans(self):
         # Randomly shuffle the winner_or_looser list
-        print("yabbba dabbbba dooooooooooo")
+        # print("yabbba dabbbba dooooooooooo")
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
 
         # Assign a shuffled item to each can and print the content

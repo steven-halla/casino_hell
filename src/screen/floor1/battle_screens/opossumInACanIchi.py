@@ -221,7 +221,7 @@ class OpossumInACanIchiScreen(Screen):
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/opossum_in_a_can_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.initialize_music()
         self.music_on = True
 
 
@@ -291,7 +291,7 @@ class OpossumInACanIchiScreen(Screen):
     def reveal_selected_box_content(self, state):
         selected_can_attribute = f'can{self.green_box_index + 1}'
         selected_box_content = getattr(self, selected_can_attribute)
-        print(f"Selected box content: {selected_box_content}")
+        # print(f"Selected box content: {selected_box_content}")
 
         if selected_box_content == "win":
             self.trash_can_pick = "win"
@@ -325,7 +325,7 @@ class OpossumInACanIchiScreen(Screen):
                 elif "opossum repellent" not in state.player.items:
                     state.player.stamina_points -= 50
 
-                print("are we gong???")
+                # print("are we gong???")
                 self.refresh()
                 self.initializeGarbageCans()
                 self.game_state = "immune_lose_screen"
@@ -384,10 +384,10 @@ class OpossumInACanIchiScreen(Screen):
             if self.player_score >= 0 and self.talley_checker == False:
                 # state.player.stamina_points -= 3
 
-                print("Your before  total exp is: " + str(state.player.exp))
+                # print("Your before  total exp is: " + str(state.player.exp))
 
                 state.player.exp += 10
-                print("Your after total exp is: " + str(state.player.exp))
+                # print("Your after total exp is: " + str(state.player.exp))
                 self.talley_checker = True
 
                 return
@@ -399,8 +399,8 @@ class OpossumInACanIchiScreen(Screen):
             while self.tally_money_once == True:
                 # print("yoda la he ho")
                 if self.player_score <= self.ichiOpossumMoney:
-                    print("this your player score playa" + str(self.player_score))
-                    print("your winnings are before" + str(self.total_winnings))
+                    # print("this your player score playa" + str(self.player_score))
+                    # print("your winnings are before" + str(self.total_winnings))
                     # print("your play are before" + str(self.player_score))
                     self.total_winnings = self.player_score
                     state.player.money += self.player_score
@@ -521,14 +521,14 @@ class OpossumInACanIchiScreen(Screen):
 
                 # Print the current green box index and its content
                 current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-                print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
+                # print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
 
                 # Reset the key pressed time
                 state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
 
             # Check for 'T' key press
             if state.controller.isTPressed:
-                print(self.game_state)
+                # print(self.game_state)
 
                 # Call the function to reveal the selected box content
                 state.controller.isPressed = False
@@ -548,14 +548,14 @@ class OpossumInACanIchiScreen(Screen):
 
 
             if state.player.money < 1:
-                print("No money ")
+                # print("No money ")
                 self.game_state = "game_over_no_money"
 
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"
 
             elif state.player.money < 150:
-                print("Leave")
+                # print("Leave")
                 self.game_state = "no_money_you_leave"
 
             # state.currentScreen = state.gamblingAreaScreen
@@ -571,14 +571,14 @@ class OpossumInACanIchiScreen(Screen):
                 print("No money ")
                 self.game_state = "game_over_no_money"
             # this handles our EXP
-            print("Your before total exp is: " + str(state.player.exp))
+            # print("Your before total exp is: " + str(state.player.exp))
             if self.talley_checker == False:
                 self.talley_checker = True
                 return
-            print("you gained: " + str(100) + "exp")
-            print("Your after total exp is: " + str(state.player.exp))
-
-            print(str(self.opossumInACanMessages["lose_message"].message_index))
+            # print("you gained: " + str(100) + "exp")
+            # print("Your after total exp is: " + str(state.player.exp))
+            #
+            # print(str(self.opossumInACanMessages["lose_message"].message_index))
 
 
             # Reset the message index every time you enter the lose_screen
@@ -622,7 +622,7 @@ class OpossumInACanIchiScreen(Screen):
 
                 if self.magic_menu_opossum_index < 0:
                     self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
-                    print(str(self.magic_menu_opossum_index))
+                    # print(str(self.magic_menu_opossum_index))
 
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -633,7 +633,7 @@ class OpossumInACanIchiScreen(Screen):
 
                 if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
                     self.magic_menu_opossum_index = 0  # Wrap around to the first item
-                    print(str(self.magic_menu_opossum_index))
+                    # print(str(self.magic_menu_opossum_index))
 
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
@@ -664,14 +664,13 @@ class OpossumInACanIchiScreen(Screen):
                     self.debuff_keen_perception = False
 
                     self.refresh()
-                    print("Hey there you")
 
 
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     state.controller.isTPressed = False  # Reset the button state
                     self.opossumInACanMessages["tally_message"].message_index = 0
-                    print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
+                    # print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 150
                     self.ichiOpossumMoney += 150
                     self.initializeGarbageCans()
