@@ -377,7 +377,7 @@ class CoinFlipTedScreen(Screen):
 
         if self.music_on == True:
             self.stop_music()
-            # self.initialize_music()
+            self.initialize_music()
             self.music_on = False
 
 

@@ -28,7 +28,7 @@ class StartLoadScreen(Screen):
         self.spell_sound.set_volume(0.3)
         self.timer_start_time = None  # New attribute for timer start time
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/startscreen3.mp3"
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/startscreen4.mp3"
         self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.title_colors = [(0, 0, 51),(120, 0, 0), (160, 0, 0), (200, 0, 0), (255, 0, 0)]  # Deeper shades of red
@@ -77,7 +77,7 @@ class StartLoadScreen(Screen):
     def start(self, state: "GameState") -> None:
         super().start(state)
         self.stop_music()
-        # self.initialize_music()
+        self.initialize_music()
 
     def update(self, state: "GameState"):
         controller = state.controller
@@ -130,7 +130,7 @@ class StartLoadScreen(Screen):
             state.controller.isTPressed = False
             if self.timer_start_time is None:
                 self.start_timer(1200)  # Start a 1.2-second delay
-                # self.spell_sound.play()  # Play the sound effect
+                self.spell_sound.play()  # Play the sound effect
 
         elif selected_option == "No" and state.controller.isTPressed:
             self.t_key_pressed = True  # Add this line
@@ -140,7 +140,7 @@ class StartLoadScreen(Screen):
             state.controller.isTPressed = False
             if self.timer_start_time is None:
                 self.start_timer(2000)  # Start a 2-second delay
-                # self.spell_sound.play()  # Play the sound effect
+                self.spell_sound.play()  # Play the sound effect
 
         # Outside your conditional blocks for handling "Yes" or "No" selection
         # Ensure this check happens every update cycle, not just when a key is pressed

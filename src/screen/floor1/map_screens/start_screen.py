@@ -1,7 +1,8 @@
 import pygame
 import pytmx
+from pygame import display
 
-from constants import PLAYER_OFFSET, BLUEBLACK, SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE
+from constants import PLAYER_OFFSET, BLUEBLACK, SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, BLACK, WHITE
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -58,14 +59,21 @@ class StartScreen(Screen):
         pygame.mixer.music.play(-1)
 
 
+
+
+
+
+
+
     def start(self, state: "GameState"):
         self.stop_music()
-        # self.initialize_music()
+        self.initialize_music()
         super().start(state)
+        # self.show_loading_screen(state)
 
         if state.start_new_game_entry_point == True:
-            player_start_x = 16 * 88  # Desired X coordinate
-            player_start_y = 16 * 57  # Desired Y coordinate
+            player_start_x = 16 * 52  # Desired X coordinate
+            player_start_y = 16 * 54  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.start_new_game_entry_point = False
         elif state.rest_area_to_start_area_entry_point == True:
@@ -81,10 +89,7 @@ class StartScreen(Screen):
         # state.player.setPosition(player_start_x, player_start_y)
 
         # Check if a player instance already exists
-        if not hasattr(state, 'player') or state.player is None:
-            player_start_x = 300
-            player_start_y = 200
-            state.player = Player(player_start_x, player_start_y)
+
 
         state.treasurechests = [
 
@@ -211,7 +216,9 @@ class StartScreen(Screen):
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
 
+
     def draw(self, state: "GameState"):
+        # self.show_loading_screen(state)
         state.DISPLAY.fill(BLUEBLACK)
 
 
@@ -279,10 +286,28 @@ class StartScreen(Screen):
                     state.controller.isPPressed = False
                     print("Mew")
                     return
-
-
-
-
-
-        # Update the display
         pygame.display.update()
+
+    # def show_loading_screen(self, state):
+    #     current_time = pygame.time.get_ticks()
+    #     if current_time - start_time < 3000:  # Check if less than 3 seconds have passed
+    #         state.DISPLAY.fill(BLACK)  # Fill the screen with black
+    #
+    #         font = pygame.font.Font(None, 36)  # Setup the font
+    #         text_surface = font.render('Loading...', True, WHITE)  # Create the text surface
+    #
+    #         # Calculate the position for the text to center it on the screen
+    #         text_x = (SCREEN_WIDTH - text_surface.get_width()) // 2
+    #         text_y = (SCREEN_HEIGHT - text_surface.get_height()) // 2
+    #
+    #         # Blit the text surface to the display at the calculated position
+    #         state.DISPLAY.blit(text_surface, (text_x, text_y))
+    #
+    #         # Update the display to show the text
+    #         pygame.display.update()
+    #     else:
+    #         # Optional: Code to transition away from the loading screen after 3 seconds
+    #         pass
+    #
+    #     # Update the display
+    #     pygame.display.update()
