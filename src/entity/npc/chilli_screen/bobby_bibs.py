@@ -76,6 +76,7 @@ class BobbyBibs(Npc):
 
             if distance < 40:
                 self.state = "talking"
+                state.player.canMove = False
 
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
@@ -89,6 +90,8 @@ class BobbyBibs(Npc):
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
+            state.player.canMove = True
+
             self.state_start_time = pygame.time.get_ticks()
     # def isOverlap(self, entity: "Entity") -> bool:
     #     print("Overlap called")

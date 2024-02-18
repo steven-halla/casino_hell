@@ -137,6 +137,8 @@ class SirLeopoldTheHedgeHog(Npc):
 
                 else:
                     print("no")
+                    state.player.canMove = True
+
 
 
             # self.textbox.reset()
@@ -252,6 +254,8 @@ class SirLeopoldTheHedgeHog(Npc):
         if state.controller.isTPressed and self.textbox.is_finished():
             # if state.controller.isTPressed and self.textbox.message_index == 0:
             print("Here we go we're walking here")
+            self.menu_index = 0
+            self.arrow_index = 0
 
 
             # print("start state: waiting")

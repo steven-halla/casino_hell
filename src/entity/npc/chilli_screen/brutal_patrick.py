@@ -73,6 +73,8 @@ class BrutalPatrick(Npc):
 
             if distance < 40:
                 self.state = "talking"
+                state.player.canMove = False
+
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.guy_messages["default_message"]
@@ -85,6 +87,8 @@ class BrutalPatrick(Npc):
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
+            state.player.canMove = True
+
             self.state_start_time = pygame.time.get_ticks()
             # state.player.canMove = True
 

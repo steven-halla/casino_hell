@@ -42,6 +42,7 @@ class JessicaStarving(Npc):
 
         elif self.state == "talking":
 
+
             # Determine which message to use based on player state
             current_message = self.guy_messages["default_message"]
             if "sir leopold" in state.player.companions:
@@ -63,6 +64,8 @@ class JessicaStarving(Npc):
 
             if distance < 40:
                 self.state = "talking"
+                state.player.canMove = False
+
 
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
@@ -76,6 +79,8 @@ class JessicaStarving(Npc):
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
+            state.player.canMove = True
+
             self.state_start_time = pygame.time.get_ticks()
     def draw(self, state):
         # rect = (

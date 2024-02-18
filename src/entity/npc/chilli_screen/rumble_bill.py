@@ -51,6 +51,8 @@ class RumbleBill(Npc):
         if distance < 40 and state.controller.isTPressed and \
                 (pygame.time.get_ticks() - self.state_start_time) > 500:
             self.state = "talking"
+            state.player.canMove = False
+
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
             if state.player.hasRabies == True:
@@ -104,6 +106,8 @@ class RumbleBill(Npc):
             state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
+            state.player.canMove = True
+
             self.state_start_time = pygame.time.get_ticks()
 
             # Unlock the player to allow movement

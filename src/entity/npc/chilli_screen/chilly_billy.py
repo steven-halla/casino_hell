@@ -41,7 +41,7 @@ class ChillyBilly(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state: "GameState"):
-        print("can player move: " + str(state.player.canMove))
+        # print("can player move: " + str(state.player.canMove))
 
         if self.state == "waiting":
             # state.player.canMove = True
@@ -82,6 +82,8 @@ class ChillyBilly(Npc):
 
             if distance < 40:
                 self.state = "talking"
+                state.player.canMove = False
+
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.guy_messages["default_message"]
@@ -94,6 +96,8 @@ class ChillyBilly(Npc):
 
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
+            state.player.canMove = True
+
             self.state_start_time = pygame.time.get_ticks()
             # state.player.canMove = True
 
