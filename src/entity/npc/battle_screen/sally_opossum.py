@@ -120,6 +120,8 @@ class SallyOpossum(Npc):
             state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
+            self.menu_index = 0
+            self.arrow_index = 0
             self.state_start_time = pygame.time.get_ticks()
 
             # Unlock the player to allow movement

@@ -126,6 +126,7 @@ class GameState:
         self.rest_area_to_chili_area_entry_point = False
 
 
+
     def save_game(self, player, state: "GameState"):
         # Convert player stats to dictionary
         player_data = player.to_dict(state)

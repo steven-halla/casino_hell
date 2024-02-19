@@ -55,9 +55,7 @@ class RestScreenTeleporter(Npc):
         current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
         current_message.update(state)
 
-        # Lock the player in place while talking
 
-        # Check for keypresses only once per frame
 
 
         # Check if the "T" key is pressed and the flag is not set

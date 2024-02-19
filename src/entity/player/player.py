@@ -110,6 +110,8 @@ class Player(Entity):
 
 
 
+
+
     def to_dict(self, state: "GameState") -> dict:
         return {
             "level": self.level,
@@ -159,6 +161,8 @@ class Player(Entity):
     def update(self, state: "GameState"):
         if state.controller.isAPressed:
             print("Your nPc inventory issss:::   " + str(state.player.npc_items))
+
+
 
         # if self.money < 1:
         #     state.currentScreen = state.gameOverScreen

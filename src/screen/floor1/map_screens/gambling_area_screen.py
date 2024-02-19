@@ -120,6 +120,8 @@ class GamblingAreaScreen(Screen):
 
 
 
+
+
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
@@ -331,9 +333,21 @@ class GamblingAreaScreen(Screen):
         for treasurechests in state.treasurechests:
             treasurechests.draw(state)
 
+
+
         state.obstacle.draw(state)
 
         state.player.draw(state)
+
+        if state.controller.isPPressed == True:
+
+            state.player.draw_player_stats(state)
+
+            if state.controller.isBPressed == True:
+                if state.controller.isPPressed:
+                    state.controller.isPPressed = False
+                    print("Mew")
+                    return
 
 
 
