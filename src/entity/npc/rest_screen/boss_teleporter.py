@@ -46,7 +46,7 @@ class BossTeleporter(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipTedScreen.coinFlipTedDefeated:
+            if "boss key" in state.player.npc_items:
                 self.flipping_ted_messages["defeated_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
@@ -58,21 +58,21 @@ class BossTeleporter(Npc):
         # Lock the player in place while talking
         state.player.canMove = False
 
-        # Check for keypresses only once per frame
-        if state.controller.isUpPressed:
-            state.controller.isUpPressed = False
+        if "boss key" in state.player.npc_items:
+            if state.controller.isUpPressed:
+                state.controller.isUpPressed = False
 
-            self.arrow_index = (self.arrow_index - 1) % len(self.choices)
-            print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
+                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
 
-        elif state.controller.isDownPressed:
-            state.controller.isDownPressed = False
+            elif state.controller.isDownPressed:
+                state.controller.isDownPressed = False
 
-            self.arrow_index = (self.arrow_index + 1) % len(self.choices)
-            print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
+                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and "b key" in state.player.items:
+        if current_message.is_finished() and state.controller.isTPressed and "boss key" in state.player.npc_items:
             state.rest_area_to_boss_area_entry_point = True
 
             state.currentScreen = state.bossScreen
@@ -96,31 +96,31 @@ class BossTeleporter(Npc):
 
     def draw(self, state):
 
-        sprite_rect = pygame.Rect(5, 6, 24, 28)
-
-        # Get the subsurface for the area you want
-        sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        # sprite_rect = pygame.Rect(5, 6, 24, 28)
+        #
+        # # Get the subsurface for the area you want
+        # sprite = self.character_sprite_image.subsurface(sprite_rect)
+        #
+        # # Scale the subsurface to make it two times bigger
+        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+        #
+        # # Define the position where you want to draw the sprite
+        # sprite_x = self.collision.x + state.camera.x - 20
+        # sprite_y = self.collision.y + state.camera.y - 10
+        #
+        # # Draw the scaled sprite portion on the display
+        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         # rect = (
         #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         #     self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
         if self.state == "talking":
-            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+            current_message = self.flipping_ted_messages["defeated_message"] if "boss key" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == True:
+            if current_message.is_finished() and "boss key" in state.player.npc_items:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
