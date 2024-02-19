@@ -117,6 +117,7 @@ class BarCutScene1Screen(Screen):
         if state.controller.isTPressed and current_message.is_finished():
             print("nununu")
             self.display_message1 = False  # Set this flag to True to display the message immediately
+            state.player.canMove = True
             state.currentScreen = state.restScreen
             state.restScreen.start(state)
 

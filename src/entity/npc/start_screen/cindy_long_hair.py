@@ -133,7 +133,7 @@ class CindyLongHair(Npc):
         elif state.coinFlipTedScreen.coinFlipTedDefeated:
             if "reveal" not in state.player.magicinventory:
                 state.player.magicinventory.append("reveal")
-                state.player.items.append("inn badge")
+                state.player.npc_items.append("inn badge")
             if state.player.mind < 1:
                 state.player.mind += 1
 

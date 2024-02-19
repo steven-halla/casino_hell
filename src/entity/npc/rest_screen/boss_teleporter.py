@@ -10,10 +10,10 @@ class BossTeleporter(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Boss Guard: You ready to go fight the boss.....i hope so. Since this is your first Time I'll make sure they add extra hedge hoggies.`"],
+                ["Hero: I need the boss key to pass through...Boss key? That was the name they came up with!?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Do you want to go back to the boss screen?, I was tired of looking at his ugly face. Hope Cindy's reward made you happy. Would you like to go to the rest area?You've earned it!"],
+                ["Do you want to go to the boss area? There is no turning back."],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -52,7 +52,7 @@ class BossTeleporter(Npc):
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+        current_message = self.flipping_ted_messages["defeated_message"] if "boss key" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking

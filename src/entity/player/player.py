@@ -50,6 +50,7 @@ class Player(Entity):
         self.max_focus_points = 50
         self.perks = []
         self.items = []
+        self.npc_items = []
 
         self.magicinventory = [ ]
         self.companions = []
@@ -119,6 +120,7 @@ class Player(Entity):
             "max_focus_points": self.max_focus_points,
             "companions": self.companions,
             "items": self.items,
+            "npcitems": self.npc_items,
             "magicinventory": self.magicinventory,
             "body": self.body,
             "mind": self.mind,
@@ -155,6 +157,8 @@ class Player(Entity):
 
 
     def update(self, state: "GameState"):
+        if state.controller.isAPressed:
+            print("Your nPc inventory issss:::   " + str(state.player.npc_items))
 
         # if self.money < 1:
         #     state.currentScreen = state.gameOverScreen
@@ -510,6 +514,7 @@ class Player(Entity):
             state.player.max_focus_points = player_data['max_focus_points']
             state.player.companions = player_data['companions']
             state.player.items = player_data['items']
+            state.player.npc_items = player_data['npcitems']
             state.player.magicinventory = player_data['magicinventory']
             state.player.body = player_data['body']
             state.player.mind = player_data['mind']

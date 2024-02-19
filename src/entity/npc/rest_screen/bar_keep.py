@@ -26,7 +26,7 @@ class BarKeep(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["beer", "moldy sandwich", "b key"]
+        self.shop_items = ["beer", "moldy sandwich", "boss key"]
 
         self.shop_costs = ["100", "200", "500"]
 
@@ -54,7 +54,7 @@ class BarKeep(Npc):
             self.barcutscene2 = True
 
 
-        if "b key" in state.player.items:
+        if "boss key" in state.player.npc_items:
             self.shop_items[2] = "sold out"
 
 
@@ -167,13 +167,13 @@ class BarKeep(Npc):
                             elif self.barcutscene1 == True and self.barcutscene2 == True:
                                 print("yay")
 
-                    elif self.selected_money_index == 2 and state.player.money > 600:
+                    elif self.selected_money_index == 2 and state.player.money > 2300:
                         self.buy_sound.play()  # Play the sound effect once
 
 
-                        if "b key" not in state.player.items:
-                            state.player.money -= 500
-                            state.player.items.append("b key")
+                        if "boss key" not in state.player.npc_items:
+                            state.player.money -= 2000
+                            state.player.npc_items.append("boss key")
                         print("Its boss time")
 
 
