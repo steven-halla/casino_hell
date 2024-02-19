@@ -247,7 +247,6 @@ class OpossumInACanSallyScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def initializeGarbageCans(self):
-        self.sallyOpossumMoney += 150
         self.trash_can_pick = ""
 
 
@@ -361,6 +360,8 @@ class OpossumInACanSallyScreen(Screen):
             self.initializeGarbageCans()
             self.fill_cans = False
             state.player.money -= 150
+            self.sallyOpossumMoney += 150
+
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -666,6 +667,7 @@ class OpossumInACanSallyScreen(Screen):
                     self.opossumInACanMessages["tally_message"].message_index = 0
                     # print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 150
+                    self.sallyOpossumMoney += 150
                     self.initializeGarbageCans()
 
                     self.game_state = "menu_screen"
