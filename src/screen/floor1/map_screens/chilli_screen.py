@@ -40,7 +40,7 @@ class ChilliScreen(Screen):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/chili_screen.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.initialize_music()
 
 
 
@@ -78,10 +78,16 @@ class ChilliScreen(Screen):
 
 
         if state.rest_area_to_chili_area_entry_point == True:
-            player_start_x = 16 * 5  # Desired X coordinate
-            player_start_y = 16 * 5  # Desired Y coordinate
+            player_start_x = 16 * 35  # Desired X coordinate
+            player_start_y = 16 * 30  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_chili_area_entry_point = False
+
+        elif state.maze_area_to_chili_area_entry_point == True:
+            player_start_x = 16 * 35  # Desired X coordinate
+            player_start_y = 16 * 28  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.maze_area_to_chili_area_entry_point = False
 
 
         # Check if a player instance already exists
@@ -133,11 +139,8 @@ class ChilliScreen(Screen):
         # print(str(state.player.items))
         # print(str(state.player.money))
 
-        if state.maze_area_to_chili_area_entry_point == True:
-            player_start_x = 16 * 5  # Desired X coordinate
-            player_start_y = 16 * 5  # Desired Y coordinate
-            state.player.setPosition(player_start_x, player_start_y)
-            state.maze_area_to_chili_area_entry_point = False
+
+
 
         if "blue flower" in state.player.items:
             # Loop through the NPCs to find SirLeopoldTheHedgeHog and update his position

@@ -344,7 +344,7 @@ class OpossumInACanSallyScreen(Screen):
 
         if self.music_on == True:
             self.stop_music()
-            # self.initialize_music()
+            self.initialize_music()
             self.music_on = False
         # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
         if self.player_score >= 300:
