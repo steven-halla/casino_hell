@@ -246,6 +246,8 @@ class OpossumInACanNellyScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def initializeGarbageCans(self):
+        self.nellyOpossumMoney += 150
+
         self.trash_can_pick = ""
 
         # Randomly shuffle the winner_or_looser list
@@ -652,7 +654,6 @@ class OpossumInACanNellyScreen(Screen):
                     self.opossumInACanMessages["tally_message"].message_index = 0
                     # print("The oppoin in a can index talley message is at a:" + str(self.opossumInACanMessages["tally_message"].message_index))
                     state.player.money -= 150
-                    self.nellyOpossumMoney += 150
                     self.initializeGarbageCans()
                     self.game_state = "menu_screen"
 
@@ -660,6 +661,8 @@ class OpossumInACanNellyScreen(Screen):
                 elif self.play_again_or_quit_index == 1:
                     self.music_on = True
                     self.debuff_keen_perception = False
+                    self.play_again_or_quit_index = 0
+
 
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)

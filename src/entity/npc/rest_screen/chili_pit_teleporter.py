@@ -65,8 +65,10 @@ class ChiliPitTeleporter(Npc):
         if state.player.hasRabies == True or state.player.rabiesImmunity == True and state.controller.isTPressed:
             state.rest_area_to_chili_area_entry_point = True
 
+
             state.currentScreen = state.chilliScreen
             state.chilliScreen.start(state)
+            state.player.canMove = True
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")

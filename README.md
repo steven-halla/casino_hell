@@ -557,3 +557,12 @@ they have to fight the other two bosses.
 wally reads a letter from his past self before he went insane
 
 need to fix boss screen
+
+
+one time crazy larry pissed in the chili thinking they wouldn't make us eat it?
+Did they make you eat it?
+How the hell should I know? As soon as he started urinating I got the hell out of there. I never had the heart
+to ask the others that stayed what happened.
+
+BUG ALERT:
+WE END UP APPENDING A NEW ITEM BLUE FLOWER TO CHILI SCREEN

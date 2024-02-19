@@ -35,7 +35,7 @@ class BlackJackRumbleBillScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 500
+        self.cheater_bob_money = 1000
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []

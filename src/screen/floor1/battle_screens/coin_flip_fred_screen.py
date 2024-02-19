@@ -52,7 +52,7 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 100
+        self.coinFlipFredMoney = 500
 
 
 

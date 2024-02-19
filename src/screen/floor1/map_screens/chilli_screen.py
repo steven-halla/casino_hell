@@ -99,14 +99,6 @@ class ChilliScreen(Screen):
         state.npcs.clear()
         state.demons.clear()
 
-        state.treasurechests = [
-
-            # WaterBottle(16 * 36, 16 * 10),
-
-        ]
-
-
-
         state.npcs = []
 
         # Add other NPCs to the state.npcs list
@@ -128,6 +120,10 @@ class ChilliScreen(Screen):
 
         state.demons = [
             # Demon1(16 * 55, 16 * 3),
+
+        ]
+
+        state.items = [
 
         ]
 
@@ -305,6 +301,15 @@ class ChilliScreen(Screen):
         state.obstacle.draw(state)
 
         state.player.draw(state)
+
+        if state.controller.isPPressed == True:
+
+            state.player.draw_player_stats(state)
+
+            if state.controller.isBPressed == True:
+                if state.controller.isPPressed:
+                    state.controller.isPPressed = False
+                    return
 
         # Update the display
         pygame.display.update()

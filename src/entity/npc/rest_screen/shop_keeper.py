@@ -29,7 +29,7 @@ class ShopKeeper(Npc):
         # New: Initialize an array of items for the shopkeeper
         self.shop_items = ["+10 potion", "save coin", "opossum repellent"]
 
-        self.shop_costs = ["100", "200", "300"]
+        self.shop_costs = ["100", "10", "300"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
