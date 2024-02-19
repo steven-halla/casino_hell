@@ -59,43 +59,25 @@ class StartScreenTeleporter(Npc):
         # Lock the player in place while talking
         state.player.canMove = False
 
-        # Check for keypresses only once per frame
-
-
-        # Check if the "T" key is pressed and the flag is not set
-
-            # Handle the selected option
-            # selected_option = self.choices[self.arrow_index]
-            # print(f"Selected option: {selected_option}")
-
-            # Check if the selected option is "Yes" and execute the code you provided
 
 
 
-        #
-        # if state.controller.isTPressed and current_message.is_finished():
-        #     # Exiting the conversation
-        #     self.state = "waiting"
-        #     self.state_start_time = pygame.time.get_ticks()
-        #
-        #     # Unlock the player to allow movement
-        #     state.player.canMove = True
 
     def draw(self, state):
-        sprite_rect = pygame.Rect(5, 6, 24, 28)
-
-        # Get the subsurface for the area you want
-        sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+        # sprite_rect = pygame.Rect(5, 6, 24, 28)
+        #
+        # # Get the subsurface for the area you want
+        # sprite = self.character_sprite_image.subsurface(sprite_rect)
+        #
+        # # Scale the subsurface to make it two times bigger
+        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+        #
+        # # Define the position where you want to draw the sprite
+        # sprite_x = self.collision.x + state.camera.x - 20
+        # sprite_y = self.collision.y + state.camera.y - 10
+        #
+        # # Draw the scaled sprite portion on the display
+        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         # rect = (
         #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
         #     self.collision.width, self.collision.height)

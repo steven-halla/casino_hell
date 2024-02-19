@@ -114,5 +114,8 @@ class MainScreenTeleporter(Npc):
 
         if self.state == "talking":
             current_message = self.flipping_ted_messages["defeated_message"] if "inn badge" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
-            current_message.draw(state)
+
+            if current_message == self.flipping_ted_messages["welcome_message"]:
+                current_message.draw(state)
+
 
