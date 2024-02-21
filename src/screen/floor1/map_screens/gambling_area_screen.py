@@ -38,6 +38,8 @@ class GamblingAreaScreen(Screen):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
 
 
 
@@ -73,11 +75,7 @@ class GamblingAreaScreen(Screen):
             state.rest_area_to_gambling_area_entry_point = False
 
 
-        state.treasurechests = [
 
-            # WaterBottle(16 * 36, 16 * 10),
-
-        ]
 
         state.npcs = []
 
@@ -105,23 +103,11 @@ class GamblingAreaScreen(Screen):
         ])
 
 
-        state.demons = [
-            # Demon1(16 * 55, 16 * 3),
-            # Demon2(16 * 55, 16 * 13),
-            # Demon3(16 * 55, 16 * 23),
-            # Demon4(16 * 55, 16 * 33),
-        ]
 
     def update(self, state: "GameState"):
-        # i dont think npc and demons getting updated
-        # print(state.quest_giver_janet.find_hog)
-        # print(state.quest_giver_janet.quest2counter)
 
 
-
-
-
-
+        self.clock.tick(60)
 
         controller = state.controller
         player = state.player
@@ -133,44 +119,32 @@ class GamblingAreaScreen(Screen):
                 state.npcs.remove(npc)
                 state.restScreen.rest_screen_npc_janet_find_hog = True
 
-        # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
-        # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
+
 
 
         ### i can use this to append NPC if i need to , just state.npcs.append(npc)
-        for npc in state.npcs:
-            npc.update(state)
-            # Check if the npc is any of the hedgehogs
-            if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
-                self.hedge_hog_counter += 1
-                print(self.hedge_hog_counter)
-                state.npcs.remove(npc)
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     # Check if the npc is any of the hedgehogs
+        #     if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
+        #         self.hedge_hog_counter += 1
+        #         print(self.hedge_hog_counter)
+        #         state.npcs.remove(npc)
 
         # Game Update Loop
         for chest in state.treasurechests:
             chest.update(state)
 
-        for demon in state.demons:
-            demon.update(state)
-            if demon.move_player_down:
-                state.player.collision.y += 100  # Move player down by 100 pixels
-                demon.move_player_down = False
 
         if controller.isExitPressed is True:
             state.isRunning = False
 
-        if state.player.inn_badge == True:
-            for npc in state.npcs:
-                if isinstance(npc, InnGuard):
-                    state.npcs.remove(npc)
 
 
 
 
-        #
-        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
-        #     coinMonicle = "coin monicle"
-        #     state.player.items.append(coinMonicle)
+
+
 
         if controller.isUpPressed:
 

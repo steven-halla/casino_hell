@@ -20,7 +20,7 @@
     "luck": 0,
     "money": 500,
     "rabies": false,
-    "immunity": false,
+    "immunity": true,
     "level3reward": false,
     "food": 0,
     "days": 1,

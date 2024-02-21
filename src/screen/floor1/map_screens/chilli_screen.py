@@ -36,6 +36,8 @@ class ChilliScreen(Screen):
         self.hedge_hog_counter = 4
         self.npcs = []
         self.move_player_down_flag = False
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/chili_screen.mp3"
 
@@ -129,6 +131,8 @@ class ChilliScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        self.clock.tick(60)
+
         state.demons.clear()
 
         # print("The demons are: " + str(state.demons))
@@ -165,13 +169,13 @@ class ChilliScreen(Screen):
                 state.npcs.remove(npc)
 
         ### i can use this to append NPC if i need to , just state.npcs.append(npc)
-        for npc in state.npcs:
-            npc.update(state)
-            # Check if the npc is any of the hedgehogs
-            if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
-                self.hedge_hog_counter += 1
-                print(self.hedge_hog_counter)
-                state.npcs.remove(npc)
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     # Check if the npc is any of the hedgehogs
+        #     if isinstance(npc, (HedgeHog1, HedgeHog2, HedgeHog3, HedgeHog4)) and npc.to_be_deleted:
+        #         self.hedge_hog_counter += 1
+        #         print(self.hedge_hog_counter)
+        #         state.npcs.remove(npc)
 
         # Game Update Loop
         for chest in state.treasurechests:
