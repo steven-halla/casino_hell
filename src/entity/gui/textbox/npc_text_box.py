@@ -88,11 +88,12 @@ class NpcTextBox(Entity):
 
         # Adjust the number '60' in the textwrap.wrap function and the padding values as needed
 
-
-
-
+    def message_at_end(self) -> bool:
+        """Checks if the current message has finished displaying its last letter."""
+        current_message = self.messages[self.message_index]
+        return self.characters_to_display == len(current_message)
     def is_finished(self) -> bool:
-        self.delay = 600
+        self.delay = 700
         return self.message_index == len(self.messages) - 1 and \
             pygame.time.get_ticks() - self.time > self.delay
 

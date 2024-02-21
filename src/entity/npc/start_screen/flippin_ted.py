@@ -10,7 +10,7 @@ class FlippinTed(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Ted: I'm a newb stomper, better be careful", "Are you ready to lose?!"],
+                ["Ted: I'm a newb stomper, better be careful", "You should just give up now.....or do you want some of this?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["You took my coins you....you.....I'll never forgive you!!!"],
@@ -151,7 +151,7 @@ class FlippinTed(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == False and state.player.hasRabies == False:
+            if current_message.is_finished() and state.coinFlipTedScreen.coinFlipTedDefeated == False and current_message.message_at_end():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

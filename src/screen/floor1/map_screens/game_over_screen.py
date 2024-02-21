@@ -36,6 +36,8 @@ class GameOverScreen(Screen):
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
 
 
 
