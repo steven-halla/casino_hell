@@ -61,8 +61,9 @@ class GameOverScreen(Screen):
 
     def start(self, state: "GameState"):
 
-
         self.stop_music()
+        if state.musicOn == True:
+            self.initialize_music()
         # self.initialize_music()
         super().start(state)
         state.npcs.clear()

@@ -566,3 +566,7 @@ to ask the others that stayed what happened.
 
 BUG ALERT:
 WE END UP APPENDING A NEW ITEM BLUE FLOWER TO CHILI SCREEN
+
+i have decided that 10 days and its Game over. lets have the hero make a bet he'll get out in 10 days. 
+
+opossum in a can : need to be able to use left key to go through trash cans

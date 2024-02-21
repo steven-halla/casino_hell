@@ -62,7 +62,8 @@ class GamblingAreaScreen(Screen):
 
     def start(self, state: "GameState"):
         self.stop_music()
-        self.initialize_music()
+        if state.musicOn == True:
+            self.initialize_music()
         super().start(state)
 
         if state.rest_area_to_gambling_area_entry_point == True:

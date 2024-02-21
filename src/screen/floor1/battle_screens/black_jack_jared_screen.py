@@ -266,9 +266,10 @@ class BlackJackJaredScreen(Screen):
 
     def update(self, state: "GameState"):
         if self.music_on == True:
-            self.stop_music()
-            self.initialize_music()
-            self.music_on = False
+            if state.musicOn == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
 
 
         # print("update() - state: " + str(self.game_state) + ", start at: " )

@@ -28,7 +28,7 @@ class BarKeep(Npc):
         # New: Initialize an array of items for the shopkeeper
         self.shop_items = ["beer", "moldy sandwich", "boss key"]
 
-        self.shop_costs = ["100", "200", "500"]
+        self.shop_costs = ["100", "200", "2000"]
 
         self.barcutscene1 = False
         self.barcutscene2 = False

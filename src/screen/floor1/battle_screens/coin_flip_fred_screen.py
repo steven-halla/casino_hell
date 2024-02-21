@@ -52,7 +52,7 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 500
+        self.coinFlipFredMoney = 700
 
 
 
@@ -405,10 +405,11 @@ class CoinFlipFredScreen(Screen):
         #     state.currentScreen = state.gameOverScreen
         #     state.gameOverScreen.start(state)
 
-        if self.music_on == True:
-            self.stop_music()
-            self.initialize_music()
-            self.music_on = False
+        if state.musicOn == True:
+            if self.music_on == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
 
 
         # if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:

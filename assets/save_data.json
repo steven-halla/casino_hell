@@ -1,9 +1,9 @@
 {
     "level": 3,
-    "exp": 830,
+    "exp": 880,
     "stamina_points": 140,
     "max_stamina_points": 140,
-    "focus_points": 100,
+    "focus_points": 60,
     "max_focus_points": 100,
     "companions": [
         "sir leopold"
@@ -26,7 +26,7 @@
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 1100,
+    "money": 1740,
     "rabies": false,
     "immunity": true,
     "level3reward": true,
@@ -37,10 +37,10 @@
     "quest1complete": true,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "opossumnellymoney": 200,
-    "opossumsallymoney": 1000,
-    "blackjackthomasmoney": 0,
+    "opossumnellymoney": 0,
+    "opossumsallymoney": 400,
+    "blackjackthomasmoney": 110,
     "blackjackrumblebillmoney": 0,
     "shopkeeperpotion": true,
-    "shopkeepersavecoin": false
+    "shopkeepersavecoin": true
 }

@@ -135,10 +135,9 @@ class RestScreen(Screen):
         if state.opossumInACanSallyScreen.sallyOpossumMoney < 10:
             state.opossumInACanSallyScreen.sallyOpossumIsDefeated = True
 
-
-
         self.stop_music()
-        self.initialize_music()
+        if state.musicOn == True:
+            self.initialize_music()
         super().start(state)
         state.npcs.clear()
 

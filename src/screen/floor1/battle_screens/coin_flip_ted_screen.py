@@ -375,10 +375,11 @@ class CoinFlipTedScreen(Screen):
 
     def update(self, state: "GameState"):
 
-        if self.music_on == True:
-            self.stop_music()
-            self.initialize_music()
-            self.music_on = False
+        if state.musicOn == True:
+            if self.music_on == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
 
 
 

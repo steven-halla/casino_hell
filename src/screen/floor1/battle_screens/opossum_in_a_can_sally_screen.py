@@ -341,11 +341,11 @@ class OpossumInACanSallyScreen(Screen):
 
     def update(self, state: "GameState"):
 
-
-        if self.music_on == True:
-            self.stop_music()
-            self.initialize_music()
-            self.music_on = False
+        if state.musicOn == True:
+            if self.music_on == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
         # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
         if self.player_score >= 300:
             # print("you got a opossum")
