@@ -46,13 +46,13 @@ class MainScreenTeleporter(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipTedScreen.coinFlipTedDefeated == False:
+            if "inn badge" not in state.player.npc_items:
                 self.flipping_ted_messages["defeated_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.flipping_ted_messages["defeated_message"] if state.player.hasRabies == False or state.player.rabiesImmunity == False else self.flipping_ted_messages["welcome_message"]
+        current_message = self.flipping_ted_messages["defeated_message"] if "inn badge" not in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
