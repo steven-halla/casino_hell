@@ -18,7 +18,7 @@ class BappingMike(Npc):
                         "Chinrog is the head demon of this level. He'll be gone in 10 days.",
                     "Hero: Demon???"
                 ],
-                (50, 450, 50, 45), 30, 500
+                (50, 450, 700, 130), 30, 500
             ),
             "rabies_message": NpcTextBox(
                 ["You should go see a doctor, sadly for you I'm not a doctor.There is a doctor, very far away from me."],

@@ -50,6 +50,9 @@ class RestScreen(Screen):
         self.barscene1 = False
         self.barscene2 = False
 
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
+
 
         self.nurgle_turned_in = False
 
@@ -195,6 +198,11 @@ class RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        # timer = self.clock.tick(60)
+        self.clock.tick(60)
+        # print("Your rest screen game clock is: " + str(timer))
+
+
         if state.player.perception > 0 and self.powerpotiongotten == False and state.player.hasRabies == False:
             state.treasurechests.append(PowerPotion(16 * 27, 14 * 10))
 
@@ -240,20 +248,16 @@ class RestScreen(Screen):
         # For example, calling its update method:
         janet_keeper_instance.update(state)
 
-
-        for npc in state.npcs:
-            npc.update(state)
-            if isinstance(npc, Nurgle) and npc.to_be_deleted:
-                state.npcs.remove(npc)
+        #the below speeds up text speech
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     if isinstance(npc, Nurgle) and npc.to_be_deleted:
+        #         state.npcs.remove(npc)
 
         for npc in state.npcs:
             npc.update(state)
             if isinstance(npc, BarKeepLowBody) and state.player.body > 0:
                 state.npcs.remove(npc)
-
-
-
-
 
 
         # Game Update Loop

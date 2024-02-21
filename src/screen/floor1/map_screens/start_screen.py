@@ -117,8 +117,11 @@ class StartScreen(Screen):
         start_time = pygame.time.get_ticks()
 
         # ... [your game update logic]
-
         self.clock.tick(60)
+
+
+        # timer = self.clock.tick(60)
+        # print("Your start screen game clock is: " + str(timer))
         end_time = pygame.time.get_ticks()
 
 

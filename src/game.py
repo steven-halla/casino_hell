@@ -15,6 +15,7 @@ class Game:
 
     def start(self):
         clock = pygame.time.Clock()
+        # print(clock)
 
         self.state.currentScreen.start(self.state)
 
