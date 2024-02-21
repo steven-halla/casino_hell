@@ -1,6 +1,6 @@
 {
     "level": 1,
-    "exp": 10,
+    "exp": 27,
     "stamina_points": 100,
     "max_stamina_points": 100,
     "focus_points": 50,
@@ -20,7 +20,7 @@
     "luck": 0,
     "money": 500,
     "rabies": false,
-    "immunity": true,
+    "immunity": false,
     "level3reward": false,
     "food": 0,
     "days": 1,

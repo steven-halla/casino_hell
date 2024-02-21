@@ -8,13 +8,12 @@ class MainScreenTeleporter(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
-        self.inn_badge_recieved = False
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Hero: It says here I need the inn badge to pass`"],
+                ["Chili Guard: You ready to eat you some yum yum chilli. Since this is your first Time I'll make sure they add extra hedge hoggies.`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["I feel tired I should take a rest."],
+                ["It says here I need the inn badge first in order to pass."],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -27,8 +26,9 @@ class MainScreenTeleporter(Npc):
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
 
-        # self.character_sprite_image = pygame.image.load(
-        #     "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
+
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -46,51 +46,29 @@ class MainScreenTeleporter(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if state.coinFlipTedScreen.coinFlipTedDefeated and "inn badge" in state.player.items:
+            if state.coinFlipTedScreen.coinFlipTedDefeated == False:
                 self.flipping_ted_messages["defeated_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = self.flipping_ted_messages["defeated_message"] if "inn badge" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
+        current_message = self.flipping_ted_messages["defeated_message"] if state.player.hasRabies == False or state.player.rabiesImmunity == False else self.flipping_ted_messages["welcome_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
         state.player.canMove = False
 
         # Check for keypresses only once per frame
-        if state.controller.isUpPressed:
-            state.controller.isUpPressed = False
-        if state.controller.isLeftPressed:
-            state.controller.isLeftPressed = False
-
-        if state.controller.isRightPressed:
-            state.controller.isRightPressed = False
-
-
-        if state.controller.isDownPressed:
-            state.controller.isDownPressed = False
-
 
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed:
+        if "inn badge" in state.player.npc_items and state.controller.isTPressed:
+            state.start_area_to_rest_area_entry_point = True
 
-            if "inn badge" in state.player.npc_items:
-                self.inn_badge_recieved = True
 
-            if self.inn_badge_recieved == True:
-                state.start_area_to_rest_area_entry_point = True
-
-                state.currentScreen = state.restScreen
-                state.restScreen.start(state)
-
-            if state.restScreen.inn_badge_recieved_tracker == True:
-                state.start_area_to_rest_area_entry_point = True
-                state.currentScreen = state.restScreen
-                state.restScreen.start(state)
-                # state.player.items.remove("inn badge")
-
+            state.currentScreen = state.restScreen
+            state.restScreen.start(state)
+            state.player.canMove = True
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -111,11 +89,10 @@ class MainScreenTeleporter(Npc):
     def draw(self, state):
 
 
-
         if self.state == "talking":
-            current_message = self.flipping_ted_messages["defeated_message"] if "inn badge" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
+            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+            if "inn badge" not in state.player.npc_items:
+                current_message = self.flipping_ted_messages["defeated_message"]
 
-            if current_message == self.flipping_ted_messages["welcome_message"]:
                 current_message.draw(state)
-
 
