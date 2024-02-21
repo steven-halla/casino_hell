@@ -48,13 +48,29 @@ class NpcTextBox(Entity):
         if self.characters_to_display < len(text):
             self.characters_to_display += 1
 
-        # handle button press to see next message
-        if state.controller.isTPressed and \
-                pygame.time.get_ticks() - self.time > self.delay and \
-                self.message_index < len(self.messages) - 1:
-            self.time = pygame.time.get_ticks()
-            self.message_index += 1
-            self.characters_to_display = 0
+        if state.controller.isTPressed and current_time - self.time > self.delay:
+            # Check if the entire message isn't shown yet
+            if self.characters_to_display < len(text):
+                # If not, show the full message immediately
+                self.characters_to_display = len(text)
+                self.time = pygame.time.get_ticks()  # Reset the time to prevent immediate skipping
+            else:
+                # If the full message is already displayed, and "T" is pressed again,
+                # check if there's a next message to move to
+                if self.message_index < len(self.messages) - 1:
+                    # Move to the next message and start from the beginning of it
+                    self.message_index += 1
+                    self.characters_to_display = 0  # Reset character count for new message
+                    self.time = pygame.time.get_ticks()
+
+                # # handle button press to see next message
+        # if state.controller.isTPressed and \
+        #         pygame.time.get_ticks() - self.time > self.delay and \
+        #         self.message_index < len(self.messages) - 1:
+        #     print("Tttttt")
+        #     self.time = pygame.time.get_ticks()
+        #     self.message_index += 1
+        #     self.characters_to_display = 0
 
         # print("is finished? " + str(self.is_finished()))
 
