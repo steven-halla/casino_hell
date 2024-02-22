@@ -238,7 +238,7 @@ class BlackJackThomasScreen(Screen):
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
-        self.defeated_textbox = NpcTextBox(
+        self.defeated_textbox = TextBox(
             [
                 "Guy:Looks like you defeated me.....back to eating chili for days and day and days....",
 
