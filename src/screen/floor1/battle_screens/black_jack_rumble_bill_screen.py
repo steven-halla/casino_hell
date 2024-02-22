@@ -22,7 +22,6 @@ class BlackJackRumbleBillScreen(Screen):
 
 
         self.last_t_press_time = 0  # Initialize the last T press time
-        self.t_debounce_threshold = 0.5
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
         self.ace_up_sleeve_jack = False
@@ -1136,6 +1135,7 @@ class BlackJackRumbleBillScreen(Screen):
                     print("Quit")
                     state.player.canMove = True
                     self.reveal_hand = 11
+                    self.magic_lock = False
 
 
                     self.music_on = True
@@ -1358,6 +1358,9 @@ class BlackJackRumbleBillScreen(Screen):
 
 
         elif self.game_state == "game_over_no_stamina":
+            self.reveal_hand = 11
+            self.magic_lock = False
+
             self.player_no_stamina.update(state)
             self.player_no_stamina.draw(state)
             if self.player_no_stamina.is_finished():
@@ -1373,6 +1376,7 @@ class BlackJackRumbleBillScreen(Screen):
                         state.currentScreen = state.restScreen
                         state.restScreen.start(state)
                         state.player.stamina_points = 1
+
 
             if state.player.money < 1:
                 self.game_state = "game_over_no_money"

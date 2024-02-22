@@ -77,7 +77,7 @@ class RumbleBill(Npc):
         # Lock the player in place while talking
 
         # Check for keypresses only once per frame
-        if current_message.is_finished():
+        if current_message.is_finished() and current_message.message_at_end():
 
             if state.controller.isUpPressed:
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
@@ -147,7 +147,7 @@ class RumbleBill(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False and state.player.hasRabies == False:
+            if current_message.is_finished() and current_message.message_at_end() and state.blackJackRumbleBillScreen.black_jack_rumble_bill_defeated == False and state.player.hasRabies == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

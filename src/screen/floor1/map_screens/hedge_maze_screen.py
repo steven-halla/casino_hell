@@ -56,7 +56,6 @@ class HedgeMazeScreen(Screen):
         state.treasurechests = [
 
             BlueFlower(16 * 72, 14 * 122),
-            BlueFlower(16 * 5, 14 * 5),
 
         ]
 
@@ -124,25 +123,15 @@ class HedgeMazeScreen(Screen):
             self.add_demon = False
             state.npcs = [npc for npc in state.npcs if not isinstance(npc, EvilCat)]
 
-        controller = state.controller
-        # ... (rest of your update code) ...
 
-        # Check if 'A' key is pressed
-        if controller.isAPressed:
-            # Instantiate Demon4 at a specific position (x, y)
-            new_demon = Demon4(16 * 80, 16 * 1)  # You can set the position as needed
-            # Add the new demon to the state.demons list
-            state.demons.append(new_demon)
+
 
 
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
         controller.update()
-        for npc in state.npcs:
-            npc.update(state)
-            if isinstance(npc, Nurgle) and npc.to_be_deleted:
-                state.npcs.remove(npc)
+
 
         # Assuming you have your hedgehog instances named like HedgeHog1, HedgeHog2, etc.
         # hedgehogs = [HedgeHog1(), HedgeHog2(), HedgeHog3(), HedgeHog4()]
@@ -191,66 +180,7 @@ class HedgeMazeScreen(Screen):
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
-    # def draw(self, state: "GameState"):
-    #     state.DISPLAY.fill(BLUEBLACK)
-    #     state.DISPLAY.blit(state.FONT.render(
-    #         f"player money: {state.player.money}",
-    #         True, (255, 255, 255)), (333, 333))
-    #     state.DISPLAY.blit(state.FONT.render(
-    #         f"player stamina points: {state.player.stamina_points}",
-    #         True, (255, 255, 255)), (333, 388))
-    #
-    #     if self.tiled_map.layers:
-    #         tile_width = self.tiled_map.tilewidth
-    #         tile_height = self.tiled_map.tileheight
-    #
-    #         # Get the background layer
-    #         bg_layer = self.tiled_map.get_layer_by_name("bg")
-    #         # Iterate over the tiles in the background layer
-    #         for x, y, image in bg_layer.tiles():
-    #             # Calculate the position of the tile in pixels
-    #             pos_x = x * tile_width + state.camera.x
-    #             pos_y = y * tile_height + state.camera.y
-    #
-    #             scaled_image = pygame.transform.scale(image, (
-    #                 tile_width * 1.3, tile_height * 1.3))
-    #
-    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-    #
-    #         # Get the collision layer
-    #         collision_layer = self.tiled_map.get_layer_by_name("collision")
-    #         for x, y, image in collision_layer.tiles():
-    #             # Calculate the position of the tile in pixels
-    #             pos_x = x * tile_width + state.camera.x
-    #             pos_y = y * tile_height + state.camera.y
-    #
-    #             scaled_image = pygame.transform.scale(image, (
-    #                 tile_width * 1.3, tile_height * 1.3))
-    #
-    #             state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-    #
-    #     for npc in state.npcs:
-    #         npc.draw(state)
-    #         if isinstance(npc, WallyGuide):
-    #             # Assuming npc.collision has x, y, width, and height attributes
-    #             rect = (npc.collision.x, npc.collision.y, npc.collision.width, npc.collision.height)
-    #             pygame.draw.rect(state.DISPLAY, (0, 255, 0), rect, 2)
-    #
-    #     for demon in state.demons:
-    #         demon.draw(state)
-    #
-    #     for treasurechests in state.treasurechests:
-    #         treasurechests.draw(state)
-    #
-    #     state.obstacle.draw(state)
-    #
-    #     state.player.draw(state)
-    #
-    #     # Draw Player's collision box in red
-    #     pygame.draw.rect(state.DISPLAY, (255, 0, 0), state.player.collision.toTuple(), 2)
-    #
-    #     # ... (rest of your drawing code, like updating the display) ...
-    #     pygame.display.update()
+
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)

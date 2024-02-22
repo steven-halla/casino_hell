@@ -121,14 +121,9 @@ class ChilliScreen(Screen):
 
 
 
-        state.demons = [
-            # Demon1(16 * 55, 16 * 3),
 
-        ]
 
-        state.items = [
 
-        ]
 
     def update(self, state: "GameState"):
         self.clock.tick(60)
