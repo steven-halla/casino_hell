@@ -310,6 +310,9 @@ class DemonBossScreen(Screen):
         if self.bet > self.cheater_bob_money:
             self.bet = self.cheater_bob_money
 
+        if self.bet > state.player.money:
+            self.bet = state.player.money
+
     def update(self, state: "GameState"):
         if state.musicOn == True:
             if self.music_on == True:

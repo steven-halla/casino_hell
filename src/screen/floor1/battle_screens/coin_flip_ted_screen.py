@@ -320,6 +320,9 @@ class CoinFlipTedScreen(Screen):
         if self.bet > self.coinFlipTedMoney:
             self.bet = self.coinFlipTedMoney
 
+        if self.bet > state.player.money:
+            self.bet = state.player.money
+
         if controller.isTPressed:
 
             self.game_state = "heads_tails_choose_screen"

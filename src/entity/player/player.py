@@ -181,21 +181,23 @@ class Player(Entity):
         if self.exp > 100 and self.level2checker == False:
             print("grats you leveld up to level 2")
             self.level = 2
-
-            if self.spirit < 1:
-                self.max_stamina_points += 10 + (self.stamina_increase)
-                self.max_focus_points += 10
-                self.spirit += 1
-            self.level2checker = True
-            return
-
-        if self.exp > 400 and self.level3checker == False:
-            print("grats you leveld up to level 3")
-            # if "shield" not in self.magicinventory:
             if "shield" not in state.player.magicinventory:
                 self.magicinventory.append("shield")
                 self.max_stamina_points += 10
                 self.max_focus_points += 10
+
+
+            self.level2checker = True
+            return
+
+        if self.exp > 500 and self.level3checker == False:
+            print("grats you leveld up to level 3")
+            if self.spirit < 1:
+                self.max_stamina_points += 10 + (self.stamina_increase)
+                self.max_focus_points += 10
+                self.spirit += 1
+            # if "shield" not in self.magicinventory:
+
             self.level3checker = True
             self.level = 3
 
