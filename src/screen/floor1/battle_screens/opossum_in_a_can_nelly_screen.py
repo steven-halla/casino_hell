@@ -267,10 +267,6 @@ class OpossumInACanNellyScreen(Screen):
                     self.initializeGarbageCans()
                     break
 
-        # Print the contents of each can
-        # for i in range(1, 9):
-        #     print(f"Can {i} contains: {getattr(self, f'can{i}')}")
-
 
     def refresh(self):
         self.bet = 20
@@ -330,11 +326,6 @@ class OpossumInACanNellyScreen(Screen):
                 self.game_state = "lose_screen"
 
 
-
-
-
-
-
         # Remove the item from the can (set it to an empty string)
         setattr(self, selected_can_attribute, "")
 
@@ -347,7 +338,6 @@ class OpossumInACanNellyScreen(Screen):
                 self.music_on = False
 
         if self.player_score >= 300:
-            # print("you got a opossum")
             state.gamblingAreaScreen.five_hundred_opossums = True
         if self.player_score >= 300:
             self.five_hundred_points = True
@@ -507,6 +497,7 @@ class OpossumInACanNellyScreen(Screen):
 
             # Debugging: Print the time since the last right key press
             time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
+            time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
             # print(f"Time since right key pressed: {time_since_right_pressed}")
 
             # Check if enough time has passed since the last right key press
@@ -521,6 +512,17 @@ class OpossumInACanNellyScreen(Screen):
 
                 # Reset the key pressed time
                 state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+            elif state.controller.isLeftPressed and time_since_left_pressed >= key_press_threshold:
+                # Move to the next box
+                self.green_box_index = (self.green_box_index - 1) % 8
+                self.menu_movement_sound.play()  # Play the sound effect once
+
+                # Print the current green box index and its content
+                current_can_content = getattr(self, f'can{self.green_box_index + 1}')
+                print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
+
+                # Reset the key pressed time
+                state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
 
             # Check for 'T' key press
             if state.controller.isTPressed:
