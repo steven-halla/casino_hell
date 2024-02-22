@@ -565,12 +565,21 @@ How the hell should I know? As soon as he started urinating I got the hell out o
 to ask the others that stayed what happened.
 
 BUG ALERT:
-WE END UP APPENDING A NEW ITEM BLUE FLOWER TO CHILI SCREEN
 
 i have decided that 10 days and its Game over. lets have the hero make a bet he'll get out in 10 days. 
 
 opossum in a can : need to be able to use left key to go through trash cans
 
+build screen for boss that has a cut scene
 
-for some reason the start screen messages are slower than the rest screen 
+need to add state for bar keeper , so that we can give a + 20 stam, + 20 magic and not milk it. 
+ a future consideration would be to save the game after a cut scene , which would give some benifit to it
+or even a minor boon for games , 
+
+i feel players may forget about bar. 
+we can have : food luck:
+if food luck == true:
+
+
+
 

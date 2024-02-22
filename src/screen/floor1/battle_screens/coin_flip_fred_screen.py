@@ -52,12 +52,13 @@ class CoinFlipFredScreen(Screen):
 
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 700
+        self.coinFlipFredMoney = 1000
 
 
 
 
         self.coinFlipFredDefeated = False
+        self.food_luck = False
 
 
 
@@ -375,12 +376,12 @@ class CoinFlipFredScreen(Screen):
         #     self.result = "tails"
         print("The coin counter is now at the start so what is it?: " + str(self.coin_leaning_counter))
 
-        if self.coinFlipFredMoney <= 100:
+        if self.coinFlipFredMoney <= 300:
             self.result = "tails"
             print("Less than 100")
 
 
-        elif self.coinFlipFredMoney > 300:
+        elif self.coinFlipFredMoney > 700:
             # coin_fate = random.randint(1, 20)
             # print("your coin fate is" + str(coin_fate))
             # print("coin counter at:" + str(self.coin_leaning_counter))
@@ -388,18 +389,20 @@ class CoinFlipFredScreen(Screen):
             self.result = "tails"
 
 
-            # if coin_fate > 6:
-            #     self.result = "tails"
-            # elif coin_fate <= 6:
-            #     self.result = "heads"
-
-        elif self.coinFlipFredMoney <= 300:
+        elif self.coinFlipFredMoney <= 700:
             coin_fate = random.randint(1, 20)
             print("more than 300")
 
-            # print("your coin fate is" + str(coin_fate))
-            # print("coin counter at:" + str(self.coin_leaning_counter))
-            self.result = "heads"
+            if self.food_luck == True:
+                if coin_fate >= 6:
+                    self.result = "heads"
+                elif coin_fate < 6:
+                    self.result = "tails"
+            elif self.food_luck == False:
+                if coin_fate >= 8:
+                    self.result = "heads"
+                elif coin_fate < 8:
+                    self.result = "tails"
 
         self.game_state = "results_screen"
 
