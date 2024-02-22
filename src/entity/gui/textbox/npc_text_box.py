@@ -77,10 +77,13 @@ class NpcTextBox(Entity):
         if self.is_finished():
             self.show_shop_menu = True
 
+    import pygame
+    import textwrap
+
     def draw(self, state: "GameState"):
         text = self.messages[self.message_index]
         text_to_display = text[:self.characters_to_display]
-        # Wrap text to a maximum of 40 characters per line
+        # Wrap text to a maximum of 55 characters per line
         wrapped_text = textwrap.wrap(text_to_display, 55)
 
         # Fixed dimensions for the text box
@@ -90,7 +93,14 @@ class NpcTextBox(Entity):
         # Position of the text box
         box_x, box_y = self.position.x, self.position.y
 
-        # Draw the black background rectangle
+        # Border dimensions and color
+        border_size = 5  # Size of the border around the text box
+        border_color = (255, 255, 255)  # White
+
+        # Draw the border rectangle
+        pygame.draw.rect(state.DISPLAY, border_color, (box_x - border_size, box_y - border_size, box_width + 2 * border_size, box_height + 2 * border_size))
+
+        # Draw the black background rectangle for the text box
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
 
         # Draw the text within the text box
