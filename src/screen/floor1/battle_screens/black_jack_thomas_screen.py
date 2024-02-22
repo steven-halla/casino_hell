@@ -508,6 +508,7 @@ class BlackJackThomasScreen(Screen):
                     self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                     print("New enemy score is: " + str(self.enemy_score))
             if "sir leopold's paw" in state.player.items:
+                self.enemy_black_jack_win = False
 
                 for card in self.enemy_hand:
                     if card in aces_to_remove:
