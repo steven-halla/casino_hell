@@ -16,4 +16,9 @@ in the future we need to make sure that all screens operate at the same speed, f
         the below goes in update
         self.clock.tick(60)
 
+i need start screns
+i need give exp function for every screen to make it easier to change exp gains
+i need give money function as well to make things easier
+
+
 
