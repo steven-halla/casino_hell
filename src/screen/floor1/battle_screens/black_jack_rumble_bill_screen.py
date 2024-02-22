@@ -467,19 +467,10 @@ class BlackJackRumbleBillScreen(Screen):
 
             print("Player score is: " + str(self.player_score))
 
-            # Check if the player has an ACE in their hand
-            if self.black_jack_counter > 0:
-                print("Player black jack win set to true and it might be true?")
+            if self.player_score > 20:
                 self.player_black_jack_win = True
-                self.black_jack_bluff_counter += 1
-            else:
-                self.player_black_jack_win = False
 
-            #################################need to test aces if a player gets multiple aces
 
-            # If the player has an ACE, check which value is better for the player
-
-            # Define the Aces you want to remove
             aces_to_remove = [
                 ('Ace', 'Hearts', 11),
                 ('Ace', 'Spades', 11),
@@ -492,6 +483,8 @@ class BlackJackRumbleBillScreen(Screen):
             ]
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             print("Enemy hand is" + str(self.enemy_hand))
+            if self.enemy_score > 20:
+                self.enemy_black_jack_win = True
             if self.food_luck == True:
                 while self.enemy_score > 15:
                     print("Redrawing hand, score too high: " + str(self.enemy_score))
@@ -889,8 +882,8 @@ class BlackJackRumbleBillScreen(Screen):
 
                     self.first_message_display = f"You gain 100 exp and win {self.bet * 3} gold "
                     self.second_message_display = "You win player press T when ready"
-                    state.player.money += self.bet * 3
-                    self.cheater_bob_money -= self.bet * 3
+                    state.player.money += self.bet * 2
+                    self.cheater_bob_money -= self.bet * 2
                     print("nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
@@ -913,8 +906,8 @@ class BlackJackRumbleBillScreen(Screen):
                     self.second_message_display = "You lose player press T when ready"
                     self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
 
-                    state.player.money -= self.bet * 3
-                    self.cheater_bob_money += self.bet * 3
+                    state.player.money -= self.bet * 2
+                    self.cheater_bob_money += self.bet * 2
 
                     print("nd;3434343434343;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 

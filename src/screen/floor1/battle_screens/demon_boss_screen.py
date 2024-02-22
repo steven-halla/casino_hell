@@ -481,13 +481,8 @@ class DemonBossScreen(Screen):
             self.player_score = self.deck.compute_hand_value(self.player_hand)
             print("Player score is: " + str(self.player_score))
 
-            # Check if the player has an ACE in their hand
-            if self.black_jack_counter > 0:
-                print("Player black jack win set to true and it might be true?")
+            if self.player_score > 20:
                 self.player_black_jack_win = True
-                self.black_jack_bluff_counter += 1
-            else:
-                self.player_black_jack_win = False
 
             aces_to_remove = [
                 ('Ace', 'Hearts', 11),
@@ -504,6 +499,8 @@ class DemonBossScreen(Screen):
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
+            if self.enemy_score > 20:
+                self.enemy_black_jack_win = True
             # while self.enemy_score > 17:
             #     print("Redrawing hand, score too high: " + str(self.enemy_score))
             #     # Empty the enemy_hand array
@@ -821,7 +818,7 @@ class DemonBossScreen(Screen):
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
-                self.first_message_display = f"You gain 100 exp and {self.bet * 3} gold "
+                self.first_message_display = f"You gain 100 exp and {self.bet * 2} gold "
 
 
 
@@ -836,7 +833,7 @@ class DemonBossScreen(Screen):
 
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.second_message_display = "Enemy gets blackjack you lose "
-                self.first_message_display = f"You gain 30 exp and 0 gold "
+                self.first_message_display = f"You gain 30 exp and lose {self.bet * 3} gold "
 
 
 
@@ -871,10 +868,10 @@ class DemonBossScreen(Screen):
                     state.player.exp += 100
 
 
-                    self.first_message_display = f"You gain 100 exp and win {self.bet * 3} gold "
+                    self.first_message_display = f"You gain 100 exp and win {self.bet * 2} gold "
                     self.second_message_display = "You win player press T when ready"
-                    state.player.money += self.bet * 3
-                    self.cheater_bob_money -= self.bet * 3
+                    state.player.money += self.bet * 2
+                    self.cheater_bob_money -= self.bet * 2
                     self.cheater_bob_money -= 5
                     state.player.money -= 10
 
@@ -895,8 +892,8 @@ class DemonBossScreen(Screen):
                     state.player.exp += 25
                     state.player.stamina_points -= 25
 
-                    self.second_message_display = "You lose player press T when ready"
-                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+                    self.second_message_display = "Oh no Critial hit"
+                    self.first_message_display = f"You gain 25 exp and lose {self.bet * 3} gold "
 
                     state.player.money -= self.bet * 3
                     self.cheater_bob_money += self.bet * 3
