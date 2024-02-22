@@ -80,7 +80,7 @@ class CoinFlipFred(Npc):
 
         # Lock the player in place while talking
         state.player.canMove = False
-        if current_message.is_finished():
+        if current_message.is_finished() and current_message.message_at_end():
 
             # Check for keypresses only once per frame
             if state.controller.isUpPressed:
@@ -150,7 +150,7 @@ class CoinFlipFred(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
+            if current_message.is_finished() and current_message.message_at_end() and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

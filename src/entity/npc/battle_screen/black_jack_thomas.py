@@ -78,7 +78,7 @@ class BlackJackThomas(Npc):
         state.player.canMove = False
 
         # Check for keypresses only once per frame
-        if current_message.is_finished():
+        if current_message.is_finished() and current_message.message_at_end():
 
             if state.controller.isUpPressed:
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
@@ -90,7 +90,7 @@ class BlackJackThomas(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
+        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
 
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -150,7 +150,7 @@ class BlackJackThomas(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
+            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False and current_message.message_at_end():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

@@ -86,7 +86,7 @@ class SallyOpossum(Npc):
         state.player.canMove = False
 
         # Check for keypresses only once per frame
-        if current_message.is_finished():
+        if current_message.is_finished() and current_message.message_at_end():
 
             if state.controller.isUpPressed:
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
@@ -169,7 +169,7 @@ class SallyOpossum(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 149:
+            if current_message.is_finished() and current_message.message_at_end() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 149:
                 print("better not see this shit")
                 bet_box_width = 150
                 bet_box_height = 100
