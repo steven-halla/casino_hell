@@ -17,7 +17,7 @@ class ChillyBilly(Npc):
                 [
                     "People keep complaining that the hedge hogs are pooping in teh chilli",
                     "It doesn't make any sense, I mean you humans eat canned food which has an acceptable amount of feces",
-                    "We demons have studied you humans closely, we know what you like."
+                    "We demons have studied you humans very closely."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

@@ -573,3 +573,4 @@ opossum in a can : need to be able to use left key to go through trash cans
 
 
 for some reason the start screen messages are slower than the rest screen 
+

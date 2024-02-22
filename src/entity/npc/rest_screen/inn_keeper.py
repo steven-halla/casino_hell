@@ -105,6 +105,9 @@ class InnKeeper(Npc):
                 if state.player.body > 0:
                     state.player.food = 1
 
+                if state.player.hasRabies == True:
+                    state.player.days -= 1
+
                 if state.player.hasRabies == False:
                     state.player.stamina_points += 500
                     if state.player.stamina_points > state.player.max_stamina_points:

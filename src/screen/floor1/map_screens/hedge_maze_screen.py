@@ -35,6 +35,8 @@ class HedgeMazeScreen(Screen):
         move_player_down_flag = False
         self.hog4_replaced_with_demon = False  # Set a flag to prevent repeated additions
         self.add_demon = False
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
 
     def start(self, state: "GameState"):
         super().start(state)
@@ -85,6 +87,9 @@ class HedgeMazeScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+
+        self.clock.tick(60)
+
 
 
         if "blue flower" in state.player.items:
@@ -165,50 +170,6 @@ class HedgeMazeScreen(Screen):
         if controller.isExitPressed is True:
             state.isRunning = False
 
-        if state.player.inn_badge == True:
-            for npc in state.npcs:
-                if isinstance(npc, InnGuard):
-                    state.npcs.remove(npc)
-
-
-
-
-        #
-        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
-        #     coinMonicle = "coin monicle"
-        #     state.player.items.append(coinMonicle)
-
-        if controller.isUpPressed:
-
-            self.y_up_move = True
-
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-
-        elif controller.isDownPressed:
-            self.y_down_move = True
-            self.y_up_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-
-        elif controller.isLeftPressed:
-            self.x_left_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_right_move = False
-
-        elif controller.isRightPressed:
-            self.x_right_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-
-        else:
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
 
         player.update(state)
 
