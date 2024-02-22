@@ -227,6 +227,7 @@ class OpossumInACanSallyScreen(Screen):
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
+        self.food_luck = False
 
 
 
@@ -324,6 +325,9 @@ class OpossumInACanSallyScreen(Screen):
                     state.player.stamina_points -= 25
                 elif "opossum repellent" not in state.player.items:
                     state.player.stamina_points -= 50
+
+                if self.food_luck == True:
+                    state.player.stamina_points += 5
 
                 self.refresh()
                 self.initializeGarbageCans()

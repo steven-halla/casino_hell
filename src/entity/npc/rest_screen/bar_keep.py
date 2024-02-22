@@ -138,43 +138,39 @@ class BarKeep(Npc):
 
                         print("hey 0")
                         state.player.money -= 100
-                        state.player.stamina_points += 75
-                        if state.player.max_stamina_points < 160:
-                            state.player.max_stamina_points += 10
+                        state.player.stamina_points += 50
+
                         state.player.food -= 1
-                        if state.player.stamina_points > state.player.max_stamina_points:
-                            state.player.stamina_points = state.player.max_stamina_points
-                            if self.barcutscene1 == False:
-                                state.currentScreen = state.barCutScene1
-                                state.barCutScene1.start(state)
-                            elif self.barcutscene2 == False:
-                                state.currentScreen = state.barCutScene2
-                                state.barCutScene2.start(state)
-                            elif self.barcutscene1 == True and self.barcutscene2 == True:
-                                print("yay")
+
+                        if self.barcutscene1 == False:
+                            state.currentScreen = state.barCutScene1
+                            state.barCutScene1.start(state)
+                        elif self.barcutscene2 == False:
+                            state.currentScreen = state.barCutScene2
+                            state.barCutScene2.start(state)
+                        elif self.barcutscene1 == True and self.barcutscene2 == True:
+                            print("yay")
 
 
 
                     elif self.selected_money_index == 1 and state.player.money > 300:
                         self.buy_sound.play()  # Play the sound effect once
 
-                        state.player.money -= 100
+                        state.player.money -= 200
                         print("hey 1")
                         # this will go above the max which is ok for this item
-                        state.player.focus_points += 50
-                        if state.player.max_focus_points < 160:
-                            state.player.max_focus_points += 10
+                        state.player.focus_points += 30
+
                         state.player.food -= 1
-                        if state.player.focus_points > state.player.max_focus_points:
-                            state.player.focus_points = state.player.max_focus_points
-                            if self.barcutscene1 == False:
-                                state.currentScreen = state.barCutScene1
-                                state.barCutScene1.start(state)
-                            elif self.barcutscene2 == False:
-                                state.currentScreen = state.barCutScene2
-                                state.barCutScene2.start(state)
-                            elif self.barcutscene1 == True and self.barcutscene2 == True:
-                                print("yay")
+
+                        if self.barcutscene1 == False:
+                            state.currentScreen = state.barCutScene1
+                            state.barCutScene1.start(state)
+                        elif self.barcutscene2 == False:
+                            state.currentScreen = state.barCutScene2
+                            state.barCutScene2.start(state)
+                        elif self.barcutscene1 == True and self.barcutscene2 == True:
+                            print("yay")
 
 
 
@@ -257,7 +253,7 @@ class BarKeep(Npc):
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 0:
 
-                state.DISPLAY.blit(self.font.render(f"Kinda smells like pee. Restores 75 Stamina +10 max stamina(160 max)", True,
+                state.DISPLAY.blit(self.font.render(f"Kinda smells like pee. Restores 50 Stamina Can go above max", True,
                                                     (255, 255, 255)), (70, 460))
             if self.selected_item_index == 1 and state.player.money < 300:
                 state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
@@ -266,7 +262,7 @@ class BarKeep(Npc):
                 state.DISPLAY.blit(self.font.render(f"Your food is at 0, rest at inn to restore.", True,
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 1:
-                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restore 75 Magic. +10 max magic(160 max)  ", True,
+                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restore 30 Magic. Can go above max. ", True,
                                                     (255, 255, 255)), (70, 460))
             if self.selected_item_index == 2 and state.player.money < 600:
                 state.DISPLAY.blit(self.font.render(f"Money cannot fall below 10 post purchase", True,

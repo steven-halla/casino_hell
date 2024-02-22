@@ -336,6 +336,7 @@ class BlackJackThomasScreen(Screen):
 
             self.npc_speaking = True
             self.hero_speaking = False
+            self.food_luck = False
 
 
             self.redraw_lock = False
@@ -479,16 +480,28 @@ class BlackJackThomasScreen(Screen):
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
-            while self.enemy_score > 17:
-                print("Redrawing hand, score too high: " + str(self.enemy_score))
-                # Empty the enemy_hand array
-                self.enemy_hand = []
-                # Draw a new hand
-                self.enemy_hand = self.deck.enemy_draw_hand(2)
-                print("New enemy hand is: " + str(self.enemy_hand))
-                # Compute the score of the new hand
-                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print("New enemy score is: " + str(self.enemy_score))
+            if self.food_luck == True:
+                while self.enemy_score > 15:
+                    print("Redrawing hand, score too high: " + str(self.enemy_score))
+                    # Empty the enemy_hand array
+                    self.enemy_hand = []
+                    # Draw a new hand
+                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+                    print("New enemy hand is: " + str(self.enemy_hand))
+                    # Compute the score of the new hand
+                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                    print("New enemy score is: " + str(self.enemy_score))
+            elif self.food_luck == False:
+                while self.enemy_score > 17:
+                    print("Redrawing hand, score too high: " + str(self.enemy_score))
+                    # Empty the enemy_hand array
+                    self.enemy_hand = []
+                    # Draw a new hand
+                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+                    print("New enemy hand is: " + str(self.enemy_hand))
+                    # Compute the score of the new hand
+                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                    print("New enemy score is: " + str(self.enemy_score))
             if "sir leopold's paw" in state.player.items:
 
                 for card in self.enemy_hand:

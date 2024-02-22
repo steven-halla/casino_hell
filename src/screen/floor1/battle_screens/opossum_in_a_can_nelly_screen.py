@@ -20,6 +20,8 @@ class OpossumInACanNellyScreen(Screen):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
         self.desperate = False
+        self.food_luck = False
+
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.nellyOpossumMoney = 500
@@ -309,6 +311,9 @@ class OpossumInACanNellyScreen(Screen):
                     state.player.stamina_points -= 25
                 elif "opossum repellent" not in state.player.items:
                     state.player.stamina_points -= 50
+
+                if self.food_luck == True:
+                    state.player.stamina_points += 5
 
 
                 self.refresh()
