@@ -497,7 +497,7 @@ class BlackJackRumbleBillScreen(Screen):
                     self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                     print("New enemy score is: " + str(self.enemy_score))
             elif self.food_luck == False:
-                while self.enemy_score > 17:
+                while self.enemy_score > 17 and self.enemy_score < 21:
                     print("Redrawing hand, score too high: " + str(self.enemy_score))
                     # Empty the enemy_hand array
                     self.enemy_hand = []
@@ -523,12 +523,7 @@ class BlackJackRumbleBillScreen(Screen):
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
 
-            if self.black_jack_counter > 0:
-                print(
-                    "Enemy black jack win set to true and the code is right here")
-                self.enemy_black_jack_win = True
-            elif self.black_jack_counter == 0:
-                self.enemy_black_jack_win = False
+
 
             print(self.player_black_jack_win)
 
