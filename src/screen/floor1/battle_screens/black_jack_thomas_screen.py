@@ -447,6 +447,7 @@ class BlackJackThomasScreen(Screen):
                     controller.isTPressed = False
 
         elif self.game_state == "draw_phase":
+
             self.first_message_display = ""
             self.second_message_display = ""
             self.thrid_message_display = ""
@@ -458,14 +459,14 @@ class BlackJackThomasScreen(Screen):
             print("Player hand is" + str(self.player_hand))
             self.player_score = self.deck.compute_hand_value(self.player_hand)
             print("Player score is: " + str(self.player_score))
+            if self.player_score > 20:
+                self.player_black_jack_win = True
+
+            print("YOur black jack player detecter is :  " + str(self.player_black_jack_win))
+            print("YOur black jack enemy detecter is :  " + str(self.enemy_black_jack_win))
 
             # Check if the player has an ACE in their hand
-            if self.black_jack_counter > 0:
-                print("Player black jack win set to true and it might be true?")
-                self.player_black_jack_win = True
-                self.black_jack_bluff_counter += 1
-            else:
-                self.player_black_jack_win = False
+
 
             aces_to_remove = [
                 ('Ace', 'Hearts', 11),
@@ -482,6 +483,8 @@ class BlackJackThomasScreen(Screen):
             print("Enemy hand is" + str(self.enemy_hand))
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             print("enemy score is: " + str(self.enemy_score))
+            if self.enemy_score > 20:
+                self.enemy_black_jack_win = True
             if self.food_luck == True:
                 while self.enemy_score > 15:
                     print("Redrawing hand, score too high: " + str(self.enemy_score))
@@ -545,7 +548,7 @@ class BlackJackThomasScreen(Screen):
             if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.black_jack_draw = True
                 self.thrid_message_display = "Its a draw"
-                print("Its a draw")
+                print("Its a draw 548")
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
 
@@ -587,20 +590,24 @@ class BlackJackThomasScreen(Screen):
                 state.player.exp += 5
 
                 self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
+                self.second_message_display = f"You busted "
                     # self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
 
+            if self.player_score > 21:
+                state.player.money -= self.bet
+                self.cheater_bob_money += self.bet
+                print("Going to bust a giant busttttttttter")
 
-            elif self.player_score > 21 and self.reveal_hand < 11:
-                print("you almost busted")
-                print(self.player_hand)
-                self.player_hand.pop()
-                self.deck.compute_hand_value(self.player_hand)
-                self.player_score = self.deck.compute_hand_value(
-                    self.player_hand)
-                print("here is your new hand")
-                print(self.player_hand)
-                self.reveal_hand -= 2
-                self.bust_protection = True
+
+                if state.player.level == 1:
+                    state.player.exp += 5
+                    self.first_message_display = f"gold."
+                    self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
+                elif state.player.level == 2:
+                    state.player.exp += 2
+                    self.first_message_display = f"gold. "
+                    self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
+
 
             if self.bust_protection == True:
                 self.game_state = "results_screen"
@@ -800,7 +807,7 @@ class BlackJackThomasScreen(Screen):
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
-                self.first_message_display = f"You gain 100 exp and {self.bet * 3} gold "
+                self.first_message_display = f"You gain 100 exp and {self.bet * 2} gold "
                 print("<<<<????????????>>>>" + str(state.player.exp))
 
 
@@ -825,17 +832,36 @@ class BlackJackThomasScreen(Screen):
 
 
             elif self.player_score > self.enemy_score and self.player_score < 22:
-                self.second_message_display = "You win player press T when ready"
-                self.first_message_display = f"You gain 25 exp and {self.bet} gold "
-                print("nd;3fefefefefefefeefefe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+                if self.player_black_jack_win == True:
+                    print("you got the blackest of black jacks")
+                    state.player.money += self.bet
+                    self.second_message_display = "You win black jack player press T when ready"
+                    self.first_message_display = f"You gain 25 exp and {self.bet * 2} gold "
+                    self.player_black_jack_win = False
+                else:
+                    self.second_message_display = "You win player press T when ready"
+                    self.first_message_display = f"You gain 25 exp and {self.bet} gold "
+                    print("nd;3fefefefefefefeefefe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+
 
 
 
 
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
-                self.second_message_display = "You lose player press T when ready"
-                self.first_message_display = f"You gain 5 experience and lose {self.bet} gold "
-                print("nd;OIJJJLJLJJJKJKJKJJJJKJIJIJIJIJJ;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
+                if self.enemy_black_jack_win == True:
+                    print("you got the blackest of black jacks")
+                    state.player.money += self.bet
+                    self.second_message_display = "You lose to the black jack press T when ready"
+                    self.first_message_display = f"You lose 25 exp and {self.bet * 2} gold "
+                    self.enemy_black_jack_win = False
+                else:
+                    self.second_message_display = "You lose player press T when ready"
+                    self.first_message_display = f"You gain 5 experience and lose {self.bet} gold "
+                    print("nd;OIJJJLJLJJJKJKJKJJJJKJIJIJIJIJJ;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
+
 
 
 
@@ -856,10 +882,10 @@ class BlackJackThomasScreen(Screen):
                     state.player.exp += 100
 
 
-                    self.first_message_display = f"You gain 100 exp and win {self.bet * 3} gold "
+                    self.first_message_display = f"You gain 100 exp and win {self.bet * 2} gold "
                     self.second_message_display = "You win player press T when ready"
-                    state.player.money += self.bet * 3
-                    self.cheater_bob_money -= self.bet * 3
+                    state.player.money += self.bet * 2
+                    self.cheater_bob_money -= self.bet * 2
                     print("nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
@@ -880,10 +906,10 @@ class BlackJackThomasScreen(Screen):
                     state.player.stamina_points -= 25
 
                     self.second_message_display = "You lose player press T when ready"
-                    self.first_message_display = f"You gain 25 exp and lose {self.bet} gold "
+                    self.first_message_display = f"You gain 25 exp and lose {self.bet * 2} gold "
 
-                    state.player.money -= self.bet * 3
-                    self.cheater_bob_money += self.bet * 3
+                    state.player.money -= self.bet * 2
+                    self.cheater_bob_money += self.bet * 2
 
                     print("nd;3434343434343;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 

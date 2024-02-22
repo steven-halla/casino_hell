@@ -599,14 +599,14 @@ class DemonBossScreen(Screen):
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
-            if self.player_score > 21:
-                state.player.money -= self.bet
-                self.cheater_bob_money += self.bet
-
+            if state.player.level == 1:
                 state.player.exp += 5
-
-                self.first_message_display = f"You busted! You Gain 5 exp and lose {self.bet} gold "
-                    # self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
+                self.first_message_display = f"gold."
+                self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
+            elif state.player.level == 2:
+                state.player.exp += 2
+                self.first_message_display = f"gold. "
+                self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
 
 
             elif self.player_score > 21 and self.reveal_hand < 11:

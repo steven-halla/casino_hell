@@ -253,8 +253,10 @@ class BarKeep(Npc):
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 0:
 
-                state.DISPLAY.blit(self.font.render(f"Kinda smells like pee. Restores 50 Stamina Can go above max", True,
+                state.DISPLAY.blit(self.font.render(f"Smells heavily acrid. Restores 50 Stamina Can go above", True,
                                                     (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render(f"max.", True,
+                                                    (255, 255, 255)), (70, 500))
             if self.selected_item_index == 1 and state.player.money < 300:
                 state.DISPLAY.blit(self.font.render(f"Money cannot fall below 100 post purchase", True,
                                                     (255, 255, 255)), (70, 460))
@@ -262,8 +264,10 @@ class BarKeep(Npc):
                 state.DISPLAY.blit(self.font.render(f"Your food is at 0, rest at inn to restore.", True,
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 1:
-                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restore 30 Magic. Can go above max. ", True,
+                state.DISPLAY.blit(self.font.render(f"There is more mold than sandwich. Restores 30 magic.", True,
                                                     (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render(f"Can go above max. ", True,
+                                                    (255, 255, 255)), (70, 500))
             if self.selected_item_index == 2 and state.player.money < 600:
                 state.DISPLAY.blit(self.font.render(f"Money cannot fall below 10 post purchase", True,
                                                     (255, 255, 255)), (70, 460))
