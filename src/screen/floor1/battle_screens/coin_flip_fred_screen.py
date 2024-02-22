@@ -398,6 +398,7 @@ class CoinFlipFredScreen(Screen):
                     self.result = "heads"
                 elif coin_fate < 6:
                     self.result = "tails"
+
             elif self.food_luck == False:
                 if coin_fate >= 8:
                     self.result = "heads"

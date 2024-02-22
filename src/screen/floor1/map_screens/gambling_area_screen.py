@@ -108,6 +108,14 @@ class GamblingAreaScreen(Screen):
 
 
         self.clock.tick(60)
+        if state.player.stamina_points < 1:
+            state.player.money -= 100
+            state.currentScreen = state.restScreen
+            state.restScreen.start(state)
+            state.player.stamina_points = 1
+            if state.player.money < 1:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
 
         controller = state.controller
         player = state.player

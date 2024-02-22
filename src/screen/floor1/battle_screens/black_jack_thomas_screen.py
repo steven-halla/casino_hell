@@ -299,6 +299,8 @@ class BlackJackThomasScreen(Screen):
             self.bet = state.player.money
 
     def update(self, state: "GameState"):
+
+
         if state.musicOn == True:
             if self.music_on == True:
 

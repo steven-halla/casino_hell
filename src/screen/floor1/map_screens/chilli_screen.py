@@ -128,6 +128,15 @@ class ChilliScreen(Screen):
     def update(self, state: "GameState"):
         self.clock.tick(60)
 
+        if state.player.stamina_points < 1:
+            state.player.money -= 100
+            state.currentScreen = state.restScreen
+            state.restScreen.start(state)
+            state.player.stamina_points = 1
+            if state.player.money < 1:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+
         state.demons.clear()
 
         # print("The demons are: " + str(state.demons))

@@ -581,5 +581,6 @@ we can have : food luck:
 if food luck == true:
 
 
-
+i beat the boss and had - stamina, this is a bug
+need to test each screen so that on victory condition, low stamina still results in player
 

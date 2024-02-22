@@ -302,6 +302,8 @@ class OpossumInACanNellyScreen(Screen):
             self.player_score += 200
 
         if selected_box_content == "lose":
+            if state.player.exp < 100:
+                state.player.exp = 100
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False
 
@@ -1156,6 +1158,8 @@ class OpossumInACanNellyScreen(Screen):
                                 [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         if self.game_state == "opossum_defeated_screen":
+            if state.player.exp < 100:
+                state.player.exp = 100
             self.opossumInACanMessages["opossum_defeated_message"].draw(state)
 
         if self.game_state == "real_opossum_defeated_screen":
