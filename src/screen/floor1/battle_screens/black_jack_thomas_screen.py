@@ -351,7 +351,7 @@ class BlackJackThomasScreen(Screen):
 
 
 
-            if self.welcome_screen_text_box.message_index == 2:
+            if self.welcome_screen_text_box.is_finished() and self.welcome_screen_text_box.current_message_finished():
 
                 self.npc_speaking = False
                 self.hero_speaking = True

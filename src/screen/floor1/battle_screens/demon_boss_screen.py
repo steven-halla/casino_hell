@@ -607,17 +607,7 @@ class DemonBossScreen(Screen):
                 self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
 
 
-            elif self.player_score > 21 and self.reveal_hand < 11:
-                print("you almost busted")
-                print(self.player_hand)
-                self.player_hand.pop()
-                self.deck.compute_hand_value(self.player_hand)
-                self.player_score = self.deck.compute_hand_value(
-                    self.player_hand)
-                print("here is your new hand")
-                print(self.player_hand)
-                self.reveal_hand -= 2
-                self.bust_protection = True
+
 
             if self.bust_protection == True:
                 self.game_state = "results_screen"

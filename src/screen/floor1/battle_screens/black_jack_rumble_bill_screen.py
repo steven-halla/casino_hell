@@ -345,7 +345,7 @@ class BlackJackRumbleBillScreen(Screen):
             # self.player_hand.clear() # todo shouldn't need to do because we override the self.player_hand/enemy_hand when we call: self.xyz_hand = self.deck.draw_hand()
             # self.enemy_hand.clear()
 
-            if self.welcome_screen_text_box.message_index == 2:
+            if self.welcome_screen_text_box.is_finished() and self.welcome_screen_text_box.current_message_finished():
                 self.npc_speaking = False
                 self.hero_speaking = True
                 # self.welcome_screen_text_box_hero.update(state)
@@ -613,17 +613,7 @@ class BlackJackRumbleBillScreen(Screen):
                 self.second_message_display = "player bust you lose"
                 self.game_state = "results_screen"
 
-            elif self.player_score > 21 and self.reveal_hand < 11:
-                print("you almost busted")
-                print(self.player_hand)
-                self.player_hand.pop()
-                self.deck.compute_hand_value(self.player_hand)
-                self.player_score = self.deck.compute_hand_value(
-                    self.player_hand)
-                print("here is your new hand")
-                print(self.player_hand)
-                self.reveal_hand -= 2
-                self.bust_protection = True
+
 
             if self.bust_protection == True:
                 self.game_state = "results_screen"
