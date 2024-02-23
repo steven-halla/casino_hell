@@ -594,3 +594,5 @@ i should probably blank messages before displaying a new one.
 demon boss is super duper glitched need to fix it with newer screen 
 and then update it with demon boss changes that make it unique. 
 
+need to set barkeep state to true for cut scene
+

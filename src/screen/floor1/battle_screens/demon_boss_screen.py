@@ -29,7 +29,7 @@ class DemonBossScreen(Screen):
         self.second_message_display = ""
         self.third_message_display = ""
         self.game_state = "intro_demon_message"
-        self.bet = 10
+        self.bet = 50
         self.cheater_bob_money = 660
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
@@ -374,7 +374,7 @@ class DemonBossScreen(Screen):
 
 
 
-            if self.welcome_screen_text_box.message_index == 4:
+            if self.welcome_screen_text_box.is_finished() and self.welcome_screen_text_box.current_message_finished():
 
                 self.npc_speaking = False
                 self.hero_speaking = True
