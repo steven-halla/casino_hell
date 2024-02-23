@@ -19,10 +19,10 @@ class QuestGiverJanet(Npc):
             ["Janet: Good job on your bravery now take this reward, the new super special techniq that i learned from the dance floor:: Shake"],
             (50, 450, 50, 45), 30, 500)
         self.queststart2 = NpcTextBox(
-            ["Janet: Come talk to me when you have the spell 'shield' "],
+            ["Janet: Go level up till you have the 'shield' spell. It'll protect you in coinflip."],
             (50, 450, 50, 45), 30, 500)
         self.questfinish2 = NpcTextBox(
-            ["Janet: I'll give you something else, coin flip glasses.!"],
+            ["Janet: Such a handy spell, here is something to also help:"],
             (50, 450, 50, 45), 30, 500)
         self.queststart3 = NpcTextBox(
             ["Janet: Can you find my hedge hog friend Nurgle? We just seperated right before you talked to me. ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly, just make sure your perception is high or you wont find him"],
@@ -68,7 +68,7 @@ class QuestGiverJanet(Npc):
             self.textboxstate = "textbox2"
 
 
-        elif state.restScreen.npc_janet_textbox3 and state.player.spirit < 1:
+        elif state.restScreen.npc_janet_textbox3 and "shield" not in state.player.magicinventory:
             self.textboxstate = "textbox3"
 
         elif state.restScreen.npc_janet_textbox4 == True:
@@ -93,7 +93,7 @@ class QuestGiverJanet(Npc):
                 #     print("fjasd;fjkdls")
 
 
-            if state.player.spirit == 1 and "coin flip glasses" not in state.player.items and "shake" in state.player.magicinventory:
+            if "shield" in state.player.magicinventory and "coin flip glasses" not in state.player.items and "shake" in state.player.magicinventory:
                 # print("time for the 2nd quest")
                 self.textboxstate = "textbox4"
                 self.find_hog = True
