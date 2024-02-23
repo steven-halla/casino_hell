@@ -611,7 +611,6 @@ class DemonBossScreen(Screen):
                     state.player.exp += 2
                     self.first_message_display = f"You lose -10 HP."
                     self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-                    self.game_state = "results_screen"
 
 
 

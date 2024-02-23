@@ -50,7 +50,7 @@ class OpossumInACanNellyScreen(Screen):
                 500  # Delay
             ),
             "pick_message": TextBox(
-                ["Keep picking boxes I believe in you......Dont forget that B opens the menu ", ""],
+                ["Press Left/Right keys to select, T to select, B to go back. Tally when your ready."],
                 (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -489,69 +489,70 @@ class OpossumInACanNellyScreen(Screen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "pick_screen":
-            if state.controller.isBPressed:
-                self.game_state = "menu_screen"
+            self.opossumInACanMessages["pick_message"].update(state)
 
+            if self.opossumInACanMessages["pick_message"].current_message_finished():
 
-            key_press_threshold = 80  # Example threshold, adjust as needed
+                if state.controller.isBPressed:
+                    self.game_state = "menu_screen"
 
-            # Debugging: Print the time since the last right key press
-            time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
-            time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
-            # print(f"Time since right key pressed: {time_since_right_pressed}")
+                key_press_threshold = 80  # Example threshold, adjust as needed
 
-            if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
-                # Initially move to the next box
-                self.green_box_index = (self.green_box_index + 1) % 8
-                current_can_content = getattr(self, f'can{self.green_box_index + 1}')
+                time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
+                time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
+                # print(f"Time since right key pressed: {time_since_right_pressed}")
 
-                # Continue moving right if the can is empty
-                while current_can_content == "":
+                # Check if enough time has passed since the last right key press
+                if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+                    # Initially move to the next box
                     self.green_box_index = (self.green_box_index + 1) % 8
                     current_can_content = getattr(self, f'can{self.green_box_index + 1}')
 
-                self.menu_movement_sound.play()  # Play the sound effect once for the valid move
-                print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
-                state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+                    # Continue moving right if the can is empty
+                    while current_can_content == "":
+                        self.green_box_index = (self.green_box_index + 1) % 8
+                        current_can_content = getattr(self, f'can{self.green_box_index + 1}')
 
+                    self.menu_movement_sound.play()  # Play the sound effect once for the valid move
+                    print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
+                    state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
 
-            # Check if enough time has passed since the last right key press
-            # if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
-            #     # Move to the next box
-            #     self.green_box_index = (self.green_box_index + 1) % 8
-            #     self.menu_movement_sound.play()  # Play the sound effect once
-            #
-            #     # Print the current green box index and its content
-            #     current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-            #     print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
-            #
-            #     # Reset the key pressed time
-            #     state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
-            elif state.controller.isLeftPressed and time_since_left_pressed >= key_press_threshold:
-                # Initially move to the previous box
-                self.green_box_index = (self.green_box_index - 1 + 8) % 8  # Adding 8 before modulo for negative index handling
-                current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-
-                # Continue moving left if the can is empty
-                while current_can_content == "":
-                    self.green_box_index = (self.green_box_index - 1 + 8) % 8  # Ensure the index wraps correctly
+                    # Check if enough time has passed since the last right key press
+                    # if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+                    #     # Move to the next box
+                    #     self.green_box_index = (self.green_box_index + 1) % 8
+                    #     self.menu_movement_sound.play()  # Play the sound effect once
+                    #
+                    #     # Print the current green box index and its content
+                    #     current_can_content = getattr(self, f'can{self.green_box_index + 1}')
+                    #     print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
+                    #
+                    #     # Reset the key pressed time
+                    #     state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+                elif state.controller.isLeftPressed and time_since_left_pressed >= key_press_threshold:
+                    # Initially move to the previous box
+                    self.green_box_index = (self.green_box_index - 1 + 8) % 8  # Adding 8 before modulo for negative index handling
                     current_can_content = getattr(self, f'can{self.green_box_index + 1}')
 
-                self.menu_movement_sound.play()  # Play the sound effect once for the valid move
-                print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
-                state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
+                    # Continue moving left if the can is empty
+                    while current_can_content == "":
+                        self.green_box_index = (self.green_box_index - 1 + 8) % 8  # Ensure the index wraps correctly
+                        current_can_content = getattr(self, f'can{self.green_box_index + 1}')
 
-            # Check for 'T' key press
-            if state.controller.isTPressed:
-                print(self.game_state)
+                    self.menu_movement_sound.play()  # Play the sound effect once for the valid move
+                    print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
+                    state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
 
-                # Call the function to reveal the selected box content
-                state.controller.isPressed = False
+                # Check for 'T' key press
+                if state.controller.isTPressed:
+                    # print(self.game_state)
 
-                self.reveal_selected_box_content(state)
+                    # Call the function to reveal the selected box content
+                    state.controller.isPressed = False
 
-            self.opossumInACanMessages["pick_message"].update(state)
+                    self.reveal_selected_box_content(state)
 
+                self.opossumInACanMessages["pick_message"].update(state)
 
 
         if self.game_state == "immune_lose_screen":

@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 500
+        self.money = 1000
         # self.image = pygame.image.load(
         #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png")
         # self.character_sprite_down_image = pygame.image.load(

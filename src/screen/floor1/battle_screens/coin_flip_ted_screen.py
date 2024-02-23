@@ -561,7 +561,7 @@ class CoinFlipTedScreen(Screen):
 
 
         if self.game_state == "enemy_defeated_screen":
-            if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
+            if self.coin_flip_messages["enemy_defeated_message"].is_finished() and self.coin_flip_messages["enemy_defeated_message"].current_message_finished():
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
                 state.currentScreen = state.startScreen
