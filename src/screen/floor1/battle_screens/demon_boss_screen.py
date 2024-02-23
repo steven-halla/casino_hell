@@ -378,9 +378,7 @@ class DemonBossScreen(Screen):
 
                 self.npc_speaking = False
                 self.hero_speaking = True
-                # self.welcome_screen_text_box_hero.update(state)
 
-                # if self.welcome_screen_text_box_hero.is_finished():
 
                 if controller.isUpPressed:
                     self.menu_movement_sound.play()  # Play the sound effect once
