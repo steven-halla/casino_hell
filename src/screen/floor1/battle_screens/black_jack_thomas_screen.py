@@ -559,6 +559,7 @@ class BlackJackThomasScreen(Screen):
                 self.thrid_message_display = "Its a draw"
                 print("Its a draw 548")
                 self.game_state = "results_screen"
+
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
 
                 print("its time for you to have double winnings")
@@ -592,31 +593,23 @@ class BlackJackThomasScreen(Screen):
 
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
-            if self.player_score > 21:
-                state.player.money -= self.bet
-                self.cheater_bob_money += self.bet
 
-                state.player.exp += 5
-
-                self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
-                self.second_message_display = f"You busted "
-                    # self.first_message_display = f"You gain 5 exp and lose {self.bet} gold "
 
             if self.player_score > 21:
                 state.player.money -= self.bet
                 self.cheater_bob_money += self.bet
+                state.player.stamina_points -= 5
                 print("Going to bust a giant busttttttttter")
 
 
                 if state.player.level == 1:
                     state.player.exp += 5
-                    self.first_message_display = f"gold."
+                    self.first_message_display = f"You lose -5 HP."
                     self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
                 elif state.player.level == 2:
                     state.player.exp += 2
-                    self.first_message_display = f"gold. "
+                    self.first_message_display = f"You lose -5 HP."
                     self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-
 
             if self.bust_protection == True:
                 self.game_state = "results_screen"
