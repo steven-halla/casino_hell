@@ -598,3 +598,14 @@ need to set barkeep state to true for cut scene
 
 when we rescue nurgle it looks like we can talk and walk 
 
+need to add ARROWS or some other indicator when message is done
+
+note its ugly as fuk that messages end with a blank message we should
+do a global change for this when we update all messages
+also BE SURE TO INCLUDE MESSAGE ARROWS OR MAYBE MAKE A 
+BLINKING ARROW FUNCTION
+
+Priority 2:
+going to the screen for lack of stamina does stuff for music be sure to test this across all games
+Oh no you got bit! these messages are not tranistion good
+need to blit message if boss key already bought

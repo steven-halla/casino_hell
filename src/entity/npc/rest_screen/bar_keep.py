@@ -28,7 +28,7 @@ class BarKeep(Npc):
         # New: Initialize an array of items for the shopkeeper
         self.shop_items = ["beer", "moldy sandwich", "boss key"]
 
-        self.shop_costs = ["100", "200", "1500"]
+        self.shop_costs = ["100", "200", "1800"]
 
         self.barcutscene1 = False
         self.barcutscene2 = False
@@ -117,22 +117,28 @@ class BarKeep(Npc):
                         print(f"selected_money_index: {self.selected_money_index}")
 
             if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
+                state.controller.isTPressed = False
                 self.input_time = pygame.time.get_ticks()
                 selected_item = self.shop_items[self.selected_item_index]
 
-                if self.selected_money_index == 2 and state.player.money > 1510:
-                    self.buy_sound.play()  # Play the sound effect once
 
-                    if "boss key" not in state.player.npc_items:
-                        state.player.money -= 1500
-                        state.player.npc_items.append("boss key")
-                    print("Its boss time")
 
-                elif state.player.money < cost or state.player.food == 0 and self.textbox.is_finished():
-                    self.cant_buy_sound.play()  # Play the sound effect once
+                if self.selected_money_index == 2:
+                    if state.player.money < 1810 or state.player.stamina_points != state.player.max_stamina_points and self.textbox.is_finished():
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif state.player.money >= 1810 and state.player.stamina_points == state.player.max_stamina_points:
+
+                        self.buy_sound.play()  # Play the sound effect once
+
+                        if "boss key" not in state.player.npc_items:
+                            state.player.money -= 1800
+                            state.player.npc_items.append("boss key")
+                        print("Its boss time")
+
                     # pass
 
-                elif state.player.money >= cost and state.player.food > 0 and self.textbox.is_finished():
+                if state.player.money >= cost and state.player.food > 0 and self.textbox.is_finished():
                     if self.selected_money_index == 0 and state.player.money > 200:
                         self.buy_sound.play()  # Play the sound effect once
 
@@ -272,11 +278,11 @@ class BarKeep(Npc):
                                                     (255, 255, 255)), (70, 460))
                 state.DISPLAY.blit(self.font.render(f"Can go above max. ", True,
                                                     (255, 255, 255)), (70, 500))
-            if self.selected_item_index == 2 and state.player.money < 600:
-                state.DISPLAY.blit(self.font.render(f"Money cannot fall below 10 post purchase", True,
+            if self.selected_item_index == 2 and state.player.money < 1810:
+                state.DISPLAY.blit(self.font.render(f"Need FULL HP to buy. Money Cannot Fall below 10. ", True,
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 2:
-                state.DISPLAY.blit(self.font.render(f"Key for boss area. ", True,
+                state.DISPLAY.blit(self.font.render(f"NEED FULL HP to buy. Key for boss area.", True,
                                                     (255, 255, 255)), (70, 460))
 
             # print("is talking")

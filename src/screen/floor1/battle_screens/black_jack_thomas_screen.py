@@ -29,7 +29,7 @@ class BlackJackThomasScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 400
+        self.cheater_bob_money = 500
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
         self.player_score = 0
