@@ -143,9 +143,13 @@ class BarKeep(Npc):
                         state.player.food -= 1
 
                         if self.barcutscene1 == False:
+                            state.restScreen.bar_keeper_talking = False
+
                             state.currentScreen = state.barCutScene1
                             state.barCutScene1.start(state)
                         elif self.barcutscene2 == False:
+                            state.restScreen.bar_keeper_talking = False
+
                             state.currentScreen = state.barCutScene2
                             state.barCutScene2.start(state)
                         elif self.barcutscene1 == True and self.barcutscene2 == True:

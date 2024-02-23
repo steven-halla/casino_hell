@@ -511,6 +511,7 @@ class DemonBossScreen(Screen):
             #     print("New enemy score is: " + str(self.enemy_score))
 
             if state.player.luck > 0:
+                # the below has a 15% chance per new hand to trigger
                 if self.player_score > 12 and self.player_score < 17:
                     lucky_roll = random.randint(1, 100)  # Get a random number between 1 and 100
                     if lucky_roll >= 50:

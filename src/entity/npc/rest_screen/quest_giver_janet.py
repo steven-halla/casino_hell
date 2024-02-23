@@ -19,10 +19,10 @@ class QuestGiverJanet(Npc):
             ["Janet: Good job on your bravery now take this reward, the new super special techniq that i learned from the dance floor:: Shake"],
             (50, 450, 50, 45), 30, 500)
         self.queststart2 = NpcTextBox(
-            ["Janet: If you want more from me you need to be more suave, get a Spirit of 1 and come back and talk to me."],
+            ["Janet: Come talk to me when you have the spell 'shield' "],
             (50, 450, 50, 45), 30, 500)
         self.questfinish2 = NpcTextBox(
-            ["Janet: Your chariasma is magnetic I'll talk to you now and reward you!"],
+            ["Janet: I'll give you something else, coin flip glasses.!"],
             (50, 450, 50, 45), 30, 500)
         self.queststart3 = NpcTextBox(
             ["Janet: Can you find my hedge hog friend Nurgle? We just seperated right before you talked to me. ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly, just make sure your perception is high or you wont find him"],
@@ -226,7 +226,7 @@ class QuestGiverJanet(Npc):
                     self.input_time = current_time  # Update last input time
                     # self.talkfirstfivehundred = True
                     self.quest2counter = True
-                    if state.player.spirit > 0:
+                    if "shield" in state.player.magicinventory:
                         state.restScreen.npc_janet_textbox4 = True
                         state.restScreen.npc_janet_textbox3 = False
                     elif state.player.spirit < 1:

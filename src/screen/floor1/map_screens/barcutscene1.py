@@ -69,6 +69,8 @@ class BarCutScene1Screen(Screen):
 
     def start(self, state: "GameState"):
         state.restScreen.barscene1 = True
+        state.restScreen.bar_keeper_talking = False
+
 
         super().start(state)
         self.timer_start = time.time()  # Initialize the timer at the start of the screen
@@ -118,6 +120,8 @@ class BarCutScene1Screen(Screen):
             print("nununu")
             self.display_message1 = False  # Set this flag to True to display the message immediately
             state.player.canMove = True
+            state.restScreen.bar_keeper_talking = False
+
             state.currentScreen = state.restScreen
             state.restScreen.start(state)
 
