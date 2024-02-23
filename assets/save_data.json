@@ -1,21 +1,19 @@
 {
     "level": 3,
-    "exp": 449,
+    "exp": 433,
     "stamina_points": 140,
     "max_stamina_points": 140,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "focus_points": 100,
+    "max_focus_points": 100,
     "companions": [
         "sir leopold"
     ],
     "items": [
-        "opossum repellent",
         "coin flip glasses",
         "sir leopold's paw"
     ],
     "npcitems": [
-        "inn badge",
-        "boss key"
+        "inn badge"
     ],
     "magicinventory": [
         "reveal",
@@ -27,21 +25,21 @@
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 830,
+    "money": 2080,
     "rabies": false,
     "immunity": true,
     "level3reward": true,
     "food": 1,
-    "days": 5,
+    "days": 4,
     "cutscene1": false,
     "cutscene2": false,
     "quest1complete": true,
     "coinfliptedmoney": 0,
-    "coinflipfredmoney": 610,
-    "opossumnellymoney": 500,
-    "opossumsallymoney": 150,
+    "coinflipfredmoney": 970,
+    "opossumnellymoney": 200,
+    "opossumsallymoney": 1150,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "shopkeeperpotion": true,
-    "shopkeepersavecoin": true
+    "shopkeepersavecoin": false
 }

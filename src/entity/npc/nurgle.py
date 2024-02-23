@@ -78,6 +78,8 @@ class Nurgle(Npc):
             if distance < 40:
                 # print("start state: talking")
                 print("10")
+                state.player.canMove = False
+
 
                 self.state = "talking"
 
@@ -96,6 +98,8 @@ class Nurgle(Npc):
             # self.textbox.reset()
 
             self.state = "waiting"
+            state.player.canMove = True
+
             if "Nurgle the hedge hog" not in state.player.items:
                 state.player.items.append("Nurgle the hedge hog")
                 print("Added: " + str(state.player.items))

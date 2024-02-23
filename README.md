@@ -596,3 +596,5 @@ and then update it with demon boss changes that make it unique.
 
 need to set barkeep state to true for cut scene
 
+when we rescue nurgle it looks like we can talk and walk 
+

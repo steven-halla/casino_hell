@@ -526,7 +526,9 @@ class DemonBossScreen(Screen):
             # Assuming other parts of your code are already defined
             if "sir leopold's paw" in state.player.items:
                 roll = random.randint(1, 100)  # Get a random number between 1 and 100
-                if roll >= 30:  # Check if the roll is less than or equal to 30
+                if roll >= 50:  # Check if the roll is less than or equal to 30
+                    self.enemy_black_jack_win = False
+
                     for card in self.enemy_hand:
                         if card in aces_to_remove:
                             self.enemy_hand.remove(card)
@@ -832,7 +834,7 @@ class DemonBossScreen(Screen):
 
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.second_message_display = "Enemy gets blackjack you lose "
-                self.first_message_display = f"You gain 30 exp and lose {self.bet * 3} gold "
+                self.first_message_display = f"You gain 30 exp and lose {self.bet * 2} gold "
 
 
 

@@ -1,3 +1,5 @@
+import random  # Make sure to import the random module at the beginning of your script
+
 import pygame
 
 from constants import DISPLAY
@@ -519,17 +521,18 @@ class BlackJackRumbleBillScreen(Screen):
                         print("After redrawing to avoid 21, new enemy score is: " + str(self.enemy_score))
 
             if "sir leopold's paw" in state.player.items:
-                self.enemy_black_jack_win = False
+                roll = random.randint(1, 100)  # Get a random number between 1 and 100
+                if roll >= 30:  # Check if the roll is less than or equal to 30
+                    self.enemy_black_jack_win = False
 
-                for card in self.enemy_hand:
-                    if card in aces_to_remove:
-                        self.enemy_hand.remove(card)
-                        print(f"jdsajf;lsjlafjsafjsa;flj Hedgehog swiped an Ace! Removed card: {card}")
-                        self.sir_leopold_ace_attack.play()  # Play the sound effect once
-
-                        self.enemy_hand += self.deck.enemy_draw_hand(1)
-
-                        break  # Break after removing the card to avoid altering the list during iteration
+                    for card in self.enemy_hand:
+                        if card in aces_to_remove:
+                            self.enemy_hand.remove(card)
+                            print(f"Hedgehog swiped an Ace! Removed card: {card}")
+                            print("Your roll is: " + str(roll))
+                            self.sir_leopold_ace_attack.play()  # Play the sound effect once
+                            self.enemy_hand += self.deck.enemy_draw_hand(1)
+                            break
 
             print("Enemy hand is" + str(self.enemy_hand))
 
@@ -835,7 +838,7 @@ class BlackJackRumbleBillScreen(Screen):
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
-                self.first_message_display = f"You gain 100 exp and {self.bet * 3} gold "
+                self.first_message_display = f"You gain 100 exp and {self.bet * 2} gold "
                 print("<<<<????????????>>>>" + str(state.player.exp))
 
 
