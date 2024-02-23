@@ -503,10 +503,21 @@ class BlackJackRumbleBillScreen(Screen):
                     self.enemy_hand = []
                     # Draw a new hand
                     self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    print("New enemy hand is: " + str(self.enemy_hand))
                     # Compute the score of the new hand
                     self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                    print("New enemy hand is: " + str(self.enemy_hand))
                     print("New enemy score is: " + str(self.enemy_score))
+
+                    # Check if the new score is exactly 21, and if so, redraw
+                    if self.enemy_score == 21:
+                        print("Score is 21, redrawing to avoid giving the enemy a 21.")
+                        # Redraw logic here (similar to above, you might want to loop back or redraw immediately)
+                        self.enemy_hand = []
+                        self.enemy_hand = self.deck.enemy_draw_hand(2)
+                        self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                        print("After redrawing to avoid 21, new enemy hand is: " + str(self.enemy_hand))
+                        print("After redrawing to avoid 21, new enemy score is: " + str(self.enemy_score))
+
             if "sir leopold's paw" in state.player.items:
                 self.enemy_black_jack_win = False
 

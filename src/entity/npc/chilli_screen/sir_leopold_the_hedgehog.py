@@ -223,7 +223,6 @@ class SirLeopoldTheHedgeHog(Npc):
             if state.controller.isTPressed and (current_time - self.input_time > 500):
                 if self.reward_all_hogs.is_finished():
                     state.player.money += 500
-                    state.player.items.append("sir leopold's paw")
                     self.textboxstate = "textbox5"
                     self.state_start_time = current_time
                     self.input_time = current_time
@@ -248,6 +247,8 @@ class SirLeopoldTheHedgeHog(Npc):
                     state.player.canMove = True
 
                     if state.player.perception == 0:
+                        state.player.items.append("sir leopold's paw")
+
                         state.player.companions.append("sir leopold")
                         state.player.perception = 1
 

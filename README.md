@@ -585,3 +585,12 @@ i beat the boss and had - stamina, this is a bug
 need to test each screen so that on victory condition, low stamina still results in player
 lesson learned: 
 
+critical hit sound for black jack 
+
+dont let player skip through battle messages in screens
+
+i should probably blank messages before displaying a new one. 
+
+demon boss is super duper glitched need to fix it with newer screen 
+and then update it with demon boss changes that make it unique. 
+

@@ -251,11 +251,11 @@ class DemonBossScreen(Screen):
         # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
-        self.defeated_textbox = NpcTextBox(
+        self.defeated_textbox = TextBox(
             [
-                "Guy:Looks like you defeated me.....back to eating chili for days and day and days....",
+                "ChinRog: Impossible, your just a stupid dum dum human ",
 
-                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high",
+                "You killed my reputation, I'll be banned from all chili eating contest NOOOOOOooooooo",
             ""],
             (50, 450, 50, 45), 30, 500)
 

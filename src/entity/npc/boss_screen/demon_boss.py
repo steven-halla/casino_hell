@@ -30,13 +30,11 @@ class DemonBoss(Npc):
         self.t_pressed = False
         self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Demons Crest - Firebrand Ultimate.png").convert_alpha()
 
-        self.isWorthy = False
+        self.isWorthy = True
 
 
     def update(self, state: "GameState"):
 
-        if state.coinFlipSandyScreen.coinFlipSandyDefeated == True and state.opossumInACanIchiScreen.ichiOpossumIsDefeated == True:
-            self.isWorthy = True
 
         if self.state == "waiting":
             self.update_waiting(state)
@@ -89,8 +87,8 @@ class DemonBoss(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                state.currentScreen = state.blackJackJaredScreen
-                state.blackJackJaredScreen.start(state)
+                state.currentScreen = state.blackJackDemonBossScreen
+                state.blackJackDemonBossScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -106,12 +104,7 @@ class DemonBoss(Npc):
             state.player.canMove = True
 
     def draw(self, state):
-        # rect = (
-        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        #     self.collision.width, self.collision.height)
-        # pygame.draw.rect(state.DISPLAY, self.color, rect)
-
-
+    
         sprite_rect = pygame.Rect(1, 1, 33, 88)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
         scaled_sprite = pygame.transform.scale(sprite, (77, 77))

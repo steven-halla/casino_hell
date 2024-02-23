@@ -63,7 +63,7 @@ class GameState:
         self.npcs = []
         self.demons = []
         self.treasurechests = []
-        self.musicOn = False
+        self.musicOn = True
 
         self.entryPoint = None
 

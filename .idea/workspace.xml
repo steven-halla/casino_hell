@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now we have a white border for our text bosx" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="using text box instead of npc text box for last message">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/boss_screen/demon_boss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/boss_screen/demon_boss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/demon_boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/demon_boss_screen.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -355,7 +366,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="223325000" />
+      <workItem from="1707589099832" duration="227290000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -700,7 +711,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="596" />
+    <option name="localTasksCounter" value="597" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -729,7 +740,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated teleporter gettingr rid of draw methods" />
     <MESSAGE value="added status screen to gambling area screen" />
     <MESSAGE value="lot of minor updates also fixed bug where money was not getting added when starting opossum in a can." />
     <MESSAGE value="fixed moeny bug for opossum g irls" />
@@ -754,7 +764,8 @@
     <MESSAGE value="updated exp for both black jack screens based on bets" />
     <MESSAGE value="many updates to black jack:&#10;first we updated exp, money, as well as now allow enemy to get black jacks" />
     <MESSAGE value="now we have a white border for our text bosx" />
-    <option name="LAST_COMMIT_MESSAGE" value="now we have a white border for our text bosx" />
+    <MESSAGE value="using text box instead of npc text box for last message" />
+    <option name="LAST_COMMIT_MESSAGE" value="using text box instead of npc text box for last message" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -781,7 +792,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py</url>
-          <line>574</line>
+          <line>585</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
@@ -790,7 +801,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1708634052731" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1708659351859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
