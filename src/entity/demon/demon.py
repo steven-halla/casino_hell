@@ -29,6 +29,9 @@ class Demon(Entity):
         self.right_los_horizontal_range = 100
         self.los_vertical_range = 30
 
+        self.facing_right = False
+        self.facing_left = False
+
 
     def move_randomly(self, state):
         current_time = pygame.time.get_ticks()
@@ -156,8 +159,14 @@ class Demon(Entity):
         # Define the LOS horizontal and vertical range
         # los_horizontal_range = 220
         # los_vertical_range = 32
+        if self.color == GREEN:
+            self.facing_right = True
+            self.facing_left = False
 
         if self.color == PURPLE:  # Demon facing left
+            self.facing_left = True
+            self.facing_right = False
+
             los_left_boundary = self.collision.x - self.los_horizontal_range
             los_upper_boundary = self.collision.y - self.los_vertical_range
             los_lower_boundary = self.collision.y +  self.los_vertical_range

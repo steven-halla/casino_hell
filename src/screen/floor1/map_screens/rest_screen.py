@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.demon.demon1 import Demon1
 from entity.npc.hedge_maze_screen.evilcat import EvilCat
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
@@ -193,7 +194,7 @@ class RestScreen(Screen):
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
 
         state.demons = [
-            # Demon1(16 * 55, 16 * 3),
+            # Demon1(16 * 5, 16 * 5),
             # Demon2(16 * 55, 16 * 13),
             # Demon3(16 * 55, 16 * 23),
             # Demon4(16 * 55, 16 * 33),

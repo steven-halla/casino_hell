@@ -15,9 +15,12 @@ class ChillyBilly(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "People keep complaining that the hedge hogs are pooping in teh chilli",
-                    "It doesn't make any sense, I mean you humans eat canned food which has an acceptable amount of feces",
-                    "We demons have studied you humans very closely."
+                    "Chilly Billy: People keep complaining that the hedge hogs are pooping in the chilli",
+                    "It doesn't make any sense, I mean you humans eat canned foods ,  which has poop,and you know it has poop, and you eat it.",
+                    "Maybe it's because the poop is fresh? Is that the real issue they've been complaining? Or is it the type of poop?",
+                    "Hero: Humans don't like to eat poop, most people dont' even know that food is contaminated.",
+                    "Chilly Billy: So why is it that when you tell them about it, they shrug their shoulders and keep eating it? ",
+                    "Hero: ..."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
