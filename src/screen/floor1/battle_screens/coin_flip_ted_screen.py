@@ -87,50 +87,50 @@ class CoinFlipTedScreen(Screen):
         self.coin_flip_messages = {
             "welcome_message": TextBox(
                 ["Press T to select options and go through T messages", "Welcome to Coin flip I'll make you flip!", ""],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 50, 45),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "bet_message": TextBox(
                 ["Min Bet is 10 and Max Bet is 100. Press Up/Down keys to change your bet. "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "heads_tails_message": TextBox(
                 ["Choose heads or tails. "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "magic_message": TextBox(
                 ["Choose your spell . "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "flip_message": TextBox(
                 ["Flipping the coin now hold your breath. "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "results_message": TextBox(["  " ], (50, 450, 700, 130), 36, 500),
             "shield_message1": TextBox(
                 ["A bird came down and stole the coin, who knows who won now. "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "shield_message2": TextBox(
                 ["someone just took the coin "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "shield_message3": TextBox(
                 ["now the coin is gone :(. "],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -138,7 +138,7 @@ class CoinFlipTedScreen(Screen):
                 [
                   " Would you like to play again or quit?"
                  ],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -146,7 +146,7 @@ class CoinFlipTedScreen(Screen):
                 ["Looks like your out of money, sorry time for you to go. "
 
                  ],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -154,7 +154,7 @@ class CoinFlipTedScreen(Screen):
                 ["Hero: Oh crap... I screwed up, I'm going to pass out...(-100 golds) "
 
                  ],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -165,7 +165,7 @@ class CoinFlipTedScreen(Screen):
                  "Hero: Sadly for you I'm ruthless, I'm taking you out!", ""
 
                  ],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -175,7 +175,7 @@ class CoinFlipTedScreen(Screen):
                  "Should I leave, or stay with it and trust in my luck?", ""
 
                  ],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -185,7 +185,7 @@ class CoinFlipTedScreen(Screen):
                  "Enemy: I bet Cindy will be happy to  hear that I lost my standing.....", ""
 
                  ],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
@@ -720,7 +720,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["bet_message"].update(state)
             self.coin_flip_messages["bet_message"].draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
-                                                (255, 255, 255)), (65, 550))
+                                                (255, 255, 255)), (45, 560))
 
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
                                (312, 555))
@@ -804,10 +804,10 @@ class CoinFlipTedScreen(Screen):
             image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
             state.DISPLAY.blit(image_to_display, image_rect)
             state.DISPLAY.blit(self.font.render(f"The coin landed on:{self.result}", True,
-                                                (255, 255, 255)), (70, 460))
+                                                (255, 255, 255)), (45, 460))
 
             state.DISPLAY.blit(self.font.render(f"You gained: {self.exp_gain} experience points", True,
-                                                (255, 255, 255)), (70, 510))
+                                                (255, 255, 255)), (45, 510))
 
             # Call the update method for the results_message TextBox
             self.coin_flip_messages["results_message"].update(state)
