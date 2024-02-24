@@ -25,13 +25,14 @@ class Demon4(Demon):
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.move_player_down = False
-
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/PlayStation - Breath of Fire 3 - Gonger.png").convert_alpha()
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
 
     def update(self, state):
-        self.move_down_fast(state)
+        # self.move_down_fast(state)
 
         # use enums for facing
 
@@ -58,10 +59,17 @@ class Demon4(Demon):
     def draw(self, state):
         # if self.isSpeaking:
         #     self.textbox.draw(state)
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
-        distance = math.sqrt(
-            (state.player.collision.x - self.collision.x) ** 2 + (
-                        state.player.collision.y - self.collision.y) ** 2)
+        sprite_rect = pygame.Rect(7, 77, 40, 60)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (60, 60))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))

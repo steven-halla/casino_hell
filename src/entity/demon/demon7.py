@@ -31,6 +31,8 @@ class Demon7(Demon):
 
         #the below is for testing never delete this
         self.show_los = False  # LOS visibility flag
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state):
 
@@ -77,9 +79,23 @@ class Demon7(Demon):
             self.textbox.draw(state)
 
         # Draw the demon itself
-        rect = (self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-                self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        if self.facing_left == True:
+            sprite_rect = pygame.Rect(1, 40, 22, 31.5)
+        elif self.facing_right == True:
+            sprite_rect = pygame.Rect(111, 40, 22, 31)
+
+            # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         # Draw LOS if enabled
         if self.show_los:
