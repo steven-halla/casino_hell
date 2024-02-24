@@ -178,7 +178,7 @@ class RestScreen(Screen):
             InnKeeper(16 * 101, 16 * 33),
             # JustinNoFruit(16 * 10, 16 * 18),
             JustinNoFruit(16 * 52, 16 * 13),
-            # EvilCat(16 * 52, 16 * 13),
+            # EvilCat(16 * 54, 16 * 13),
             # QuestGiverJanet(16 * 10, 16 * 26),
             ChiliPitTeleporter(16 * 15, 16 * 49),
 

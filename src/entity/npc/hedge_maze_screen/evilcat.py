@@ -127,8 +127,8 @@ class EvilCat(Npc):
         scaled_sprite = pygame.transform.scale(sprite, (60, 60))  # 44*2 = 88
 
         # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 50
-        sprite_y = self.collision.y + state.camera.y - 50
+        sprite_x = self.collision.x + state.camera.x - 28
+        sprite_y = self.collision.y + state.camera.y - 30
 
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))

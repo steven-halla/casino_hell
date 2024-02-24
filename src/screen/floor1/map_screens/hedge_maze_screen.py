@@ -47,11 +47,7 @@ class HedgeMazeScreen(Screen):
             state.player.setPosition(player_start_x, player_start_y)
             state.chili_area_to_maze_area_entry_point = False
 
-        # Check if a player instance already exists
-        # if not hasattr(state, 'player') or state.player is None:
-        #     player_start_x = 300
-        #     player_start_y = 200
-        #     state.player = Player(player_start_x, player_start_y)
+
 
         state.treasurechests = [
 
@@ -59,11 +55,10 @@ class HedgeMazeScreen(Screen):
 
         ]
 
-        # state.npcs = []
         state.npcs = [
             HedgeHog4(16 * 3, 14 * 6),
             EvilCat(16 * 82, 14 * 35),
-            HedgeHog2(16 * 10, 14 * 160),  # this is our 2nd hogger to the far left bottom of screen
+            HedgeHog2(16 * 10, 14 * 160),
             HedgeHog3(16 * 63, 14 * 118),
             HedgeHog1(16 * 79, 14 * 184), # this position is set for our 1st hoggy hog hog hog bottom right of screen
             ]

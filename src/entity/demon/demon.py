@@ -23,7 +23,7 @@ class Demon(Entity):
         self.vertical_direction = 1  # 1 for down, -1 for up
         self.last_fast_move_time = pygame.time.get_ticks()  # Initialize with the current time
         self.fast_move_interval = 55  # Time interval between fast moves, in milliseconds
-        self.fast_move_distance = 15
+        self.fast_move_distance = 16
         self.player_spotted = False
         self.los_horizontal_range = 410
         self.right_los_horizontal_range = 100
