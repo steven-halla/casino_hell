@@ -101,6 +101,7 @@ class ChilliScreen(Screen):
 
         state.npcs.clear()
         state.demons.clear()
+        state.treasurechests.clear()
 
         state.npcs = []
 

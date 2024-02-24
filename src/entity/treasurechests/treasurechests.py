@@ -12,6 +12,8 @@ class TreasureChest(Entity):
         super().__init__(x, y, 16, 16)  # Assuming 16x16 is the size of the chest
         self.color: Tuple[int, int, int] = PURPLE
         self.treasure_item = treasure_item  # The item in the chest
+        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/NES - Magician - Treasure Chest.png").convert_alpha()
+
 
 
 
@@ -35,12 +37,11 @@ class TreasureChest(Entity):
         print("Your inventory so far: " + str(state.player.inventory))
 
     def draw(self, state: "GameState"):
-        rect = (
-            self.collision.x + state.camera.x,
-            self.collision.y + state.camera.y,
-            self.collision.width,
-            self.collision.height
-        )
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(1, 1, 26, 18)
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (40, 40))
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
 
