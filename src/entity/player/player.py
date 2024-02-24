@@ -191,7 +191,7 @@ class Player(Entity):
             self.level2checker = True
             return
 
-        if self.exp >= 400 and self.level3checker == False:
+        if self.exp >= 350 and self.level3checker == False:
             print("grats you leveld up to level 3")
             # if "shield" not in self.magicinventory:
             if "shield" not in state.player.magicinventory:

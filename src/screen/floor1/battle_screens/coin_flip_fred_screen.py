@@ -815,7 +815,7 @@ class CoinFlipFredScreen(Screen):
 
 
         black_box_height = 130
-        black_box_width = 700
+        black_box_width = 740
         border_width = 5  # Width of the white border
 
         # Create the black box
