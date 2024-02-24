@@ -21,7 +21,7 @@ class BobbyBibs(Npc):
             ),
 
             "sir_leopold_message": NpcTextBox(
-                ["I'm gooing to miss the little hedge hogger"],
+                ["I'm going to miss the little hedge hogger"],
                 (50, 450, 700, 130), 36, 500
             ),
 

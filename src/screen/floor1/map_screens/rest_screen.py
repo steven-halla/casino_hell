@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.hedge_maze_screen.evilcat import EvilCat
 from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
 from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
 from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
@@ -177,6 +178,7 @@ class RestScreen(Screen):
             InnKeeper(16 * 101, 16 * 33),
             # JustinNoFruit(16 * 10, 16 * 18),
             JustinNoFruit(16 * 52, 16 * 13),
+            # EvilCat(16 * 52, 16 * 13),
             # QuestGiverJanet(16 * 10, 16 * 26),
             ChiliPitTeleporter(16 * 15, 16 * 49),
 

@@ -25,7 +25,8 @@ class EvilCat(Npc):
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
-
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/PSP - Lunar Silver Star Harmony - Animals.png").convert_alpha()
     def update(self, state: "GameState"):
 
         if self.state == "waiting":
@@ -117,10 +118,20 @@ class EvilCat(Npc):
     #     return self.collision.isOverlap(entity.collision)
 
     def draw(self, state):
-        rect = (
-        self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        self.collision.width, self.collision.height)
-        pygame.draw.rect(state.DISPLAY, self.color, rect)
+        sprite_rect = pygame.Rect(277, 166, 58, 40)
+
+        # Get the subsurface for the area you want
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (60, 60))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
+        sprite_x = self.collision.x + state.camera.x - 50
+        sprite_y = self.collision.y + state.camera.y - 50
+
+        # Draw the scaled sprite portion on the display
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "waiting":
             pass
