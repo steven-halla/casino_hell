@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="final boss door fixed now players need both cut scenes">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="yes no menu looks a lot better">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/black_jack_thomas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/black_jack_thomas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/nelly_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/nelly_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/boss_screen/demon_boss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/boss_screen/demon_boss.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/boss_teleporter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/boss_teleporter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/boss_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/demon/demon4.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_thomas_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -368,7 +365,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="265473000" />
+      <workItem from="1707589099832" duration="267310000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -713,7 +710,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="616" />
+    <option name="localTasksCounter" value="617" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -742,7 +739,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now can use left key for opossum in a can when picking trash cans" />
     <MESSAGE value="now we skip over cans that are empty" />
     <MESSAGE value="updated exp for both black jack screens based on bets" />
     <MESSAGE value="many updates to black jack:&#10;first we updated exp, money, as well as now allow enemy to get black jacks" />
@@ -767,7 +763,8 @@
     <MESSAGE value="complete for heddge maze" />
     <MESSAGE value="updated text for cut scene 1" />
     <MESSAGE value="final boss door fixed now players need both cut scenes" />
-    <option name="LAST_COMMIT_MESSAGE" value="final boss door fixed now players need both cut scenes" />
+    <MESSAGE value="yes no menu looks a lot better" />
+    <option name="LAST_COMMIT_MESSAGE" value="yes no menu looks a lot better" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -808,7 +805,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1708833434188" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1708835274500" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />

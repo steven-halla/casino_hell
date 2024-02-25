@@ -1249,6 +1249,8 @@ class OpossumInACanSallyScreen(Screen):
                     else:
                         self.game_state = "welcome_screen"
                         state.player.canMove = True
+                        state.start_area_to_rest_area_entry_point = True
+
                         state.currentScreen = state.restScreen
                         state.restScreen.start(state)
                         state.player.stamina_points = 1

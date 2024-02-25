@@ -720,7 +720,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["bet_message"].update(state)
             self.coin_flip_messages["bet_message"].draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
-                                                (255, 255, 255)), (45, 560))
+                                                (255, 255, 255)), (45, 550))
 
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
                                (312, 555))
