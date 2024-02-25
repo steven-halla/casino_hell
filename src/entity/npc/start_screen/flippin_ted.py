@@ -157,7 +157,7 @@ class FlippinTed(Npc):
                 border_width = 5
 
                 screen_width, screen_height = state.DISPLAY.get_size()
-                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_x = screen_width - bet_box_width - border_width - 48
                 bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
 
                 bet_box = pygame.Surface((bet_box_width, bet_box_height))

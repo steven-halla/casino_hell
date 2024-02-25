@@ -8,7 +8,8 @@
     "companions": ["sir leopold"],
     "items": [],
     "npcitems": [
-        "inn badge"
+        "inn badge",
+        "boss key"
     ],
     "magicinventory": [
         "reveal"

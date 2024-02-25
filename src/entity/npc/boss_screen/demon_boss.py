@@ -28,8 +28,9 @@ class DemonBoss(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
-        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Demons Crest - Firebrand Ultimate.png").convert_alpha()
 
+        self.character_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
         self.isWorthy = True
 
 
@@ -98,18 +99,28 @@ class DemonBoss(Npc):
             state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
+            self.menu_index = 0
+
             self.state_start_time = pygame.time.get_ticks()
 
             # Unlock the player to allow movement
             state.player.canMove = True
 
     def draw(self, state):
-    
-        sprite_rect = pygame.Rect(1, 1, 33, 88)
+
+        sprite_rect = pygame.Rect(5, 6, 24, 28)
+
+        # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-        scaled_sprite = pygame.transform.scale(sprite, (77, 77))
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
@@ -125,7 +136,7 @@ class DemonBoss(Npc):
                 border_width = 5
 
                 screen_width, screen_height = state.DISPLAY.get_size()
-                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_x = screen_width - bet_box_width - border_width - 48
                 bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
 
                 bet_box = pygame.Surface((bet_box_width, bet_box_height))
@@ -135,7 +146,7 @@ class DemonBoss(Npc):
                 white_border.blit(bet_box, (border_width, border_width))
 
                 # Calculate text positions
-                text_x = bet_box_x + 40 + border_width
+                text_x = bet_box_x + 50 + border_width
                 text_y_yes = bet_box_y + 20
                 text_y_no = text_y_yes + 40
                 # Draw the box on the screen
@@ -144,7 +155,7 @@ class DemonBoss(Npc):
                 # Draw the text on the screen (over the box)
                 state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
                 state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
                 arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
 
                 # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)

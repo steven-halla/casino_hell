@@ -317,13 +317,13 @@ class SirLeopoldTheHedgeHog(Npc):
 
         if self.state == "talking" and "blue flower" not in state.player.items:
             # Draw the "Yes/No" box only on the last message
-            if self.textbox.is_finished():
+            if self.textbox.is_finished() and self.textbox.message_at_end():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
 
                 screen_width, screen_height = state.DISPLAY.get_size()
-                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_x = screen_width - bet_box_width - border_width - 48
                 bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
 
                 bet_box = pygame.Surface((bet_box_width, bet_box_height))
@@ -333,7 +333,7 @@ class SirLeopoldTheHedgeHog(Npc):
                 white_border.blit(bet_box, (border_width, border_width))
 
                 # Calculate text positions
-                text_x = bet_box_x + 40 + border_width
+                text_x = bet_box_x + 50 + border_width
                 text_y_yes = bet_box_y + 20
                 text_y_no = text_y_yes + 40
                 # Draw the box on the screen
@@ -342,11 +342,10 @@ class SirLeopoldTheHedgeHog(Npc):
                 # Draw the text on the screen (over the box)
                 state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
                 state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
                 arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
 
                 # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
                 # Here's a simple example using a triangle:
                 pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                                     [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
