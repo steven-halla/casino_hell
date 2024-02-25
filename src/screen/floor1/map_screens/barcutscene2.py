@@ -51,8 +51,21 @@ class BarCutScene2Screen(Screen):
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
-                    "Hero:well we're at the final scene...lets get everyone together, that demon bastard is still there right?",
-                    "Janet: Yeah you've already noticed, that your stamina gets drained from gambling, it takes a tool on the mind and body."
+                    "Hero: So how did it all go?",
+                    "Janet: It went very well, I managed to get 100,000 coins",
+                    "Suzy: How....did you...get so much",
+                    "Janet: I'm a persuasive talker, everyone was happy to chip in, peer pressure also helps too.",
+                    "Sir Leopold: WIth that much money you could go straight to the 3rd level, must have been tempting to leave us high and dry",
+                    "Janet: No not at all, didnt' even cross my mind till now....Would you have done it? Cut and RUn",
+                    "Sir Leopold: No way, I may not look like it, but I'm a knight, there is no way I can let anything stain my honor",
+                    "Hero: Don't you steal though? The first time we met you offered me coins that you stole.",
+                    "Sir Leopold: Yes I do steal, for justice. I steal in a knightly kind of way.",
+                    "Suzy: I put in my life savings too...we're counting on you. If you lose I'm giving you rabies and keeping you as a pet",
+                    "Janet:  If you lose I'm sure Chinrog will do something horrible to you, are you sure you want to go through with this? You should think about this, ",
+                    "Hero: What is there to think about? I've never gambled with such high stakes, how can I not do it?",
+                    "Sir Leopold: I'll be there to help as well, no matter what happens I got your back. "
+
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

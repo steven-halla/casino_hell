@@ -13,8 +13,11 @@ class BossTeleporter(Npc):
                 ["Hero: I need the boss key to pass through...Boss key? That was the name they came up with!?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Do you want to go to the boss area? There is no turning back."],
-                (50, 450, 700, 130), 36, 500)
+                ["Do you want to go to the boss area? There is no turning back.  "],
+                (50, 450, 700, 130), 36, 500),
+            "watch_cut_scene_2_message": NpcTextBox(
+                ["You need to watch both cut scenes from the bar, remeember your promise to sir Leopold, go grab a drink or a sandwhich."],
+                (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -46,13 +49,18 @@ class BossTeleporter(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             # Reset the message depending on the game state
-            if "boss key" in state.player.npc_items:
+            if "boss key" in state.player.npc_items and state.restScreen.barscene2 == False:
+                self.flipping_ted_messages["watch_cut_scene_2_message"].reset()
+            elif "boss key" in state.player.npc_items and state.restScreen.barscene2 == True:
                 self.flipping_ted_messages["defeated_message"].reset()
+
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = self.flipping_ted_messages["defeated_message"] if "boss key" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
+        if state.restScreen.barscene2 == False and "boss key" in state.player.npc_items:
+            current_message = self.flipping_ted_messages["watch_cut_scene_2_message"]
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -72,7 +80,7 @@ class BossTeleporter(Npc):
                 print("Down pressed, arrow_index:", self.arrow_index)  # Debugging line
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and "boss key" in state.player.npc_items:
+        if current_message.is_finished() and state.controller.isTPressed and "boss key" in state.player.npc_items and state.restScreen.barscene2 == True and self.arrow_index == 0:
             state.rest_area_to_boss_area_entry_point = True
 
             state.currentScreen = state.bossScreen
@@ -89,6 +97,7 @@ class BossTeleporter(Npc):
         if state.controller.isTPressed and current_message.is_finished():
             # Exiting the conversation
             self.state = "waiting"
+            self.arrow_index = 0
             self.state_start_time = pygame.time.get_ticks()
 
             # Unlock the player to allow movement
@@ -117,10 +126,13 @@ class BossTeleporter(Npc):
 
         if self.state == "talking":
             current_message = self.flipping_ted_messages["defeated_message"] if "boss key" in state.player.npc_items else self.flipping_ted_messages["welcome_message"]
+            if state.restScreen.barscene2 == False and "boss key" in state.player.npc_items:
+                current_message = self.flipping_ted_messages["watch_cut_scene_2_message"]
+
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and "boss key" in state.player.npc_items:
+            if current_message.is_finished() and "boss key" in state.player.npc_items and state.restScreen.barscene2 == True:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
