@@ -1263,9 +1263,14 @@ class BlackJackThomasScreen(Screen):
             enemy_card_y = 15
 
             for i, card in enumerate(self.player_hand):
-                if i > 3:
+                if i == 4:  # Adjust for the 5th card, moving to the second row
                     player_card_y = 305
-                    player_card_x = 235
+                    player_card_x = 235  # Start position for the second row
+                elif i > 4:
+                    # For the 6th card and beyond, increment player_card_x normally
+                    player_card_y = 305
+                    player_card_x = 300  # Start position for the second row
+
                 self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
 
                 player_card_x += 75

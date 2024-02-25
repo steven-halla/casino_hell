@@ -124,10 +124,10 @@ class BarKeep(Npc):
 
 
                 if self.selected_money_index == 2:
-                    if state.player.money < 1810 or state.player.stamina_points != state.player.max_stamina_points or state.player.level < 3 and self.textbox.is_finished():
+                    if state.player.money < 1810 or state.player.stamina_points < state.player.max_stamina_points or state.player.level < 3 and self.textbox.is_finished():
                         self.cant_buy_sound.play()  # Play the sound effect once
 
-                    elif state.player.money >= 1810 and state.player.stamina_points == state.player.max_stamina_points:
+                    elif state.player.money >= 1810 and state.player.stamina_points >= state.player.max_stamina_points:
 
                         self.buy_sound.play()  # Play the sound effect once
 

@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.battle_screen.coin_flip_fred import CoinFlipFred
 from entity.npc.boss_screen.FlippingSandy import FlippingSandy
 from entity.npc.boss_screen.black_jack_jared import BlackJackJared
 from entity.npc.boss_screen.demon_boss import DemonBoss
@@ -41,18 +42,6 @@ class BossScreen(Screen):
     def stop_music(self):
         pygame.mixer.music.stop()
 
-    # def initialize_music(self):
-    #     # Initialize the mixer
-    #     pygame.mixer.init()
-    #
-    #     # Load the music file
-    #     pygame.mixer.music.load(self.music_file)
-    #
-    #     # Set the volume for the music (0.0 to 1.0)
-    #     pygame.mixer.music.set_volume(self.music_volume)
-    #
-    #     # Play the music, -1 means the music will loop indefinitely
-    #     pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
         self.stop_music()
@@ -85,13 +74,11 @@ class BossScreen(Screen):
 
             IchiOpossum(16 * 11, 16 * 30),
             FlippingSandy(16 * 21, 16 * 20),
-            BlackJackJared(16 * 31, 16 * 10),
+            CoinFlipFred(16 * 31, 16 * 10),
             DemonBoss(16 * 15, 16 * 10),
 
                       ]
 
-        if state.player.days < 11 and state.restScreen.barscene1 == True and state.restScreen.barscene2 == True:
-            state.npcs.append(DemonBoss(16 * 4, 16 * 10))
         #
         # if state.quest_giver_janet.find_hog:
         #     state.npcs.append(Nurgle(16 * 24, 16 * 34))
