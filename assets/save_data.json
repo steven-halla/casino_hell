@@ -6,10 +6,8 @@
     "focus_points": 80,
     "max_focus_points": 80,
     "companions": [
-        "sir leopold"
     ],
     "items": [
-        "sir leopold's paw"
     ],
     "npcitems": [
         "inn badge"
@@ -24,8 +22,8 @@
     "perception": 1,
     "luck": 0,
     "money": 590,
-    "rabies": false,
-    "immunity": true,
+    "rabies": true,
+    "immunity": false,
     "level3reward": false,
     "food": 1,
     "days": 3,

@@ -178,7 +178,7 @@ class HedgeMazeScreen(Screen):
 
 
     def draw(self, state: "GameState"):
-        state.DISPLAY.fill(BLUEBLACK)
+        state.DISPLAY.fill((65, 47, 12))  # Correct usage with the RGB values you provided
         # state.DISPLAY.blit(state.FONT.render(
         #     f"player money: {state.player.money}",
         #     True, (255, 255, 255)), (333, 333))
