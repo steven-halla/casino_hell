@@ -124,7 +124,7 @@ class BarKeep(Npc):
 
 
                 if self.selected_money_index == 2:
-                    if state.player.money < 1810 or state.player.stamina_points != state.player.max_stamina_points and self.textbox.is_finished():
+                    if state.player.money < 1810 or state.player.stamina_points != state.player.max_stamina_points or state.player.level < 3 and self.textbox.is_finished():
                         self.cant_buy_sound.play()  # Play the sound effect once
 
                     elif state.player.money >= 1810 and state.player.stamina_points == state.player.max_stamina_points:
@@ -282,7 +282,7 @@ class BarKeep(Npc):
                 state.DISPLAY.blit(self.font.render(f"Need FULL HP to buy. Money Cannot Fall below 10. ", True,
                                                     (255, 255, 255)), (70, 460))
             elif self.selected_item_index == 2:
-                state.DISPLAY.blit(self.font.render(f"NEED FULL HP to buy. Key for boss area.", True,
+                state.DISPLAY.blit(self.font.render(f"Boss Key: LVL 3 Min, Full HP to buy.", True,
                                                     (255, 255, 255)), (70, 460))
 
             # print("is talking")

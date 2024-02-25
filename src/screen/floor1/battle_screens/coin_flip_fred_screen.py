@@ -222,14 +222,14 @@ class CoinFlipFredScreen(Screen):
         self.coin_flip_fred_messages = {
             "welcome_message": TextBox(
                 ["praying that this works", "We", ""],
-                (65, 460, 700, 130),  # Position and size as a tuple: (x_position, y_position, width, height)
+                (45, 460, 700, 130),  # Position and size as a tuple: (x_position, y_position, width, height)
                 36,  # Font size
                 500  # Delay in milliseconds
             ),
             # Example for another message
             "bet_message": TextBox(
                 ["Min Bet is 10 and Max Bet is 100. The more you bet, the more your stamina is drained."],
-                (65, 460, 700, 130),  # Position and size
+                (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
