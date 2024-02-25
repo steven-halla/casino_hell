@@ -50,8 +50,22 @@ class BarCutScene1Screen(Screen):
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
-                    "Hero: I tell you all what, after a good hard day of gambling I need a stiff drink.",
-                    "Janet: Yeah you've already noticed, that your stamina gets drained from gambling, it takes a tool on the mind and body."
+                    "Hero: So what is it going to take,to get some rule changes around here?",
+                    "Bar keep: Friend I've been working here a long time, I don't see them change the rules much, these demons are real sticklers..",
+                    "Janet: It would be nice to have better food, clean clothes, and a mattress not filled with insects",
+                    "Hero: I'm sure that if I put enough on the line, I can make a gamble with this chinrog",
+                    "Guy: You don't have the coins for that, I bet it would take all of us pooling together our resources",
+                    "Janet: Then why don't we do that then? I can probably convince the others to chip in",
+                    "Guy: And what if he fails",
+                    "Sir Leopold:  He won't fail, no need to have any doubts, how can it get any worse.",
+                    "bar keep: It can always get worse",
+                    "Sir Leopold: In due time, if we don't act now it probably will get worse no matter what, I believe in him, I say we take this chance..",
+
+                    "Janet: Arent you scared to battle a demon? You know it won't be the same as the others",
+                    "Hero: That's why I want to do it, the thought of betting a demon has my blood boiling with excitment",
+                    "Janet: That's just what I wanted to hear, next time we meet I'll let you know how it panned out"
+
+
 
                 ],
                 (50, 450, 50, 45), 30, 500
