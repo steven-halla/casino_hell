@@ -181,9 +181,9 @@ class CoinFlipFredScreen(Screen):
                 500  # Delay
             ),
             "enemy_defeated_message": TextBox(
-                ["Hero: Well looks like I'm done with you! ",
-                 "Enemy: Looks like it's back to an all chili diet for me!",
-                 "Enemy: I bet Cindy will be happy to  hear that I lost my standing.....", ""
+                ["Hero: Got your last coin buddy, time for you to go to sleep buddy. ",
+                 "Fred: I had a dream last night this would happen",
+                 "Enemy: I'm the best coin flipper here they have to give me more coins.", ""
 
                  ],
                 (45, 460, 700, 130),  # Position and size

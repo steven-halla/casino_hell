@@ -97,7 +97,7 @@ class BlackJackRumbleBillScreen(Screen):
 
         self.messages = {
             "welcome_screen": ["RumbleBill: Press T key for all commands.",
-                               "You look pretty fresh to me.", ""],
+                               "You look pretty fresh to me. Time to grind you into hamburger boy.", ""],
             "hero_intro_text": [
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 

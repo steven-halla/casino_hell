@@ -180,9 +180,9 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "enemy_defeated_message": TextBox(
-                ["Hero: Well looks like I'm done with you! ",
-                 "Enemy: Looks like it's back to an all chili diet for me!",
-                 "Enemy: I bet Cindy will be happy to  hear that I lost my standing.....", ""
+                ["Hero: That was pretty easy ",
+                 "Ted: You have much stronger people to face you bastard",
+                 "Hero: Maybe so but I won't be facing you anymore, see you around Clown.", ""
 
                  ],
                 (45, 460, 700, 130),  # Position and size

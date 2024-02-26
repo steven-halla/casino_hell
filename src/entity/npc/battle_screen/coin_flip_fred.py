@@ -13,7 +13,7 @@ class CoinFlipFred(Npc):
                 ["Freddy: My coin flips are so good it'll give you nightmares. You ready for this?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Maybe I should retire from coin flip."],
+                ["Maybe I should retire from coin flip. I need to take a nap."],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["Oh my god, your eyes are blood red....GET AWAY FROM ME!!!!"],

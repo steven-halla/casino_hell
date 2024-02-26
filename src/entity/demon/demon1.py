@@ -17,7 +17,7 @@ class Demon1(Demon):
         self.isSpeaking: bool = False
         self.textbox = NpcTextBox(
             [
-                "Demon: Your not a hedge hog, git on out of here human.!,"
+                "Demon: Your not a hedge hog, git on out of here human!"
                 ],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]

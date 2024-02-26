@@ -10,7 +10,25 @@ class DemonBoss(Npc):
         self.selected_item_index = 0
         self.coin_flip_fred_messages = {
             "welcome_message": NpcTextBox(
-                ["Demon: I'm the head chilli demon round here , better be careful", "Are you ready to lose?!"],
+                ["Chinrog: I'm the head chilli demon round here, what do you want human?",
+                 "Hero: You must be Chinrog, are you? You all look the same to me.",
+                 "Sir Leopold: Yeah your right, they do all look the same, right down to the amount of hair on their bodies",
+                 "Chinrog: Hey that's not true, Chilly Billy is balding in the back. And yes I am Chinrog, now get out of my sight you scum, enjoy your trip to the next floor",
+                 "Hero: Actually I'm here to gamble with you, unless of course, your afraid of high stakes? ",
+                 "Sir Leopold: Yeah he does looked pretty scared to me, I doublt he'll do it",
+                 "Chinrog: Wait...your serious, you want to face me, your joking, oh ho ho ho boy, we got a live one here.",
+                 "Hero: That's right Chinrog, I have 100,250 coins, your going to do everything as outlined here. ",
+                 "Chinrog: Let's see....no more chili, no more hedge hogs, normal food, washing clothes, whats all this?",
+                 "Hero: The demands of everyone on the floor, we all chipped in, I'm taking you down you scum bag",
+                 "Chinrog: Careful boy, you better not anger me or else.",
+                 "Sir Leopold: Ha, I read the rules before coming here, as long as we have coins you can't do anything to us",
+                 "Chinrog: Ok...fine..you win, I'll play along, but if I win, then I'm making the entire floor pay,  the whole lot of",
+                 "you will be force fed chili from a hose, and as for you, well, I'll save the worse for you. I'll use the orb of traignome",
+                 "Hero: That doens't sound so bad",
+                 "Chinrog: Oh it is bad, It'll let me see your deepest darkest fears which I'll inflict...FOR ALL ETERNITY",
+                 "YOU THINK YOUR READY FOR ME, YOUR GOING DOWN, AND I'M SHOVING THAT STUPID HEDGE HOG INSIDE THE BACK SIDE OF A OPOSSUM",
+                 "I'LL MAKE A HEDGEOSSUM, THEN I'LL SEW YOU IN SHUT."
+                 ],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],

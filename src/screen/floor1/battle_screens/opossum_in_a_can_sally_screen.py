@@ -66,13 +66,13 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
             "opossum_defeated_message": TextBox(
-                ["WEll since you beat me I have a super secret item just for you hero take it!! ", "you open the treash can and get bit by a rapid opossom;)", "Ooops I didn't meanto do that, oh well i'll be seeing you soon enjoy your humanity while it loast opossum-kun", ""],
+                ["You disgusting trash, take this gift, you deserve it. ", "You open the present  and get bit by a rapid opossum;)", "The doctor's medicine is missing, I'll throw you in a cage real soon.", ""],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "real_opossum_defeated_message": TextBox(
-                ["Stupid Doctor and her shots, hate her I want her to be a opossum soooooo badly ", "",
+                ["Stupid Doctor and her medicine, I hate her so much,  I want her to be a opossum soooooo badly ", "",
     ],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
@@ -91,7 +91,7 @@ class OpossumInACanSallyScreen(Screen):
                 500  # Delay
             ),
             "lose_message": TextBox(
-                ["something poppped out!!! ", "oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
+                ["Something poppped out!!! ", "Oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay

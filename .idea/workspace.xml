@@ -4,25 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated so that money wont fall below 0 including gains when gettinga blkac jack when enemy money is low">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated text">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/evilcat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/evilcat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/hedgehog2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/hedgehog2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep_low_body.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep_low_body.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/bapping_mike.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/bapping_mike.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/demon/demon1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/coin_flip_fred.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/battle_screen/sally_opossum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/boss_screen/demon_boss.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/boss_screen/demon_boss.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/black_jack_rumble_bill_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_fred_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_nelly_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/opossum_in_a_can_sally_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -374,7 +366,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="295205000" />
+      <workItem from="1707589099832" duration="297551000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -719,7 +711,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="628" />
+    <option name="localTasksCounter" value="629" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -748,7 +740,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed black jack bug that was not taking away stamina poitns for busts, upated messages and other bugs for busting" />
     <MESSAGE value="nowplayers cant move arrow till message is done" />
     <MESSAGE value="updated boss key" />
     <MESSAGE value="janet quest line updated for level 3" />
@@ -773,7 +764,8 @@
     <MESSAGE value="updated hogs so that now you cannot move while chatting with them" />
     <MESSAGE value="fized bug tht allowed player to use magic even at 0" />
     <MESSAGE value="updated so that money wont fall below 0 including gains when gettinga blkac jack when enemy money is low" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated so that money wont fall below 0 including gains when gettinga blkac jack when enemy money is low" />
+    <MESSAGE value="updated text" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated text" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

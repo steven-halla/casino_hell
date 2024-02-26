@@ -13,7 +13,7 @@ class SallyOpossum(Npc):
                 ["Sally: This game is super easy and chill, go ahead and play yeah, just 150 coins."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["You must have cheated somehow."],
+                ["As far as men go you are the worst, trash, scum, idiot, scoundrel."],
                 (50, 450, 700, 130), 36, 500),
             "money_message": NpcTextBox(
                 ["You need at least 150 coins to play, so stop wasting my time you scum"],
