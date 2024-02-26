@@ -961,7 +961,7 @@ class OpossumInACanSallyScreen(Screen):
                 # print("total winnings are part 2: " + str(self.total_winnings))
 
                 state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings} and 10 exp", True,
-                                                    (255, 255, 255)), (70, 460))
+                                                    (255, 255, 255)), (45, 460))
 
         if self.game_state == "menu_screen":
             bet_box_width = 150

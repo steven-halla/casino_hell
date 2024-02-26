@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 1000
+        self.money = 400
         # self.image = pygame.image.load(
         #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png")
         # self.character_sprite_down_image = pygame.image.load(
@@ -46,8 +46,8 @@ class Player(Entity):
         self.stamina_guard = False
 
         self.max_stamina_points = 100 + self.stamina_increase
-        self.focus_points = 50
-        self.max_focus_points = 50
+        self.focus_points = 10
+        self.max_focus_points = 10
         self.perks = []
         self.items = []
         self.npc_items = []
@@ -191,7 +191,7 @@ class Player(Entity):
             self.level2checker = True
             return
 
-        if self.exp >= 350 and self.level3checker == False:
+        if self.exp >= 300 and self.level3checker == False:
             print("grats you leveld up to level 3")
             # if "shield" not in self.magicinventory:
             if "shield" not in state.player.magicinventory:
@@ -200,6 +200,16 @@ class Player(Entity):
                 self.max_focus_points += 10
             self.level3checker = True
             self.level = 3
+
+            return
+
+        if self.exp >= 600 and self.level3checker == False:
+            print("grats you leveld up to level 4")
+            # if "shield" not in self.magicinventory:
+            self.max_stamina_points += 20
+            self.max_focus_points += 20
+            self.level3checker = True
+            self.level = 4
 
             return
 

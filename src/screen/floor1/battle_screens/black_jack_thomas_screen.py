@@ -50,6 +50,8 @@ class BlackJackThomasScreen(Screen):
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
+        self.testing_low = False
+
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
@@ -462,6 +464,14 @@ class BlackJackThomasScreen(Screen):
             print("Player score is: " + str(self.player_score))
             if self.player_score > 20:
                 self.player_black_jack_win = True
+
+            if self.testing_low == True:
+                while self.player_score > 10:
+                    self.player_score = 0
+                    self.player_hand = []
+                    self.player_hand = self.deck.player_draw_hand(2)
+                    print("Player hand is" + str(self.player_hand))
+                    self.player_score = self.deck.compute_hand_value(self.player_hand)
 
             print("YOur black jack player detecter is :  " + str(self.player_black_jack_win))
             print("YOur black jack enemy detecter is :  " + str(self.enemy_black_jack_win))
@@ -1266,10 +1276,11 @@ class BlackJackThomasScreen(Screen):
                 if i == 4:  # Adjust for the 5th card, moving to the second row
                     player_card_y = 305
                     player_card_x = 235  # Start position for the second row
-                elif i > 4:
+                if len(self.player_hand) > 5 and i == 5:
                     # For the 6th card and beyond, increment player_card_x normally
                     player_card_y = 305
                     player_card_x = 300  # Start position for the second row
+
 
                 self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
 
