@@ -17,7 +17,8 @@ class WallyGuide(Npc):
                     "Wally: I'm the last one, everyone I came here with... it's like my friend here always says.",
                     "Opossum in a can is very dangerous, if you can get Cindy to teach you.....it will be less so.",
                     "Hero:  Where is your friend, I dont' see anyone here but you???",
-                    "Wally: How can you not see the giant rat on your shoulder, or do you hate rats so much that you can't see or hear them?"
+                    "Wally: How can you not see the giant rat on your shoulder, or do you hate rats so much that you can't see or hear them?",
+                    "What's that...oh yes I Should tell him that. Ronald told me to tell you, don't trust the cat in the hedge maze. It's evil."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

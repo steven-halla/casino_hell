@@ -11,13 +11,11 @@ class CindyLongHair(Npc):
         self.cindy_long_hair_messages = {
             'textbox': NpcTextBox(
                 [
-                    "Cindy: Cheating Ted is such a bastard ass.",
-                    "Because of him my boyfriend making beer",
-                    "Hero: That sounds like a fun job",
+                    "Cindy:Hi there I'm Cindy, you should know,  Cheating Ted is a real bastard. Because of him my boyfriend is making beer.",
+                    "Hero: That sounds like a fun job, what's so bad about that?",
                     "Cindy: Fun?... Oh that's right your still new here...let me teach you something useful."
                     "The key to winning coin flip is to pay attention to patterns.",
-                    "This can change based on certain conditions.",
-                    "Try betting low, and get a hang for the patterns.",
+                    "This can change based on certain conditions. Try betting low, and get a hang for the patterns.",
                     "If you brute force it you'll more than likely lose."
                 ],
                 (50, 450, 50, 45), 36, 500
@@ -25,9 +23,13 @@ class CindyLongHair(Npc):
             'reward_message': NpcTextBox(
                 [
                     "",
-                    "Cindy: Oh kool look at you, time for your reward (inn badge). Oh, you want something else too, what a greedy man you are!.",
-                    "This potion will increase your intelligence by one, this will open up 3 spell slots. More Mind means you can hold on to more spells!",
+                    "Cindy: Oh cool look at you, time for your reward (inn badge). I have something else for you too, I don't just be giving these out.",
+                    "Cindy: This potion will increase your intelligence by one, this will open up 3 spell slots. More Mind means you can hold on more spells!",
+                    "Cindy: Higher intelligence also means more magic points.",
                     "Go play some black jack and try it out. It'll give you the advantage you need to win.",
+                    "Hero: Thanks for that, your such a great help Cindy.",
+                    "Cindy: Chinrog will be leaving in 10 days, you don't want to meet him",
+                    "Hero: No matter what I'll battle him...10 days,I got this."
 
                 ],
 
@@ -45,8 +47,8 @@ class CindyLongHair(Npc):
             'rabies_message': NpcTextBox(
                 [
                     "",
-                    "That bitch Sally took teh doctors blue flower, I just know it.",
-                    "Why else was she snooping around her office?"
+                    "That witch Sally took the doctor's blue flower, I just know it.",
+                    "Why else was she snooping around her office? You can't trust those opossum girls."
                 ],
                 (50, 450, 50, 45), 36, 500
             ),

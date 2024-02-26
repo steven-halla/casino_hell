@@ -20,10 +20,10 @@ class SirLeopoldTheHedgeHog(Npc):
             (50, 450, 50, 45), 30, 500)
         self.reward_no_hogs = NpcTextBox(
             ["Wow you really suck",
-             "Your hopeless.......I guess I have no choice but to join you, by the looks of it you can use a helping paw.Though I'm not giving you coins"],
+             "Your hopeless.......I guess I have no choice but to join you, by the looks of it you can use a helping paw.Though I'm not giving you coins."],
             (50, 450, 50, 45), 30, 500)
         self.reward_some_hogs = NpcTextBox(
-            ["Well at least you tried",
+            ["Well at least you tried.",
              "Take these 250 coins."],
             (50, 450, 50, 45), 30, 500)
         self.reward_all_hogs = NpcTextBox(
@@ -34,8 +34,8 @@ class SirLeopoldTheHedgeHog(Npc):
             (50, 450, 50, 45), 30, 500)
 
         self.final_message = NpcTextBox(
-            ["", "As long as your wearing this I can help you in black jack. (You received sir leopold's paw)" ,
-             "Since your Spirit is high I'll join you, the higher spirit you have the more companions will join us",
+            ["", "As long as your wearing this I can help you in black jack. (You received sir leopold's paw)." ,
+             "Since your Spirit is high I'll join you, the higher spirit you have the more companions will join us.",
              "Hero: If I don't hurry up and get to the Doctor I'll be joining the trash cans.",
              "Sir Leopold: Right you are, as for that item I gave you, whenever you hear the 'ting' noise that means I stole something",
              "Hero: Wait you can steal cards? That's allowed?",

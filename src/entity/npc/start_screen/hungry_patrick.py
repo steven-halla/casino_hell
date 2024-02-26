@@ -14,7 +14,7 @@ class HungryPatrick(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Patrick: Care of opossum in a can, if you get bit, you'll get rabies. But the reward is high so people do it.",
+                    "Patrick: Don't play opossum in a can, if you get bit, you'll get rabies. But the reward is high so people do it anyways.",
                     "Hero: So your telling me that the stakes are high....now I gotta go play it.",
                     "Patrick: No don't play it didn't you hear....oh whatever, not like anyone ever listens to me."
                 ],

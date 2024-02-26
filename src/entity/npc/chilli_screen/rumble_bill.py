@@ -13,11 +13,11 @@ class RumbleBill(Npc):
                 ["Rumble bill: They call me the Rumble, I only lose when I let my opponent win."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["I let you win on purpose, you should be grateful."],
+                ["Rumble Bill: I let you win on purpose, you should be grateful."],
                 (50, 450, 700, 130), 36, 500),
 
             "rabies_message": NpcTextBox(
-                ["I'm a black jack master, but I sure as hell don't play with no damn opossums you trash scum."],
+                ["Rumble Bill: I'm a black jack master, but I sure as hell don't play with no damn opossums you trash scum."],
                 (50, 450, 700, 130), 36, 500),
 
         }

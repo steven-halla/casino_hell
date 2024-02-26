@@ -13,23 +13,23 @@ class QuestGiverJanet(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.queststart1 = NpcTextBox(
-            ["I have a quest for you, get a score of 300 in opossum in a can from Nelly, Sandy, or Ichi", "These are the three people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them."],
+            ["Janet: I have a quest for you, get a score of 300 in opossum in a can from Nelly or Sally.", "These are the two people here you can do this from, be sure to complete the quest beforehand. Once you defeate someone you cant fight them."],
             (50, 450, 50, 45), 30, 500)
         self.questfinish1 = NpcTextBox(
-            ["Janet: Good job on your bravery now take this reward, the new super special techniq that i learned from the dance floor:: Shake"],
+            ["Janet: Good job on your bravery, now take this reward, a technique I developed watching people play opossum in a can: Shake.", "Hero: I still can't believe i'm learning magic, this place is nuts."],
             (50, 450, 50, 45), 30, 500)
         self.queststart2 = NpcTextBox(
-            ["Janet: Go level up till you have the 'shield' spell. It'll protect you in coinflip."],
+            ["Janet: Go level up till you have the 'shield' spell. It'll protect you in coinflip. It's very powerful."],
             (50, 450, 50, 45), 30, 500)
         self.questfinish2 = NpcTextBox(
-            ["Janet: Such a handy spell, here is something to also help:"],
+            ["Janet: Wear these glasses and you'll take 20 coins per coin toss you win.", "Hero: What if they don't agree to those terms?", "Janet: As long as your wearing those glasses the coins will just vanish out of thier coffers."],
             (50, 450, 50, 45), 30, 500)
         self.queststart3 = NpcTextBox(
-            ["Janet: Can you find my hedge hog friend Nurgle? We just seperated right before you talked to me. ",  "He loves to dig around in the trash, he's so cute, plump, white, looks very sickly, just make sure your perception is high or you wont find him"],
+            ["Janet: Can you find my hedge hog friend Burgle? We just seperated right before you talked to me. ",  "I'm confidant with your perception you'll locate my companion easily."],
             (50, 450, 50, 45), 30, 500)
 
         self.questfinish3 = NpcTextBox(
-            ["Janet:Thank you so much for finding my drinking buddy, hope you enjoy the extra magic stamina. ", "with a body of 1 you can drink with me."],
+            ["Janet:Thank you so much for finding my drinking buddy, hope you enjoy the extra magic stamina. ", "Hero: Thanks Janet, I can feel the power."],
             (50, 450, 50, 45), 30, 500)
         self.choices = ["Yes", "No"]
         self.menu_index = 0

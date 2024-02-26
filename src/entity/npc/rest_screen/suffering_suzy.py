@@ -14,10 +14,9 @@ class SufferingSuzy(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Suzy: I can't wait till the bar keeper is off vacation, funny that it happened the same day you got here.",
-                    "Hero: Just my luck that it happens while I get here?",
-                    "Suzy: Actually, your lucky that it happened the same day as you got here...just don't ask where the beer comes from.",
-                    "I'll give you a good tip: Thomas, the black jack dealer, takes it easy on everyone, he stays at a low number."
+                    "Suzy: Rabies is very scary, I already had to get my shop before, you start frothing at the mouth very early.",
+                    "Hero: What kind of casino is this? How is this even legal?",
+                    "Suzy: The kind that everyone regrets going to, unless of course you make it to the upper levels.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

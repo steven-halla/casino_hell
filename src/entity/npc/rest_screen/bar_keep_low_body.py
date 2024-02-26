@@ -13,9 +13,10 @@ class BarKeepLowBody(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Bar Keep: Bar is closed right now, your free to hang out and chill. Even I need time off you know.",
-                    "Funny that I took vacation the same day you got here, but don't worry I'll tell you something good",
-                    "Sometimes , based on certain events what people say can change."
+                    "Bar Keep: Sorry friend but you need a body of 1 in order to eat/drink here, rules and all.",
+                    "In the mean time I'll tell you something good: In black jack the dealers will hold below 16, even if they lose the hand.",
+                    "Chinrog on the other hand will show you no mercy.",
+                    "Also when you eat/drink here you will trigger IMPORTANT!!! cut scenes, so don't neglect em."
 
                 ],
                 (50, 450, 700, 45), 36, 500

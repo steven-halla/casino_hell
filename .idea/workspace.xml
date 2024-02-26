@@ -4,9 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fized bug tht allowed player to use magic even at 0">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated so that money wont fall below 0 including gains when gettinga blkac jack when enemy money is low">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/bobby_bibs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/chilly_billy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/jessica_starving.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/rumble_bill.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/chilli_screen/sir_leopold_the_hedgehog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/evilcat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/evilcat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/hedgehog2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/hedge_maze_screen/hedgehog2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep_low_body.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/bar_keep_low_body.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/doctor_opossum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/quest_giver_janet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/suffering_suzy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/rest_screen/wally_guide.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/bapping_mike.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/bapping_mike.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/cindy_long_hair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/flippin_ted.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/start_screen/hungry_patrick.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -358,7 +374,7 @@
       <workItem from="1706309237437" duration="11605000" />
       <workItem from="1706635016180" duration="104034000" />
       <workItem from="1706926189767" duration="120635000" />
-      <workItem from="1707589099832" duration="290544000" />
+      <workItem from="1707589099832" duration="295205000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -703,7 +719,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="627" />
+    <option name="localTasksCounter" value="628" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -732,7 +748,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed it so that bust protect no longer has an impact as this is old as I removed the lady luck ability" />
     <MESSAGE value="fixed black jack bug that was not taking away stamina poitns for busts, upated messages and other bugs for busting" />
     <MESSAGE value="nowplayers cant move arrow till message is done" />
     <MESSAGE value="updated boss key" />
@@ -757,7 +772,8 @@
     <MESSAGE value="minor bug fix with demon boss and minor bug fix with nelly" />
     <MESSAGE value="updated hogs so that now you cannot move while chatting with them" />
     <MESSAGE value="fized bug tht allowed player to use magic even at 0" />
-    <option name="LAST_COMMIT_MESSAGE" value="fized bug tht allowed player to use magic even at 0" />
+    <MESSAGE value="updated so that money wont fall below 0 including gains when gettinga blkac jack when enemy money is low" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated so that money wont fall below 0 including gains when gettinga blkac jack when enemy money is low" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -798,7 +814,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1708917460472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1708982821888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />

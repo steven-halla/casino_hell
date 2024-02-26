@@ -1,45 +1,38 @@
 {
-    "level": 3,
-    "exp": 389,
-    "stamina_points": 140,
-    "max_stamina_points": 140,
-    "focus_points": 50,
-    "max_focus_points": 50,
-    "companions": [
-        "sir leopold"
-    ],
-    "items": [
-        "sir leopold's paw",
-        "opossum repellent"
-    ],
+    "level": 1,
+    "exp": 10,
+    "stamina_points": 100,
+    "max_stamina_points": 100,
+    "focus_points": 10,
+    "max_focus_points": 10,
+    "companions": [],
+    "items": [],
     "npcitems": [
         "inn badge"
     ],
     "magicinventory": [
-        "reveal",
-        "shake",
-        "shield"
+        "reveal"
     ],
-    "body": 1,
+    "body": 0,
     "mind": 1,
-    "spirit": 1,
-    "perception": 1,
+    "spirit": 0,
+    "perception": 0,
     "luck": 0,
-    "money": 2740,
+    "money": 400,
     "rabies": false,
-    "immunity": true,
+    "immunity": false,
     "level3reward": false,
-    "food": 1,
-    "days": 4,
+    "food": 0,
+    "days": 1,
     "cutscene1": false,
     "cutscene2": false,
-    "quest1complete": true,
+    "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 1000,
-    "opossumnellymoney": 0,
-    "opossumsallymoney": 450,
-    "blackjackthomasmoney": 0,
-    "blackjackrumblebillmoney": -100,
-    "shopkeeperpotion": true,
-    "shopkeepersavecoin": true
+    "opossumnellymoney": 500,
+    "opossumsallymoney": 1000,
+    "blackjackthomasmoney": 500,
+    "blackjackrumblebillmoney": 900,
+    "shopkeeperpotion": false,
+    "shopkeepersavecoin": false
 }

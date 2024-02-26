@@ -10,13 +10,13 @@ class FlippinTed(Npc):
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
-                ["Ted: I'm a newb stomper, better be careful", "You should just give up now.....or do you want some of this?"],
+                ["Ted: I'm a newb stomper, better be careful.", "You should just give up now, or do you want some of this?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["You took my coins you....you.....I'll never forgive you!!!"],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
-                ["I see you got bit, you deserve it you trash. I hope you suffer!"],
+                ["I see you got bit, you deserve it you trash. I hope you suffer! I'm going to hose you down when I get a chance."],
                 (50, 450, 700, 130), 36, 500),
 
         }

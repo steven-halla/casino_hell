@@ -15,7 +15,7 @@ class Guy(Npc):
                     "Guy: Most people in this area are here to gamble, you can quit a match and go rest if you feel it too much.",
                     "Enemy money won't reset, so take it at your own pace.",
                     "You don't have to take everyone's money, you should just take what you need and try and get through this area.",
-                    "For those that beat this area, on average it takes them 5-10 days. Try and beat this area before your 10th day if you can.",
+                    "Thomas is not all that good at black jack, Rumble Bill is more of a threat, if you end up deciding to battle Chinrog, good luck.",
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

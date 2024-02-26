@@ -12,7 +12,7 @@ class JessicaStarving(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "no more chili please god not again no no no no no no no no no no no no no god no please no anything but chili please somebody help me!",
+                    "Jessica: No more chili please god not again no no no no no no no no no no no no no god no please no anything but chili please somebody help me!",
                     "Hero: (These demons are just too cruel, is there anyway I can help them?)"
                 ],
                 (50, 450, 50, 45), 30, 500

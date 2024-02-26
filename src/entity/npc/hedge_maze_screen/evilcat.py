@@ -11,9 +11,9 @@ class EvilCat(Npc):
         super().__init__(x, y)
         self.textbox = NpcTextBox(
             ["I'm just a cute kitty cat you can trust me.",
-             "You look so stressed out why dont you just sit back and relax",
-             "Try some relaxing breathing exerciess with me. breath in. Hold it, hold it, breath out. Breath in....breath out",
-             "Just ignore the demon and breath in",
+             "You look so stressed out why dont you just sit back and relax, close your eyes and forget all your troubles.",
+             "Try some relaxing breathing exerciess with me. breath in. Hold it, hold it, breath out. Breath in....breath out.",
+             "Great, now stop and look around I have a gift for you.",
 
              ],
             (50, 450, 50, 45), 30, 500)
