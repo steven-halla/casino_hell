@@ -1009,7 +1009,7 @@ class CoinFlipFredScreen(Screen):
             state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
 
             if state.controller.isTPressed:
-                if self.magicindex == 0:
+                if self.magicindex == 0 and state.player.focus_points > 0:
 
                     print(str(self.magic_menu_selector[0]))
                     print(str(self.magic_menu_selector))

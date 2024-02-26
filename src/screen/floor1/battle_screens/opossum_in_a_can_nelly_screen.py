@@ -1116,11 +1116,13 @@ class OpossumInACanNellyScreen(Screen):
                 self.opossumInACanMessages["magic_description_back"].draw(state)
             if state.controller.isTPressed:
                 if self.magic_menu_opossum_index == 0:
-                    self.debuff_keen_perception = True
-                    state.player.focus_points -= 10
-                    self.spell_sound.play()  # Play the sound effect once
-                    self.game_state = "menu_screen"
-                    state.controller.isTPressed = False  # Reset the button state
+                    if state.player.focus_points > 0:
+
+                        self.debuff_keen_perception = True
+                        state.player.focus_points -= 10
+                        self.spell_sound.play()  # Play the sound effect once
+                        self.game_state = "menu_screen"
+                        state.controller.isTPressed = False  # Reset the button state
 
                 elif self.magic_menu_opossum_index == 1:
                     state.controller.isTPressed = False  # Reset the button state
