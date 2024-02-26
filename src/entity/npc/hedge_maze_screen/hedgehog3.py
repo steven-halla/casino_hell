@@ -80,6 +80,8 @@ class HedgeHog3(Npc):
                 print("10")
 
                 self.state = "talking"
+                state.player.canMove = False
+
 
                 self.state_start_time = pygame.time.get_ticks()
                 # the below is where kenny had it
@@ -96,6 +98,8 @@ class HedgeHog3(Npc):
             # self.textbox.reset()
 
             self.state = "waiting"
+            state.player.canMove = True
+
             # if "Nurgle the hedge hog" not in state.player.items:
             #     state.player.items.append("Nurgle the hedge hog")
             #     print("Added: " + str(state.player.items))
