@@ -157,7 +157,7 @@ class OpossumInACanNellyScreen(Screen):
 
             # You can add more game state keys and TextBox instances here
         }
-        self.result = "win"
+        self.result = ""
         self.bet = 200
         self.insurance = 200
         self.X3 = False
@@ -249,6 +249,8 @@ class OpossumInACanNellyScreen(Screen):
 
     def initializeGarbageCans(self):
         self.trash_can_pick = ""
+        self.result = ""
+
 
         # Randomly shuffle the winner_or_looser list
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
@@ -287,17 +289,22 @@ class OpossumInACanNellyScreen(Screen):
         if selected_box_content == "win":
             self.trash_can_pick = "win"
             self.player_score += 50
+            self.result = "+50"
 
         if selected_box_content == "X3_star":
             self.trash_can_pick = "X3_star"
+            self.result = "X3"
 
             self.player_score *= 3
 
         if selected_box_content == "lucky_star":
             self.trash_can_pick = "lucky_star"
             self.player_score += 200
+            self.result = "+200"
+
 
         if selected_box_content == "lose":
+            self.result = "lose"
 
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False

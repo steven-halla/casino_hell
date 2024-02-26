@@ -612,18 +612,10 @@ class BlackJackThomasScreen(Screen):
                 print("Going to bust a giant busttttttttter")
 
 
-                if state.player.level == 1:
-                    state.player.exp += 5
-                    self.first_message_display = f"You lose -5 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-                elif state.player.level == 2:
-                    state.player.exp += 2
-                    self.first_message_display = f"You lose -5 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-                elif state.player.level == 3:
-                    state.player.exp += 1
-                    self.first_message_display = f"You lose -5 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 1 exp and lose {self.bet} "
+                state.player.exp += 5
+                self.first_message_display = f"You lose -5 HP."
+                self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
+
             if self.bust_protection == True:
                 self.game_state = "results_screen"
             else:

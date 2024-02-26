@@ -601,22 +601,12 @@ class BlackJackRumbleBillScreen(Screen):
             if self.player_score > 21:
                 state.player.money -= self.bet
                 self.cheater_bob_money += self.bet
-                state.player.stamina_points -= 8
+                state.player.stamina_points -= 6
                 print("Going to bust a giant busttttttttter")
 
-                if state.player.level == 1:
-                    state.player.exp += 5
-                    self.first_message_display = f"You lose -8 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-                elif state.player.level == 2:
-                    state.player.exp += 2
-                    self.first_message_display = f"You lose -8 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-                elif state.player.level == 3:
-                    state.player.exp += 1
-                    self.first_message_display = f"You lose -8 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 1 exp and lose {self.bet} "
-
+                state.player.exp += 10
+                self.first_message_display = f"You lose -6 HP."
+                self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
 
 
             if self.bust_protection == True:
@@ -884,13 +874,13 @@ class BlackJackRumbleBillScreen(Screen):
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                     if self.bet <= 50:
-                        state.player.exp += 10
-                        self.first_message_display = f"Gain 10 exp and win {self.bet * 2} gold "
+                        state.player.exp += 20
+                        self.first_message_display = f"Gain 20 exp and win {self.bet * 2} gold "
 
                     else:
-                        self.first_message_display = f"Gain 25 exp and win {self.bet * 2} gold "
+                        self.first_message_display = f"Gain 40 exp and win {self.bet * 2} gold "
 
-                        state.player.exp += 25
+                        state.player.exp += 40
 
                     self.second_message_display = "Player deals a CRITICAL HIT!!! "
                     state.player.money += self.bet * 2

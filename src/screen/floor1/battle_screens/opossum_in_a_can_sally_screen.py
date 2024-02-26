@@ -156,7 +156,7 @@ class OpossumInACanSallyScreen(Screen):
 
             # You can add more game state keys and TextBox instances here
         }
-        self.result = "win"
+        self.result = ""
         self.bet = 200
         self.insurance = 200
         self.X3 = False
@@ -249,6 +249,8 @@ class OpossumInACanSallyScreen(Screen):
 
     def initializeGarbageCans(self):
         self.trash_can_pick = ""
+        self.result = ""
+
 
 
 
@@ -297,17 +299,21 @@ class OpossumInACanSallyScreen(Screen):
         if selected_box_content == "win":
             self.trash_can_pick = "win"
             self.player_score += 50
+            self.result = "+50"
 
         if selected_box_content == "X3_star":
             self.trash_can_pick = "X3_star"
+            self.result = "X3"
 
             self.player_score *= 3
 
         if selected_box_content == "lucky_star":
             self.trash_can_pick = "lucky_star"
             self.player_score += 200
+            self.result = "+200"
 
         if selected_box_content == "lose":
+            self.result = "lose"
 
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False
@@ -892,8 +898,9 @@ class OpossumInACanSallyScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                             (255, 255, 255)), (37, 330 - 40))
         state.DISPLAY.blit(
-            self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
+            self.font.render(f"result: {self.result}", True, (255, 255, 255)),
             (37, 370 - 40))
+        #refrain
 
         state.DISPLAY.blit(self.font.render(f"Score: {self.player_score} ", True, (255, 255, 255)), (37, 370))
 
