@@ -910,8 +910,12 @@ class BlackJackThomasScreen(Screen):
                         state.player.exp += 25
 
                     self.second_message_display = "You win player press T when ready"
-                    state.player.money += self.bet * 2
-                    self.cheater_bob_money -= self.bet * 2
+                    if self.bet * 2 < self.cheater_bob_money:
+                        state.player.money += self.bet * 2
+                        self.cheater_bob_money -= self.bet * 2
+                    else:
+                        state.player.money += self.cheater_bob_money
+                        self.cheater_bob_money = 0
                     print("LINE 891 nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 

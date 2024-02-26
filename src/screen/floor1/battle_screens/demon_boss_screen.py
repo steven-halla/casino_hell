@@ -874,8 +874,12 @@ class DemonBossScreen(Screen):
 
                     self.first_message_display = f"You gain 100 exp and win {self.bet * 2} gold "
                     self.second_message_display = "You win player press T when ready"
-                    state.player.money += self.bet * 2
-                    self.cheater_bob_money -= self.bet * 2
+                    if self.bet * 2 < self.cheater_bob_money:
+                        state.player.money += self.bet * 2
+                        self.cheater_bob_money -= self.bet * 2
+                    else:
+                        state.player.money += self.cheater_bob_money
+                        self.cheater_bob_money = 0
                     self.cheater_bob_money -= 5
                     state.player.money -= 10
 

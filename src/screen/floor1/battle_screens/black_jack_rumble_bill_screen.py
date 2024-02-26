@@ -883,8 +883,12 @@ class BlackJackRumbleBillScreen(Screen):
                         state.player.exp += 40
 
                     self.second_message_display = "Player deals a CRITICAL HIT!!! "
-                    state.player.money += self.bet * 2
-                    self.cheater_bob_money -= self.bet * 2
+                    if self.bet * 2 < self.cheater_bob_money:
+                        state.player.money += self.bet * 2
+                        self.cheater_bob_money -= self.bet * 2
+                    else:
+                        state.player.money += self.cheater_bob_money
+                        self.cheater_bob_money = 0
                     print("nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
