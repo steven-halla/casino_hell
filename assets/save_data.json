@@ -1,20 +1,22 @@
 {
-    "level": 3,
-    "exp": 538,
-    "stamina_points": 140,
-    "max_stamina_points": 140,
-    "focus_points": 60,
-    "max_focus_points": 60,
+    "level": 4,
+    "exp": 600,
+    "stamina_points": 160,
+    "max_stamina_points": 160,
+    "focus_points": 70,
+    "max_focus_points": 70,
     "companions": [
         "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
+        "opossum repellent",
         "coin flip glasses",
-        "opossum repellent"
+        "Nurgle the hedge hog"
     ],
     "npcitems": [
-        "inn badge"
+        "inn badge",
+        "level 4 token"
     ],
     "magicinventory": [
         "reveal",
@@ -26,21 +28,21 @@
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 2320,
+    "money": 2100,
     "rabies": false,
     "immunity": true,
-    "level3reward": true,
+    "level3reward": false,
     "food": 1,
-    "days": 7,
+    "days": 8,
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": true,
     "coinfliptedmoney": 0,
-    "coinflipfredmoney": 180,
-    "opossumnellymoney": 350,
-    "opossumsallymoney": 550,
+    "coinflipfredmoney": 0,
+    "opossumnellymoney": 0,
+    "opossumsallymoney": 400,
     "blackjackthomasmoney": 0,
-    "blackjackrumblebillmoney": 200,
+    "blackjackrumblebillmoney": 1200,
     "shopkeeperpotion": true,
     "shopkeepersavecoin": false
 }

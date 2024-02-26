@@ -203,12 +203,14 @@ class Player(Entity):
 
             return
 
-        if self.exp >= 600 and self.level3checker == False:
+        if self.exp >= 600 and self.level4checker == False:
             print("grats you leveld up to level 4")
+            if "level 4 token" not in state.player.npc_items:
             # if "shield" not in self.magicinventory:
-            self.max_stamina_points += 20
-            self.max_focus_points += 20
-            self.level3checker = True
+                state.player.npc_items.append("level 4 token")
+                self.max_stamina_points += 20
+                self.max_focus_points += 20
+            self.level4checker = True
             self.level = 4
 
             return

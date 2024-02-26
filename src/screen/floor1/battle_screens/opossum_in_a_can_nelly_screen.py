@@ -866,7 +866,7 @@ class OpossumInACanNellyScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
                                             (255, 255, 255)), (37, 330 - 40))
         state.DISPLAY.blit(
-            self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
+            self.font.render(f"Result: {self.result}", True, (255, 255, 255)),
             (37, 370 - 40))
 
         state.DISPLAY.blit(self.font.render(f"Score: {self.player_score} ", True, (255, 255, 255)), (37, 370))

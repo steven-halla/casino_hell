@@ -56,24 +56,14 @@ class DemonBoss(Npc):
             #     self.coin_flip_fred_messages["welcome_message"].reset()
 
 
-            if state.player.hasRabies == True:
-                self.coin_flip_fred_messages["rabies_message"].reset()
 
-            elif state.coinFlipFredScreen.coinFlipFredDefeated == True:
-                self.coin_flip_fred_messages["defeated_message"].reset()
-            else:
-                self.coin_flip_fred_messages["welcome_message"].reset()
+            self.coin_flip_fred_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.coin_flip_fred_messages["rabies_message"]
-            if state.player.hasRabies
-            else (
-                self.coin_flip_fred_messages["defeated_message"]
-                if state.coinFlipFredScreen.coinFlipFredDefeated
-                else self.coin_flip_fred_messages["welcome_message"]
+             self.coin_flip_fred_messages["welcome_message"]
             )
-        )
+
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -90,7 +80,7 @@ class DemonBoss(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and state.controller.isTPressed and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
+        if current_message.is_finished() and state.controller.isTPressed:
             # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -137,18 +127,13 @@ class DemonBoss(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.coin_flip_fred_messages["rabies_message"]
-                if state.player.hasRabies
-                else (
-                    self.coin_flip_fred_messages["defeated_message"]
-                    if state.coinFlipFredScreen.coinFlipFredDefeated
-                    else self.coin_flip_fred_messages["welcome_message"]
-                )
+              self.coin_flip_fred_messages["welcome_message"]
+
             )
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and current_message.message_at_end() and state.coinFlipFredScreen.coinFlipFredDefeated == False and state.player.hasRabies == False:
+            if current_message.is_finished() and current_message.message_at_end():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
