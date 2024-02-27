@@ -10,7 +10,7 @@ class FlippingSandy(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Sandy: I'm the ultimate in coin flip, best you turn back now, like, right now right now....hey your not turning back???? , better be careful", "Are you ready to lose?!"],
+                ["Buck: They make me drink beer till I'm almost ready to pop."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Looks like you defeated me, how sad :("],
@@ -27,7 +27,7 @@ class FlippingSandy(Npc):
         self.t_pressed = False
 
         self.character_sprite_image = pygame.image.load(
-             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Mayors Wife.png").convert_alpha()
+             "/Users/stevenhalla/code/casino_hell/assets/images/horse.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -75,9 +75,7 @@ class FlippingSandy(Npc):
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes":
-                state.currentScreen = state.coinFlipSandyScreen
-                state.coinFlipSandyScreen.start(state)
+
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -98,9 +96,9 @@ class FlippingSandy(Npc):
         #     self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        sprite_rect = pygame.Rect(5, 6, 19, 25)
+        sprite_rect = pygame.Rect(1, 80, 31, 28)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        scaled_sprite = pygame.transform.scale(sprite, (60, 60))
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
@@ -110,35 +108,3 @@ class FlippingSandy(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished():
-                bet_box_width = 150
-                bet_box_height = 100
-                border_width = 5
-
-                screen_width, screen_height = state.DISPLAY.get_size()
-                bet_box_x = screen_width - bet_box_width - border_width - 30
-                bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
-
-                bet_box = pygame.Surface((bet_box_width, bet_box_height))
-                bet_box.fill((0, 0, 0))
-                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-                white_border.fill((255, 255, 255))
-                white_border.blit(bet_box, (border_width, border_width))
-
-                # Calculate text positions
-                text_x = bet_box_x + 40 + border_width
-                text_y_yes = bet_box_y + 20
-                text_y_no = text_y_yes + 40
-                # Draw the box on the screen
-                state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
-
-                # Draw the text on the screen (over the box)
-                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
-                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-
-                # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-                # Here's a simple example using a triangle:
-                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])

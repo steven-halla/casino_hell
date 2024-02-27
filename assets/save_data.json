@@ -1,31 +1,32 @@
 {
     "level": 1,
-    "exp": 10,
-    "stamina_points": 100,
+    "exp": 1110,
+    "stamina_points": 140,
     "max_stamina_points": 100,
     "focus_points": 10,
     "max_focus_points": 10,
     "companions": [],
     "items": [],
     "npcitems": [
-        "inn badge"
+        "inn badge",
+        "boss key"
     ],
     "magicinventory": [
         "reveal"
     ],
-    "body": 0,
+    "body": 1,
     "mind": 1,
     "spirit": 0,
     "perception": 0,
     "luck": 0,
-    "money": 400,
+    "money": 2222,
     "rabies": false,
     "immunity": false,
     "level3reward": false,
     "food": 0,
     "days": 1,
     "cutscene1": false,
-    "cutscene2": false,
+    "cutscene2": true,
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 1000,

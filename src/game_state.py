@@ -38,6 +38,7 @@ from physics.vector import Vector
 from screen.floor1.map_screens.rest_screen import RestScreen
 from screen.floor1.map_screens.start_load_screen import StartLoadScreen
 from screen.floor1.map_screens.start_screen import StartScreen
+from screen.floor1.map_screens.win_screen import WinScreen
 
 
 class GameState:
@@ -91,6 +92,7 @@ class GameState:
         self.barCutScene1 = BarCutScene1Screen()
         self.barCutScene2 = BarCutScene2Screen()
         self.gameOverScreen = GameOverScreen()
+        self.winGameScreen = WinScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()

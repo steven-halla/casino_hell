@@ -1380,9 +1380,8 @@ class DemonBossScreen(Screen):
                         self.game_state = "welcome_screen"
 
                         state.player.canMove = True
-                        state.currentScreen = state.restScreen
-                        state.currentScreen = state.gameOverScreen
-                        state.gameOverScreen.start(state)
+                        state.currentScreen = state.winScreen
+                        state.winScreen.start(state)
 
             if state.player.money < 1:
                 self.game_state = "game_over_no_money"
