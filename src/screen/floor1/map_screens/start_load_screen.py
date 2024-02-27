@@ -179,42 +179,41 @@ class StartLoadScreen(Screen):
         # Draw the title text on the screen
         state.DISPLAY.blit(title_text, (title_x, title_y))
 
+        if self.current_color_index == len(self.title_colors) - 1:
 
-        # this is for hte box down below
-        # if self.last_color == True:
-        bet_box_width = 180
-        bet_box_height = 100
-        border_width = 5
+            bet_box_width = 180
+            bet_box_height = 100
+            border_width = 5
 
-        screen_width, screen_height = state.DISPLAY.get_size()
-        bet_box_x = screen_width - bet_box_width - border_width - 30 - 295  # Shift left by 300
-        bet_box_y = screen_height - 130 - bet_box_height - border_width + 15
+            screen_width, screen_height = state.DISPLAY.get_size()
+            bet_box_x = screen_width - bet_box_width - border_width - 30 - 295  # Shift left by 300
+            bet_box_y = screen_height - 130 - bet_box_height - border_width + 15
 
-        bet_box = pygame.Surface((bet_box_width, bet_box_height))
-        bet_box.fill((0, 0, 0))
-        white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(bet_box, (border_width, border_width))
+            bet_box = pygame.Surface((bet_box_width, bet_box_height))
+            bet_box.fill((0, 0, 0))
+            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+            white_border.fill((255, 255, 255))
+            white_border.blit(bet_box, (border_width, border_width))
 
-        # Calculate text positions relative to the bet_box_x
-        text_x = bet_box_x + 40 + border_width  # Position based on bet_box_x
-        text_y_start_game = bet_box_y + 20
-        text_y_load = text_y_start_game + 40
+            # Calculate text positions relative to the bet_box_x
+            text_x = bet_box_x + 40 + border_width  # Position based on bet_box_x
+            text_y_start_game = bet_box_y + 20
+            text_y_load = text_y_start_game + 40
 
-        # Draw the box on the screen
-        state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+            # Draw the box on the screen
+            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
-        # Draw the text on the screen (over the box)
-        state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
-        state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_load))
+            # Draw the text on the screen (over the box)
+            state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
+            state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_load))
 
-        arrow_x = text_x - 25  # Adjust the position of the arrow based on your preference
-        arrow_y = text_y_start_game + self.arrow_index * 40  # Adjust based on the item's height
+            arrow_x = text_x - 25  # Adjust the position of the arrow based on your preference
+            arrow_y = text_y_start_game + self.arrow_index * 40  # Adjust based on the item's height
 
-        # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-        # Here's a simple example using a triangle:
-        pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                            [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+            # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+            # Here's a simple example using a triangle:
+            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
         pygame.display.update()
 
