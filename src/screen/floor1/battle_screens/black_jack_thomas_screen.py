@@ -243,9 +243,9 @@ class BlackJackThomasScreen(Screen):
 
         self.defeated_textbox = TextBox(
             [
-                "Guy:Looks like you defeated me.....back to eating chili for days and day and days....",
+                "Thomas: You may have beat me for now, but there are others. Word is going around that you want to face Chinrog.",
 
-                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high",
+                "He's going to eat you for breakfast, you should just forget your hero antics and move on.",
             ""],
             (50, 450, 50, 45), 30, 500)
 

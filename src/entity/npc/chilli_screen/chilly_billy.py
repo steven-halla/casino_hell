@@ -15,7 +15,7 @@ class ChillyBilly(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Chilly Billy: People keep complaining that the hedge hogs are pooping in the chilli",
+                    "Chilly Billy: People keep complaining that the hedge hogs are pooping in the chilli.",
                     "It doesn't make any sense, I mean you humans eat canned foods ,  which has poop,and you know it has poop, and you eat it.",
                     "Maybe it's because the poop is fresh? Is that the real issue they've been complaining? Or is it the type of poop?",
                     "Hero: Humans don't like to eat poop, most people dont' even know that food is contaminated.",

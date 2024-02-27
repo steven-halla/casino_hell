@@ -11,20 +11,20 @@ class DoctorOpossum(Npc):
         super().__init__(x, y)
         self.doctor_messages = {
             "welcome_message": NpcTextBox(
-                ["Alice: I'm a rabies doctor, I used to be a heart surgeon", "If you need any help in the future let me know", "Hero: If i need to swing by I will"],
+                ["Alice: I'm a rabies doctor, I used to be a heart surgeon.", "If you need any help in the future let me know.", "Hero: If i need to swing by I will."],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "rabies_message": NpcTextBox(
-                ["Alice: I can tell by looking at you...sorry but my blue flower, which is part of the antidote was stolen",
+                ["Alice: I can tell by looking at you...sorry but my blue flower, which is part of the antidote was stolen.",
                  "You'll need to go to the hedge maze which is past the chili pit down south of here. There you will find a new blue flower, just be aware of the demons."],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "cured_message": NpcTextBox(
-                ["Alice: Thank you for the flower....I'll cure you...and here, this will increase your perception. Look above you for the body potion. Now go and rest up at the Inn, Doctor's orders!!! "],
+                ["Alice: Thank you for the flower....I'll cure you...and here, this will increase your perception. Look above you for the body potion.", " Now go and rest up at the Inn, Doctor's orders!!! "],
                 (50, 450, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -34,9 +34,9 @@ class DoctorOpossum(Npc):
 
             "sir_leopold_message": NpcTextBox(
                 ["Alice: Your actions not only saved yourself, but others as well, I'll never forget you.",
-                 "Hero: That dirty Chinrog, I'll make him pay for what he's done to everyone",
+                 "Hero: That dirty Chinrog, I'll make him pay for what he's done to everyone.",
                  "Alice: Are you sure you can take him on? He's too strong for you.",
-                 "Hero: Even when the chips are down I always make a come back, I'll rescue everyone and make things better."
+                 "Hero: Even when the chips are down I always make a  come back, I'll rescue everyone and make things better."
 
                  ],
                 (50, 450, 700, 130),  # Position and size

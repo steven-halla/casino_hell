@@ -24,12 +24,12 @@ class CindyLongHair(Npc):
                 [
                     "",
                     "Cindy: Oh cool look at you, time for your reward (inn badge). I have something else for you too, I don't just be giving these out.",
-                    "Cindy: This potion will increase your intelligence by one, this will open up 3 spell slots. More Mind means you can hold on more spells!",
+                    "Cindy: This potion will increase your intelligence by one, this will open up 3 spell slots. More Mind means you can hold on to more spells!",
                     "Cindy: Higher intelligence also means more magic points.",
                     "Go play some black jack and try it out. It'll give you the advantage you need to win.",
                     "Hero: Thanks for that, your such a great help Cindy.",
-                    "Cindy: Chinrog will be leaving in 10 days, you don't want to meet him",
-                    "Hero: No matter what I'll battle him...10 days,I got this."
+                    "Cindy: Chinrog will be leaving in 10 days, you don't want to meet him.",
+                    "Hero: No matter what I'll battle him...10 days, I got this."
 
                 ],
 

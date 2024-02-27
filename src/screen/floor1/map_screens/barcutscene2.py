@@ -12,6 +12,7 @@ from entity.npc.rest_screen.bar_keep import BarKeep
 from entity.npc.rest_screen.doctor_opossum import DoctorOpossum
 
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
+from entity.npc.rest_screen.wally_guide import WallyGuide
 
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.player.player import Player
@@ -52,16 +53,16 @@ class BarCutScene2Screen(Screen):
             "message_1": NpcTextBox(
                 [
                     "Hero: So how did it all go?",
-                    "Janet: It went very well, I managed to get 100,000 coins",
-                    "Suzy: How....did you...get so much",
-                    "Janet: I'm a persuasive talker, everyone was happy to chip in, peer pressure also helps too.",
+                    "Cindy: It went very well, I managed to get a lot of coins, and a list of demands.",
+                    "Wally: How....did you...get so much, was it the rats?",
+                    "Cindy: I'm a persuasive talker, everyone was happy to chip in, peer pressure also helps too.",
                     "Sir Leopold: WIth that much money you could go straight to the 3rd level, must have been tempting to leave us high and dry",
-                    "Janet: No not at all, didnt' even cross my mind till now....Would you have done it? Cut and RUn",
-                    "Sir Leopold: No way, I may not look like it, but I'm a knight, there is no way I can let anything stain my honor",
+                    "Cindy: No not at all, didnt' even cross my mind till now....Would you have done it? Cut and Run?",
+                    "Sir Leopold: No way, I may not look like it, but I have honor, there is no way I can let anything stain that.",
                     "Hero: Don't you steal though? The first time we met you offered me coins that you stole.",
-                    "Sir Leopold: Yes I do steal, for justice. I steal in a knightly kind of way.",
-                    "Suzy: I put in my life savings too...we're counting on you. If you lose I'm giving you rabies and keeping you as a pet",
-                    "Janet:  If you lose I'm sure Chinrog will do something horrible to you, are you sure you want to go through with this? You should think about this, ",
+                    "Sir Leopold: Yes I do steal, for justice. I steal in a Robin Hood kind of way.",
+                    "Wally: I put in all but 10 coins, if you lose i'll feed you to my rat buddy.",
+                    "Cindy:  If you lose I'm sure Chinrog will do something horrible to you, are you sure you want to go through with this? You should think about this. ",
                     "Hero: What is there to think about? I've never gambled with such high stakes, how can I not do it?",
                     "Sir Leopold: I'll be there to help as well, no matter what happens I got your back. "
 
@@ -82,6 +83,7 @@ class BarCutScene2Screen(Screen):
 
 
     def start(self, state: "GameState"):
+
         state.restScreen.barscene2 = True
 
         super().start(state)
@@ -97,12 +99,11 @@ class BarCutScene2Screen(Screen):
             state.player = Player(player_start_x, player_start_y)
 
         state.npcs = [
-            SirLeopoldTheHedgeHog(16 * 11, 16 * 30),
-            QuestGiverJanet(16 * 21, 16 * 20),
+            SirLeopoldTheHedgeHog(16 * 16, 16 * 30),
+            WallyGuide(16 * 22, 16 * 30),
             BarKeep(16 * 31, 16 * 5),
             CindyLongHair(16 * 31, 16 * 20),
             Guy(16 * 31, 16 * 28),
-            DoctorOpossum(16 * 31, 16 * 12)
         ]
 
 

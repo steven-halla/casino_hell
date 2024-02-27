@@ -27,7 +27,7 @@ class ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["+10 potion", "save coin", "opossum repellent"]
+        self.shop_items = ["mega potion", "save coin", "opossum repellent"]
 
         self.shop_costs = ["100", "10", "300"]
 
@@ -66,8 +66,8 @@ class ShopKeeper(Npc):
                 self.state = "waiting"
                 print("Leaving the shop...")
                 self.textbox.reset()
-                if "+10 stamina" in state.player.items:
-                    state.player.items.remove("+10 stamina")
+                if "mega potion" in state.player.items:
+                    state.player.items.remove("mega potion")
                     state.player.max_stamina_points += 10
                 return
 
@@ -124,8 +124,8 @@ class ShopKeeper(Npc):
                     state.save_game(state.player, state)  # Call the save_game function
 
 
-                if "+10 potion" in state.player.items:
-                    state.player.items.remove("+10 potion")
+                if "mega potion" in state.player.items:
+                    state.player.items.remove("mega potion")
                     state.player.max_stamina_points += 20
                     state.player.max_focus_points += 20
                     state.player.shop_keep_potion = True

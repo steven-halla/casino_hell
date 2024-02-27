@@ -13,7 +13,7 @@ class JessicaStarving(Npc):
             "default_message": NpcTextBox(
                 [
                     "Jessica: No more chili please god not again no no no no no no no no no no no no no god no please no anything but chili please somebody help me!",
-                    "Hero: (These demons are just too cruel, is there anyway I can help them?)"
+                    "Hero: (These demons are just too cruel, hold on, I'll help you all.)"
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

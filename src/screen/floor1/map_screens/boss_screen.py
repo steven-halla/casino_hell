@@ -39,6 +39,9 @@ class BossScreen(Screen):
         self.last_sound_time = 0
         self.collision_sound.set_volume(0.2)  # Set the volume to 50%
 
+        self.clock = pygame.time.Clock()  # Initialize the clock
+
+
     def stop_music(self):
         pygame.mixer.music.stop()
 
@@ -92,6 +95,9 @@ class BossScreen(Screen):
         # i dont think npc and demons getting updated
         # print(state.quest_giver_janet.find_hog)
         # print(state.quest_giver_janet.quest2counter)
+
+        self.clock.tick(60)
+
 
 
         controller = state.controller

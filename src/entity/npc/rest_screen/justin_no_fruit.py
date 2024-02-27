@@ -28,7 +28,8 @@ class JustinNoFruit(Npc):
                 [
 
                     "Justin: I was so scared...you have a knack for defying the odds.....",
-                    "Hero: I guess you can say I was born lucky. That's what my mom always told me."
+                    "Hero: I guess you can say I was born lucky. That's what my mom always told me.",
+                    "Here is a good tip: the food down here is disgusting, the higher your Health, the more food you can eat in a day."
                     ,
                 ],
                 (50, 450, 50, 45), 30, 500

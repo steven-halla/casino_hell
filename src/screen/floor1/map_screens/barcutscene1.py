@@ -52,18 +52,18 @@ class BarCutScene1Screen(Screen):
                 [
                     "Hero: So what is it going to take,to get some rule changes around here?",
                     "Bar keep: Friend I've been working here a long time, I don't see them change the rules much, these demons are real sticklers..",
-                    "Janet: It would be nice to have better food, clean clothes, and a mattress not filled with insects",
+                    "Cindy: It would be nice to have better food, clean clothes, and a mattress not filled with insects",
                     "Hero: I'm sure that if I put enough on the line, I can make a gamble with this chinrog",
                     "Guy: You don't have the coins for that, I bet it would take all of us pooling together our resources",
-                    "Janet: Then why don't we do that then? I can probably convince the others to chip in",
+                    "Cindy: Then why don't we do that then? I can probably convince the others to chip in",
                     "Guy: And what if he fails",
                     "Sir Leopold:  He won't fail, no need to have any doubts, how can it get any worse.",
                     "bar keep: It can always get worse",
                     "Sir Leopold: In due time, if we don't act now it probably will get worse no matter what, I believe in him, I say we take this chance..",
 
-                    "Janet: Arent you scared to battle a demon? You know it won't be the same as the others",
+                    "Cindy: Arent you scared to battle a demon? You know it won't be the same as the others",
                     "Hero: That's why I want to do it, the thought of betting a demon has my blood boiling with excitment",
-                    "Janet: That's just what I wanted to hear, next time we meet I'll let you know how it panned out"
+                    "Cindy: That's just what I wanted to hear, next time we meet I'll let you know how it panned out"
 
 
 
@@ -99,8 +99,7 @@ class BarCutScene1Screen(Screen):
             state.player = Player(player_start_x, player_start_y)
 
         state.npcs = [
-            SirLeopoldTheHedgeHog(16 * 11, 16 * 30),
-            QuestGiverJanet(16 * 21, 16 * 20),
+            SirLeopoldTheHedgeHog(16 * 16, 16 * 30),
             BarKeep(16 * 31, 16 * 10),
             CindyLongHair(16 * 31, 16 * 20),
             Guy(16 * 31, 16 * 28)

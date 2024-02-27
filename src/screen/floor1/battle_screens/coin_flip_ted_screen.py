@@ -180,8 +180,8 @@ class CoinFlipTedScreen(Screen):
                 500  # Delay
             ),
             "enemy_defeated_message": TextBox(
-                ["Hero: That was pretty easy ",
-                 "Ted: You have much stronger people to face you bastard",
+                ["Hero: That was pretty easy. ",
+                 "Ted: You have much stronger people to face you bastard.",
                  "Hero: Maybe so but I won't be facing you anymore, see you around Clown.", ""
 
                  ],

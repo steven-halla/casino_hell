@@ -93,7 +93,7 @@ class WinScreen(Screen):
     def draw(self, state: "GameState"):
 
         state.DISPLAY.fill(BLUEBLACK)
-        state.DISPLAY.blit(self.font.render(f"You beat the evil demon, but there is more to come. Congratulations!!!", True,
+        state.DISPLAY.blit(self.font.render(f"You beat the evil demon, but there is more to come.", True,
                                                 (255, 255, 255)), (70, 460))
 
         pygame.display.update()

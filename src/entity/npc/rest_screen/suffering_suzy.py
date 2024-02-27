@@ -14,7 +14,7 @@ class SufferingSuzy(Npc):
         self.guy_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Suzy: Rabies is very scary, I already had to get my shop before, you start frothing at the mouth very early.",
+                    "Suzy: Rabies is very scary, I already had to get my shot before, you start frothing at the mouth very early.",
                     "Hero: What kind of casino is this? How is this even legal?",
                     "Suzy: The kind that everyone regrets going to, unless of course you make it to the upper levels.",
 

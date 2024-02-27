@@ -99,16 +99,21 @@ class DemonBossScreen(Screen):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "demon_introduction_screen": ["Chinrog: hehehe. I will make you regret the day you were born.",
+            "demon_introduction_screen": ["Chinrog: You want it, you got it punk, I'll teach you, I'll teach you all to go against a demon.",
 
-                               "Forgotten corpse king rotting in a cell of eternal agony, ...Poison Purse",
+                               "The forgotten corpse king of plagues, spreading his blessings across the land. Rot, Fester, Decay...Necrotic Purse.",
                                ""],
-            "welcome_screen": ["Hero: This....what is this I feel....sick.",
+            "welcome_screen": ["Hero: This....what is this I feel....strange.",
 
-                               "Sir Leopold: Be careful I've seen this before, every round your oponnent will lose 5 coins, but you lose 10 coins per round",
-                               "Hero: What your saying sounds impossible, Even when the odds arent in my favor, I never back down" ,
-                               "Sir Leopold: It gets worse...It'll be harder for me to steal his aces, 70/30 split, our favor",
-                               "Hero: I like those odds....lets do this and save the people of this floor. "],
+                               "Sir Leopold: Be careful I've seen this before, every round your oponnent will lose 5 coins, but you lose 10 coins per round.",
+                               "Hero: What your saying sounds impossible, Even when the odds arent in my favor, I never back down." ,
+                               "Sir Leopold: It gets worse...It'll be harder for me to steal his aces, 50/50 split.",
+                               "Hero: Time for my secret weapon...My mom's lucky coin. ",
+                               "Sir Leopold: Your luck...it just went up, listen for the TING for your new power to activate.",
+                               "If you draw a bad hand you'll get a redraw. ",
+                               "Luck is a global power that affects all games.",
+                               "Now lets get em."
+                               ],
             "hero_intro_text": [
                 "am I in trouble?",
 
@@ -1168,8 +1173,8 @@ class DemonBossScreen(Screen):
                 print("moogles")
                 state.player.canMove = True
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.winGameScreen
+                state.winGameScreen.start(state)
 
         elif self.game_state == "hero_is_desperate_state":
             self.hero_losing_money_text.draw(state)
@@ -1380,8 +1385,8 @@ class DemonBossScreen(Screen):
                         self.game_state = "welcome_screen"
 
                         state.player.canMove = True
-                        state.currentScreen = state.winScreen
-                        state.winScreen.start(state)
+                        state.currentScreen = state.winGameScreen
+                        state.winGameScreen.start(state)
 
             if state.player.money < 1:
                 self.game_state = "game_over_no_money"

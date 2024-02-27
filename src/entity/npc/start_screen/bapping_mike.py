@@ -17,7 +17,7 @@ class BappingMike(Npc):
                         "Mike: Money is FINITE, so don't waste it. You'll need it for gambling, sleeping, eating, as well as buying items.",
                         "Chinrog is the head demon of this level. He'll be gone in 10 days.",
                     "Hero: Demon? You know Demons aren't real right?",
-                    "Mike: You didn't read the terms and conditions before signing it I bet.",
+                    "Mike: You didn't read the terms and conditions before signing I bet.",
                     "Hero: Nope, it was 30 pages long, no thanks. Never had to fill one out at a casino before."
                 ],
                 (50, 450, 700, 130), 30, 500
