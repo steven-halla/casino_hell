@@ -203,12 +203,12 @@ class BossScreen(Screen):
 
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)
-        state.DISPLAY.blit(state.FONT.render(
-            f"player money: {state.player.money}",
-            True, (255, 255, 255)), (333, 333))
-        state.DISPLAY.blit(state.FONT.render(
-            f"player stamina points: {state.player.stamina_points}",
-            True, (255, 255, 255)), (333, 388))
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player money: {state.player.money}",
+        #     True, (255, 255, 255)), (333, 333))
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player stamina points: {state.player.stamina_points}",
+        #     True, (255, 255, 255)), (333, 388))
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
