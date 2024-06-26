@@ -1,4 +1,5 @@
 import textwrap
+from typing import List, Tuple
 
 import pygame
 
@@ -9,17 +10,17 @@ class NpcTextBox(Entity):
     def __init__(self, messages: list[str], rect: tuple[int, int, int, int],
                  font_size: int, delay: int):
         super().__init__(rect[0], rect[1], rect[2], rect[3])
-        self.messages = messages
-        self.message_index = 0
-        self.characters_to_display = 0
-        self.font_size = font_size
-        self.delay = delay
-        self.time = pygame.time.get_ticks()
-        self.font = pygame.font.Font(None, 36)
-        self.show_shop_menu = False  # New flag for showing shop menu
-        self.shop_items = []  # New: List to store shop items
-        self.selected_item_index = 0  # New attribute to track selected item index
-        self.last_key_time = 0  # Track the time of the last key press for scrolling
+        self.messages: List[str] = messages
+        self.message_index: int = 0
+        self.characters_to_display: int = 0
+        self.font_size: int = font_size
+        self.delay: int = delay
+        self.time: int = pygame.time.get_ticks()
+        self.font: pygame.font.Font = pygame.font.Font(None, 36)
+        self.show_shop_menu: bool = False  # New flag for showing shop menu
+        self.shop_items: List[str] = []  # New: List to store shop items (assuming shop items are strings)
+        self.selected_item_index: int = 0  # New attribute to track selected item index
+        self.last_key_time: int = 0  # Track the time of the last key press for scrolling
 
 
 
@@ -32,8 +33,8 @@ class NpcTextBox(Entity):
 
     def update(self, state: "GameState"):
         # print("textbox update")
-        current_time = pygame.time.get_ticks()
-        key_scroll_delay = 200  # Time in milliseconds before recognizing another key press
+        current_time: int = pygame.time.get_ticks()
+        key_scroll_delay: int = 200  # Time in milliseconds before recognizing another key press
 
         if state.controller.isUpPressed and (current_time - self.last_key_time > key_scroll_delay):
             self.selected_item_index = max(0, self.selected_item_index - 1)
@@ -44,7 +45,7 @@ class NpcTextBox(Entity):
             self.last_key_time = current_time  # Update the time of the last key press
 
         # show characters of text one at a time, not whole message.
-        text = self.messages[self.message_index]
+        text: str = self.messages[self.message_index]
         if self.characters_to_display < len(text):
             self.characters_to_display += 1
 
@@ -75,27 +76,27 @@ class NpcTextBox(Entity):
         # print("is finished? " + str(self.is_finished()))
 
         if self.is_finished():
-            self.show_shop_menu = True
+            self.show_shop_menu: bool = True
 
     import pygame
     import textwrap
 
-    def draw(self, state: "GameState"):
-        text = self.messages[self.message_index]
-        text_to_display = text[:self.characters_to_display]
+    def draw(self, state: "GameState") -> None:
+        text: str = self.messages[self.message_index]
+        text_to_display: str = text[:self.characters_to_display]
         # Wrap text to a maximum of 55 characters per line
-        wrapped_text = textwrap.wrap(text_to_display, 55)
+        wrapped_text: List[str] = textwrap.wrap(text_to_display, 55)
 
         # Fixed dimensions for the text box
-        box_width = 700  # Width of the text box
-        box_height = 120  # Height of the text box
+        box_width: int = 700  # Width of the text box
+        box_height: int = 120  # Height of the text box
 
         # Position of the text box
         box_x, box_y = self.position.x, self.position.y
 
         # Border dimensions and color
-        border_size = 5  # Size of the border around the text box
-        border_color = (255, 255, 255)  # White
+        border_size: int = 5  # Size of the border around the text box
+        border_color: Tuple[int, int, int] = (255, 255, 255)  # White
 
         # Draw the border rectangle
         pygame.draw.rect(state.DISPLAY, border_color, (box_x - border_size, box_y - border_size, box_width + 2 * border_size, box_height + 2 * border_size))
@@ -104,11 +105,11 @@ class NpcTextBox(Entity):
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
 
         # Draw the text within the text box
-        line_height = 40  # Adjust line height as needed
-        padding = 10  # Padding for top, left, and right
+        line_height: int = 40  # Adjust line height as needed
+        padding: int = 10  # Padding for top, left, and right
         for i, line in enumerate(wrapped_text):
-            text_line_y = box_y + (i * line_height) + padding  # Apply top padding
-            text_surface = state.FONT.render(line, True, (255, 255, 255))
+            text_line_y: int = box_y + (i * line_height) + padding  # Apply top padding
+            text_surface: pygame.Surface = state.FONT.render(line, True, (255, 255, 255))
             # Render text with left padding
             state.DISPLAY.blit(text_surface, (box_x + padding, text_line_y))
 
@@ -116,14 +117,15 @@ class NpcTextBox(Entity):
 
     def message_at_end(self) -> bool:
         """Checks if the current message has finished displaying its last letter."""
-        current_message = self.messages[self.message_index]
+        current_message: str = self.messages[self.message_index]
         return self.characters_to_display == len(current_message)
+
     def is_finished(self) -> bool:
-        self.delay = 700
+        self.delay: int = 700
         return self.message_index == len(self.messages) - 1 and \
             pygame.time.get_ticks() - self.time > self.delay
 
     def reset(self):
-        self.message_index = 0
-        self.characters_to_display = 0
-        self.time = pygame.time.get_ticks()
+        self.message_index: int = 0
+        self.characters_to_display: int = 0
+        self.time: int = pygame.time.get_ticks()
