@@ -1,6 +1,5 @@
 import math
 import pygame
-from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 

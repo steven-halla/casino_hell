@@ -2,9 +2,9 @@
     "level": 4,
     "exp": 1051,
     "stamina_points": 160,
-    "max_stamina_points": 160,
+    "max_stamina_points": 180,
     "focus_points": 80,
-    "max_focus_points": 80,
+    "max_focus_points": 100,
     "companions": [
         "sir leopold"
     ],
@@ -15,7 +15,8 @@
     ],
     "npcitems": [
         "inn badge",
-        "level 4 token"
+        "level 4 token",
+        "Stallion Brew"
     ],
     "magicinventory": [
         "reveal",
@@ -27,7 +28,7 @@
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 3390,
+    "money": 2222,
     "rabies": false,
     "immunity": true,
     "level3reward": true,
