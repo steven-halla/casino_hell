@@ -1,22 +1,11 @@
 import pygame
 import pytmx
-from pygame import display
-from constants import PLAYER_OFFSET, BLUEBLACK, SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, BLACK, WHITE
-from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
-from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
-from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
-from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
-from entity.npc.start_screen.bapping_mike import BappingMike
-from entity.npc.start_screen.cindy_long_hair import CindyLongHair
-from entity.npc.start_screen.flippin_ted import FlippinTed
-from entity.npc.start_screen.hungry_patrick import HungryPatrick
-from entity.npc.jacky_banana import JackyBanana
-from entity.npc.start_screen.main_screen_teleporter import MainScreenTeleporter
-from entity.npc.nicky_hints import NickyHints
+from constants import PLAYER_OFFSET, BLUEBLACK, TILE_SIZE
+from entity.npc.area2.area_2_start_screen.alice import Alice
+from entity.npc.area2.area_2_start_screen.rib_demon_jack_ripper import RibDemonJackRipper
 from entity.player.player import Player
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-
 
 class Area2StartScreen(Screen):
 
@@ -36,6 +25,8 @@ class Area2StartScreen(Screen):
         self.initialize_music()
 
         self.clock = pygame.time.Clock()  # Initialize the clock
+        self.initialClearNPC: bool = False
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -47,6 +38,19 @@ class Area2StartScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        print("Hi")
+        state.npcs = []
+
+        # Add other NPCs to the state.npcs list
+        state.npcs =[
+            RibDemonJackRipper(16 * 18, 16 * 22),
+            Alice(16 * 24, 16 * 33),
+
+            # SleepyNed(16 * 18, 16 * 26),
+        ]
+
+        print(str(state.npcs))
+
         self.stop_music()
         if state.musicOn:
             self.initialize_music()
@@ -62,12 +66,15 @@ class Area2StartScreen(Screen):
             player_start_y = 16 * 4
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_start_area_entry_point = False
-
-        state.npcs = []
         # print("NPCs after setting to empty list:", state.npcs)
 
     def update(self, state: "GameState"):
-        state.npcs = []
+
+
+        # if self.initialClearNPC == False:
+        #     state.npcs = []
+        #     self.initialClearNPC = True
+
 
         start_time = pygame.time.get_ticks()
         self.clock.tick(60)
@@ -110,6 +117,8 @@ class Area2StartScreen(Screen):
             self.x_right_move = False
 
         player.update(state)
+        for npc in state.npcs:
+            npc.update(state)
 
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
@@ -148,7 +157,7 @@ class Area2StartScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
-            # print(f"Drawing NPC: {npc}")
+
 
         state.player.draw(state)
 
@@ -157,7 +166,7 @@ class Area2StartScreen(Screen):
             if state.controller.isBPressed:
                 if state.controller.isPPressed:
                     state.controller.isPPressed = False
-                    # print("Mew")
+                    print("Mew")
                     return
 
         pygame.display.update()

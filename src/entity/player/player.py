@@ -577,7 +577,8 @@ class Player(Entity):
             # state.currentScreen = state.restScreen
             state.currentScreen = state.area2StartScreen
 
-            state.restScreen.start(state)
+
+            state.area2StartScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")
