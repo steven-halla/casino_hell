@@ -574,7 +574,9 @@ class Player(Entity):
             state.player.setPosition(innkeeper_position_x, innkeeper_position_y)
 
             # Switch to the restScreen
-            state.currentScreen = state.restScreen
+            # state.currentScreen = state.restScreen
+            state.currentScreen = state.area2StartScreen
+
             state.restScreen.start(state)
             # ... more stats as needed
 
