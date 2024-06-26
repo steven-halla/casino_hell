@@ -146,13 +146,13 @@ class StartLoadScreen(Screen):
         # Ensure this check happens every update cycle, not just when a key is pressed
         if self.timer_start_time is not None and self.timer_finished():
             # Now that the timer has finished, check which option was selected and proceed
-            if selected_option == "Yes":
+            if selected_option == "No":
                 # Actions to take if "Yes" was selected and the timer has elapsed
                 state.start_new_game_entry_point = True
                 state.currentScreen = state.startScreen
                 state.startScreen.start(state)
                 print("Transitioning to start screen after delay")
-            elif selected_option == "No":
+            elif selected_option == "Yes":
                 # Actions to take if "No" was selected and the timer has elapsed
                 state.player.load_game(state)
                 print("Loading game after delay")
@@ -204,8 +204,8 @@ class StartLoadScreen(Screen):
             state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
             # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_start_game))
-            state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_load))
+            state.DISPLAY.blit(self.font.render("Load", True, (255, 255, 255)), (text_x, text_y_start_game))
+            state.DISPLAY.blit(self.font.render("New Game", True, (255, 255, 255)), (text_x, text_y_load))
 
             arrow_x = text_x - 25  # Adjust the position of the arrow based on your preference
             arrow_y = text_y_start_game + self.arrow_index * 40  # Adjust based on the item's height

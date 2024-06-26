@@ -1,10 +1,10 @@
 {
-    "level": 3,
-    "exp": 385,
-    "stamina_points": 140,
-    "max_stamina_points": 140,
-    "focus_points": 60,
-    "max_focus_points": 60,
+    "level": 4,
+    "exp": 1051,
+    "stamina_points": 160,
+    "max_stamina_points": 160,
+    "focus_points": 80,
+    "max_focus_points": 80,
     "companions": [
         "sir leopold"
     ],
@@ -15,33 +15,33 @@
     ],
     "npcitems": [
         "inn badge",
-        "boss key"
+        "level 4 token"
     ],
     "magicinventory": [
         "reveal",
-        "shake",
-        "shield"
+        "shield",
+        "shake"
     ],
     "body": 1,
     "mind": 1,
     "spirit": 1,
     "perception": 1,
     "luck": 0,
-    "money": 650,
+    "money": 3390,
     "rabies": false,
     "immunity": true,
     "level3reward": true,
     "food": 1,
-    "days": 5,
+    "days": 7,
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": true,
     "coinfliptedmoney": 0,
-    "coinflipfredmoney": 400,
+    "coinflipfredmoney": 0,
     "opossumnellymoney": 0,
-    "opossumsallymoney": 250,
+    "opossumsallymoney": 0,
     "blackjackthomasmoney": 0,
-    "blackjackrumblebillmoney": 700,
+    "blackjackrumblebillmoney": 0,
     "shopkeeperpotion": true,
-    "shopkeepersavecoin": false
+    "shopkeepersavecoin": true
 }
