@@ -18,6 +18,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.stopping: bool = False  # Flag to indicate if stopping
         self.stop_start_time: int = 0  # Time when stopping started
 
+
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
         self.bet: int = 0
@@ -54,7 +55,12 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
-        print(self.slot3[2])
+        # print(self.slot3)
+        # print(self.slot3[0])
+        # print(self.slot3[1])
+        # print(self.slot3[2])
+        for index, value in enumerate(self.slot3):
+            print(f"slot3[{index}]: {value}")
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].update(state)
