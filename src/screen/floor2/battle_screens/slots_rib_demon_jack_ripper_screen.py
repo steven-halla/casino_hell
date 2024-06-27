@@ -19,6 +19,8 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.stop_start_time: int = 0  # Time when stopping started
 
 
+
+
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
         self.bet: int = 0
@@ -55,12 +57,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
-        # print(self.slot3)
-        # print(self.slot3[0])
-        # print(self.slot3[1])
-        # print(self.slot3[2])
-        for index, value in enumerate(self.slot3):
-            print(f"slot3[{index}]: {value}")
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].update(state)
@@ -72,24 +68,28 @@ class SlotsRibDemonJackRipperScreen(Screen):
             self.battle_messages["spin_message"].update(state)
 
         if self.spinning:
-            if self.stopping:
-                elapsed_time = current_time - self.stop_start_time
-                if elapsed_time >= 2000:  # 2 seconds
-                    self.spinning = False
-                    self.stopping = False
-                    print("Spinning stopped.")
-                else:
-                    self.spin_delay = int(70 + 130 * (elapsed_time / 2000))  # Gradually increase delay
-                    print(f"Slowing down... {self.spin_delay}ms delay")
             if current_time - self.last_update_time > self.spin_delay:
                 self.last_update_time = current_time
-                for i in range(3):  # Adjust range to fit 3 numbers
-                    self.slot_positions[i] += 10  # Move numbers down by 10 pixels
-                    if self.slot_positions[i] >= 100:  # Adjust position to fit 3 numbers
-                        self.slot_positions[i] = -50  # Reset position to top
+                for i in range(3):
+                    self.slot_positions[i] += 10
+                    if self.slot_positions[i] >= 100:
+                        self.slot_positions[i] = -50
                         self.slot1[i] = random.randint(0, 9)
                         self.slot2[i] = random.randint(0, 9)
                         self.slot3[i] = random.randint(0, 9)
+
+            # Check if we need to stop the spin
+            if self.stopping:
+                if current_time - self.stop_start_time >= 2000:  # 2 seconds delay
+                    self.counter += 1
+                    if self.counter >= 5:  # Stop after 5 iterations
+                        self.spinning = False
+                        self.stopping = False
+                        self.counter = 0  # Reset counter
+                        print("Spinning stopped.")
+                        # Ensure middle index is aligned
+                        self.slot_positions = [0, 50, 100]
+                        print(f"Stopped Slots: {[self.slot1[0], self.slot2[0], self.slot3[0]]}")
 
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -106,7 +106,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 print("Spinning started.")
             else:
                 self.stopping = True
-                self.stop_start_time = current_time
+                self.stop_start_time = current_time  # Start the delay timer
                 print("Stopping initiated.")
 
         if not state.controller.isAPressed:
