@@ -13,24 +13,7 @@ class Player(Entity):
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
         self.money = 400
-        # self.image = pygame.image.load(
-        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png")
-        # self.character_sprite_down_image = pygame.image.load(
-        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
-        #
-        # self.character_sprite_left_image= pygame.image.load(
-        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
-        #
-        # self.character_sprite_up_image= pygame.image.load(
-        #     "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png").convert_alpha()
-
-
-        # Load the sprite images. Replace 'path_to_sprite' with the actual paths to your sprite images.
-        # For simplicity, I'm assuming these are single frames. You'd expand these lists with more frames for animation.
-
         self.current_frame_index = 0
-        # need to put in a max for stamina and focus
-
         self.exp = 0
         self.inn_badge = False
         self.level = 1
@@ -42,41 +25,29 @@ class Player(Entity):
         self.perception = 0
         self.stamina_points = 100
         self.stamina_increase = self.body * 1 * self.level
-
         self.stamina_guard = False
-
         self.max_stamina_points = 100 + self.stamina_increase
         self.focus_points = 10
         self.max_focus_points = 10
         self.perks = []
         self.items = []
         self.npc_items = []
-
         self.magicinventory = [ ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
-
         self.hasRabies = False
-
-
         self.rabies1time = False
         self.rabiesImmunity = False
         self.level2checker = False
         self.level3checker = False
         self.level4checker = False
-        #conflip glasses gives player + 20 gold
-        # need ingame menus that explain rules, minues to stamina,and other info
         self.close_status_screen = False
-
         self.days = 0
-
         self.isBossWorthy = False
         self.realBarKeep = False
-
         self.shop_keep_potion = False
         self.shop_keep_save_coin = False
-
         self.current_frame_index = 0  # Current index in the sprite list
 
         # Timer for sprite animation
@@ -84,9 +55,6 @@ class Player(Entity):
         self.sprite_animation_interval = 500  # 500 milliseconds (0.5 seconds) per frame
 
         self.left_animation_frames = []  # Holds frames for left movement animation
-
-        # More attributes as in your original class...åç
-        # sprite_rect = pygame.Rect(22, 120, 24, 26)  # Your provided values for the 'down' sprite
 
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
@@ -98,20 +66,11 @@ class Player(Entity):
 
         self.up_frames = [(29, 172, 18, 26), (47, 172, 18, 26), (64, 172, 17.9, 26)]
 
-        # sprite_rect = pygame.Rect(22, 172, 24, 26)  # Adjusted values for the 'up' sprite
-
-        # self.up_frames = []
-
-        # For the right sprite, flip the left sprite. This is a placeholder for an actual right-facing sprite.
 
         # Set the initial direction and frame index.
         self.current_direction = 'down'  # Default direction
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
         self.music_volume = 0.5  # Adjust as needed
-
-
-
-
 
 
     def to_dict(self, state: "GameState") -> dict:
@@ -154,6 +113,10 @@ class Player(Entity):
 
             "shopkeeperpotion": self.shop_keep_potion,
             "shopkeepersavecoin": self.shop_keep_save_coin,
+
+
+            # level 2
+            "slotsribdemonjackrippermoney": state.slotsRibDemonJackRipperScreen.money,
 
             # Add more stats as needed
         }
@@ -565,6 +528,12 @@ class Player(Entity):
 
             state.player.shop_keep_potion = player_data['shopkeeperpotion']
             state.player.shop_keep_save_coin = player_data['shopkeepersavecoin']
+
+
+            #level 2
+
+            state.slotsRibDemonJackRipperScreen.money = player_data['slotsribdemonjackrippermoney']
+
 
 
 

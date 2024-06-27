@@ -39,7 +39,8 @@ from screen.floor1.map_screens.rest_screen import RestScreen
 from screen.floor1.map_screens.start_load_screen import StartLoadScreen
 from screen.floor1.map_screens.start_screen import StartScreen
 from screen.floor1.map_screens.win_screen import WinScreen
-from screen.floor2.map_screens.area2StartScreen import Area2StartScreen
+from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRibDemonJackRipperScreen
+from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
 class GameState:
@@ -111,7 +112,10 @@ class GameState:
         self.blackJackJaredScreen = BlackJackJaredScreen()
         self.blackJackDemonBossScreen = DemonBossScreen()
 
+
+# level 2 area below
         self.area2StartScreen = Area2StartScreen()
+        self.slotsRibDemonJackRipperScreen = SlotsRibDemonJackRipperScreen()
 
 
 

@@ -166,7 +166,8 @@ REFACTOR TIME!!!!
 8) There should be a primary class for text boxes perhaps, no idea why I have it as an entity?
 9)  How many text boxes do I need? 
 10) the screen class needs a full refactor as all screens need to look the same.
-11) 
+11) I need to improve player status screen to have images
+12) I need to have a level up system in place so when teh player levels up we give the player the info they need
 
 
 

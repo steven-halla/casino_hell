@@ -1,21 +1,14 @@
 import pygame
 import pytmx
-from pygame import display
 
 from constants import PLAYER_OFFSET, BLUEBLACK, SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, BLACK, WHITE
-from entity.npc.hedge_maze_screen.hedgehog1 import HedgeHog1
-from entity.npc.hedge_maze_screen.hedgehog2 import HedgeHog2
-from entity.npc.hedge_maze_screen.hedgehog3 import HedgeHog3
-from entity.npc.hedge_maze_screen.hedgehog4 import HedgeHog4
+
 from entity.npc.start_screen.bapping_mike import BappingMike
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.start_screen.flippin_ted import FlippinTed
 from entity.npc.start_screen.hungry_patrick import HungryPatrick
 from entity.npc.nurgle import Nurgle
-from entity.npc.jacky_banana import JackyBanana
 from entity.npc.start_screen.main_screen_teleporter import MainScreenTeleporter
-from entity.npc.nicky_hints import NickyHints
-from entity.player.player import Player
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -29,9 +22,7 @@ class StartScreen(Screen):
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
-        # self.player = Player(333, 555)
         self.hedge_hog_counter = 0
-        move_player_down_flag = False
         self.lock_screen = False
 
 
@@ -58,13 +49,6 @@ class StartScreen(Screen):
         # Play the music, -1 means the music will loop indefinitely
         pygame.mixer.music.play(-1)
 
-
-
-
-
-
-
-
     def start(self, state: "GameState"):
         self.stop_music()
         if state.musicOn == True:
@@ -82,17 +66,6 @@ class StartScreen(Screen):
             player_start_y = 16 * 4  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_start_area_entry_point = False
-
-        # player_start_x = SCREEN_WIDTH / 1 - TILE_SIZE / 2
-        # player_start_y = SCREEN_HEIGHT / 2 - TILE_SIZE / 2
-
-        # Update the player's position to be centered on the screen
-        # state.player.setPosition(player_start_x, player_start_y)
-
-        # Check if a player instance already exists
-
-
-
 
 
 

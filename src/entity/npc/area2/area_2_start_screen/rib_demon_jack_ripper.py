@@ -10,15 +10,12 @@ class RibDemonJackRipper(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["RibDemonJackRipper: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
+                ["RibDemonJackRipper: Kee kee kee you want to play some slots?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["Well you got all my coins I dont know what to say."],
                 (50, 450, 700, 130), 36, 500),
 
-            "rabies_message": NpcTextBox(
-                ["GET AWAY FROM ME YOU FROTHY MOUTHED BASTARD."],
-                (50, 450, 700, 130), 36, 500),
 
 
         }
@@ -97,8 +94,8 @@ class RibDemonJackRipper(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                state.currentScreen = state.blackJackThomasScreen
-                state.blackJackThomasScreen.start(state)
+                state.currentScreen = state.slotsRibDemonJackRipperScreen
+                state.slotsRibDemonJackRipperScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
