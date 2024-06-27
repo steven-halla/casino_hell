@@ -4,26 +4,20 @@ from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 
-
-#lets keep it random
-# maybe have an item that changes it to non random
-#or perhaps the 2nd rib demon slots machine just has it that way to where its non random?
-
 class SlotsRibDemonJackRipperScreen(Screen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
 
-        self.slot1: list[int] = [random.randint(0, 9) for _ in range(3)]  # Extra number for next row
-        self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]
-        self.slot3: list[int] = [random.randint(0, 9) for _ in range(3)]
-        self.slot_positions: list[int] = [-50, 0, 50]  # Adjust positions to fit 3 numbers
-        self.last_a_press_time: int = 0  # Initialize in __init__ method
-        self.counter = 0
-        self.stopping: bool = False  # Flag to indicate if stopping
-        self.stop_start_time: int = 0  # Time when stopping started
-
-
-
+        self.slot1: list[int] = [random.randint(0, 9) for _ in range(3)]  # First column with 3 numbers
+        self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]  # Second column with 3 numbers
+        self.slot_positions1: list[int] = [-50, 0, 50]  # Positions for column 1
+        self.slot_positions2: list[int] = [-50, 0, 50]  # Positions for column 2
+        self.last_update_time: int = pygame.time.get_ticks()
+        self.spin_delay: int = 44  # Speed of the spin (lower is faster)
+        self.spinning: bool = False
+        self.stopping: bool = False
+        self.stop_start_time: int = 0
+        self.stopping_first: bool = False
 
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
@@ -43,21 +37,13 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
-            # You can add more game state keys and TextBox instances here
         }
 
-        self.spinning: bool = False
-        self.hide_numbers: bool = True  # Initialize hide_numbers variable
-        self.last_update_time: int = pygame.time.get_ticks()
-        self.spin_delay: int = 44  # Speed of the spin (lower is faster)
-        self.last_a_press_time: int = 0  # Initialize in __init__ method
+        self.hide_numbers: bool = True
 
     def print_current_slots(self) -> None:
-        """Prints the current numbers visible in the slots."""
-        # Assuming slot1, slot2, slot3 contain the numbers
-        # And slot_positions contain the vertical positions of these numbers
-        visible_slots = [self.slot1[1], self.slot2[1], self.slot3[1]]  # Adjust to get the visible numbers
-        # print(f"Current Slots: {visible_slots}")
+        visible_slots = [self.slot1[1], self.slot2[1]]  # Middle numbers of both columns
+        print(f"Current Slots: {visible_slots}")
 
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
@@ -75,25 +61,27 @@ class SlotsRibDemonJackRipperScreen(Screen):
             if current_time - self.last_update_time > self.spin_delay:
                 self.last_update_time = current_time
                 for i in range(3):
-                    self.slot_positions[i] += 10
-                    if self.slot_positions[i] >= 100:
-                        self.slot_positions[i] = -50
-                        self.slot1[i] = random.randint(0, 9)
+                    if not self.stopping_first:
+                        self.slot_positions1[i] += 10
+                        if self.slot_positions1[i] >= 100:
+                            self.slot_positions1[i] = -50
+                            self.slot1[i] = random.randint(0, 9)
+                    self.slot_positions2[i] += 10
+                    if self.slot_positions2[i] >= 100:
+                        self.slot_positions2[i] = -50
                         self.slot2[i] = random.randint(0, 9)
-                        self.slot3[i] = random.randint(0, 9)
 
-            # Check if we need to stop the spin
             if self.stopping:
-                if current_time - self.stop_start_time >= 2000:  # 2 seconds delay
-                    self.counter += 1
-                    if self.counter >= 5:  # Stop after 5 iterations
-                        self.spinning = False
-                        self.stopping = False
-                        self.counter = 0  # Reset counter
-                        print("Spinning stopped.")
-                        # Ensure middle index is aligned
-                        self.slot_positions = [0, 50, 100]
-                        print(f"Stopped Slots: {[self.slot1[0], self.slot2[0], self.slot3[0]]}")
+                if not self.stopping_first:
+                    if current_time - self.stop_start_time >= 2000:  # 2 seconds delay for the first column
+                        self.stopping_first = True
+                        self.slot_positions1 = [0, 50, 100]  # Align the first column
+                elif current_time - self.stop_start_time >= 3500:  # 3.5 seconds delay for the second column
+                    self.spinning = False
+                    self.stopping = False
+                    print("Spinning stopped.")
+                    self.slot_positions2 = [0, 50, 100]  # Align the second column
+                    self.print_current_slots()
 
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -102,75 +90,83 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
         if state.controller.isAPressed and not self.a_key_pressed:
             self.a_key_pressed = True
-            self.last_a_press_time = current_time
             if not self.spinning:
                 self.spinning = True
                 self.stopping = False
-                self.spin_delay = 70  # Reset spin delay
+                self.stopping_first = False
+                self.spin_delay = 70
                 print("Spinning started.")
             else:
                 self.stopping = True
-                self.stop_start_time = current_time  # Start the delay timer
+                self.stop_start_time = current_time
                 print("Stopping initiated.")
 
         if not state.controller.isAPressed:
             self.a_key_pressed = False
 
         if state.controller.isBPressed:
-            self.hide_numbers = not self.hide_numbers  # Toggle hide_numbers
+            self.hide_numbers = not self.hide_numbers
 
-        # Update the controller
         controller = state.controller
         controller.update()
-
-    def draw_bottom_black_box(self, state: "GameState") -> None:
-        # Define the dimensions and position of the bottom black box
-        black_box_height = 130
-        black_box_width = 700
-        border_width = 5  # Width of the white border
-
-        # Create the black box
-        black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill((0, 0, 0))  # Fill the box with black color
-
-        # Create a white border
-        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))  # Fill the border with white color
-        white_border.blit(black_box, (border_width, border_width))
-
-        # Determine the position of the white-bordered box
-        screen_width, screen_height = state.DISPLAY.get_size()
-        black_box_x = (screen_width - black_box_width) // 2 - border_width
-        black_box_y = screen_height - black_box_height - 20 - border_width  # Subtract 20 pixels and adjust for border
-
-        # Blit the white-bordered box onto the display
-        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
 
-        # Draw the hero's info boxes
         self.draw_hero_info_boxes(state)
-
-        # Draw the grid box with the current slot values
         self.draw_grid_box(state)
 
-        # Draw the mask box if hide_numbers is True
         if self.hide_numbers:
             self.draw_mask_box(state)
 
-        # Draw the bottom black box
         self.draw_bottom_black_box(state)
 
-        # Draw battle messages
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
-
         elif self.game_state == "spin_screen":
             self.battle_messages["spin_message"].draw(state)
 
-        # Flip the display
         pygame.display.flip()
+
+    def draw_grid_box(self, state: "GameState") -> None:
+        screen_width, screen_height = state.DISPLAY.get_size()
+        box_size = 50
+        line_thickness = 2
+        start_x1 = (screen_width - box_size * 2 - line_thickness) // 2  # Adjust for two columns
+        start_y = (screen_height - box_size) // 2
+        black_color = (0, 0, 0)
+        white_color = (255, 255, 255)
+
+        font = pygame.font.Font(None, 36)
+
+        # Draw first column
+        for i, pos in enumerate(self.slot_positions1):
+            box_x = start_x1
+            box_y = start_y + pos
+            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
+            number_text = font.render(str(self.slot1[i]), True, white_color)
+            text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
+            state.DISPLAY.blit(number_text, text_rect)
+
+        # Draw second column
+        for i, pos in enumerate(self.slot_positions2):
+            box_x = start_x1 + box_size + line_thickness
+            box_y = start_y + pos
+            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
+            number_text = font.render(str(self.slot2[i]), True, white_color)
+            text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
+            state.DISPLAY.blit(number_text, text_rect)
+
+        # Draw the white lines
+        for start_x in [start_x1, start_x1 + box_size + line_thickness]:
+            y = start_y - line_thickness // 2
+            pygame.draw.line(state.DISPLAY, white_color, (start_x, y), (start_x + box_size, y), line_thickness)
+            y = start_y + box_size + line_thickness // 2
+            pygame.draw.line(state.DISPLAY, white_color, (start_x, y), (start_x + box_size, y), line_thickness)
+            x = start_x - line_thickness // 2
+            pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
+            x = start_x + box_size + line_thickness // 2
+            pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
         # Draw the black box for hero info
@@ -223,43 +219,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
-    def draw_grid_box(self, state: "GameState") -> None:
-        """Draws a single row of 3 black boxes with the current slot values in the middle of the screen."""
-        screen_width, screen_height = state.DISPLAY.get_size()
-        grid_size = 3  # Number of columns
-        box_size = 50
-        line_thickness = 2
-        total_grid_width = grid_size * box_size + (grid_size - 1) * line_thickness
-        start_x = (screen_width - total_grid_width) // 2
-        start_y = (screen_height - box_size) // 2  # Center vertically for a single row
-        black_color = (0, 0, 0)
-        white_color = (255, 255, 255)
-
-        font = pygame.font.Font(None, 36)
-
-        slots = [self.slot1, self.slot2, self.slot3]
-
-        for col in range(grid_size):
-            for i, pos in enumerate(self.slot_positions):
-                box_x = start_x + col * (box_size + line_thickness)
-                box_y = start_y + pos
-                pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
-
-                # Draw the current slot number in the center of each box
-                number_text = font.render(str(slots[col][i]), True, white_color)
-                text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
-                state.DISPLAY.blit(number_text, text_rect)
-
-        # Draw the white lines
-        y = start_y - line_thickness // 2
-        pygame.draw.line(state.DISPLAY, white_color, (start_x, y), (start_x + total_grid_width - line_thickness, y), line_thickness)
-        y = start_y + box_size + line_thickness // 2
-        pygame.draw.line(state.DISPLAY, white_color, (start_x, y), (start_x + total_grid_width - line_thickness, y), line_thickness)
-
-        for col in range(grid_size + 1):
-            x = start_x + col * (box_size + line_thickness) - line_thickness // 2
-            pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
-
     def draw_mask_box(self, state: "GameState") -> None:
         """Draws a mask box to hide numbers outside the white lines."""
         screen_width, screen_height = state.DISPLAY.get_size()
@@ -280,11 +239,25 @@ class SlotsRibDemonJackRipperScreen(Screen):
         state.DISPLAY.blit(mask_box_top, (start_x, 0))
         state.DISPLAY.blit(mask_box_bottom, (start_x, start_y + box_size + line_thickness))
 
-    def print_current_slots(self) -> None:
-        """Prints the current numbers visible in the slots."""
-        # Assuming slot1, slot2, slot3 contain the numbers
-        # And slot_positions contain the vertical positions of these numbers
-        visible_slots = [self.slot1[1], self.slot2[1], self.slot3[1]]  # Adjust to get the visible numbers
-        print(f"Current Slots: {visible_slots}")
+    def draw_bottom_black_box(self, state: "GameState") -> None:
+        # Define the dimensions and position of the bottom black box
+        black_box_height = 130
+        black_box_width = 700
+        border_width = 5  # Width of the white border
 
+        # Create the black box
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill((0, 0, 0))  # Fill the box with black color
 
+        # Create a white border
+        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))  # Fill the border with white color
+        white_border.blit(black_box, (border_width, border_width))
+
+        # Determine the position of the white-bordered box
+        screen_width, screen_height = state.DISPLAY.get_size()
+        black_box_x = (screen_width - black_box_width) // 2 - border_width
+        black_box_y = screen_height - black_box_height - 20 - border_width  # Subtract 20 pixels and adjust for border
+
+        # Blit the white-bordered box onto the display
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
