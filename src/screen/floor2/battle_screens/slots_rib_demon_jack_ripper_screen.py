@@ -15,6 +15,8 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.slot_positions: list[int] = [-50, 0, 50, 100]  # Adjust positions to fit 4 numbers
         self.last_a_press_time: int = 0  # Initialize in __init__ method
         self.counter = 0
+        self.stopping: bool = False  # Flag to indicate if stopping
+        self.stop_start_time: int = 0  # Time when stopping started
 
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
@@ -40,7 +42,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.spinning: bool = False
         self.hide_numbers: bool = True  # Initialize hide_numbers variable
         self.last_update_time: int = pygame.time.get_ticks()
-        self.spin_delay: int = 70  # Speed of the spin (lower is faster)
+        self.spin_delay: int = 44  # Speed of the spin (lower is faster)
         self.last_a_press_time: int = 0  # Initialize in __init__ method
 
     def update(self, state: "GameState") -> None:
@@ -55,15 +57,25 @@ class SlotsRibDemonJackRipperScreen(Screen):
         if self.game_state == "spin_screen":
             self.battle_messages["spin_message"].update(state)
 
-        if self.spinning and current_time - self.last_update_time > self.spin_delay:
-            self.last_update_time = current_time
-            for i in range(4):
-                self.slot_positions[i] += 10  # Move numbers down by 10 pixels
-                if self.slot_positions[i] >= 150:  # Adjust position to fit 4 numbers
-                    self.slot_positions[i] = -50  # Reset position to top
-                    self.slot1[i] = random.randint(0, 9)
-                    self.slot2[i] = random.randint(0, 9)
-                    self.slot3[i] = random.randint(0, 9)
+        if self.spinning:
+            if self.stopping:
+                elapsed_time = current_time - self.stop_start_time
+                if elapsed_time >= 2000:  # 2 seconds
+                    self.spinning = False
+                    self.stopping = False
+                    print("Spinning stopped.")
+                else:
+                    self.spin_delay = int(70 + 130 * (elapsed_time / 2000))  # Gradually increase delay
+                    print(f"Slowing down... {self.spin_delay}ms delay")
+            if current_time - self.last_update_time > self.spin_delay:
+                self.last_update_time = current_time
+                for i in range(4):
+                    self.slot_positions[i] += 10  # Move numbers down by 10 pixels
+                    if self.slot_positions[i] >= 150:  # Adjust position to fit 4 numbers
+                        self.slot_positions[i] = -50  # Reset position to top
+                        self.slot1[i] = random.randint(0, 9)
+                        self.slot2[i] = random.randint(0, 9)
+                        self.slot3[i] = random.randint(0, 9)
 
         if state.controller.isQPressed:
             # Transition to the main screen
@@ -71,17 +83,21 @@ class SlotsRibDemonJackRipperScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if state.controller.isAPressed and not self.a_key_pressed and current_time - self.last_a_press_time > 150:
-            print("I'm the A team")
-            self.spinning = not self.spinning  # Toggle spinning
-            self.last_a_press_time = current_time  # Update the last press time
-            self.a_key_pressed = True  # Set the key state to pressed
+        if state.controller.isAPressed and not self.a_key_pressed:
+            self.a_key_pressed = True
+            self.last_a_press_time = current_time
+            if not self.spinning:
+                self.spinning = True
+                self.stopping = False
+                self.spin_delay = 70  # Reset spin delay
+                print("Spinning started.")
+            else:
+                self.stopping = True
+                self.stop_start_time = current_time
+                print("Stopping initiated.")
 
         if not state.controller.isAPressed:
-            self.a_key_pressed = False  # Reset the key state when the key is released
-
-        if state.controller.isBPressed:
-            self.hide_numbers = not self.hide_numbers  # Toggle hide_numbers
+            self.a_key_pressed = False
 
         if state.controller.isBPressed:
             self.hide_numbers = not self.hide_numbers  # Toggle hide_numbers
