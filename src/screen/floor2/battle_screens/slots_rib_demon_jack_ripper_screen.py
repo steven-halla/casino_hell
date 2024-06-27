@@ -123,6 +123,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
+
     def draw_grid_box(self, state: "GameState") -> None:
         """Draws a single row of 3 black boxes with the current slot values in the middle of the screen."""
         screen_width, screen_height = state.DISPLAY.get_size()
