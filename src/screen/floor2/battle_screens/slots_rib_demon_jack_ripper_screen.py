@@ -13,6 +13,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.slot2: list[int] = [random.randint(0, 9) for _ in range(4)]
         self.slot3: list[int] = [random.randint(0, 9) for _ in range(4)]
         self.slot_positions: list[int] = [-50, 0, 50, 100]  # Adjust positions to fit 4 numbers
+        self.last_a_press_time: int = 0  # Initialize in __init__ method
 
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
@@ -22,6 +23,12 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
                 ["Are you here for some rib demon slots?", ""],
+                (65, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "spin_message": TextBox(
+                ["Press the A key in order to Spin", ""],
                 (65, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -40,6 +47,14 @@ class SlotsRibDemonJackRipperScreen(Screen):
         if self.game_state == "welcome_screen":
 
             self.battle_messages["welcome_message"].update(state)
+
+        if self.battle_messages["welcome_message"].message_index == 1:
+            self.game_state = "spin_screen"
+
+
+        if self.game_state == "spin_screen":
+            self.battle_messages["spin_message"].update(state)
+
 
         if self.spinning and current_time - self.last_update_time > self.spin_delay:
             self.last_update_time = current_time
@@ -62,6 +77,10 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
         if state.controller.isBPressed:
             self.hide_numbers = not self.hide_numbers  # Toggle hide_numbers
+
+        if state.controller.isAPressed and current_time - self.last_a_press_time > 100:
+            self.spinning = not self.spinning  # Toggle spinning
+            self.last_a_press_time = current_time  # Update the last press time
 
         # Update the controller
         controller = state.controller
@@ -109,6 +128,9 @@ class SlotsRibDemonJackRipperScreen(Screen):
         # Draw battle messages
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
+
+        elif self.game_state == "spin_screen":
+            self.battle_messages["spin_message"].draw(state)
 
         # Flip the display
         pygame.display.flip()

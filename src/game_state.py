@@ -119,7 +119,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.startLoadScreen
+        self.currentScreen = self.slotsRibDemonJackRipperScreen
 
 
         self.start_new_game_entry_point = False
