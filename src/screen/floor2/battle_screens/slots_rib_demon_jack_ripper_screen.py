@@ -100,7 +100,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if state.controller.isAPressed and self.game_state == "spin_screen" and not self.a_key_pressed:
+        if state.controller.isAPressed and not self.a_key_pressed:
             self.a_key_pressed = True
             self.last_a_press_time = current_time
             if not self.spinning:
