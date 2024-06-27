@@ -5,6 +5,10 @@ from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 
 
+#lets keep it random
+# maybe have an item that changes it to non random
+#or perhaps the 2nd rib demon slots machine just has it that way to where its non random?
+
 class SlotsRibDemonJackRipperScreen(Screen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
@@ -96,7 +100,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if state.controller.isAPressed and not self.a_key_pressed:
+        if state.controller.isAPressed and self.game_state == "spin_screen" and not self.a_key_pressed:
             self.a_key_pressed = True
             self.last_a_press_time = current_time
             if not self.spinning:
