@@ -4,6 +4,7 @@ from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 
+
 class SlotsRibDemonJackRipperScreen(Screen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
@@ -29,6 +30,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
         }
 
         self.spinning: bool = False
+        self.hide_numbers: bool = True  # Initialize hide_numbers variable
         self.last_update_time: int = pygame.time.get_ticks()
         self.spin_delay: int = 100  # Speed of the spin (lower is faster)
 
@@ -54,6 +56,9 @@ class SlotsRibDemonJackRipperScreen(Screen):
         if state.controller.isTPressed:
             self.spinning = not self.spinning  # Toggle spinning
 
+        if state.controller.isBPressed:
+            self.hide_numbers = not self.hide_numbers  # Toggle hide_numbers
+
         # Update the controller
         controller = state.controller
         controller.update()
@@ -66,6 +71,9 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
         # Draw the grid box with the current slot values
         self.draw_grid_box(state)
+
+        if self.hide_numbers:
+            self.draw_mask_box(state)  # Draw the mask box if hide_numbers is True
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
@@ -123,7 +131,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
-
     def draw_grid_box(self, state: "GameState") -> None:
         """Draws a single row of 3 black boxes with the current slot values in the middle of the screen."""
         screen_width, screen_height = state.DISPLAY.get_size()
@@ -142,15 +149,14 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
         for col in range(grid_size):
             for i, pos in enumerate(self.slot_positions):
-                if pos >= -box_size and pos <= 2 * box_size:  # Only draw if within bounds of the box
-                    box_x = start_x + col * (box_size + line_thickness)
-                    box_y = start_y + pos
-                    pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
+                box_x = start_x + col * (box_size + line_thickness)
+                box_y = start_y + pos
+                pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
 
-                    # Draw the current slot number in the center of each box
-                    number_text = font.render(str(slots[col][i]), True, white_color)
-                    text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
-                    state.DISPLAY.blit(number_text, text_rect)
+                # Draw the current slot number in the center of each box
+                number_text = font.render(str(slots[col][i]), True, white_color)
+                text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
+                state.DISPLAY.blit(number_text, text_rect)
 
         # Draw the white lines
         y = start_y - line_thickness // 2
@@ -161,3 +167,24 @@ class SlotsRibDemonJackRipperScreen(Screen):
         for col in range(grid_size + 1):
             x = start_x + col * (box_size + line_thickness) - line_thickness // 2
             pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
+
+    def draw_mask_box(self, state: "GameState") -> None:
+        """Draws a mask box to hide numbers outside the white lines."""
+        screen_width, screen_height = state.DISPLAY.get_size()
+        grid_size = 3  # Number of columns
+        box_size = 50
+        line_thickness = 2
+        total_grid_width = grid_size * box_size + (grid_size - 1) * line_thickness
+        start_x = (screen_width - total_grid_width) // 2
+        start_y = (screen_height - box_size) // 2  # Center vertically for a single row
+
+        # Draw the mask box (black rectangle covering areas outside the grid)
+        mask_box_top = pygame.Surface((total_grid_width, start_y))
+        mask_box_bottom = pygame.Surface((total_grid_width, screen_height - (start_y + box_size)))
+        mask_box_top.fill((0, 0, 51))
+        mask_box_bottom.fill((0, 0, 51))
+
+        # Adjust the mask box bottom to not overlap with the bottom white line
+        state.DISPLAY.blit(mask_box_top, (start_x, 0))
+        state.DISPLAY.blit(mask_box_bottom, (start_x, start_y + box_size + line_thickness))
+
