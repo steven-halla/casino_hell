@@ -4,7 +4,7 @@ import pygame
 
 from entity.entity import Entity
 
-
+# we need this class because npctext box wouldn't be good for it because its a white box too
 class TextBox(Entity):
     def __init__(self, messages: list[str], rect: tuple[int, int, int, int],
                  font_size: int, delay: int, ):
