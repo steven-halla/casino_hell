@@ -44,6 +44,16 @@ class BattleScreen:
         """Draws the HUD for the battle screen."""
         # background
         state.DISPLAY.fill((0, 0, 51))
+
+
+
+        # this is for black box this is just helper code should not stay here forever
+
+
+
+
+
+
         # this box is for hero money, bet amount, and other info
         black_box = pygame.Surface((200 - 10, 180 - 10))
         black_box.fill((0, 0, 0))
@@ -122,3 +132,9 @@ class BattleScreen:
         state.DISPLAY.fill(BLUEBLACK)
         self.draw_tiles(state)
         self.draw_hud(state)
+
+    def draw_black_box(self, state: 'GameState') -> None:
+        """Draws a black box in the middle of the screen."""
+        print("draw the blcak box")
+
+

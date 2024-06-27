@@ -1,7 +1,6 @@
 import pygame
 from entity.gui.screen.battle_screen import BattleScreen
 
-
 class SlotsRibDemonJackRipperScreen(BattleScreen):
     def __init__(self):
         super().__init__("Casino Coin Flip Screen")
@@ -25,4 +24,4 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
     def draw(self, state: "GameState"):
         super().draw(state)
-        # You can add any additional drawing logic specific to SlotsRibDemonJackRipperScreen here
+        # Draw the black square box in the middle of the screen
