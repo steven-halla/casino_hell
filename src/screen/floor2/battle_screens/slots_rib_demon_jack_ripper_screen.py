@@ -9,10 +9,10 @@ class SlotsRibDemonJackRipperScreen(Screen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
 
-        self.slot1: list[int] = [random.randint(0, 9) for _ in range(4)]  # Extra number for next row
-        self.slot2: list[int] = [random.randint(0, 9) for _ in range(4)]
-        self.slot3: list[int] = [random.randint(0, 9) for _ in range(4)]
-        self.slot_positions: list[int] = [-50, 0, 50, 100]  # Adjust positions to fit 4 numbers
+        self.slot1: list[int] = [random.randint(0, 9) for _ in range(3)]  # Extra number for next row
+        self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]
+        self.slot3: list[int] = [random.randint(0, 9) for _ in range(3)]
+        self.slot_positions: list[int] = [-50, 0, 50]  # Adjust positions to fit 3 numbers
         self.last_a_press_time: int = 0  # Initialize in __init__ method
         self.counter = 0
         self.stopping: bool = False  # Flag to indicate if stopping
@@ -45,8 +45,16 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.spin_delay: int = 44  # Speed of the spin (lower is faster)
         self.last_a_press_time: int = 0  # Initialize in __init__ method
 
+    def print_current_slots(self) -> None:
+        """Prints the current numbers visible in the slots."""
+        # Assuming slot1, slot2, slot3 contain the numbers
+        # And slot_positions contain the vertical positions of these numbers
+        visible_slots = [self.slot1[1], self.slot2[1], self.slot3[1]]  # Adjust to get the visible numbers
+        # print(f"Current Slots: {visible_slots}")
+
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
+        print(self.slot3[2])
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].update(state)
@@ -69,16 +77,15 @@ class SlotsRibDemonJackRipperScreen(Screen):
                     print(f"Slowing down... {self.spin_delay}ms delay")
             if current_time - self.last_update_time > self.spin_delay:
                 self.last_update_time = current_time
-                for i in range(4):
+                for i in range(3):  # Adjust range to fit 3 numbers
                     self.slot_positions[i] += 10  # Move numbers down by 10 pixels
-                    if self.slot_positions[i] >= 150:  # Adjust position to fit 4 numbers
+                    if self.slot_positions[i] >= 100:  # Adjust position to fit 3 numbers
                         self.slot_positions[i] = -50  # Reset position to top
                         self.slot1[i] = random.randint(0, 9)
                         self.slot2[i] = random.randint(0, 9)
                         self.slot3[i] = random.randint(0, 9)
 
         if state.controller.isQPressed:
-            # Transition to the main screen
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
             return
@@ -262,4 +269,12 @@ class SlotsRibDemonJackRipperScreen(Screen):
         # Adjust the mask box bottom to not overlap with the bottom white line
         state.DISPLAY.blit(mask_box_top, (start_x, 0))
         state.DISPLAY.blit(mask_box_bottom, (start_x, start_y + box_size + line_thickness))
+
+    def print_current_slots(self) -> None:
+        """Prints the current numbers visible in the slots."""
+        # Assuming slot1, slot2, slot3 contain the numbers
+        # And slot_positions contain the vertical positions of these numbers
+        visible_slots = [self.slot1[1], self.slot2[1], self.slot3[1]]  # Adjust to get the visible numbers
+        print(f"Current Slots: {visible_slots}")
+
 
