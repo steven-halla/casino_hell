@@ -37,6 +37,10 @@ class SlotsRibDemonJackRipperScreen(Screen):
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
 
+        if self.game_state == "welcome_screen":
+
+            self.battle_messages["welcome_message"].update(state)
+
         if self.spinning and current_time - self.last_update_time > self.spin_delay:
             self.last_update_time = current_time
             for i in range(4):
@@ -53,7 +57,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if state.controller.isTPressed:
+        if state.controller.isAPressed:
             self.spinning = not self.spinning  # Toggle spinning
 
         if state.controller.isBPressed:
@@ -62,6 +66,29 @@ class SlotsRibDemonJackRipperScreen(Screen):
         # Update the controller
         controller = state.controller
         controller.update()
+
+    def draw_bottom_black_box(self, state: "GameState") -> None:
+        # Define the dimensions and position of the bottom black box
+        black_box_height = 130
+        black_box_width = 700
+        border_width = 5  # Width of the white border
+
+        # Create the black box
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill((0, 0, 0))  # Fill the box with black color
+
+        # Create a white border
+        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))  # Fill the border with white color
+        white_border.blit(black_box, (border_width, border_width))
+
+        # Determine the position of the white-bordered box
+        screen_width, screen_height = state.DISPLAY.get_size()
+        black_box_x = (screen_width - black_box_width) // 2 - border_width
+        black_box_y = screen_height - black_box_height - 20 - border_width  # Subtract 20 pixels and adjust for border
+
+        # Blit the white-bordered box onto the display
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
@@ -72,12 +99,18 @@ class SlotsRibDemonJackRipperScreen(Screen):
         # Draw the grid box with the current slot values
         self.draw_grid_box(state)
 
+        # Draw the mask box if hide_numbers is True
         if self.hide_numbers:
-            self.draw_mask_box(state)  # Draw the mask box if hide_numbers is True
+            self.draw_mask_box(state)
 
+        # Draw the bottom black box
+        self.draw_bottom_black_box(state)
+
+        # Draw battle messages
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
 
+        # Flip the display
         pygame.display.flip()
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
