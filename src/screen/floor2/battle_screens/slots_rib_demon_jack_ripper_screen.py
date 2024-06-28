@@ -8,8 +8,8 @@ class SlotsRibDemonJackRipperScreen(Screen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
 
-        self.slot1: list[int] = [random.randint(0, 9) for _ in range(3)]
-        self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]
+        self.slot1: list[int] = [random.randint(0, 9) for _ in range(3)]  # the _ is just a placehold variable name
+        self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]   #
         self.slot3: list[int] = [random.randint(0, 9) for _ in range(3)]
         self.slot_positions1: list[int] = [-50, 0, 50]
         self.slot_positions2: list[int] = [-50, 0, 50]
@@ -23,18 +23,18 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.stopping_second: bool = False
         self.magic_lock = False
 
-        self.magic_screen_choices = ["Cast", "Back"]
-        self.welcome_screen_index = 0
-        self.magic_screen_index = 0
+        self.magic_screen_choices: list[str] = ["Cast", "Back"]
+        self.welcome_screen_index: int = 0
+        self.magic_screen_index: int = 0
 
-        self.welcome_screen_choices = ["Play", "Magic", "Bet", "Quit"]
+        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
 
 
-        self.go_to_results = False
+        self.go_to_results: bool = False
 
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
-        self.bet: int = 0
+        self.bet: int = 50
         self.money: int = 1000
         self.font: pygame.font.Font = pygame.font.Font(None, 36)
         self.battle_messages: dict[str, TextBox] = {
@@ -57,8 +57,15 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 500
             ),
 
+            "bet_message": TextBox(
+                ["Min Bet of 50, Max Bet of 250. Press UP button to add +50 to bet, Press DOWN button to decrease -50 from bet, Press B to go back to main menu."],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
             "results_message": TextBox(
-                ["Your spin is {0} {1} {2}", ""],
+                ["Your spinssss is {0} {1} {2}", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -73,16 +80,16 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         pygame.mixer.music.stop()
-        current_time: int = pygame.time.get_ticks()
+        current_time: int = pygame.time.get_ticks()  # local variable
 
         if self.spinning:
             if current_time - self.last_update_time > self.spin_delay:
-                self.last_update_time = current_time
-                for i in range(3):
+                self.last_update_time = current_time   # this and the line above control the speed of spinning slots (spin_delay mainly)
+                for i in range(3):  # the positions of the slots (top middle bottom)
                     if not self.stopping_first:
                         self.slot_positions1[i] += 10
-                        if self.slot_positions1[i] >= 100:
-                            self.slot_positions1[i] = -50
+                        if self.slot_positions1[i] >= 100: # this block handles the position of spinning slots as they stop
+                            self.slot_positions1[i] = -50  # sets it in the middle
                             self.slot1[i] = random.randint(0, 9)
                     if not self.stopping_second:
                         self.slot_positions2[i] += 10
@@ -96,16 +103,16 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
             if self.stopping:
                 if not self.stopping_first:
-                    if current_time - self.stop_start_time >= 2000:
+                    if current_time - self.stop_start_time >= 2000: # the time is in milli seconds so 2 seconds
                         self.stopping_first = True
                         self.slot_positions1 = [0, 50, 100]
                 elif not self.stopping_second:
-                    if current_time - self.stop_start_time >= 3500:
+                    if current_time - self.stop_start_time >= 3500: # this stops 1.5 seconds after slot 1 stops
                         self.stopping_second = True
                         self.slot_positions2 = [0, 50, 100]
-                elif current_time - self.stop_start_time >= 5000:
+                elif current_time - self.stop_start_time >= 5000:  # this stops 3 seconds after slot 1 stops / 1.5 after slot 2
                     self.spinning = False
-                    self.stopping = False
+                    self.stopping = False # this ensures the slots remained stopped, stopping means its still stopping false means it's stopped
                     print("Spinning stopped.")
                     self.slot_positions3 = [0, 50, 100]
                     self.print_current_slots()
@@ -116,7 +123,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
             state.mainScreen.start(state)
             return
 
-        if state.controller.isAPressed and self.game_state == "spin_screen" and not self.a_key_pressed:
+        if state.controller.isAPressed and self.game_state == "spin_screen":
             self.a_key_pressed = True
             if not self.spinning:
                 self.spinning = True
@@ -157,6 +164,10 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
                 print("going to magic")
+            elif self.welcome_screen_index == 2 and controller.isTPressed:
+                self.game_state = "bet_screen"
+                controller.isTPressed = False
+                print("going to magic")
 
         elif self.game_state == "magic_screen":
             self.battle_messages["magic_message"].update(state)
@@ -177,17 +188,41 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
+        if self.game_state == "bet_screen":
+            self.battle_messages["bet_message"].update(state)
+            if controller.isUpPressed:
+                self.bet += 50
+                if self.bet > 250:
+                    self.bet = 250
+                controller.isUpPressed = False
+
+
+            elif controller.isDownPressed:
+                self.bet -= 50
+                if self.bet < 50:
+                    self.bet = 50
+                controller.isDownPressed = False
+
+            elif controller.isBPressed:
+                self.game_state = "welcome_screen"
+                controller.isBPressed = False
+
+
+          
+
+
         if self.game_state == "spin_screen":
             self.battle_messages["spin_message"].update(state)
             if self.go_to_results:
                 print("results here we go")
                 self.game_state = "results_screen"
 
+
+
         if self.game_state == "results_screen":
             print("results")
-            self.battle_messages["results_message"].text = [
-                f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]}",
-                ""
+            self.battle_messages["results_message"].messages = [
+                f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]}", ""
             ]
             self.battle_messages["results_message"].update(state)
 
@@ -319,6 +354,10 @@ class SlotsRibDemonJackRipperScreen(Screen):
             #         self.font.render("->", True, (255, 255, 255)),
             #         (start_x_right_box + 12, start_y_right_box + 132)
             #     )
+
+
+        elif self.game_state == "bet_screen":
+            self.battle_messages["bet_message"].draw(state)
 
         elif self.game_state == "spin_screen":
             self.battle_messages["spin_message"].draw(state)
