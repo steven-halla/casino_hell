@@ -61,9 +61,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
 
-
-
-
         if self.spinning:
             if current_time - self.last_update_time > self.spin_delay:
                 self.last_update_time = current_time
