@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 400
+        self.money = 555
         self.current_frame_index = 0
         self.exp = 0
         self.inn_badge = False

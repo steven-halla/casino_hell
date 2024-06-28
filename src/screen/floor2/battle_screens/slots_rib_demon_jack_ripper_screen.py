@@ -8,7 +8,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
 
-        self.slot1: list[int] = [random.randint(0, 9) for _ in range(3)]  # the _ is just a placehold variable name
+        self.slot1: list[int] = [0, 0, 0]
         self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]   #
         self.slot3: list[int] = [random.randint(0, 9) for _ in range(3)]
         self.slot_positions1: list[int] = [-50, 0, 50]
@@ -23,10 +23,11 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.stopping_second: bool = False
         self.magic_lock = False
 
-        self.magic_screen_choices: list[str] = ["Cast", "Back"]
+        self.magic_screen_choices: list[str] = ["Hack", "Back"]
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
 
+        #maybe replace Bet with Rules?
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
 
 
@@ -84,13 +85,12 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
         if self.spinning:
             if current_time - self.last_update_time > self.spin_delay:
-                self.last_update_time = current_time   # this and the line above control the speed of spinning slots (spin_delay mainly)
+                self.last_update_time = current_time  # this and the line above control the speed of spinning slots (spin_delay mainly)
                 for i in range(3):  # the positions of the slots (top middle bottom)
                     if not self.stopping_first:
                         self.slot_positions1[i] += 10
-                        if self.slot_positions1[i] >= 100: # this block handles the position of spinning slots as they stop
+                        if self.slot_positions1[i] >= 100:  # this block handles the position of spinning slots as they stop
                             self.slot_positions1[i] = -50  # sets it in the middle
-                            self.slot1[i] = random.randint(0, 9)
                     if not self.stopping_second:
                         self.slot_positions2[i] += 10
                         if self.slot_positions2[i] >= 100:
@@ -103,16 +103,16 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             if self.stopping:
                 if not self.stopping_first:
-                    if current_time - self.stop_start_time >= 2000: # the time is in milli seconds so 2 seconds
+                    if current_time - self.stop_start_time >= 2000:  # the time is in milliseconds, so 2 seconds
                         self.stopping_first = True
                         self.slot_positions1 = [0, 50, 100]
                 elif not self.stopping_second:
-                    if current_time - self.stop_start_time >= 3500: # this stops 1.5 seconds after slot 1 stops
+                    if current_time - self.stop_start_time >= 3500:  # this stops 1.5 seconds after slot 1 stops
                         self.stopping_second = True
                         self.slot_positions2 = [0, 50, 100]
                 elif current_time - self.stop_start_time >= 5000:  # this stops 3 seconds after slot 1 stops / 1.5 after slot 2
                     self.spinning = False
-                    self.stopping = False # this ensures the slots remained stopped, stopping means its still stopping false means it's stopped
+                    self.stopping = False  # this ensures the slots remain stopped
                     print("Spinning stopped.")
                     self.slot_positions3 = [0, 50, 100]
                     self.print_current_slots()
@@ -132,6 +132,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.stopping_second = False
                 self.spin_delay = 70
                 print("Spinning started.")
+                self.generate_numbers()  # Call the method to generate new numbers
+
             else:
                 self.stopping = True
                 self.stop_start_time = current_time
@@ -165,27 +167,18 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
-                print("going to magic")
             elif self.welcome_screen_index == 2 and controller.isTPressed:
                 self.battle_messages["bet_message"].reset()
-
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
-                print("going to magic")
-
             elif self.welcome_screen_index == 3 and controller.isTPressed:
-
                 state.currentScreen = state.area2StartScreen
-
                 controller.isTPressed = False
-                print("going to magic")
 
         elif self.game_state == "magic_screen":
-
-
             if self.magic_screen_index == 0:
                 self.battle_messages["magic_message"].messages = [
-                    f"Speeds up brain synapis to process information faster slowing the wheel down."
+                    f""
                 ]
             elif self.magic_screen_index == 1:
                 self.battle_messages["magic_message"].messages = [
@@ -203,7 +196,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 controller.isDownPressed = False
 
             if self.magic_screen_index == 0 and controller.isTPressed:
-                print("casting spell")
                 controller.isTPressed = False
             elif self.magic_screen_index == 1 and controller.isTPressed:
                 self.battle_messages["magic_message"].update(state)
@@ -218,7 +210,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     self.bet = 250
                 controller.isUpPressed = False
 
-
             elif controller.isDownPressed:
                 self.bet -= 50
                 if self.bet < 50:
@@ -229,20 +220,12 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.game_state = "welcome_screen"
                 controller.isBPressed = False
 
-
-          
-
-
         if self.game_state == "spin_screen":
             self.battle_messages["spin_message"].update(state)
             if self.go_to_results:
-                print("results here we go")
                 self.game_state = "results_screen"
 
-
-
         if self.game_state == "results_screen":
-            print("results")
             self.battle_messages["results_message"].messages = [
                 f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]}", ""
             ]
@@ -300,7 +283,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
-            if "Focus" not in state.player.magicinventory:
+            if "Hack" not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
@@ -326,7 +309,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 )
 
         elif self.game_state == "magic_screen":
-            print("You are in the magic screeen right now")
             self.battle_messages["magic_message"].draw(state)
 
             black_box_height = 221 - 50  # Adjust height
@@ -442,9 +424,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             x = start_x + box_size + line_thickness // 2
             pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
 
-
-
-
     def draw_mask_box(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()
         box_size = 50
@@ -478,3 +457,32 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         black_box_y = screen_height - black_box_height - 20 - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+    def generate_numbers(self) -> None:
+        # Generate the first slot number based on a 1-100 range
+        generated_values = [random.randint(1, 100) for _ in range(3)]
+
+        # Map the generated values to slot numbers 0-9
+        def map_to_slot_number(value: int) -> int:
+            slot_mapping = {
+                range(1, 5): 0, # lose a rib
+                range(6, 10): 1, # lost 50 extra coins from your state.player.money
+                range(11, 15): 2, # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                range(16, 56): 3, # add 100 coins
+                range(57, 65): 4, # gain 10 hp 10 mp 100 coins
+                range(66, 70): 5, # gain 20 hp 20 mp 125 coins
+                range(71, 85): 6, # add 200 coins
+                range(86, 91): 7, #lucky spin better % for jackpot
+                range(92, 97): 8, #get special item or 50 coins
+                range(98, 100): 9, # jackpot
+            }
+            for key in slot_mapping:
+                if value in key:
+                    return slot_mapping[key]
+            return 0  # Default value in case something goes wrong
+
+        self.slot1 = [map_to_slot_number(value) for value in generated_values]
+        print(str(self.slot1) + "this is  your slots")
+
+
+
