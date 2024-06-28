@@ -26,9 +26,9 @@ class StartScreen(Screen):
         self.lock_screen = False
 
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
-        self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
+        # self.music_volume = 0.5  # Adjust as needed
+        # self.initialize_music()
 
         self.clock = pygame.time.Clock()  # Initialize the clock
 
@@ -37,22 +37,24 @@ class StartScreen(Screen):
         pygame.mixer.music.stop()
 
     def initialize_music(self):
+        pass
         # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.init()
+        #
+        # # Load the music file
+        # pygame.mixer.music.load(self.music_file)
+        #
+        # # Set the volume for the music (0.0 to 1.0)
+        # pygame.mixer.music.set_volume(self.music_volume)
+        #
+        # # Play the music, -1 means the music will loop indefinitely
+        # pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
         self.stop_music()
         if state.musicOn == True:
-            self.initialize_music()
+            pass
+            # self.initialize_music()
         super().start(state)
         # self.show_loading_screen(state)
 

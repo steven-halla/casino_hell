@@ -65,6 +65,8 @@ class SlotsRibDemonJackRipperScreen(Screen):
         visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]
 
     def update(self, state: "GameState") -> None:
+        pygame.mixer.music.stop()
+
         current_time: int = pygame.time.get_ticks()
 
         if self.spinning:
@@ -210,11 +212,11 @@ class SlotsRibDemonJackRipperScreen(Screen):
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
 
-            black_box_height = 221 - 10  # Adjust height
+            black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box
             border_width = 5
             start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-            start_y_right_box = 199  # Adjust vertical alignment
+            start_y_right_box = 240  # Adjust vertical alignment
 
             # Create the black box
             black_box = pygame.Surface((black_box_width, black_box_height))
@@ -236,31 +238,31 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
             # Draw the menu options
             for idx, choice in enumerate(self.welcome_screen_choices):
-                y_position = start_y_right_box + idx * 45  # Adjust spacing between choices
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
                 state.DISPLAY.blit(
                     self.font.render(choice, True, (255, 255, 255)),
-                    (start_x_right_box + 60, y_position + 45)
+                    (start_x_right_box + 60, y_position + 15)
                 )
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 43)
+                    (start_x_right_box + 12, start_y_right_box + 12)
                 )
             elif self.welcome_screen_index == 1:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 88)
+                    (start_x_right_box + 12, start_y_right_box + 52)
                 )
             elif self.welcome_screen_index == 2:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 133)
+                    (start_x_right_box + 12, start_y_right_box + 92)
                 )
             elif self.welcome_screen_index == 3:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 178)
+                    (start_x_right_box + 12, start_y_right_box + 132)
                 )
 
         elif self.game_state == "spin_screen":

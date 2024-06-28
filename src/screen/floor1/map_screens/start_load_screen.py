@@ -28,8 +28,8 @@ class StartLoadScreen(Screen):
         self.spell_sound.set_volume(0.3)
         self.timer_start_time = None  # New attribute for timer start time
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/startscreen4.mp3"
-        self.music_volume = 0.5  # Adjust as needed
+        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/startscreen4.mp3"
+        # self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.title_colors = [(0, 0, 51),(120, 0, 0), (160, 0, 0), (200, 0, 0), (255, 0, 0)]  # Deeper shades of red
 
@@ -62,17 +62,18 @@ class StartLoadScreen(Screen):
         pygame.mixer.music.stop()
 
     def initialize_music(self):
+        pass
         # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.init()
+        #
+        # # Load the music file
+        # pygame.mixer.music.load(self.music_file)
+        #
+        # # Set the volume for the music (0.0 to 1.0)
+        # pygame.mixer.music.set_volume(self.music_volume)
+        #
+        # # Play the music, -1 means the music will loop indefinitely
+        # pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState") -> None:
         super().start(state)
