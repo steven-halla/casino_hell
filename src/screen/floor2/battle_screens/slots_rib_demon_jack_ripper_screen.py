@@ -21,6 +21,13 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.stop_start_time: int = 0
         self.stopping_first: bool = False
         self.stopping_second: bool = False
+        self.magic_lock = False
+
+
+        self.welcome_screen_index = 0
+
+        self.welcome_screen_choices = ["Play", "Magic", "Bet", "Quit"]
+
 
         self.go_to_results = False
 
@@ -56,7 +63,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
     def print_current_slots(self) -> None:
         visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]
-        print(f"Current Slots: {visible_slots}")
 
     def update(self, state: "GameState") -> None:
         current_time: int = pygame.time.get_ticks()
@@ -129,10 +135,44 @@ class SlotsRibDemonJackRipperScreen(Screen):
         controller.update()
 
         if self.game_state == "welcome_screen":
-            print("Hi welcome screen")
             self.go_to_results = False
 
             self.battle_messages["welcome_message"].update(state)
+            if controller.isUpPressed:
+                print("Nurgle is here for you ")
+                # self.menu_movement_sound.play()  # Play the sound effect once
+
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound(
+                #     "audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
+                if not hasattr(self, "welcome_screen_index"):
+                    self.welcome_screen_index = len(
+                        self.welcome_screen_choices) - 1
+                else:
+                    self.welcome_screen_index -= 1
+                self.welcome_screen_index %= len(
+                    self.welcome_screen_choices)
+                controller.isUpPressed = False
+
+
+            elif controller.isDownPressed:
+                # self.menu_movement_sound.play()  # Play the sound effect once
+
+                print("Nurgle is here for you ")
+
+                # channel3 = pygame.mixer.Channel(3)
+                # sound3 = pygame.mixer.Sound(
+                #     "audio/Fotstep_Carpet_Right_3.mp3")
+                # channel3.play(sound3)
+                if not hasattr(self, "welcome_screen_index"):
+                    self.welcome_screen_index = len(
+                        self.welcome_screen_choices) + 1
+                else:
+                    self.welcome_screen_index += 1
+                self.welcome_screen_index %= len(
+                    self.welcome_screen_choices)
+                controller.isDownPressed = False
 
         if self.battle_messages["welcome_message"].message_index == 1:
             self.game_state = "spin_screen"
@@ -169,6 +209,60 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
+
+            black_box_height = 221 - 10  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 199  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            # Draw the menu options
+            for idx, choice in enumerate(self.welcome_screen_choices):
+                y_position = start_y_right_box + idx * 45  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 45)
+                )
+
+            if self.welcome_screen_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 43)
+                )
+            elif self.welcome_screen_index == 1:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 88)
+                )
+            elif self.welcome_screen_index == 2:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 133)
+                )
+            elif self.welcome_screen_index == 3:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 178)
+                )
+
         elif self.game_state == "spin_screen":
             self.battle_messages["spin_message"].draw(state)
         elif self.game_state == "results_screen":
