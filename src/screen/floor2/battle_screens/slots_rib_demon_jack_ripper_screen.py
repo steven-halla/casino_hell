@@ -44,7 +44,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
             ),
 
             "results_message": TextBox(
-                ["Your spin is {} {} {}", ""],
+                ["Your spin is {0} {1} {2}", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -132,6 +132,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
         controller.update()
 
         if self.game_state == "welcome_screen":
+            print("Hi welcome screen")
             self.go_to_results = False
 
             self.battle_messages["welcome_message"].update(state)
@@ -145,13 +146,18 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 print("resultes here we go")
                 self.game_state = "results_screen"
 
-
         if self.game_state == "results_screen":
             print("results")
-            self.battle_messages["results_message"].text = f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]}"
-
+            self.battle_messages["results_message"].text = [
+                f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]}",
+                ""
+            ]
             self.battle_messages["results_message"].update(state)
 
+            if self.battle_messages["results_message"].message_index == 1:
+                self.battle_messages["welcome_message"].reset()
+                self.battle_messages["results_message"].reset()
+                self.game_state = "welcome_screen"
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
