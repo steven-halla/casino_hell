@@ -39,13 +39,13 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.font: pygame.font.Font = pygame.font.Font(None, 36)
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
-                ["Are you here for some rib demon slots?"],
+                [" "],
                 (65, 460, 700, 130),
                 36,
                 500
             ),
             "spin_message": TextBox(
-                ["Press the A key in order to Spin"],
+                ["Press the A key to stop the spin."],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -160,7 +160,7 @@ class SlotsRibDemonJackRipperScreen(Screen):
             if self.welcome_screen_index == 0 and controller.isTPressed:
                 self.game_state = "spin_screen"
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 1 and controller.isTPressed:
+            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
                 self.magic_screen_index = 0
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
@@ -298,6 +298,9 @@ class SlotsRibDemonJackRipperScreen(Screen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
+            if "Focus" not in state.player.magicinventory:
+                self.magic_lock = True
+                self.welcome_screen_choices[1] = "Locked"
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
