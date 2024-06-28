@@ -23,8 +23,9 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.stopping_second: bool = False
         self.magic_lock = False
 
-
+        self.magic_screen_choices = ["Cast", "Back"]
         self.welcome_screen_index = 0
+        self.magic_screen_index = 0
 
         self.welcome_screen_choices = ["Play", "Magic", "Bet", "Quit"]
 
@@ -38,13 +39,19 @@ class SlotsRibDemonJackRipperScreen(Screen):
         self.font: pygame.font.Font = pygame.font.Font(None, 36)
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
-                ["Are you here for some rib demon slots?", ""],
+                ["Are you here for some rib demon slots?"],
                 (65, 460, 700, 130),
                 36,
                 500
             ),
             "spin_message": TextBox(
                 ["Press the A key in order to Spin"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "magic_message": TextBox(
+                ["Casts a spell"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -66,7 +73,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         pygame.mixer.music.stop()
-
         current_time: int = pygame.time.get_ticks()
 
         if self.spinning:
@@ -105,7 +111,6 @@ class SlotsRibDemonJackRipperScreen(Screen):
                     self.print_current_slots()
                     self.go_to_results = True
 
-
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
@@ -131,58 +136,51 @@ class SlotsRibDemonJackRipperScreen(Screen):
         if state.controller.isBPressed:
             self.hide_numbers = not self.hide_numbers
 
-
-
         controller = state.controller
         controller.update()
 
         if self.game_state == "welcome_screen":
             self.go_to_results = False
-
             self.battle_messages["welcome_message"].update(state)
+
             if controller.isUpPressed:
-                print("Nurgle is here for you ")
-                # self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound(
-                #     "audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
-                if not hasattr(self, "welcome_screen_index"):
-                    self.welcome_screen_index = len(
-                        self.welcome_screen_choices) - 1
-                else:
-                    self.welcome_screen_index -= 1
-                self.welcome_screen_index %= len(
-                    self.welcome_screen_choices)
+                self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
                 controller.isUpPressed = False
-
-
             elif controller.isDownPressed:
-                # self.menu_movement_sound.play()  # Play the sound effect once
-
-                print("Nurgle is here for you ")
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound(
-                #     "audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
-                if not hasattr(self, "welcome_screen_index"):
-                    self.welcome_screen_index = len(
-                        self.welcome_screen_choices) + 1
-                else:
-                    self.welcome_screen_index += 1
-                self.welcome_screen_index %= len(
-                    self.welcome_screen_choices)
+                self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
                 controller.isDownPressed = False
 
-        if self.battle_messages["welcome_message"].message_index == 1:
-            self.game_state = "spin_screen"
+            if self.welcome_screen_index == 0 and controller.isTPressed:
+                self.game_state = "spin_screen"
+                controller.isTPressed = False
+            elif self.welcome_screen_index == 1 and controller.isTPressed:
+                self.game_state = "magic_screen"
+                controller.isTPressed = False
+                print("going to magic")
+
+        elif self.game_state == "magic_screen":
+            self.battle_messages["magic_message"].update(state)
+            print("You are in the currently magic screen")
+
+            if controller.isUpPressed:
+                self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
+                controller.isUpPressed = False
+            elif controller.isDownPressed:
+                self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
+                controller.isDownPressed = False
+
+            if self.magic_screen_index == 0 and controller.isTPressed:
+                print("casting spell")
+                controller.isTPressed = False
+            elif self.magic_screen_index == 1 and controller.isTPressed:
+                self.battle_messages["magic_message"].update(state)
+                self.game_state = "welcome_screen"
+                controller.isTPressed = False
 
         if self.game_state == "spin_screen":
             self.battle_messages["spin_message"].update(state)
-            if self.go_to_results == True:
-                print("resultes here we go")
+            if self.go_to_results:
+                print("results here we go")
                 self.game_state = "results_screen"
 
         if self.game_state == "results_screen":
@@ -264,6 +262,63 @@ class SlotsRibDemonJackRipperScreen(Screen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 132)
                 )
+
+        elif self.game_state == "magic_screen":
+            print("You are in the magic screeen right now")
+            self.battle_messages["magic_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            # Draw the menu options
+            for idx, choice in enumerate(self.magic_screen_choices):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
+
+            if self.magic_screen_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
+                )
+            elif self.magic_screen_index == 1:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 52)
+                )
+            # elif self.welcome_screen_index == 2:
+            #     state.DISPLAY.blit(
+            #         self.font.render("->", True, (255, 255, 255)),
+            #         (start_x_right_box + 12, start_y_right_box + 92)
+            #     )
+            # elif self.welcome_screen_index == 3:
+            #     state.DISPLAY.blit(
+            #         self.font.render("->", True, (255, 255, 255)),
+            #         (start_x_right_box + 12, start_y_right_box + 132)
+            #     )
 
         elif self.game_state == "spin_screen":
             self.battle_messages["spin_message"].draw(state)
