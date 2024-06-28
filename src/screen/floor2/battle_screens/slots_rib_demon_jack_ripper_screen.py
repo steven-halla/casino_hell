@@ -161,17 +161,39 @@ class SlotsRibDemonJackRipperScreen(Screen):
                 self.game_state = "spin_screen"
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed:
+                self.magic_screen_index = 0
+                self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
                 print("going to magic")
             elif self.welcome_screen_index == 2 and controller.isTPressed:
+                self.battle_messages["bet_message"].reset()
+
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
                 print("going to magic")
 
+            elif self.welcome_screen_index == 3 and controller.isTPressed:
+
+                state.currentScreen = state.area2StartScreen
+
+                controller.isTPressed = False
+                print("going to magic")
+
         elif self.game_state == "magic_screen":
+
+
+            if self.magic_screen_index == 0:
+                self.battle_messages["magic_message"].messages = [
+                    f"Speeds up brain synapis to process information faster slowing the wheel down."
+                ]
+            elif self.magic_screen_index == 1:
+                self.battle_messages["magic_message"].messages = [
+                    f"Go back to main menu."
+                ]
+
+            self.battle_messages["results_message"].update(state)
             self.battle_messages["magic_message"].update(state)
-            print("You are in the currently magic screen")
 
             if controller.isUpPressed:
                 self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
