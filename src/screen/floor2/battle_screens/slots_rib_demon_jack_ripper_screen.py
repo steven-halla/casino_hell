@@ -461,6 +461,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
     def generate_numbers(self) -> None:
         # Generate the first slot number based on a 1-100 range
         generated_values = [random.randint(1, 100) for _ in range(3)]
+        print(f"Generated values: {generated_values}")
 
         # Map the generated values to slot numbers 0-9
         def map_to_slot_number(value: int) -> int:
