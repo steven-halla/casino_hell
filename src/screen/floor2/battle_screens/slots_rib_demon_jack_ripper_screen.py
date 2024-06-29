@@ -107,7 +107,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         def map_to_slot_number(value: int) -> int:
             slot_mapping = {
                 # range(1, 7): 4,  # lose a rib
-                range(1, 100): 8,  # lost 50 extra coins from your state.player.money
+                range(1, 100): 9,  # lost 50 extra coins from your state.player.money
                 # range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
                 # range(21, 45): 3,  # add 100 coins
                 # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
@@ -500,6 +500,19 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                     print(str(state.player.items))
                     self.resolve_penalty = True
+
+            elif self.three_nines == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You got the JACK POT!!!!", ""
+                ]
+
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+                    self.resolve_penalty = True
+                    state.player.money += 500
+                    self.money -= 500
+                    print("now its time for a lucky strike")
 
 
 
