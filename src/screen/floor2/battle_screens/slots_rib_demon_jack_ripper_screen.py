@@ -9,7 +9,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         super().__init__("Casino Slots Screen")
 
         self.slot1: list[int] = [0, 0, 0]
-        self.slot2: list[int] = [random.randint(0, 9) for _ in range(3)]   #
+        self.slot2: list[int] = [0, 0, 0]
         self.slot3: list[int] = [random.randint(0, 9) for _ in range(3)]
         self.slot_positions1: list[int] = [-50, 0, 50]
         self.slot_positions2: list[int] = [-50, 0, 50]
@@ -95,11 +95,9 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                         self.slot_positions2[i] += 10
                         if self.slot_positions2[i] >= 100:
                             self.slot_positions2[i] = -50
-                            self.slot2[i] = random.randint(0, 9)
                     self.slot_positions3[i] += 10
                     if self.slot_positions3[i] >= 100:
                         self.slot_positions3[i] = -50
-                        self.slot3[i] = random.randint(0, 9)
 
             if self.stopping:
                 if not self.stopping_first:
@@ -133,7 +131,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.spin_delay = 70
                 print("Spinning started.")
                 self.generate_numbers()  # Call the method to generate new numbers
-
             else:
                 self.stopping = True
                 self.stop_start_time = current_time
@@ -460,30 +457,48 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
     def generate_numbers(self) -> None:
         # Generate the first slot number based on a 1-100 range
-        generated_values = [random.randint(1, 100) for _ in range(3)]
-        print(f"Generated values: {generated_values}")
+        generated_values1 = [random.randint(1, 100) for _ in range(3)]
+        print(f"Generated values for slot1: {generated_values1}")
 
         # Map the generated values to slot numbers 0-9
         def map_to_slot_number(value: int) -> int:
             slot_mapping = {
-                range(1, 5): 0, # lose a rib
-                range(6, 10): 1, # lost 50 extra coins from your state.player.money
-                range(11, 15): 2, # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                range(16, 56): 3, # add 100 coins
-                range(57, 65): 4, # gain 10 hp 10 mp 100 coins
-                range(66, 70): 5, # gain 20 hp 20 mp 125 coins
-                range(71, 85): 6, # add 200 coins
-                range(86, 91): 7, #lucky spin better % for jackpot
-                range(92, 97): 8, #get special item or 50 coins
-                range(98, 100): 9, # jackpot
+                range(1, 5): 0,  # lose a rib
+                range(6, 10): 1,  # lost 50 extra coins from your state.player.money
+                range(11, 15): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                range(16, 56): 3,  # add 100 coins
+                range(57, 65): 4,  # gain 10 hp 10 mp 100 coins
+                range(66, 70): 5,  # gain 20 hp 20 mp 125 coins
+                range(71, 85): 6,  # add 200 coins
+                range(86, 91): 7,  # lucky spin better % for jackpot
+                range(92, 97): 8,  # get special item or 50 coins
+                range(98, 100): 9,  # jackpot
             }
             for key in slot_mapping:
                 if value in key:
                     return slot_mapping[key]
             return 0  # Default value in case something goes wrong
 
-        self.slot1 = [map_to_slot_number(value) for value in generated_values]
-        print(str(self.slot1) + "this is  your slots")
+        self.slot1 = [map_to_slot_number(value) for value in generated_values1]
+        print(f"Mapped slot1 values: {self.slot1}")
+
+        # Generate the second slot number based on a 1-100 roll
+        generated_value2 = random.randint(1, 100)
+        print(f"Generated value for slot2 position 0: {generated_value2}")
+
+        if generated_value2 >= 50:  # 50% chance to match slot1 position 0
+            self.slot2[0] = self.slot1[0]
+        else:
+            self.slot2[0] = map_to_slot_number(generated_value2)
+
+        # Generate random values for the other two positions of slot2
+        self.slot2[1:] = [random.randint(0, 9) for _ in range(2)]
+
+        print(f"Mapped slot2 values: {self.slot2}")
+
+
+
+
 
 
 
