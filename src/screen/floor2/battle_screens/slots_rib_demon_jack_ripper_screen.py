@@ -398,6 +398,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.battle_messages["welcome_message"].reset()
                 self.battle_messages["results_message"].reset()
                 self.resolve_penalty = False
+                if self.lock_down > 0:
+                    self.lock_down -= 1
                 self.game_state = "welcome_screen"
 
     def draw(self, state: "GameState") -> None:
