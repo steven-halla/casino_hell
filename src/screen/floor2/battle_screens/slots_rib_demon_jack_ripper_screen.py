@@ -8,16 +8,18 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
 
-        self.three_zeros = False
-        self.three_ones = False
-        self.three_twos = False
-        self.three_threes = False
-        self.three_fours = False
-        self.three_fives = False
-        self.three_sixes = False
-        self.three_sevens = False
-        self.three_eights = False
-        self.three_nines = False
+        self.three_zeros: bool = False
+        self.three_ones: bool  = False
+        self.three_twos: bool  = False
+        self.three_threes: bool  = False
+        self.three_fours: bool  = False
+        self.three_fives: bool  = False
+        self.three_sixes: bool  = False
+        self.three_sevens: bool  = False
+        self.three_eights: bool  = False
+        self.three_nines: bool  = False
+
+        self.lock_down: int = 0
 
         self.no_matches = True
 
@@ -101,8 +103,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         # Map the generated values to slot numbers 0-9
         def map_to_slot_number(value: int) -> int:
             slot_mapping = {
-                range(1, 100): 0,  # lose a rib
-                # range(7, 15): 1,  # lost 50 extra coins from your state.player.money
+                # range(1, 7): 0,  # lose a rib
+                range(1, 100): 2,  # lost 50 extra coins from your state.player.money
                 # range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
                 # range(21, 45): 3,  # add 100 coins
                 # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
@@ -146,38 +148,56 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         if self.slot1[0] == 1 and self.slot2[0] == 1 and self.slot3[0] == 1:
             print("hi ones")
             self.three_ones = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 2 and self.slot2[0] == 2 and self.slot3[0] == 2:
             print("hi twos")
             self.three_twos = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 3 and self.slot2[0] == 3 and self.slot3[0] == 3:
             print("hi threes")
             self.three_threes = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 4 and self.slot2[0] == 4 and self.slot3[0] == 4:
             print("hi fours")
             self.three_fours = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 5 and self.slot2[0] == 5 and self.slot3[0] == 5:
             print("hi fives")
             self.three_fives = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 6 and self.slot2[0] == 6 and self.slot3[0] == 6:
             print("hi sixes")
             self.three_sixes = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 7 and self.slot2[0] == 7 and self.slot3[0] == 7:
             print("hi sevens")
             self.three_sevens = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 8 and self.slot2[0] == 8 and self.slot3[0] == 8:
             print("hi eights")
             self.three_eights = True
+            self.no_matches = False
+
 
         if self.slot1[0] == 9 and self.slot2[0] == 9 and self.slot3[0] == 9:
             print("hi nines")
             self.three_nines = True
+            self.no_matches = False
+
 
         # print(f"Mapped slot3 values: {self.slot3}")
 
@@ -350,10 +370,28 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     state.player.stamina_points -= 10
                     self.resolve_penalty = True
 
+            elif self.three_ones == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and lose 50 gold", ""
+                ]
 
+                self.battle_messages["results_message"].update(state)
 
+                if self.resolve_penalty == False:
+                    state.player.money -= 50
+                    self.resolve_penalty = True
 
+            elif self.three_twos == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} And now your locked in ", ""
+                ]
 
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+                    print("player lock")
+                    self.resolve_penalty = True
+                    self.lock_down = 5
 
 
             if self.battle_messages["results_message"].message_index == 1:
@@ -368,6 +406,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             self.draw_mask_box(state)
 
         self.draw_hero_info_boxes(state)
+
         self.draw_grid_box(state)
         self.draw_enemy_info_box(state)
 
@@ -375,6 +414,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             self.draw_mask_box(state)
 
         self.draw_bottom_black_box(state)
+
+
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)

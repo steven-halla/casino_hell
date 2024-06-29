@@ -12,6 +12,7 @@ class BattleScreen:
         self.font: pygame.font.Font = pygame.font.Font(None, 36)  # Initialize the font attribute
         self.money: int = 1000  # Add this line
         self.bet: int = 50  # Add this line
+        self.lock_down = 0
 
     def start(self, state: 'GameState') -> None:
         pygame.display.set_caption(self.screenName)
@@ -65,6 +66,10 @@ class BattleScreen:
         state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, (255, 255, 255)), (37, 250))
         state.DISPLAY.blit(self.font.render(f"HP: {state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True, (255, 255, 255)), (37, 330))
-        state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
+        if self.lock_down < 1:
+            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
+        elif self.lock_down > 0:
+            state.DISPLAY.blit(self.font.render(f"Locked Down", True, (255, 255, 255)), (37, 205))
+
 
 
