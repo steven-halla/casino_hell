@@ -2,6 +2,7 @@ import pygame
 import random
 from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
+from globalclasses.money_balancer import MoneyBalancer
 from screen.examples.screen import Screen
 
 class SlotsRibDemonJackRipperScreen(BattleScreen):
@@ -55,7 +56,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
         self.bet: int = 50
-        self.money: int = 1000
+        self.money: int = 100
         self.font: pygame.font.Font = pygame.font.Font(None, 36)
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
@@ -94,6 +95,9 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         }
 
         self.hide_numbers: bool = True
+
+        self.money_balancer = MoneyBalancer(self.money)
+
 
     def print_current_slots(self) -> None:
         visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]
@@ -501,7 +505,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     print(str(state.player.items))
                     self.resolve_penalty = True
 
-            elif self.three_nines == True:
+            elif self.three_nines:
                 self.battle_messages["results_message"].messages = [
                     f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You got the JACK POT!!!!", ""
                 ]
@@ -510,29 +514,38 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                 if self.resolve_penalty == False:
                     self.resolve_penalty = True
-                    state.player.money += 500
-                    self.money -= 500
+
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 500
+
+                    # Adjust player and enemy money
+                    if self.money > 499:
+                        state.player.money += jackpot_amount
+
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
                     print("now its time for a lucky strike")
 
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
 
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    # Print final values
+                    print(f"Final Player Money: {state.player.money}")
+                    print(f"Final Enemy Money: {self.money}")
 
             if self.battle_messages["results_message"].message_index == 1:
                 self.battle_messages["welcome_message"].reset()

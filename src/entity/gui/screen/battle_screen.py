@@ -14,6 +14,7 @@ class BattleScreen:
         self.bet: int = 50  # Add this line
         self.lock_down = 0
 
+
     def start(self, state: 'GameState') -> None:
         pygame.display.set_caption(self.screenName)
 
@@ -45,6 +46,8 @@ class BattleScreen:
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 70))
         state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
+
+
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
         black_box = pygame.Surface((200 - 10, 180 - 10))
