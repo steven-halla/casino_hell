@@ -339,12 +339,12 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         if self.game_state == "bet_screen":
             self.battle_messages["bet_message"].update(state)
             if controller.isUpPressed:
-                self.bet += 50
-                if self.bet > 250:
-                    self.bet = 250
+                self.bet += 10
+                if self.bet > 60:
+                    self.bet = 60
                 controller.isUpPressed = False
             elif controller.isDownPressed:
-                self.bet -= 50
+                self.bet -= 10
                 if self.bet < 50:
                     self.bet = 50
                 controller.isDownPressed = False
@@ -411,8 +411,32 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 if self.resolve_penalty == False:
 
                     self.resolve_penalty = True
-                    state.player.money += 100
-                    self.money -= 100
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 100
+
+                    # Adjust player and enemy money
+                    if self.money > 99:
+                        state.player.money += jackpot_amount
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
+                    print("now its time for a lucky strike")
+
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
+
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
 
 
 
@@ -426,8 +450,32 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 if self.resolve_penalty == False:
 
                     self.resolve_penalty = True
-                    state.player.money += 100
-                    self.money -= 100
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 100
+
+                    # Adjust player and enemy money
+                    if self.money > 99:
+                        state.player.money += jackpot_amount
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
+                    print("now its time for a lucky strike")
+
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
+
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
                     if state.player.stamina_points < state.player.max_stamina_points:
                         state.player.stamina_points += 20
                         if state.player.stamina_points > state.player.max_stamina_points:
@@ -448,8 +496,32 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 if self.resolve_penalty == False:
 
                     self.resolve_penalty = True
-                    state.player.money += 100
-                    self.money -= 100
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 100
+
+                    # Adjust player and enemy money
+                    if self.money > 99:
+                        state.player.money += jackpot_amount
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
+                    print("now its time for a lucky strike")
+
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
+
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
                     state.player.exp += 50
 
 
@@ -462,8 +534,32 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                 if self.resolve_penalty == False:
                     self.resolve_penalty = True
-                    state.player.money += 250
-                    self.money -= 250
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 250
+
+                    # Adjust player and enemy money
+                    if self.money > 249:
+                        state.player.money += jackpot_amount
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
+                    print("now its time for a lucky strike")
+
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
+
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
 
 
             elif self.three_sevens == True:
@@ -475,8 +571,37 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                 if self.resolve_penalty == False:
                     self.resolve_penalty = True
-                    state.player.money += 50
-                    self.money -= 50
+
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 50
+
+                    # Adjust player and enemy money
+                    if self.money > 49:
+                        state.player.money += jackpot_amount
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
+                    print("now its time for a lucky strike")
+
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
+
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
+
+
+
+
                     self.lucky_strike += 6
                     print("now its time for a lucky strike")
 
@@ -497,10 +622,36 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
-                    state.player.money += 50
                     self.secret_item = True
-
+                    state.player.money += 50
                     self.money -= 50
+
+                    # Capture the initial enemy money before adjustment
+                    initial_enemy_money = self.money
+                    print(f"Initial Player Money: {state.player.money}")
+                    print(f"Initial Enemy Money: {initial_enemy_money}")
+
+                    # The amount to add or subtract
+                    jackpot_amount = 50
+
+                    # Adjust player and enemy money
+                    if self.money > 49:
+                        state.player.money += jackpot_amount
+
+                    self.money -= jackpot_amount
+
+                    # Print values after jackpot logic
+                    print(f"After Jackpot - Player Money: {state.player.money}")
+                    print(f"After Jackpot - Enemy Money: {self.money}")
+
+                    print("now its time for a lucky strike")
+
+                    # Use MoneyBalancer to ensure enemy's money does not go below zero
+                    self.money_balancer.money = self.money
+                    self.money_balancer.balance_money(state, initial_enemy_money)
+
+                    # Update the enemy's money after balancing
+                    self.money = self.money_balancer.money
 
                     print(str(state.player.items))
                     self.resolve_penalty = True
@@ -543,9 +694,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     # Update the enemy's money after balancing
                     self.money = self.money_balancer.money
 
-                    # Print final values
-                    print(f"Final Player Money: {state.player.money}")
-                    print(f"Final Enemy Money: {self.money}")
 
             if self.battle_messages["results_message"].message_index == 1:
                 self.battle_messages["welcome_message"].reset()
