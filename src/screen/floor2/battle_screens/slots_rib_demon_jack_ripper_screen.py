@@ -21,7 +21,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.three_nines: bool  = False
         self.secret_item = False
 
-        self.lock_down: int = 0
+        self.lock_down: int = 1
         self.lucky_strike = 0
 
         self.no_matches = True
@@ -109,18 +109,50 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
         # Map the generated values to slot numbers 0-9
         def map_to_slot_number(value: int) -> int:
-            slot_mapping = {
-                # range(1, 7): 4,  # lose a rib
-                range(1, 100): 9,  # lost 50 extra coins from your state.player.money
-                # range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                # range(21, 45): 3,  # add 100 coins
-                # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                # range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
-                # range(72, 80): 6,  # add 200 coins
-                # range(80, 87): 7,  # lucky spin better % for jackpot
-                # range(87, 95): 8,  # get special item or 50 coins
-                # range(95, 101): 9,  # jackpot
-            }
+            if self.lock_down == 0 and self.lucky_strike == 0:
+                slot_mapping = {
+                    range(1, 7): 0,  # lose a rib
+                    range(7, 15): 1,  # lost 50 extra coins from your state.player.money
+                    range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(21, 45): 3,  # add 100 coins
+                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
+                    range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
+                    range(72, 80): 6,  # add 200 coins
+                    range(80, 87): 7,  # lucky spin better % for jackpot
+                    range(87, 95): 8,  # get special item or 50 coins
+                    range(95, 101): 9,  # jackpot
+                }
+            elif self.lock_down > 0 and self.lucky_strike == 0:
+                slot_mapping = {
+                    range(1, 11): 0,  # lose a rib
+                    range(11, 19): 1,  # lost 50 extra coins from your state.player.money
+                    range(19, 26): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(26, 45): 3,  # add 100 coins
+                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
+                    range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
+                    range(72, 80): 6,  # add 200 coins
+                    range(80, 87): 7,  # lucky spin better % for jackpot
+                    range(87, 95): 8,  # get special item or 50 coins
+                    range(95, 101): 9,  # jackpot
+                }
+
+            elif self.lucky_strike > 0:
+                slot_mapping = {
+                    range(1, 3): 0,  # lose a rib
+                    range(4, 7): 1,  # lost 50 extra coins from your state.player.money
+                    range(7, 11): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(11, 45): 3,  # add 100 coins
+                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
+                    range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
+                    range(72, 79): 6,  # add 200 coins
+                    range(79, 80): 7,  # lucky spin better % for jackpot
+                    range(80, 85): 8,  # get special item or 50 coins
+                    range(85, 101): 9,  # jackpot
+                }
+
+            for key in slot_mapping:
+                print(f"Range {key}: {slot_mapping[key]}")
+
             for key in slot_mapping:
                 if value in key:
                     return slot_mapping[key]
