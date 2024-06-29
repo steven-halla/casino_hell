@@ -10,7 +10,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
         self.slot1: list[int] = [0, 0, 0]
         self.slot2: list[int] = [0, 0, 0]
-        self.slot3: list[int] = [random.randint(0, 9) for _ in range(3)]
+        self.slot2: list[int] = [0, 0, 0]
         self.slot_positions1: list[int] = [-50, 0, 50]
         self.slot_positions2: list[int] = [-50, 0, 50]
         self.slot_positions3: list[int] = [-50, 0, 50]
@@ -29,7 +29,6 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
         #maybe replace Bet with Rules?
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-
 
         self.go_to_results: bool = False
 
@@ -79,10 +78,45 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
     def print_current_slots(self) -> None:
         visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]
 
-    def update(self, state: "GameState") -> None:
-        pygame.mixer.music.stop()
-        current_time: int = pygame.time.get_ticks()  # local variable
+    def generate_numbers(self) -> None:
+        # Generate the first slot number based on a 1-100 range
+        generated_values1 = [random.randint(1, 100) for _ in range(3)]
+        print(f"Generated values for slot1: {generated_values1}")
 
+        # Map the generated values to slot numbers 0-9
+        def map_to_slot_number(value: int) -> int:
+            slot_mapping = {
+                range(1, 5): 0,  # lose a rib
+                range(6, 10): 1,  # lost 50 extra coins from your state.player.money
+                range(11, 15): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                range(16, 56): 3,  # add 100 coins
+                range(57, 65): 4,  # gain 10 hp 10 mp 100 coins
+                range(66, 70): 5,  # gain 20 hp 20 mp 125 coins
+                range(71, 85): 6,  # add 200 coins
+                range(86, 91): 7,  # lucky spin better % for jackpot
+                range(92, 97): 8,  # get special item or 50 coins
+                range(98, 100): 9,  # jackpot
+            }
+            for key in slot_mapping:
+                if value in key:
+                    return slot_mapping[key]
+            return 0  # Default value in case something goes wrong
+
+        self.slot1 = [map_to_slot_number(value) for value in generated_values1]
+        print(f"Mapped slot1 values: {self.slot1}")
+
+        # Generate the second slot number based on a 1-100 roll
+        self.slot2 = [0, 0, 0]  # Initialize slot2
+        for i in range(3):
+            generated_value = random.randint(1, 100)
+            print(f"Generated value for slot2 position {i}: {generated_value}")
+            if i == 0 and generated_value >= 50:  # 50% chance to match slot1
+                self.slot2[i] = self.slot1[i]
+            else:
+                self.slot2[i] = map_to_slot_number(generated_value)
+        print(f"Mapped slot2 values: {self.slot2}")
+
+    def handle_spinning(self, state: "GameState", current_time: int) -> None:
         if self.spinning:
             if current_time - self.last_update_time > self.spin_delay:
                 self.last_update_time = current_time  # this and the line above control the speed of spinning slots (spin_delay mainly)
@@ -136,11 +170,13 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.stop_start_time = current_time
                 print("Stopping initiated.")
 
-        if not state.controller.isAPressed:
-            self.a_key_pressed = False
-
+    def update(self, state: "GameState") -> None:
+        pygame.mixer.music.stop()
+        current_time: int = pygame.time.get_ticks()  # local variable
         if state.controller.isBPressed:
             self.hide_numbers = not self.hide_numbers
+
+        self.handle_spinning(state, current_time)  # Call the new method here
 
         controller = state.controller
         controller.update()
@@ -174,24 +210,17 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
-                self.battle_messages["magic_message"].messages = [
-                    f""
-                ]
+                self.battle_messages["magic_message"].messages = [f""]
             elif self.magic_screen_index == 1:
-                self.battle_messages["magic_message"].messages = [
-                    f"Go back to main menu."
-                ]
-
+                self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
             self.battle_messages["results_message"].update(state)
             self.battle_messages["magic_message"].update(state)
-
             if controller.isUpPressed:
                 self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
-
             if self.magic_screen_index == 0 and controller.isTPressed:
                 controller.isTPressed = False
             elif self.magic_screen_index == 1 and controller.isTPressed:
@@ -206,13 +235,11 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 if self.bet > 250:
                     self.bet = 250
                 controller.isUpPressed = False
-
             elif controller.isDownPressed:
                 self.bet -= 50
                 if self.bet < 50:
                     self.bet = 50
                 controller.isDownPressed = False
-
             elif controller.isBPressed:
                 self.game_state = "welcome_screen"
                 controller.isBPressed = False
@@ -235,7 +262,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
-
+        if not self.hide_numbers:
+            self.draw_mask_box(state)
 
         self.draw_hero_info_boxes(state)
         self.draw_grid_box(state)
@@ -350,23 +378,13 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 52)
                 )
-            # elif self.welcome_screen_index == 2:
-            #     state.DISPLAY.blit(
-            #         self.font.render("->", True, (255, 255, 255)),
-            #         (start_x_right_box + 12, start_y_right_box + 92)
-            #     )
-            # elif self.welcome_screen_index == 3:
-            #     state.DISPLAY.blit(
-            #         self.font.render("->", True, (255, 255, 255)),
-            #         (start_x_right_box + 12, start_y_right_box + 132)
-            #     )
-
 
         elif self.game_state == "bet_screen":
             self.battle_messages["bet_message"].draw(state)
 
         elif self.game_state == "spin_screen":
             self.battle_messages["spin_message"].draw(state)
+
         elif self.game_state == "results_screen":
             self.battle_messages["results_message"].draw(state)
 
@@ -454,51 +472,3 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         black_box_y = screen_height - black_box_height - 20 - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-    def generate_numbers(self) -> None:
-        # Generate the first slot number based on a 1-100 range
-        generated_values1 = [random.randint(1, 100) for _ in range(3)]
-        print(f"Generated values for slot1: {generated_values1}")
-
-        # Map the generated values to slot numbers 0-9
-        def map_to_slot_number(value: int) -> int:
-            slot_mapping = {
-                range(1, 5): 0,  # lose a rib
-                range(6, 10): 1,  # lost 50 extra coins from your state.player.money
-                range(11, 15): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                range(16, 56): 3,  # add 100 coins
-                range(57, 65): 4,  # gain 10 hp 10 mp 100 coins
-                range(66, 70): 5,  # gain 20 hp 20 mp 125 coins
-                range(71, 85): 6,  # add 200 coins
-                range(86, 91): 7,  # lucky spin better % for jackpot
-                range(92, 97): 8,  # get special item or 50 coins
-                range(98, 100): 9,  # jackpot
-            }
-            for key in slot_mapping:
-                if value in key:
-                    return slot_mapping[key]
-            return 0  # Default value in case something goes wrong
-
-        self.slot1 = [map_to_slot_number(value) for value in generated_values1]
-        print(f"Mapped slot1 values: {self.slot1}")
-
-        # Generate the second slot number based on a 1-100 roll
-        generated_value2 = random.randint(1, 100)
-        print(f"Generated value for slot2 position 0: {generated_value2}")
-
-        if generated_value2 >= 50:  # 50% chance to match slot1 position 0
-            self.slot2[0] = self.slot1[0]
-        else:
-            self.slot2[0] = map_to_slot_number(generated_value2)
-
-        # Generate random values for the other two positions of slot2
-        self.slot2[1:] = [random.randint(0, 9) for _ in range(2)]
-
-        print(f"Mapped slot2 values: {self.slot2}")
-
-
-
-
-
-
-
