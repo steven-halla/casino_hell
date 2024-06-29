@@ -23,11 +23,11 @@ class Player(Entity):
         self.luck = 0
         self.food = 0
         self.perception = 0
-        self.stamina_points = 100
+        self.stamina_points = 55
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False
         self.max_stamina_points = 100 + self.stamina_increase
-        self.focus_points = 10
+        self.focus_points = 5
         self.max_focus_points = 10
         self.perks = []
         self.items = []

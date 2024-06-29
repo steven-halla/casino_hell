@@ -103,8 +103,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         # Map the generated values to slot numbers 0-9
         def map_to_slot_number(value: int) -> int:
             slot_mapping = {
-                # range(1, 7): 0,  # lose a rib
-                range(1, 100): 2,  # lost 50 extra coins from your state.player.money
+                # range(1, 7): 4,  # lose a rib
+                range(1, 100): 4,  # lost 50 extra coins from your state.player.money
                 # range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
                 # range(21, 45): 3,  # add 100 coins
                 # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
@@ -305,7 +305,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 3 and controller.isTPressed:
+            elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
                 state.currentScreen = state.area2StartScreen
                 controller.isTPressed = False
 
@@ -379,6 +379,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                 if self.resolve_penalty == False:
                     state.player.money -= 50
+                    self.money += 50
                     self.resolve_penalty = True
 
             elif self.three_twos == True:
@@ -392,6 +393,52 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     print("player lock")
                     self.resolve_penalty = True
                     self.lock_down = 5
+
+            elif self.three_threes == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You win 100 Coins!", ""
+                ]
+
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+
+                    self.resolve_penalty = True
+                    state.player.money += 100
+                    self.money -= 100
+
+
+
+            elif self.three_fours == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You feel invigorated {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain life and MP and some money!", ""
+                ]
+
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+
+                    self.resolve_penalty = True
+                    state.player.money += 100
+                    self.money -= 100
+                    if state.player.stamina_points < state.player.max_stamina_points:
+                        state.player.stamina_points += 20
+                        if state.player.stamina_points > state.player.max_stamina_points:
+                            state.player.stamina_points = state.player.max_stamina_points
+                    if state.player.focus_points < state.player.max_focus_points:
+                        state.player.focus_points += 20
+                        if state.player.focus_points > state.player.max_focus_points:
+                            state.player.focus_points = state.player.max_focus_points
+
+
+
+
+
+
+
+
+
+
 
 
             if self.battle_messages["results_message"].message_index == 1:
@@ -456,6 +503,10 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             if "Hack" not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
+
+            if self.lock_down > 0:
+
+                self.welcome_screen_choices[3] = "Locked"
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
