@@ -45,6 +45,7 @@ class BattleScreen:
 
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 70))
         state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
+
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
 

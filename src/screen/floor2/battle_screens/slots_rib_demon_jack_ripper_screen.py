@@ -122,6 +122,22 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     range(87, 95): 8,  # get special item or 50 coins
                     range(95, 101): 9,  # jackpot
                 }
+            elif self.lucky_strike == 0 and self.bet > 50:
+                slot_mapping = {
+                    range(1, 7): 0,  # lose a rib
+                    range(7, 15): 1,  # lost 50 extra coins from your state.player.money
+                    range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(21, 45): 3,  # add 100 coins
+                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
+                    range(57, 65): 5,  # gain 20 hp 20 mp 125 coins
+                    range(65, 76): 6,  # add 200 coins
+                    range(76, 82): 7,  # lucky spin better % for jackpot
+                    range(82, 95): 8,  # get special item or 50 coins
+                    range(95, 101): 9,  # jackpot
+                }
+
+
+
             elif self.lock_down > 0 and self.lucky_strike == 0:
                 slot_mapping = {
                     range(1, 11): 0,  # lose a rib
@@ -136,17 +152,25 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     range(95, 101): 9,  # jackpot
                 }
 
+            elif self.lucky_strike > 0 and self.bet > 50:
+                slot_mapping = {
+
+                    range(1, 30): 3,  # add 100 coins
+                    range(30, 40): 4,  # gain 10 hp 10 mp 100 coins
+                    range(40, 50): 5,  # gain 20 hp 20 mp 125 coins
+                    range(50, 55): 6,  # add 200 coins
+                    range(55, 85): 8,  # get special item or 50 coins
+                    range(85, 101): 9,  # jackpot
+                }
+
             elif self.lucky_strike > 0:
                 slot_mapping = {
-                    range(1, 3): 0,  # lose a rib
-                    range(4, 7): 1,  # lost 50 extra coins from your state.player.money
-                    range(7, 11): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(11, 45): 3,  # add 100 coins
-                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                    range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
-                    range(72, 79): 6,  # add 200 coins
-                    range(79, 80): 7,  # lucky spin better % for jackpot
-                    range(80, 85): 8,  # get special item or 50 coins
+
+                    range(1, 30): 3,  # add 100 coins
+                    range(30, 40): 4,  # gain 10 hp 10 mp 100 coins
+                    range(40, 50): 5,  # gain 20 hp 20 mp 125 coins
+                    range(50, 60): 6,  # add 200 coins
+                    range(60, 85): 8,  # get special item or 50 coins
                     range(85, 101): 9,  # jackpot
                 }
 
@@ -308,7 +332,11 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         controller = state.controller
         controller.update()
 
+
+
         if self.game_state == "welcome_screen":
+            if "Lucky Shoes" in state.player.items:
+                self.bet = 50
             self.no_matches = True
 
             self.three_zeros = False
@@ -340,7 +368,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 2 and controller.isTPressed:
+            elif self.welcome_screen_index == 2 and controller.isTPressed and "Lucky Shoes" not in state.player.items:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
@@ -793,6 +821,9 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             if "Hack" not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
+
+            if "Lucky Shoes" in state.player.items:
+                self.welcome_screen_choices[2] = "Locked"
 
             if self.lock_down > 0:
 
