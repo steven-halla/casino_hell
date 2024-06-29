@@ -18,8 +18,10 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.three_sevens: bool  = False
         self.three_eights: bool  = False
         self.three_nines: bool  = False
+        self.secret_item = False
 
         self.lock_down: int = 0
+        self.lucky_strike = 0
 
         self.no_matches = True
 
@@ -39,6 +41,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.stopping_first: bool = False
         self.stopping_second: bool = False
         self.magic_lock = False
+
 
         self.magic_screen_choices: list[str] = ["Hack", "Back"]
         self.welcome_screen_index: int = 0
@@ -104,7 +107,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         def map_to_slot_number(value: int) -> int:
             slot_mapping = {
                 # range(1, 7): 4,  # lose a rib
-                range(1, 100): 4,  # lost 50 extra coins from your state.player.money
+                range(1, 100): 8,  # lost 50 extra coins from your state.player.money
                 # range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
                 # range(21, 45): 3,  # add 100 coins
                 # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
@@ -431,6 +434,83 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                             state.player.focus_points = state.player.max_focus_points
 
 
+            elif self.three_fives == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 100 gold and +50 exp", ""
+                ]
+
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+
+                    self.resolve_penalty = True
+                    state.player.money += 100
+                    self.money -= 100
+                    state.player.exp += 50
+
+
+            elif self.three_sixes == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 250 gold", ""
+                ]
+
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+                    self.resolve_penalty = True
+                    state.player.money += 250
+                    self.money -= 250
+
+
+            elif self.three_sevens == True:
+                self.battle_messages["results_message"].messages = [
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Lucky 7s increased chance of jack pot!", ""
+                ]
+
+                self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+                    self.resolve_penalty = True
+                    state.player.money += 50
+                    self.money -= 50
+                    self.lucky_strike += 6
+                    print("now its time for a lucky strike")
+
+
+            elif self.three_eights == True:
+
+                if "Lucky Shoes" not in state.player.items:
+                    self.battle_messages["results_message"].messages = [
+                        f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} grats you got the super secret item!!", ""
+                    ]
+
+                    self.battle_messages["results_message"].update(state)
+                elif "Lucky Shoes" in state.player.items and self.secret_item == True:
+                    self.battle_messages["results_message"].messages = [
+                        f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} too bad for you there is only 1 item.!", ""
+                    ]
+
+                    self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+                    state.player.money += 50
+                    self.secret_item = True
+
+                    self.money -= 50
+
+                    print(str(state.player.items))
+                    self.resolve_penalty = True
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -447,7 +527,11 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.resolve_penalty = False
                 if self.lock_down > 0:
                     self.lock_down -= 1
+
                 self.game_state = "welcome_screen"
+                if self.secret_item == True and "Lucky Shoes" not in state.player.items:
+                    state.player.items.append("Lucky Shoes")
+                print(str(state.player.items))
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
