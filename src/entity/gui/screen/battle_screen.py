@@ -77,3 +77,22 @@ class BattleScreen:
 
 
 
+    def draw_bottom_black_box(self, state: "GameState") -> None:
+        black_box_height = 130
+        black_box_width = 700
+        border_width = 5
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill((0, 0, 0))
+
+        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+
+        screen_width, screen_height = state.DISPLAY.get_size()
+        black_box_x = (screen_width - black_box_width) // 2 - border_width
+        black_box_y = screen_height - black_box_height - 20 - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
