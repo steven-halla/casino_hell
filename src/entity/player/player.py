@@ -12,7 +12,7 @@ class Player(Entity):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
-        self.money = 0
+        self.money = 110
         self.current_frame_index = 0
         self.exp = 0
         self.inn_badge = False
@@ -23,7 +23,7 @@ class Player(Entity):
         self.luck = 0
         self.food = 0
         self.perception = 0
-        self.stamina_points = 40
+        self.stamina_points = 1
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False
         self.max_stamina_points = 100 + self.stamina_increase

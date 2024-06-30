@@ -104,7 +104,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             ),
 
             "game_over_no_stamina_message": TextBox(
-                ["Hero: Crap I can't...keep...going...(You ran out of stamina)", ""],
+                ["Hero: Crap I can't...keep...going...(You ran out of stamina", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -112,6 +112,20 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             "game_over_no_money_message": TextBox(
                 ["You ran out of money game over, enjoy eternity in rib demon hell", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+        "game_over_low_stamina_message": TextBox(
+                ["Hero: I'm too tired to keep gambling i need to rest)", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "game_over_low_money_message": TextBox(
+                ["I don't have enough money to keep playing time to leave", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -387,9 +401,22 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             self.go_to_results = False
             self.battle_messages["welcome_message"].update(state)
 
+
+
             if state.player.stamina_points < 1:
                 self.battle_messages["game_over_no_stamina_message"].update(state)
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+                self.battle_messages["game_over_low_stamina_message"].update(state)
+                if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+
+            elif state.player.money < 50 and state.player.money > 0:
+                self.battle_messages["game_over_low_money_message"].update(state)
+                if self.battle_messages["game_over_low_money_message"].message_index == 1:
                     state.currentScreen = Area2StartScreen()
 
             elif state.player.money <= 0:
@@ -875,6 +902,17 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             elif state.player.money <= 0:
                 self.battle_messages["game_over_no_money_message"].draw(state)
+
+
+            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+                self.battle_messages["game_over_low_stamina_message"].draw(state)
+
+
+
+            elif state.player.money < 50 and state.player.money > 0:
+                self.battle_messages["game_over_low_money_message"].draw(state)
+
+
 
 
             black_box_height = 221 - 50  # Adjust height
