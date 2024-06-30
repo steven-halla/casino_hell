@@ -71,7 +71,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.font: pygame.font.Font = pygame.font.Font(None, 36)
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
-                [" "],
+                [" t"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -433,6 +433,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             if self.welcome_screen_index == 0 and controller.isTPressed:
                 self.game_state = "spin_screen"
+                state.player.stamina_points -= 4
+                state.player.money -= self.bet
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
                 self.magic_screen_index = 0

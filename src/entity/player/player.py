@@ -23,7 +23,7 @@ class Player(Entity):
         self.luck = 0
         self.food = 0
         self.perception = 0
-        self.stamina_points = 1
+        self.stamina_points = 111
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False
         self.max_stamina_points = 100 + self.stamina_increase
