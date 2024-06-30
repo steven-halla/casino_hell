@@ -73,7 +73,7 @@ class BattleScreen:
         if self.lock_down < 1:
             state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
         elif self.lock_down > 0:
-            state.DISPLAY.blit(self.font.render(f"Locked Down  {self.lock_down}", True, (255, 255, 255)), (37, 205))
+            state.DISPLAY.blit(self.font.render(f"Locked Down:{self.lock_down}", True, (255, 0, 0)), (37, 205))
 
 
 

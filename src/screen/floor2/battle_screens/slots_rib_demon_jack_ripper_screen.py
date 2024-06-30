@@ -2,12 +2,19 @@ import pygame
 import random
 from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
+from globalclasses.exp_gain import ExpGain
+from globalclasses.game_over import GameOver
 from globalclasses.money_balancer import MoneyBalancer
 from screen.examples.screen import Screen
+from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
+
 
 class SlotsRibDemonJackRipperScreen(BattleScreen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
+
+        self.game_over = GameOver()  # Initialize GameOver
+
 
         self.three_zeros: bool = False
         self.three_ones: bool  = False
@@ -21,7 +28,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.three_nines: bool  = False
         self.secret_item = False
 
-        self.lock_down: int = 1
+        self.lock_down: int = 0
         self.lucky_strike = 0
 
         self.no_matches = True
@@ -44,6 +51,10 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.magic_lock = False
 
 
+        self.exp_gain = ExpGain()  # Initialize ExpGain without specifying experience points
+
+
+
         self.magic_screen_choices: list[str] = ["Hack", "Back"]
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
@@ -56,7 +67,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
         self.game_state: str = "welcome_screen"
         self.bet: int = 50
-        self.money: int = 100
+        self.money: int = 555
         self.font: pygame.font.Font = pygame.font.Font(None, 36)
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
@@ -92,11 +103,29 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 500
             ),
 
+            "game_over_no_stamina_message": TextBox(
+                ["Hero: Crap I can't...keep...going...(You ran out of stamina)", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "game_over_no_money_message": TextBox(
+                ["You ran out of money game over, enjoy eternity in rib demon hell", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
         }
 
         self.hide_numbers: bool = True
 
         self.money_balancer = MoneyBalancer(self.money)
+        self.game_over = GameOver()  # Initialize GameOver
+
+        self.game_over_message = []  # Initialize game_over_message
+
 
 
     def print_current_slots(self) -> None:
@@ -111,16 +140,16 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
         def map_to_slot_number(value: int) -> int:
             if self.lock_down == 0 and self.lucky_strike == 0:
                 slot_mapping = {
-                    range(1, 7): 0,  # lose a rib
-                    range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                    range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(21, 45): 3,  # add 100 coins
-                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                    range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
-                    range(72, 80): 6,  # add 200 coins
-                    range(80, 87): 7,  # lucky spin better % for jackpot
-                    range(87, 95): 8,  # get special item or 50 coins
-                    range(95, 101): 9,  # jackpot
+                    range(1, 100): 0,  # lose a rib
+                    # range(7, 15): 1,  # lost 50 extra coins from your state.player.money
+                    # range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    # range(21, 45): 3,  # add 100 coins
+                    # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
+                    # range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
+                    # range(72, 80): 6,  # add 200 coins
+                    # range(80, 87): 7,  # lucky spin better % for jackpot
+                    # range(87, 95): 8,  # get special item or 50 coins
+                    # range(95, 101): 9,  # jackpot
                 }
             elif self.lucky_strike == 0 and self.bet > 50:
                 slot_mapping = {
@@ -174,8 +203,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     range(85, 101): 9,  # jackpot
                 }
 
-            for key in slot_mapping:
-                print(f"Range {key}: {slot_mapping[key]}")
+            # for key in slot_mapping:
+            #     print(f"Range {key}: {slot_mapping[key]}")
 
             for key in slot_mapping:
                 if value in key:
@@ -321,6 +350,10 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 self.stop_start_time = current_time
                 print("Stopping initiated.")
 
+
+
+
+
     def update(self, state: "GameState") -> None:
         pygame.mixer.music.stop()
         current_time: int = pygame.time.get_ticks()  # local variable
@@ -335,6 +368,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+
             if "Lucky Shoes" in state.player.items:
                 self.bet = 50
             self.no_matches = True
@@ -352,6 +386,16 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             self.go_to_results = False
             self.battle_messages["welcome_message"].update(state)
+
+            if state.player.stamina_points < 1:
+                self.battle_messages["game_over_no_stamina_message"].update(state)
+                if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+            elif state.player.money <= 0:
+                self.battle_messages["game_over_no_money_message"].update(state)
+                if self.battle_messages["game_over_no_money_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
 
             if controller.isUpPressed:
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
@@ -417,53 +461,82 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
             if self.go_to_results:
                 self.game_state = "results_screen"
 
-        if self.game_state == "results_screen":
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if self.game_state == "results_screen":
             if self.no_matches == True:
                 self.battle_messages["results_message"].messages = [
-                    f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]}", ""
+                    f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you gain 10 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
+                if self.resolve_penalty == False:
+                    self.exp_gain.gain_exp(state, 10)  # Adjust the amount of experience points as needed
+                    self.resolve_penalty = True
+
             elif self.three_zeros == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take 10 damage", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take 10 damage and gain 30 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     state.player.stamina_points -= 10
+                    self.exp_gain.gain_exp(state, 30)  # Adjust the amount of experience points as needed
+
                     self.resolve_penalty = True
 
             elif self.three_ones == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and lose 50 gold", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and lose 50 gold and gain 20 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     state.player.money -= 50
+                    self.exp_gain.gain_exp(state, 20)  # Adjust the amount of experience points as needed
+
                     self.money += 50
                     self.resolve_penalty = True
 
             elif self.three_twos == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} And now your locked in ", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} And now your locked in and gain 15 exp ", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     print("player lock")
+                    self.exp_gain.gain_exp(state, 15)  # Adjust the amount of experience points as needed
+
                     self.resolve_penalty = True
                     self.lock_down = 5
 
             elif self.three_threes == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You win 100 Coins!", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You win 100 Coins! and 10 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -473,6 +546,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                     self.resolve_penalty = True
                     # Capture the initial enemy money before adjustment
                     initial_enemy_money = self.money
+                    self.exp_gain.gain_exp(state, 10)  # Adjust the amount of experience points as needed
+
                     print(f"Initial Player Money: {state.player.money}")
                     print(f"Initial Enemy Money: {initial_enemy_money}")
 
@@ -502,7 +577,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             elif self.three_fours == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You feel invigorated {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain life and MP and some money!", ""
+                    f"You feel invigorated {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain life and MP and some money and 15 exp!", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -510,6 +585,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 if self.resolve_penalty == False:
 
                     self.resolve_penalty = True
+                    self.exp_gain.gain_exp(state, 15)  # Adjust the amount of experience points as needed
+
                     # Capture the initial enemy money before adjustment
                     initial_enemy_money = self.money
                     print(f"Initial Player Money: {state.player.money}")
@@ -548,7 +625,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             elif self.three_fives == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 100 gold and +50 exp", ""
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 100 gold and +15 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -556,6 +633,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
                 if self.resolve_penalty == False:
 
                     self.resolve_penalty = True
+                    self.exp_gain.gain_exp(state, 15)  # Adjust the amount of experience points as needed
+
                     # Capture the initial enemy money before adjustment
                     initial_enemy_money = self.money
                     print(f"Initial Player Money: {state.player.money}")
@@ -587,13 +666,15 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             elif self.three_sixes == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 250 gold", ""
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 250 gold and 30 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     self.resolve_penalty = True
+                    self.exp_gain.gain_exp(state, 30)  # Adjust the amount of experience points as needed
+
                     # Capture the initial enemy money before adjustment
                     initial_enemy_money = self.money
                     print(f"Initial Player Money: {state.player.money}")
@@ -624,13 +705,14 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             elif self.three_sevens == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Lucky 7s increased chance of jack pot!", ""
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Lucky 7s increased chance of jack pot and 50 exp gained!", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     self.resolve_penalty = True
+                    self.exp_gain.gain_exp(state, 50)  # Adjust the amount of experience points as needed
 
                     # Capture the initial enemy money before adjustment
                     initial_enemy_money = self.money
@@ -670,7 +752,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                 if "Lucky Shoes" not in state.player.items:
                     self.battle_messages["results_message"].messages = [
-                        f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} grats you got the super secret item!!", ""
+                        f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} grats you got the super secret item!! + 25 exp", ""
                     ]
 
                     self.battle_messages["results_message"].update(state)
@@ -683,6 +765,8 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                 if self.resolve_penalty == False:
                     self.secret_item = True
+                    self.exp_gain.gain_exp(state, 25)  # Adjust the amount of experience points as needed
+
                     state.player.money += 50
                     self.money -= 50
 
@@ -718,13 +802,15 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
             elif self.three_nines:
                 self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You got the JACK POT!!!!", ""
+                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You got the JACK POT!!!! gain 100 exp!", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     self.resolve_penalty = True
+                    self.exp_gain.gain_exp(state, 100)  # Adjust the amount of experience points as needed
+
 
                     # Capture the initial enemy money before adjustment
                     initial_enemy_money = self.money
@@ -741,11 +827,7 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
                     self.money -= jackpot_amount
 
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
 
-                    print("now its time for a lucky strike")
 
                     # Use MoneyBalancer to ensure enemy's money does not go below zero
                     self.money_balancer.money = self.money
@@ -786,6 +868,14 @@ class SlotsRibDemonJackRipperScreen(BattleScreen):
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
+
+
+            if state.player.stamina_points < 1:
+                self.battle_messages["game_over_no_stamina_message"].draw(state)
+
+            elif state.player.money <= 0:
+                self.battle_messages["game_over_no_money_message"].draw(state)
+
 
             black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box

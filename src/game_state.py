@@ -3,6 +3,7 @@ import json
 
 
 from entity.demon.demon1 import Demon1
+from entity.gui.textbox.text_box import TextBox
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
@@ -45,6 +46,8 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 class GameState:
     def __init__(self):
+        self.game_over_message = TextBox([""], (65, 460, 700, 130), 36, 500)
+
 
         # shared pygame constructs
         self.DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
