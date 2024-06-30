@@ -2,6 +2,7 @@ import pygame
 from entity.gui.textbox.text_box import TextBox
 from screen.examples.screen import Screen
 import time
+import random
 
 class HungryStarvingHippos(Screen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
@@ -20,28 +21,21 @@ class HungryStarvingHippos(Screen):
 
         # Ball attributes
         self.ball_size = 20
-        self.ball_pos = [0, 0]
-        self.ball_vel = [0, -200]  # Negative for upward movement
-        self.move_left_speed = 200  # Speed for leftward movement
+        self.balls = {}  # Dictionary to store ball positions and speeds
+        self.hippo = None  # Dictionary to store hippo position and speed
 
         # Initialize box attributes
         self.box_top_left = (0, 0)
         self.box_bottom_right = (0, 0)
 
-        self.last_time = time.time()
-
-
-        # Initialize ball position (this should be done only once)
+        # Initialize ball positions (this should be done only once)
         self.initialize_ball_position()
 
         self.last_time = time.time()
-        self.human_eating = False
-
-        self.ball_y_position = 0
-        self.move_left_speed = 30  # Speed for leftward movement
+        self.start_time = time.time()  # Timer to track elapsed time
 
     def initialize_ball_position(self):
-        # Set the initial position of the ball near the right edge of the box
+        # Set the initial position of the balls
         width, height = 600, 300
         y_axis_position_adjuster = 80
         top_left_x = (800 - width) // 2
@@ -49,9 +43,20 @@ class HungryStarvingHippos(Screen):
         top_left = (top_left_x, top_left_y)
         self.box_top_left = top_left
         self.box_bottom_right = (top_left[0] + width, top_left[1] + height)
-        self.ball_x_position = self.box_bottom_right[0] - self.ball_size - 20  # 20 pixels from the right edge
-        self.ball_y_position = self.box_top_left[1] + height // 2 - self.ball_size // 2
-        self.ball_pos = [self.ball_x_position, self.ball_y_position]
+
+        labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
+        for i, label in enumerate(labels):
+            initial_x = self.box_bottom_right[0] - self.ball_size - 20
+            initial_y = self.box_top_left[1] + height // 2 - self.ball_size // 2 - (i * 20) + 60  # Move down by 60 pixels
+            move_speed = random.randint(150, 250)  # Assign a unique speed for each ball
+            self.balls[label] = {"pos": [initial_x, initial_y], "speed": move_speed}
+
+    def initialize_hippo_position(self):
+        width, height = 600, 300
+        initial_x = self.box_bottom_right[0] - self.ball_size - 20
+        initial_y = self.box_top_left[1] + height // 2 - self.ball_size // 2 + 60
+        move_speed = random.randint(150, 250)
+        self.hippo = {"pos": [initial_x, initial_y], "speed": move_speed}
 
     def update(self, state: "GameState") -> None:
         pygame.mixer.music.stop()
@@ -68,8 +73,17 @@ class HungryStarvingHippos(Screen):
         delta_time = current_time - self.last_time
         self.last_time = current_time
 
-        # Move the ball
+        # Check if 10 seconds have passed to spawn the hippo
+        if self.hippo is None and current_time - self.start_time >= 10:
+            self.initialize_hippo_position()
+
+        # Move the balls
         self.move_ball(delta_time)
+
+        # Move the hippo if it exists
+        if self.hippo:
+            self.move_hippo(delta_time)
+            self.check_collisions()
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
@@ -109,14 +123,19 @@ class HungryStarvingHippos(Screen):
         # Define the color for the text
         color = (255, 255, 255)
 
-        # Render the text "A1"
-        text_surface = self.font.render("A1", True, color)
+        for label, data in self.balls.items():
+            # Render the text
+            text_surface = self.font.render(label, True, color)
+            # Get the text's rectangle and set its position to the ball's position
+            text_rect = text_surface.get_rect(center=(data["pos"][0] + self.ball_size // 2, data["pos"][1] + self.ball_size // 2))
+            # Draw the text
+            state.DISPLAY.blit(text_surface, text_rect)
 
-        # Get the text's rectangle and set its position to the ball's position
-        text_rect = text_surface.get_rect(center=(self.ball_pos[0] + self.ball_size // 2, self.ball_pos[1] + self.ball_size // 2))
-
-        # Draw the text
-        state.DISPLAY.blit(text_surface, text_rect)
+        if self.hippo:
+            # Render the hippo text
+            text_surface = self.font.render("H1", True, color)
+            text_rect = text_surface.get_rect(center=(self.hippo["pos"][0] + self.ball_size // 2, self.hippo["pos"][1] + self.ball_size // 2))
+            state.DISPLAY.blit(text_surface, text_rect)
 
     def draw_bottom_black_box(self, state: "GameState") -> None:
         black_box_height = 130
@@ -137,15 +156,32 @@ class HungryStarvingHippos(Screen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
     def move_ball(self, delta_time: float) -> None:
-        # Move the ball left by its speed scaled by delta_time
-        self.ball_pos[0] -= self.move_left_speed * delta_time
+        for label, data in self.balls.items():
+            # Move the balls left by their speed scaled by delta_time
+            data["pos"][0] -= data["speed"] * delta_time
+
+            # Check for collision with the left and right lines of the box
+            if data["pos"][0] <= self.box_top_left[0] or data["pos"][0] + self.ball_size >= self.box_bottom_right[0]:
+                data["pos"][0] = max(self.box_top_left[0], min(data["pos"][0], self.box_bottom_right[0] - self.ball_size))
+                data["speed"] = -data["speed"]  # Reverse the horizontal direction
+
+    def move_hippo(self, delta_time: float) -> None:
+        # Move the hippo left by its speed scaled by delta_time
+        self.hippo["pos"][0] -= self.hippo["speed"] * delta_time
 
         # Check for collision with the left and right lines of the box
-        if self.ball_pos[0] <= self.box_top_left[0] or self.ball_pos[0] + self.ball_size >= self.box_bottom_right[0]:
-            self.ball_pos[0] = max(self.box_top_left[0], min(self.ball_pos[0], self.box_bottom_right[0] - self.ball_size))
-            self.move_left_speed = -self.move_left_speed  # Reverse the horizontal direction
+        if self.hippo["pos"][0] <= self.box_top_left[0] or self.hippo["pos"][0] + self.ball_size >= self.box_bottom_right[0]:
+            self.hippo["pos"][0] = max(self.box_top_left[0], min(self.hippo["pos"][0], self.box_bottom_right[0] - self.ball_size))
+            self.hippo["speed"] = -self.hippo["speed"]  # Reverse the horizontal direction
 
-        # Debugging print statements to verify movement logic
-        print(f"Delta Time: {delta_time}")
-        print(f"Ball Position after move: {self.ball_pos}")
-        print(f"Move Left Speed: {self.move_left_speed}")
+    def check_collisions(self) -> None:
+        # Check for collisions between the hippo and the balls
+        hippo_rect = pygame.Rect(self.hippo["pos"][0], self.hippo["pos"][1], self.ball_size, self.ball_size)
+        balls_to_remove = []
+        for label, data in self.balls.items():
+            ball_rect = pygame.Rect(data["pos"][0], data["pos"][1], self.ball_size, self.ball_size)
+            if hippo_rect.colliderect(ball_rect):
+                balls_to_remove.append(label)
+
+        for label in balls_to_remove:
+            del self.balls[label]
