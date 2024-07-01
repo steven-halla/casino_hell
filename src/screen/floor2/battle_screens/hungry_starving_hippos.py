@@ -73,6 +73,10 @@ class HungryStarvingHippos(Screen):
         top_left_y = (screen_height - box_height) // 2 - 50  # Move up by 50 pixels
         arrow_x_axis = top_left_x - 30 + 100  # Move arrow to the right by 100 pixels
 
+        # Update the bet_message with selected humans
+        selected_humans_text = "Press A when ready: Selected humans: " + ", ".join(self.human_picks)
+        self.battle_messages["bet_message"].messages = [selected_humans_text]
+
         for i, item in enumerate(self.bet_selection):
             color = (0, 255, 0) if i == self.bet_selection_index else (255, 255, 255)  # Green for selected item
             text_surface = self.font.render(item, True, color)
@@ -127,7 +131,6 @@ class HungryStarvingHippos(Screen):
         return closest_human
 
     def update(self, state: "GameState") -> None:
-
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -147,62 +150,85 @@ class HungryStarvingHippos(Screen):
                     self.human_picks.append(selected_human)
                     print(f"Human picks: {self.human_picks}")
 
+            if controller.isBPressed and self.human_picks:
+                controller.isBPressed = False
+                self.human_picks.pop()
+                print(f"Human picks: {self.human_picks}")
+
             if controller.isDownPressed:
                 controller.isDownPressed = False
                 if self.bet_selection_index < len(self.bet_selection) - 1:
                     self.bet_selection_index += 1
             elif controller.isUpPressed:
                 controller.isUpPressed = False
-
                 if self.bet_selection_index > 0:
                     self.bet_selection_index -= 1
 
-        if self.commentary == True:
-            if self.comment_to_use == 1:
-                self.battle_messages["hippo_message_1"].update(state)
-            elif self.comment_to_use == 2:
-                self.battle_messages["hippo_message_2"].update(state)
-            elif self.comment_to_use == 3:
-                self.battle_messages["hippo_message_3"].update(state)
+            if controller.isAPressed and len(self.human_picks) == 3:
+                self.game_state = "human_race"
+                print("Game state changed to human_race")
+                self.initialize_human_position()  # Ensure humans are initialized for the race
+                self.start_time = time.time()  # Reset the timer for the race
 
-        # Calculate delta_time
-        current_time = time.time()
-        delta_time = current_time - self.last_time
-        self.last_time = current_time
+        if self.game_state == "human_race":
+            if not self.humans:
+                print("All humans have been eaten or escaped!")
+                self.game_state = "game_over"  # Example: Change the game state or take another action
+                for bet in self.bet_selection:
+                    if bet in self.human_picks:
+                        print("Yay, you won!")
+                        break  # Exit the loop after finding the first match
 
-        # Check if 10 seconds have passed to spawn the hippo
-        if self.hippo is None and current_time - self.start_time >= 10:
-            self.initialize_hippo_position()
+            # Calculate delta_time
+            current_time = time.time()
+            delta_time = current_time - self.last_time
+            self.last_time = current_time
 
-        # Move the balls
-        self.move_human(delta_time)
+            # Initialize hippo position after 10 seconds
+            if self.hippo is None and current_time - self.start_time >= 10:
+                self.initialize_hippo_position()
 
-        # Move the hippo if it exists
-        if self.hippo:
-            self.move_hippo(delta_time)
-            self.check_collisions()
+            # Move the humans
+            self.move_human(delta_time)
+
+            # Move the hippo if it exists
+            if self.hippo:
+                self.move_hippo(delta_time)
+                self.check_collisions()
+
+            if self.commentary:
+                if self.comment_to_use == 1:
+                    self.battle_messages["hippo_message_1"].update(state)
+                elif self.comment_to_use == 2:
+                    self.battle_messages["hippo_message_2"].update(state)
+                elif self.comment_to_use == 3:
+                    self.battle_messages["hippo_message_3"].update(state)
+
+
+
+
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
-        self.draw_box_boundary(state)
-        self.draw_human(state)
         self.draw_bottom_black_box(state)
-        self.draw_bet_selection(state)  # Add this line
 
         if self.game_state == "bet_screen":
             self.battle_messages["bet_message"].draw(state)
+            self.draw_bet_selection(state)  # Add this line
+
+        if self.game_state == "human_race":
+            self.draw_box_boundary(state)
+            self.draw_human(state)
 
 
-        if self.commentary == True:
+            if self.commentary == True:
 
-            if self.comment_to_use == 1:
-                self.battle_messages["hippo_message_1"].draw(state)
-            elif self.comment_to_use == 2:
-                self.battle_messages["hippo_message_2"].draw(state)
-            elif self.comment_to_use == 3:
-                self.battle_messages["hippo_message_3"].draw(state)
-
-
+                if self.comment_to_use == 1:
+                    self.battle_messages["hippo_message_1"].draw(state)
+                elif self.comment_to_use == 2:
+                    self.battle_messages["hippo_message_2"].draw(state)
+                elif self.comment_to_use == 3:
+                    self.battle_messages["hippo_message_3"].draw(state)
 
         pygame.display.flip()
 
@@ -270,6 +296,17 @@ class HungryStarvingHippos(Screen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
     def move_human(self, delta_time: float) -> None:
+        # If the race just started, set the start time
+        if not hasattr(self, 'human_race_start_time'):
+            self.human_race_start_time = time.time()
+
+        # Calculate the elapsed time
+        elapsed_time = time.time() - self.human_race_start_time
+
+        # Wait for 2 seconds before allowing humans to move
+        if elapsed_time < 2.0:
+            return
+
         for label, data in list(self.humans.items()):
             # Move the balls left by their speed scaled by delta_time
             data["pos"][0] -= data["speed"] * delta_time
@@ -317,10 +354,12 @@ class HungryStarvingHippos(Screen):
                 self.hippo_stopping_eating = time.time()  # Set the time when the hippo starts eating
 
         for label in humans_to_remove:
-            activate_talking = random.randint(1,4)
+            activate_talking = random.randint(1,3)
             if activate_talking == 3:
                 print("acticate talk")
                 self.commentary = True
                 self.comment_to_use = random.randint(1, 4)
 
             del self.humans[label]
+
+            # i should build a counter for every human eating incrase counter by +1 for every even numbers, create the message.
