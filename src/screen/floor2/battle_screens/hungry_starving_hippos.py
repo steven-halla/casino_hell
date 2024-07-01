@@ -88,7 +88,7 @@ class HungryStarvingHippos(Screen):
                 arrow_rect = arrow_surface.get_rect(center=(arrow_x_axis, top_left_y + (i * 40) + 20))
                 state.DISPLAY.blit(arrow_surface, arrow_rect)
 
-    def initialize_human_position(self) -> None:
+    def initialize_human_position(self, state) -> None:
         # Set the initial position of the balls
         width, height = 600, 300
         y_axis_position_adjuster = 80
@@ -99,17 +99,28 @@ class HungryStarvingHippos(Screen):
         self.box_bottom_right = (top_left[0] + width, top_left[1] + height)
 
         labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
+        player_luck = state.player.luck  # Get the player's luck stat
+
         for i, label in enumerate(labels):
             initial_x = self.box_bottom_right[0] - self.human_size - 20
             initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 - (i * 20) + 60  # Move down by 60 pixels
             move_speed = random.randint(5, 10)  # Assign a unique speed for each ball
+
+            print(f"Human {label} initial speed: {move_speed}")  # Print initial speed
+
+            # Increase the speed for the chosen humans based on player's luck
+            if label in self.human_picks:
+                move_speed += player_luck
+
+            print(f"Human {label} final speed after luck boost: {move_speed}")  # Print final speed after luck boost
+
             self.humans[label] = {"pos": [initial_x, initial_y], "speed": move_speed}
 
     def initialize_hippo_position(self) -> None:
         width, height = 600, 200
         initial_x = self.box_bottom_right[0] - self.human_size - 20
         initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 + 60
-        move_speed = 15
+        move_speed = 16
         self.hippo = {"pos": [initial_x, initial_y], "speed": move_speed}
 
     def find_closest_human(self) -> Tuple[Optional[str], Optional[int], Optional[int]]:
@@ -167,7 +178,7 @@ class HungryStarvingHippos(Screen):
             if controller.isAPressed and len(self.human_picks) == 3:
                 self.game_state = "human_race"
                 print("Game state changed to human_race")
-                self.initialize_human_position()  # Ensure humans are initialized for the race
+                self.initialize_human_position(state)  # Ensure humans are initialized for the race
                 self.start_time = time.time()  # Reset the timer for the race
 
         if self.game_state == "human_race":
