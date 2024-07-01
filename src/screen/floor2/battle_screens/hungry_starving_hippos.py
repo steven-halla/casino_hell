@@ -43,7 +43,12 @@ class HungryStarvingHippos(Screen):
 
         }
 
-        # Ball attributes
+        # Second hippo attributes
+        self.hippo2: Optional[Dict[str, Any]] = None
+        self.hippo2_charge_used: bool = False
+        self.hippo2_charge_start_time: Optional[float] = None
+
+        # human attributes
         self.human_size: int = 20
         self.humans: Dict[str, Dict[str, Any]] = {}  # Dictionary to store ball positions and speeds
         self.hippo: Optional[Dict[str, Any]] = None  # Dictionary to store hippo position and speed
@@ -64,6 +69,10 @@ class HungryStarvingHippos(Screen):
         self.bet_selection = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"] #important
         self.bet_selection_index = 0 #important
         self.human_picks = []
+
+
+
+
 
     def draw_bet_selection(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()
@@ -396,4 +405,5 @@ class HungryStarvingHippos(Screen):
 
             # i should build a counter for every human eating incrase counter by +1 for every even numbers, create the message.
             # i need to give exp for each human that  lives that the player bet on
+            # need a final report after the race for the user as well as a prize award
 
