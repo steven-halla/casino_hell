@@ -63,6 +63,7 @@ class HungryStarvingHippos(Screen):
         self.game_state: str = "bet_screen" #important
         self.bet_selection = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"] #important
         self.bet_selection_index = 0 #important
+        self.human_picks = []
 
     def draw_bet_selection(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()
@@ -137,7 +138,24 @@ class HungryStarvingHippos(Screen):
         controller.update()
 
         if self.game_state == "bet_screen":
-            print("bet time")
+            self.battle_messages["bet_message"].update(state)
+
+            if controller.isTPressed and len(self.human_picks) < 3:
+                controller.isTPressed = False
+                selected_human = self.bet_selection[self.bet_selection_index]
+                if selected_human not in self.human_picks:
+                    self.human_picks.append(selected_human)
+                    print(f"Human picks: {self.human_picks}")
+
+            if controller.isDownPressed:
+                controller.isDownPressed = False
+                if self.bet_selection_index < len(self.bet_selection) - 1:
+                    self.bet_selection_index += 1
+            elif controller.isUpPressed:
+                controller.isUpPressed = False
+
+                if self.bet_selection_index > 0:
+                    self.bet_selection_index -= 1
 
         if self.commentary == True:
             if self.comment_to_use == 1:
@@ -170,6 +188,10 @@ class HungryStarvingHippos(Screen):
         self.draw_human(state)
         self.draw_bottom_black_box(state)
         self.draw_bet_selection(state)  # Add this line
+
+        if self.game_state == "bet_screen":
+            self.battle_messages["bet_message"].draw(state)
+
 
         if self.commentary == True:
 
