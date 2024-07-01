@@ -4,6 +4,7 @@ from screen.examples.screen import Screen
 import time
 import random
 import math
+from typing import Dict, Tuple, Optional, Any
 
 
 class HungryStarvingHippos(Screen):
@@ -12,7 +13,7 @@ class HungryStarvingHippos(Screen):
         self.game_state: str = "welcome_screen"
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
 
-        self.battle_messages: dict[str, TextBox] = {
+        self.battle_messages: Dict[str, TextBox] = {
             "welcome_message": TextBox(
                 [" "],
                 (65, 460, 700, 130),
@@ -22,22 +23,23 @@ class HungryStarvingHippos(Screen):
         }
 
         # Ball attributes
-        self.ball_size = 20
-        self.balls = {}  # Dictionary to store ball positions and speeds
-        self.hippo = None  # Dictionary to store hippo position and speed
-        self.hippo_stopping_eating = 0  # Time when the hippo starts eating
+        self.human_size: int = 20
+        self.humans: Dict[str, Dict[str, Any]] = {}  # Dictionary to store ball positions and speeds
+        self.hippo: Optional[Dict[str, Any]] = None  # Dictionary to store hippo position and speed
+        self.hippo_stopping_eating: float = 0  # Time when the hippo starts eating
 
         # Initialize box attributes
-        self.box_top_left = (0, 0)
-        self.box_bottom_right = (0, 0)
+        self.box_top_left: Tuple[int, int] = (0, 0)
+        self.box_bottom_right: Tuple[int, int] = (0, 0)
 
         # Initialize ball positions (this should be done only once)
-        self.initialize_ball_position()
+        self.initialize_human_position()
 
-        self.last_time = time.time()
-        self.start_time = time.time()  # Timer to track elapsed time
+        self.last_time: float = time.time()
+        self.start_time: float = time.time()  # Timer to track elapsed time
+        self.winners = []
 
-    def initialize_ball_position(self):
+    def initialize_human_position(self) -> None:
         # Set the initial position of the balls
         width, height = 600, 300
         y_axis_position_adjuster = 80
@@ -49,27 +51,27 @@ class HungryStarvingHippos(Screen):
 
         labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
         for i, label in enumerate(labels):
-            initial_x = self.box_bottom_right[0] - self.ball_size - 20
-            initial_y = self.box_top_left[1] + height // 2 - self.ball_size // 2 - (i * 20) + 60  # Move down by 60 pixels
+            initial_x = self.box_bottom_right[0] - self.human_size - 20
+            initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 - (i * 20) + 60  # Move down by 60 pixels
             move_speed = random.randint(5, 10)  # Assign a unique speed for each ball
-            self.balls[label] = {"pos": [initial_x, initial_y], "speed": move_speed}
+            self.humans[label] = {"pos": [initial_x, initial_y], "speed": move_speed}
 
-    def initialize_hippo_position(self):
+    def initialize_hippo_position(self) -> None:
         width, height = 600, 200
-        initial_x = self.box_bottom_right[0] - self.ball_size - 20
-        initial_y = self.box_top_left[1] + height // 2 - self.ball_size // 2 + 60
+        initial_x = self.box_bottom_right[0] - self.human_size - 20
+        initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 + 60
         move_speed = 15
         self.hippo = {"pos": [initial_x, initial_y], "speed": move_speed}
 
-    def find_closest_human(self):
-        if not self.hippo or not self.balls:
+    def find_closest_human(self) -> Tuple[Optional[str], Optional[int], Optional[int]]:
+        if not self.hippo or not self.humans:
             return None, None, None
 
         closest_human = None
         closest_distance = float('inf')
         hippo_x, hippo_y = self.hippo["pos"]
 
-        for label, data in self.balls.items():
+        for label, data in self.humans.items():
             human_x, human_y = data["pos"]
             distance = math.sqrt((human_x - hippo_x) ** 2 + (human_y - hippo_y) ** 2)
 
@@ -99,7 +101,7 @@ class HungryStarvingHippos(Screen):
             self.initialize_hippo_position()
 
         # Move the balls
-        self.move_ball(delta_time)
+        self.move_human(delta_time)
 
         # Move the hippo if it exists
         if self.hippo:
@@ -109,7 +111,7 @@ class HungryStarvingHippos(Screen):
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
         self.draw_box_boundary(state)
-        self.draw_ball(state)
+        self.draw_human(state)
         self.draw_bottom_black_box(state)
         pygame.display.flip()
 
@@ -140,22 +142,22 @@ class HungryStarvingHippos(Screen):
         self.box_top_left = top_left
         self.box_bottom_right = (top_left[0] + width, top_left[1] + height)
 
-    def draw_ball(self, state: "GameState") -> None:
+    def draw_human(self, state: "GameState") -> None:
         # Define the color for the text
         color = (255, 255, 255)
 
-        for label, data in self.balls.items():
+        for label, data in self.humans.items():
             # Render the text
             text_surface = self.font.render(label, True, color)
             # Get the text's rectangle and set its position to the ball's position
-            text_rect = text_surface.get_rect(center=(data["pos"][0] + self.ball_size // 2, data["pos"][1] + self.ball_size // 2))
+            text_rect = text_surface.get_rect(center=(data["pos"][0] + self.human_size // 2, data["pos"][1] + self.human_size // 2))
             # Draw the text
             state.DISPLAY.blit(text_surface, text_rect)
 
         if self.hippo:
             # Render the hippo text
             text_surface = self.font.render("H1", True, color)
-            text_rect = text_surface.get_rect(center=(self.hippo["pos"][0] + self.ball_size // 2, self.hippo["pos"][1] + self.ball_size // 2))
+            text_rect = text_surface.get_rect(center=(self.hippo["pos"][0] + self.human_size // 2, self.hippo["pos"][1] + self.human_size // 2))
             state.DISPLAY.blit(text_surface, text_rect)
 
     def draw_bottom_black_box(self, state: "GameState") -> None:
@@ -176,19 +178,21 @@ class HungryStarvingHippos(Screen):
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-    def move_ball(self, delta_time: float) -> None:
-        for label, data in self.balls.items():
+    def move_human(self, delta_time: float) -> None:
+        for label, data in list(self.humans.items()):
             # Move the balls left by their speed scaled by delta_time
             data["pos"][0] -= data["speed"] * delta_time
 
-            # Check for collision with the left and right lines of the box
-            if data["pos"][0] <= self.box_top_left[0] or data["pos"][0] + self.ball_size >= self.box_bottom_right[0]:
-                data["pos"][0] = max(self.box_top_left[0], min(data["pos"][0], self.box_bottom_right[0] - self.ball_size))
-                data["speed"] = -data["speed"]  # Reverse the horizontal direction
+            # Check for collision with the left line of the box (indicating they've reached the boundary)
+            if data["pos"][0] <= self.box_top_left[0]:
+                data["pos"][0] = self.box_top_left[0]
+                self.winners.append(label)  # Add the human to the winners list
+                del self.humans[label]  # Remove the human from the dictionary
+                print(str(self.winners))
 
     def move_hippo(self, delta_time: float) -> None:
         # Check if the hippo is currently eating
-        if time.time() - self.hippo_stopping_eating < 3:
+        if time.time() - self.hippo_stopping_eating < 4:
             return
 
         closest_human = self.find_closest_human()
@@ -213,13 +217,13 @@ class HungryStarvingHippos(Screen):
         self.check_collisions()
 
     def check_collisions(self) -> None:
-        hippo_rect = pygame.Rect(self.hippo["pos"][0], self.hippo["pos"][1], self.ball_size, self.ball_size)
-        balls_to_remove = []
-        for label, data in self.balls.items():
-            ball_rect = pygame.Rect(data["pos"][0], data["pos"][1], self.ball_size, self.ball_size)
+        hippo_rect = pygame.Rect(self.hippo["pos"][0], self.hippo["pos"][1], self.human_size, self.human_size)
+        humans_to_remove = []
+        for label, data in self.humans.items():
+            ball_rect = pygame.Rect(data["pos"][0], data["pos"][1], self.human_size, self.human_size)
             if hippo_rect.colliderect(ball_rect):
-                balls_to_remove.append(label)
+                humans_to_remove.append(label)
                 self.hippo_stopping_eating = time.time()  # Set the time when the hippo starts eating
 
-        for label in balls_to_remove:
-            del self.balls[label]
+        for label in humans_to_remove:
+            del self.humans[label]
