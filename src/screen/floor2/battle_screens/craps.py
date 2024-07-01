@@ -1,10 +1,12 @@
+from typing import Optional
 import pygame
 
 from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
+from globalclasses.money_balancer import MoneyBalancer
 from screen.examples.screen import Screen
 
-class ExampleBattleScreenBASE(BattleScreen):
+class Craps(BattleScreen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"
@@ -16,6 +18,15 @@ class ExampleBattleScreenBASE(BattleScreen):
                 500
             ),
         }
+        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
+        self.magic_screen_choices: list[str] = ["Hack", "Back"]
+        self.welcome_screen_index: int = 0
+        self.magic_screen_index: int = 0
+
+        self.money_balancer = MoneyBalancer(self.money)
+
+        self.game_over_message = []  # Initialize game_over_message
+
 
     def update(self, state: "GameState") -> None:
         pygame.mixer.music.stop()
