@@ -4,7 +4,7 @@ from screen.examples.screen import Screen
 import time
 import random
 import math
-from typing import Dict, Tuple, Optional, Any
+from typing import Dict, Tuple, List, Optional,Union ,  Any
 
 # its possible to eat two humans need unique oen for htat
 class HungryStarvingHippos(Screen):
@@ -101,15 +101,17 @@ class HungryStarvingHippos(Screen):
         labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
         player_luck = state.player.luck  # Get the player's luck stat
 
+
+        # label is each human in the labels ,
         for i, label in enumerate(labels):
             initial_x = self.box_bottom_right[0] - self.human_size - 20
             initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 - (i * 20) + 60  # Move down by 60 pixels
-            move_speed = random.randint(5, 10)  # Assign a unique speed for each ball
+            move_speed = random.randint(5, 10)  # Assign a unique speed for each human
 
             print(f"Human {label} initial speed: {move_speed}")  # Print initial speed
 
             # Increase the speed for the chosen humans based on player's luck
-            if label in self.human_picks:
+            if label in self.human_picks[0]:
                 move_speed += player_luck
 
             print(f"Human {label} final speed after luck boost: {move_speed}")  # Print final speed after luck boost
@@ -127,13 +129,24 @@ class HungryStarvingHippos(Screen):
         if not self.hippo or not self.humans:
             return None, None, None
 
-        closest_human = None
-        closest_distance = float('inf')
-        hippo_x, hippo_y = self.hippo["pos"]
-
+        closest_human: Optional[Tuple[str, int, int]] = None
+        closest_distance = float('inf') # inf means infinity float(inf) represents positive infinity
+        hippo_x: int = self.hippo["pos"][0]
+        hippo_y: int = self.hippo["pos"][1]
         for label, data in self.humans.items():
-            human_x, human_y = data["pos"]
-            distance = math.sqrt((human_x - hippo_x) ** 2 + (human_y - hippo_y) ** 2)
+            label: str
+            data: Dict[str, Union[List[int], int]]
+            human_x: int = data["pos"][0]
+            human_y: int = data["pos"][1]
+
+            # Euclidean distance is a measure of the straight-line distance between two points in Euclidean space.
+            # It's the most common way to represent the distance between two points.
+            # x1,y1 = 1,2
+            # x2, y2 = 4, 6
+            # distance = math.sqrt((x2-x2) ** 2 + (y2 - y1) ** 2)
+            # output is 5
+
+            distance: float = math.sqrt((human_x - hippo_x) ** 2 + (human_y - hippo_y) ** 2)
 
             if distance < closest_distance:
                 closest_distance = distance
@@ -357,20 +370,30 @@ class HungryStarvingHippos(Screen):
 
     def check_collisions(self) -> None:
         hippo_rect = pygame.Rect(self.hippo["pos"][0], self.hippo["pos"][1], self.human_size, self.human_size)
-        humans_to_remove = []
+        humans_to_remove: List[str] = []
+
         for label, data in self.humans.items():
+            label: str
+            # Label is each item in the  self.bet list such as A1 or D2
+
+            data: Dict[str, Union[List[int], int]]  # Using Union for compatibility with Python 3.9
+            # example data{'pos': [379.94802474975586, 90], 'speed': 8}
+
             ball_rect = pygame.Rect(data["pos"][0], data["pos"][1], self.human_size, self.human_size)
+            #  ball_rect : <rect(578, 90, 20, 20)>
             if hippo_rect.colliderect(ball_rect):
                 humans_to_remove.append(label)
                 self.hippo_stopping_eating = time.time()  # Set the time when the hippo starts eating
 
         for label in humans_to_remove:
-            activate_talking = random.randint(1,3)
+            activate_talking = random.randint(1, 3)
             if activate_talking == 3:
-                print("acticate talk")
+
                 self.commentary = True
                 self.comment_to_use = random.randint(1, 4)
-
+            print("Your label is" + str(label))
             del self.humans[label]
 
             # i should build a counter for every human eating incrase counter by +1 for every even numbers, create the message.
+            # i need to give exp for each human that  lives that the player bet on
+
