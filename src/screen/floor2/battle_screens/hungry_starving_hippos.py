@@ -6,20 +6,41 @@ import random
 import math
 from typing import Dict, Tuple, Optional, Any
 
-
+# its possible to eat two humans need unique oen for htat
 class HungryStarvingHippos(Screen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
+        self.commentary = False
+        self.comment_to_use = 0
 
         self.battle_messages: Dict[str, TextBox] = {
-            "welcome_message": TextBox(
-                [" "],
+            "bet_message": TextBox(
+                ["Select whom you think is going to win"],
                 (65, 460, 700, 130),
                 36,
                 500
             ),
+            "hippo_message_1": TextBox(
+                ["Oh wow folks it's total carnage did you see him rip that human in half? The blood is in the water today for sure, it's too bad humans are terrible at swimming.  "],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_2": TextBox(
+                ["I would like to remind everyone watching that hungry starving hipppos is sponsored by chicken nuggz. The only nuggz you need is chicken nuggz."],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_3": TextBox(
+                ["That one is going in the books for sure folks, the way he tosssed her in the air and swallowed her whole!"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
         }
 
         # Ball attributes
@@ -33,11 +54,34 @@ class HungryStarvingHippos(Screen):
         self.box_bottom_right: Tuple[int, int] = (0, 0)
 
         # Initialize ball positions (this should be done only once)
-        self.initialize_human_position()
+        # self.initialize_human_position()
 
         self.last_time: float = time.time()
         self.start_time: float = time.time()  # Timer to track elapsed time
-        self.winners = []
+
+        self.winners = [] #important
+        self.game_state: str = "bet_screen" #important
+        self.bet_selection = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"] #important
+        self.bet_selection_index = 0 #important
+
+    def draw_bet_selection(self, state: "GameState") -> None:
+        screen_width, screen_height = state.DISPLAY.get_size()
+        box_width, box_height = 300, len(self.bet_selection) * 40  # Adjust height based on the number of items
+
+        top_left_x = (screen_width - box_width) // 2
+        top_left_y = (screen_height - box_height) // 2 - 50  # Move up by 50 pixels
+        arrow_x_axis = top_left_x - 30 + 100  # Move arrow to the right by 100 pixels
+
+        for i, item in enumerate(self.bet_selection):
+            color = (0, 255, 0) if i == self.bet_selection_index else (255, 255, 255)  # Green for selected item
+            text_surface = self.font.render(item, True, color)
+            text_rect = text_surface.get_rect(center=(top_left_x + box_width // 2, top_left_y + (i * 40) + 20))
+            state.DISPLAY.blit(text_surface, text_rect)
+
+            if i == self.bet_selection_index:
+                arrow_surface = self.font.render("->", True, (255, 255, 255))
+                arrow_rect = arrow_surface.get_rect(center=(arrow_x_axis, top_left_y + (i * 40) + 20))
+                state.DISPLAY.blit(arrow_surface, arrow_rect)
 
     def initialize_human_position(self) -> None:
         # Set the initial position of the balls
@@ -82,6 +126,7 @@ class HungryStarvingHippos(Screen):
         return closest_human
 
     def update(self, state: "GameState") -> None:
+
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -90,6 +135,17 @@ class HungryStarvingHippos(Screen):
 
         controller = state.controller
         controller.update()
+
+        if self.game_state == "bet_screen":
+            print("bet time")
+
+        if self.commentary == True:
+            if self.comment_to_use == 1:
+                self.battle_messages["hippo_message_1"].update(state)
+            elif self.comment_to_use == 2:
+                self.battle_messages["hippo_message_2"].update(state)
+            elif self.comment_to_use == 3:
+                self.battle_messages["hippo_message_3"].update(state)
 
         # Calculate delta_time
         current_time = time.time()
@@ -113,6 +169,19 @@ class HungryStarvingHippos(Screen):
         self.draw_box_boundary(state)
         self.draw_human(state)
         self.draw_bottom_black_box(state)
+        self.draw_bet_selection(state)  # Add this line
+
+        if self.commentary == True:
+
+            if self.comment_to_use == 1:
+                self.battle_messages["hippo_message_1"].draw(state)
+            elif self.comment_to_use == 2:
+                self.battle_messages["hippo_message_2"].draw(state)
+            elif self.comment_to_use == 3:
+                self.battle_messages["hippo_message_3"].draw(state)
+
+
+
         pygame.display.flip()
 
     def draw_box_boundary(self, state: "GameState") -> None:
@@ -226,4 +295,10 @@ class HungryStarvingHippos(Screen):
                 self.hippo_stopping_eating = time.time()  # Set the time when the hippo starts eating
 
         for label in humans_to_remove:
+            activate_talking = random.randint(1,4)
+            if activate_talking == 3:
+                print("acticate talk")
+                self.commentary = True
+                self.comment_to_use = random.randint(1, 4)
+
             del self.humans[label]
