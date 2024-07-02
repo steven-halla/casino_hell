@@ -104,12 +104,75 @@ class Craps(BattleScreen):
 
         self.lucky_seven = 0
         self.magic_lock = False
-        self.extra_dice = 0
+        self.extra_dice = 5
         self.poison = 0
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.dice_roll_3 = 0
 
+    # def display_dice(self, state: "GameState") -> None:
+    #     # Crop out the first dice image (210 by 200 pixels starting at top left of the sprite sheet)
+    #     dice_rect1 = pygame.Rect(0, 0, 210, 200)  # Define the rectangle for the first dice
+    #     cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
+    #
+    #     # Crop out the second dice image (210 by 200 pixels starting 210 pixels to the right)
+    #     dice_rect2 = pygame.Rect(210, 0, 160, 200)  # Define the rectangle for the second dice
+    #     cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
+    #
+    #     # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
+    #     dice_rect3 = pygame.Rect(380, 0, 133, 200)  # Define the rectangle for the third dice
+    #     cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the third dice image
+    #
+    #     # Crop out the fourth dice image (210 by 200 pixels starting 520 pixels to the right)
+    #     dice_rect4 = pygame.Rect(520, 0, 133, 200)  # Define the rectangle for the fourth dice
+    #     cropped_dice4 = self.sprite_sheet.subsurface(dice_rect4)  # Crop the fourth dice image
+    #
+    #     # Crop out the fifth dice image (210 by 200 pixels starting 710 pixels to the right)
+    #     dice_rect5 = pygame.Rect(710, 0, 133, 200)  # Define the rectangle for the fifth dice
+    #     cropped_dice5 = self.sprite_sheet.subsurface(dice_rect5)  # Crop the fifth dice image
+    #
+    #     # Crop out the sixth dice image (210 by 200 pixels starting 880 pixels to the right)
+    #     dice_rect6 = pygame.Rect(880, 0, 139, 200)  # Define the rectangle for the sixth dice
+    #     cropped_dice6 = self.sprite_sheet.subsurface(dice_rect6)  # Crop the sixth dice image
+    #
+    #     # Blit the cropped dice images onto the display, with a 78-pixel gap between them
+    #     state.DISPLAY.blit(cropped_dice4, (200, 0))  # Adjusted y-coordinate by subtracting 100 for the first dice
+    #     state.DISPLAY.blit(cropped_dice5, (360, 0))  # Placed 200 + 210 for the second dice
+    #     state.DISPLAY.blit(cropped_dice6, (480, 0))  # Placed 200 + 420 for the third dice
+
+    def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int, dice_roll_3: int) -> None:
+        # Define the rectangles for each dice face
+        dice_faces = [
+            pygame.Rect(50, 0, 133, 200),  # Dice face 1
+            pygame.Rect(210, 0, 133, 200),  # Dice face 2
+            pygame.Rect(370, 0, 133, 200),  # Dice face 3
+            pygame.Rect(545, 0, 133, 200),  # Dice face 4
+            pygame.Rect(710, 0, 133, 200),  # Dice face 5
+            pygame.Rect(880, 0, 133, 200)  # Dice face 6
+        ]
+
+        # Get the rectangles for the rolled dice
+        dice_rect1 = dice_faces[dice_roll_1 - 1]
+        cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
+
+        dice_rect2 = dice_faces[dice_roll_2 - 1]
+        cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
+
+
+
+        dice_rect3 = dice_faces[dice_roll_3 - 1]
+        cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the second dice image
+
+        # Blit the cropped dice images onto the display with a 30-pixel gap
+        state.DISPLAY.blit(cropped_dice1, (300, 0))  # Adjusted y-coordinate for the first dice
+        state.DISPLAY.blit(cropped_dice2, (420, 0))  # Placed the second dice 150 pixels to the right
+        if self.extra_dice > 0:
+            state.DISPLAY.blit(cropped_dice3, (540, 0))  # Placed the second dice 150 pixels to the right
+
+    # Usage:
+    # Call this method within your update method or any other place in your code where you need to show the dice roll result
+    # Example:
+    # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
         self.lucky_seven = state.player.luck * 2
@@ -162,6 +225,8 @@ class Craps(BattleScreen):
 
             if self.welcome_screen_index == 0 and controller.isTPressed:
                 self.game_state = "come_out_roll_screen"
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2, self.dice_roll_3)  # Call the method to display the dice roll
+
                 state.player.stamina_points -= 4
                 # state.player.money -= self.bet
                 # self.money += self.bet
@@ -218,7 +283,7 @@ class Craps(BattleScreen):
                 self.dice_roll_2 = random.randint(1, 6)
                 if self.extra_dice > 0:
                     self.dice_roll_3 = random.randint(1, 6)
-                    controller.isTPressed = False
+                controller.isTPressed = False
                 print("Dice roll 1: ", self.dice_roll_1)
                 print("Dice roll 2: ", self.dice_roll_2)
                 print("Dice roll 3: ", self.dice_roll_3)
@@ -232,37 +297,37 @@ class Craps(BattleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
 
-       # Crop out the first dice image (210 by 200 pixels starting at top left of the sprite sheet)
-        dice_rect1 = pygame.Rect(0, 0, 210, 200)  # Define the rectangle for the first dice
-        cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
-
-        # Crop out the second dice image (210 by 200 pixels starting 210 pixels to the right)
-        dice_rect2 = pygame.Rect(210, 0, 160, 200)  # Define the rectangle for the second dice
-        cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
-
-        # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-        dice_rect3 = pygame.Rect(380, 0, 133, 200)  # Define the rectangle for the third dice
-        cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the third dice image
-
-        # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-        dice_rect4 = pygame.Rect(520, 0, 133, 200)  # Define the rectangle for the third dice
-        cropped_dice4 = self.sprite_sheet.subsurface(dice_rect4)  # Crop the third dice image
-
-        # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-        dice_rect5 = pygame.Rect(710, 0, 133, 200)  # Define the rectangle for the third dice
-        cropped_dice5 = self.sprite_sheet.subsurface(dice_rect5)  # Crop the third dice image
-
-        # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-        dice_rect6 = pygame.Rect(880, 0, 139, 200)  # Define the rectangle for the third dice
-        cropped_dice6 = self.sprite_sheet.subsurface(dice_rect6)  # Crop the third dice image
-
-        # Blit the cropped dice images onto the display, with a 78-pixel gap between them
-        state.DISPLAY.blit(cropped_dice1, (200, 0))  # Adjusted y-coordinate by subtracting 100 for the first dice
-        state.DISPLAY.blit(cropped_dice2, (360, 0))  # Placed 200 + 210 for the second dice
-        state.DISPLAY.blit(cropped_dice3, (480, 0))  # Placed 200 + 420 for the third dice
-        # state.DISPLAY.blit(cropped_dice4, (580, 0))  # Placed 200 + 420 for the third dice
-        # state.DISPLAY.blit(cropped_dice5, (240, 0))  # Placed 200 + 420 for the third dice
-        # state.DISPLAY.blit(cropped_dice6, (500, 0))  # Placed 200 + 420 for the third dice
+       # # Crop out the first dice image (210 by 200 pixels starting at top left of the sprite sheet)
+       #  dice_rect1 = pygame.Rect(0, 0, 210, 200)  # Define the rectangle for the first dice
+       #  cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
+       #
+       #  # Crop out the second dice image (210 by 200 pixels starting 210 pixels to the right)
+       #  dice_rect2 = pygame.Rect(210, 0, 160, 200)  # Define the rectangle for the second dice
+       #  cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
+       #
+       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
+       #  dice_rect3 = pygame.Rect(380, 0, 133, 200)  # Define the rectangle for the third dice
+       #  cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the third dice image
+       #
+       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
+       #  dice_rect4 = pygame.Rect(520, 0, 133, 200)  # Define the rectangle for the third dice
+       #  cropped_dice4 = self.sprite_sheet.subsurface(dice_rect4)  # Crop the third dice image
+       #
+       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
+       #  dice_rect5 = pygame.Rect(710, 0, 133, 200)  # Define the rectangle for the third dice
+       #  cropped_dice5 = self.sprite_sheet.subsurface(dice_rect5)  # Crop the third dice image
+       #
+       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
+       #  dice_rect6 = pygame.Rect(880, 0, 139, 200)  # Define the rectangle for the third dice
+       #  cropped_dice6 = self.sprite_sheet.subsurface(dice_rect6)  # Crop the third dice image
+       #
+       #  # Blit the cropped dice images onto the display, with a 78-pixel gap between them
+       #  state.DISPLAY.blit(cropped_dice4, (200, 0))  # Adjusted y-coordinate by subtracting 100 for the first dice
+       #  state.DISPLAY.blit(cropped_dice5, (360, 0))  # Placed 200 + 210 for the second dice
+       #  state.DISPLAY.blit(cropped_dice6, (480, 0))  # Placed 200 + 420 for the third dice
+       #  # state.DISPLAY.blit(cropped_dice4, (580, 0))  # Placed 200 + 420 for the third dice
+       #  # state.DISPLAY.blit(cropped_dice5, (240, 0))  # Placed 200 + 420 for the third dice
+       #  # state.DISPLAY.blit(cropped_dice6, (500, 0))  # Placed 200 + 420 for the third dice
 
 
         self.draw_bottom_black_box(state)
@@ -395,6 +460,8 @@ class Craps(BattleScreen):
 
 
         elif self.game_state == "come_out_roll_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2, self.dice_roll_3)
             self.battle_messages["come_out_roll_message"].draw(state)
 
             black_box_height = 221 - 50  # Adjust height
