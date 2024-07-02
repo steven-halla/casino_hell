@@ -237,7 +237,7 @@ class Craps(BattleScreen):
         cropped_dice = self.sprite_sheet.subsurface(dice_rect)  # Crop the image
 
         # Blit the cropped dice image onto the display
-        state.DISPLAY.blit(cropped_dice, (200, 100))
+        state.DISPLAY.blit(cropped_dice, (200, 0))
 
         self.draw_bottom_black_box(state)
 
