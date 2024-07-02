@@ -7,7 +7,8 @@ from globalclasses.money_balancer import MoneyBalancer
 from screen.examples.screen import Screen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
-
+# maybe we can have craps be more about saving people? that would be a fun mission
+# poison dice  is -1 to all dice rolls , this makes it less likely to get a 7 on come out
 class Craps(BattleScreen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
@@ -20,15 +21,29 @@ class Craps(BattleScreen):
                 500
             ),
 
+            "bet_message": TextBox(
+                ["Time to take a crap with some craps"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "magic_message": TextBox(
+                ["Time to take a crap with some craps"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
             "game_over_no_stamina_message": TextBox(
-                ["Hero: Crap I can't...keep...going...(You ran out of stamina", ""],
+                ["Hero: Crap I can't...keep...going...(You ran out of stamina)", ""],
                 (65, 460, 700, 130),
                 36,
                 500
             ),
 
             "game_over_no_money_message": TextBox(
-                ["You ran out of money game over, enjoy eternity in rib demon hell", ""],
+                ["You ran out of money, game over, enjoy eternity in chicken nugget  hell", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -56,16 +71,22 @@ class Craps(BattleScreen):
             ),
         }
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-        self.magic_screen_choices: list[str] = ["Hack", "Back"]
+        self.magic_screen_choices: list[str] = ["Magnet", "Back"]
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
+        self.magic_magnet = 0
+        self.bet = 50
 
         self.money_balancer = MoneyBalancer(self.money)
 
         self.game_over_message = []  # Initialize game_over_message
 
+        self.lucky_seven = 0
+        self.magic_lock = False
+
 
     def update(self, state: "GameState") -> None:
+        self.lucky_seven = state.player.luck * 2
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -134,7 +155,7 @@ class Craps(BattleScreen):
 
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
-                self.battle_messages["magic_message"].messages = [f""]
+                self.battle_messages["magic_message"].messages = [f"Add an extra dice to your rolls"]
             elif self.magic_screen_index == 1:
                 self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
             self.battle_messages["magic_message"].update(state)
@@ -214,16 +235,10 @@ class Craps(BattleScreen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
-            if "Hack" not in state.player.magicinventory:
+            if "Magnet" not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
-            if "Lucky Shoes" in state.player.items:
-                self.welcome_screen_choices[2] = "Locked"
-
-            if self.lock_down > 0:
-
-                self.welcome_screen_choices[3] = "Locked"
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
