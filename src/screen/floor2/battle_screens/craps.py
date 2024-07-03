@@ -34,7 +34,7 @@ class Craps(BattleScreen):
             ),
 
             "come_out_roll_message": TextBox(
-                ["This is your come out roll"],
+                ["This is your come out roll", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -160,7 +160,7 @@ class Craps(BattleScreen):
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
         # Define the rectangles for each dice face
         dice_faces = [
-            pygame.Rect(50, 0, 133, 200),  # Dice face 1
+            pygame.Rect(50, 0, 133, 200),  # Dice face 1=
             pygame.Rect(210, 0, 133, 200),  # Dice face 2
             pygame.Rect(370, 0, 133, 200),  # Dice face 3
             pygame.Rect(545, 0, 133, 200),  # Dice face 4
@@ -202,9 +202,6 @@ class Craps(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
-
-
-
 
             self.battle_messages["welcome_message"].update(state)
 
@@ -334,17 +331,26 @@ class Craps(BattleScreen):
                     unlucky_two_roll = random.randint(1, 100)
                     if unlucky_two_roll >= 80:
                         self.dice_roll_1 = 1
-                        self.dice_roll_2 = 2
+                        self.dice_roll_2 = 1
                         print("you are not a lucky ducky, you are snake eyes")
+                    elif unlucky_two_roll < 80:
+                        self.dice_roll_1 = random.randint(1, 6)
+                        self.dice_roll_2 = random.randint(1, 6)
+                        print("maybe next time")
                 # if self.extra_dice > 0:
                 #     self.dice_roll_3 = random.randint(1, 6)
                 controller.isTPressed = False
                 print("Dice roll 1: ", self.dice_roll_1)
                 print("Dice roll 2: ", self.dice_roll_2)
+                # self.game_state = "point_phase"
             elif self.come_out_roll_index == 1 and controller.isTPressed:
                 self.battle_messages["come_out_roll_message"].update(state)
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
+
+        # if self.game_state == "point_phase":
+        #     print("welcome to the point phase")
+
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
