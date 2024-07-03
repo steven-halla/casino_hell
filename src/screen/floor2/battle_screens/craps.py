@@ -16,6 +16,8 @@ class Craps(BattleScreen):
         self.game_state: str = "welcome_screen"
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
 
+        self.power_meter_index: int = 0  # Example initial power level
+
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
                 ["Time to take a crap with some craps"],
@@ -109,6 +111,9 @@ class Craps(BattleScreen):
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.dice_roll_3 = 0
+        self.power_meter_speed = 2
+        self.power_meter_goal = 80
+        self.luck_bonus = False
 
     # def display_dice(self, state: "GameState") -> None:
     #     # Crop out the first dice image (210 by 200 pixels starting at top left of the sprite sheet)
@@ -138,7 +143,30 @@ class Craps(BattleScreen):
     #     # Blit the cropped dice images onto the display, with a 78-pixel gap between them
     #     state.DISPLAY.blit(cropped_dice4, (200, 0))  # Adjusted y-coordinate by subtracting 100 for the first dice
     #     state.DISPLAY.blit(cropped_dice5, (360, 0))  # Placed 200 + 210 for the second dice
-    #     state.DISPLAY.blit(cropped_dice6, (480, 0))  # Placed 200 + 420 for the third dice
+    #     state.DISPLAY.blit(cropped_dice6, (480, 0))  # Placed 200 + 420 for the third dice''
+
+    def create_meter(self, state: "GameState", power: int) -> None:
+        meter_width = 300  # Three times wider
+        meter_height = 30
+        max_power = 100
+
+        # Calculate the width of the filled portion of the meter
+        filled_width = int((power / max_power) * meter_width)
+
+        # Draw the background of the meter (empty portion)
+        meter_bg_rect = pygame.Rect(250, 50, meter_width, meter_height)  # Position: (250, 50)
+        pygame.draw.rect(state.DISPLAY, (255, 0, 0), meter_bg_rect)  # Red background
+
+        # Draw the filled portion of the meter
+        meter_fill_rect = pygame.Rect(250, 50, filled_width, meter_height)  # Position: (250, 50)
+        pygame.draw.rect(state.DISPLAY, (0, 255, 0), meter_fill_rect)  # Green filled portion
+
+        # Draw the border of the meter
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), meter_bg_rect, 2)  # White border
+
+        # Draw the goal indicator line
+        goal_position = int((self.power_meter_goal / max_power) * meter_width) + 250  # Adjust position to start from 250
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (goal_position, 50), (goal_position, 80), 5)  # Thick white line
 
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int, dice_roll_3: int) -> None:
         # Define the rectangles for each dice face
@@ -185,7 +213,22 @@ class Craps(BattleScreen):
         controller = state.controller
         controller.update()
 
+
+
         if self.game_state == "welcome_screen":
+            self.power_meter_index += self.power_meter_speed
+            if self.power_meter_index >= 100:
+                self.power_meter_index = 0
+                
+            if controller.isPPressed:
+                self.power_meter_speed = 0
+                self.power_meter_index = self.power_meter_index
+                controller.isPPressed = False
+                if self.power_meter_index >= 80:
+                    print("grats you get a luck bonus")
+                    self.lucky_seven = True
+                print("Your meter is:" + str(self.power_meter_index))
+
 
 
             self.battle_messages["welcome_message"].update(state)
@@ -331,6 +374,8 @@ class Craps(BattleScreen):
 
 
         self.draw_bottom_black_box(state)
+
+        self.create_meter(state, self.power_meter_index)
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
