@@ -15,8 +15,11 @@ class Craps(BattleScreen):
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
-
+        self.dice_roll_1 = 0
+        self.dice_roll_2 = 0
         self.power_meter_index: int = 0  # Example initial power level
+
+        # self.point_phase_target = self.dice_roll_1 + self.dice_roll_2
 
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
@@ -35,6 +38,12 @@ class Craps(BattleScreen):
 
             "come_out_roll_message": TextBox(
                 ["This is your come out roll", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "point_phase_message": TextBox(
+                [f""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -99,11 +108,14 @@ class Craps(BattleScreen):
         }
 
         self.come_out_roll_choices: list[str] = ["Roll", "Back"]
+        self.point_roll_choices: list[str] = ["Play", "Bet"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
         self.magic_screen_choices: list[str] = ["Focus", "Back"]
+
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
         self.come_out_roll_index: int = 0
+        self.point_roll_index: int = 0
         self.magic_magnet = 0
         self.bet = 50
 
@@ -116,9 +128,7 @@ class Craps(BattleScreen):
         self.extra_dice = 5
         self.poison = 1
         self.poison_meter_speed = 1
-        self.dice_roll_1 = 0
-        self.dice_roll_2 = 0
-        self.dice_roll_3 = 0
+
         self.power_meter_speed = 2
         self.power_meter_goal = 80
         self.luck_bonus = 0
@@ -326,6 +336,10 @@ class Craps(BattleScreen):
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
                         print("maybe next time")
+                        self.game_state = "point_phase_screen"
+
+
+
 
                 elif self.lucky_seven == False:
                     unlucky_two_roll = random.randint(1, 100)
@@ -337,19 +351,52 @@ class Craps(BattleScreen):
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
                         print("maybe next time")
+                        self.game_state = "point_phase_screen"
+
                 # if self.extra_dice > 0:
                 #     self.dice_roll_3 = random.randint(1, 6)
                 controller.isTPressed = False
                 print("Dice roll 1: ", self.dice_roll_1)
                 print("Dice roll 2: ", self.dice_roll_2)
+
+
                 # self.game_state = "point_phase"
             elif self.come_out_roll_index == 1 and controller.isTPressed:
                 self.battle_messages["come_out_roll_message"].update(state)
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
+
         # if self.game_state == "point_phase":
         #     print("welcome to the point phase")
+        if self.game_state == "point_phase_screen":
+            point_phase_target = self.dice_roll_1 + self.dice_roll_2
+            # print("point phase target" + str(point_phase_target))
+
+            self.battle_messages["point_phase_message"].messages = [f"Your roll target is {point_phase_target}", ""]
+
+            self.battle_messages["point_phase_message"].update(state)
+
+
+
+            # if self.come_out_roll_index == 0:
+            #     self.battle_messages["point_phase_message"].messages = [f"Roll the dice"]
+            # elif self.come_out_roll_index == 1:
+            #     self.battle_messages["point_phase_message"].messages = [f"Go back to main menu."]
+            # self.battle_messages["point_phase_message"].update(state)/
+            if controller.isUpPressed:
+                self.point_roll_index = (self.point_roll_index - 1) % len(self.point_roll_choices)
+                controller.isUpPressed = False
+            elif controller.isDownPressed:
+                self.point_roll_index = (self.point_roll_index + 1) % len(self.point_roll_choices)
+                controller.isDownPressed = False
+            if self.point_roll_index == 0 and controller.isTPressed:
+                # self.battle_messages["point_phase_message"].update(state)
+                print("")
+
+
+
+
 
 
     def draw(self, state: "GameState") -> None:
@@ -493,6 +540,9 @@ class Craps(BattleScreen):
 
 
 
+
+
+
         elif self.game_state == "come_out_roll_screen":
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
@@ -540,6 +590,56 @@ class Craps(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 52)
                 )
+
+        elif self.game_state == "point_phase_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.battle_messages["point_phase_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            # Draw the menu options
+            for idx, choice in enumerate(self.point_roll_choices):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
+
+            if self.come_out_roll_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
+                )
+            elif self.come_out_roll_index == 1:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 52)
+                )
+
+
 
 
 
