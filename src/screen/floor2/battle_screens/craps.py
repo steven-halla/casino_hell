@@ -47,6 +47,13 @@ class Craps(BattleScreen):
                 500
             ),
 
+            "power_meter_message": TextBox(
+                ["Save it for when its needed most."],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
             "hand_cramp_message": TextBox(
                 ["Jack: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad.",
                  "Sir Leopold: That bastard just cursed you, all dice  receive a -1 and you can't run away.", " He's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Jack."],
@@ -93,7 +100,7 @@ class Craps(BattleScreen):
 
         self.come_out_roll_choices: list[str] = ["Roll", "Back"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-        self.magic_screen_choices: list[str] = ["Magnet", "Back"]
+        self.magic_screen_choices: list[str] = ["Focus", "Back"]
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
         self.come_out_roll_index: int = 0
@@ -104,46 +111,18 @@ class Craps(BattleScreen):
 
         self.game_over_message = []  # Initialize game_over_message
 
-        self.lucky_seven = 0
+        self.lucky_seven = False
         self.magic_lock = False
         self.extra_dice = 5
-        self.poison = 0
+        self.poison = 1
+        self.poison_meter_speed = 1
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.dice_roll_3 = 0
         self.power_meter_speed = 2
         self.power_meter_goal = 80
-        self.luck_bonus = False
-
-    # def display_dice(self, state: "GameState") -> None:
-    #     # Crop out the first dice image (210 by 200 pixels starting at top left of the sprite sheet)
-    #     dice_rect1 = pygame.Rect(0, 0, 210, 200)  # Define the rectangle for the first dice
-    #     cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
-    #
-    #     # Crop out the second dice image (210 by 200 pixels starting 210 pixels to the right)
-    #     dice_rect2 = pygame.Rect(210, 0, 160, 200)  # Define the rectangle for the second dice
-    #     cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
-    #
-    #     # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-    #     dice_rect3 = pygame.Rect(380, 0, 133, 200)  # Define the rectangle for the third dice
-    #     cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the third dice image
-    #
-    #     # Crop out the fourth dice image (210 by 200 pixels starting 520 pixels to the right)
-    #     dice_rect4 = pygame.Rect(520, 0, 133, 200)  # Define the rectangle for the fourth dice
-    #     cropped_dice4 = self.sprite_sheet.subsurface(dice_rect4)  # Crop the fourth dice image
-    #
-    #     # Crop out the fifth dice image (210 by 200 pixels starting 710 pixels to the right)
-    #     dice_rect5 = pygame.Rect(710, 0, 133, 200)  # Define the rectangle for the fifth dice
-    #     cropped_dice5 = self.sprite_sheet.subsurface(dice_rect5)  # Crop the fifth dice image
-    #
-    #     # Crop out the sixth dice image (210 by 200 pixels starting 880 pixels to the right)
-    #     dice_rect6 = pygame.Rect(880, 0, 139, 200)  # Define the rectangle for the sixth dice
-    #     cropped_dice6 = self.sprite_sheet.subsurface(dice_rect6)  # Crop the sixth dice image
-    #
-    #     # Blit the cropped dice images onto the display, with a 78-pixel gap between them
-    #     state.DISPLAY.blit(cropped_dice4, (200, 0))  # Adjusted y-coordinate by subtracting 100 for the first dice
-    #     state.DISPLAY.blit(cropped_dice5, (360, 0))  # Placed 200 + 210 for the second dice
-    #     state.DISPLAY.blit(cropped_dice6, (480, 0))  # Placed 200 + 420 for the third dice''
+        self.luck_bonus = 0
+        self.player_poison_penalty = False
 
     def create_meter(self, state: "GameState", power: int) -> None:
         meter_width = 300  # Three times wider
@@ -165,10 +144,20 @@ class Craps(BattleScreen):
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), meter_bg_rect, 2)  # White border
 
         # Draw the goal indicator line
-        goal_position = int((self.power_meter_goal / max_power) * meter_width) + 250  # Adjust position to start from 250
-        pygame.draw.line(state.DISPLAY, (255, 255, 255), (goal_position, 50), (goal_position, 80), 5)  # Thick white line
 
-    def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int, dice_roll_3: int) -> None:
+
+
+        goal_position = int((self.power_meter_goal / max_power) * meter_width) + 250  # Adjust position to start from 250
+
+        if self.poison_meter_speed > 0 and self.player_poison_penalty == True:
+            self.power_meter_goal += 10
+            goal_position += 10
+            self.power_meter_speed += .5
+            self.player_poison_penalty = False
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (goal_position, 50), (goal_position, 80), 5)  # Thick white line
+        # print(f"Power Meter Goal: {self.power_meter_goal}, Goal Position: {goal_position}, Power Meter Speed: {self.power_meter_speed}, Player Poison Penalty: {self.player_poison_penalty}")
+
+    def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
         # Define the rectangles for each dice face
         dice_faces = [
             pygame.Rect(50, 0, 133, 200),  # Dice face 1
@@ -176,7 +165,7 @@ class Craps(BattleScreen):
             pygame.Rect(370, 0, 133, 200),  # Dice face 3
             pygame.Rect(545, 0, 133, 200),  # Dice face 4
             pygame.Rect(710, 0, 133, 200),  # Dice face 5
-            pygame.Rect(880, 0, 133, 200)  # Dice face 6
+            pygame.Rect(880, 0, 133, 200)  # Dice face 6p
         ]
 
         # Get the rectangles for the rolled dice
@@ -188,14 +177,11 @@ class Craps(BattleScreen):
 
 
 
-        dice_rect3 = dice_faces[dice_roll_3 - 1]
-        cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the second dice image
 
         # Blit the cropped dice images onto the display with a 30-pixel gap
         state.DISPLAY.blit(cropped_dice1, (300, 0))  # Adjusted y-coordinate for the first dice
         state.DISPLAY.blit(cropped_dice2, (420, 0))  # Placed the second dice 150 pixels to the right
-        if self.extra_dice > 0:
-            state.DISPLAY.blit(cropped_dice3, (540, 0))  # Placed the second dice 150 pixels to the right
+
 
     # Usage:
     # Call this method within your update method or any other place in your code where you need to show the dice roll result
@@ -203,7 +189,7 @@ class Craps(BattleScreen):
     # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
-        self.lucky_seven = state.player.luck * 2
+        # self.lucky_seven = state.player.luck * 2
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -216,18 +202,7 @@ class Craps(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
-            self.power_meter_index += self.power_meter_speed
-            if self.power_meter_index >= 100:
-                self.power_meter_index = 0
-                
-            if controller.isPPressed:
-                self.power_meter_speed = 0
-                self.power_meter_index = self.power_meter_index
-                controller.isPPressed = False
-                if self.power_meter_index >= 80:
-                    print("grats you get a luck bonus")
-                    self.lucky_seven = True
-                print("Your meter is:" + str(self.power_meter_index))
+
 
 
 
@@ -267,8 +242,8 @@ class Craps(BattleScreen):
                 controller.isDownPressed = False
 
             if self.welcome_screen_index == 0 and controller.isTPressed:
-                self.game_state = "come_out_roll_screen"
-                self.display_dice(state, self.dice_roll_1, self.dice_roll_2, self.dice_roll_3)  # Call the method to display the dice roll
+                self.game_state = "power_meter_screen"
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)  # Call the method to display the dice roll
 
                 state.player.stamina_points -= 4
                 # state.player.money -= self.bet
@@ -289,7 +264,7 @@ class Craps(BattleScreen):
 
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
-                self.battle_messages["magic_message"].messages = [f"Add an extra dice to your rolls"]
+                self.battle_messages["magic_message"].messages = [f"increase chance of a  7 if you get a lucky roll by + 5%, this bonus decreases by -1 each turn"]
             elif self.magic_screen_index == 1:
                 self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
             self.battle_messages["magic_message"].update(state)
@@ -300,12 +275,32 @@ class Craps(BattleScreen):
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
             if self.magic_screen_index == 0 and controller.isTPressed:
-                self.extra_dice = 5
+                self.luck_bonus = 5
                 controller.isTPressed = False
             elif self.magic_screen_index == 1 and controller.isTPressed:
                 self.battle_messages["magic_message"].update(state)
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
+
+        if self.game_state == "power_meter_screen":
+
+            self.power_meter_index += self.power_meter_speed
+            if self.power_meter_index >= 100:
+                self.power_meter_index = 0
+
+            if controller.isPPressed:
+                self.power_meter_speed = 0
+                self.power_meter_index = self.power_meter_index
+                controller.isPPressed = False
+                if self.power_meter_index >= 80:
+                    print("grats you get a luck bonus")
+                    self.lucky_seven = True
+                    print(str(self.lucky_seven))
+                print("Your meter is:" + str(self.power_meter_index))
+                self.game_state = "come_out_roll_screen"
+            self.battle_messages["power_meter_message"].update(state)
+
+
 
         if self.game_state == "come_out_roll_screen":
             self.battle_messages["come_out_roll_message"].update(state)
@@ -322,14 +317,30 @@ class Craps(BattleScreen):
                 controller.isDownPressed = False
             if self.come_out_roll_index == 0 and controller.isTPressed:
                 self.battle_messages["come_out_roll_message"].update(state)
-                self.dice_roll_1 = random.randint(1, 6)
-                self.dice_roll_2 = random.randint(1, 6)
-                if self.extra_dice > 0:
-                    self.dice_roll_3 = random.randint(1, 6)
+                print("is  lucky 7 true: " + str(self.lucky_seven))
+                if self.lucky_seven == True:
+                    lucky_player_bonus = state.player.luck
+                    lucky_7_roll = random.randint(1, 100) + (lucky_player_bonus * 2) + self.luck_bonus
+                    if lucky_7_roll >= 80:
+                        self.dice_roll_1 = 1
+                        self.dice_roll_2 = 6
+                        print("Lucky Ducky you got a 7 instant win")
+                    elif lucky_7_roll < 80:
+                        self.dice_roll_1 = random.randint(1, 6)
+                        self.dice_roll_2 = random.randint(1, 6)
+                        print("maybe next time")
+
+                elif self.lucky_seven == False:
+                    unlucky_two_roll = random.randint(1, 100)
+                    if unlucky_two_roll >= 80:
+                        self.dice_roll_1 = 1
+                        self.dice_roll_2 = 2
+                        print("you are not a lucky ducky, you are snake eyes")
+                # if self.extra_dice > 0:
+                #     self.dice_roll_3 = random.randint(1, 6)
                 controller.isTPressed = False
                 print("Dice roll 1: ", self.dice_roll_1)
                 print("Dice roll 2: ", self.dice_roll_2)
-                print("Dice roll 3: ", self.dice_roll_3)
             elif self.come_out_roll_index == 1 and controller.isTPressed:
                 self.battle_messages["come_out_roll_message"].update(state)
                 self.game_state = "welcome_screen"
@@ -340,42 +351,9 @@ class Craps(BattleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
 
-       # # Crop out the first dice image (210 by 200 pixels starting at top left of the sprite sheet)
-       #  dice_rect1 = pygame.Rect(0, 0, 210, 200)  # Define the rectangle for the first dice
-       #  cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
-       #
-       #  # Crop out the second dice image (210 by 200 pixels starting 210 pixels to the right)
-       #  dice_rect2 = pygame.Rect(210, 0, 160, 200)  # Define the rectangle for the second dice
-       #  cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
-       #
-       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-       #  dice_rect3 = pygame.Rect(380, 0, 133, 200)  # Define the rectangle for the third dice
-       #  cropped_dice3 = self.sprite_sheet.subsurface(dice_rect3)  # Crop the third dice image
-       #
-       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-       #  dice_rect4 = pygame.Rect(520, 0, 133, 200)  # Define the rectangle for the third dice
-       #  cropped_dice4 = self.sprite_sheet.subsurface(dice_rect4)  # Crop the third dice image
-       #
-       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-       #  dice_rect5 = pygame.Rect(710, 0, 133, 200)  # Define the rectangle for the third dice
-       #  cropped_dice5 = self.sprite_sheet.subsurface(dice_rect5)  # Crop the third dice image
-       #
-       #  # Crop out the third dice image (210 by 200 pixels starting 420 pixels to the right)
-       #  dice_rect6 = pygame.Rect(880, 0, 139, 200)  # Define the rectangle for the third dice
-       #  cropped_dice6 = self.sprite_sheet.subsurface(dice_rect6)  # Crop the third dice image
-       #
-       #  # Blit the cropped dice images onto the display, with a 78-pixel gap between them
-       #  state.DISPLAY.blit(cropped_dice4, (200, 0))  # Adjusted y-coordinate by subtracting 100 for the first dice
-       #  state.DISPLAY.blit(cropped_dice5, (360, 0))  # Placed 200 + 210 for the second dice
-       #  state.DISPLAY.blit(cropped_dice6, (480, 0))  # Placed 200 + 420 for the third dice
-       #  # state.DISPLAY.blit(cropped_dice4, (580, 0))  # Placed 200 + 420 for the third dice
-       #  # state.DISPLAY.blit(cropped_dice5, (240, 0))  # Placed 200 + 420 for the third dice
-       #  # state.DISPLAY.blit(cropped_dice6, (500, 0))  # Placed 200 + 420 for the third dice
-
 
         self.draw_bottom_black_box(state)
 
-        self.create_meter(state, self.power_meter_index)
 
         if self.game_state == "welcome_screen":
             self.battle_messages["welcome_message"].draw(state)
@@ -426,7 +404,7 @@ class Craps(BattleScreen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
-            if "Magnet" not in state.player.magicinventory:
+            if "Focus" not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
@@ -502,11 +480,16 @@ class Craps(BattleScreen):
 
             self.battle_messages["bet_message"].draw(state)
 
+        elif self.game_state == "power_meter_screen":
+            self.create_meter(state, self.power_meter_index)
+            self.battle_messages["power_meter_message"].draw(state)
+
+
 
 
         elif self.game_state == "come_out_roll_screen":
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
-                self.display_dice(state, self.dice_roll_1, self.dice_roll_2, self.dice_roll_3)
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
             self.battle_messages["come_out_roll_message"].draw(state)
 
             black_box_height = 221 - 50  # Adjust height

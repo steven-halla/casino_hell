@@ -32,7 +32,7 @@ class Player(Entity):
         self.perks = []
         self.items = []
         self.npc_items = []
-        self.magicinventory = ["Magnet" ]
+        self.magicinventory = ["Focus" ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
