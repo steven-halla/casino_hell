@@ -118,7 +118,7 @@ class Craps(BattleScreen):
             ),
         }
 
-        self.come_out_roll_choices: list[str] = ["Roll", "Back"]
+        self.come_out_roll_choices: list[str] = ["Roll"]
         self.point_roll_choices: list[str] = ["Play", "Bet"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
         self.magic_screen_choices: list[str] = ["Focus", "Back"]
@@ -356,12 +356,7 @@ class Craps(BattleScreen):
             elif self.come_out_roll_index == 1:
                 self.battle_messages["come_out_roll_message"].messages = [f"Go back to main menu."]
             self.battle_messages["come_out_roll_message"].update(state)
-            if controller.isUpPressed:
-                self.come_out_roll_index = (self.come_out_roll_index - 1) % len(self.magic_screen_choices)
-                controller.isUpPressed = False
-            elif controller.isDownPressed:
-                self.come_out_roll_index = (self.come_out_roll_index + 1) % len(self.magic_screen_choices)
-                controller.isDownPressed = False
+
             if self.come_out_roll_index == 0 and controller.isTPressed:
                 self.battle_messages["come_out_roll_message"].update(state)
                 print("is  lucky 7 true: " + str(self.lucky_seven))
@@ -404,10 +399,7 @@ class Craps(BattleScreen):
 
 
                 # self.game_state = "point_phase"
-            elif self.come_out_roll_index == 1 and controller.isTPressed:
-                self.battle_messages["come_out_roll_message"].update(state)
-                self.game_state = "welcome_screen"
-                controller.isTPressed = False
+
 
 
         # if self.game_state == "point_phase":
