@@ -122,11 +122,13 @@ class Craps(BattleScreen):
         self.point_roll_choices: list[str] = ["Play", "Bet"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
         self.magic_screen_choices: list[str] = ["Focus", "Back"]
+        self.bet_screen_choices: list[str] = ["Back"]
 
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
         self.come_out_roll_index: int = 0
         self.point_roll_index: int = 0
+        self.point_bet_index: int = 0
         self.magic_magnet = 0
         self.bet = 50
 
@@ -274,13 +276,38 @@ class Craps(BattleScreen):
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 2 and controller.isTPressed and "Lucky Shoes" not in state.player.items:
+            elif self.welcome_screen_index == 2 and controller.isTPressed:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
+
                 controller.isTPressed = False
+
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
                 state.currentScreen = state.area2StartScreen
                 controller.isTPressed = False
+
+        elif self.game_state == "bet_screen":
+            print(self.game_state)
+            if controller.isUpPressed:
+                self.bet += 25
+                print(self.game_state)
+
+                if self.bet >= 75:
+                    self.bet = 75
+                controller.isUpPressed = False
+
+            if controller.isDownPressed:
+                self.bet -= 25
+                if self.bet <= 50:
+                    self.bet = 50
+                controller.isDownPressed = False
+
+            if controller.isTPressed:
+                self.game_state = "welcome_screen"
+                controller.isTPressed = False
+
+
+
 
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
@@ -428,6 +455,34 @@ class Craps(BattleScreen):
                     print(f"your come out rolld of {self.come_out_roll_total} + your pont roll of {self.point_roll_total}")
                 controller.isTPressed = False
 
+            elif self.point_roll_index == 1 and controller.isTPressed:
+                self.game_state = "point_bet_screen"
+                controller.isTPressed = False
+
+
+        elif self.game_state == "point_bet_screen":
+            print("point bet index: " + str(self.point_bet_index))
+            if controller.isUpPressed:
+                self.bet += 25
+                print("UP")
+                if self.bet > 200:
+                    self.bet = 200
+                controller.isUpPressed = False
+
+            elif controller.isDownPressed:
+                print("Dow n")
+
+                self.bet -= 25
+                if self.bet < 50:
+                    self.bet = 50
+                controller.isDownPressed = False
+
+            if self.point_bet_index == 0 and controller.isTPressed:
+                self.game_state = "point_phase_screen"
+                controller.isTPressed = False
+
+
+
 
 
 
@@ -515,6 +570,46 @@ class Craps(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 132)
                 )
+
+        elif self.game_state == "bet_screen":
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            # Draw the menu options
+            for idx, choice in enumerate(self.bet_screen_choices):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
+            if self.point_bet_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
+                )
+
+
 
 
         elif self.game_state == "magic_screen":
@@ -623,6 +718,46 @@ class Craps(BattleScreen):
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 52)
+                )
+
+        elif self.game_state == "point_bet_screen":
+            print("drawing point bet")
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            # Draw the menu options
+            for idx, choice in enumerate(self.bet_screen_choices):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
+            if self.point_bet_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
                 )
 
         elif self.game_state == "point_phase_screen":
