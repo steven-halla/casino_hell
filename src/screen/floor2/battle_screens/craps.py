@@ -15,9 +15,12 @@ class Craps(BattleScreen):
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
+
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.power_meter_index: int = 0  # Example initial power level
+        self.come_out_roll_total = 0
+        self.point_roll_total = 0
 
         # self.point_phase_target = self.dice_roll_1 + self.dice_roll_2
 
@@ -43,7 +46,14 @@ class Craps(BattleScreen):
                 500
             ),
             "point_phase_message": TextBox(
-                [f""],
+                [f"Your point phase is here"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "point_phase_result_message": TextBox(
+                [f"Your point phase result messaage is here"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -65,7 +75,8 @@ class Craps(BattleScreen):
 
             "hand_cramp_message": TextBox(
                 ["Jack: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad.",
-                 "Sir Leopold: That bastard just cursed you, all dice  receive a -1 and you can't run away.", " He's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Jack."],
+                 "Sir Leopold: That bastard just cursed you,your come out roll meter is not only sped up but the margin of success is lower.",
+                 "Hero:  He's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Jack."],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -86,7 +97,7 @@ class Craps(BattleScreen):
             ),
 
             "game_over_low_stamina_message": TextBox(
-                ["Hero: I'm too tired to keep gambling i need to rest)", ""],
+                ["Hero: I'm too tired to keep gambling i need to rest", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -167,6 +178,8 @@ class Craps(BattleScreen):
         pygame.draw.line(state.DISPLAY, (255, 255, 255), (goal_position, 50), (goal_position, 80), 5)  # Thick white line
         # print(f"Power Meter Goal: {self.power_meter_goal}, Goal Position: {goal_position}, Power Meter Speed: {self.power_meter_speed}, Player Poison Penalty: {self.player_poison_penalty}")
 
+
+
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
         # Define the rectangles for each dice face
         dice_faces = [
@@ -174,7 +187,7 @@ class Craps(BattleScreen):
             pygame.Rect(210, 0, 133, 200),  # Dice face 2
             pygame.Rect(370, 0, 133, 200),  # Dice face 3
             pygame.Rect(545, 0, 133, 200),  # Dice face 4
-            pygame.Rect(710, 0, 133, 200),  # Dice face 5
+            pygame.Rect(710, 0, 133, 200),  # Dice face
             pygame.Rect(880, 0, 133, 200)  # Dice face 6p
         ]
 
@@ -337,6 +350,7 @@ class Craps(BattleScreen):
                         self.dice_roll_2 = random.randint(1, 6)
                         print("maybe next time")
                         self.game_state = "point_phase_screen"
+                        self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
 
 
 
@@ -351,6 +365,8 @@ class Craps(BattleScreen):
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
                         print("maybe next time")
+                        self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+
                         self.game_state = "point_phase_screen"
 
                 # if self.extra_dice > 0:
@@ -373,7 +389,7 @@ class Craps(BattleScreen):
             point_phase_target = self.dice_roll_1 + self.dice_roll_2
             # print("point phase target" + str(point_phase_target))
 
-            self.battle_messages["point_phase_message"].messages = [f"Your roll target is {point_phase_target}", ""]
+            self.battle_messages["point_phase_message"].messages = [f"Your roll target is {self.come_out_roll_total}"]
 
             self.battle_messages["point_phase_message"].update(state)
 
@@ -386,13 +402,31 @@ class Craps(BattleScreen):
             # self.battle_messages["point_phase_message"].update(state)/
             if controller.isUpPressed:
                 self.point_roll_index = (self.point_roll_index - 1) % len(self.point_roll_choices)
+                print(str(self.point_roll_index))
                 controller.isUpPressed = False
             elif controller.isDownPressed:
                 self.point_roll_index = (self.point_roll_index + 1) % len(self.point_roll_choices)
                 controller.isDownPressed = False
             if self.point_roll_index == 0 and controller.isTPressed:
-                # self.battle_messages["point_phase_message"].update(state)
-                print("")
+                state.player.stamina_points -= 2
+               # self.come_out_roll total is what i need to match
+                self.point_roll_total = random.randint(1, 6)
+
+                self.dice_roll_1 = random.randint(1, 6)
+                self.dice_roll_2 = random.randint(1, 6)
+                self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                print("your point roll total is: " + str(self.point_roll_total))
+
+                if self.point_roll_total == 7:
+                    state.player.money -= self.bet
+                    self.money += self.bet
+                    self.point_roll_total = 0
+                    # self.game_state = "welcome_screen"
+                    print("You got a 7 you lose")
+
+                elif self.point_roll_total == self.come_out_roll_total:
+                    print(f"your come out rolld of {self.come_out_roll_total} + your pont roll of {self.point_roll_total}")
+                controller.isTPressed = False
 
 
 
@@ -628,12 +662,12 @@ class Craps(BattleScreen):
                     (start_x_right_box + 60, y_position + 15)
                 )
 
-            if self.come_out_roll_index == 0:
+            if self.point_roll_index == 0:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 12)
                 )
-            elif self.come_out_roll_index == 1:
+            elif self.point_roll_index == 1:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 52)
