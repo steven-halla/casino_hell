@@ -40,7 +40,7 @@ class Craps(BattleScreen):
             ),
 
             "come_out_roll_message": TextBox(
-                ["This is your come out roll", ""],
+                ["This is your come out roll"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -130,7 +130,7 @@ class Craps(BattleScreen):
         self.point_roll_index: int = 0
         self.point_bet_index: int = 0
         self.magic_magnet = 0
-        self.bet = 50
+        self.bet = 75
 
         self.money_balancer = MoneyBalancer(self.money)
 
@@ -142,10 +142,38 @@ class Craps(BattleScreen):
         self.poison = 1
         self.poison_meter_speed = 1
 
+        self.lucky_message_switch = False
+
         self.power_meter_speed = 2
         self.power_meter_goal = 80
         self.luck_bonus = 0
         self.player_poison_penalty = False
+
+        self.point_phase_win = False
+        self.unlucky_message_switch = False
+
+
+    def game_reset(self, state: "GameState"):
+        print("Calling game reset")
+        self.bet = 75
+        self.point_phase_win = False
+
+        self.welcome_screen_index = 0
+        self.magic_screen_index = 0
+        self.come_out_roll_index = 0
+        self.point_roll_index = 0
+        # we can also reset messages here too as needed
+        self.lucky_seven = False
+        self.come_out_roll_total = 0
+        self.dice_roll_2 = 0
+        self.dice_roll_1 = 0
+        self.point_roll_total = 0
+        self.lucky_message_switch = False
+        if self.luck_bonus > 0:
+            self.luck_bonus -= 1
+            print(str(self.luck_bonus))
+
+
 
     def create_meter(self, state: "GameState", power: int) -> None:
         meter_width = 300  # Three times wider
@@ -340,9 +368,7 @@ class Craps(BattleScreen):
                 self.power_meter_index = self.power_meter_index
                 controller.isPPressed = False
                 if self.power_meter_index >= 80:
-                    print("grats you get a luck bonus")
                     self.lucky_seven = True
-                    print(str(self.lucky_seven))
                 print("Your meter is:" + str(self.power_meter_index))
                 self.game_state = "come_out_roll_screen"
             self.battle_messages["power_meter_message"].update(state)
@@ -351,28 +377,74 @@ class Craps(BattleScreen):
 
         if self.game_state == "come_out_roll_screen":
             self.battle_messages["come_out_roll_message"].update(state)
-            if self.come_out_roll_index == 0:
-                self.battle_messages["come_out_roll_message"].messages = [f"Roll the dice"]
-            elif self.come_out_roll_index == 1:
-                self.battle_messages["come_out_roll_message"].messages = [f"Go back to main menu."]
-            self.battle_messages["come_out_roll_message"].update(state)
+            # if self.come_out_roll_index == 0 and self.lucky_message_switch == False:
+            #     self.battle_messages["come_out_roll_message"].messages = [f"Roll the dice"]
+            # elif self.come_out_roll_index == 1:
+            #     self.battle_messages["come_out_roll_message"].messages = [f"Go back to main menu."]
 
             if self.come_out_roll_index == 0 and controller.isTPressed:
                 self.battle_messages["come_out_roll_message"].update(state)
-                print("is  lucky 7 true: " + str(self.lucky_seven))
                 if self.lucky_seven == True:
                     lucky_player_bonus = state.player.luck
                     lucky_7_roll = random.randint(1, 100) + (lucky_player_bonus * 2) + self.luck_bonus
                     if lucky_7_roll >= 80:
+                        self.lucky_message_switch = True
                         self.dice_roll_1 = 1
                         self.dice_roll_2 = 6
-                        print("Lucky Ducky you got a 7 instant win")
+                        self.battle_messages["come_out_roll_message"].messages = [f"Youuu got a lucky 7 good job",  f"You gain 50 exp and {self.bet} coins"]
+                        if self.battle_messages["come_out_roll_message"].message_index == 1:
+                            print("395")
+                            state.player.money += self.bet
+                            state.player.exp += 50
+                            self.game_state = "welcome_screen"
+
+
                     elif lucky_7_roll < 80:
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
                         print("maybe next time")
-                        self.game_state = "point_phase_screen"
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+
+                        if self.come_out_roll_total == 2:
+                            self.battle_messages["come_out_roll_message"].messages = [f"snake 409", f"You gain 10 exp and lose {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                print("line 410")
+                                state.player.money -= self.bet
+                                self.money += self.bet
+                                state.player.exp += 10
+                                self.game_state = "welcome_screen"
+                        elif self.come_out_roll_total == 3:
+                            self.battle_messages["come_out_roll_message"].messages = [f"417 roll of 3", f"You gain 10 exp and lose {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                print("line 418")
+
+                                state.player.money -= self.bet
+                                self.money += self.bet
+                                state.player.exp += 10
+                                self.game_state = "welcome_screen"
+                        elif self.come_out_roll_total == 12:
+                            self.battle_messages["come_out_roll_message"].messages = [f"rol of 12  line 426", f"You gain 10 exp and lose {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                print("line 427")
+
+                                state.player.money -= self.bet
+                                self.money += self.bet
+                                state.player.exp += 10
+                                self.game_state = "welcome_screen"
+
+                        elif self.come_out_roll_total == 7:
+                            self.battle_messages["come_out_roll_message"].messages = [f"You got a 7 and your line is 436.", f"You gain 50 exp and gain {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                print("line 437")
+                                state.player.money += self.bet
+                                self.money -= self.bet
+                                state.player.exp += 50
+                                self.game_state = "welcome_screen"
+
+                        else:
+                            print("444")
+
+                            self.game_state = "point_phase_screen"
 
 
 
@@ -382,23 +454,82 @@ class Craps(BattleScreen):
                     if unlucky_two_roll >= 80:
                         self.dice_roll_1 = 1
                         self.dice_roll_2 = 1
-                        print("you are not a lucky ducky, you are snake eyes")
+
+                        print("line 457")
+                        self.battle_messages["come_out_roll_message"].messages = [f"You got snake eyes you loseeeeeee.",  f"You gain 25 exp and lose {self.bet} coins"]
+                        if self.battle_messages["come_out_roll_message"].message_index == 1:
+                            print("line 462")
+                            state.player.money -= self.bet
+                            self.money += self.bet
+                            state.player.exp += 50
+                            self.game_state = "welcome_screen"
+
                     elif unlucky_two_roll < 80:
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
-                        print("maybe next time")
+                        print("line 471")
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+                        print("come out roll total: " + str(self.come_out_roll_total))
+                        if self.come_out_roll_total == 2:
+                            print("475")
 
-                        self.game_state = "point_phase_screen"
+                            self.battle_messages["come_out_roll_message"].messages = [f"You got snakey eyes you lose.", f"You gain 25 exp and lose {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                state.player.money -= self.bet
+                                self.money += self.bet
+                                self.game_state = "welcome_screen"
+                        elif self.come_out_roll_total == 3:
+                            print("481")
+
+                            self.battle_messages["come_out_roll_message"].messages = [f"You got a total of 3 you lose.", f"You gain 25 exp and lose {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                state.player.money -= self.bet
+                                self.money += self.bet
+                                self.game_state = "welcome_screen"
+                        elif self.come_out_roll_total == 12:
+                            print("487")
+
+                            self.battle_messages["come_out_roll_message"].messages = [f"You got a total of 12 you lose.", f"You gain 25 exp and lose {self.bet} coins"]
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                state.player.money -= self.bet
+                                self.money += self.bet
+                                self.game_state = "welcome_screen"
+
+                        elif self.come_out_roll_total == 7:
+                            print("490")
+
+                            self.battle_messages["come_out_roll_message"].messages = [f"You got a 7  you iwn.", f"You gain 50 exp and gain {self.bet} coins"]
+
+                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                                state.player.money += self.bet
+                                self.money -= self.bet
+                                self.game_state = "welcome_screen"
+
+                        else:
+                            self.battle_messages["come_out_roll_message"].messages = [f"Your point roll is set at {self.come_out_roll_total}."]
+                            if self.battle_messages["come_out_roll_message"].message_index == 0:
+                                self.game_state = "point_phase_screen"
+
+
+
+
+
+
+
+
+
 
                 # if self.extra_dice > 0:
                 #     self.dice_roll_3 = random.randint(1, 6)
                 controller.isTPressed = False
                 print("Dice roll 1: ", self.dice_roll_1)
                 print("Dice roll 2: ", self.dice_roll_2)
-
+                self.battle_messages["come_out_roll_message"].update(state)
 
                 # self.game_state = "point_phase"
+
+        # if self.game_state == "come_out_roll_fail_screen":
+        #     pass
 
 
 
@@ -442,6 +573,7 @@ class Craps(BattleScreen):
                     self.point_roll_total = 0
                     # self.game_state = "welcome_screen"
                     print("You got a 7 you lose")
+
 
                 elif self.point_roll_total == self.come_out_roll_total:
                     print(f"your come out rolld of {self.come_out_roll_total} + your pont roll of {self.point_roll_total}")
