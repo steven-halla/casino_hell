@@ -457,7 +457,7 @@ class Craps(BattleScreen):
 
                         print("line 457")
                         self.battle_messages["come_out_roll_message"].messages = [f"You got snake eyes you loseeeeeee.",  f"You gain 25 exp and lose {self.bet} coins"]
-                        if self.battle_messages["come_out_roll_message"].message_index == 1:
+                        if self.battle_messages["come_out_roll_message"].is_finished():
                             print("line 462")
                             state.player.money -= self.bet
                             self.money += self.bet
@@ -474,7 +474,7 @@ class Craps(BattleScreen):
                             print("475")
 
                             self.battle_messages["come_out_roll_message"].messages = [f"You got snakey eyes you lose.", f"You gain 25 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                            if self.battle_messages["come_out_roll_message"].is_finished():
                                 state.player.money -= self.bet
                                 self.money += self.bet
                                 self.game_state = "welcome_screen"
@@ -482,7 +482,7 @@ class Craps(BattleScreen):
                             print("481")
 
                             self.battle_messages["come_out_roll_message"].messages = [f"You got a total of 3 you lose.", f"You gain 25 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                            if self.battle_messages["come_out_roll_message"].is_finished():
                                 state.player.money -= self.bet
                                 self.money += self.bet
                                 self.game_state = "welcome_screen"
@@ -490,7 +490,7 @@ class Craps(BattleScreen):
                             print("487")
 
                             self.battle_messages["come_out_roll_message"].messages = [f"You got a total of 12 you lose.", f"You gain 25 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                            if self.battle_messages["come_out_roll_message"].is_finished():
                                 state.player.money -= self.bet
                                 self.money += self.bet
                                 self.game_state = "welcome_screen"
@@ -500,14 +500,14 @@ class Craps(BattleScreen):
 
                             self.battle_messages["come_out_roll_message"].messages = [f"You got a 7  you iwn.", f"You gain 50 exp and gain {self.bet} coins"]
 
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
+                            if self.battle_messages["come_out_roll_message"].is_finished():
                                 state.player.money += self.bet
                                 self.money -= self.bet
                                 self.game_state = "welcome_screen"
 
                         else:
                             self.battle_messages["come_out_roll_message"].messages = [f"Your point roll is set at {self.come_out_roll_total}."]
-                            if self.battle_messages["come_out_roll_message"].message_index == 0:
+                            if self.battle_messages["come_out_roll_message"].is_finished():
                                 self.game_state = "point_phase_screen"
 
 
