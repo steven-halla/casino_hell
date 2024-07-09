@@ -2,6 +2,8 @@ import textwrap
 import pygame
 from entity.entity import Entity
 
+
+# I need a way to not show a message, so that we dont have message collisions this will elimate pain in the ass creating newe states
 class TextBox(Entity):
     def __init__(self, messages: list[str], rect: tuple[int, int, int, int],
                  font_size: int, delay: int):

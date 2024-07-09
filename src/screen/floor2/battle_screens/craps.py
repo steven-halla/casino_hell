@@ -116,6 +116,35 @@ class Craps(BattleScreen):
                 36,
                 500
             ),
+
+            "you_lose_seven_message": TextBox(
+                [f"You rolled a 7 you lose. You win 25 exp and lose {self.bet}"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "you_win_matching_message": TextBox(
+                [f"You matched  You win 50 exp and win {self.bet}"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "you_lose_come_out_roll_message": TextBox(
+                [f"You rolled a {self.point_roll_total}  and lose. You win 50 exp and lose {self.bet}", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+            "you_win_come_out_roll_message": TextBox(
+                [f"You rolled a 7 and win. You win 50 exp and win {self.bet}", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
         }
 
         self.come_out_roll_choices: list[str] = ["Roll"]
@@ -152,9 +181,20 @@ class Craps(BattleScreen):
         self.point_phase_win = False
         self.unlucky_message_switch = False
 
+        self.reset_flag = True
+
 
     def game_reset(self, state: "GameState"):
         print("Calling game reset")
+        self.battle_messages["come_out_roll_message"].reset()
+        self.battle_messages["point_phase_message"].reset()
+        self.battle_messages["point_phase_result_message"].reset()
+        self.battle_messages["you_lose_come_out_roll_message"].reset()
+        self.battle_messages["you_win_come_out_roll_message"].reset()
+
+        self.power_meter_speed = 2
+        self.power_meter_index = 0
+
         self.bet = 75
         self.point_phase_win = False
 
@@ -164,11 +204,13 @@ class Craps(BattleScreen):
         self.point_roll_index = 0
         # we can also reset messages here too as needed
         self.lucky_seven = False
-        self.come_out_roll_total = 0
         self.dice_roll_2 = 0
         self.dice_roll_1 = 0
         self.point_roll_total = 0
         self.lucky_message_switch = False
+        self.point_roll_total = 0
+        self.come_out_roll_total = 0
+
         if self.luck_bonus > 0:
             self.luck_bonus -= 1
             print(str(self.luck_bonus))
@@ -259,30 +301,23 @@ class Craps(BattleScreen):
             self.battle_messages["welcome_message"].update(state)
 
             if self.money < 1:
-                self.battle_messages["you_win"].update(state)
-                if self.battle_messages["you_win"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+               self.game_state = "game_over_screen"
 
             if state.player.stamina_points < 1:
-                self.battle_messages["game_over_no_stamina_message"].update(state)
-                if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                self.game_state = "game_over_screen"
 
-            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].update(state)
-                if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+
+            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+                self.game_state = "game_over_screen"
+
 
 
             elif state.player.money < 50 and state.player.money > 0:
-                self.battle_messages["game_over_low_money_message"].update(state)
-                if self.battle_messages["game_over_low_money_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                self.game_state = "game_over_screen"
+
 
             elif state.player.money <= 0:
-                self.battle_messages["game_over_no_money_message"].update(state)
-                if self.battle_messages["game_over_no_money_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                self.game_state = "game_over_screen"
 
             if controller.isUpPressed:
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
@@ -387,62 +422,70 @@ class Craps(BattleScreen):
                 if self.lucky_seven == True:
                     lucky_player_bonus = state.player.luck
                     lucky_7_roll = random.randint(1, 100) + (lucky_player_bonus * 2) + self.luck_bonus
+                    print(f"Your lucky roll is: " + str(lucky_7_roll))
                     if lucky_7_roll >= 80:
+                        print("426 lucky roll above 80")
+
                         self.lucky_message_switch = True
                         self.dice_roll_1 = 1
                         self.dice_roll_2 = 6
-                        self.battle_messages["come_out_roll_message"].messages = [f"Youuu got a lucky 7 good job",  f"You gain 50 exp and {self.bet} coins"]
-                        if self.battle_messages["come_out_roll_message"].message_index == 1:
-                            print("395")
+                        self.battle_messages["come_out_roll_message"].messages = [
+                            f"roll of 7 you win",
+                            f"You gain 10 exp and lose {self.bet} coins"
+
+                        ]
+
+                        # Check if the current message is finished and if the current message index is 2
+                        if self.battle_messages["come_out_roll_message"].message_index == 1 and \
+                                self.battle_messages["come_out_roll_message"].current_message_finished():
+                            print("440")
                             state.player.money += self.bet
                             state.player.exp += 50
                             self.game_state = "welcome_screen"
+                            self.battle_messages["come_out_roll_message"].reset()
+
+                            self.game_reset(state)
 
 
                     elif lucky_7_roll < 80:
+                        print("450 lucky roll below 80")
+
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
-                        print("maybe next time")
+                        print("454")
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
 
                         if self.come_out_roll_total == 2:
-                            self.battle_messages["come_out_roll_message"].messages = [f"snake 409", f"You gain 10 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
-                                print("line 410")
-                                state.player.money -= self.bet
-                                self.money += self.bet
-                                state.player.exp += 10
-                                self.game_state = "welcome_screen"
+                            self.game_state = "you_lose_come_out_roll_screen"
                         elif self.come_out_roll_total == 3:
-                            self.battle_messages["come_out_roll_message"].messages = [f"417 roll of 3", f"You gain 10 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
-                                print("line 418")
+                            self.game_state = "you_lose_come_out_roll_screen"
 
-                                state.player.money -= self.bet
-                                self.money += self.bet
-                                state.player.exp += 10
-                                self.game_state = "welcome_screen"
                         elif self.come_out_roll_total == 12:
-                            self.battle_messages["come_out_roll_message"].messages = [f"rol of 12  line 426", f"You gain 10 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
-                                print("line 427")
+                            self.game_state = "you_lose_come_out_roll_screen"
 
-                                state.player.money -= self.bet
-                                self.money += self.bet
-                                state.player.exp += 10
-                                self.game_state = "welcome_screen"
 
                         elif self.come_out_roll_total == 7:
-                            self.battle_messages["come_out_roll_message"].messages = [f"You got a 7 and your line is 436.", f"You gain 50 exp and gain {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].message_index == 1:
-                                print("line 437")
+                            print("line 505  roll of 7")
+                            self.battle_messages["come_out_roll_message"].messages = [
+                                f"roll of 7 line 507",
+                                f"You gain 10 exp and lose {self.bet} coins"
+
+                            ]
+
+                            # Check if the current message is finished and if the current message index is 2
+                            if self.battle_messages["come_out_roll_message"].message_index == 1 and \
+                                    self.battle_messages["come_out_roll_message"].current_message_finished():
+                                print("Message at index 2 is finished.")
+                                print("line 516")
                                 state.player.money += self.bet
                                 self.money -= self.bet
                                 state.player.exp += 50
+                                self.game_reset(state)
+
                                 self.game_state = "welcome_screen"
 
                         else:
-                            print("444")
+                            print("line 527")
 
                             self.game_state = "point_phase_screen"
 
@@ -454,69 +497,37 @@ class Craps(BattleScreen):
                     if unlucky_two_roll >= 80:
                         self.dice_roll_1 = 1
                         self.dice_roll_2 = 1
+                        self.come_out_roll_total = 2
 
-                        print("line 457")
-                        self.battle_messages["come_out_roll_message"].messages = [f"You got snake eyes you loseeeeeee.",  f"You gain 25 exp and lose {self.bet} coins"]
-                        if self.battle_messages["come_out_roll_message"].is_finished():
-                            print("line 462")
-                            state.player.money -= self.bet
-                            self.money += self.bet
-                            state.player.exp += 50
-                            self.game_state = "welcome_screen"
+                        print("line 500")
+                        self.game_state = "you_lose_come_out_roll_screen"
 
                     elif unlucky_two_roll < 80:
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
-                        print("line 471")
+                        print("line 514")
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
                         print("come out roll total: " + str(self.come_out_roll_total))
                         if self.come_out_roll_total == 2:
-                            print("475")
+                            self.game_state = "you_lose_come_out_roll_screen"
 
-                            self.battle_messages["come_out_roll_message"].messages = [f"You got snakey eyes you lose.", f"You gain 25 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].is_finished():
-                                state.player.money -= self.bet
-                                self.money += self.bet
-                                self.game_state = "welcome_screen"
                         elif self.come_out_roll_total == 3:
-                            print("481")
+                            self.game_state = "you_lose_come_out_roll_screen"
 
-                            self.battle_messages["come_out_roll_message"].messages = [f"You got a total of 3 you lose.", f"You gain 25 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].is_finished():
-                                state.player.money -= self.bet
-                                self.money += self.bet
-                                self.game_state = "welcome_screen"
                         elif self.come_out_roll_total == 12:
-                            print("487")
+                            self.game_state = "you_lose_come_out_roll_screen"
 
-                            self.battle_messages["come_out_roll_message"].messages = [f"You got a total of 12 you lose.", f"You gain 25 exp and lose {self.bet} coins"]
-                            if self.battle_messages["come_out_roll_message"].is_finished():
-                                state.player.money -= self.bet
-                                self.money += self.bet
-                                self.game_state = "welcome_screen"
 
                         elif self.come_out_roll_total == 7:
-                            print("490")
+                            print("521")
+                            self.game_state = "you_win_come_out_roll_screen"
 
-                            self.battle_messages["come_out_roll_message"].messages = [f"You got a 7  you iwn.", f"You gain 50 exp and gain {self.bet} coins"]
 
-                            if self.battle_messages["come_out_roll_message"].is_finished():
-                                state.player.money += self.bet
-                                self.money -= self.bet
-                                self.game_state = "welcome_screen"
 
                         else:
-                            self.battle_messages["come_out_roll_message"].messages = [f"Your point roll is set at {self.come_out_roll_total}."]
-                            if self.battle_messages["come_out_roll_message"].is_finished():
-                                self.game_state = "point_phase_screen"
+                            print("625")
 
-
-
-
-
-
-
-
+                            self.game_state = "point_phase_screen"
 
 
                 # if self.extra_dice > 0:
@@ -526,30 +537,32 @@ class Craps(BattleScreen):
                 print("Dice roll 2: ", self.dice_roll_2)
                 self.battle_messages["come_out_roll_message"].update(state)
 
-                # self.game_state = "point_phase"
-
-        # if self.game_state == "come_out_roll_fail_screen":
-        #     pass
-
 
 
         # if self.game_state == "point_phase":
         #     print("welcome to the point phase")
         if self.game_state == "point_phase_screen":
-            point_phase_target = self.dice_roll_1 + self.dice_roll_2
+            if self.money < 1:
+                self.game_state = "game_over_screen"
+
+            if state.player.stamina_points < 1:
+                self.game_state = "game_over_screen"
+
+
+            elif state.player.stamina_points <= 2 and state.player.stamina_points > 0:
+                self.game_state = "game_over_screen"
+
+
+
+
             # print("point phase target" + str(point_phase_target))
 
-            self.battle_messages["point_phase_message"].messages = [f"Your roll target is {self.come_out_roll_total}"]
+            self.battle_messages["point_phase_message"].messages = [f"Your roll target is {self.come_out_roll_total} and your current roll is {self.point_roll_total}"]
 
             self.battle_messages["point_phase_message"].update(state)
 
 
 
-            # if self.come_out_roll_index == 0:
-            #     self.battle_messages["point_phase_message"].messages = [f"Roll the dice"]
-            # elif self.come_out_roll_index == 1:
-            #     self.battle_messages["point_phase_message"].messages = [f"Go back to main menu."]
-            # self.battle_messages["point_phase_message"].update(state)/
             if controller.isUpPressed:
                 self.point_roll_index = (self.point_roll_index - 1) % len(self.point_roll_choices)
                 print(str(self.point_roll_index))
@@ -565,23 +578,101 @@ class Craps(BattleScreen):
                 self.dice_roll_1 = random.randint(1, 6)
                 self.dice_roll_2 = random.randint(1, 6)
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
-                print("your point roll total is: " + str(self.point_roll_total))
+                print("your come out  roll total is: " + str(self.come_out_roll_total) + f"and your roll is {self.point_roll_total}")
 
+                # if self.point_roll_total == 7:
+                #     print("you rolled 7 line 625")
+                #
+                #     self.battle_messages["point_phase_message"].messages = [
+                #         f"roll of 7  you lose",
+                #         f"you win 10exp and lose {self.bet} money"
+                #
+                #     ]
+                #     self.battle_messages["point_phase_message"].update(state)
+                #
+                #     # Check if the current message is finished and if the current message index is 2
+                #     if self.battle_messages["point_phase_message"].message_index == 1 and \
+                #             self.battle_messages["point_phase_message"].current_message_finished():
+                #         state.player.money -= self.bet
+                #         self.money += self.bet
+                #         self.point_roll_total = 0
+                #
+                #         self.game_reset(state)
+                #
+                #         self.game_state = "welcome_screen"
+                #         print("You got a 7 you lose line 635")
                 if self.point_roll_total == 7:
-                    state.player.money -= self.bet
-                    self.money += self.bet
-                    self.point_roll_total = 0
-                    # self.game_state = "welcome_screen"
-                    print("You got a 7 you lose")
+                    print("you rolled 7 line 625")
+                    self.game_state = "roll_seven_lose_screen"
+
+
+
+
+
 
 
                 elif self.point_roll_total == self.come_out_roll_total:
-                    print(f"your come out rolld of {self.come_out_roll_total} + your pont roll of {self.point_roll_total}")
-                controller.isTPressed = False
+                    self.game_state = "roll_match_win_screen"
 
             elif self.point_roll_index == 1 and controller.isTPressed:
                 self.game_state = "point_bet_screen"
                 controller.isTPressed = False
+            controller.isTPressed = False
+
+
+        elif self.game_state == "you_lose_come_out_roll_screen":
+            print("Your come out roll is: " + str(self.come_out_roll_total))
+            self.battle_messages["you_lose_come_out_roll_message"].messages = [
+                f"roll  of {self.come_out_roll_total} you lose sorry",
+                f"You gain 10 exp and lose {self.bet} coins"
+
+            ]
+            self.battle_messages["you_lose_come_out_roll_message"].update(state)
+            print("624 should follow")
+            if self.battle_messages["you_lose_come_out_roll_message"].message_index == 1:
+                state.player.money -= self.bet
+                self.money += self.bet
+                state.player.exp += 15
+                self.game_state = "welcome_screen"
+                self.game_reset(state)
+
+
+        elif self.game_state == "you_win_come_out_roll_screen":
+
+            self.battle_messages["you_win_come_out_roll_message"].update(state)
+            print("624 should follow")
+            if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
+                state.player.money -= self.bet
+                self.money += self.bet
+                state.player.exp += 15
+                self.game_state = "welcome_screen"
+                self.game_reset(state)
+
+
+
+
+            # if controller.isTPressed:
+            #     print("635")
+            #     state.player.money -= self.bet
+            #     self.money += self.bet
+            #     state.player.exp += 50
+            #     self.game_state = "welcome_screen"
+            #     self.game_reset(state)
+            #     controller.isTPressed = False
+
+
+            # if controller.isTPressed:
+            #     state.player.money -= self.bet
+            #     self.money += self.bet
+            #     self.point_roll_total = 0
+            #     self.game_reset(state)
+            #
+            #     self.game_state = "welcome_screen"
+            #     controller.isTPressed = False
+
+
+
+
 
 
         elif self.game_state == "point_bet_screen":
@@ -604,6 +695,89 @@ class Craps(BattleScreen):
             if self.point_bet_index == 0 and controller.isTPressed:
                 self.game_state = "point_phase_screen"
                 controller.isTPressed = False
+
+
+        elif self.game_state == "roll_seven_lose_screen":
+            self.battle_messages["you_lose_seven_message"].update(state)
+
+            if controller.isTPressed:
+                state.player.money -= self.bet
+                self.money += self.bet
+                self.point_roll_total = 0
+                self.game_reset(state)
+
+                self.game_state = "welcome_screen"
+                controller.isTPressed = False
+
+
+        elif self.game_state == "roll_match_win_screen":
+            self.battle_messages["you_win_matching_message"].update(state)
+
+            if controller.isTPressed:
+                state.player.money += self.bet
+                self.money -= self.bet
+                self.point_roll_total = 0
+                self.game_reset(state)
+
+                self.game_state = "welcome_screen"
+                controller.isTPressed = False
+
+
+        elif self.game_state == "game_over_screen":
+            if self.money < 1:
+                self.battle_messages["you_win"].update(state)
+
+
+            if state.player.stamina_points < 1:
+                self.battle_messages["game_over_no_stamina_message"].update(state)
+
+
+
+            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+                self.battle_messages["game_over_low_stamina_message"].update(state)
+
+
+
+            elif state.player.money < 50 and state.player.money > 0:
+                self.battle_messages["game_over_low_money_message"].update(state)
+
+
+
+            elif state.player.money <= 0:
+                self.battle_messages["game_over_no_money_message"].update(state)
+
+
+                # if self.money < 1:
+                #     self.battle_messages["you_win"].draw(state)
+                #
+                #     if self.battle_messages["you_win"].message_index == 1:
+                #         state.currentScreen = Area2StartScreen()
+                #
+                # if state.player.stamina_points < 1:
+                #     self.battle_messages["game_over_no_stamina_message"].draw(state)
+                #
+                #     if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
+                #         state.currentScreen = Area2StartScreen()
+                #
+                # elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+                #     self.battle_messages["game_over_low_stamina_message"].draw(state)
+                #
+                #     if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
+                #         state.currentScreen = Area2StartScreen()
+                #
+                #
+                # elif state.player.money < 50 and state.player.money > 0:
+                #     self.battle_messages["game_over_low_money_message"].draw(state)
+                #
+                #     if self.battle_messages["game_over_low_money_message"].message_index == 1:
+                #         state.currentScreen = Area2StartScreen()
+                #
+                # elif state.player.money <= 0:
+                #     self.battle_messages["game_over_no_money_message"].draw(state)
+                #
+                #     if self.battle_messages["game_over_no_money_message"].message_index == 1:
+                #         state.currentScreen = Area2StartScreen()
+
 
 
 
@@ -694,6 +868,62 @@ class Craps(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 132)
                 )
+
+        elif self.game_state == "game_over_screen":
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            if self.money < 1:
+                self.battle_messages["you_win"].draw(state)
+
+                if self.battle_messages["you_win"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+            if state.player.stamina_points < 1:
+                self.battle_messages["game_over_no_stamina_message"].draw(state)
+
+                if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+                self.battle_messages["game_over_low_stamina_message"].draw(state)
+
+                if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+
+            elif state.player.money < 50 and state.player.money > 0:
+                self.battle_messages["game_over_low_money_message"].draw(state)
+
+                if self.battle_messages["game_over_low_money_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
+
+            elif state.player.money <= 0:
+                self.battle_messages["game_over_no_money_message"].draw(state)
+
+                if self.battle_messages["game_over_no_money_message"].message_index == 1:
+                    state.currentScreen = Area2StartScreen()
 
         elif self.game_state == "bet_screen":
             black_box_height = 221 - 50  # Adjust height
@@ -885,6 +1115,9 @@ class Craps(BattleScreen):
                 )
 
         elif self.game_state == "point_phase_screen":
+
+            if state.player.stamina_points < 1:
+                self.battle_messages["game_over_no_stamina_message"].draw(state)
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
             self.battle_messages["point_phase_message"].draw(state)
@@ -931,6 +1164,128 @@ class Craps(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 52)
                 )
+
+        elif self.game_state == "roll_seven_lose_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.battle_messages["you_lose_seven_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
+        elif self.game_state == "roll_match_win_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.battle_messages["you_win_matching_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        elif self.game_state == "you_lose_come_out_roll_screen":
+
+            self.battle_messages["you_lose_come_out_roll_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
+
+        elif self.game_state == "you_win_come_out_roll_screen":
+
+            self.battle_messages["you_win_come_out_roll_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
+
+
+
 
 
 
