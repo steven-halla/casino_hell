@@ -120,7 +120,7 @@ class Player(Entity):
 
 
             # level 2
-            "slotsribdemonjackrippermoney": state.slotsRibDemonJackRipperScreen.money,
+            "slotsrippasnappamoney": state.slotsRippaSnappaScreen.money,
 
             # Add more stats as needed
         }
@@ -543,7 +543,7 @@ class Player(Entity):
 
             #level 2
 
-            state.slotsRibDemonJackRipperScreen.money = player_data['slotsribdemonjackrippermoney']
+            state.slotsRippaSnappaScreen.money = player_data['slotsrippasnappamoney']
 
 
 

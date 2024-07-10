@@ -263,8 +263,7 @@ leve 2 level :
 3 quest givers
 1 needs spirit of 2 for quest 
 
-quest 1:
-win 750 coins from coin flip and oppossum each in one sitting can use save coin but not inn - triggers hippo game - get spell
+
  
 quest 2:
 need spirit 2

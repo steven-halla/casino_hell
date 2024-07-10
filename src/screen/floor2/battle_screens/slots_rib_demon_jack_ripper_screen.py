@@ -12,7 +12,7 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 #need to build status effect unlucky for rib demon when lucky strike is active
 
-class SlotsRibDemonJackRipperScreen(BattleScreen):
+class SlotsRippaSnappaScreen(BattleScreen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
 

@@ -4,10 +4,9 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
-from game_constants.equipment import Equipment
 
 
-class Alice(Npc):
+class Natasha(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -15,26 +14,9 @@ class Alice(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Alice: Back in my day I was the queen of black jack, if you can complete my quest i'll give you an item",
-                    "Hero: Sure that sounds great lady, what do you want me to do?",
-                    "Alice: Defeat Rippa Snappa the rib demon , I want you to take every coin he has",
-                    "Hero: It'll be my pleasure. "
-
-
-                ],
-                (50, 450, 50, 45), 30, 500
-            ),
-            "quest_2_complete": NpcTextBox(
-                [
-                    "Alice: As i made a promise here is your back jack item",
-                    "Hero: Thank you for this friend. "
-
-                ],
-                (50, 450, 50, 45), 30, 500
-            ),
-            "quest_2_complete_after_message": NpcTextBox(
-                [
-                    "Alice: I can give you a hint.",
+                    "Natasha: Rabies is very scary, I already had to get my shot before, you start frothing at the mouth very early.",
+                    "Hero: What kind of casino is this? How is this even legal?",
+                    "Suzy: The kind that everyone regrets going to, unless of course you make it to the upper levels.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -48,18 +30,33 @@ class Alice(Npc):
 
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Seed Shop Owner.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
     def update(self, state: "GameState"):
-
         if self.state == "waiting":
+            player = state.player
             self.update_waiting(state)
+
         elif self.state == "talking":
-            self.update_talking(state)
+            # Determine which message to use based on player state
+            current_message = self.npc_messages["default_message"]
 
+            if current_message.message_index == 1:
+                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
 
+                    state.player.money -= 100
+                    state.player.stamina_points += 500
+                    if state.player.stamina_points > 100:
+                        state.player.stamina_points = 100
+                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state, current_message)
 
     def update_waiting(self, state: "GameState"):
         player = state.player
@@ -76,55 +73,39 @@ class Alice(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.npc_messages["default_message"]
-                if state.slotsRippaSnappaScreen.money < 1:
-                    current_message = self.npc_messages["quest_2_complete"]
-                if Equipment.BLACK_JACK_HAT in state.player.items:
-                    current_message = self.npc_messages["quest_2_complete_after_message"]
 
                 current_message.reset()
 
-    def update_talking(self, state: "GameState"):
-
-
-
-        current_message = self.npc_messages["default_message"]
-        if state.slotsRippaSnappaScreen.money < 1:
-            current_message = self.npc_messages["quest_2_complete"]
-        if Equipment.BLACK_JACK_HAT in state.player.items:
-            current_message = self.npc_messages["quest_2_complete_after_message"]
-
-
-
+    def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False
 
-
-
-
         if state.controller.isTPressed and current_message.is_finished():
-            if state.slotsRippaSnappaScreen.money < 1 and Equipment.BLACK_JACK_HAT not in state.player.items:
-                state.player.items.append(Equipment.BLACK_JACK_HAT)
-
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
 
     def draw(self, state):
         # Draw character sprite
-        sprite_rect = pygame.Rect(5, 6, 18, 26)
+
+        sprite_rect = pygame.Rect(147, 6, 16, 28)
+
+        # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+
+        # Scale the subsurface to make it two times bigger
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+
+        # Define the position where you want to draw the sprite
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
+
+        # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
             current_message = self.npc_messages["default_message"]
-            if state.slotsRippaSnappaScreen.money < 1:
-                current_message = self.npc_messages["quest_2_complete"]
-            if Equipment.BLACK_JACK_HAT in state.player.items:
-                current_message = self.npc_messages["quest_2_complete_after_message"]
 
             current_message.draw(state)
 

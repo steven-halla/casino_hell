@@ -4,6 +4,7 @@ import json
 
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
+from entity.npc.area2.area_2_start_screen.slots_rippa_snappa import SlotsRippaSnappa
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
@@ -42,7 +43,7 @@ from screen.floor1.map_screens.start_screen import StartScreen
 from screen.floor1.map_screens.win_screen import WinScreen
 from screen.floor2.battle_screens.craps import Craps
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
-from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRibDemonJackRipperScreen
+from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
@@ -120,7 +121,7 @@ class GameState:
 
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
-        self.slotsRibDemonJackRipperScreen = SlotsRibDemonJackRipperScreen()
+        self.slotsRippaSnappaScreen = SlotsRippaSnappaScreen()
         self.hungryStarvingHippos = HungryStarvingHippos()
         self.craps = Craps()
 

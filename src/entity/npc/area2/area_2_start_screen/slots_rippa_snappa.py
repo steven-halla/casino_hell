@@ -4,7 +4,7 @@ from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class RibDemonJackRipper(Npc):
+class SlotsRippaSnappa(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
@@ -94,8 +94,8 @@ class RibDemonJackRipper(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                state.currentScreen = state.slotsRibDemonJackRipperScreen
-                state.slotsRibDemonJackRipperScreen.start(state)
+                state.currentScreen = state.slotsRippaSnappaScreen
+                state.slotsRippaSnappaScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
