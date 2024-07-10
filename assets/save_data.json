@@ -8,15 +8,17 @@
     "companions": [
         "sir leopold"
     ],
+    "leveltwonpcstate": [
+        "QUEST_1_BADGE",
+        "QUEST_1_COIN"
+    ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses"
     ],
     "npcitems": [
-        "inn badge",
-        "level 4 token",
-        "Stallion Brew"
+
     ],
     "magicinventory": [
         "reveal",
@@ -27,7 +29,7 @@
     "mind": 1,
     "spirit": 1,
     "perception": 1,
-    "luck": 0,
+    "luck": 1,
     "money": 2222,
     "rabies": false,
     "immunity": true,
@@ -44,6 +46,7 @@
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "slotsribdemonjackrippermoney": 1000,
+
     "shopkeeperpotion": true,
     "shopkeepersavecoin": true
 }

@@ -1,9 +1,14 @@
 import pygame
 import pytmx
-from constants import PLAYER_OFFSET, BLUEBLACK, TILE_SIZE
+from constants import PLAYER_OFFSET
+from entity.npc.area2.area_2_start_screen.alex import Alex
 from entity.npc.area2.area_2_start_screen.alice import Alice
+from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
+from entity.npc.area2.area_2_start_screen.lunky import Lunky
+from entity.npc.area2.area_2_start_screen.natasha import Natasha
+from entity.npc.area2.area_2_start_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_start_screen.rib_demon_jack_ripper import RibDemonJackRipper
-from entity.player.player import Player
+from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -37,16 +42,26 @@ class Area2StartScreen(Screen):
         state.npcs =[
             RibDemonJackRipper(16 * 18, 16 * 22),
             Alice(16 * 24, 16 * 33),
+            Johnathon(16 * 30, 16 * 33),
+            Nibblet(16 * 40, 16 * 33),
+            Alex(16 * 16, 16 * 45),
+            Lunky(16 * 26, 16 * 45),
+            Natasha(16 * 36, 16 * 45),
 
         ]
 
-        print(str(state.npcs))
         self.stop_music()
         if state.musicOn:
             self.initialize_music()
         super().start(state)
 
     def update(self, state: "GameState"):
+        # for our screens we can set a value of 500, every time player wins/loses add/delte money from the pot
+        if Events.QUEST_1_COIN in state.player.level_two_npc_state and Events.QUEST_1_BADGE in state.player.level_two_npc_state and Events.QUEST_1_COMPLETE not in state.player.level_two_npc_state:
+            state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE)
+
+
+
         self.clock.tick(60)
         controller = state.controller
         player = state.player

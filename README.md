@@ -168,6 +168,7 @@ REFACTOR TIME!!!!
 10) the screen class needs a full refactor as all screens need to look the same.
 11) I need to improve player status screen to have images
 12) I need to have a level up system in place so when teh player levels up we give the player the info they need
+13) i need to fix inventory menu
 
 
 play advancement for level 2:
@@ -202,9 +203,10 @@ have  1 companion item slot
 at level 5 perception allow a free slot for anything
 
 For level 2:
+
 body :2 - this lets the player eat chicken poodle soup  + 20 HP
-mind 2: + 20 MP 
-spirit 2: NPC gives player an item. also allows chicken nugget pendant to get equiped 
+mind 2: +10 MP -hack spell
+spirit 2:  also allows chicken nugget pendant to get equiped 
 percption 2 : 2 chest
 luck 2: global bonus 
 
@@ -212,20 +214,20 @@ level 4 is your level:
 
 Level 5:
 gain 10 HP / MP
-gain new magic spell
 Gain stat point
 
 level 6:
 gain 20 HP / MP
+magic spell 
 
 level 7:
 gain 10 hp / mp
 stat point
 
+
 level 8:
 stat point
 gain 10 hp / mp
-magic spell 
 
 1 spell in treasure chest perception 2
 
@@ -239,20 +241,170 @@ LETS INTRODCUCE LEVEL CHECKS FOR EXP GAINS, SO THAT IF A PLAYER IS AT A CERTIAN 
 
 
 
+1 for black jack - if player bust gives 50% chance to disard the last card instead, players cannot redraw 
+1 for hungry starving hippos - hippo takes an extra 3 seconds to appear on screen
+1 for player boost -  + 20 hp + 10 mp
+1 for craps - 1/2 stamina drain for point rolls 
+1 for slots
+
+
+
+leve 2 level :
+
+1 coin flip - 2000 coins
+1 black jack  - 2000 coins
+1 opposum in a can  -2000 coins
+3 craps  -3000 coins
+2 slots   - 2000 coins
+2 hippos  - varies
+
+10,000 coins
+
+3 quest givers
+1 needs spirit of 2 for quest 
+
+quest 1:
+win 750 coins from coin flip and oppossum each in one sitting can use save coin but not inn - triggers hippo game - get spell
+ 
+quest 2:
+need spirit 2
+defeat rib demon slots - black jack item
+
+quest 3: - nugg man -chicken with cool shades deep voice, has the best tasting nuggz
+
+reach level 7 -
+find item - need perception 2
+find all 6 golden nuggz - the nugz will be locked till you talk to him, nuggz are hidden in pots and stuff 
+beat black-jack jack - he will be locked, starting this quest will unleash him - craps item
+
+story quest:
+find the best sauce for the ulitmate nugg experience 
+we need 3 ingrediants
+1 can be giving by a person just for talking to them, if spirit 2 they give for free, otherwise they charge 1000 coins
+1  can be found in rib demon guantlet maze
+1 can be won in rib demon slots 
+
+more ingrediants = better sauce and reward - darlenes chicken nugger amulet:
+1 - 500 coins
+2  - + 10 hp/ mp
+3  - + rib regen  - you'll no longer suffer from rib lock
+
+
+BAR: 3 cut scenes
+truck stop sammich - the ingrediants can be found insdie a truck stop bathroom   - restores 100 HP/ 50 MP  - 100 GP
+chickdne poodle soup - no chicken/poodle wasted   - + 20 HP/ + 10 MP max  - 50 GP
+
+INN:
+200 GP per night 
+1800 - 9 nights total 
+
+SHOP:
+stat potion - 900 GP
+save coin - 100 GP
+Spell: Oppusm reshuffle : 500 coins    - if you get a opposum reshuffle, or turn X3 to X4, or if you win 500 coins double. 
+Hippo shoes - 500 coins - includes free item reset re equip  - hippo takes 3 extra seconds to appear
+
+
+Treasure chest:
+Perception 1:
+coins: 500
+Save coin - rib demon maze
+
+
+Perception 2:
+coins: 1000
+slots item - vanguard - adds + 5% for rolls
+chicken nuggz item for quest
+
+Perception 3:
+ + 30 HP/+ 15 MP item 
+
+rib demon slots items:
+spicy sauce for chickden nuggz
+perception socks - adds +  1 to perception max 3
+
+
+rib demon lock: 
+you cant play games. have to sleep in inn to heal
+
+level 2 flow:
+1 main quest
+3 opitonal quest 
+
+
+starter room:
+3 NPC
+craps
+
+
+Game ROOM:
+2 NPC
+slots
+coin flip
+opposum in a can 
+
+Bar Area:
+6 NPC
+2 quest givers
+SHOP
+INN
+BAR
+
+rib demon maze:
+slots
+save coin before slots
+panels will have random effects you can restore HP/MP, lose HP/MP, or other stuff not sure
+
+
+kitchen nugget:
+6 golden nuggz 
+1 quest giver
+1 NPC with BOSS KEY sells for 5000 GOLD , must first win competition, NPC will vanish after getting 
+2 NPC
+black jack dealer 
+craps
 
 
 
 
+golden nuggz game - time limit 
+lets have nuggz be visable and throw in other nuggz
+nuggz are randomly placed 
+
+boss room:
+2 npc
+1 boss - craps
+magic spell : sets bar to 90 + 1 speed each time player hits unlucky 7  or snake eyes 
 
 
+lets handle state by NPC items
+so save coin if its in your NPC items it wont be for sale again 
+stat potion 
+save coin 
+we can also do this for quest items as well. so if a quest is done, it goes in an npc item slot so we know the easy way to do this. 
+
+here is what i can do :
+npc items level 2
+this should handle all the state for level 2
+
+anytime that an NPC needs to be deleted or qust or anything we can have items here handle state. 
+
+lets incldue an NPC in rib demon maze that will take you back and forth to rest area and back'
+or
+we cna ust have a rib demon slot pop up somewhere
 
 
-
-
-
-
-
-
+#items to include for state.player.npc_level_two_npc_state
+- quest 1 token
+- quest 2 token
+- quest 3.1 , 3.2, 3.3 tokens
+- chicken_nugget_competition_before
+- chicken_nugget_competition_after
+- cut scene 1
+- cut scene 2
+- cut scene 3
+- save coin 1
+- save coin 2
 
 
 

@@ -3,7 +3,7 @@ from typing import Tuple
 
 import pygame
 
-from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_OFFSET, BLUEBLACK
+from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, BLUEBLACK
 from entity.entity import Entity
 
 
@@ -32,7 +32,7 @@ class Player(Entity):
         self.perks = []
         self.items = []
         self.npc_items = []
-        self.magicinventory = ["Focus" ]
+        self.magicinventory = [ ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -58,6 +58,7 @@ class Player(Entity):
 
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
+        # TODO refrence the images with relative paths
         self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
@@ -71,6 +72,8 @@ class Player(Entity):
         self.current_direction = 'down'  # Default direction
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
         self.music_volume = 0.5  # Adjust as needed
+
+        self.level_two_npc_state = []
 
 
     def to_dict(self, state: "GameState") -> dict:
@@ -96,6 +99,7 @@ class Player(Entity):
             "level3reward": self.level3janetreward,
             "food": self.food,
             "days": self.days,
+            "leveltwonpcstate": self.level_two_npc_state,
 
             "cutscene1": state.restScreen.barscene1,
             "cutscene2": state.restScreen.barscene2,
@@ -120,6 +124,8 @@ class Player(Entity):
 
             # Add more stats as needed
         }
+
+
 
 
 
@@ -171,6 +177,8 @@ class Player(Entity):
             if "level 4 token" not in state.player.npc_items:
             # if "shield" not in self.magicinventory:
                 state.player.npc_items.append("level 4 token")
+                # TODO, DO THIS! NOT RAW STRING
+                # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
                 self.max_stamina_points += 20
                 self.max_focus_points += 20
             self.level4checker = True
@@ -486,7 +494,10 @@ class Player(Entity):
             # Convert JSON string to a dictionary
             player_data = json.loads(player_data_json)
 
+
             # Update player's stats with the loaded data
+            state.player.level_two_npc_state = player_data['leveltwonpcstate']
+
             state.player.level = player_data['level']
             state.player.exp = player_data['exp']
             state.player.stamina_points = player_data['stamina_points']

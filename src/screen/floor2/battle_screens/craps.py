@@ -10,6 +10,11 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 # maybe we can have craps be more about saving people? that would be a fun mission
 # poison dice  is -1 to all dice rolls , this makes it less likely to get a 7 on come out
+
+
+
+
+# for boss if you roll a snake eyes add + 1 to power meter speed. Triple bet loss on 2 3 12 but triple bet win on 7.
 class Craps(BattleScreen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)

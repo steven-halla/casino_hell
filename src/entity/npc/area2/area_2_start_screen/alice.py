@@ -11,7 +11,7 @@ class Alice(Npc):
         super().__init__(x, y)
 
         # Integrated textbox content into guy_messages
-        self.guy_messages = {
+        self.npc_messages = {
             "default_message": NpcTextBox(
                 [
                     "Alice: Rabies is very scary, I already had to get my shot before, you start frothing at the mouth very early.",
@@ -21,18 +21,7 @@ class Alice(Npc):
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
-            "rabies_message": NpcTextBox(
-                ["Alice: look much cuter right now, I can't quiet put my finger on why..."],
-                (50, 450, 700, 130), 36, 500
-            ),
-            'sir_leopold_message': NpcTextBox(
-                [
 
-                    "Alice: I liked you better with rabies, when the antidote wears off you should go get rabies again... what is with that look?",
-                "I heard that the head chili demon Chinrog might still be in the boss area. Can you reach him in time? ",
-                ],
-                (50, 450, 50, 45), 30, 500
-            ),
         }
 
         self.choices = ["Yes", "No"]
@@ -52,9 +41,8 @@ class Alice(Npc):
 
         elif self.state == "talking":
             # Determine which message to use based on player state
-            current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-            if state.player.rabiesImmunity == True:
-                current_message = self.guy_messages["sir_leopold_message"]
+            current_message = self.npc_messages["default_message"]
+
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
@@ -84,9 +72,8 @@ class Alice(Npc):
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
-                current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-                if state.player.rabiesImmunity == True:
-                    current_message = self.guy_messages["sir_leopold_message"]
+                current_message = self.npc_messages["default_message"]
+
                 current_message.reset()
 
     def update_talking(self, state: "GameState", current_message):
@@ -109,8 +96,7 @@ class Alice(Npc):
 
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
-            current_message = self.guy_messages["rabies_message"] if state.player.hasRabies else self.guy_messages["default_message"]
-            if state.player.rabiesImmunity == True:
-                current_message = self.guy_messages["sir_leopold_message"]
+            current_message = self.npc_messages["default_message"]
+
             current_message.draw(state)
 

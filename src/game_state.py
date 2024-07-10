@@ -126,7 +126,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.craps
+        self.currentScreen = self.startLoadScreen
 
 
         self.start_new_game_entry_point = False
@@ -152,6 +152,7 @@ class GameState:
         player_json = json.dumps(player_data, indent=4)
 
         # Define the file path
+        # TODO '~/.casino_hell/save_data.json'
         file_path = '/Users/stevenhalla/code/casino_hell/assets/save_data.json'
 
         # Write JSON string to a file at the specified path
