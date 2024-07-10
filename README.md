@@ -261,15 +261,16 @@ leve 2 level :
 10,000 coins
 
 3 quest givers
-1 needs spirit of 2 for quest 
 
 
  
-quest 2:
-need spirit 2
-defeat rib demon slots - black jack item
 
-quest 3: - nugg man -chicken with cool shades deep voice, has the best tasting nuggz
+
+
+
+
+quest 3:
+- nugg man -chicken with cool shades deep voice, has the best tasting nuggz
 
 reach level 7 -
 find item - need perception 2
@@ -409,3 +410,4 @@ we cna ust have a rib demon slot pop up somewhere
 new enemy spell  poisoin bite, opposum in  a can , bites cause a loss of magic, locks
 player in for 5 turns. if no MP then coins are targeted at 100 coins. 10 MP per nibble
 
+rib lock needs to have bleeding affect of -5 hp per turn  per rib
