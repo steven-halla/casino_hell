@@ -48,10 +48,7 @@ class Johnathon(Npc):
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > 100:
-                        state.player.stamina_points = 100
+
                 elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"

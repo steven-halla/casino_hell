@@ -7,12 +7,23 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
 
 
+
+
 class Alice(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
         # Integrated textbox content into guy_messages
         self.npc_messages = {
+            "no_spirit_2": NpcTextBox(
+                [
+                    "Hero: Yo whats up",
+                    "Alice: A bit rude, you should learn to be more sauve, i'll give you a  quest then . Get more spirit."
+
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
             "default_message": NpcTextBox(
                 [
                     "Alice: Back in my day I was the queen of black jack, if you can complete my quest i'll give you an item",
@@ -75,8 +86,13 @@ class Alice(Npc):
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
-                current_message = self.npc_messages["default_message"]
-                if state.slotsRippaSnappaScreen.money < 1:
+                if state.player.spirit >= 2:
+                    current_message = self.npc_messages["default_message"]
+                else:
+                    current_message = self.npc_messages["no_spirit_2"]
+
+
+                if state.slotsRippaSnappaScreen.money < 1 and state.player.spirit >= 2:
                     current_message = self.npc_messages["quest_2_complete"]
                 if Equipment.BLACK_JACK_HAT in state.player.items:
                     current_message = self.npc_messages["quest_2_complete_after_message"]
@@ -85,10 +101,11 @@ class Alice(Npc):
 
     def update_talking(self, state: "GameState"):
 
-
-
-        current_message = self.npc_messages["default_message"]
-        if state.slotsRippaSnappaScreen.money < 1:
+        if state.player.spirit >= 2:
+            current_message = self.npc_messages["default_message"]
+        else:
+            current_message = self.npc_messages["no_spirit_2"]
+        if state.slotsRippaSnappaScreen.money < 1 and state.player.spirit >= 2:
             current_message = self.npc_messages["quest_2_complete"]
         if Equipment.BLACK_JACK_HAT in state.player.items:
             current_message = self.npc_messages["quest_2_complete_after_message"]
@@ -102,7 +119,7 @@ class Alice(Npc):
 
 
         if state.controller.isTPressed and current_message.is_finished():
-            if state.slotsRippaSnappaScreen.money < 1 and Equipment.BLACK_JACK_HAT not in state.player.items:
+            if state.slotsRippaSnappaScreen.money < 1 and Equipment.BLACK_JACK_HAT not in state.player.items and state.player.spirit >= 2:
                 state.player.items.append(Equipment.BLACK_JACK_HAT)
 
             self.state = "waiting"
@@ -120,8 +137,11 @@ class Alice(Npc):
 
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
-            current_message = self.npc_messages["default_message"]
-            if state.slotsRippaSnappaScreen.money < 1:
+            if state.player.spirit >= 2:
+                current_message = self.npc_messages["default_message"]
+            else:
+                current_message = self.npc_messages["no_spirit_2"]
+            if state.slotsRippaSnappaScreen.money < 1 and state.player.spirit >= 2:
                 current_message = self.npc_messages["quest_2_complete"]
             if Equipment.BLACK_JACK_HAT in state.player.items:
                 current_message = self.npc_messages["quest_2_complete_after_message"]

@@ -406,4 +406,6 @@ we cna ust have a rib demon slot pop up somewhere
 - save coin 2
 
 
+new enemy spell  poisoin bite, opposum in  a can , bites cause a loss of magic, locks
+player in for 5 turns. if no MP then coins are targeted at 100 coins. 10 MP per nibble
 
