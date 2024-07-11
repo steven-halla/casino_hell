@@ -5,8 +5,7 @@ import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
-
-
+from game_constants.events import Events
 
 
 class Alice(Npc):
@@ -91,8 +90,7 @@ class Alice(Npc):
                 else:
                     current_message = self.npc_messages["no_spirit_2"]
 
-
-                if state.slotsRippaSnappaScreen.money < 1 and state.player.spirit >= 2:
+                if Events.SLOTS_RIPPA_SNAPPA_DEFEATED in state.player.level_two_npc_state and state.player.spirit >= 2:
                     current_message = self.npc_messages["quest_2_complete"]
                 if Equipment.BLACK_JACK_HAT in state.player.items:
                     current_message = self.npc_messages["quest_2_complete_after_message"]
@@ -105,7 +103,7 @@ class Alice(Npc):
             current_message = self.npc_messages["default_message"]
         else:
             current_message = self.npc_messages["no_spirit_2"]
-        if state.slotsRippaSnappaScreen.money < 1 and state.player.spirit >= 2:
+        if Events.SLOTS_RIPPA_SNAPPA_DEFEATED in state.player.level_two_npc_state and state.player.spirit >= 2:
             current_message = self.npc_messages["quest_2_complete"]
         if Equipment.BLACK_JACK_HAT in state.player.items:
             current_message = self.npc_messages["quest_2_complete_after_message"]
@@ -119,7 +117,7 @@ class Alice(Npc):
 
 
         if state.controller.isTPressed and current_message.is_finished():
-            if state.slotsRippaSnappaScreen.money < 1 and Equipment.BLACK_JACK_HAT not in state.player.items and state.player.spirit >= 2:
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED in state.player.level_two_npc_state and Equipment.BLACK_JACK_HAT not in state.player.items and state.player.spirit >= 2:
                 state.player.items.append(Equipment.BLACK_JACK_HAT)
 
             self.state = "waiting"
@@ -141,7 +139,7 @@ class Alice(Npc):
                 current_message = self.npc_messages["default_message"]
             else:
                 current_message = self.npc_messages["no_spirit_2"]
-            if state.slotsRippaSnappaScreen.money < 1 and state.player.spirit >= 2:
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED in state.player.level_two_npc_state and state.player.spirit >= 2:
                 current_message = self.npc_messages["quest_2_complete"]
             if Equipment.BLACK_JACK_HAT in state.player.items:
                 current_message = self.npc_messages["quest_2_complete_after_message"]

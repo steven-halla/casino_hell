@@ -173,11 +173,9 @@ REFACTOR TIME!!!!
 
 play advancement for level 2:
 
-the player levels:
-at this point we can have + 3 levels
 
 
-we can have a quest stat increase potion. 
+
 
 We need 4 magic spells:
 1 for slots  - hack: your coin last for 5 spins
@@ -192,11 +190,11 @@ we need 4 items:
 1 for craps - no stamina drain for point rolls 
 
 1 stat potion - increase any stat from a 1 to a 2
-1000 gold --
-100 gold
+
 
 2 save coins
-+1 spirit gloves  adds spirit to you 
+
++1 spirit gloves  adds spirit to you max 2
 
 darlene's chicken nugget amulet - slots-adds + 20% chance that final roll will match first number good or bad
 have  1 companion item slot
@@ -229,9 +227,7 @@ level 8:
 stat point
 gain 10 hp / mp
 
-1 spell in treasure chest perception 2
 
-1 spell for sale in shop
 
 IMPORTANT
 LETS INTRODCUCE LEVEL CHECKS FOR EXP GAINS, SO THAT IF A PLAYER IS AT A CERTIAN LEVEL THEY CANNOT GAIN EXP
@@ -241,11 +237,6 @@ LETS INTRODCUCE LEVEL CHECKS FOR EXP GAINS, SO THAT IF A PLAYER IS AT A CERTIAN 
 
 
 
-1 for black jack - if player bust gives 50% chance to disard the last card instead, players cannot redraw 
-1 for hungry starving hippos - hippo takes an extra 3 seconds to appear on screen
-1 for player boost -  + 20 hp + 10 mp
-1 for craps - 1/2 stamina drain for point rolls 
-1 for slots
 
 
 
@@ -394,20 +385,40 @@ or
 we cna ust have a rib demon slot pop up somewhere
 
 
-#items to include for state.player.npc_level_two_npc_state
-- quest 1 token
-- quest 2 token
-- quest 3.1 , 3.2, 3.3 tokens
-- chicken_nugget_competition_before
-- chicken_nugget_competition_after
-- cut scene 1
-- cut scene 2
-- cut scene 3
-- save coin 1
-- save coin 2
+]
 
 
 new enemy spell  poisoin bite, opposum in  a can , bites cause a loss of magic, locks
 player in for 5 turns. if no MP then coins are targeted at 100 coins. 10 MP per nibble
 
 rib lock needs to have bleeding affect of -5 hp per turn  per rib
+
+WHEN black mack is defeated have him give player badge 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,13 @@
     ],
     "leveltwonpcstate": [
         "QUEST_1_BADGE",
-        "QUEST_1_COIN"
+        "QUEST_1_COIN",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "BLACK_JACK_BLACK_MACK_DEFEATED",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_SECOND_QUEST_COMPLETE",
+        "MC_NUGGET_THIRD_QUEST_COMPLETE"
+
     ],
     "items": [
         "sir leopold's paw",
