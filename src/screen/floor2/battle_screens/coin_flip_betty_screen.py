@@ -108,7 +108,7 @@ class CoinFlipBettyScreen(Screen):
                 500  # Delay
             ),
             "magic_message": TextBox(
-                ["Choose your spell . "],
+                [" "],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -127,13 +127,13 @@ class CoinFlipBettyScreen(Screen):
                 500  # Delay
             ),
             "shield_message2": TextBox(
-                ["someone just took the coin "],
+                ["opposum ned gobbled it down "],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
             ),
             "shield_message3": TextBox(
-                ["now the coin is gone :(. "],
+                ["A cat stole the coin. "],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -196,7 +196,16 @@ class CoinFlipBettyScreen(Screen):
 
             "magic_description_shield": TextBox(
                 [
-                    "shield: reality warps in such a way to attract animals to coins when they would land in the enmies favor."
+                    "Shield: Reality warps in such a way to attract animals to coins when they would land in the enmies favor."
+                ],
+                (45, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+
+            "magic_description_force": TextBox(
+                [
+                    "Force: Making calculations based on coin weight and gravity, put the exact amount of force required  to get your coin flip to land on heads."
                 ],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
@@ -204,7 +213,7 @@ class CoinFlipBettyScreen(Screen):
             ),
             "magic_description_back": TextBox(
                 [
-                    "back: go back to previous menu"
+                    "Back: go back to previous menu"
                 ],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
@@ -228,6 +237,9 @@ class CoinFlipBettyScreen(Screen):
         self.turn_5 = False
         self.phase = 1
         self.magic_lock = False
+        self.lock_down  = 0
+        self.weighted_coin = False
+
         pygame.mixer.music.stop()
 
 
@@ -296,6 +308,8 @@ class CoinFlipBettyScreen(Screen):
             self.odd = False
             self.phase = 1
         # evens and odds
+        if self.weighted_coin == True:
+            self.result = "Heads"
         #
         if self.even == False and self.odd == False:
             coin_fate = random.randint(1, 2)
@@ -305,7 +319,9 @@ class CoinFlipBettyScreen(Screen):
                 self.odd = True
 
 
-        if self.even == True:
+
+        if self.even == True and self.weighted_coin == False:
+
             if self.phase == 1:
                 self.result = "Heads"
             elif self.phase == 2:
@@ -317,7 +333,7 @@ class CoinFlipBettyScreen(Screen):
             elif self.phase == 5:
                 self.result = "Heads"
 
-        elif self.odd == True:
+        elif self.odd == True and self.weighted_coin == False:
             if self.phase == 1:
                 self.result = "Tails"
             elif self.phase == 2:
@@ -527,6 +543,7 @@ class CoinFlipBettyScreen(Screen):
 
 
             if "coin flip glasses" in state.player.items and self.player_choice == self.result:
+                # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
 
                 state.player.money += self.bet + 20
                 self.money -= self.bet + 20
@@ -540,20 +557,23 @@ class CoinFlipBettyScreen(Screen):
 
 
             elif self.player_choice == self.result:
-                print("better not")
+                # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
+
                 state.player.money += self.bet
 
                 self.money -= self.bet
 
             elif self.player_choice != self.result:
+                print("Your choice is : " + self.player_choice)
+                print("Your result is :" + self.result)
 
-                state.player.money -= self.bet
-                self.money += self.bet
+
+                # state.player.money -= self.bet
+                # self.money += self.bet
                 if self.debuff_vanish == True:
                     import random
                     roll = random.randint(1, 100)
                     if roll > 10:
-                        print("gotcha")
                         state.player.money += self.bet
                         self.money -= self.bet
                         self.game_state = "shield_screen"
@@ -924,19 +944,16 @@ class CoinFlipBettyScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.headstailsindex == 0:
-                    print("Heads")
                     self.player_choice = "heads"
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
                 elif self.headstailsindex == 1:
-                    print("Tails")
                     self.player_choice = "tails"
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
                 else:
-                    print("Magic")  # Added print statement for consistency
                     if self.debuff_counter == 0:
                         self.player_choice = "magic"
                         self.game_state = "magic_screen"
@@ -952,6 +969,9 @@ class CoinFlipBettyScreen(Screen):
                 self.coin_flip_messages["magic_description_shield"].update(state)
                 self.coin_flip_messages["magic_description_shield"].draw(state)
             elif self.magicindex == 1:
+                self.coin_flip_messages["magic_description_force"].update(state)
+                self.coin_flip_messages["magic_description_force"].draw(state)
+            elif self.magicindex == 2:
                 self.coin_flip_messages["magic_description_back"].update(state)
                 self.coin_flip_messages["magic_description_back"].draw(state)
 
@@ -1010,8 +1030,7 @@ class CoinFlipBettyScreen(Screen):
             if state.controller.isTPressed:
                 if self.magicindex == 0 and state.player.focus_points > 0:
 
-                    print(str(self.magic_menu_selector[0]))
-                    print(str(self.magic_menu_selector))
+
                     self.spell_sound.play()  # Play the sound effect once
 
                     self.debuff_vanish = True
@@ -1020,9 +1039,20 @@ class CoinFlipBettyScreen(Screen):
                     state.controller.isTPressed = False  # Reset the button state
                     self.game_state = "welcome_screen"
 
+                elif self.magicindex == 1 and state.player.focus_points > 0:
 
 
-                elif self.magicindex == 1:
+                    self.spell_sound.play()  # Play the sound effect once
+
+                    self.weighted_coin = True
+                    self.debuff_counter += 1
+                    state.player.focus_points -= 10
+                    state.controller.isTPressed = False  # Reset the button state
+                    self.game_state = "welcome_screen"
+
+
+
+                elif self.magicindex == 2:
                     print(str(self.magic_menu_selector[1]))
                     self.game_state = "welcome_screen"
                     state.controller.isTPressed = False  # Reset the button state
@@ -1036,6 +1066,7 @@ class CoinFlipBettyScreen(Screen):
         #     self.coin_flip_messages["results_message"].update(state)
         #     self.coin_flip_messages["results_message"].draw(state)
         if self.game_state == "results_screen":
+            print("your results are in :  " + str(self.result))
             self.coin_flip_messages["results_message"].update(state)
             self.coin_flip_messages["results_message"].draw(state)
 
@@ -1132,24 +1163,20 @@ class CoinFlipBettyScreen(Screen):
 
                     if self.debuff_counter > 0:
                         self.debuff_counter -= 1
-                        print(self.debuff_counter)
-                        print(self.debuff_vanish)
+
                         if self.debuff_counter == 0:
                             self.debuff_vanish = False
-                            print(self.debuff_vanish)
 
                     state.controller.isTPressed = False  # Reset the button state
 
                     if state.player.stamina_points < 2 or state.player.money < 10:
                         self.game_state = "game_over_screen"
-                        print("game over")
 
                     elif state.player.stamina_points > 1 or state.player.money > 9:
                         self.game_state = "bet_screen"
 
 
                 else:
-                    print("1 index")
                     self.arrow_index = 0
                     self.game_state ="bet_screen"
                     self.music_on = True
@@ -1159,18 +1186,7 @@ class CoinFlipBettyScreen(Screen):
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 
-        # if self.game_state == "game_over_screen":
-        #     print("your game state is: " + str(self.game_state))
-        #     if state.player.stamina_points < 2:
-        #         print("no stamina")
-        #         self.coin_flip_messages["game_over_no_stamina"].update(state)
-        #         self.coin_flip_messages["game_over_no_stamina"].draw(state)
-        #
-        #
-        #     elif state.player.money < 10:
-        #         print("no money")
-        #         self.coin_flip_messages["game_over_no_money"].update(state)
-        #         self.coin_flip_messages["game_over_no_money"].draw(state)
+
 
 
         if self.game_state == "enemy_desperate_screen":
