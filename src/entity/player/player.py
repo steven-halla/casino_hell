@@ -27,12 +27,12 @@ class Player(Entity):
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False
         self.max_stamina_points = 160 + self.stamina_increase
-        self.focus_points = 5
+        self.focus_points = 55
         self.max_focus_points = 10
         self.perks = []
         self.items = []
         self.npc_items = []
-        self.magicinventory = ["shield" ]
+        self.magicinventory = ["shield", "HEADS_FORCE" ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False

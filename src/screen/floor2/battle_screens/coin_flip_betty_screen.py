@@ -21,14 +21,17 @@ class CoinFlipBettyScreen(Screen):
         self.third_message_display = ""
         self.magic_player_message_display = ""
         self.magic_enemy_message_display = ""
+        self.welcome_screen_index: int = 0
+
 
         self.headstailsindex = 0
 
 
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
+        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
         self.heads_or_tails_Menu = ["Heads", "Tails"]
-        self.magic_menu_selector = ["Back"]
+        self.magic_menu_selector = ["shield",   "Back"]
         self.choice_sequence = True
         self.player_choice = ""
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
@@ -50,9 +53,9 @@ class CoinFlipBettyScreen(Screen):
         self.coin_leaning_tracker = ""  # Initialize to "none" or similar
 
 
-        self.bet = 0
+        self.bet = 50
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipFredMoney = 1000
+        self.money = 1000
 
 
 
@@ -81,13 +84,13 @@ class CoinFlipBettyScreen(Screen):
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.initialize_music()
         self.music_on = True
 
 
         self.coin_flip_messages = {
             "welcome_message": TextBox(
-                ["Press T to select options and go through T messages", "Welcome to Coin flip I'll haunt your nightmares!", ""],
+                ["Press T to select options and go through T messages"],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -216,25 +219,18 @@ class CoinFlipBettyScreen(Screen):
         self.coin_flip_messages_initialized = False  # Add an initialization flag
 
         self.exp_gain = 0
+        self.odd = False
+        self.even = False
+        self.turn_1 = False
+        self.turn_2 = False
+        self.turn_3 = False
+        self.turn_4 = False
+        self.turn_5 = False
+        self.phase = 1
+        self.magic_lock = False
+        pygame.mixer.music.stop()
 
-    # def initialize_text_boxes(self):
-    #     # Initialize and store TextBox instances in self.coin_flip_messages
-    #     self.coin_flip_fred_messages = {
-    #         "welcome_message": TextBox(
-    #             ["praying that this works", "We", ""],
-    #             (45, 460, 700, 130),  # Position and size as a tuple: (x_position, y_position, width, height)
-    #             36,  # Font size
-    #             500  # Delay in milliseconds
-    #         ),
-    #         # Example for another message
-    #         "bet_message": TextBox(
-    #             ["Min Bet is 10 and Max Bet is 100. The more you bet, the more your stamina is drained."],
-    #             (45, 460, 700, 130),  # Position and size
-    #             36,  # Font size
-    #             500  # Delay
-    #         ),
-    #         # You can continue adding other TextBox instances as needed...
-    #     }
+
 
 
 
@@ -254,87 +250,13 @@ class CoinFlipBettyScreen(Screen):
         # Play the music, -1 means the music will loop indefinitely
         pygame.mixer.music.play(-1)
 
-    def giveExp(self, state: "GameState"):
-        # print("Player exp is: " + str(state.player.exp))
-        if self.result == self.player_choice:
-
-            if self.bet < 11:
-                state.player.stamina_points -= 2
-
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 5
-                self.exp_gain = 5
-
-                print("you gained: " + str(10) + "exp")
-                print("Your after total exp is: " + str(state.player.exp))
-
-            elif self.bet >= 50:
-                state.player.stamina_points -= 4
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 15
-                self.exp_gain = 15
-
-                print("you gained: " + str(100) + "exp")
-
-                print("Your after total exp is: " + str(state.player.exp))
-
-
-            elif self.bet < 50:
-                state.player.stamina_points -= 3
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 10
-                self.exp_gain = 10
-
-                print("you gained: " + str(50) + "exp")
-
-                print("Your after  total exp is: " + str(state.player.exp))
-
-
-
-        elif self.result != self.player_choice:
-            if self.bet < 11:
-                state.player.stamina_points -= 2
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 3
-                self.exp_gain = 3
-
-                print("you gained: " + str(5) + "exp")
-
-                print("Your after total exp is: " + str(state.player.exp))
-
-            elif self.bet >= 50:
-                state.player.stamina_points -= 6
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 5
-                self.exp_gain = 5
-
-                print("you gained: " + str(50) + "exp")
-
-                print("Your after total exp is: " + str(state.player.exp))
-
-
-            elif self.bet < 50:
-                state.player.stamina_points -= 4
-                print("Your before  total exp is: " + str(state.player.exp))
-
-                state.player.exp += 4
-                self.exp_gain = 4
-
-                print("you gained: " + str(25) + "exp")
-
-                print("Your after total exp is: " + str(state.player.exp))
 
     def place_bet(self, state: "GameState"):
         controller = state.controller
         controller.update()
 
         if controller.isUpPressed:
-            self.bet += 10
+            self.bet += 50
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(200)
@@ -343,7 +265,7 @@ class CoinFlipBettyScreen(Screen):
 
 
         elif controller.isDownPressed:
-            self.bet -= 10
+            self.bet -= 50
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(200)
@@ -351,113 +273,141 @@ class CoinFlipBettyScreen(Screen):
             print(self.bet)
 
 
-        if self.bet < 10:
-            self.bet = 10
+        if self.bet < 50:
+            self.bet = 50
 
-        if self.bet > 100:
-            self.bet = 100
+        if self.bet > 200:
+            self.bet = 200
 
-        if self.bet > self.coinFlipFredMoney:
-            self.bet = self.coinFlipFredMoney
+        if self.bet > self.money:
+            self.bet = self.money
 
         if self.bet > state.player.money:
             self.bet = state.player.money
 
         if controller.isTPressed:
 
-            self.game_state = "heads_tails_choose_screen"
+            self.game_state = "welcome_screen"
             state.controller.isTPressed = False  # Reset the button state
 
     def flipCoin(self, state: "GameState"):
-        # Check if we need to determine a new bias
-        # coin = random.random()
-        # if coin < 0.9:
-        #     print("coin landed on tails")
-        #     self.result = "tails"
-        print("The coin counter is now at the start so what is it?: " + str(self.coin_leaning_counter))
-
-        if self.coinFlipFredMoney <= 300:
-            self.result = "tails"
-            print("Less than 100")
-
-
-        elif self.coinFlipFredMoney > 700:
-            # coin_fate = random.randint(1, 20)
-            # print("your coin fate is" + str(coin_fate))
-            # print("coin counter at:" + str(self.coin_leaning_counter))
-            print("more than 300")
-            self.result = "tails"
+        if self.phase > 5:
+            self.even = False
+            self.odd = False
+            self.phase = 1
+        # evens and odds
+        #
+        if self.even == False and self.odd == False:
+            coin_fate = random.randint(1, 2)
+            if coin_fate == 1:
+                self.even = True
+            elif coin_fate == 2:
+                self.odd = True
 
 
-        elif self.coinFlipFredMoney <= 700:
-            coin_fate = random.randint(1, 20)
-            print("more than 300")
+        if self.even == True:
+            if self.phase == 1:
+                self.result = "Heads"
+            elif self.phase == 2:
+                self.result = "Tails"
+            elif self.phase == 3:
+                self.result = "Heads"
+            elif self.phase == 4:
+                self.result = "Tails"
+            elif self.phase == 5:
+                self.result = "Heads"
 
-            if self.food_luck == True:
-                if coin_fate >= 6:
-                    self.result = "heads"
-                elif coin_fate < 6:
-                    self.result = "tails"
-
-            elif self.food_luck == False:
-                if coin_fate >= 8:
-                    self.result = "heads"
-                elif coin_fate < 8:
-                    self.result = "tails"
+        elif self.odd == True:
+            if self.phase == 1:
+                self.result = "Tails"
+            elif self.phase == 2:
+                self.result = "Heads"
+            elif self.phase == 3:
+                self.result = "Tails"
+            elif self.phase == 4:
+                self.result = "Heads"
+            elif self.phase == 5:
+                self.result = "Tails"
 
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
-        # if state.player.money < 0:
-        #     state.currentScreen = state.gameOverScreen
-        #     state.gameOverScreen.start(state)
+
 
         if state.musicOn == True:
             if self.music_on == True:
                 self.stop_music()
-                self.initialize_music()
+                # self.initialize_music()
                 self.music_on = False
 
 
-        # if self.coinFlipTedMoney <= 100 and self.enemy_desperate_counter == False:
-        #     self.game_state = "enemy_desperate_screen"
-
-        if self.coinFlipFredMoney < 10:
+        if self.money < 10:
             self.coinFlipFredDefeated = True
 
 
 
         if state.controller.isQPressed:
-            # Transition to the main screen
             state.currentScreen = state.startScreen
             state.startScreen.start(state)
             return
 
+        controller = state.controller
+        controller.update()
 
 
         if self.game_state == "welcome_screen":
 
-            if "shield" in state.player.magicinventory and "shield"not in self.magic_menu_selector:
-
-                self.magic_menu_selector.append("shield")
-
-
-
-            # Update the welcome screen text box
-            # self.coin_flip_messages["welcome_message"].update(state)
-            print("Heyo")
-
-            if not self.coin_flip_messages_initialized:
-                # self.initialize_text_boxes()
-                self.coin_flip_messages_initialized = True
             self.coin_flip_messages["welcome_message"].update(state)
 
-                # Check if the text box message index is at the second element (index 1)
-            if self.coin_flip_messages["welcome_message"].message_index == 2:
-                self.coin_flip_messages_initialized = False
+            if self.money < 1:
+               self.game_state = "game_over_screen"
 
-                # Change the game state to "bet"
+            if state.player.stamina_points < 1:
+                self.game_state = "game_over_screen"
+
+
+            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+                self.game_state = "game_over_screen"
+
+
+
+            elif state.player.money < 50 and state.player.money > 0:
+                self.game_state = "game_over_screen"
+
+
+            elif state.player.money <= 0:
+                self.game_state = "game_over_screen"
+
+            if controller.isUpPressed:
+                self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
+                controller.isUpPressed = False
+            elif controller.isDownPressed:
+                self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
+                controller.isDownPressed = False
+
+            if self.welcome_screen_index == 0 and controller.isTPressed:
+                for i in range(0, self.bet, 50):
+                    state.player.stamina_points -= 4
+                self.game_state = "heads_tails_choose_screen"
+
+
+
+
+                controller.isTPressed = False
+            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
+                self.magic_screen_index = 0
+                self.coin_flip_messages["magic_message"].reset()
+                self.game_state = "magic_screen"
+                controller.isTPressed = False
+            elif self.welcome_screen_index == 2 and controller.isTPressed:
+                self.coin_flip_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
+
+                controller.isTPressed = False
+
+            elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
+                state.currentScreen = state.area2StartScreen
+                controller.isTPressed = False
 
 
         if self.game_state == "bet_screen":
@@ -478,14 +428,11 @@ class CoinFlipBettyScreen(Screen):
         if self.game_state == "heads_tails_choose_screen":
             self.coin_flip_messages["bet_message"].update(state)
 
-            # print("welcome to the choice screen")
             self.coin_flip_messages["heads_tails_message"].update(state)
 
-            # Append "Magic" to the menu only if "Shield" is in inventory and "Magic" is not already in the menu
             if "shield" in state.player.magicinventory and "Magic" not in self.heads_or_tails_Menu:
                 self.heads_or_tails_Menu.append("Magic")
 
-            # Handling Up Press
             if self.coin_flip_messages["bet_message"].is_finished():
                 if state.controller.isUpPressed:
                     self.headstailsindex -= 1
@@ -509,6 +456,8 @@ class CoinFlipBettyScreen(Screen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
+            if "HEADS_FORCE" in state.player.magicinventory and "FORCE" not in self.magic_menu_selector:
+                self.magic_menu_selector.insert(1, "FORCE")
 
             if state.controller.isUpPressed:
                 self.magicindex -= 1
@@ -574,58 +523,56 @@ class CoinFlipBettyScreen(Screen):
             #     self.game_state = "enemy_defeated_screen"
 
             # Assuming this is part of a class
-            if not self.has_run_money_logic:
-                self.giveExp(state)
-
-
-                if "coin flip glasses" in state.player.items and self.player_choice == self.result:
-                    print("Coin flip")
-
-                    state.player.money += self.bet + 20
-                    self.coinFlipFredMoney -= self.bet + 20
-                    if self.coinFlipFredMoney == -10:
-                        self.coinFlipFredMoney = 0
-                        state.player.money -= 10
-                    elif self.coinFlipFredMoney == -20:
-                        self.coinFlipFredMoney = 0
-                        state.player.money -= 20
 
 
 
-                elif self.player_choice == self.result:
-                    print("better not")
-                    state.player.money += self.bet
+            if "coin flip glasses" in state.player.items and self.player_choice == self.result:
 
-                    self.coinFlipFredMoney -= self.bet
-
-                elif self.player_choice != self.result:
-
-                    state.player.money -= self.bet
-                    self.coinFlipFredMoney += self.bet
-                    if self.debuff_vanish == True:
-                        import random
-                        roll = random.randint(1, 100)
-                        if roll > 10:
-                            print("gotcha")
-                            state.player.money += self.bet
-                            self.coinFlipFredMoney -= self.bet
-                            self.game_state = "shield_screen"
-
-                self.has_run_money_logic = True
-
-            self.coin_flip_messages["results_message"].update(state)
-
-            # Construct the result message
-            result_message = f"Here you go, the result of your flip: {self.result}"
-            # bet_message = f"Bet amount: {self.bet}"
-
-            # Update the messages in the TextBox
-            self.coin_flip_messages["results_message"].messages = [result_message]
+                state.player.money += self.bet + 20
+                self.money -= self.bet + 20
+                if self.money == -10:
+                    self.money = 0
+                    state.player.money -= 10
+                elif self.money == -20:
+                    self.money = 0
+                    state.player.money -= 20
 
 
-            # if state.controller.isTPressed:
-            #     self.game_state = "play_again_screen"
-            #     print(str(self.game_state))
+
+            elif self.player_choice == self.result:
+                print("better not")
+                state.player.money += self.bet
+
+                self.money -= self.bet
+
+            elif self.player_choice != self.result:
+
+                state.player.money -= self.bet
+                self.money += self.bet
+                if self.debuff_vanish == True:
+                    import random
+                    roll = random.randint(1, 100)
+                    if roll > 10:
+                        print("gotcha")
+                        state.player.money += self.bet
+                        self.money -= self.bet
+                        self.game_state = "shield_screen"
+
+            self.has_run_money_logic = True
+
+        self.coin_flip_messages["results_message"].update(state)
+
+        # Construct the result message
+        result_message = f"Here you go, the result of your flip: {self.result}"
+        # bet_message = f"Bet amount: {self.bet}"
+
+        # Update the messages in the TextBox
+        self.coin_flip_messages["results_message"].messages = [result_message]
+
+
+        # if state.controller.isTPressed:
+        #     self.game_state = "play_again_screen"
+        #     print(str(self.game_state))
 
         if self.game_state == "shield_screen":
             # print("sheild time")
@@ -640,7 +587,7 @@ class CoinFlipBettyScreen(Screen):
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"
 
-            if self.coinFlipFredMoney < 10:
+            if self.money < 10:
                 self.coinFlipTedDefeated = True
                 self.game_state = "enemy_defeated_screen"
 
@@ -803,7 +750,7 @@ class CoinFlipBettyScreen(Screen):
         # Blit the white border (with the black box) onto the state display
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.coinFlipFredMoney}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
                                             (255, 255, 255)), (37, 70))
 
         if self.debuff_counter == 0:
@@ -836,12 +783,83 @@ class CoinFlipBettyScreen(Screen):
         # Blit the white-bordered box onto the display
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
+
         if self.game_state == "welcome_screen":
-            # self.coin_flip_fred_messages["welcome_message"].update(state)
             if not self.coin_flip_messages_initialized:
                 # self.initialize_text_boxes()
                 self.coin_flip_messages_initialized = True
             self.coin_flip_messages["welcome_message"].draw(state)
+
+            if self.money < 1:
+                self.coin_flip_messages["you_win"].draw(state)
+
+            if state.player.stamina_points < 1:
+                self.coin_flip_messages["game_over_no_stamina_message"].draw(state)
+
+            elif state.player.money <= 0:
+                self.coin_flip_messages["game_over_no_money_message"].draw(state)
+
+            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+                self.coin_flip_messages["game_over_low_stamina_message"].draw(state)
+
+            elif state.player.money < 50 and state.player.money > 0:
+                self.coin_flip_messages["game_over_low_money_message"].draw(state)
+
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
+            border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
+
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
+
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+            # Draw the menu options
+            for idx, choice in enumerate(self.welcome_screen_choices):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
+            # if "Focus" not in state.player.magicinventory:
+            #     self.magic_lock = True
+            #     self.welcome_screen_choices[1] = "Locked"
+
+            if self.welcome_screen_index == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
+                )
+            elif self.welcome_screen_index == 1:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 52)
+                )
+            elif self.welcome_screen_index == 2:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 92)
+                )
+            elif self.welcome_screen_index == 3:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 132)
+                )
 
         if self.game_state == "bet_screen":
             # print("Game state is 'bet'")  # Debugging
@@ -939,74 +957,55 @@ class CoinFlipBettyScreen(Screen):
 
             # Define new_box_x
 
-            # Updated dimensions
-            bet_box_width = 150  # Width for both boxes
-            top_box_height = 50  # Height for top box
-            bet_box_height = 100 + 40 - 50  # Height for bottom box, now 50 pixels shorter
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
             border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
 
-            # Screen dimensions
-            screen_width, screen_height = state.DISPLAY.get_size()
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
 
-            # Positions for the top and bottom boxes
-            new_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
-            magic_box_y = 320 - 40
-            new_box_y = magic_box_y - top_box_height - border_width + 50  # Adjusted Y position for top box
+            # Create a white border
+            white_border = pygame.Surface(
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
+            white_border.fill((255, 255, 255))
+            white_border.blit(black_box, (border_width, border_width))
 
-            # Create the top box (black box with white border but no bottom border)
-            black_box_top = pygame.Surface((bet_box_width, top_box_height))
-            black_box_top.fill((0, 0, 0))
-            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))
-            white_border_top.fill((255, 255, 255))
-            white_border_top.blit(black_box_top, (border_width, border_width))
-            state.DISPLAY.blit(white_border_top, (new_box_x, new_box_y))
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
 
-            # Adjusted bottom box positions
-            bet_box_x = new_box_x  # Aligning with the top box
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 50  # Raised by 40 pixels, accounting for borders
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-            # Create the bottom box (now shorter)
-            bottom_box = pygame.Surface((bet_box_width, bet_box_height))
-            bottom_box.fill((0, 0, 0))
-            white_border_bottom = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border_bottom.fill((255, 255, 255))
-            white_border_bottom.blit(bottom_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border_bottom, (bet_box_x, bet_box_y))
+            # Draw the menu options
+            for idx, choice in enumerate(self.magic_menu_selector):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                state.DISPLAY.blit(
+                    self.font.render(choice, True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
 
-            # Adjust text and arrow positions relative to the bottom box
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20  # Adjusted back to the original position
-            text_y_no = text_y_yes + 40
-            # Adjust arrow positions relative to the bottom box
-            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_yes + self.headstailsindex * 40  # Arrow position adjusted based on selected menu item
+            if self.magicindex == 0:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
+                )
+            elif self.magicindex == 1:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 52)
+                )
+            elif self.magicindex == 2:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 92)
+                )
 
-            # Draw text
-            # Draw text
-            if "shield" in self.magic_menu_selector:
-                state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
-            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            # Y position for "Shield" text, using self.magic_menu_selector[1]
-            text_y_shield = text_y_yes  # Assuming "Shield" is rendered at this position
 
-            # Draw the arrow on the same Y coordinate as "Shield"
-            # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
-            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_shield + self.magicindex * 40  # Update arrow Y position based on selected item
-            # print(str(self.magic_menu_selector))
-            # Draw the arrow using pygame's drawing functions
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
-            magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
-            text_margin = 47  # Margin from the left edge of the top box for the text
-
-            # Position for the "Magic" text inside the top box
-            magic_text_x = new_box_x + text_margin
-            magic_text_y = new_box_y + (top_box_height - magic_text.get_height()) // 2  # Vertically center inside the top box
-
-            # Blit the "Magic" text onto the screen
-            state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
 
             if state.controller.isTPressed:
                 if self.magicindex == 0 and state.player.focus_points > 0:
@@ -1019,13 +1018,13 @@ class CoinFlipBettyScreen(Screen):
                     self.debuff_counter += 3
                     state.player.focus_points -= 10
                     state.controller.isTPressed = False  # Reset the button state
-                    self.game_state = "heads_tails_choose_screen"
+                    self.game_state = "welcome_screen"
 
 
 
                 elif self.magicindex == 1:
                     print(str(self.magic_menu_selector[1]))
-                    self.game_state = "heads_tails_choose_screen"
+                    self.game_state = "welcome_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
 
@@ -1070,7 +1069,7 @@ class CoinFlipBettyScreen(Screen):
                 # Set the flag to True to avoid repeating this in the current state
                 self.entered_shield_screen = True
                 # state.player.money += self.bet
-                # self.coinFlipFredMoney -= self.bet
+                # self.money -= self.bet
 
             # Update and draw the selected TextBox
             self.selected_shield_message.update(state)
