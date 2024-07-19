@@ -30,7 +30,7 @@ class CoinFlipBettyScreen(Screen):
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-        self.heads_or_tails_Menu = ["Heads", "Tails"]
+        self.heads_or_tails_Menu = ["Heads", "Tails", "Back"]
         self.magic_menu_selector = ["shield",   "Back"]
         self.choice_sequence = True
         self.player_choice = ""
@@ -446,8 +446,7 @@ class CoinFlipBettyScreen(Screen):
 
             self.coin_flip_messages["heads_tails_message"].update(state)
 
-            if "shield" in state.player.magicinventory and "Magic" not in self.heads_or_tails_Menu:
-                self.heads_or_tails_Menu.append("Magic")
+
 
             if self.coin_flip_messages["bet_message"].is_finished():
                 if state.controller.isUpPressed:
@@ -544,39 +543,61 @@ class CoinFlipBettyScreen(Screen):
 
             if "coin flip glasses" in state.player.items and self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
-
-                state.player.money += self.bet + 20
-                self.money -= self.bet + 20
-                if self.money == -10:
-                    self.money = 0
-                    state.player.money -= 10
-                elif self.money == -20:
-                    self.money = 0
-                    state.player.money -= 20
+                if controller.isTPressed:
+                    self.phase += 1
+                    state.player.money += self.bet + 20
+                    self.money -= self.bet + 20
+                    if self.money == -10:
+                        self.money = 0
+                        state.player.money -= 10
+                    elif self.money == -20:
+                        self.money = 0
+                        state.player.money -= 20
+                    state.controller.isTPressed = False
+                    self.game_state = "welcome_screen"
 
 
 
             elif self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
+                if controller.isTPressed:
+                    self.phase += 1
 
-                state.player.money += self.bet
 
-                self.money -= self.bet
+
+                    state.player.money += self.bet
+
+                    self.money -= self.bet
+                    state.controller.isTPressed = False
+                    self.game_state = "welcome_screen"
 
             elif self.player_choice != self.result:
                 print("Your choice is : " + self.player_choice)
                 print("Your result is :" + self.result)
+                if controller.isTPressed and self.debuff_vanish == False:
+                    self.phase += 1
 
 
-                # state.player.money -= self.bet
-                # self.money += self.bet
+
+                    state.player.money -= self.bet
+                    self.money += self.bet
+                    state.controller.isTPressed = False
+                    self.game_state = "welcome_screen"
+
+
+
                 if self.debuff_vanish == True:
+                    self.phase += 1
+
                     import random
                     roll = random.randint(1, 100)
-                    if roll > 10:
-                        state.player.money += self.bet
-                        self.money -= self.bet
+                    if roll > 0:
                         self.game_state = "shield_screen"
+                    # elif roll <= 90:
+                    #
+                    #     state.player.money -= self.bet
+                    #     self.money += self.bet
+                    #     self.game_state = "welcome_screen"
 
             self.has_run_money_logic = True
 
@@ -922,10 +943,8 @@ class CoinFlipBettyScreen(Screen):
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Heads ", True, (255, 255, 255)), (text_x, text_y_yes))
             state.DISPLAY.blit(self.font.render(f"Tails ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            if "shield" in state.player.magicinventory and self.debuff_counter == 0:
-                state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
-            elif self.debuff_counter > 0:
-                state.DISPLAY.blit(self.font.render(f"Locked ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
+            state.DISPLAY.blit(self.font.render(f"Back ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
+
 
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.headstailsindex * 40  # Adjust based on the item's height
@@ -954,12 +973,10 @@ class CoinFlipBettyScreen(Screen):
                     state.controller.isTPressed = False  # Reset the button state
 
                 else:
-                    if self.debuff_counter == 0:
-                        self.player_choice = "magic"
-                        self.game_state = "magic_screen"
-                        state.controller.isTPressed = False  # Reset the button state
-                    elif self.debuff_counter > 0:
-                        print("stay here")
+                    self.game_state = "welcome_screen"
+                    self.headstailsindex = 0
+                    state.controller.isTPressed = False  # Reset the button state
+
 
         if self.game_state == "magic_screen":
             self.coin_flip_messages["magic_message"].update(state)
@@ -1087,9 +1104,7 @@ class CoinFlipBettyScreen(Screen):
             # Now, draw the results_message TextBox
             self.coin_flip_messages["results_message"].draw(state)
 
-            if state.controller.isTPressed:
-                self.game_state = "play_again_screen"
-                state.controller.isTPressed = False  # Reset the button state
+
 
         if self.game_state == "shield_screen":
             if not self.entered_shield_screen:
