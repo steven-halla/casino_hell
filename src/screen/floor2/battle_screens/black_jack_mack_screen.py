@@ -5,6 +5,7 @@ import pygame
 from constants import DISPLAY
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.gui.textbox.text_box import TextBox
+from game_constants.coin_flip_constants import CoinFlipConstants
 from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
@@ -20,6 +21,7 @@ class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
+        self.money = 1000
         self.deck = Deck()
 
 
@@ -36,7 +38,7 @@ class BlackJackMackScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 10
-        self.cheater_bob_money = 900
+        self.moneyer_bob_money = 900
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -45,7 +47,7 @@ class BlackJackMackScreen(Screen):
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Redraw"]
         self.current_index = 0
-        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
+        self.welcome_screen_choices = ["Play", "Magic", "Bet", "Quit"]
         self.welcome_screen_index = 0
         self.magic_menu_selector = ["Reveal",  "Back"]
         self.magic_menu_index = 0
@@ -74,7 +76,6 @@ class BlackJackMackScreen(Screen):
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
 
-        self.black_jack_bluff_counter = 0
         self.reveal_hand = 11
         self.magic_lock = False
         self.luck_of_jack = 7
@@ -82,7 +83,7 @@ class BlackJackMackScreen(Screen):
         self.redraw_lock = False
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.initialize_music()
         self.music_on = True
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
@@ -96,13 +97,13 @@ class BlackJackMackScreen(Screen):
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
         self.messages = {
-            "welcome_screen": ["RumbleBill: Press T key for all commands.",
-                               "You look pretty fresh to me. Time to grind you into hamburger boy.", ""],
+            "welcome_screen": ["Mack: Time to take out the trash.",
+                               "You look pretty fresh to me. Time to grind you into hamburger boy.", "Presss T for commands"],
             "hero_intro_text": [
                 "I can press up and down to select. Play to start, quit to leave, or magic for an advantage"],
 
             "bet_intro_text": [
-                "RumbleBill: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
+                "Mack: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained. "],
 
             "hero_losing_text": [
                 "Hero: This isn't good, I'll need to get serious if I want to make a comeback.",
@@ -256,17 +257,18 @@ class BlackJackMackScreen(Screen):
         pygame.mixer.music.stop()
 
     def initialize_music(self):
+        pass
         # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.init()
+        #
+        # # Load the music file
+        # pygame.mixer.music.load(self.music_file)
+        #
+        # # Set the volume for the music (0.0 to 1.0)
+        # pygame.mixer.music.set_volume(self.music_volume)
+        #
+        # # Play the music, -1 means the music will loop indefinitely
+        # pygame.mixer.music.play(-1)
 
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
@@ -290,8 +292,8 @@ class BlackJackMackScreen(Screen):
         if self.bet > 200:
             self.bet = 200
 
-        if self.bet > self.cheater_bob_money:
-            self.bet = self.cheater_bob_money
+        if self.bet > self.money:
+            self.bet = self.money
 
         if self.bet > state.player.money:
             self.bet = state.player.money
@@ -304,7 +306,7 @@ class BlackJackMackScreen(Screen):
             self.music_on = False
 
         state.player.canMove = False
-        if self.cheater_bob_money < 10:
+        if self.money < 10:
             self.black_jack_rumble_bill_defeated = True
             self.game_state = "defeated"
 
@@ -387,9 +389,31 @@ class BlackJackMackScreen(Screen):
                         self.welcome_screen_choices)
                     controller.isDownPressed = False
 
+                if self.welcome_screen_index == 0 and controller.isTPressed:
+                    for i in range(0, self.bet, 50):
+                        state.player.stamina_points -= 4
+                    self.deck.shuffle()
+
+                    self.game_state = "draw_phase"
+
+                    controller.isTPressed = False
+                elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
+                    self.magic_screen_index = 0
+                    self.game_state = "magic_menu"
+                    controller.isTPressed = False
+                elif self.welcome_screen_index == 2 and controller.isTPressed:
+                    self.game_state = "bet_phase"
+
+                    controller.isTPressed = False
+
+                elif self.welcome_screen_index == 3 and controller.isTPressed:
+                    state.currentScreen = state.area2StartScreen
+                    controller.isTPressed = False
 
 
-                # if self.enemy_winning_money_text.is_finished():
+
+
+
 
 
         elif self.game_state == "bet_phase":
@@ -415,7 +439,7 @@ class BlackJackMackScreen(Screen):
                     print("-2")
 
                 pygame.time.wait(300)
-                self.game_state = "draw_phase"
+                self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
         elif self.game_state == "draw_phase":
@@ -534,15 +558,15 @@ class BlackJackMackScreen(Screen):
                 print("its time for you to have double winnings")
                 # state.player.money += self.bet
                 # state.player.money += self.bet
-                # self.cheater_bob_money -= self.bet
-                # self.cheater_bob_money -= self.bet
+                # self.money -= self.bet
+                # self.money -= self.bet
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
                 # state.player.money -= self.bet
                 # state.player.money -= self.bet
-                # self.cheater_bob_money += self.bet
-                # self.cheater_bob_money += self.bet
+                # self.money += self.bet
+                # self.money += self.bet
 
                 self.game_state = "results_screen"
 
@@ -564,7 +588,7 @@ class BlackJackMackScreen(Screen):
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21:
                 state.player.money -= self.bet
-                self.cheater_bob_money += self.bet
+                self.money += self.bet
                 state.player.stamina_points -= 6
                 print("Going to bust a giant busttttttttter")
 
@@ -596,7 +620,7 @@ class BlackJackMackScreen(Screen):
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
                     state.player.money += self.bet
-                    self.cheater_bob_money -= self.bet
+                    self.money -= self.bet
                     print("enemy bust")
                     if state.player.level == 1:
                         state.player.exp += 12
@@ -626,7 +650,7 @@ class BlackJackMackScreen(Screen):
                 if self.enemy_score > 21:
                     print("if the enemy is going to bust")
                     state.player.money += self.bet
-                    self.cheater_bob_money -= self.bet
+                    self.money -= self.bet
                     print("enemy bust")
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
@@ -644,7 +668,7 @@ class BlackJackMackScreen(Screen):
             if self.player_score > 21:
                 self.message_display = "You bust and lose."
                 # state.player.money -= self.bet
-                # self.cheater_bob_money += self.bet
+                # self.money += self.bet
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
@@ -748,10 +772,10 @@ class BlackJackMackScreen(Screen):
                         self.magic_lock = True
                         self.player_status = "Focus"
                         self.enemy_status = "Reveal"
-                        self.isTPressed = False
 
                         print("You cast reveal")
                         self.game_state = "welcome_screen"
+                        self.isTPressed = False
 
 
                     elif state.player.focus_points < 10:
@@ -772,8 +796,6 @@ class BlackJackMackScreen(Screen):
                     print(str(controller.isTPressed))
                     controller.isTPressed = False
                     print(str(controller.isTPressed))
-
-
                     self.game_state = "welcome_screen"
                     self.isTPressed = False
                     print(str(controller.isTPressed))
@@ -847,12 +869,12 @@ class BlackJackMackScreen(Screen):
                         state.player.exp += 40
 
                     self.second_message_display = "Player deals a CRITICAL HIT!!! "
-                    if self.bet * 2 < self.cheater_bob_money:
+                    if self.bet * 2 < self.money:
                         state.player.money += self.bet * 2
-                        self.cheater_bob_money -= self.bet * 2
+                        self.money -= self.bet * 2
                     else:
-                        state.player.money += self.cheater_bob_money
-                        self.cheater_bob_money = 0
+                        state.player.money += self.money
+                        self.money = 0
                     print("nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
@@ -889,7 +911,7 @@ class BlackJackMackScreen(Screen):
                     self.second_message_display = "Enemy deals a CRITICAL HIT!!! "
 
                     state.player.money -= self.bet * 2
-                    self.cheater_bob_money += self.bet * 2
+                    self.money += self.bet * 2
 
                     print("nd;3434343434343;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
@@ -907,7 +929,7 @@ class BlackJackMackScreen(Screen):
                     self.second_message_display = "You win player press T when ready"
 
                     state.player.money += self.bet
-                    self.cheater_bob_money -= self.bet
+                    self.money -= self.bet
 
                     print("nd;lsnjfl;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
@@ -926,7 +948,7 @@ class BlackJackMackScreen(Screen):
 
                     self.second_message_display = "You lose player press T when ready"
                     state.player.money -= self.bet
-                    self.cheater_bob_money += self.bet
+                    self.money += self.bet
                     print("nd;bbbbbababab;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
@@ -1051,7 +1073,7 @@ class BlackJackMackScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.cheater_bob_money}", True,
+        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
                                       (255, 255, 255)), (37, 70))
         state.DISPLAY.blit(self.font.render(f"Status: {self.enemy_status}", True,
                                       (255, 255, 255)), (37, 110))
@@ -1080,74 +1102,66 @@ class BlackJackMackScreen(Screen):
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"
             #
-            black_box = pygame.Surface((160 - 10, 180 - 10))
-            black_box.fill((0, 0, 0))
+            black_box_height = 221 - 50  # Adjust height
+            black_box_width = 200 - 10  # Adjust width to match the left box
             border_width = 5
+            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+            start_y_right_box = 240  # Adjust vertical alignment
+
+            # Create the black box
+            black_box = pygame.Surface((black_box_width, black_box_height))
+            black_box.fill((0, 0, 0))
+
+            # Create a white border
             white_border = pygame.Surface(
-                (160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+            )
             white_border.fill((255, 255, 255))
             white_border.blit(black_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border, (620, 235))
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.welcome_screen_choices[0]}", True,
-                                 (255, 255, 255)),
-                (687, 260))
+            # Determine the position of the white-bordered box
+            black_box_x = start_x_right_box - border_width
+            black_box_y = start_y_right_box - border_width
 
-            if self.magic_lock == False:
+            # Blit the white-bordered box onto the display
+            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
+            # Draw the menu options
+            for idx, choice in enumerate(self.welcome_screen_choices):
+                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                # Example render method ensuring all items are strings
                 state.DISPLAY.blit(
-                    self.font.render(f"{self.welcome_screen_choices[1]}", True,
-                                     (255, 255, 255)),
-                    (687, 310))
-            elif self.magic_lock == True:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (680, 310))
+                    self.font.render(str(choice), True, (255, 255, 255)),
+                    (start_x_right_box + 60, y_position + 15)
+                )
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.welcome_screen_choices[2]}", True,
-                                 (255, 255, 255)),
-                (687, 360))
+            if self.reveal_hand < 11:
+                self.magic_lock = True
+                self.welcome_screen_choices[1] = "Locked"   # if I use a constant it shows it as the full name not the string part
+            else:
+                self.magic_lock = False
+                self.welcome_screen_choices[1] = "Magic"
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 255))
-                if state.controller.isTPressed and self.welcome_screen_text_box.is_finished():
-                    self.deck.shuffle()
-
-                    self.game_state = "bet_phase"
-                    state.controller.isTPressed = False
-
-
-
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 12)
+                )
             elif self.welcome_screen_index == 1:
                 state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 305))
-                if state.controller.isTPressed and self.magic_lock == False:
-                    pygame.time.wait(300)
-                    self.game_state = "magic_menu"
-                    self.isTPressed = False
-
-
-
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 52)
+                )
             elif self.welcome_screen_index == 2:
                 state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 355))
-                if state.controller.isTPressed:
-                    print("Quit")
-                    state.player.canMove = True
-                    self.reveal_hand = 11
-                    self.magic_lock = False
-
-
-                    self.music_on = True
-
-                    state.currentScreen = state.chilliScreen
-                    state.chilliScreen.start(state)
-                    state.controller.isTPressed = False
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 92)
+                )
+            elif self.welcome_screen_index == 3:
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, start_y_right_box + 132)
+                )
 
             self.welcome_screen_text_box.draw(state)
             # self.welcome_screen_text_box_hero.draw(state)
