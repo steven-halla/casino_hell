@@ -41,6 +41,7 @@ from screen.floor1.map_screens.rest_screen import RestScreen
 from screen.floor1.map_screens.start_load_screen import StartLoadScreen
 from screen.floor1.map_screens.start_screen import StartScreen
 from screen.floor1.map_screens.win_screen import WinScreen
+from screen.floor2.battle_screens.black_jack_mack_screen import BlackJackMackScreen
 from screen.floor2.battle_screens.coin_flip_betty_screen import CoinFlipBettyScreen
 from screen.floor2.battle_screens.craps import Craps
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
@@ -126,6 +127,7 @@ class GameState:
         self.hungryStarvingHippos = HungryStarvingHippos()
         self.craps = Craps()
         self.coinFlipBettyScreen = CoinFlipBettyScreen()
+        self.blackJackMackScreen = BlackJackMackScreen()
 
 
 

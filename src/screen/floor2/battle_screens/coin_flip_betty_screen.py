@@ -782,7 +782,7 @@ class CoinFlipBettyScreen(Screen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 20))
 
-        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
+        state.DISPLAY.blit(self.font.render(f"Enemy-Phase {self.phase}" , True, (255, 255, 255)), (37, 33))
 
         #holds enemy status, money and other info
         # Original dimensions
