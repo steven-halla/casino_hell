@@ -534,6 +534,8 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "results_screen":
+            if self.weighted_coin == True:
+                self.result = "heads"
             # if self.coinFlipTedMoney < 10:
             #     self.game_state = "enemy_defeated_screen"
 
@@ -555,6 +557,8 @@ class CoinFlipBettyScreen(Screen):
                         state.player.money -= 20
                     state.controller.isTPressed = False
                     self.game_state = "welcome_screen"
+                    self.weighted_coin = False
+                    self.debuff_counter -= 1
 
 
 
@@ -570,6 +574,10 @@ class CoinFlipBettyScreen(Screen):
                     self.money -= self.bet
                     state.controller.isTPressed = False
                     self.game_state = "welcome_screen"
+                    self.weighted_coin = False
+                    self.debuff_counter -= 1
+
+
 
             elif self.player_choice != self.result:
                 print("Your choice is : " + self.player_choice)
@@ -583,6 +591,10 @@ class CoinFlipBettyScreen(Screen):
                     self.money += self.bet
                     state.controller.isTPressed = False
                     self.game_state = "welcome_screen"
+                    self.weighted_coin = False
+                    self.debuff_counter -= 1
+
+
 
 
 
@@ -593,6 +605,9 @@ class CoinFlipBettyScreen(Screen):
                     roll = random.randint(1, 100)
                     if roll > 0:
                         self.game_state = "shield_screen"
+                        self.weighted_coin = False
+                        self.debuff_counter -= 1
+
                     # elif roll <= 90:
                     #
                     #     state.player.money -= self.bet
@@ -877,9 +892,9 @@ class CoinFlipBettyScreen(Screen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
-            # if "Focus" not in state.player.magicinventory:
-            #     self.magic_lock = True
-            #     self.welcome_screen_choices[1] = "Locked"
+            if self.debuff_counter > 0:
+                self.magic_lock = True
+                self.welcome_screen_choices[1] = "Locked"
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
@@ -1026,6 +1041,7 @@ class CoinFlipBettyScreen(Screen):
                     (start_x_right_box + 60, y_position + 15)
                 )
 
+
             if self.magicindex == 0:
                 state.DISPLAY.blit(
                     self.font.render("->", True, (255, 255, 255)),
@@ -1070,7 +1086,6 @@ class CoinFlipBettyScreen(Screen):
 
 
                 elif self.magicindex == 2:
-                    print(str(self.magic_menu_selector[1]))
                     self.game_state = "welcome_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
@@ -1123,84 +1138,6 @@ class CoinFlipBettyScreen(Screen):
         else:
             # Reset the flag when leaving the state to enable a new random message next time
             self.entered_shield_screen = False
-
-        if self.game_state == "play_again_screen":
-            ## this shows the coin
-            # image_to_display = self.heads_image if self.result == "heads" else self.tails_image
-            # image_rect = image_to_display.get_rect()
-            # image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
-            # state.DISPLAY.blit(image_to_display, image_rect)
-
-            if self.coinFlipFredDefeated == False:
-                self.coin_flip_messages["play_again_message"].update(state)
-                self.coin_flip_messages["play_again_message"].draw(state)
-
-                bet_box_width = 150
-                bet_box_height = 100
-                border_width = 5
-
-                screen_width, screen_height = state.DISPLAY.get_size()
-                bet_box_x = screen_width - bet_box_width - border_width - 30
-                bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
-
-                bet_box = pygame.Surface((bet_box_width, bet_box_height))
-                bet_box.fill((0, 0, 0))
-                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-                white_border.fill((255, 255, 255))
-                white_border.blit(bet_box, (border_width, border_width))
-
-                # Calculate text positions
-                text_x = bet_box_x + 40 + border_width
-                text_y_yes = bet_box_y + 20
-                text_y_no = text_y_yes + 40
-                # Draw the box on the screen
-                state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
-
-                # Draw the text on the screen (over the box)
-                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
-                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x , text_y_yes + 40))
-                arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
-                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-                # Set the initial arrow position to "Yes"
-
-                # Draw the arrow next to the selected option
-                # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-                # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-                # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-                #
-                # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-                # Here's a simple example using a triangle:
-                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
-            if state.controller.isTPressed:
-                if self.arrow_index == 0:
-
-                    if self.debuff_counter > 0:
-                        self.debuff_counter -= 1
-
-                        if self.debuff_counter == 0:
-                            self.debuff_vanish = False
-
-                    state.controller.isTPressed = False  # Reset the button state
-
-                    if state.player.stamina_points < 2 or state.player.money < 10:
-                        self.game_state = "game_over_screen"
-
-                    elif state.player.stamina_points > 1 or state.player.money > 9:
-                        self.game_state = "bet_screen"
-
-
-                else:
-                    self.arrow_index = 0
-                    self.game_state ="bet_screen"
-                    self.music_on = True
-                    self.debuff_vanish = False
-                    self.debuff_counter = 0
-
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
-
 
 
 
