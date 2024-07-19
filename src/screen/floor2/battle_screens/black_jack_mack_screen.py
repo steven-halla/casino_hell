@@ -271,24 +271,24 @@ class BlackJackMackScreen(Screen):
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
 
-            self.bet += 10
+            self.bet += 50
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(100)
             state.controller.isUpPressed = False
 
         elif state.controller.isDownPressed:
-            self.bet -= 10
+            self.bet -= 50
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(100)
             state.controller.isDownPressed = False
 
-        if self.bet < 10:
-            self.bet = 10
+        if self.bet < 50:
+            self.bet = 50
 
-        if self.bet > 100:
-            self.bet = 100
+        if self.bet > 200:
+            self.bet = 200
 
         if self.bet > self.cheater_bob_money:
             self.bet = self.cheater_bob_money
@@ -387,45 +387,9 @@ class BlackJackMackScreen(Screen):
                         self.welcome_screen_choices)
                     controller.isDownPressed = False
 
-        elif self.game_state == "hero_is_desperate_state":
-            self.npc_speaking = False
-            self.hero_speaking = True
-            self.hero_losing_money_text.update(state)
 
-            self.hero_losing_text_state = True
-
-            if self.hero_losing_money_text.is_finished():
-                self.npc_speaking = True
-                self.hero_speaking = False
-                self.enemy_winning_money_text.update(state)
-                if self.enemy_winning_money_text.is_finished():
-                    self.npc_speaking = False
-                    self.hero_speaking = True
-                    self.hero_losing_confused_money_text.update(state)
-                    if self.hero_losing_confused_money_text.is_finished():
-                        self.game_state = "welcome_screen"
 
                 # if self.enemy_winning_money_text.is_finished():
-                #     self.game_state = "welcome_screen"
-        elif self.game_state == "enemy_is_desperate_state":
-            self.npc_speaking = True
-            self.hero_speaking = False
-            self.enemy_losing_money_text.update(state)
-
-            self.hero_winning_text_state = True
-
-            if self.enemy_losing_money_text.is_finished():
-                self.npc_speaking = False
-                self.hero_speaking = True
-                self.hero_winning_money_text.update(state)
-                if self.hero_winning_money_text.is_finished():
-                    self.npc_speaking = True
-                    self.hero_speaking = False
-                    self.enemy_losing_confused_money_text.update(state)
-                    if self.enemy_losing_confused_money_text.is_finished():
-                        self.game_state = "welcome_screen"
-
-
 
 
         elif self.game_state == "bet_phase":

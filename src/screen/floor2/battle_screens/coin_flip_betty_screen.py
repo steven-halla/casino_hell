@@ -897,7 +897,7 @@ class CoinFlipBettyScreen(Screen):
 
             if self.debuff_counter > 0:
                 self.magic_lock = True
-                self.welcome_screen_choices[1] = CoinFlipConstants.LOCKED
+                self.welcome_screen_choices[1] = "Locked"
             else:
                 self.magic_lock = False
                 self.welcome_screen_choices[1] = "Magic"

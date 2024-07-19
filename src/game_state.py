@@ -132,7 +132,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.coinFlipBettyScreen
+        self.currentScreen = self.blackJackMackScreen
 
 
         self.start_new_game_entry_point = False
