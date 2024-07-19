@@ -3,6 +3,8 @@ import random
 import pygame
 
 from entity.gui.textbox.text_box import TextBox
+from game_constants.coin_flip_constants import CoinFlipConstants
+from game_constants.magic import Magic
 from screen.examples.screen import Screen
 
 
@@ -309,7 +311,7 @@ class CoinFlipBettyScreen(Screen):
             self.phase = 1
         # evens and odds
         if self.weighted_coin == True:
-            self.result = "heads"
+            self.result =  CoinFlipConstants.HEADS
         #
         if self.even == False and self.odd == False:
             coin_fate = random.randint(1, 2)
@@ -323,27 +325,27 @@ class CoinFlipBettyScreen(Screen):
         if self.even == True and self.weighted_coin == False:
 
             if self.phase == 1:
-                self.result = "heads"
+                self.result = CoinFlipConstants.HEADS
             elif self.phase == 2:
-                self.result = "tails"
+                self.result = CoinFlipConstants.TAILS
             elif self.phase == 3:
-                self.result = "heads"
+                self.result = CoinFlipConstants.HEADS
             elif self.phase == 4:
-                self.result = "tails"
+                self.result = CoinFlipConstants.TAILS
             elif self.phase == 5:
-                self.result = "heads"
+                self.result = CoinFlipConstants.HEADS
 
         elif self.odd == True and self.weighted_coin == False:
             if self.phase == 1:
-                self.result = "tails"
+                self.result = CoinFlipConstants.TAILS
             elif self.phase == 2:
-                self.result = "heads"
+                self.result = CoinFlipConstants.HEADS
             elif self.phase == 3:
-                self.result = "tails"
+                self.result = CoinFlipConstants.TAILS
             elif self.phase == 4:
-                self.result = "heads"
+                self.result = CoinFlipConstants.HEADS
             elif self.phase == 5:
-                self.result = "tails"
+                self.result = CoinFlipConstants.TAILS
 
         self.game_state = "results_screen"
 
@@ -471,8 +473,8 @@ class CoinFlipBettyScreen(Screen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
-            if "HEADS_FORCE" in state.player.magicinventory and "FORCE" not in self.magic_menu_selector:
-                self.magic_menu_selector.insert(1, "FORCE")
+            if Magic.HEADS_FORCE in state.player.magicinventory and Magic.FORCE not in self.magic_menu_selector:
+                self.magic_menu_selector.insert(1, Magic.FORCE )
 
             if state.controller.isUpPressed:
                 self.magicindex -= 1
@@ -535,7 +537,7 @@ class CoinFlipBettyScreen(Screen):
 
         if self.game_state == "results_screen":
             if self.weighted_coin == True:
-                self.result = "heads"
+                self.result = CoinFlipConstants.HEADS
             # if self.coinFlipTedMoney < 10:
             #     self.game_state = "enemy_defeated_screen"
 
@@ -633,7 +635,7 @@ class CoinFlipBettyScreen(Screen):
         if self.game_state == "shield_screen":
             # print("sheild time")
             if state.controller.isTPressed:
-                self.game_state = "play_again_screen"
+                self.game_state = "welcome_screen"
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
@@ -892,9 +894,13 @@ class CoinFlipBettyScreen(Screen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
+
             if self.debuff_counter > 0:
                 self.magic_lock = True
-                self.welcome_screen_choices[1] = "Locked"
+                self.welcome_screen_choices[1] = CoinFlipConstants.LOCKED
+            else:
+                self.magic_lock = False
+                self.welcome_screen_choices[1] = "Magic"
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
@@ -978,12 +984,12 @@ class CoinFlipBettyScreen(Screen):
 
             if state.controller.isTPressed:
                 if self.headstailsindex == 0:
-                    self.player_choice = "heads"
+                    self.player_choice = CoinFlipConstants.HEADS
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
                 elif self.headstailsindex == 1:
-                    self.player_choice = "tails"
+                    self.player_choice = CoinFlipConstants.TAILS
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
