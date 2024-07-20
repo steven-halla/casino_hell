@@ -30,7 +30,7 @@ class Player(Entity):
         self.focus_points = 55
         self.max_focus_points = 10
         self.perks = []
-        self.items = []
+        self.items = ["sir leopold's paw"]
         self.npc_items = []
         self.magicinventory = ["shield", "HEADS_FORCE" ]
         self.companions = []

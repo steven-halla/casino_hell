@@ -76,6 +76,10 @@ class BlackJackMackScreen(Screen):
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
 
+        self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
+        self.lucky_strike.set_volume(0.6)
+
+
         self.reveal_hand = 11
         self.magic_lock = False
         self.luck_of_jack = 7
@@ -409,10 +413,6 @@ class BlackJackMackScreen(Screen):
 
 
 
-
-
-
-
         elif self.game_state == "bet_phase":
 
             self.bet_screen_text.update(state)
@@ -472,42 +472,24 @@ class BlackJackMackScreen(Screen):
             print("Enemy hand is" + str(self.enemy_hand))
             if self.enemy_score > 20:
                 self.enemy_black_jack_win = True
-            if self.food_luck == True:
-                while self.enemy_score > 15:
-                    print("Redrawing hand, score too high: " + str(self.enemy_score))
-                    # Empty the enemy_hand array
-                    self.enemy_hand = []
-                    # Draw a new hand
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    print("New enemy hand is: " + str(self.enemy_hand))
-                    # Compute the score of the new hand
-                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                    print("New enemy score is: " + str(self.enemy_score))
-            elif self.food_luck == False:
-                while self.enemy_score > 17 and self.enemy_score < 21:
-                    print("Redrawing hand, score too high: " + str(self.enemy_score))
-                    # Empty the enemy_hand array
-                    self.enemy_hand = []
-                    # Draw a new hand
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    # Compute the score of the new hand
-                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                    print("New enemy hand is: " + str(self.enemy_hand))
-                    print("New enemy score is: " + str(self.enemy_score))
 
-                    # Check if the new score is exactly 21, and if so, redraw
-                    if self.enemy_score == 21:
-                        print("Score is 21, redrawing to avoid giving the enemy a 21.")
-                        # Redraw logic here (similar to above, you might want to loop back or redraw immediately)
-                        self.enemy_hand = []
-                        self.enemy_hand = self.deck.enemy_draw_hand(2)
-                        self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                        print("After redrawing to avoid 21, new enemy hand is: " + str(self.enemy_hand))
-                        print("After redrawing to avoid 21, new enemy score is: " + str(self.enemy_score))
+            if state.player.luck > 0:
+                # the below has a 15% chance per new hand to trigger
+                if self.player_score > 12 and self.player_score < 17:
+                    lucky_roll = random.randint(1, 100)  # Get a random number between 1 and 100
+                    adjusted_lucky_roll = lucky_roll + state.player.luck * 5
+                    if adjusted_lucky_roll >= 45:
+                        self.lucky_strike.play()  # Play the sound effect once
+
+                        self.player_hand = self.deck.player_draw_hand(2)
+                        print("New Player hand is" + str(self.player_hand))
+                        self.player_score = self.deck.compute_hand_value(self.player_hand)
+                        print(" New Player score is: " + str(self.player_score))
 
             if "sir leopold's paw" in state.player.items:
+                print("Sir leo dsfsfsafsfdsafsfassadafdafafsafad")
                 roll = random.randint(1, 100)  # Get a random number between 1 and 100
-                if roll >= 30:  # Check if the roll is less than or equal to 30
+                if roll >= 40:  # Check if the roll is less than or equal to 30
                     self.enemy_black_jack_win = False
 
                     for card in self.enemy_hand:
