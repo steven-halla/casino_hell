@@ -809,7 +809,6 @@ class BlackJackMackScreen(Screen):
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
                 self.first_message_display = f"You gain 100 exp and {self.bet * 2} gold "
-                print("<<<<????????????>>>>" + str(state.player.exp))
 
 
 
@@ -817,7 +816,6 @@ class BlackJackMackScreen(Screen):
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.second_message_display = "It's a draw press T when ready"
                 self.first_message_display = f"You gain 25 exp and 0 gold "
-                print("nd;>>>>>>>>>>>>>>;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
@@ -826,7 +824,6 @@ class BlackJackMackScreen(Screen):
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.second_message_display = "Enemy gets blackjack you lose "
                 self.first_message_display = f"You gain 30 exp and 0 gold "
-                print("nd;asasasasasasasss;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
@@ -835,19 +832,10 @@ class BlackJackMackScreen(Screen):
             elif self.player_score > self.enemy_score and self.player_score < 22:
                 self.second_message_display = "You win player press T when ready"
                 self.first_message_display = f"You gain 25 exp and {self.bet} gold "
-                print("nd;3fefefefefefefeefefe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
 
             elif self.player_score < self.enemy_score and self.enemy_score < 22:
                 self.second_message_display = "You lose player press T when ready"
                 self.first_message_display = f"You gain 5 experience and lose {self.bet} gold "
-                print("nd;OIJJJLJLJJJKJKJKJJJJKJIJIJIJIJJ;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
 
 
             elif self.player_score == self.enemy_score:
@@ -1169,10 +1157,8 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "defeated":
-            print("enemy defeated")
             self.defeated_textbox.draw(state)
             if self.defeated_textbox.message_index == 2:
-                print("moogles")
                 state.player.canMove = True
 
                 state.currentScreen = state.chilliScreen
@@ -1271,7 +1257,6 @@ class BlackJackMackScreen(Screen):
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
 
-                    print("code is broke right here")
                     if self.despair == False:
                         self.game_state = "enemy_draw_one_card"
                     elif self.despair == True:
@@ -1285,7 +1270,6 @@ class BlackJackMackScreen(Screen):
                     (637, 305))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
-                    print("Time to draw a card")
                     self.game_state = "player_draw_one_card"
                     self.isTPressed = False
 
@@ -1330,16 +1314,7 @@ class BlackJackMackScreen(Screen):
 
             # Blit the white-bordered black box onto the display
             state.DISPLAY.blit(white_border, (position_x, position_y))
-            # black_box.fill((0, 0, 0))
-            # # Create the white border
-            # border_width = 5
-            # white_border = pygame.Surface(
-            #     (170 + 2 * border_width, 215 + 2 * border_width))
-            # white_border.fill((255, 255, 255))
-            # black_box = pygame.Surface((170, 215))
-            # black_box.fill((0, 0, 0))
-            # white_border.blit(black_box, (border_width, border_width))
-            # state.DISPLAY.blit(white_border, (620 - 20, 190))
+
 
             # Use the provided position variables
             # Determine the position on the screen
