@@ -318,9 +318,7 @@ class BlackJackMackScreen(Screen):
             print("enemy defeated")
             self.defeated_textbox.update(state)
 
-        #
-        # print("p: " + self.hand_to_str(self.player_hand))
-        # print("e: " + self.hand_to_str(self.enemy_hand))
+
 
         if self.game_state == "welcome_screen":
 
@@ -333,8 +331,7 @@ class BlackJackMackScreen(Screen):
             self.npc_speaking = True
             self.hero_speaking = False
 
-            # self.second_message_display = "Press the T key, which is our action key"
-            # self.third_message_display = "To go forward with the game"
+
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
             self.bust_protection = False
@@ -842,7 +839,6 @@ class BlackJackMackScreen(Screen):
 
                 self.second_message_display = "It's a draw nobody wins press T when Ready"
                 self.first_message_display = f"You gain 25 exp and 0 gold "
-                print("nd;3434343434343;aaaaaaaaaaaaa;fnlsnfsanf;" + str(state.player.exp))
 
             if controller.isTPressed:
 
