@@ -21,7 +21,7 @@ class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
-        self.money = 1000
+        self.money = 2000
         self.deck = Deck()
 
 
@@ -32,6 +32,7 @@ class BlackJackMackScreen(Screen):
         self.ace_up_sleeve_jack_cheat_mode = False
 
         self.black_jack_rumble_bill_defeated = False
+        self.critical_hit = False
 
         self.first_message_display = ""
         self.second_message_display = ""
@@ -78,6 +79,14 @@ class BlackJackMackScreen(Screen):
 
         self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
+
+
+
+        self.double_draw_casting = False
+        self.player_debuff_double_draw = 0
+        self.magic_points = 3
+
+
 
 
         self.reveal_hand = 11
@@ -184,6 +193,11 @@ class BlackJackMackScreen(Screen):
                 "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..(-100 golds)",
             ],
 
+            "score_critical_hit_message": ["luck is on your side,  hand re shuffled.", ""
+                                  ],
+            "magic_enemy_attack_double_draw": ["You have been affected by double draw, while affected the draw command draws twice", ""
+                                           ],
+
         }
 
         self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"],
@@ -238,6 +252,10 @@ class BlackJackMackScreen(Screen):
             self.messages["player_no_money_explain"], (50, 450, 50, 45), 30, 500)
         self.player_no_stamina = TextBox(
             self.messages["player_no_stamina_explain"], (50, 450, 50, 45), 30, 500)
+        self.score_critical_hit_message_component = TextBox(
+            self.messages["score_critical_hit_message"], (50, 450, 50, 45), 30, 500)
+        self.magic_enemy_attack_double_draw_message_component = TextBox(
+            self.messages["magic_enemy_attack_double_draw"], (50, 450, 50, 45), 30, 500)
 
 
 
@@ -334,6 +352,7 @@ class BlackJackMackScreen(Screen):
 
             self.npc_speaking = True
             self.hero_speaking = False
+            self.critical_hit = False
 
 
             self.redraw_lock = False
@@ -394,6 +413,18 @@ class BlackJackMackScreen(Screen):
                     for i in range(0, self.bet, 50):
                         state.player.stamina_points -= 4
                     self.deck.shuffle()
+
+                    if self.player_debuff_double_draw <= 0 and self.money < 1500 and self.magic_points > 0:
+                        enemy_magic_cast = random.randint(1, 100)
+
+                        enemy_magic_cast_modifier = self.magic_points * 5
+
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= 70:
+                            self.game_state = "double_draw_casting_phase"
+
+
+
+
 
                     self.game_state = "draw_phase"
 
@@ -479,15 +510,16 @@ class BlackJackMackScreen(Screen):
                     lucky_roll = random.randint(1, 100)  # Get a random number between 1 and 100
                     adjusted_lucky_roll = lucky_roll + state.player.luck * 5
                     if adjusted_lucky_roll >= 45:
+                        print("You got a critical hit: dslajfldsjfjsalfjlsjfl;sjfklsjaf;lksjaflksajf;lskajflsjf;saljf;lkasjfl;akjf;lksajfl;sajf;lkasjf;lsjf;lajsfl;")
                         self.lucky_strike.play()  # Play the sound effect once
 
                         self.player_hand = self.deck.player_draw_hand(2)
                         print("New Player hand is" + str(self.player_hand))
                         self.player_score = self.deck.compute_hand_value(self.player_hand)
                         print(" New Player score is: " + str(self.player_score))
+                        self.critical_hit = True
 
             if "sir leopold's paw" in state.player.items:
-                print("Sir leo dsfsfsafsfdsafsfassadafdafafsafad")
                 roll = random.randint(1, 100)  # Get a random number between 1 and 100
                 if roll >= 40:  # Check if the roll is less than or equal to 30
                     self.enemy_black_jack_win = False
@@ -558,6 +590,13 @@ class BlackJackMackScreen(Screen):
             self.player_hand += self.deck.player_draw_hand(1)
             self.deck.compute_hand_value(self.player_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+
+
+            if self.player_debuff_double_draw > 0:
+                self.player_hand += self.deck.player_draw_hand(1)
+                self.deck.compute_hand_value(self.player_hand)
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
 
             if self.player_score > 10:
                 print("hi greater than 10")
@@ -954,7 +993,11 @@ class BlackJackMackScreen(Screen):
 
                 pygame.time.wait(300)
                 print("Hey there going to the welcome_screen")
+                if self.player_debuff_double_draw > 0:
+                    self.player_debuff_double_draw -= 1
+                    print("Player debuff turns left: " + str (self.player_debuff_double_draw))
 
+                    print("printing 976")
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
@@ -1132,6 +1175,13 @@ class BlackJackMackScreen(Screen):
             self.welcome_screen_text_box.draw(state)
             # self.welcome_screen_text_box_hero.draw(state)
             # self.bordered_text_box.draw(state)
+
+        elif self.game_state == "draw_phase":
+            if self.critical_hit == True:
+                self.score_critical_hit_message_component.update(state)
+
+                self.score_critical_hit_message_component.draw(state)
+
 
 
         elif self.game_state == "defeated":
