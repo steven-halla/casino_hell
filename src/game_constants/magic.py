@@ -1,7 +1,8 @@
 
 
+from enum import Enum
 
-class Magic:
+class Magic(Enum):
     HEADS_FORCE = "HEADS_FORCE"
     FORCE = "FORCE"
     SLOTS_HACK = "SLOTS_HACK"

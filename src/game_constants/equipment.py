@@ -1,6 +1,7 @@
 
+from enum import Enum
 
-class Equipment:
+class Equipment(Enum):
     BLACK_JACK_HAT = "BLACK_JACK_HAT"
     HIPPO_SHOES = "HIPPO_SHOES"
     GOURMAND_HAT = "GOURMAND_HAT"

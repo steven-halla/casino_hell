@@ -1,5 +1,6 @@
+from enum import Enum
 
-class Events:
+class Events(Enum):
     QUEST_1_BADGE = "QUEST_1_BADGE"
     QUEST_1_COIN = "QUEST_1_COIN"
     QUEST_1_COMPLETE = "QUEST_1_COMPLETE"
@@ -8,3 +9,9 @@ class Events:
     MC_NUGGET_FIRST_QUEST_COMPLETE = "MC_NUGGET_FIRST_QUEST_COMPLETE"
     MC_NUGGET_SECOND_QUEST_COMPLETE = "MC_NUGGET_SECOND_QUEST_COMPLETE"
     MC_NUGGET_THIRD_QUEST_COMPLETE = "MC_NUGGET_THIRD_QUEST_COMPLETE"
+
+
+    @staticmethod
+    def add_event_to_player(player, event):
+        if event.value not in player.npc_items:
+            player.npc_items.append(event.value)

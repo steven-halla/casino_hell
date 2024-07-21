@@ -131,6 +131,7 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
         if state.controller.isAPressed:
+
             print("Your nPc inventory issss:::   " + str(state.player.npc_items))
 
 

@@ -4,6 +4,7 @@ import pygame
 
 from entity.gui.textbox.text_box import TextBox
 from game_constants.coin_flip_constants import CoinFlipConstants
+from game_constants.events import Events
 from game_constants.magic import Magic
 from screen.examples.screen import Screen
 
@@ -57,7 +58,7 @@ class CoinFlipBettyScreen(Screen):
 
         self.bet = 50
         self.font = pygame.font.Font(None, 36)
-        self.money = 1000
+        self.money = 500
 
 
 
@@ -424,6 +425,9 @@ class CoinFlipBettyScreen(Screen):
                 controller.isTPressed = False
 
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
+                if self.money < 1500:
+                    Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
+
                 state.currentScreen = state.area2StartScreen
                 controller.isTPressed = False
 
@@ -690,6 +694,8 @@ class CoinFlipBettyScreen(Screen):
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
+                Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 

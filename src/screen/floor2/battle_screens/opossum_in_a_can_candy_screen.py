@@ -4,6 +4,7 @@ from typing import List
 import pygame
 
 from entity.gui.textbox.text_box import TextBox
+from game_constants.events import Events
 from screen.examples.screen import Screen
 
 
@@ -25,6 +26,8 @@ class OpossumInACanCandyScreen(Screen):
 
         self.sallyOpossumIsDefeated = False
         self.magic_points = 1
+
+        self.opossum_coin = False
 
 
         self.opossum_font = pygame.font.Font(None, 36)
@@ -695,6 +698,9 @@ class OpossumInACanCandyScreen(Screen):
                     self.music_on = True
                     self.debuff_keen_perception = False
                     self.play_again_or_quit_index = 0
+                    if self.sallyOpossumMoney < 1500:
+                        Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+
                     state.currentScreen = state.gamblingAreaScreen
                     state.gamblingAreaScreen.start(state)
 
@@ -714,6 +720,8 @@ class OpossumInACanCandyScreen(Screen):
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
                 self.music_on = True
+                Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
 
@@ -722,6 +730,7 @@ class OpossumInACanCandyScreen(Screen):
             self.opossumInACanMessages["real_opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
                 self.music_on = True
+                Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)
