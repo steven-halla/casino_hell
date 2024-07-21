@@ -21,7 +21,7 @@ class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
-        self.money = 1400
+        self.money = 2000
         self.deck = Deck()
 
 
@@ -195,7 +195,7 @@ class BlackJackMackScreen(Screen):
 
             "score_critical_hit_message": ["luck is on your side,  hand re shuffled.", ""
                                   ],
-            "magic_enemy_attack_double_draw": ["You have been affected by double draw, while affected the draw command draws twice", ""
+            "magic_enemy_attack_double_draw": ["Walking into a fog of confusion, forget and let your brain soak in the mist. Let your reality shift and increase times 2...double draw", ""
                                            ],
 
         }
@@ -432,7 +432,7 @@ class BlackJackMackScreen(Screen):
 
                         enemy_magic_cast_modifier = self.magic_points * 10
 
-                        if enemy_magic_cast + enemy_magic_cast_modifier >= 10:
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= 80:
                             print("436")
 
                             self.player_debuff_double_draw += 10
