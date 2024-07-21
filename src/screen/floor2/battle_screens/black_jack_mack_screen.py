@@ -10,12 +10,12 @@ from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
 
-# if a player has 3 cards, then an ace value is equal to one
-# ace should be set that if a value is less than 10, then at least one of them should be
-# set to 11
-# need to set up test cases for many up to having 4 aces in hand
 
-# betting is also broken, a black jack should net X 2 winnings
+
+
+
+
+# DO NOT ALLOW PLAYER TO LEAVE WHEN ENEMY USES ABILITY
 
 class BlackJackMackScreen(Screen):
     def __init__(self):

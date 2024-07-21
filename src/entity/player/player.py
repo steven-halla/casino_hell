@@ -32,7 +32,7 @@ class Player(Entity):
         self.perks = []
         self.items = ["sir leopold's paw"]
         self.npc_items = []
-        self.magicinventory = ["shield", "HEADS_FORCE" ]
+        self.magicinventory = ["shield", "HEADS_FORCE" , "shake" ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False

@@ -45,6 +45,7 @@ from screen.floor2.battle_screens.black_jack_mack_screen import BlackJackMackScr
 from screen.floor2.battle_screens.coin_flip_betty_screen import CoinFlipBettyScreen
 from screen.floor2.battle_screens.craps import Craps
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
+from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
 from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
@@ -128,11 +129,13 @@ class GameState:
         self.craps = Craps()
         self.coinFlipBettyScreen = CoinFlipBettyScreen()
         self.blackJackMackScreen = BlackJackMackScreen()
+        self.opossumInACanCandyScreen = OpossumInACanCandyScreen()
 
 
 
 
-        self.currentScreen = self.blackJackMackScreen
+        self.currentScreen = self.opossumInACanCandyScreen
+
 
 
         self.start_new_game_entry_point = False
