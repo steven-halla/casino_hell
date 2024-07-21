@@ -45,7 +45,7 @@ class TextBox(Entity):
 
     def reset(self):
         """Resets the TextBox to its initial state."""
-        print("Time to reset")
+        # print("Time to reset")
         self.message_index = 0
         self.characters_to_display = 0
         self.time = pygame.time.get_ticks()  # Reset the timer as well

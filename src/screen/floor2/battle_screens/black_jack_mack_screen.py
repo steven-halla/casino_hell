@@ -21,7 +21,7 @@ class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
-        self.money = 2000
+        self.money = 1400
         self.deck = Deck()
 
 
@@ -353,6 +353,7 @@ class BlackJackMackScreen(Screen):
             self.npc_speaking = True
             self.hero_speaking = False
             self.critical_hit = False
+            self.magic_enemy_attack_double_draw_message_component.reset()
 
 
             self.redraw_lock = False
@@ -414,19 +415,33 @@ class BlackJackMackScreen(Screen):
                         state.player.stamina_points -= 4
                     self.deck.shuffle()
 
-                    if self.player_debuff_double_draw <= 0 and self.money < 1500 and self.magic_points > 0:
+
+
+                    if self.player_debuff_double_draw <= 0 and self.money < 300 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
 
-                        enemy_magic_cast_modifier = self.magic_points * 5
+                        enemy_magic_cast_modifier = self.magic_points * 10
 
-                        if enemy_magic_cast + enemy_magic_cast_modifier >= 70:
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= 35:
+                            self.player_debuff_double_draw += 10
+                            self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
 
+                    elif self.player_debuff_double_draw <= 0 and self.money < 1500 and self.magic_points > 0:
+                        enemy_magic_cast = random.randint(1, 100)
 
+                        enemy_magic_cast_modifier = self.magic_points * 10
 
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= 10:
+                            print("436")
 
+                            self.player_debuff_double_draw += 10
+                            self.magic_points -= 1
+                            self.game_state = "double_draw_casting_phase"
 
-                    self.game_state = "draw_phase"
+                    else:
+                        self.game_state = "draw_phase"
+
 
                     controller.isTPressed = False
                 elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
@@ -442,6 +457,11 @@ class BlackJackMackScreen(Screen):
                     state.currentScreen = state.area2StartScreen
                     controller.isTPressed = False
 
+        elif self.game_state == "double_draw_casting_phase":
+            self.magic_enemy_attack_double_draw_message_component.update(state)
+            if self.magic_enemy_attack_double_draw_message_component.message_index == 1:
+                print("Hi there")
+                self.game_state = "draw_phase"
 
 
         elif self.game_state == "bet_phase":
@@ -1184,6 +1204,13 @@ class BlackJackMackScreen(Screen):
 
 
 
+        elif self.game_state == "double_draw_casting_phase":
+            self.magic_enemy_attack_double_draw_message_component.draw(state)
+
+
+
+
+
         elif self.game_state == "defeated":
             self.defeated_textbox.draw(state)
             if self.defeated_textbox.message_index == 2:
@@ -1263,9 +1290,14 @@ class BlackJackMackScreen(Screen):
                 self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
                 (674, 260))
 
-            state.DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (674, 310))
+            if self.player_debuff_double_draw < 1:
+                state.DISPLAY.blit(
+                    self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
+                    (674, 310))
+            elif self.player_debuff_double_draw > 0:
+                state.DISPLAY.blit(
+                    self.font.render(f"D Draw", True, (255, 255, 255)),
+                    (674, 310))
 
             if self.avatar_of_luck == True and self.redraw_lock == False:
                 state.DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)),
