@@ -8,6 +8,7 @@ from entity.npc.area2.area_2_start_screen.lunky import Lunky
 from entity.npc.area2.area_2_start_screen.mcnugget import MCNugg
 from entity.npc.area2.area_2_start_screen.natasha import Natasha
 from entity.npc.area2.area_2_start_screen.nibblet import Nibblet
+from entity.npc.area2.area_2_start_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.npc.area2.area_2_start_screen.slots_rippa_snappa import SlotsRippaSnappa
 from game_constants.events import Events
@@ -50,6 +51,7 @@ class Area2StartScreen(Screen):
             Lunky(16 * 26, 16 * 45),
             Natasha(16 * 36, 16 * 45),
             MCNugg(16 * 45, 16 * 45),
+            OpossumInACanCandy(16 * 55, 16 * 45),
 
         ]
 

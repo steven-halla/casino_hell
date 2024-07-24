@@ -134,7 +134,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.opossumInACanCandyScreen
+        self.currentScreen = self.startLoadScreen
 
 
 

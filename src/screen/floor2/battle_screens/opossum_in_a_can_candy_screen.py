@@ -701,8 +701,8 @@ class OpossumInACanCandyScreen(Screen):
                     if self.sallyOpossumMoney < 1500:
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
+                    state.currentScreen = state.area2StartScreen
+                    state.area2StartScreen.start(state)
 
 
         if self.game_state == "spell_casting_poison":
