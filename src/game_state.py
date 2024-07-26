@@ -4,7 +4,6 @@ import json
 
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
-from entity.npc.area2.area_2_start_screen.slots_rippa_snappa import SlotsRippaSnappa
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
@@ -30,7 +29,6 @@ from screen.floor1.map_screens.gambling_area_screen import GamblingAreaScreen
 from screen.floor1.map_screens.game_over_screen import GameOverScreen
 from screen.floor1.map_screens.hedge_maze_screen import HedgeMazeScreen
 from screen.floor1.map_screens.hotel_room_screen import HotelRoomScreen
-from screen.examples.main_screen import MainScreen
 from screen.floor1.battle_screens.opossumInACanIchi import OpossumInACanIchiScreen
 # from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 # from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen

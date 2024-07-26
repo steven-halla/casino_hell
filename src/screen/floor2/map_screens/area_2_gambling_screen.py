@@ -2,18 +2,12 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.demon.demon1 import Demon1
-from entity.npc.area2.area_2_start_screen.alex import Alex
-from entity.npc.area2.area_2_start_screen.alice import Alice
-from entity.npc.area2.area_2_start_screen.area_2_gambling_area import Area2GamblingArea
-from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
-from entity.npc.area2.area_2_start_screen.lunky import Lunky
-from entity.npc.area2.area_2_start_screen.natasha import Natasha
-from entity.npc.area2.area_2_start_screen.nibblet import Nibblet
+from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
+from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
+from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
+from entity.npc.area2.area_2_start_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.player.player import Player
-from entity.treasurechests.blueflower import BlueFlower
-from entity.treasurechests.powerpotion import PowerPotion
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -98,13 +92,11 @@ class Area2GamblingScreen(Screen):
         # state.npcs = []
 
         state.npcs = [
-            Alice(16 * 5, 16 * 15),
-            Johnathon(16 * 15, 16 * 15),
-            Nibblet(16 * 25, 16 * 15),
-            Alex(16 * 16, 16 * 45),
-            Lunky(16 * 26, 16 * 45),
-            Natasha(16 * 36, 16 * 45),
-            Area2GamblingArea(16 * 17, 16 * 0)
+            BlackJackMack(16 * 5, 16 * 5),
+            OpossumInACanCandy(16 * 15, 16 * 5),
+            CoinFlipBetty(16 * 25, 16 * 5),
+            SlotsRippaSnappa(16 * 35, 16 * 5),
+
 
 
         ]

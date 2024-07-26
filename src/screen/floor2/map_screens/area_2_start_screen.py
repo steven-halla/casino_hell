@@ -1,17 +1,9 @@
 import pygame
 import pytmx
 from constants import PLAYER_OFFSET
-from entity.npc.area2.area_2_start_screen.alex import Alex
 from entity.npc.area2.area_2_start_screen.alice import Alice
-from entity.npc.area2.area_2_start_screen.coin_flip_betty import CoinFlipBetty
-from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
-from entity.npc.area2.area_2_start_screen.lunky import Lunky
-from entity.npc.area2.area_2_start_screen.mcnugget import MCNugg
-from entity.npc.area2.area_2_start_screen.natasha import Natasha
-from entity.npc.area2.area_2_start_screen.nibblet import Nibblet
-from entity.npc.area2.area_2_start_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
-from entity.npc.area2.area_2_start_screen.slots_rippa_snappa import SlotsRippaSnappa
+from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
 from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle

@@ -1,36 +1,22 @@
-
-
 import math
 import pygame
-
-
+from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
-from game_constants.events import Events
-from game_constants.magic import Magic
 
-
-# in order to get this quest to work:
-# if you win 500 coins get a coin
-# if you win 500 coins from two games those coins become mega coin.
-# if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class CoinFlipBetty(Npc):
+class SlotsRippaSnappa(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-
-        # Integrated textbox content into guy_messages
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Betty: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
+                ["RibDemonJackRipper: Kee kee kee you want to play some slots?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["Well you got all my coins I dont know what to say."],
                 (50, 450, 700, 130), 36, 500),
 
-            "rabies_message": NpcTextBox(
-                ["GET AWAY FROM ME YOU FROTHY MOUTHED BASTARD."],
-                (50, 450, 700, 130), 36, 500),
+
 
         }
         self.choices = ["Yes", "No"]
@@ -43,8 +29,9 @@ class CoinFlipBetty(Npc):
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
 
+
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Reporter.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -82,6 +69,7 @@ class CoinFlipBetty(Npc):
         )
         current_message.update(state)
 
+
         # Lock the player in place while talking
         state.player.canMove = False
 
@@ -105,8 +93,8 @@ class CoinFlipBetty(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                state.currentScreen = state.coinFlipBettyScreen
-                state.coinFlipBettyScreen.start(state)
+                state.currentScreen = state.slotsRippaSnappaScreen
+                state.slotsRippaSnappaScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
