@@ -21,7 +21,7 @@ class MCNugg(Npc):
         self.npc_messages = {
             "no_level_6": NpcTextBox(
                 [
-                    "MC Nugg: Yo Cuzz, sorry but you need to level up to level 6. My other quests needs a perception of 2, do you dig me?. ",
+                    "MC Nugg: Yo Cuzz,  My other quests needs a perception of 2, do you dig me?. ",
 
 
                 ],
