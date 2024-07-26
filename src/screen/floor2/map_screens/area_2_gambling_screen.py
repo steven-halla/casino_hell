@@ -19,12 +19,12 @@ from physics.rectangle import Rectangle
 
 
 
-class Area2RestScreen(Screen):
+class Area2GamblingScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/gamblingarea.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False
@@ -34,11 +34,19 @@ class Area2RestScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
+
+
+
         self.clock = pygame.time.Clock()  # Initialize the clock
+
+
+
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -59,13 +67,35 @@ class Area2RestScreen(Screen):
     def start(self, state: "GameState"):
 
 
+        if state.area_2_rest_area_to_gambling_point == True:
+            player_start_x = 16 * 18  # Desired X coordinate
+            player_start_y = 16 * 51  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.area_2_rest_area_to_gambling_point = False
+
+
+
+
         self.stop_music()
         if state.musicOn == True:
             self.initialize_music()
         super().start(state)
         state.npcs.clear()
 
+        # Check if a player instance already exists
+        # if not hasattr(state, 'player') or state.player is None:
+        #     player_start_x = 300
+        #     player_start_y = 200
+        #     state.player = Player(player_start_x, player_start_y)
 
+        state.treasurechests = [
+
+            # WaterBottle(16 * 36, 16 * 10),
+
+        ]
+        # Check the value of state.player.body
+
+        # state.npcs = []
 
         state.npcs = [
             Alice(16 * 5, 16 * 15),
@@ -75,6 +105,8 @@ class Area2RestScreen(Screen):
             Lunky(16 * 26, 16 * 45),
             Natasha(16 * 36, 16 * 45),
             Area2GamblingArea(16 * 17, 16 * 0)
+
+
         ]
 
     def update(self, state: "GameState"):
@@ -86,12 +118,30 @@ class Area2RestScreen(Screen):
         controller.update()
 
 
+        #the below speeds up text speech
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     if isinstance(npc, Nurgle) and npc.to_be_deleted:
+        #         state.npcs.remove(npc)
+
         for npc in state.npcs:
             npc.update(state)
 
 
+
+
+
+
         if controller.isExitPressed is True:
             state.isRunning = False
+
+
+
+
+        #
+        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
+        #     coinMonicle = "coin monicle"
+        #     state.player.items.append(coinMonicle)
 
         if controller.isUpPressed:
 
@@ -150,7 +200,12 @@ class Area2RestScreen(Screen):
     def draw(self, state: "GameState"):
 
         state.DISPLAY.fill(BLUEBLACK)
-
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player money: {state.player.money}",
+        #     True, (255, 255, 255)), (333, 333))
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player stamina points: {state.player.stamina_points}",
+        #     True, (255, 255, 255)), (333, 388))
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth

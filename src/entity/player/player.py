@@ -49,13 +49,10 @@ class Player(Entity):
         self.shop_keep_potion = False
         self.shop_keep_save_coin = False
         self.current_frame_index = 0  # Current index in the sprite list
-
         # Timer for sprite animation
         self.sprite_animation_timer = 0
         self.sprite_animation_interval = 500  # 500 milliseconds (0.5 seconds) per frame
-
         self.left_animation_frames = []  # Holds frames for left movement animation
-
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
         # TODO refrence the images with relative paths
@@ -64,17 +61,12 @@ class Player(Entity):
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (63, 146, 17.9, 26)]
         self.down_frames = [(28, 120, 18, 26), (45, 120, 18, 26), (63, 120, 17.9, 26)]
-
         self.up_frames = [(29, 172, 18, 26), (47, 172, 18, 26), (64, 172, 17.9, 26)]
-
-
         # Set the initial direction and frame index.
         self.current_direction = 'down'  # Default direction
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
         self.music_volume = 0.5  # Adjust as needed
-
         self.level_two_npc_state = []
-
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -126,24 +118,11 @@ class Player(Entity):
         }
 
 
-
-
-
     def update(self, state: "GameState"):
         if state.controller.isAPressed:
 
             print("Your nPc inventory issss:::   " + str(state.player.npc_items))
             print("Your level 2 NPC state  issss:::   " + str(state.player.level_two_npc_state))
-
-
-
-        # if self.money < 1:
-        #     state.currentScreen = state.gameOverScreen
-        #     state.gameOverScreen.start(state)
-
-
-
-
 
 
 
@@ -310,13 +289,6 @@ class Player(Entity):
     def draw(self, state):
         sprite = None  # Initialize sprite to None
 
-        # # down image
-        # sprite_rect = pygame.Rect(22, 120, 24, 26)
-        # sprite = self.down_sprite.subsurface(sprite_rect)
-        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
-        # sprite_x = self.collision.x + state.camera.x - 20
-        # sprite_y = self.collision.y + state.camera.y - 10
-        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         if self.current_direction == 'up':
             # Define the rectangle for the up sprite
             frame_rect = self.up_frames[self.current_frame_index]

@@ -14,9 +14,7 @@ class Natasha(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: Rabies is very scary, I already had to get my shot before, you start frothing at the mouth very early.",
-                    "Hero: What kind of casino is this? How is this even legal?",
-                    "Suzy: The kind that everyone regrets going to, unless of course you make it to the upper levels.",
+                    "Natasha: Rabiesrt frothing at the mouth very early.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

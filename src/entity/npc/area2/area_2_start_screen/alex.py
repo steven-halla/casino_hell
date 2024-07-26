@@ -23,9 +23,6 @@ class Alex(Npc):
             "default_message": NpcTextBox(
                 [
                     "Alex: I have  a simple quest for you: win 500 coins from the coin flip and oppossum in a can game in ONE SITTING",
-                    "Hero: So you want me to win 500 coins from coin flip, then win 500 coins from opposum in a can, without resting in between",
-                    "Alex: That is correct. I'll give you something extra special if you can pull it off.You can use a save coin if you like, but I wouldnt suggest it"
-                    "Hero: This should be easy enough. And yah I agree , save coins are rare afterall. "
 
                 ],
                 (50, 450, 50, 45), 30, 500

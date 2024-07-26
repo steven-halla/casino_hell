@@ -47,6 +47,7 @@ from screen.floor2.battle_screens.craps import Craps
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
 from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
 from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
+from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
@@ -126,6 +127,7 @@ class GameState:
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
         self.area2RestScreen = Area2RestScreen()
+        self.area2GamblingScreen = Area2GamblingScreen()
 
 
 
@@ -155,6 +157,10 @@ class GameState:
         self.rest_area_to_start_area_entry_point = False
         self.rest_area_to_gambling_area_entry_point = False
         self.rest_area_to_chili_area_entry_point = False
+
+        self.area_2_rest_area_to_gambling_point = False
+        self.area_2_gambling_area_to_rest_point = False
+
 
 
 

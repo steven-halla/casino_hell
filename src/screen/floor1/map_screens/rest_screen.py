@@ -97,7 +97,7 @@ class RestScreen(Screen):
 
     def start(self, state: "GameState"):
 
-
+        # receiving
         if state.start_area_to_rest_area_entry_point == True:
             player_start_x = 16 * 94  # Desired X coordinate
             player_start_y = 16 * 3  # Desired Y coordinate
