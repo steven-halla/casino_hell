@@ -26,6 +26,7 @@ class OpossumInACanCandyScreen(Screen):
 
         self.sallyOpossumIsDefeated = False
         self.magic_points = 1
+        self.quest_money = 0
 
         self.opossum_coin = False
 
@@ -345,6 +346,7 @@ class OpossumInACanCandyScreen(Screen):
 
 
             self.player_score = 0
+            self.quest_money -= 300
             if "opossum repellent" in state.player.items:
                 state.player.stamina_points -= 25
             elif "opossum repellent" not in state.player.items:
@@ -415,12 +417,14 @@ class OpossumInACanCandyScreen(Screen):
                     self.total_winnings = self.player_score
                     state.player.money += self.player_score
                     self.sallyOpossumMoney -= self.player_score
+                    self.quest_money += self.player_score
 
 
                 elif self.player_score > self.sallyOpossumMoney:
 
                     self.total_winnings = self.sallyOpossumMoney
                     state.player.money += self.total_winnings
+                    self.quest_money += self.total_winnings
                     self.sallyOpossumMoney = 0
 
                 self.tally_money_once = False
@@ -698,7 +702,7 @@ class OpossumInACanCandyScreen(Screen):
                     self.music_on = True
                     self.debuff_keen_perception = False
                     self.play_again_or_quit_index = 0
-                    if self.sallyOpossumMoney < 1500:
+                    if self.quest_money >= 500:
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
                     state.currentScreen = state.area2StartScreen

@@ -3,6 +3,7 @@ import pytmx
 from constants import PLAYER_OFFSET
 from entity.npc.area2.area_2_start_screen.alex import Alex
 from entity.npc.area2.area_2_start_screen.alice import Alice
+from entity.npc.area2.area_2_start_screen.coin_flip_betty import CoinFlipBetty
 from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_start_screen.lunky import Lunky
 from entity.npc.area2.area_2_start_screen.mcnugget import MCNugg
@@ -45,13 +46,14 @@ class Area2StartScreen(Screen):
         state.npcs =[
             SlotsRippaSnappa(16 * 18, 16 * 22),
             Alice(16 * 24, 16 * 33),
-            Johnathon(16 * 30, 16 * 33),
-            Nibblet(16 * 40, 16 * 33),
-            Alex(16 * 16, 16 * 45),
-            Lunky(16 * 26, 16 * 45),
-            Natasha(16 * 36, 16 * 45),
-            MCNugg(16 * 45, 16 * 45),
-            OpossumInACanCandy(16 * 55, 16 * 45),
+            # Johnathon(16 * 30, 16 * 33),
+            # Nibblet(16 * 40, 16 * 33),
+            # Alex(16 * 16, 16 * 45),
+            # Lunky(16 * 26, 16 * 45),
+            # Natasha(16 * 36, 16 * 45),
+            # MCNugg(16 * 45, 16 * 45),
+            # OpossumInACanCandy(16 * 55, 16 * 45),
+            # CoinFlipBetty(16 * 55, 16 * 35),
 
         ]
 
@@ -62,8 +64,17 @@ class Area2StartScreen(Screen):
 
     def update(self, state: "GameState"):
         # for our screens we can set a value of 500, every time player wins/loses add/delte money from the pot
-        if Events.QUEST_1_COIN in state.player.level_two_npc_state and Events.QUEST_1_BADGE in state.player.level_two_npc_state and Events.QUEST_1_COMPLETE not in state.player.level_two_npc_state:
-            state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE)
+
+        # Check the condition
+        if (Events.QUEST_1_COIN.value in state.player.level_two_npc_state and
+                Events.QUEST_1_BADGE.value in state.player.level_two_npc_state and
+                Events.QUEST_1_COMPLETE.value not in state.player.level_two_npc_state):
+            print("yoyoyo")
+            state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE.value)
+
+        if state.slotsRippaSnappaScreen.money <= 0 and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value not in state.player.level_two_npc_state:
+            state.player.level_two_npc_state.append(Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value)
+
 
 
 

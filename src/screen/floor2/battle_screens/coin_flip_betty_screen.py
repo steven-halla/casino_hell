@@ -8,7 +8,7 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 from screen.examples.screen import Screen
 
-
+# need more testing for self.quest_money
 
 class CoinFlipBettyScreen(Screen):
     def __init__(self):
@@ -25,6 +25,8 @@ class CoinFlipBettyScreen(Screen):
         self.magic_player_message_display = ""
         self.magic_enemy_message_display = ""
         self.welcome_screen_index: int = 0
+        self.quest_money = 0
+
 
 
         self.headstailsindex = 0
@@ -306,6 +308,10 @@ class CoinFlipBettyScreen(Screen):
             state.controller.isTPressed = False  # Reset the button state
 
     def flipCoin(self, state: "GameState"):
+        #here we need logic to handle if player leaves and comes back
+
+
+
         if self.phase > 5:
             self.even = False
             self.odd = False
@@ -554,10 +560,12 @@ class CoinFlipBettyScreen(Screen):
                 if controller.isTPressed:
                     self.phase += 1
                     state.player.money += self.bet + 20
+                    self.quest_money += self.bet
                     self.money -= self.bet + 20
                     if self.money == -10:
                         self.money = 0
                         state.player.money -= 10
+
                     elif self.money == -20:
                         self.money = 0
                         state.player.money -= 20
@@ -578,6 +586,8 @@ class CoinFlipBettyScreen(Screen):
                     state.player.money += self.bet
 
                     self.money -= self.bet
+                    self.quest_money += self.bet
+
                     state.controller.isTPressed = False
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
@@ -595,6 +605,8 @@ class CoinFlipBettyScreen(Screen):
 
                     state.player.money -= self.bet
                     self.money += self.bet
+                    self.quest_money -= self.bet
+
                     state.controller.isTPressed = False
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
@@ -694,7 +706,8 @@ class CoinFlipBettyScreen(Screen):
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
-                Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
+                if self.quest_money >= 500:
+                    Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
 
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)

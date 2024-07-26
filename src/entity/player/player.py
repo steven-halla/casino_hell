@@ -32,7 +32,7 @@ class Player(Entity):
         self.perks = []
         self.items = ["sir leopold's paw"]
         self.npc_items = []
-        self.magicinventory = ["shield", "HEADS_FORCE" , "shake" ]
+        self.magicinventory = ["shield",  "shake" ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -133,6 +133,7 @@ class Player(Entity):
         if state.controller.isAPressed:
 
             print("Your nPc inventory issss:::   " + str(state.player.npc_items))
+            print("Your level 2 NPC state  issss:::   " + str(state.player.level_two_npc_state))
 
 
 
@@ -556,10 +557,10 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.area2StartScreen
+            state.currentScreen = state.area2RestScreen
 
 
-            state.area2StartScreen.start(state)
+            state.area2RestScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")

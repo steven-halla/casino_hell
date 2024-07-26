@@ -401,6 +401,81 @@ WHEN black mack is defeated have him give player badge
 
 
 
+[//]: # (first screen:)
+
+[//]: # (npc givnig details  on stats)
+
+[//]: # (alice &#40;quest giver&#41; a few NPCS, as well as rib demon slots.)
+
+[//]: # (lets have rib demon slots give out a tokent that can be traded for an item by NPC)
+
+[//]: # (1 token - item)
+
+[//]: # (2 token - nugg sauce)
+
+2nd screen:
+rest screen
+
+1 quest giver
+1 inn keeper
+1 bar keep
+1 shop keep
+5 npcs
+
+3rd screen:
+game screen:
+slots
+craps
+
+[//]: # (craps)
+
+black jack
+opossum in a can 
+coin flip
+
+npcs
+
+4th screen:
+nugg rannch 
+craps
+demon chicken elaine compainion 
+
+mc nugg quest giver
+chicken npcs
+
+5th screen:
+rib demon maze -people are the walls - this is what the quest goes for
+slots
+
+6th screen:
+stage for competetion 
+
+npcs 
+nugg sauce /chicken nuggies competion 
+
+7th screen:
+boss screen
+npcs
+craps boss
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
