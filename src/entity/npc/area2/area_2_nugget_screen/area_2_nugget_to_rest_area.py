@@ -49,8 +49,8 @@ class Area2NuggetToRestArea(Npc):
                 state.area_2_nugget_area_to_rest_point = True
                 print(str(state.area_2_nugget_area_to_rest_point))
 
-                state.currentScreen = state.area2NuggetScreen
-                state.area2NuggetScreen.start(state)
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
             # Reset the message depending on the game state
 
     def update_talking(self, state: "GameState"):

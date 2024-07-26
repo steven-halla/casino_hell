@@ -65,6 +65,12 @@ class Area2RestScreen(Screen):
             player_start_y = 16 * 1  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_gambling_area_to_rest_point = False
+        if state.area_2_nugget_area_to_rest_point == True:
+            print("hdshfa;ljflksja;f")
+            player_start_x = 16 * 94  # Desired X coordinate
+            player_start_y = 16 * 1  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.area_2_nugget_area_to_rest_point = False
 
 
 
