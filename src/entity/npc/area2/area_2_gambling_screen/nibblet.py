@@ -15,7 +15,7 @@ class Nibblet(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Nibblet: I'm the last one, everyone I came riend here always says.",
+                    "Nibblet: Some people on this floor can use magic , be careful.",
                 ],
                 (50, 450, 50, 45), 30, 500
             )

@@ -2,18 +2,15 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.demon.demon1 import Demon1
 from entity.npc.area2.area_2_start_screen.alex import Alex
 from entity.npc.area2.area_2_start_screen.alice import Alice
-from entity.npc.area2.area_2_start_screen.area_2_gambling_area import Area2GamblingArea
+from entity.npc.area2.area_2_start_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
 from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
-from entity.npc.area2.area_2_start_screen.lunky import Lunky
+from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
 from entity.npc.area2.area_2_start_screen.natasha import Natasha
-from entity.npc.area2.area_2_start_screen.nibblet import Nibblet
+from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 
 from entity.player.player import Player
-from entity.treasurechests.blueflower import BlueFlower
-from entity.treasurechests.powerpotion import PowerPotion
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -58,6 +55,16 @@ class Area2RestScreen(Screen):
 
     def start(self, state: "GameState"):
 
+        print("this is for our start area")
+        print(str(state.area_2_gambling_area_to_rest_point))
+
+        if state.area_2_gambling_area_to_rest_point == True:
+            print("hdshfa;ljflksja;f")
+            player_start_x = 16 * 16  # Desired X coordinate
+            player_start_y = 16 * 1  # Desired Y coordinate
+            state.player.setPosition(player_start_x, player_start_y)
+            state.area_2_gambling_area_to_rest_point = False
+
 
         self.stop_music()
         if state.musicOn == True:
@@ -74,7 +81,7 @@ class Area2RestScreen(Screen):
             Alex(16 * 16, 16 * 45),
             Lunky(16 * 26, 16 * 45),
             Natasha(16 * 36, 16 * 45),
-            Area2GamblingArea(16 * 17, 16 * 0)
+            Area2RestToGamblingArea(16 * 17, 16 * 0)
         ]
 
     def update(self, state: "GameState"):

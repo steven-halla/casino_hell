@@ -14,8 +14,7 @@ class Lunky(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Lunky: I'm the last one,e my friend here always says.",
-                    "Hero:  Where is your friend, I dont' see anyone here but you???",
+                    "Lunky: Sometimes you'll get dragged into  a secret layer where you can play some happy starving hippos , how it happens nobody knows.",
                 ],
                 (50, 450, 50, 45), 30, 500
             )
@@ -26,7 +25,7 @@ class Lunky(Npc):
         self.input_time = pygame.time.get_ticks()
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Priest.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Carpenter.png").convert_alpha()
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 

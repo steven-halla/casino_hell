@@ -3,7 +3,7 @@ import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class Area2GamblingArea(Npc):
+class Area2GamblingToRestArea(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
@@ -45,10 +45,12 @@ class Area2GamblingArea(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             if state.controller.isTPressed:
-                state.area_2_rest_area_to_gambling_point = True
+                print("nannannnana")
+                state.area_2_gambling_area_to_rest_point = True
+                print(str(state.area_2_gambling_area_to_rest_point))
 
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
             # Reset the message depending on the game state
 
     def update_talking(self, state: "GameState"):
@@ -66,5 +68,5 @@ class Area2GamblingArea(Npc):
 
 
         if self.state == "talking":
-            current_message = self.flipping_ted_messages["defeated_message"] if state.coinFlipTedScreen.coinFlipTedDefeated else self.flipping_ted_messages["welcome_message"]
+            current_message = self.flipping_ted_messages["defeated_message"]
             current_message.draw(state)

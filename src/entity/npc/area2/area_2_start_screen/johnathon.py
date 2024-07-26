@@ -9,12 +9,26 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class Johnathon(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
+        # the below is how i will implement this in the future
+
+
+        # DEFAULT_MESSAGE = "default_message"
+        #
+        # self.npc_messages = {
+        #     DEFAULT_MESSAGE: NpcTextBox(
+        #         [
+        #             "Johnathon:If you want in the nugg den you need to prove yourself, reach level 6 and I'll let you inside to have all the juicy crispy chicken nuggies your little heart desires",
+        #             "Opossum in ao teach you.....it will be less so.",
+        #         ],
+        #         (50, 450, 50, 45), 30, 500
+        #     )
+        # }
 
         # Integrated textbox content into guy_messages
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Johnathon: Iiend here always says.",
+                    "Johnathon:If you want in the nugg den you need to prove yourself, reach level 6 and I'll let you inside ot have all the juicy crispy chicken nuggies your little heart desires",
                     "Opossum in ao teach you.....it will be less so.",
                 ],
                 (50, 450, 50, 45), 30, 500

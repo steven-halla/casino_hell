@@ -2,9 +2,12 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
 from entity.npc.area2.area_2_gambling_screen.happy_craps import CrapsHappy
+from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
+from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
@@ -60,13 +63,15 @@ class Area2GamblingScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        print("this is for our start area")
+        print(str(state.area_2_rest_area_to_gambling_point))
 
-
-        if state.area_2_rest_area_to_gambling_point == True:
-            player_start_x = 16 * 18  # Desired X coordinate
-            player_start_y = 16 * 51  # Desired Y coordinate
+        if state.area_2_gambling_area_to_rest_point == True:
+            print("hdshfa;ljflksja;f")
+            player_start_x = 16 * 19  # Desired X coordinate
+            player_start_y = 16 * 52  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
-            state.area_2_rest_area_to_gambling_point = False
+            state.area_2_gambling_area_to_rest_point = False
 
 
 
@@ -97,9 +102,10 @@ class Area2GamblingScreen(Screen):
             OpossumInACanCandy(16 * 15, 16 * 5),
             CoinFlipBetty(16 * 25, 16 * 5),
             SlotsRippaSnappa(16 * 35, 16 * 5),
-            CrapsHappy(16 * 5, 16 * 30),
-
-
+            CrapsHappy(16 * 5, 16 * 28),
+            Nibblet(16 * 15, 16 * 28),
+            Lunky(16 * 25, 16 * 28),
+            Area2GamblingToRestArea(16 * 19, 16 * 54),
 
         ]
 
