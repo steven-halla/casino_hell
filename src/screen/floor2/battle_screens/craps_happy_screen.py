@@ -15,7 +15,7 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
 # for boss if you roll a snake eyes add + 1 to power meter speed. Triple bet loss on 2 3 12 but triple bet win on 7.
-class Craps(BattleScreen):
+class CrapsHappyScreen(BattleScreen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"

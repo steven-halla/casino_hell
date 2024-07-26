@@ -4,8 +4,9 @@ import pytmx
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
+from entity.npc.area2.area_2_gambling_screen.happy_craps import CrapsHappy
 from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
-from entity.npc.area2.area_2_start_screen.opossum_in_a_can_candy import OpossumInACanCandy
+from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.player.player import Player
 from screen.examples.screen import Screen
@@ -96,6 +97,7 @@ class Area2GamblingScreen(Screen):
             OpossumInACanCandy(16 * 15, 16 * 5),
             CoinFlipBetty(16 * 25, 16 * 5),
             SlotsRippaSnappa(16 * 35, 16 * 5),
+            CrapsHappy(16 * 5, 16 * 30),
 
 
 
