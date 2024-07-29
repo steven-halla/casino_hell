@@ -2,16 +2,14 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area2.area_2_start_screen.alex import Alex
-from entity.npc.area2.area_2_start_screen.alice import Alice
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_boss_area import Area2RestToBossArea
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
-from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
+from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
+from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
+from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
+from entity.npc.area2.area_2_gambling_screen.happy_craps import CrapsHappy
 from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
-from entity.npc.area2.area_2_start_screen.natasha import Natasha
 from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
+from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
+from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.player.player import Player
 from screen.examples.screen import Screen
@@ -19,12 +17,12 @@ from physics.rectangle import Rectangle
 
 
 
-class Area2RestScreen(Screen):
+class Area2BossScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False
@@ -34,11 +32,19 @@ class Area2RestScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
+
+
+
         self.clock = pygame.time.Clock()  # Initialize the clock
+
+
+
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -57,22 +63,16 @@ class Area2RestScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        print("this is for our start area")
+        print(str(state.area_2_rest_area_to_gambling_point))
 
-        print("this is for our nugget area")
-        print(str(state.area_2_gambling_area_to_rest_point))
 
-        if state.area_2_gambling_area_to_rest_point == True:
-            print("hdshfa;ljflksja;f")
-            player_start_x = 16 * 16  # Desired X coordinate
-            player_start_y = 16 * 1  # Desired Y coordinate
+        if state.area_2_rest_area_to_boss_point == True:
+            player_start_x = 16 * 27  # Desired X coordinate
+            player_start_y = 16 * 34  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
-            state.area_2_gambling_area_to_rest_point = False
-        if state.area_2_nugget_area_to_rest_point == True:
-            print("hdshfa;ljflksja;f")
-            player_start_x = 16 * 94  # Desired X coordinate
-            player_start_y = 16 * 1  # Desired Y coordinate
-            state.player.setPosition(player_start_x, player_start_y)
-            state.area_2_nugget_area_to_rest_point = False
+            state.rest_area_to_boss_area_entry_point = False
+
 
 
 
@@ -82,19 +82,30 @@ class Area2RestScreen(Screen):
         super().start(state)
         state.npcs.clear()
 
+        # Check if a player instance already exists
+        # if not hasattr(state, 'player') or state.player is None:
+        #     player_start_x = 300
+        #     player_start_y = 200
+        #     state.player = Player(player_start_x, player_start_y)
 
+        state.treasurechests = [
+
+            # WaterBottle(16 * 36, 16 * 10),
+
+        ]
+        # Check the value of state.player.body
+
+        # state.npcs = []
 
         state.npcs = [
-            Alice(16 * 5, 16 * 15),
-            Johnathon(16 * 15, 16 * 15),
-            Nibblet(16 * 25, 16 * 15),
-            Alex(16 * 26, 16 * 45),
-            Lunky(16 * 36, 16 * 45),
-            Natasha(16 * 46, 16 * 45),
-            Area2RestToGamblingArea(16 * 17, 16 * 0),
-            Area2RestToNuggetArea(16 * 95, 16 * 0),
-            Area2RestToRibDemonMazeArea(16 * 15, 16 * 49),
-            Area2RestToBossArea(16 * 64, 16 * 49),
+            # BlackJackMack(16 * 5, 16 * 5),
+            # OpossumInACanCandy(16 * 15, 16 * 5),
+            # CoinFlipBetty(16 * 25, 16 * 5),
+            # SlotsRippaSnappa(16 * 35, 16 * 5),
+            # CrapsHappy(16 * 5, 16 * 28),
+            # Nibblet(16 * 15, 16 * 28),
+            # Lunky(16 * 25, 16 * 28),
+            # Area2GamblingToRestArea(16 * 19, 16 * 54),
 
         ]
 
@@ -107,12 +118,30 @@ class Area2RestScreen(Screen):
         controller.update()
 
 
+        #the below speeds up text speech
+        # for npc in state.npcs:
+        #     npc.update(state)
+        #     if isinstance(npc, Nurgle) and npc.to_be_deleted:
+        #         state.npcs.remove(npc)
+
         for npc in state.npcs:
             npc.update(state)
 
 
+
+
+
+
         if controller.isExitPressed is True:
             state.isRunning = False
+
+
+
+
+        #
+        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
+        #     coinMonicle = "coin monicle"
+        #     state.player.items.append(coinMonicle)
 
         if controller.isUpPressed:
 
@@ -171,7 +200,12 @@ class Area2RestScreen(Screen):
     def draw(self, state: "GameState"):
 
         state.DISPLAY.fill(BLUEBLACK)
-
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player money: {state.player.money}",
+        #     True, (255, 255, 255)), (333, 333))
+        # state.DISPLAY.blit(state.FONT.render(
+        #     f"player stamina points: {state.player.stamina_points}",
+        #     True, (255, 255, 255)), (333, 388))
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth

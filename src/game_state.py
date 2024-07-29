@@ -46,6 +46,7 @@ from screen.floor2.battle_screens.craps_happy_screen import CrapsHappyScreen
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
 from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
 from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
+from screen.floor2.map_screens.area_2_boss_screen import Area2BossScreen
 from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
 from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
@@ -131,6 +132,7 @@ class GameState:
         self.area2GamblingScreen = Area2GamblingScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
+        self.area2BossScreen = Area2BossScreen()
 
 
 
@@ -171,6 +173,7 @@ class GameState:
         self.area_2_rest_area_to_nugget_point = False
         self.area_2_rest_area_to_gambling_point = False
         self.area_2_rest_area_to_rib_demon_maze_point = False
+        self.area_2_rest_area_to_boss_point = False
 
 
 

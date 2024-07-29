@@ -75,8 +75,6 @@ class BossScreen(Screen):
         # state.npcs = []
         state.npcs = [
 
-            FlippingSandy(16 * 21, 16 * 20),
-            DemonBoss(16 * 15, 16 * 10),
 
                       ]
 
