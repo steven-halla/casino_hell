@@ -454,8 +454,10 @@ class BlackJackMackScreen(Screen):
                     controller.isTPressed = False
 
                 elif self.welcome_screen_index == 3 and controller.isTPressed:
-                    state.currentScreen = state.area2StartScreen
+                    state.currentScreen = state.area2GamblingScreen
                     controller.isTPressed = False
+                    state.player.canMove = True
+
 
         elif self.game_state == "double_draw_casting_phase":
             self.magic_enemy_attack_double_draw_message_component.update(state)

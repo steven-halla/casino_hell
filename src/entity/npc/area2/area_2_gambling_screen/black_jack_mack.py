@@ -106,8 +106,9 @@ class BlackJackMack(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                state.currentScreen = state.opossumInACanCandyScreen
-                state.opossumInACanCandyScreen.start(state)
+
+                state.currentScreen = state.blackJackMackScreen
+                state.blackJackMackScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:

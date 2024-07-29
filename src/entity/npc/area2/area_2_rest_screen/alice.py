@@ -17,7 +17,7 @@ class Alice(Npc):
             "no_spirit_2": NpcTextBox(
                 [
                     "Hero: Yo whats up",
-                    "Alice: A bit rude, you should learn to be more sauve, i'll give you a  quest later . Get more spirit first."
+                    "Alice: A bit rude, you should learn to be more sauve, i'll give you a  quest later . You need a 2 spirit to chat with me."
 
 
                 ],

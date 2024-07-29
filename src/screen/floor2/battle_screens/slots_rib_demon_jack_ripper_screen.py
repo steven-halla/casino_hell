@@ -379,6 +379,11 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
     def update(self, state: "GameState") -> None:
+
+        if state.controller.is1Pressed:
+            self.money = 0
+            state.controller.is1Pressed = False
+
         pygame.mixer.music.stop()
         current_time: int = pygame.time.get_ticks()  # local variable
         if state.controller.isBPressed:
