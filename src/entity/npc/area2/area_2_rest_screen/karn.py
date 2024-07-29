@@ -6,7 +6,7 @@ from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
 
-class Natasha(Npc):
+class Karn(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -14,9 +14,9 @@ class Natasha(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: Out of the 5 stats BODY is the most important stat ",
-                    "Not only do you gain bonus HP, but you also gain resistance to physical damage",
-                    "In addition you'll be able to eat more food per day, and eat better quality foods at the bar. ",
+                    "Karn: Out of the 5 stats LUCK is the most important stat ",
+                    "Luck gives global boness to all games, how could you beat that?",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

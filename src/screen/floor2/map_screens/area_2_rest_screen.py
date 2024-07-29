@@ -2,16 +2,20 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.area2.area_2_rest_screen.Stew import Stew
 from entity.npc.area2.area_2_rest_screen.alex import Alex
 from entity.npc.area2.area_2_rest_screen.alice import Alice
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_boss_area import Area2RestToBossArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
+from entity.npc.area2.area_2_rest_screen.clara import Clara
 from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
+from entity.npc.area2.area_2_rest_screen.karn import Karn
 from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
+from entity.npc.area2.area_2_rest_screen.paul import Paul
 
 from entity.player.player import Player
 from game_constants.events import Events
@@ -97,7 +101,12 @@ class Area2RestScreen(Screen):
             Nibblet(16 * 25, 16 * 15),
             Alex(16 * 26, 16 * 45),
             Lunky(16 * 36, 16 * 45),
-            Natasha(16 * 46, 16 * 45),
+            Natasha(16 * 70, 16 * 45),
+            Clara(16 * 80, 16 * 45),
+            Stew(16 * 90, 16 * 45),
+            Paul(16 * 100, 16 * 45),
+            Karn(16 * 60, 16 * 45),
+            # below are doors
             Area2RestToGamblingArea(16 * 17, 16 * 0),
             Area2RestToNuggetArea(16 * 95, 16 * 0),
             Area2RestToRibDemonMazeArea(16 * 15, 16 * 49),

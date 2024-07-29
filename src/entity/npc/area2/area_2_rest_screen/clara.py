@@ -6,7 +6,7 @@ from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
 
-class Natasha(Npc):
+class Clara(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -14,9 +14,10 @@ class Natasha(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: Out of the 5 stats BODY is the most important stat ",
-                    "Not only do you gain bonus HP, but you also gain resistance to physical damage",
-                    "In addition you'll be able to eat more food per day, and eat better quality foods at the bar. ",
+                    "Natasha: Out of the 5 stats MIND is the most important stat ",
+                    "Not only do you gain bonus MP, but you also gain unique spells at each level",
+                    "At higher levels your magic will also be empowered with higher success rates and your spells last longer ",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

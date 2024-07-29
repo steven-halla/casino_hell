@@ -28,8 +28,11 @@ class Johnathon(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Johnathon:If you want in the nugg den you need to prove yourself, reach level 6 and I'll let you inside ot have all the juicy crispy chicken nuggies your little heart desires",
-                    "Opossum in ao teach you.....it will be less so.",
+                    "Johnathon:The nugg koop only allows player level 6 or higher.",
+                    "Johnathon: Once you're in, You can eat all the delcious crispy chicken nuggz your heart destires",
+                    "Hero: Whats the catch?",
+                    "Johnathon: oh no catch, you just might not like where they come from",
+
                 ],
                 (50, 450, 50, 45), 30, 500
             )
