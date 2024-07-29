@@ -49,6 +49,7 @@ from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import Slot
 from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
 from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
+from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemonMazeScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
@@ -129,6 +130,7 @@ class GameState:
         self.area2RestScreen = Area2RestScreen()
         self.area2GamblingScreen = Area2GamblingScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
+        self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
 
 
 
@@ -159,10 +161,17 @@ class GameState:
         self.rest_area_to_gambling_area_entry_point = False
         self.rest_area_to_chili_area_entry_point = False
 
-        self.area_2_rest_area_to_gambling_point = False
+
+
         self.area_2_gambling_area_to_rest_point = False
         self.area_2_nugget_area_to_rest_point = False
+
+
+
         self.area_2_rest_area_to_nugget_point = False
+        self.area_2_rest_area_to_gambling_point = False
+        self.area_2_rest_area_to_rib_demon_maze_point = False
+
 
 
 
