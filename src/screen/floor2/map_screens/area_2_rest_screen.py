@@ -2,15 +2,15 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area2.area_2_start_screen.alex import Alex
-from entity.npc.area2.area_2_start_screen.alice import Alice
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_boss_area import Area2RestToBossArea
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
-from entity.npc.area2.area_2_start_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
-from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
+from entity.npc.area2.area_2_rest_screen.alex import Alex
+from entity.npc.area2.area_2_rest_screen.alice import Alice
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_boss_area import Area2RestToBossArea
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
+from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
-from entity.npc.area2.area_2_start_screen.natasha import Natasha
+from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 
 from entity.player.player import Player

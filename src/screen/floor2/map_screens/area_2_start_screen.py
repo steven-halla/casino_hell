@@ -1,7 +1,7 @@
 import pygame
 import pytmx
 from constants import PLAYER_OFFSET
-from entity.npc.area2.area_2_start_screen.alice import Alice
+from entity.npc.area2.area_2_rest_screen.alice import Alice
 
 from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
 from game_constants.events import Events

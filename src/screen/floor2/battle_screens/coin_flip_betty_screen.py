@@ -60,7 +60,8 @@ class CoinFlipBettyScreen(Screen):
 
         self.bet = 50
         self.font = pygame.font.Font(None, 36)
-        self.money = 500
+        self.money =1000
+
 
 
 
@@ -246,11 +247,6 @@ class CoinFlipBettyScreen(Screen):
         self.weighted_coin = False
 
         pygame.mixer.music.stop()
-
-
-
-
-
     def stop_music(self):
         pygame.mixer.music.stop()
 
@@ -381,6 +377,10 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
+            if controller.is1Pressed:
+                self.quest_money += 500
+                print("qyest money is at: " + str(self.quest_money))
+                controller.is1Pressed = False
 
             self.coin_flip_messages["welcome_message"].update(state)
 
@@ -431,10 +431,12 @@ class CoinFlipBettyScreen(Screen):
                 controller.isTPressed = False
 
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
-                if self.money < 1500:
+                if self.quest_money >= 500 and Events.QUEST_1_BADGE.value not in state.player.level_two_npc_state:
+                    print("hi")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
 
                 state.currentScreen = state.area2StartScreen
+                self.quest_money = 0
                 controller.isTPressed = False
 
 
@@ -560,15 +562,17 @@ class CoinFlipBettyScreen(Screen):
                 if controller.isTPressed:
                     self.phase += 1
                     state.player.money += self.bet + 20
-                    self.quest_money += self.bet
+                    self.quest_money += self.bet + 20
                     self.money -= self.bet + 20
                     if self.money == -10:
                         self.money = 0
                         state.player.money -= 10
+                        self.quest_money -= 10
 
                     elif self.money == -20:
                         self.money = 0
                         state.player.money -= 20
+                        self.quest_money -= 20
                     state.controller.isTPressed = False
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
@@ -596,6 +600,7 @@ class CoinFlipBettyScreen(Screen):
 
 
             elif self.player_choice != self.result:
+
                 print("Your choice is : " + self.player_choice)
                 print("Your result is :" + self.result)
                 if controller.isTPressed and self.debuff_vanish == False:
@@ -605,6 +610,8 @@ class CoinFlipBettyScreen(Screen):
 
                     state.player.money -= self.bet
                     self.money += self.bet
+
+
                     self.quest_money -= self.bet
 
                     state.controller.isTPressed = False
@@ -1197,6 +1204,7 @@ class CoinFlipBettyScreen(Screen):
             if self.coin_flip_messages["game_over_no_stamina"].is_finished():
                 if state.controller.isTPressed:
                     state.player.money -= 100
+                    self.quest_money = 0
                     if state.player.money < 1:
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)

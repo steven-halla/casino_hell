@@ -1,8 +1,8 @@
 import pygame
 import pytmx
 from constants import PLAYER_OFFSET, BLUEBLACK, TILE_SIZE
-from entity.npc.area2.area_2_start_screen.alice import Alice
-from entity.npc.area2.area_2_start_screen.rib_demon_jack_ripper import RibDemonJackRipper
+from entity.npc.area2.area_2_rest_screen.alice import Alice
+from entity.npc.area2.area_2_rest_screen.rib_demon_jack_ripper import RibDemonJackRipper
 from entity.player.player import Player
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle

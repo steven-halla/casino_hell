@@ -69,7 +69,7 @@ class Area2BossScreen(Screen):
 
         if state.area_2_rest_area_to_boss_point == True:
             player_start_x = 16 * 27  # Desired X coordinate
-            player_start_y = 16 * 34  # Desired Y coordinate
+            player_start_y = 16 * 37  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_boss_area_entry_point = False
 
