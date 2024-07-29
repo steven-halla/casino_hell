@@ -70,8 +70,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         if state.area_2_rest_area_to_rib_demon_maze_point == True:
             print("nuggggggggggggggg;f")
-            player_start_x = 16 * 35  # Desired X coordinate
-            player_start_y = 16 * 32 # Desired Y coordinate
+            player_start_x = 16 * 1  # Desired X coordinate
+            player_start_y = 16 * 1 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 

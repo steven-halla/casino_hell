@@ -6,6 +6,7 @@ from entity.npc.area2.area_2_start_screen.alex import Alex
 from entity.npc.area2.area_2_start_screen.alice import Alice
 from entity.npc.area2.area_2_start_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
 from entity.npc.area2.area_2_start_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
+from entity.npc.area2.area_2_start_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
 from entity.npc.area2.area_2_start_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
 from entity.npc.area2.area_2_start_screen.natasha import Natasha
@@ -91,6 +92,7 @@ class Area2RestScreen(Screen):
             Natasha(16 * 46, 16 * 45),
             Area2RestToGamblingArea(16 * 17, 16 * 0),
             Area2RestToNuggetArea(16 * 95, 16 * 0),
+            Area2RestToRibDemonMazeArea(16 * 15, 16 * 49),
 
         ]
 

@@ -45,7 +45,7 @@ class Area2RestToRibDemonMazeArea(Npc):
 
             self.state_start_time = pygame.time.get_ticks()
             if state.controller.isTPressed:
-                state.area_2_rest_area_to_nugget_point = True
+                state.area_2_rest_area_to_rib_demon_maze_point = True
 
                 state.currentScreen = state.area2RibDemonMazeScreen
                 state.area2RibDemonMazeScreen.start(state)
