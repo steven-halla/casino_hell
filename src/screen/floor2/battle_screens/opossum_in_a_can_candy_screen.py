@@ -16,7 +16,9 @@ class OpossumInACanCandyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 200
+        self.sallyOpossumMoney = 2000
+        self.money_minimum = 1500
+        self.quest_coins_needed = 500
 
 
         self.opossumBite = False
@@ -245,6 +247,7 @@ class OpossumInACanCandyScreen(Screen):
 
 
 
+
     def stop_music(self):
         pygame.mixer.music.stop()
 
@@ -363,6 +366,11 @@ class OpossumInACanCandyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+        if state.controller.is1Pressed:
+            self.quest_money += 500
+            print("qyest money is at: " + str(self.quest_money))
+            state.controller.is1Pressed = False
+
 
         if state.musicOn == True:
             if self.music_on == True:
@@ -441,7 +449,11 @@ class OpossumInACanCandyScreen(Screen):
             elif self.opossumInACanMessages["tally_message"].message_index == 1:
 
                 if state.player.money < 300:
+                    if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
+                        Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+
                     self.game_state = "no_money_you_leave"
+                    self.quest_money = 0
                 else:
 
                     self.game_state = "play_again_or_leave_screen"
@@ -449,8 +461,8 @@ class OpossumInACanCandyScreen(Screen):
         if self.game_state == "no_money_you_leave":
             self.opossumInACanMessages["less_than_150_money"].update(state)
             if self.opossumInACanMessages["less_than_150_money"].is_finished():
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
 
         if self.game_state == "welcome_screen":
             self.opossumInACanMessages["welcome_message"].update(state)
@@ -571,7 +583,7 @@ class OpossumInACanCandyScreen(Screen):
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"
 
-            elif state.player.money < 150:
+            elif state.player.money < 300:
                 self.game_state = "no_money_you_leave"
 
             # state.currentScreen = state.gamblingAreaScreen
@@ -684,8 +696,9 @@ class OpossumInACanCandyScreen(Screen):
 
                     state.controller.isTPressed = False  # Reset the button state
                     self.opossumInACanMessages["tally_message"].message_index = 0
-                    state.player.money -= 150
-                    self.sallyOpossumMoney += 150
+                    state.player.money -= 300
+                    self.sallyOpossumMoney += 300
+                    self.quest_money -= 300
                     self.initializeGarbageCans()
 
                     if self.magic_points > 0 and self.sallyOpossumMoney < 1000:
@@ -702,11 +715,12 @@ class OpossumInACanCandyScreen(Screen):
                     self.music_on = True
                     self.debuff_keen_perception = False
                     self.play_again_or_quit_index = 0
-                    if self.quest_money >= 500:
+                    if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
-                    state.currentScreen = state.area2StartScreen
-                    state.area2StartScreen.start(state)
+                    self.quest_money = 0
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
 
 
         if self.game_state == "spell_casting_poison":
@@ -726,18 +740,18 @@ class OpossumInACanCandyScreen(Screen):
                 self.music_on = True
                 Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
 
         if self.game_state == "real_opossum_defeated_screen":
             self.opossumBite = True
             self.opossumInACanMessages["real_opossum_defeated_message"].update(state)
             if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
                 self.music_on = True
-                Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                # Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
 
 
 
@@ -746,8 +760,8 @@ class OpossumInACanCandyScreen(Screen):
             if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
                 self.music_on = True
 
-                state.currentScreen = state.restScreen
-                state.restScreen.start(state)
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
                 state.player.stamina_points = 1
 
 

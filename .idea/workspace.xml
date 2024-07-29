@@ -4,21 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now have access to maze and boss room">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="changed name of direcotyr, updated coin flip&#10;for quest">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/alex.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/alex.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/alice.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/alice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/area_2_rest_to_boss_area.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_rest_to_boss_area.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/area_2_rest_to_gambling_area.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_rest_to_gambling_area.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/area_2_rest_to_nugget_area.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_rest_to_nugget_area.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/area_2_rest_to_rib_demon_maze_area.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_rest_to_rib_demon_maze_area.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/johnathon.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/johnathon.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_start_screen/natasha.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/natasha.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/coin_flip_betty_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/coin_flip_betty_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_boss_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rest_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_start_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_start_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/exampleScreenBASE.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/exampleScreenBASE.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/opossum_in_a_can_candy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/opossum_in_a_can_candy_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -721,7 +709,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="747" />
+    <option name="localTasksCounter" value="748" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -750,7 +738,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="about to terrform" />
     <MESSAGE value="bett" />
     <MESSAGE value="fixed bug string heads was spelled with H instead of h" />
     <MESSAGE value="Game is now fixed" />
@@ -775,7 +762,8 @@
     <MESSAGE value="teleported to maeze scren" />
     <MESSAGE value="point works" />
     <MESSAGE value="now have access to maze and boss room" />
-    <option name="LAST_COMMIT_MESSAGE" value="now have access to maze and boss room" />
+    <MESSAGE value="changed name of direcotyr, updated coin flip&#10;for quest" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed name of direcotyr, updated coin flip&#10;for quest" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -815,7 +803,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1722228847621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1722236872507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
