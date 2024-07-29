@@ -5,11 +5,13 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area2.area_2_rest_screen.Stew import Stew
 from entity.npc.area2.area_2_rest_screen.alex import Alex
 from entity.npc.area2.area_2_rest_screen.alice import Alice
+from entity.npc.area2.area_2_rest_screen.area_2_inn_keeper import Area2InnKeeper
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_boss_area import Area2RestToBossArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
 from entity.npc.area2.area_2_rest_screen.clara import Clara
+from entity.npc.area2.area_2_rest_screen.jasper import Jasper
 from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
 from entity.npc.area2.area_2_rest_screen.karn import Karn
@@ -23,6 +25,11 @@ from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
+# the mint quintuplets offer stat advice maybe change it later to include an npc to let player know
+# about the kind of info they have to offer
+# mint 1 mint 2 mint 3 mint 4 mint 5
+# or
+# minty  fresh  - minty - mint mint - condition mint - lint mint
 
 class Area2RestScreen(Screen):
 
@@ -101,11 +108,18 @@ class Area2RestScreen(Screen):
             Nibblet(16 * 25, 16 * 15),
             Alex(16 * 26, 16 * 45),
             Lunky(16 * 36, 16 * 45),
+            Jasper(16 * 52, 16 * 15),
+
             Natasha(16 * 70, 16 * 45),
             Clara(16 * 80, 16 * 45),
             Stew(16 * 90, 16 * 45),
             Paul(16 * 100, 16 * 45),
             Karn(16 * 60, 16 * 45),
+
+
+            # below are shops and such
+            Area2InnKeeper(16 * 101, 16 * 33),
+
             # below are doors
             Area2RestToGamblingArea(16 * 17, 16 * 0),
             Area2RestToNuggetArea(16 * 95, 16 * 0),

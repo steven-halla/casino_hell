@@ -15,7 +15,7 @@ class Natasha(Npc):
             "default_message": NpcTextBox(
                 [
                     "Natasha: Out of the 5 stats BODY is the most important stat ",
-                    "Not only do you gain bonus HP, but you also gain resistance to physical damage",
+                    "As you gain levels your durability will increase in mulitple ways",
                     "In addition you'll be able to eat more food per day, and eat better quality foods at the bar. ",
 
                 ],

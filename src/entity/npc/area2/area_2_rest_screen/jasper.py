@@ -6,7 +6,7 @@ from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
 
-class Clara(Npc):
+class Jasper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -14,9 +14,10 @@ class Clara(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: Out of the 5 stats MIND is the most important stat ",
-                    "Not only do you gain bonus MP, but you also gain unique spells at each level",
-                    "At higher levels your magic will also be empowered with higher success rates and your spells last longer ",
+                    "Jasper: My wife lost in the slots game, and was dragged to the maze on this floor",
+                    "Hero: what kind of maze is it",
+                    "Jasper: It's a happy place, where nothing bad ever happens, it's not a living nightmare. It's not a nightmare, not a nightmare. ",
+                    "Hero: ...",
 
                 ],
                 (50, 450, 50, 45), 30, 500
