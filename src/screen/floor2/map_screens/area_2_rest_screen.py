@@ -14,6 +14,7 @@ from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 
 from entity.player.player import Player
+from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -57,6 +58,12 @@ class Area2RestScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+
+        if (Events.QUEST_1_COIN.value in state.player.level_two_npc_state and
+                Events.QUEST_1_BADGE.value in state.player.level_two_npc_state and
+                Events.QUEST_1_COMPLETE.value not in state.player.level_two_npc_state):
+            print("yoyoyo")
+            state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE.value)
 
         print("this is for our nugget area")
         print(str(state.area_2_gambling_area_to_rest_point))

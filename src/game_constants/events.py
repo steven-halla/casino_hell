@@ -13,5 +13,5 @@ class Events(Enum):
 
     @staticmethod
     def add_event_to_player(player, event):
-        if event.value not in player.npc_items:
-            player.npc_items.append(event.value)
+        if event.value not in player.level_two_npc_state:
+            player.level_two_npc_state.append(event.value)

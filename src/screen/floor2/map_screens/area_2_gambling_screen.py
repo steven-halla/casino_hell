@@ -12,6 +12,7 @@ from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRipp
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.player.player import Player
+from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -65,6 +66,12 @@ class Area2GamblingScreen(Screen):
     def start(self, state: "GameState"):
         print("this is for our start area")
         print(str(state.area_2_rest_area_to_gambling_point))
+
+        if (Events.QUEST_1_COIN.value in state.player.level_two_npc_state and
+                Events.QUEST_1_BADGE.value in state.player.level_two_npc_state and
+                Events.QUEST_1_COMPLETE.value not in state.player.level_two_npc_state):
+            print("yoyoyo")
+            state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE.value)
 
         if state.area_2_gambling_area_to_rest_point == True:
             print("hdshfa;ljflksja;f")

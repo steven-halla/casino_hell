@@ -435,7 +435,7 @@ class CoinFlipBettyScreen(Screen):
                     print("hi")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
 
-                state.currentScreen = state.area2StartScreen
+                state.currentScreen = state.area2GamblingScreen
                 self.quest_money = 0
                 controller.isTPressed = False
 

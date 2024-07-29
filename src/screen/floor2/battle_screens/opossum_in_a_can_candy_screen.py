@@ -715,7 +715,9 @@ class OpossumInACanCandyScreen(Screen):
                     self.music_on = True
                     self.debuff_keen_perception = False
                     self.play_again_or_quit_index = 0
-                    if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
+                    if self.sallyOpossumMoney >= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
+                        print("719")
+
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
 
                     self.quest_money = 0
