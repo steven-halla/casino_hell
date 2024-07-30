@@ -93,6 +93,7 @@ class Alice(Npc):
                 if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
                     current_message = self.npc_messages["quest_2_complete"]
 
+
                 if Equipment.BLACK_JACK_HAT.value in state.player.items:
                     current_message = self.npc_messages["quest_2_complete_after_message"]
 
@@ -118,8 +119,11 @@ class Alice(Npc):
 
 
         if state.controller.isTPressed and current_message.is_finished():
-            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED in state.player.level_two_npc_state and Equipment.BLACK_JACK_HAT not in state.player.items and state.player.spirit >= 2:
-                state.player.items.append(Equipment.BLACK_JACK_HAT)
+
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and Equipment.BLACK_JACK_HAT.value not in state.player.items and state.player.spirit >= 2:
+                print("jadsjfl")
+
+                state.player.items.append(Equipment.BLACK_JACK_HAT.value)
 
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
