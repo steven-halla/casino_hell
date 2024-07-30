@@ -2,7 +2,7 @@
 from enum import Enum
 
 class Equipment(Enum):
-    BLACK_JACK_HAT = "BLACK_JACK_HAT"
+    BLACK_JACK_HAT = "Black Hat"
     HIPPO_SHOES = "HIPPO_SHOES"
     GOURMAND_HAT = "GOURMAND_HAT"
     SLOTS_VEST = "SLOTS-VEST"
