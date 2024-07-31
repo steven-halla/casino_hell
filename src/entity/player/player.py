@@ -42,6 +42,8 @@ class Player(Entity):
         self.level2checker = False
         self.level3checker = False
         self.level4checker = False
+        self.level5checker = False
+        self.level6checker = False
         self.close_status_screen = False
         self.days = 0
         self.isBossWorthy = False
@@ -164,6 +166,34 @@ class Player(Entity):
                 self.max_focus_points += 20
             self.level4checker = True
             self.level = 4
+
+            return
+
+        if self.exp >= 1200 and self.level5checker == False:
+            print("grats you leveld up to level 5")
+            if "level 5 token" not in state.player.npc_items:
+                # if "shield" not in self.magicinventory:
+                state.player.npc_items.append("level 4 token")
+                # TODO, DO THIS! NOT RAW STRING
+                # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
+                self.max_stamina_points += 20
+                self.max_focus_points += 20
+            self.level5checker = True
+            self.level = 5
+
+            return
+
+        if self.exp >= 2000 and self.level6checker == False:
+            print("grats you leveld up to level 6")
+            if "level 6 token" not in state.player.npc_items:
+                # if "shield" not in self.magicinventory:
+                state.player.npc_items.append("level 4 token")
+                # TODO, DO THIS! NOT RAW STRING
+                # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
+                self.max_stamina_points += 20
+                self.max_focus_points += 20
+            self.level6checker = True
+            self.level = 6
 
             return
 

@@ -257,6 +257,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
         else:
             self.slot3[0] = map_to_slot_number(generated_value3)
 
+        self.slot1[0] = 8
+        self.slot2[0] = 8
+        self.slot3[0] = 8
+
             # Check if all three slots are 0 and print "hi zeros"
         if self.slot1[0] == 0 and self.slot2[0] == 0 and self.slot3[0] == 0:
             print("hi zeros")
@@ -361,6 +365,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
             state.mainScreen.start(state)
             return
 
+
+
         if state.controller.isAPressed and self.game_state == "spin_screen":
             self.a_key_pressed = True
             if not self.spinning:
@@ -381,10 +387,18 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
     def update(self, state: "GameState") -> None:
+        # if state.controller.is1Pressed:
+        #     self.slot1 = [8, 8, 8]
+        #     self.slot2 = [8, 8, 8]
+        #     self.slot3 = [8, 8, 8]
+        #     self.three_eights = True
+        #     self.no_matches = False
+        #
+        #     state.controller.is1Pressed = False
 
-        if state.controller.is1Pressed:
-            self.money = 0
-            state.controller.is1Pressed = False
+        # if state.controller.is1Pressed:
+        #     self.money = 0
+        #     state.controller.is1Pressed = False
 
         pygame.mixer.music.stop()
         current_time: int = pygame.time.get_ticks()  # local variable

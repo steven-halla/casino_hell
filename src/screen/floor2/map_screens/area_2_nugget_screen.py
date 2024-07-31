@@ -11,6 +11,7 @@ from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 from entity.npc.area2.area_2_nugget_screen.area_2_nugget_to_rest_area import Area2NuggetToRestArea
+from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
 
 from entity.player.player import Player
@@ -101,6 +102,7 @@ class Area2NuggetScreen(Screen):
 
         state.npcs = [
             MCNugg(16 * 15, 16 * 5),
+            ErikaChickenGirl(16 * 25, 16 * 5),
             Area2NuggetToRestArea(16 * 35, 16 * 34),
 
         ]

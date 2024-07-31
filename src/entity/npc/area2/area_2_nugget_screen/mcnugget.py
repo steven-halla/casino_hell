@@ -13,6 +13,9 @@ from game_constants.events import Events
 #  THRID GOURMAND HAT
 
 
+# quest marker npc items 2 we can store quest state there as well as talking state of quest whether we talked to npc already or 1st time
+
+
 class MCNugg(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
@@ -95,27 +98,29 @@ class MCNugg(Npc):
                 elif state.player.level >= 6:
                     current_message = self.npc_messages["level_6_quest"]
 
-                if Events.MC_NUGGET_FIRST_QUEST_COMPLETE in state.player.level_two_npc_state:
+                if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_start"]
-                if Events.MC_NUGGET_SECOND_QUEST_COMPLETE in state.player.level_two_npc_state:
+                if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
-                if Events.MC_NUGGET_THIRD_QUEST_COMPLETE in state.player.level_two_npc_state:
+                if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_finish"]
 
                 current_message.reset()
 
     def update_talking(self, state: "GameState"):
+        if "Lucky Shoes" in state.player.items and Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value not in state.player.level_two_npc_state:
+            Events.add_event_to_player(state.player, Events.MC_NUGGET_FIRST_QUEST_COMPLETE)
 
         if state.player.level < 6:
             current_message = self.npc_messages["no_level_6"]
         elif state.player.level >= 6:
             current_message = self.npc_messages["level_6_quest"]
 
-        if Events.MC_NUGGET_FIRST_QUEST_COMPLETE in state.player.level_two_npc_state:
+        if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_start"]
-        if Events.MC_NUGGET_SECOND_QUEST_COMPLETE in state.player.level_two_npc_state:
+        if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
-        if Events.MC_NUGGET_THIRD_QUEST_COMPLETE in state.player.level_two_npc_state:
+        if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_finish"]
 
 
@@ -146,11 +151,11 @@ class MCNugg(Npc):
             elif state.player.level >= 6:
                 current_message = self.npc_messages["level_6_quest"]
 
-            if Events.MC_NUGGET_FIRST_QUEST_COMPLETE in state.player.level_two_npc_state:
+            if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_start"]
-            if Events.MC_NUGGET_SECOND_QUEST_COMPLETE in state.player.level_two_npc_state:
+            if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]
-            if Events.MC_NUGGET_THIRD_QUEST_COMPLETE in state.player.level_two_npc_state:
+            if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_finish"]
 
             current_message.draw(state)
