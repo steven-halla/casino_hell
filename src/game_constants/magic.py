@@ -5,6 +5,7 @@ from enum import Enum
 class Magic(Enum):
     HEADS_FORCE = "HEADS_FORCE"
     FORCE = "FORCE"
+    FOCUS = "Focus"
     SLOTS_HACK = "SLOTS_HACK"
     CRAPS_LUCKY_7 = "CRAPS_LUCKY_7"
     OPOSSUM_AVARICE = "OPOSSUM_AVARICE"
