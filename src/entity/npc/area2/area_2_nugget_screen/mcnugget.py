@@ -73,7 +73,7 @@ class MCNugg(Npc):
             ),
             "final_message": NpcTextBox(
                 [
-                    "MC Nugg: final .",
+                    "MC Nugg: Good on you here is your reward for 3rd complete .",
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -120,7 +120,7 @@ class MCNugg(Npc):
                     current_message = self.npc_messages["quest_2_start"]
                 if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
-                if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state and:
+                if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_start"]
                 if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_finish"]
@@ -142,7 +142,7 @@ class MCNugg(Npc):
             current_message = self.npc_messages["quest_2_start"]
         if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
-        if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state and:
+        if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_start"]
         if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_finish"]
@@ -194,7 +194,7 @@ class MCNugg(Npc):
                 current_message = self.npc_messages["quest_2_start"]
             if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]
-            if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state and:
+            if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_start"]
             if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_finish"]
