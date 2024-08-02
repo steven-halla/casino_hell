@@ -459,7 +459,8 @@ npcs
 craps boss
 
 
-
+we can add a day anytime player wants to re arm their items
+allow 1 paid version of 500 gold membership
 
 
 

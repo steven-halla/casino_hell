@@ -4,6 +4,7 @@ import pygame
 
 from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
+from game_constants.events import Events
 from globalclasses.money_balancer import MoneyBalancer
 from screen.examples.screen import Screen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
@@ -289,6 +290,9 @@ class CrapsHappyScreen(BattleScreen):
     # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
+        if self.money <= 0:
+            Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
+
         # self.lucky_seven = state.player.luck * 2
         pygame.mixer.music.stop()
         if state.controller.isQPressed:

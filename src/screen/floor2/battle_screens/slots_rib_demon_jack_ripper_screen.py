@@ -256,7 +256,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
             self.slot3[0] = self.slot1[0]
         else:
             self.slot3[0] = map_to_slot_number(generated_value3)
-
+        # for testing
         self.slot1[0] = 8
         self.slot2[0] = 8
         self.slot3[0] = 8
@@ -818,6 +818,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             elif self.three_eights == True:
+                Events.add_event_to_player(state.player, Events.MC_NUGGET_FIRST_QUEST_COMPLETE)
 
                 if "Lucky Shoes" not in state.player.items:
                     self.battle_messages["results_message"].messages = [
@@ -825,6 +826,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     ]
 
                     self.battle_messages["results_message"].update(state)
+
                 elif "Lucky Shoes" in state.player.items and self.secret_item == True:
                     self.battle_messages["results_message"].messages = [
                         f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} too bad for you there is only 1 item.!", ""

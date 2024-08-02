@@ -4,6 +4,7 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 
 
@@ -22,33 +23,41 @@ class MCNugg(Npc):
 
         # Integrated textbox content into guy_messages
         self.npc_messages = {
-            "no_level_6": NpcTextBox(
+
+            "level_6_quest": NpcTextBox(
                 [
-                    "MC Nugg: Yo Cuzz,  My other quests needs a perception of 2, do you dig me?. ",
+                    "MC Nugg: The rib demons have a special item, get it for me, either one is fine?",
 
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
-            "level_6_quest": NpcTextBox(
+            "quest_1_finish": NpcTextBox(
                 [
-                    "MC Nugg: Now that your strong enough go beat mack-jack, that guy stole something form me. You can find him somewhere. Beat him and I'll reward you, do you dig me?",
-
+                    "MC Nugg: very groovy hero here is your reward of perception glasses, very groove ",
+                    "Hero: Thank you for this friend. "
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_2_start": NpcTextBox(
                 [
-                    "MC Nugg: very groovy hero here is your reward of ",
-                    "Hero: Thank you for this friend. "
+                    "MC Nugg: listen up nugg brother, with a perception of 2 you can find my super secret item, you can either level up or equip the item i gave you",
+                    "Hero: i'll check around "
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_2_finish": NpcTextBox(
                 [
-                    "MC Nugg: Good on you here is your reward for 2nd complete .",
+                    "MC Nugg: Good on you here is your reward of 500 coins .",
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
+            "quest_3_start": NpcTextBox(
+                [
+                    "MC Nugg: ok now its time for your final quest nugg brother",
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -93,12 +102,15 @@ class MCNugg(Npc):
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
-                if state.player.level < 6:
-                    current_message = self.npc_messages["no_level_6"]
-                elif state.player.level >= 6:
-                    current_message = self.npc_messages["level_6_quest"]
+
+                current_message = self.npc_messages["level_6_quest"]
+
+
 
                 if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                    current_message = self.npc_messages["quest_1_finish"]
+
+                if Equipment.SOCKS_OF_PERCEPTION.value in state.player.items:
                     current_message = self.npc_messages["quest_2_start"]
                 if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
@@ -108,15 +120,15 @@ class MCNugg(Npc):
                 current_message.reset()
 
     def update_talking(self, state: "GameState"):
-        if "Lucky Shoes" in state.player.items and Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value not in state.player.level_two_npc_state:
-            Events.add_event_to_player(state.player, Events.MC_NUGGET_FIRST_QUEST_COMPLETE)
+        # this method casues it to skip to end of message this method is only temp
 
-        if state.player.level < 6:
-            current_message = self.npc_messages["no_level_6"]
-        elif state.player.level >= 6:
-            current_message = self.npc_messages["level_6_quest"]
+
+
+        current_message = self.npc_messages["level_6_quest"]
 
         if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            current_message = self.npc_messages["quest_1_finish"]
+        if Equipment.SOCKS_OF_PERCEPTION.value in state.player.items:
             current_message = self.npc_messages["quest_2_start"]
         if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
@@ -130,6 +142,11 @@ class MCNugg(Npc):
 
         if state.controller.isTPressed and current_message.is_finished():
 
+            if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                state.player.items.append(Equipment.SOCKS_OF_PERCEPTION.value)
+            if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
+                state.player.items.append(Equipment.NUGG_QUEST_TWO_MONEY.value)
+                state.player.money += 500
 
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
@@ -146,12 +163,12 @@ class MCNugg(Npc):
 
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
-            if state.player.level < 6:
-                current_message = self.npc_messages["no_level_6"]
-            elif state.player.level >= 6:
-                current_message = self.npc_messages["level_6_quest"]
+
+            current_message = self.npc_messages["level_6_quest"]
 
             if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                current_message = self.npc_messages["quest_1_finish"]
+            if Equipment.SOCKS_OF_PERCEPTION.value in state.player.items:
                 current_message = self.npc_messages["quest_2_start"]
             if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]
