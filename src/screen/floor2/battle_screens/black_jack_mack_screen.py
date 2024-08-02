@@ -6,6 +6,7 @@ from constants import DISPLAY
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.gui.textbox.text_box import TextBox
 from game_constants.coin_flip_constants import CoinFlipConstants
+from game_constants.events import Events
 from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
@@ -321,6 +322,9 @@ class BlackJackMackScreen(Screen):
             self.bet = state.player.money
 
     def update(self, state: "GameState"):
+        if self.money <= 0:
+            Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
+            Events.add_event_to_player(state.player, Events.MC_NUGGET_THIRD_QUEST_COMPLETE)
 
         if self.music_on == True:
             self.stop_music()

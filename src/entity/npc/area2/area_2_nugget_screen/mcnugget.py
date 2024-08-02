@@ -114,6 +114,8 @@ class MCNugg(Npc):
                     current_message = self.npc_messages["quest_2_start"]
                 if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
+                if Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.items:
+                    current_message = self.npc_messages["quest_3_start"]
                 if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_finish"]
 
@@ -132,6 +134,8 @@ class MCNugg(Npc):
             current_message = self.npc_messages["quest_2_start"]
         if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
+        if Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.items:
+            current_message = self.npc_messages["quest_3_start"]
         if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_finish"]
 
@@ -172,6 +176,8 @@ class MCNugg(Npc):
                 current_message = self.npc_messages["quest_2_start"]
             if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]
+            if Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.items:
+                current_message = self.npc_messages["quest_3_start"]
             if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_finish"]
 
