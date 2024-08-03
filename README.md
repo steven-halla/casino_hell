@@ -10,6 +10,11 @@ Mini Games:
 - Nuke 'em
 - Opossum in a Can
 
+## How to perform unit test, last part is name of file
+
+## python -m unittest tests.equipment_to_player_test
+
+
 ## Setup
 
 System Installs Python 3, Pip, and Venv
