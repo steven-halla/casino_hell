@@ -1,5 +1,5 @@
 {
-    "level": 4,
+    "level": 6,
     "exp": 2000,
     "stamina_points": 160,
     "max_stamina_points": 180,
@@ -32,7 +32,7 @@
     "spirit": 2,
     "perception": 2,
     "luck": 1,
-    "money": 2222,
+    "money": 6000,
     "rabies": false,
     "immunity": true,
     "level3reward": true,

@@ -23,6 +23,14 @@ class ErikaChickenGirl(Npc):
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
+            "quest_message": NpcTextBox(
+                [
+                    "Erika: Bawk Bawk",
+               \
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
 
         }
 
@@ -44,6 +52,9 @@ class ErikaChickenGirl(Npc):
         elif self.state == "talking":
             # Determine which message to use based on player state
             current_message = self.npc_messages["default_message"]
+
+            if state.player.money >= 6000:
+                current_message = self.npc_messages["quest_message"]
 
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -73,6 +84,9 @@ class ErikaChickenGirl(Npc):
                 # Reset the message based on player state
                 current_message = self.npc_messages["default_message"]
 
+                if state.player.money >= 6000:
+                    current_message = self.npc_messages["quest_message"]
+
                 current_message.reset()
 
     def update_talking(self, state: "GameState", current_message):
@@ -80,6 +94,8 @@ class ErikaChickenGirl(Npc):
         state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
+            if state.player.money >= 5000:
+                state.player.money -= 4000
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
@@ -105,6 +121,10 @@ class ErikaChickenGirl(Npc):
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
             current_message = self.npc_messages["default_message"]
+
+
+            if state.player.money >= 6000:
+                current_message = self.npc_messages["quest_message"]
 
             current_message.draw(state)
 
