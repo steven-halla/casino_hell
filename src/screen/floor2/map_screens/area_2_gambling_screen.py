@@ -12,6 +12,7 @@ from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRipp
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.player.player import Player
+from entity.treasurechests.bbqsauce import BBQSauce
 from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
@@ -102,7 +103,14 @@ class Area2GamblingScreen(Screen):
         ]
         # Check the value of state.player.body
 
+        state.treasurechests = [
+
+            BBQSauce(16 * 21, 14 * 39),
+
+        ]
+
         # state.npcs = []
+
 
         state.npcs = [
             BlackJackMack(16 * 5, 16 * 5),
@@ -133,6 +141,10 @@ class Area2GamblingScreen(Screen):
 
         for npc in state.npcs:
             npc.update(state)
+
+
+        for treasurechests in state.treasurechests:
+            treasurechests.update(state)
 
 
 
@@ -247,6 +259,10 @@ class Area2GamblingScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+
+        for treasurechests in state.treasurechests:
+            treasurechests.draw(state)
 
 
 

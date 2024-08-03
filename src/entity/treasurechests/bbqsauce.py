@@ -22,6 +22,8 @@ class BBQSauce(TreasureChest):
             state.treasurechests.remove(self)  # Remove the chest from the game
             self.isOpened = True  #
             Events.add_event_to_player(state.player, Events.MC_NUGGET_SECOND_QUEST_COMPLETE)
+            print("YOur level two npc state is :" + str(state.player.level_two_npc_state))
+
 
 
     def open_chest(self, state: "GameState"):
