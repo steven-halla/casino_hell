@@ -4,6 +4,7 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.events import Events
 
 
 class ErikaChickenGirl(Npc):
@@ -96,6 +97,9 @@ class ErikaChickenGirl(Npc):
         if state.controller.isTPressed and current_message.is_finished():
             if state.player.money >= 5000:
                 state.player.money -= 4000
+
+                state.player.level_two_npc_state.append(Events.CHICKEN_QUEST_START.value)
+
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True

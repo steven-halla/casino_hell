@@ -1,6 +1,7 @@
 from enum import Enum
 
 class Events(Enum):
+    CHICKEN_QUEST_START = "CHICKEN_QUEST_START"
     QUEST_1_BADGE = "QUEST_1_BADGE"
     QUEST_1_COIN = "QUEST_1_COIN"
     QUEST_1_COMPLETE = "QUEST_1_COMPLETE"

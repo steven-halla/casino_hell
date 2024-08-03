@@ -15,9 +15,11 @@ from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChicke
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
 
 from entity.player.player import Player
+from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-
+from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
+from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
 
 
 class Area2NuggetScreen(Screen):
@@ -98,14 +100,17 @@ class Area2NuggetScreen(Screen):
         ]
         # Check the value of state.player.body
 
-        # state.npcs = []
+        # If the CHICKEN_QUEST_START event is not in level_two_npc_state, populate state.npcs
 
         state.npcs = [
             MCNugg(16 * 15, 16 * 5),
             ErikaChickenGirl(16 * 25, 16 * 5),
             Area2NuggetToRestArea(16 * 35, 16 * 34),
-
         ]
+
+        print(str(state.player.level_two_npc_state))
+
+
 
     def update(self, state: "GameState"):
 
@@ -124,6 +129,9 @@ class Area2NuggetScreen(Screen):
 
         for npc in state.npcs:
             npc.update(state)
+            if Events.CHICKEN_QUEST_START.value in state.player.level_two_npc_state:
+                if isinstance(npc, ErikaChickenGirl):
+                    state.npcs.remove(npc)
 
 
 
