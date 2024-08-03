@@ -12,6 +12,11 @@ class Equipment(Enum):
 
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"
 
+    @staticmethod
+    def add_equipment_to_player(player, equipment):
+        if equipment.value not in player.level_two_npc_state:
+            player.level_two_npc_state.append(equipment.value)
+
 
 
 
