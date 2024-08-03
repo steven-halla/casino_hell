@@ -22,7 +22,7 @@ class Player(Entity):
         self.spirit = 0
         self.luck = 0
         self.food = 0
-        self.perception = 0
+        self.perception = 2
         self.stamina_points = 160
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False

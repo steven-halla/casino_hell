@@ -96,18 +96,22 @@ class Area2GamblingScreen(Screen):
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
 
-        state.treasurechests = [
 
-            # WaterBottle(16 * 36, 16 * 10),
-
-        ]
         # Check the value of state.player.body
+        print("Level 2 npc state :" + str(state.player.level_two_npc_state))
 
-        state.treasurechests = [
 
-            BBQSauce(16 * 21, 14 * 39),
+        if (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state
+                and state.player.perception >= 2
+                and Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value not in state.player.level_two_npc_state):
+            print("ydddle")
 
-        ]
+
+            state.treasurechests = [
+
+                BBQSauce(16 * 21, 14 * 39),
+
+            ]
 
         # state.npcs = []
 
