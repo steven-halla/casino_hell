@@ -104,7 +104,6 @@ class Area2BarCutScene1(Screen):
 
     def update(self, state: "GameState"):
 
-
         current_time = time.time()
 
         if self.game_state == "step_1":
@@ -113,22 +112,31 @@ class Area2BarCutScene1(Screen):
                 self.state_duration = 1  # Set the duration for step_1
 
             elapsed_time = current_time - self.state_start_time
-            print(f"Elapsed Time for step_1: {elapsed_time:.2f} seconds")
+            print(f"STEP 1: Elapsed Time: {elapsed_time:.2f} seconds")
 
             if elapsed_time < self.state_duration:
-                self.cut_scene_movement.move_right(state.player, duration=self.state_duration)
+                self.cut_scene_movement.move_right(state.player, duration=1)  # Trigger movement
             else:
-                print("Timer set")
+                print("Timer set for STEP 1")
+                self.cut_scene_movement.reset_movement()  # Reset the movement flag
                 self.game_state = "step_2"  # Move to the next step
                 self.state_start_time = None  # Reset timer for the next step
-                self.state_duration = None  # Reset duration for the next step
 
+        elif self.game_state == "step_2":
+            if self.state_start_time is None:
+                self.state_start_time = current_time
+                self.state_duration = 1  # Set the duration for step_2
 
+            elapsed_time = current_time - self.state_start_time
+            print(f"STEP 2: Elapsed Time: {elapsed_time:.2f} seconds")
 
-
-
-
-
+            if elapsed_time < self.state_duration:
+                self.cut_scene_movement.move_up(state.player, duration=1)  # Trigger movement
+            else:
+                print("Timer set for STEP 2")
+                self.cut_scene_movement.reset_movement()  # Reset the movement flag
+                self.game_state = "step_3"  # Move to the next step
+                self.state_start_time = None  # Reset timer for the next step
 
         # state.player.canMove = False
         controller = state.controller
