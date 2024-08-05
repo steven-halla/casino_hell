@@ -17,6 +17,8 @@ from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.player.player import Player
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from concurrent.futures import ThreadPoolExecutor
+
 
 
 class Area2BarCutScene1(Screen):
@@ -48,6 +50,7 @@ class Area2BarCutScene1(Screen):
         self.timer_start = None  # To store the start time of the timer
         self.timer_duration = 2
 
+
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
@@ -70,6 +73,17 @@ class Area2BarCutScene1(Screen):
             ),
         }
 
+        self.current_movement_index = 0
+        self.movement_sequence = [
+            ('move_right', 1),
+            ('move_up', 1)
+        ]
+        self.event_counter = 0
+
+        self.game_state = "step_1"
+        self.state_start_time = None
+        self.state_duration = 1  # Duration for each state
+
     def start(self, state: "GameState"):
         state.restScreen.barscene1 = True
         state.restScreen.bar_keeper_talking = False
@@ -89,7 +103,25 @@ class Area2BarCutScene1(Screen):
         state.npcs = []
 
     def update(self, state: "GameState"):
-        self.cut_scene_movement.move_right(state.player, duration=1)
+
+
+        current_time = time.time()
+
+        if self.game_state == "step_1":
+            if self.state_start_time is None:
+                self.state_start_time = current_time
+                self.state_duration = 1  # Set the duration for step_1
+
+            elapsed_time = current_time - self.state_start_time
+            print(f"Elapsed Time for step_1: {elapsed_time:.2f} seconds")
+
+            if elapsed_time < self.state_duration:
+                self.cut_scene_movement.move_right(state.player, duration=self.state_duration)
+            else:
+                print("Timer set")
+                self.game_state = "step_2"  # Move to the next step
+                self.state_start_time = None  # Reset timer for the next step
+                self.state_duration = None  # Reset duration for the next step
 
 
 
