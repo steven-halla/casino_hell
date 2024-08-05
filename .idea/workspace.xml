@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="movement is now set with a timer duration">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="now everything is handled in steps">
       <change beforePath="$PROJECT_DIR$/src/screen/floor2/cut_scenes/area_2_bar_cut_scene_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/cut_scenes/area_2_bar_cut_scene_1.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -709,7 +708,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="775" />
+    <option name="localTasksCounter" value="776" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -738,7 +737,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed first quest" />
     <MESSAGE value="fixed up alice quest, fixed black jack to work more preper" />
     <MESSAGE value="updated slots to give status on  0 coins" />
     <MESSAGE value="new NPCS" />
@@ -763,7 +761,8 @@
     <MESSAGE value="changed it back to what i wanted" />
     <MESSAGE value="movement is now handled correctly" />
     <MESSAGE value="movement is now set with a timer duration" />
-    <option name="LAST_COMMIT_MESSAGE" value="movement is now set with a timer duration" />
+    <MESSAGE value="now everything is handled in steps" />
+    <option name="LAST_COMMIT_MESSAGE" value="now everything is handled in steps" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -803,7 +802,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1722885682892" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1722885991279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />

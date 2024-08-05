@@ -138,6 +138,18 @@ class Area2BarCutScene1(Screen):
                 self.game_state = "step_3"  # Move to the next step
                 self.state_start_time = None  # Reset timer for the next step
 
+        elif self.game_state == "step_3":
+
+            print(f"STEP 3")
+
+            self.current_message = self.cut_scene_1_messages["message_1"]
+            self.current_message.update(state)
+            if self.current_message.is_finished() and state.controller.isTPressed:
+                print("hi")
+                self.game_state = "step_4"
+                state.controller.isTPressed = False
+
+
         # state.player.canMove = False
         controller = state.controller
         player = state.player
@@ -201,7 +213,7 @@ class Area2BarCutScene1(Screen):
         for npc in state.npcs:
             npc.draw(state)
 
-        if self.display_message1:
+        if self.game_state == "step_3":
             self.cut_scene_1_messages["message_1"].draw(state)
 
         state.obstacle.draw(state)
