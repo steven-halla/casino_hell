@@ -32,6 +32,6 @@ class CutSceneMovement:
             print("nommmmy")
             # Stop all movement
             self.stop_movement_flag = True  # Set the flag to stop movement
-            self.timer_start = time.time()  # Reset timer start
-            return 0  # Return 0 to indicate reset current_time
-        return current_time  # Otherwise, return the unchanged current_time
+        #     self.timer_start = time.time()  # Reset timer start
+        #     return 0  # Return 0 to indicate reset current_time
+        # return current_time  # Otherwise, return the unchanged current_time
