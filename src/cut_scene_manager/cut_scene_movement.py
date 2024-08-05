@@ -1,37 +1,55 @@
-
 import time
+
 class CutSceneMovement:
     def __init__(self):
-        self.timer_start = time.time()  # Initialize timer start with the current time
         self.stop_movement_flag = False  # Flag to control movement
+        self.movement_duration = 0  # Duration to control movement
+        self.movement_start_time = None  # Start time for the movement
 
-    def move_up(self, character):
-        if not self.stop_movement_flag:  # Only move if the flag is not set
-            character.setPosition(character.position.x, character.position.y - 1)
-
-    def move_down(self, character):
-        if not self.stop_movement_flag:  # Only move if the flag is not set
-            character.setPosition(character.position.x, character.position.y + 1)
-
-    def move_left(self, character):
+    def move_up(self, character, duration):
         if not self.stop_movement_flag:
-            character.setPosition(character.position.x -1, character.position.y)
+            if self.movement_start_time is None:
+                self.movement_start_time = time.time()
 
-    def move_right(self, character):
+            elapsed_time = time.time() - self.movement_start_time
+            if elapsed_time < duration:
+                character.setPosition(character.position.x, character.position.y - 1)
+            else:
+                self.stop_movement_flag = True
+
+    def move_down(self, character, duration):
         if not self.stop_movement_flag:
-            character.setPosition(character.position.x +1, character.position.y)
+            if self.movement_start_time is None:
+                self.movement_start_time = time.time()
 
-    def stop_movement(self, current_time, event_timer):
-        """
-        Stop movement after the specified duration.
+            elapsed_time = time.time() - self.movement_start_time
+            if elapsed_time < duration:
+                character.setPosition(character.position.x, character.position.y + 1)
+            else:
+                self.stop_movement_flag = True
 
-        :param current_time: The current time.
-        :param event_timer: The duration after which to stop movement.
-        """
-        if self.timer_start is not None and current_time - self.timer_start >= event_timer:
-            print("nommmmy")
-            # Stop all movement
-            self.stop_movement_flag = True  # Set the flag to stop movement
-        #     self.timer_start = time.time()  # Reset timer start
-        #     return 0  # Return 0 to indicate reset current_time
-        # return current_time  # Otherwise, return the unchanged current_time
+    def move_left(self, character, duration):
+        if not self.stop_movement_flag:
+            if self.movement_start_time is None:
+                self.movement_start_time = time.time()
+
+            elapsed_time = time.time() - self.movement_start_time
+            if elapsed_time < duration:
+                character.setPosition(character.position.x - 1, character.position.y)
+            else:
+                self.stop_movement_flag = True
+
+    def move_right(self, character, duration):
+        if not self.stop_movement_flag:
+            if self.movement_start_time is None:
+                self.movement_start_time = time.time()
+
+            elapsed_time = time.time() - self.movement_start_time
+            if elapsed_time < duration:
+                character.setPosition(character.position.x + 1, character.position.y)
+            else:
+                self.stop_movement_flag = True
+
+    def reset_movement(self):
+        self.stop_movement_flag = False
+        self.movement_start_time = None

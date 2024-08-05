@@ -28,6 +28,9 @@ class Area2BarCutScene1(Screen):
         self.player = Player(333, 555)
         move_player_down_flag = False
         self.npcs = []
+
+        self.timer_paused = False
+        self.fixed_time = None
         self.initial_player_y = None
 
         self.cut_scene_movement = CutSceneMovement()
@@ -86,28 +89,12 @@ class Area2BarCutScene1(Screen):
         state.npcs = []
 
     def update(self, state: "GameState"):
-        self.cut_scene_movement.move_right(state.player)
+        self.cut_scene_movement.move_right(state.player, duration=1)
 
-        elapsed_time = time.time() - self.timer_start  # Calculate elapsed time
-        print(f"Elapsed Time: {elapsed_time:.2f} seconds")
 
-        # Check if elapsed time is greater than 2 seconds
-        if elapsed_time >= 2:
-            print("puffy")
-            self.display_message1 = True
 
-            # Open the text box
-            current_message = self.cut_scene_1_messages["message_1"]
-            current_message.update(state)
 
-        current_time = time.time()
 
-        # Example of stopping movement after 2 seconds (adjust event_timer as needed)
-        event_timer = 2  # seconds
-        self.cut_scene_movement.stop_movement(current_time, event_timer)
-
-        # Increment the timer by the time elapsed since the last frame
-        # Calculate the time elapsed since the screen started
 
 
 
