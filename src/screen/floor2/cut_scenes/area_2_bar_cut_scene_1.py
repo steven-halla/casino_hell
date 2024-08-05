@@ -88,10 +88,10 @@ class Area2BarCutScene1(Screen):
 
 
         super().start(state)
+
+        # self.timer_start = time.time()  # Initialize the timer at the start of the screen
+
         self.timer_start = time.time()  # Initialize the timer at the start of the screen
-
-
-
 
         # Check if a player instance already exists
         # times 16
@@ -110,6 +110,12 @@ class Area2BarCutScene1(Screen):
         if self.timer_start is not None:  # Check if the timer has started
             elapsed_time = time.time() - self.timer_start  # Calculate elapsed time
             print(f"Elapsed Time: {elapsed_time:.2f} seconds")
+
+        current_time = time.time()
+
+        # Example of stopping movement after 5 seconds (adjust event_timer as needed)
+        event_timer = 2  # seconds
+        self.cut_scene_movement.stop_movement(current_time, event_timer)
 
 
 
