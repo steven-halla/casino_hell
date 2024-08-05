@@ -106,7 +106,7 @@ class Area2BarCutScene1(Screen):
 
 
     def update(self, state: "GameState"):
-        self.cut_scene_movement.move_up(state.player)
+        self.cut_scene_movement.move_right(state.player)
         if self.timer_start is not None:  # Check if the timer has started
             elapsed_time = time.time() - self.timer_start  # Calculate elapsed time
             print(f"Elapsed Time: {elapsed_time:.2f} seconds")

@@ -9,6 +9,18 @@ class CutSceneMovement:
         if not self.stop_movement_flag:  # Only move if the flag is not set
             character.setPosition(character.position.x, character.position.y - 1)
 
+    def move_down(self, character):
+        if not self.stop_movement_flag:  # Only move if the flag is not set
+            character.setPosition(character.position.x, character.position.y + 1)
+
+    def move_left(self, character):
+        if not self.stop_movement_flag:
+            character.setPosition(character.position.x -1, character.position.y)
+
+    def move_right(self, character):
+        if not self.stop_movement_flag:
+            character.setPosition(character.position.x +1, character.position.y)
+
     def stop_movement(self, current_time, event_timer):
         """
         Stop movement after the specified duration.
