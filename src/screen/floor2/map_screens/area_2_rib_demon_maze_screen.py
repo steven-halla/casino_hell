@@ -99,11 +99,11 @@ class Area2RibDemonMazeScreen(Screen):
 
         # state.npcs = []
 
-        state.npcs = [
-            MCNugg(16 * 15, 16 * 5),
-            Area2NuggetToRestArea(16 * 35, 16 * 34),
-
-        ]
+        # state.npcs = [
+        #     MCNugg(16 * 15, 16 * 5),
+        #     Area2NuggetToRestArea(16 * 35, 16 * 34),
+        #
+        # ]
 
     def update(self, state: "GameState"):
 
@@ -139,37 +139,37 @@ class Area2RibDemonMazeScreen(Screen):
         #     coinMonicle = "coin monicle"
         #     state.player.items.append(coinMonicle)
 
-        if controller.isUpPressed:
+        # if controller.isUpPressed:
+        #
+        #     self.y_up_move = True
+        #
+        #     self.y_down_move = False
+        #     self.x_left_move = False
+        #     self.x_right_move = False
+        #
+        # elif controller.isDownPressed:
+        #     self.y_down_move = True
+        #     self.y_up_move = False
+        #     self.x_left_move = False
+        #     self.x_right_move = False
+        #
+        # elif controller.isLeftPressed:
+        #     self.x_left_move = True
+        #     self.y_up_move = False
+        #     self.y_down_move = False
+        #     self.x_right_move = False
+        #
+        # elif controller.isRightPressed:
+        #     self.x_right_move = True
+        #     self.y_up_move = False
+        #     self.y_down_move = False
+        #     self.x_left_move = False
 
-            self.y_up_move = True
-
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-
-        elif controller.isDownPressed:
-            self.y_down_move = True
-            self.y_up_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-
-        elif controller.isLeftPressed:
-            self.x_left_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_right_move = False
-
-        elif controller.isRightPressed:
-            self.x_right_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-
-        else:
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
+        # else:
+        #     self.y_up_move = False
+        #     self.y_down_move = False
+        #     self.x_left_move = False
+        #     self.x_right_move = False
 
         player.update(state)
 

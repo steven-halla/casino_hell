@@ -46,6 +46,7 @@ from screen.floor2.battle_screens.craps_happy_screen import CrapsHappyScreen
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
 from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
 from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
+from screen.floor2.cut_scenes.area_2_bar_cut_scene_1 import Area2BarCutScene1
 from screen.floor2.map_screens.area_2_boss_screen import Area2BossScreen
 from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
 from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
@@ -143,10 +144,12 @@ class GameState:
         self.blackJackMackScreen = BlackJackMackScreen()
         self.opossumInACanCandyScreen = OpossumInACanCandyScreen()
 
+        self.area2BarCutScene1 = Area2BarCutScene1()
 
 
 
-        self.currentScreen = self.startLoadScreen
+
+        self.currentScreen = self.area2BarCutScene1
 
 
 

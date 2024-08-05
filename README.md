@@ -469,6 +469,25 @@ allow 1 paid version of 500 gold membership
 
 
 
+------------------------TO DO LIST CREATED AUG 4TH--------------------------------------------
+
+1) make new maps for all screens
+2) test all screens for new items and magic
+3) review items/equipment/magic and make sure everything is spread correctly
+4) create new DEMONS for maze area, which I'm thinking will be 4 screens.
+
+# area 1 have opossum girls say they want to give a opossum present to which the hero says 'those are the best kind of presents'
+
+5) Create all items in treasure chest 
+6) new item menu with graphics
+7) Create message system for when opening treasure chest
+8) Create level up system with text explaining level gain as well as giving players a chioice in stat point
+9) Create all cut scenes, 3 for the bar, 1 for boss area, and 1 for when we find Erika The Chicken girl
+10)  Create  3 more game screens,  1 for the boss(craps), 1 for slots, 1 for Craps
+11) Try and create easy way to make cut scenes with code  like that music software
+
+
+
 
 
 
