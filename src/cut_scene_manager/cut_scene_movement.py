@@ -29,6 +29,9 @@ class CutSceneMovement:
         :param event_timer: The duration after which to stop movement.
         """
         if self.timer_start is not None and current_time - self.timer_start >= event_timer:
+            print("nommmmy")
             # Stop all movement
             self.stop_movement_flag = True  # Set the flag to stop movement
-            self.timer_start = None  # Reset timer to avoid repetitive stopping
+            self.timer_start = time.time()  # Reset timer start
+            return 0  # Return 0 to indicate reset current_time
+        return current_time  # Otherwise, return the unchanged current_time

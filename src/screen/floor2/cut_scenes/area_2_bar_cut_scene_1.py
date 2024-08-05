@@ -19,7 +19,6 @@ from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
-
 class Area2BarCutScene1(Screen):
 
     def __init__(self):
@@ -39,9 +38,7 @@ class Area2BarCutScene1(Screen):
         self.move_distance = 30  # Distance to move the player during the cutscene
         # Initialize the clock
 
-
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
-
 
         self.display_message1 = False  # Flag to track if the message should be displayed
         self.display_message2 = False  # Flag to track if the message should be displayed
@@ -81,11 +78,9 @@ class Area2BarCutScene1(Screen):
             ),
         }
 
-
     def start(self, state: "GameState"):
         state.restScreen.barscene1 = True
         state.restScreen.bar_keeper_talking = False
-
 
         super().start(state)
 
@@ -99,33 +94,24 @@ class Area2BarCutScene1(Screen):
         player_start_y = 300
         state.player = Player(player_start_x, player_start_y)
 
-        state.npcs = [
-
-        ]
-
-
+        state.npcs = []
 
     def update(self, state: "GameState"):
         self.cut_scene_movement.move_right(state.player)
-        if self.timer_start is not None:  # Check if the timer has started
-            elapsed_time = time.time() - self.timer_start  # Calculate elapsed time
+        if self.cut_scene_movement.timer_start is not None:  # Check if the timer has started
+            elapsed_time = time.time() - self.cut_scene_movement.timer_start  # Calculate elapsed time
             print(f"Elapsed Time: {elapsed_time:.2f} seconds")
 
         current_time = time.time()
 
         # Example of stopping movement after 5 seconds (adjust event_timer as needed)
         event_timer = 2  # seconds
-        self.cut_scene_movement.stop_movement(current_time, event_timer)
-
-
+        current_time = self.cut_scene_movement.stop_movement(current_time, event_timer)
 
         # Increment the timer by the time elapsed since the last frame
         # Calculate the time elapsed since the screen started
 
-
         current_message = self.cut_scene_1_messages["message_1"]
-
-
 
         # state.player.canMove = False
         controller = state.controller
@@ -133,10 +119,8 @@ class Area2BarCutScene1(Screen):
         obstacle = state.obstacle
         controller.update()
 
-
         if controller.isExitPressed is True:
             state.isRunning = False
-
 
         player.update(state)
 
@@ -157,13 +141,8 @@ class Area2BarCutScene1(Screen):
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
-
-
-
     def draw(self, state: "GameState"):
         state.DISPLAY.fill(BLUEBLACK)
-
-
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
@@ -199,7 +178,6 @@ class Area2BarCutScene1(Screen):
 
         if self.display_message1:
             self.cut_scene_1_messages["message_1"].draw(state)
-
 
         state.obstacle.draw(state)
 
