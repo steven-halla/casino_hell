@@ -20,14 +20,14 @@ class Area2MoneyBag(TreasureChest):
     def give_item(self, state: "GameState"):
         if state.controller.isTPressed:
             state.player.money += self.hidden_item
+            Treasure.add_treasure_to_player(state.player, Treasure.FIVE_HUNDRED_GOLD)
 
 
             state.treasurechests.remove(self)  # Remove the chest from the game
             self.isOpened = True  #
             print("YOur level two npc state is :" + str(state.player.level_two_npc_state))
-            Treasure.add_treasure_to_player(state.player, Treasure.FIVE_HUNDRED_GOLD)
 
-            state.controller.isTPressed = False
+
 
 
 

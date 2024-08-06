@@ -71,6 +71,7 @@ class Area2RestScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        state.treasurechests = []
 
         if (Events.QUEST_1_COIN.value in state.player.level_two_npc_state and
                 Events.QUEST_1_BADGE.value in state.player.level_two_npc_state and
