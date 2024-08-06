@@ -149,7 +149,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.area2BarCutScene1
+        self.currentScreen = self.startLoadScreen
 
 
 

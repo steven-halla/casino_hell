@@ -20,7 +20,9 @@ from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_rest_screen.paul import Paul
 
 from entity.player.player import Player
+from entity.treasurechests.area_2_money_bag import Area2MoneyBag
 from game_constants.events import Events
+from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -100,7 +102,15 @@ class Area2RestScreen(Screen):
         super().start(state)
         state.npcs.clear()
 
+        if (state.player.perception > 1
+                and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
+            # Your code here
 
+            state.treasurechests = [
+
+                Area2MoneyBag(16 * 5, 14 * 5),
+
+            ]
 
         state.npcs = [
             Alice(16 * 5, 16 * 15),
@@ -139,6 +149,9 @@ class Area2RestScreen(Screen):
 
         for npc in state.npcs:
             npc.update(state)
+
+        for treasurechests in state.treasurechests:
+            treasurechests.update(state)
 
 
         if controller.isExitPressed is True:
@@ -237,6 +250,10 @@ class Area2RestScreen(Screen):
         for npc in state.npcs:
             npc.draw(state)
 
+
+
+        for treasurechests in state.treasurechests:
+            treasurechests.draw(state)
 
 
         state.obstacle.draw(state)

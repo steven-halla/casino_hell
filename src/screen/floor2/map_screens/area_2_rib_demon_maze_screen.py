@@ -24,7 +24,7 @@ class Area2RibDemonMazeScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/hedgemaze1.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/area_2_rest_area_map.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False

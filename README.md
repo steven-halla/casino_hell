@@ -478,7 +478,7 @@ allow 1 paid version of 500 gold membership
 
 # area 1 have opossum girls say they want to give a opossum present to which the hero says 'those are the best kind of presents'
 
-5) Create all items in treasure chest 
+5) Create all items in treasure chest
 6) new item menu with graphics
 7) Create message system for when opening treasure chest
 8) Create level up system with text explaining level gain as well as giving players a chioice in stat point
