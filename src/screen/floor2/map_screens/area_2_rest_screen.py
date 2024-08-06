@@ -2,6 +2,8 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
+from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_rest_screen.Stew import Stew
 from entity.npc.area2.area_2_rest_screen.alex import Alex
 from entity.npc.area2.area_2_rest_screen.alice import Alice
@@ -13,10 +15,8 @@ from entity.npc.area2.area_2_rest_screen.area_2_rest_to_rib_demon_maze_area impo
 from entity.npc.area2.area_2_rest_screen.clara import Clara
 from entity.npc.area2.area_2_rest_screen.jasper import Jasper
 from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
-from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
 from entity.npc.area2.area_2_rest_screen.karn import Karn
 from entity.npc.area2.area_2_rest_screen.natasha import Natasha
-from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_rest_screen.paul import Paul
 
 from entity.player.player import Player
@@ -25,13 +25,6 @@ from game_constants.events import Events
 from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-
-
-# the mint quintuplets offer stat advice maybe change it later to include an npc to let player know
-# about the kind of info they have to offer
-# mint 1 mint 2 mint 3 mint 4 mint 5
-# or
-# minty  fresh  - minty - mint mint - condition mint - lint mint
 
 class Area2RestScreen(Screen):
 
@@ -49,7 +42,7 @@ class Area2RestScreen(Screen):
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
         self.clock = pygame.time.Clock()  # Initialize the clock
-        self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
@@ -82,35 +75,29 @@ class Area2RestScreen(Screen):
         print("this is for our nugget area")
         print(str(state.area_2_gambling_area_to_rest_point))
 
-        if state.area_2_gambling_area_to_rest_point == True:
+        if state.area_2_gambling_area_to_rest_point:
             print("hdshfa;ljflksja;f")
             player_start_x = 16 * 16  # Desired X coordinate
             player_start_y = 16 * 1  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_gambling_area_to_rest_point = False
-        if state.area_2_nugget_area_to_rest_point == True:
+        if state.area_2_nugget_area_to_rest_point:
             print("hdshfa;ljflksja;f")
             player_start_x = 16 * 94  # Desired X coordinate
             player_start_y = 16 * 1  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_nugget_area_to_rest_point = False
 
-
-
         self.stop_music()
-        if state.musicOn == True:
+        if state.musicOn:
             self.initialize_music()
         super().start(state)
         state.npcs.clear()
 
         if (state.player.perception > 1
                 and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
-            # Your code here
-
             state.treasurechests = [
-
                 Area2MoneyBag(16 * 5, 14 * 5),
-
             ]
 
         state.npcs = [
@@ -120,13 +107,11 @@ class Area2RestScreen(Screen):
             Alex(16 * 26, 16 * 45),
             Lunky(16 * 36, 16 * 45),
             Jasper(16 * 52, 16 * 15),
-
             Natasha(16 * 70, 16 * 45),
             Clara(16 * 80, 16 * 45),
             Stew(16 * 90, 16 * 45),
             Paul(16 * 100, 16 * 45),
             Karn(16 * 60, 16 * 45),
-
 
             # below are shops and such
             Area2InnKeeper(16 * 101, 16 * 33),
@@ -136,54 +121,43 @@ class Area2RestScreen(Screen):
             Area2RestToNuggetArea(16 * 95, 16 * 0),
             Area2RestToRibDemonMazeArea(16 * 15, 16 * 49),
             Area2RestToBossArea(16 * 64, 16 * 49),
-
         ]
 
     def update(self, state: "GameState"):
-
-
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
         controller.update()
 
-
         for npc in state.npcs:
             npc.update(state)
 
-        for treasurechests in state.treasurechests:
-            treasurechests.update(state)
+        for treasurechest in state.treasurechests:
+            treasurechest.update(state)
 
-
-        if controller.isExitPressed is True:
+        if controller.isExitPressed:
             state.isRunning = False
 
         if controller.isUpPressed:
-
             self.y_up_move = True
-
             self.y_down_move = False
             self.x_left_move = False
             self.x_right_move = False
-
         elif controller.isDownPressed:
             self.y_down_move = True
             self.y_up_move = False
             self.x_left_move = False
             self.x_right_move = False
-
         elif controller.isLeftPressed:
             self.x_left_move = True
             self.y_up_move = False
             self.y_down_move = False
             self.x_right_move = False
-
         elif controller.isRightPressed:
             self.x_right_move = True
             self.y_up_move = False
             self.y_down_move = False
             self.x_left_move = False
-
         else:
             self.y_up_move = False
             self.y_down_move = False
@@ -192,7 +166,7 @@ class Area2RestScreen(Screen):
 
         player.update(state)
 
-        # check map for collision
+        # Check map for collision
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
@@ -206,16 +180,11 @@ class Area2RestScreen(Screen):
                     if demon.collision.isOverlap(tile_rect):
                         demon.undoLastMove()
 
-
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
-
-
     def draw(self, state: "GameState"):
-
         state.DISPLAY.fill(BLUEBLACK)
-
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
@@ -230,7 +199,7 @@ class Area2RestScreen(Screen):
                 pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (
-                tile_width * 1.3, tile_height * 1.3))
+                    tile_width * 1.3, tile_height * 1.3))
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
@@ -242,32 +211,23 @@ class Area2RestScreen(Screen):
                 pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (
-                tile_width * 1.3, tile_height * 1.3))
+                    tile_width * 1.3, tile_height * 1.3))
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
-
-
 
         for npc in state.npcs:
             npc.draw(state)
 
-
-
-        for treasurechests in state.treasurechests:
-            treasurechests.draw(state)
-
+        for treasurechest in state.treasurechests:
+            treasurechest.draw(state)
+            treasurechest.draw_message(state)  # Ensure the message is drawn if needed
 
         state.obstacle.draw(state)
-
         state.player.draw(state)
 
-
-
-        if state.controller.isPPressed == True:
-
+        if state.controller.isPPressed:
             state.player.draw_player_stats(state)
-
-            if state.controller.isBPressed == True:
+            if state.controller.isBPressed:
                 if state.controller.isPPressed:
                     state.controller.isPPressed = False
                     return
