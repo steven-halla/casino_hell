@@ -153,6 +153,10 @@ class Area2GamblingScreen(Screen):
             npc.update(state)
 
 
+
+        state.treasurechests = [chest for chest in state.treasurechests if not chest.remove]
+
+
         for treasurechests in state.treasurechests:
             treasurechests.update(state)
 
