@@ -2,6 +2,7 @@ from enum import Enum
 
 class Treasure(Enum):
     FIVE_HUNDRED_GOLD = "500 Gold"
+    BBQ_SAUCE = "BBQ_SAUCE"
 
 
     @staticmethod

@@ -132,6 +132,8 @@ class Area2RestScreen(Screen):
         for npc in state.npcs:
             npc.update(state)
 
+        state.treasurechests = [chest for chest in state.treasurechests if not chest.remove]
+
         for treasurechest in state.treasurechests:
             treasurechest.update(state)
 

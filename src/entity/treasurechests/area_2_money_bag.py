@@ -16,6 +16,8 @@ class Area2MoneyBag(TreasureChest):
         self.treasure_open_sound.set_volume(0.5)
         self.message_displayed = False
         self.message_closed = False
+        self.remove = False  # Flag to mark the chest for removal
+
 
         self.text_box_messages = {
             "default_message": NpcTextBox(
@@ -44,12 +46,12 @@ class Area2MoneyBag(TreasureChest):
 
     def update(self, state: "GameState"):
         if self.message_closed:
+            self.remove = True  # Mark the chest for removal
             return  # Do nothing if the message has been closed
         if self.isOpened:
             self.current_message.update(state)
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
-
                 print("mew")
         else:
             self.open_chest(state)

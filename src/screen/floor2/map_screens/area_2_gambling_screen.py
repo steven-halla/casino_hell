@@ -65,6 +65,12 @@ class Area2GamblingScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+
+        state.treasurechests = [
+
+
+        ]
+
         print("this is for our start area")
         print(str(state.area_2_rest_area_to_gambling_point))
 
