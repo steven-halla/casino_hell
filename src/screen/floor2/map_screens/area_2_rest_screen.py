@@ -135,6 +135,7 @@ class Area2RestScreen(Screen):
         for treasurechest in state.treasurechests:
             treasurechest.update(state)
 
+
         if controller.isExitPressed:
             state.isRunning = False
 
@@ -220,7 +221,6 @@ class Area2RestScreen(Screen):
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)
-            treasurechest.draw_message(state)  # Ensure the message is drawn if needed
 
         state.obstacle.draw(state)
         state.player.draw(state)
