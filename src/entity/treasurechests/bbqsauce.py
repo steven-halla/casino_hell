@@ -5,6 +5,7 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.treasurechests.treasurechests import TreasureChest
 from game_constants.treasure import Treasure
 
+# quest item for mcnugget, his 2nd quest
 
 class BBQSauce(TreasureChest):
     def __init__(self, x: float, y: float):

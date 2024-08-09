@@ -485,8 +485,8 @@ class CoinFlipBettyScreen(Screen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
-            if Magic.HEADS_FORCE in state.player.magicinventory and Magic.FORCE not in self.magic_menu_selector:
-                self.magic_menu_selector.insert(1, Magic.FORCE )
+            if Magic.HEADS_FORCE in state.player.magicinventory and Magic.HEADS_FORCE not in self.magic_menu_selector:
+                self.magic_menu_selector.insert(1, Magic.HEADS_FORCE.value )
 
             if state.controller.isUpPressed:
                 self.magicindex -= 1

@@ -5,7 +5,7 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.treasurechests.treasurechests import TreasureChest
 from game_constants.treasure import Treasure
 
-
+# this item is hidden reward for having a 2 perception
 class Area2MoneyBag(TreasureChest):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, "Water Bottle")

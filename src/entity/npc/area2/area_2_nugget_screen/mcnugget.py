@@ -44,7 +44,7 @@ class MCNugg(Npc):
             ),
             "quest_2_start": NpcTextBox(
                 [
-                    "MC Nugg: listen up nugg brother, with a perception of 2 you can find my super secret item, you can either level up or equip the item i gave you",
+                    "MC Nugg: listen up nugg brother, with a perception of 2 you can find my super bbq sauce item, you can either level up or equip the item i gave you",
                     "Hero: i'll check around "
 
                 ],
@@ -157,17 +157,24 @@ class MCNugg(Npc):
         if state.controller.isTPressed and current_message.is_finished():
 
             if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
-                state.player.items.append(Equipment.SOCKS_OF_PERCEPTION.value)
-                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_1_REWARD.value)
-            if Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
                 state.player.level_two_npc_state.append(Equipment.NUGG_QUEST_TWO_MONEY.value)
                 state.player.money += 500
+                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_1_REWARD.value)
+
+            if (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state
+                    and Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state
+                    and Magic.SLOTS_HACK.value not in state.player.magicinventory):
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_2_REWARD.value)
 
-            if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state and Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
-                state.player.magicinventory.append(Magic.FOCUS.value)
-                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_3_REWARD.value)
+                state.player.magicinventory.append(Magic.SLOTS_HACK.value)
 
+
+            if (Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state
+                    and Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state):
+                state.player.items.append(Equipment.SOCKS_OF_PERCEPTION.value)
+
+
+                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_3_REWARD.value)
 
 
             self.state = "waiting"

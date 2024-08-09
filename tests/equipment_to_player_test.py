@@ -32,8 +32,8 @@ class EquipmentToPlayerTest(unittest.TestCase):
         self.assertEqual(player.items.count(Equipment.BLACK_JACK_HAT.value), 1)
 
         # Add another piece of equipment
-        Equipment.add_equipment_to_player(player, Equipment.GOURMAND_HAT)
-        self.assertIn(Equipment.GOURMAND_HAT.value, player.items)
+        Equipment.add_equipment_to_player(player, Equipment.HIPPO_SHOES)
+        self.assertIn(Equipment.HIPPO_SHOES.value, player.items)
         self.assertEqual(len(player.items), 2)
 
 if __name__ == '__main__':

@@ -2,15 +2,19 @@
 from enum import Enum
 
 class Equipment(Enum):
-    BLACK_JACK_HAT = "Black Hat"
-    HIPPO_SHOES = "HIPPO_SHOES"
-    GOURMAND_HAT = "GOURMAND_HAT"
-    SLOTS_VEST = "SLOTS-VEST"
-    HEALTHY_GLOVES = "HEALTHY_GLOVES"
-    SOCKS_OF_PERCEPTION = "SOCKS_OF_PERCEPTION"
-    DARLENES_CHICKEN_NUGGET_AMULET = "DARLENES_CHICKEN_NUGGET_AMULET"
+    BLACK_JACK_HAT = "Black Hat"  # reward from Alice
+    HIPPO_SHOES = "HIPPO_SHOES"  # reward from Alex
+    SOCKS_OF_PERCEPTION = "SOCKS_OF_PERCEPTION"  # complete level 3 mc nugg quest
+    NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
 
-    NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"
+    COIN_SAVE = "COIN_SAVE" # BUY IN SHOP ONE TIME USE
+    RE_EQUIP = "RE_EQUIP" # BUY IN SHOP ONE TIME USE
+    HEALTHY_GLOVES = "HEALTHY_GLOVES"   # can be bought in shop
+    STAT_POTION = "STAT_POTION" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
+
+    DARLENES_CHICKEN_NUGGET_AMULET = "DARLENES_CHICKEN_NUGGET_AMULET" # complete main quest chicken nugger sauce
+
+
 
     @staticmethod
     def add_equipment_to_player(player, equipment):

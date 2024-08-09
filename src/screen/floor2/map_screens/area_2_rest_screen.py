@@ -94,7 +94,7 @@ class Area2RestScreen(Screen):
         super().start(state)
         state.npcs.clear()
 
-        if (state.player.perception > 1
+        if (state.player.perception >= 1
                 and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
             state.treasurechests = [
                 Area2MoneyBag(16 * 5, 14 * 5),

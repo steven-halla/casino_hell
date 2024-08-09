@@ -221,7 +221,6 @@ Gain stat point
 
 level 6:
 gain 20 HP / MP
-magic spell 
 
 level 7:
 gain 10 hp / mp
@@ -373,17 +372,9 @@ boss room:
 magic spell : sets bar to 90 + 1 speed each time player hits unlucky 7  or snake eyes 
 
 
-lets handle state by NPC items
-so save coin if its in your NPC items it wont be for sale again 
-stat potion 
-save coin 
-we can also do this for quest items as well. so if a quest is done, it goes in an npc item slot so we know the easy way to do this. 
 
-here is what i can do :
-npc items level 2
-this should handle all the state for level 2
 
-anytime that an NPC needs to be deleted or qust or anything we can have items here handle state. 
+
 
 lets incldue an NPC in rib demon maze that will take you back and forth to rest area and back'
 or
@@ -480,11 +471,9 @@ allow 1 paid version of 500 gold membership
 
 5) Create all items in treasure chest
 6) new item menu with graphics
-7) Create message system for when opening treasure chest
 8) Create level up system with text explaining level gain as well as giving players a chioice in stat point
 9) Create all cut scenes, 3 for the bar, 1 for boss area, and 1 for when we find Erika The Chicken girl
 10)  Create  3 more game screens,  1 for the boss(craps), 1 for slots, 1 for Craps
-11) Try and create easy way to make cut scenes with code  like that music software
 
 
 
