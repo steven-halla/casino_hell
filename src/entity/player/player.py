@@ -407,33 +407,6 @@ class Player(Entity):
         # Draw the sprite on the screen
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        # left image
-        # sprite_rect = pygame.Rect(22, 146, 24, 26)
-        # sprite = self.character_sprite_left_image.subsurface(sprite_rect)
-        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
-        # sprite_x = self.collision.x + state.camera.x - 20
-        # sprite_y = self.collision.y + state.camera.y - 10
-        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-
-        #right image
-        # sprite_rect = pygame.Rect(22, 146, 24, 26)
-        # sprite = self.character_sprite_left_image.subsurface(sprite_rect)
-        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
-        # flipped_sprite = pygame.transform.flip(scaled_sprite, True, False)
-        # sprite_x = self.collision.x + state.camera.x - 20
-        # sprite_y = self.collision.y + state.camera.y - 10
-        # state.DISPLAY.blit(flipped_sprite, (sprite_x, sprite_y))
-
-        # #up image
-        # sprite_rect = pygame.Rect(22, 172, 24, 26)
-        # sprite = self.character_sprite_up_image.subsurface(sprite_rect)
-        # scaled_sprite = pygame.transform.scale(sprite, (50, 50))
-        # sprite_x = self.collision.x + state.camera.x - 20
-        # sprite_y = self.collision.y + state.camera.y - 10
-        # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-
-
-
     def draw_player_stats(self, state):
         # Create a black surface of size 600x600
         stats_surface = pygame.Surface((620, 580))
@@ -525,19 +498,11 @@ class Player(Entity):
             state.player.days = player_data['days']
             state.restScreen.barscene1 = player_data['cutscene1']
             state.restScreen.barscene2 = player_data['cutscene2']
-
             state.gamblingAreaScreen.five_hundred_opossums = player_data['quest1complete']
-
-
-
-
-
             state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']
             state.coinFlipFredScreen.coinFlipFredMoney = player_data['coinflipfredmoney']
-
             state.opossumInACanNellyScreen.nellyOpossumMoney = player_data['opossumnellymoney']
             state.opossumInACanSallyScreen.sallyOpossumMoney = player_data['opossumsallymoney']
-
             state.blackJackThomasScreen.cheater_bob_money = player_data['blackjackthomasmoney']
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
 
