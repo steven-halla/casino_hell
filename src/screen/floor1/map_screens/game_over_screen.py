@@ -21,7 +21,6 @@ from entity.npc.rest_screen.wally_guide import WallyGuide
 from entity.npc.inn_guard import InnGuard
 from entity.npc.nurgle import Nurgle
 from entity.player.player import Player
-from entity.treasurechests.powerpotion import PowerPotion
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 

@@ -3,6 +3,7 @@ import pygame
 
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.treasurechests.treasurechests import TreasureChest
+from game_constants.events import Events
 from game_constants.treasure import Treasure
 
 # quest item for mcnugget, his 2nd quest
@@ -32,6 +33,8 @@ class BBQSauce(TreasureChest):
         # state.player.npc_items += self.hidden_item
 
         Treasure.add_treasure_to_player(state.player, Treasure.BBQ_SAUCE)
+        Events.add_event_to_player(state.player, Events.MC_NUGGET_SECOND_QUEST_COMPLETE)
+
         self.isOpened = True
         self.message_displayed = True
         self.current_message.reset()

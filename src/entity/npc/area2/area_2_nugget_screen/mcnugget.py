@@ -37,7 +37,8 @@ class MCNugg(Npc):
             "quest_1_finish": NpcTextBox(
                 [
                     "MC Nugg: very groovy hero here is your reward of perception glasses, very groove ",
-                    "Hero: Thank you for this friend. "
+                    "Hero: Thank you for this friend. ",
+                    "You must have a shovel because you totally dig me"
 
                 ],
                 (50, 450, 50, 45), 30, 500

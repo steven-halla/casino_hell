@@ -14,6 +14,8 @@ from entity.npc.area2.area_2_nugget_screen.area_2_nugget_to_rest_area import Are
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
 
 from entity.player.player import Player
+from entity.treasurechests.slots_vest import SlotsVest
+from game_constants.events import Events
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -70,8 +72,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         if state.area_2_rest_area_to_rib_demon_maze_point == True:
             print("nuggggggggggggggg;f")
-            player_start_x = 16 * 43  # Desired X coordinate
-            player_start_y = 16 * 177 # Desired Y coordinate
+            player_start_x = 16 * 1  # Desired X coordinate
+            player_start_y = 16 * 1 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 
@@ -90,11 +92,15 @@ class Area2RibDemonMazeScreen(Screen):
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
 
-        state.treasurechests = [
+        if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
+                and state.player.perception > 1):
+            state.treasurechests = [
+            SlotsVest(16 * 36, 16 * 10),
 
-            # WaterBottle(16 * 36, 16 * 10),
 
         ]
+
+
         # Check the value of state.player.body
 
         # state.npcs = []

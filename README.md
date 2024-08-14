@@ -464,7 +464,6 @@ allow 1 paid version of 500 gold membership
 
 1) make new maps for all screens
 2) test all screens for new items and magic
-3) review items/equipment/magic and make sure everything is spread correctly
 4) create new DEMONS for maze area, which I'm thinking will be 4 screens.
 
 # area 1 have opossum girls say they want to give a opossum present to which the hero says 'those are the best kind of presents'
