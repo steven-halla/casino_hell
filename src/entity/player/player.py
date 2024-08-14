@@ -73,6 +73,7 @@ class Player(Entity):
 
         self.stamina_increase_from_level = 0
         self.focus_increase_from_level = 0
+        self.stat_point_increase = False
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -187,15 +188,13 @@ class Player(Entity):
                 # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
                 stamina_increase = 20
                 self.max_stamina_points += stamina_increase
-
                 self.stamina_increase_from_level = stamina_increase
-
-
 
                 focus_increase = 20
                 self.max_focus_points += focus_increase
-
                 self.focus_increase_from_level = focus_increase
+                self.stat_point_increase = True
+
 
             self.level5checker = True
             self.level = 5

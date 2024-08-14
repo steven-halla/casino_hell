@@ -474,6 +474,13 @@ allow 1 paid version of 500 gold membership
 9) Create all cut scenes, 3 for the bar, 1 for boss area, and 1 for when we find Erika The Chicken girl
 10)  Create  3 more game screens,  1 for the boss(craps), 1 for slots, 1 for Craps
 
+# empowwering magic examples:
+# black jack spell for telling low med high, when magic is empowered at level 3 it tells the exact number instead
+# for level 3 maybe have a gauntlet where you have to fight all screens up to that point, further along you get more reward
+# for guantlet state for each screen wont mattter as its all or nothing 
+# can also have 2 mini gauntlets instead of 1
+
+
 
 
 
