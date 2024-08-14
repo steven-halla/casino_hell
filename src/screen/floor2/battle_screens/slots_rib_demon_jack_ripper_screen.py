@@ -143,6 +143,13 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 500
             ),
 
+            "level_up": TextBox(
+                [f"Grats you levels up. ", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
         }
 
         self.hide_numbers: bool = True
@@ -151,6 +158,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.game_over = GameOver()  # Initialize GameOver
 
         self.game_over_message = []  # Initialize game_over_message
+
 
 
 
@@ -400,6 +408,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
         #     self.money = 0
         #     state.controller.is1Pressed = False
 
+
         pygame.mixer.music.stop()
         current_time: int = pygame.time.get_ticks()  # local variable
         if state.controller.isBPressed:
@@ -413,6 +422,19 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+            state.player.update(state)
+
+            if state.controller.isEPressed:
+                state.player.leveling_up = False
+
+            if state.controller.is1Pressed:
+                state.player.exp += 1000
+                print(f"Your exp: " + str(state.player.exp))
+                print(f"Your leve: " + str(state.player.level))
+
+            if state.player.leveling_up == True:
+                self.game_state = "level_up_screen"
+
 
             if "Lucky Shoes" in state.player.items:
                 self.bet = 50
@@ -489,6 +511,15 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 state.currentScreen = state.area2GamblingScreen
                 controller.isTPressed = False
 
+        elif self.game_state == "level_up_screen":
+            print("This is the level up screen")
+
+            self.battle_messages["level_up"].update(state)
+            if self.battle_messages["level_up"].is_finished():
+                state.player.leveling_up = False
+                self.battle_messages["level_up"].reset()
+                self.game_state = "welcome_screen"
+
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
                 self.battle_messages["magic_message"].messages = [f""]
@@ -529,17 +560,6 @@ class SlotsRippaSnappaScreen(BattleScreen):
             self.battle_messages["spin_message"].update(state)
             if self.go_to_results:
                 self.game_state = "results_screen"
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1034,6 +1054,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 132)
                 )
+
+        elif self.game_state == "level_up_screen":
+            self.battle_messages["level_up"].draw(state)
+
 
         elif self.game_state == "magic_screen":
             self.battle_messages["magic_message"].draw(state)

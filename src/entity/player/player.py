@@ -69,6 +69,7 @@ class Player(Entity):
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.level_two_npc_state = []
+        self.leveling_up = False
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -141,6 +142,7 @@ class Player(Entity):
                 self.max_focus_points += 10
                 self.spirit += 1
             self.level2checker = True
+            self.leveling_up = True
             return
 
         if self.exp >= 300 and self.level3checker == False:
@@ -151,6 +153,8 @@ class Player(Entity):
                 self.max_stamina_points += 10
                 self.max_focus_points += 10
             self.level3checker = True
+            self.leveling_up = True
+
             self.level = 3
 
             return
@@ -166,6 +170,8 @@ class Player(Entity):
                 self.max_focus_points += 20
             self.level4checker = True
             self.level = 4
+            self.leveling_up = True
+
 
             return
 
@@ -180,6 +186,8 @@ class Player(Entity):
                 self.max_focus_points += 20
             self.level5checker = True
             self.level = 5
+            self.leveling_up = True
+
 
             return
 
@@ -194,6 +202,8 @@ class Player(Entity):
                 self.max_focus_points += 20
             self.level6checker = True
             self.level = 6
+            self.leveling_up = True
+
 
             return
 
