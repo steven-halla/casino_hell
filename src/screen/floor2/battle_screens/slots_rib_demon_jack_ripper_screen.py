@@ -541,13 +541,14 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     f"Grats you leveled up to level {state.player.level}!",
                     f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
                     f"Max focus increased by {state.player.focus_increase_from_level} points!",
-                    f"You gained a stat point, please allocate, stat points at this level max at 2.",
-                    ""
+                    f"You gained a stat point, please allocate, stat points at this level max at 2."
+
                 ]
                 self.battle_messages["level_up"].update(state)
                 # state.player.stat_point_increase = False
 
-                if self.battle_messages["level_up"].message_index == 3:
+                if self.battle_messages["level_up"].message_index == 3 and self.battle_messages["level_up"].current_message_finished():
+                    # print(str(self.level_up_stat_increase_index))
 
                     if controller.isUpPressed:
                         self.level_up_stat_increase_index = (self.level_up_stat_increase_index - 1) % len(self.level_screen_stats)
@@ -556,10 +557,53 @@ class SlotsRippaSnappaScreen(BattleScreen):
                         self.level_up_stat_increase_index = (self.level_up_stat_increase_index + 1) % len(self.level_screen_stats)
                         controller.isDownPressed = False
 
+                    if self.level_up_stat_increase_index == 0 and state.controller.isTPressed and state.player.body < 2:
+                        state.player.body += 1
+                        print("Player body is: " + str(state.player.body))
+                        state.controller.isTPressed = False
+                        state.player.leveling_up = False
+                        self.battle_messages["level_up"].reset()
+
+                        self.game_state = "welcome_screen"
+
+                    elif self.level_up_stat_increase_index == 1 and state.controller.isTPressed and state.player.mind < 2:
+                        state.player.mind += 1
+                        print("Player mind is: " + str(state.player.mind))
+                        state.controller.isTPressed = False
+                        state.player.leveling_up = False
+                        self.battle_messages["level_up"].reset()
+
+                        self.game_state = "welcome_screen"
+
+                    elif self.level_up_stat_increase_index == 2 and state.controller.isTPressed and state.player.spirit < 2:
+                        state.player.spirit += 1
+                        print("Player spirit is: " + str(state.player.spirit))
+                        state.controller.isTPressed = False
+                        state.player.leveling_up = False
+                        self.battle_messages["level_up"].reset()
+
+                        self.game_state = "welcome_screen"
+
+                    elif self.level_up_stat_increase_index == 3 and state.controller.isTPressed and state.player.perception < 2:
+                        state.player.perception += 1
+                        print("Player perception is: " + str(state.player.perception))
+                        state.controller.isTPressed = False
+                        state.player.leveling_up = False
+                        self.battle_messages["level_up"].reset()
+
+                        self.game_state = "welcome_screen"
+
+                    elif self.level_up_stat_increase_index == 4 and state.controller.isTPressed and state.player.luck < 2:
+                        state.player.luck += 1
+                        print("Player luck is: " + str(state.player.luck))
+                        state.controller.isTPressed = False
+                        state.player.leveling_up = False
+                        self.battle_messages["level_up"].reset()
+
+                        self.game_state = "welcome_screen"
+
                     #
-                    # state.player.leveling_up = False
                     #
-                    # self.battle_messages["level_up"].reset()
 
 
 
