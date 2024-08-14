@@ -513,6 +513,12 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
         elif self.game_state == "level_up_screen":
             print("This is the level up screen")
+            self.battle_messages["level_up"].messages = [
+                f"Grats you leveled up to level {state.player.level}!",
+                f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
+                f"Max focus increased by {state.player.focus_increase_from_level} points!",
+                ""
+            ]
 
             self.battle_messages["level_up"].update(state)
             if self.battle_messages["level_up"].is_finished():
