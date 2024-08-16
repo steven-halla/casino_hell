@@ -441,74 +441,69 @@ class Player(Entity):
         # 1. Black Background
         state.DISPLAY.fill((0, 0, 0))  # Fill the entire screen with black
 
-        # 2. Second Box (Main Menu Area)
+        # 2. Main Box (Covering most of the screen)
         main_box_width = screen_width - 20  # 10 pixels padding on both sides
         main_box_height = screen_height - 20  # 10 pixels padding on top and bottom
-        main_box = pygame.Surface((main_box_width, main_box_height))
 
         # Define the gradient colors (top to bottom)
         top_color = (0, 0, 139)  # Dark blue
         bottom_color = (135, 206, 250)  # Light blue
 
-        # Apply the gradient to the main box surface
+        # Pre-calculate the gradient colors for each pixel row of the main box
+        gradient_colors = []
         for y in range(main_box_height):
             color = (
                 bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
                 bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
                 bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
             )
-            pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
+            gradient_colors.append(color)
+
+        # Create the main box surface with the gradient applied
+        main_box = pygame.Surface((main_box_width, main_box_height))
+        for y in range(main_box_height):
+            pygame.draw.line(main_box, gradient_colors[y], (0, y), (main_box_width, y))
 
         # Draw the main box centered on the screen
         state.DISPLAY.blit(main_box, (10, 10))
 
         # Add a white border around the main box
         border_thickness = 3
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(10, 10, main_box_width, main_box_height), border_thickness)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(10, 10, main_box_width, main_box_height), border_thickness, border_radius=20)
 
         # 3. Third Box (Top right box)
         third_box_width = 220
         third_box_height = 400
-        third_box = pygame.Surface((third_box_width, third_box_height))
-
-        # Apply the same gradient or different one to the third box
-        for y in range(third_box_height):
-            color = (
-                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // third_box_height,
-                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // third_box_height,
-                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // third_box_height,
-            )
-            pygame.draw.line(third_box, color, (0, y), (third_box_width, y))
-
-        # Position the third box on the right side of the screen
-        third_box_x = screen_width - third_box_width - 10  # 10 pixels padding from the right
         third_box_y = 10  # 10 pixels padding from the top
+        third_box_x = screen_width - third_box_width - 10  # 10 pixels padding from the right
+
+        # Create the third box surface with the gradient applied
+        third_box = pygame.Surface((third_box_width, third_box_height), pygame.SRCALPHA)
+        for y in range(third_box_height):
+            pygame.draw.line(third_box, gradient_colors[y], (0, y), (third_box_width, y))
+
+        # Draw the third box on the right side of the screen
         state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
 
-        # Add a border to the third box
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness)
+        # Add a white border around the third box
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=20)
 
         # 4. Fourth Box (Bottom right box)
         fourth_box_width = 220
         fourth_box_height = 100
-        fourth_box = pygame.Surface((fourth_box_width, fourth_box_height))
-
-        # Apply the gradient to the fourth box
-        for y in range(fourth_box_height):
-            color = (
-                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // fourth_box_height,
-                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // fourth_box_height,
-                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // fourth_box_height,
-            )
-            pygame.draw.line(fourth_box, color, (0, y), (fourth_box_width, y))
-
-        # Position the fourth box below the third box
-        fourth_box_x = screen_width - fourth_box_width - 10  # 10 pixels padding from the right
         fourth_box_y = third_box_y + third_box_height + 10  # 10 pixels padding below the third box
+        fourth_box_x = screen_width - fourth_box_width - 10  # 10 pixels padding from the right
+
+        # Create the fourth box surface with the gradient applied
+        fourth_box = pygame.Surface((fourth_box_width, fourth_box_height), pygame.SRCALPHA)
+        for y in range(fourth_box_height):
+            pygame.draw.line(fourth_box, gradient_colors[y + third_box_height + 10], (0, y), (fourth_box_width, y))
+
+        # Draw the fourth box below the third box
         state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
 
-        # Add a border to the fourth box
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness)
+        # Add a white border around the fourth box
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
 
         # Render the menu items and arrow in the third box
 
@@ -559,9 +554,9 @@ class Player(Entity):
         state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
         state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
 
-        # Draw the borders around each box
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness)
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness)
+        # Draw the borders around each box with rounded corners
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=12)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
 
         # Handle menu navigation with up/down arrow keys
         if self.menu_paused:

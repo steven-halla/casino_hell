@@ -3,8 +3,8 @@ from typing import Tuple
 import pygame
 
 FPS = 60
-SCREEN_WIDTH: int = 800
-SCREEN_HEIGHT: int = 600
+SCREEN_WIDTH: int = 900  #added 100   aug 16th 2024
+SCREEN_HEIGHT: int = 700  #added 100 aug 16th 2024
 WINDOWS_SIZE: Tuple[int, int] = (SCREEN_WIDTH, SCREEN_HEIGHT)
 DISPLAY: pygame.Surface = pygame.display.set_mode(WINDOWS_SIZE)
 
