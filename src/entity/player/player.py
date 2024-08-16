@@ -74,6 +74,8 @@ class Player(Entity):
         self.stamina_increase_from_level = 0
         self.focus_increase_from_level = 0
         self.stat_point_increase = False
+        self.menu_index = 0
+        self.menu_paused = False
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -430,6 +432,9 @@ class Player(Entity):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
     def draw_player_stats(self, state):
+        self.menu_paused = True
+
+
 
         # Define the first box dimensions
         box_width = 220
@@ -444,7 +449,6 @@ class Player(Entity):
 
         # Apply the gradient to the surface
         for y in range(box_height):
-            # Calculate the color for each pixel row (reversed for the correct gradient direction)
             color = (
                 bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box_height,
                 bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box_height,
@@ -464,14 +468,26 @@ class Player(Entity):
         # Draw each menu item in the box with 10 pixels between each
         for item in menu_items:
             text_surface = font.render(item, True, (255, 255, 255))  # White color for text
-            menu_box.blit(text_surface, (30, item_y))  # 10 pixels from the left edge
-            item_y += text_surface.get_height() + 20  # Move to the next line with 10 pixels spacing
+            menu_box.blit(text_surface, (50, item_y))  # 10 pixels from the left edge
+            item_y += text_surface.get_height() + 20  # Move to the next line with 20 pixels spacing
+
+        # Define the arrow symbol
+        arrow = "->"
+
+        # Render the arrow
+        arrow_surface = font.render(arrow, True, (255, 255, 255))  # White color for the arrow
+
+        # Calculate the y position of the arrow based on the menu index
+        arrow_y = 28 + self.menu_index * (text_surface.get_height() + 20)
+
+        # Draw the arrow in the top box, aligned with the menu item
+        menu_box.blit(arrow_surface, (10, arrow_y))  # Positioned 20 pixels from the left edge
 
         # Calculate the position to center the first box horizontally
         box_x = 550
         box_y = 50  # Starting y position, adjust as needed
 
-        # Now draw the first box on the main display with the text included
+        # Now draw the first box on the main display with the text and arrow included
         state.DISPLAY.blit(menu_box, (box_x, box_y))
 
         # Optionally, draw a border around the first box
@@ -487,7 +503,6 @@ class Player(Entity):
 
         # Apply the gradient to the second box surface
         for y in range(second_box_height):
-            # Calculate the color for each pixel row (reversed for the correct gradient direction)
             color = (
                 bottom_color[0] + (top_color[0] - bottom_color[0]) * y // second_box_height,
                 bottom_color[1] + (top_color[1] - bottom_color[1]) * y // second_box_height,
@@ -519,6 +534,33 @@ class Player(Entity):
 
         # Optionally, draw a border around the second box
         pygame.draw.rect(state.DISPLAY, border_color, pygame.Rect(box_x, box_y, box_width, second_box_height), border_thickness)
+
+        if self.menu_paused == True:
+            # if state.controller.isUpPressed:
+            #     self.menu_index += 1
+            #     state.controller.isUpPressed = False
+            #
+            # if state.controller.isDownPressed:
+            #
+            #     self.menu_index -= 1
+            #     state.controller.isDownPressed = False
+
+            if state.controller.isUpPressed:
+                self.menu_index = (self.menu_index - 1) % len(menu_items)
+                state.controller.isUpPressed = False
+                print("Menu_INddex is at: " + str(self.menu_index))
+
+
+
+            elif state.controller.isDownPressed:
+                self.menu_index = (self.menu_index + 1) % len(menu_items)
+                state.controller.isDownPressed = False
+                print("Menu_INddex is at: " + str(self.menu_index))
+
+
+
+
+
 
     def load_game(self, state):
 

@@ -124,6 +124,12 @@ class Area2RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+
+        # if state.player.menu_paused == True:
+        #     state.player.canMove = False
+        # elif state.player.menu_paused == False:
+        #     state.player.canMove = True
+
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
@@ -234,6 +240,7 @@ class Area2RestScreen(Screen):
             if state.controller.isBPressed:
                 if state.controller.isPPressed:
                     state.player.canMove = True
+                    state.player.menu_paused = False
 
                     state.controller.isPPressed = False
                     return
