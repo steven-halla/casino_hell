@@ -10,6 +10,7 @@ from entity.entity import Entity
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
+
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
         self.money = 1000
@@ -76,6 +77,7 @@ class Player(Entity):
         self.stat_point_increase = False
         self.menu_index = 0
         self.menu_paused = False
+        self.player_status = "Normal"
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -468,9 +470,10 @@ class Player(Entity):
         state.DISPLAY.blit(main_box, (10, 10))
 
         border_thickness = 3
-        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10), (10 + main_box_width, 10), border_thickness)  # Top
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 12), (10 + main_box_width - 5, 12), border_thickness)  # Top
         pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10), (10, 10 + main_box_height), border_thickness)  # Left
-        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10 + main_box_height), (10 + main_box_width, 10 + main_box_height), border_thickness)  # Bottom
+        # Draw the bottom border line, ensuring it's straight
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10 + main_box_height - 2), (10 + main_box_width - 220, 10 + main_box_height - 2), border_thickness)  # Bottom
 
         # Add a white border around the main box
         # border_thickness = 3
@@ -553,7 +556,19 @@ class Player(Entity):
 
         # Set the x and y positions, similar to the top box
         text_surface = font.render(money_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (75, 50))  # 30 pixels from the left edge and top
+        fourth_box.blit(text_surface, (75, 60))  # 30 pixels from the left edge and top
+
+        status_text = f"Status"
+
+        # Set the x and y positions, similar to the top box
+        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+        fourth_box.blit(text_surface, (30, 100))  # 30 pixels from the left edge and top
+
+        status_text = f"{self.player_status}"
+
+        # Set the x and y positions, similar to the top box
+        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+        fourth_box.blit(text_surface, (75, 130))  # 30 pixels from the left edge and top
 
         # Display everything on the screen
         state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
