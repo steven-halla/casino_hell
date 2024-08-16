@@ -467,9 +467,14 @@ class Player(Entity):
         # Draw the main box centered on the screen
         state.DISPLAY.blit(main_box, (10, 10))
 
-        # Add a white border around the main box
         border_thickness = 3
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(10, 10, main_box_width, main_box_height), border_thickness, border_radius=20)
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10), (10 + main_box_width, 10), border_thickness)  # Top
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10), (10, 10 + main_box_height), border_thickness)  # Left
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10 + main_box_height), (10 + main_box_width, 10 + main_box_height), border_thickness)  # Bottom
+
+        # Add a white border around the main box
+        # border_thickness = 3
+        # pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(10, 10, main_box_width, main_box_height), border_thickness, border_radius=20)
 
         # 3. Third Box (Top right box)
         third_box_width = 220
@@ -490,7 +495,7 @@ class Player(Entity):
 
         # 4. Fourth Box (Bottom right box)
         fourth_box_width = 220
-        fourth_box_height = 100
+        fourth_box_height = 270
         fourth_box_y = third_box_y + third_box_height + 10  # 10 pixels padding below the third box
         fourth_box_x = screen_width - fourth_box_width - 10  # 10 pixels padding from the right
 
