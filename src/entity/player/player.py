@@ -79,6 +79,8 @@ class Player(Entity):
         self.menu_paused = False
         self.player_status = "Normal"
 
+        self.current_screen = "main_menu_screen"
+
     def to_dict(self, state: "GameState") -> dict:
         return {
             "level": self.level,
@@ -434,181 +436,212 @@ class Player(Entity):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
     def draw_player_stats(self, state):
+
         self.menu_paused = True
 
+
+        if self.current_screen == "main_menu_screen":
+
+            # Get the dimensions of the display
+            screen_width = state.DISPLAY.get_width()
+            screen_height = state.DISPLAY.get_height()
+
+            # 1. Black Background
+            state.DISPLAY.fill((0, 0, 0))  # Fill the entire screen with black
+
+            # 2. Main Box (Covering most of the screen)
+            main_box_width = screen_width - 20  # 10 pixels padding on both sides
+            main_box_height = screen_height - 20  # 10 pixels padding on top and bottom
+
+            # Define the gradient colors (top to bottom)
+            top_color = (0, 0, 139)  # Dark blue
+            bottom_color = (135, 206, 250)  # Light blue
+
+            # Pre-calculate the gradient colors for each pixel row of the main box
+            gradient_colors = []
+            for y in range(main_box_height):
+                color = (
+                    bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
+                    bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
+                    bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
+                )
+                gradient_colors.append(color)
+
+            # Create the main box surface with the gradient applied
+            main_box = pygame.Surface((main_box_width, main_box_height))
+            for y in range(main_box_height):
+                pygame.draw.line(main_box, gradient_colors[y], (0, y), (main_box_width, y))
+
+            # Draw the main box centered on the screen
+            state.DISPLAY.blit(main_box, (10, 10))
+
+            border_thickness = 3
+            pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 12), (10 + main_box_width - 5, 12), border_thickness)  # Top
+            pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10), (10, 10 + main_box_height), border_thickness)  # Left
+            # Draw the bottom border line, ensuring it's straight
+            pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10 + main_box_height - 2), (10 + main_box_width - 220, 10 + main_box_height - 2), border_thickness)  # Bottom
+
+            # Add a white border around the main box
+            # border_thickness = 3
+            # pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(10, 10, main_box_width, main_box_height), border_thickness, border_radius=20)
+
+            # 3. Third Box (Top right box)
+            third_box_width = 220
+            third_box_height = 400
+            third_box_y = 10  # 10 pixels padding from the top
+            third_box_x = screen_width - third_box_width - 10  # 10 pixels padding from the right
+
+            # Create the third box surface with the gradient applied
+            third_box = pygame.Surface((third_box_width, third_box_height), pygame.SRCALPHA)
+            for y in range(third_box_height):
+                pygame.draw.line(third_box, gradient_colors[y], (0, y), (third_box_width, y))
+
+            # Draw the third box on the right side of the screen
+            state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
+
+            # Add a white border around the third box
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=20)
+
+            # 4. Fourth Box (Bottom right box)
+            fourth_box_width = 220
+            fourth_box_height = 270
+            fourth_box_y = third_box_y + third_box_height + 10  # 10 pixels padding below the third box
+            fourth_box_x = screen_width - fourth_box_width - 10  # 10 pixels padding from the right
+
+            # Create the fourth box surface with the gradient applied
+            fourth_box = pygame.Surface((fourth_box_width, fourth_box_height), pygame.SRCALPHA)
+            for y in range(fourth_box_height):
+                pygame.draw.line(fourth_box, gradient_colors[y + third_box_height + 10], (0, y), (fourth_box_width, y))
+
+            # Draw the fourth box below the third box
+            state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
+
+            # Add a white border around the fourth box
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
+
+            # Render the menu items and arrow in the third box
+
+            # Set the font for the menu items
+            font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
+
+            # Define the menu items - note this needs 3 more to fill the screen proper
+            # config, load,
+            menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions", "Config", "Load", "Quit"]
+
+            # Starting y position for the first item
+            item_y = 30  # Adjust this as needed to center vertically within the box
+
+            # Draw each menu item in the box with 20 pixels between each
+            for item in menu_items:
+                text_surface = font.render(item, True, (255, 255, 255))  # White color for text
+                third_box.blit(text_surface, (50, item_y))  # Adjust x-position as needed
+                item_y += text_surface.get_height() + 20  # Move to the next line with 20 pixels spacing
+
+            # Define the arrow symbol
+            arrow = "->"
+
+            # Render the arrow
+            arrow_surface = font.render(arrow, True, (255, 255, 255))  # White color for the arrow
+
+            # Calculate the y position of the arrow based on the menu index
+            arrow_y = 28 + self.menu_index * (text_surface.get_height() + 20)
+
+            # Draw the arrow in the top box, aligned with the menu item
+            third_box.blit(arrow_surface, (10, arrow_y))  # Positioned 20 pixels from the left edge
+
+            # Set the font for the text in the fourth box
+            font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
+
+            # Create the text to display in the fourth box
+            gold_text = f"GP"
+
+            # Set the x and y positions, similar to the top box
+            text_surface = font.render(gold_text, True, (255, 255, 255))  # White color for text
+            fourth_box.blit(text_surface, (30, 30))  # 30 pixels from the left edge and top
+
+            money_text = f"{self.money}"
+
+            # Set the x and y positions, similar to the top box
+            text_surface = font.render(money_text, True, (255, 255, 255))  # White color for text
+            fourth_box.blit(text_surface, (75, 60))  # 30 pixels from the left edge and top
+
+            status_text = f"Status"
+
+            # Set the x and y positions, similar to the top box
+            text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+            fourth_box.blit(text_surface, (30, 100))  # 30 pixels from the left edge and top
+
+            status_text = f"{self.player_status}"
+
+            # Set the x and y positions, similar to the top box
+            text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+            fourth_box.blit(text_surface, (75, 130))  # 30 pixels from the left edge and top
+
+
+
+            #######
+
+            status_text = f"Time"
+
+            # Set the x and y positions, similar to the top box
+            text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+            fourth_box.blit(text_surface, (30, 170))  # 30 pixels from the left edge and top
+
+            status_text = f"00:00"
+
+            # Set the x and y positions, similar to the top box
+            text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+            fourth_box.blit(text_surface, (75, 200))  # 30 pixels from the left edge and top
+
+
+
+
+
+
+            # Display everything on the screen
+            state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
+            state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
+
+            # Draw the borders around each box with rounded corners
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=12)
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
+
+
+            if state.controller.isTPressed:
+                if self.menu_index == 0:
+                    self.current_screen = "equipment_screen"
+
+
+            # Handle menu navigation with up/down arrow keys
+            if self.menu_paused:
+                if state.controller.isUpPressed:
+                    self.menu_index = (self.menu_index - 1) % len(menu_items)
+                    state.controller.isUpPressed = False
+
+                elif state.controller.isDownPressed:
+                    self.menu_index = (self.menu_index + 1) % len(menu_items)
+                    state.controller.isDownPressed = False
+
+
+        if self.current_screen == "equipment_screen":
+            screen_width = state.DISPLAY.get_width()
+            screen_height = state.DISPLAY.get_height()
+
+            # Fill the entire screen with black
+            state.DISPLAY.fill((0, 0, 0))  # Black color
+
+            if state.controller.isBPressed:
+                state.controller.isBPressed = False
+                self.current_screen = "main_menu_screen"
+
+
+    def equipment_screen(self,state):
         # Get the dimensions of the display
         screen_width = state.DISPLAY.get_width()
         screen_height = state.DISPLAY.get_height()
 
-        # 1. Black Background
-        state.DISPLAY.fill((0, 0, 0))  # Fill the entire screen with black
-
-        # 2. Main Box (Covering most of the screen)
-        main_box_width = screen_width - 20  # 10 pixels padding on both sides
-        main_box_height = screen_height - 20  # 10 pixels padding on top and bottom
-
-        # Define the gradient colors (top to bottom)
-        top_color = (0, 0, 139)  # Dark blue
-        bottom_color = (135, 206, 250)  # Light blue
-
-        # Pre-calculate the gradient colors for each pixel row of the main box
-        gradient_colors = []
-        for y in range(main_box_height):
-            color = (
-                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
-                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
-                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
-            )
-            gradient_colors.append(color)
-
-        # Create the main box surface with the gradient applied
-        main_box = pygame.Surface((main_box_width, main_box_height))
-        for y in range(main_box_height):
-            pygame.draw.line(main_box, gradient_colors[y], (0, y), (main_box_width, y))
-
-        # Draw the main box centered on the screen
-        state.DISPLAY.blit(main_box, (10, 10))
-
-        border_thickness = 3
-        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 12), (10 + main_box_width - 5, 12), border_thickness)  # Top
-        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10), (10, 10 + main_box_height), border_thickness)  # Left
-        # Draw the bottom border line, ensuring it's straight
-        pygame.draw.line(state.DISPLAY, (255, 255, 255), (10, 10 + main_box_height - 2), (10 + main_box_width - 220, 10 + main_box_height - 2), border_thickness)  # Bottom
-
-        # Add a white border around the main box
-        # border_thickness = 3
-        # pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(10, 10, main_box_width, main_box_height), border_thickness, border_radius=20)
-
-        # 3. Third Box (Top right box)
-        third_box_width = 220
-        third_box_height = 400
-        third_box_y = 10  # 10 pixels padding from the top
-        third_box_x = screen_width - third_box_width - 10  # 10 pixels padding from the right
-
-        # Create the third box surface with the gradient applied
-        third_box = pygame.Surface((third_box_width, third_box_height), pygame.SRCALPHA)
-        for y in range(third_box_height):
-            pygame.draw.line(third_box, gradient_colors[y], (0, y), (third_box_width, y))
-
-        # Draw the third box on the right side of the screen
-        state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
-
-        # Add a white border around the third box
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=20)
-
-        # 4. Fourth Box (Bottom right box)
-        fourth_box_width = 220
-        fourth_box_height = 270
-        fourth_box_y = third_box_y + third_box_height + 10  # 10 pixels padding below the third box
-        fourth_box_x = screen_width - fourth_box_width - 10  # 10 pixels padding from the right
-
-        # Create the fourth box surface with the gradient applied
-        fourth_box = pygame.Surface((fourth_box_width, fourth_box_height), pygame.SRCALPHA)
-        for y in range(fourth_box_height):
-            pygame.draw.line(fourth_box, gradient_colors[y + third_box_height + 10], (0, y), (fourth_box_width, y))
-
-        # Draw the fourth box below the third box
-        state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
-
-        # Add a white border around the fourth box
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
-
-        # Render the menu items and arrow in the third box
-
-        # Set the font for the menu items
-        font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
-
-        # Define the menu items - note this needs 3 more to fill the screen proper
-        # config, load,
-        menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions", "Config", "Load", "Quit"]
-
-        # Starting y position for the first item
-        item_y = 30  # Adjust this as needed to center vertically within the box
-
-        # Draw each menu item in the box with 20 pixels between each
-        for item in menu_items:
-            text_surface = font.render(item, True, (255, 255, 255))  # White color for text
-            third_box.blit(text_surface, (50, item_y))  # Adjust x-position as needed
-            item_y += text_surface.get_height() + 20  # Move to the next line with 20 pixels spacing
-
-        # Define the arrow symbol
-        arrow = "->"
-
-        # Render the arrow
-        arrow_surface = font.render(arrow, True, (255, 255, 255))  # White color for the arrow
-
-        # Calculate the y position of the arrow based on the menu index
-        arrow_y = 28 + self.menu_index * (text_surface.get_height() + 20)
-
-        # Draw the arrow in the top box, aligned with the menu item
-        third_box.blit(arrow_surface, (10, arrow_y))  # Positioned 20 pixels from the left edge
-
-        # Set the font for the text in the fourth box
-        font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
-
-        # Create the text to display in the fourth box
-        gold_text = f"GP"
-
-        # Set the x and y positions, similar to the top box
-        text_surface = font.render(gold_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (30, 30))  # 30 pixels from the left edge and top
-
-        money_text = f"{self.money}"
-
-        # Set the x and y positions, similar to the top box
-        text_surface = font.render(money_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (75, 60))  # 30 pixels from the left edge and top
-
-        status_text = f"Status"
-
-        # Set the x and y positions, similar to the top box
-        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (30, 100))  # 30 pixels from the left edge and top
-
-        status_text = f"{self.player_status}"
-
-        # Set the x and y positions, similar to the top box
-        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (75, 130))  # 30 pixels from the left edge and top
-
-
-
-        #######
-
-        status_text = f"Time"
-
-        # Set the x and y positions, similar to the top box
-        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (30, 170))  # 30 pixels from the left edge and top
-
-        status_text = f"00:00"
-
-        # Set the x and y positions, similar to the top box
-        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
-        fourth_box.blit(text_surface, (75, 200))  # 30 pixels from the left edge and top
-
-
-
-
-
-
-        # Display everything on the screen
-        state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
-        state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
-
-        # Draw the borders around each box with rounded corners
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=12)
-        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
-
-        # Handle menu navigation with up/down arrow keys
-        if self.menu_paused:
-            if state.controller.isUpPressed:
-                self.menu_index = (self.menu_index - 1) % len(menu_items)
-                state.controller.isUpPressed = False
-
-            elif state.controller.isDownPressed:
-                self.menu_index = (self.menu_index + 1) % len(menu_items)
-                state.controller.isDownPressed = False
+        # Fill the entire screen with black
+        state.DISPLAY.fill((0, 0, 0))  # Black color
 
     def load_game(self, state):
 

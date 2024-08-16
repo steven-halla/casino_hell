@@ -53,6 +53,7 @@ from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemonMazeScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
+from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
 class GameState:
@@ -126,6 +127,8 @@ class GameState:
         self.blackJackJaredScreen = BlackJackJaredScreen()
         self.blackJackDemonBossScreen = DemonBossScreen()
 
+# below are the screen for player menu
+        self.equipmentScreen = EquipmentScreen()
 
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
