@@ -228,9 +228,13 @@ class Area2RestScreen(Screen):
         state.player.draw(state)
 
         if state.controller.isPPressed:
+            state.player.canMove = False
+
             state.player.draw_player_stats(state)
             if state.controller.isBPressed:
                 if state.controller.isPPressed:
+                    state.player.canMove = True
+
                     state.controller.isPPressed = False
                     return
 
