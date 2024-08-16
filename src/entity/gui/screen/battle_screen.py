@@ -13,16 +13,114 @@ class BattleScreen:
         self.money: int = 1000  # Add this line
         self.bet: int = 50  # Add this line
         self.lock_down = 0
+        self.level_up_stat_increase_index = 0  # Add this to track the selected stat
+        self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
 
 
     def start(self, state: 'GameState') -> None:
-        pygame.display.set_caption(self.screenName)
+            pygame.display.set_caption(self.screenName)
 
     def update(self, state: 'GameState') -> None:
         pass
 
+    def handle_level_up(self, state: 'GameState', controller) -> None:
+        if state.player.stat_point_increase == False:
+            self.battle_messages["level_up"].messages = [
+                f"Grats you leveled up to level {state.player.level}!",
+                f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
+                f"Max focus increased by {state.player.focus_increase_from_level} points!",
+                ""
+            ]
+            self.battle_messages["level_up"].update(state)
+            if self.battle_messages["level_up"].is_finished():
+                state.player.leveling_up = False
+                self.battle_messages["level_up"].reset()
+                self.game_state = "welcome_screen"
+
+        elif state.player.stat_point_increase == True:
+            self.battle_messages["level_up"].messages = [
+                f"Grats you leveled up to level {state.player.level}!",
+                f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
+                f"Max focus increased by {state.player.focus_increase_from_level} points!",
+                f"You gained a stat point, please allocate, stat points at this level max at 2."
+            ]
+            self.battle_messages["level_up"].update(state)
+
+            if self.battle_messages["level_up"].message_index == 3 and self.battle_messages["level_up"].current_message_finished():
+                if controller.isUpPressed:
+                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index - 1) % len(self.level_screen_stats)
+                    controller.isUpPressed = False
+                elif controller.isDownPressed:
+                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index + 1) % len(self.level_screen_stats)
+                    controller.isDownPressed = False
+
+                selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
+
+                if selected_stat == "Body" and state.controller.isTPressed and state.player.body < 2:
+                    state.player.body += 1
+                elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
+                    state.player.mind += 1
+                elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
+                    state.player.spirit += 1
+                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
+                    state.player.perception += 1
+                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
+                    state.player.luck += 1
+
+                if state.controller.isTPressed:
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
+
+    def draw_level_up(self, state: 'GameState') -> None:
+        if state.player.stat_point_increase and self.game_state == "level_up_screen":
+            if self.battle_messages["level_up"].message_index == 3:
+                black_box_height = 261 - 50  # Adjust height
+                black_box_width = 200 - 10  # Adjust width to match the left box
+                border_width = 5
+                start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+                start_y_right_box = 200  # Adjust vertical alignment
+
+                # Create the black box
+                black_box = pygame.Surface((black_box_width, black_box_height))
+                black_box.fill((0, 0, 0))
+
+                # Create a white border
+                white_border = pygame.Surface(
+                    (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+                )
+                white_border.fill((255, 255, 255))
+                white_border.blit(black_box, (border_width, border_width))
+
+                # Determine the position of the white-bordered box
+                black_box_x = start_x_right_box - border_width
+                black_box_y = start_y_right_box - border_width
+
+                # Blit the white-bordered box onto the display
+                state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+                # Draw the menu options
+                for idx, choice in enumerate(self.level_screen_stats):
+                    y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                    state.DISPLAY.blit(
+                        self.font.render(choice, True, (255, 255, 255)),
+                        (start_x_right_box + 60, y_position + 15)
+                    )
+
+                # Draw the selection arrow
+                arrow_y_positions = [12, 52, 92, 132, 172]  # Y positions for each arrow
+                arrow_y = start_y_right_box + arrow_y_positions[self.level_up_stat_increase_index]
+                state.DISPLAY.blit(
+                    self.font.render("->", True, (255, 255, 255)),
+                    (start_x_right_box + 12, arrow_y)
+                )
+
+        # Continue with other drawing logic, like drawing battle messages
+        self.battle_messages["level_up"].draw(state)
 
     def draw_enemy_info_box(self, state: "GameState") -> None:
         black_box = pygame.Surface((200 - 10, 110 - 10))
