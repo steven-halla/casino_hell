@@ -500,7 +500,7 @@ class Player(Entity):
             state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
 
             # Add a white border around the third box
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=20)
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=7)
 
             # 4. Fourth Box (Bottom right box)
             fourth_box_width = 220
@@ -517,7 +517,7 @@ class Player(Entity):
             state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
 
             # Add a white border around the fourth box
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=7)
 
             # Render the menu items and arrow in the third box
 
@@ -603,8 +603,8 @@ class Player(Entity):
             state.DISPLAY.blit(fourth_box, (fourth_box_x, fourth_box_y))
 
             # Draw the borders around each box with rounded corners
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=12)
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=12)
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=7)
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=7)
 
 
             if state.controller.isTPressed:
@@ -624,24 +624,79 @@ class Player(Entity):
 
 
         if self.current_screen == "equipment_screen":
-            screen_width = state.DISPLAY.get_width()
-            screen_height = state.DISPLAY.get_height()
+            self.equipment_screen(state)
 
-            # Fill the entire screen with black
-            state.DISPLAY.fill((0, 0, 0))  # Black color
-
-            if state.controller.isBPressed:
-                state.controller.isBPressed = False
-                self.current_screen = "main_menu_screen"
-
-
-    def equipment_screen(self,state):
+    def equipment_screen(self, state):
         # Get the dimensions of the display
         screen_width = state.DISPLAY.get_width()
         screen_height = state.DISPLAY.get_height()
 
         # Fill the entire screen with black
         state.DISPLAY.fill((0, 0, 0))  # Black color
+
+        # 2. Main Box with gradient and border
+        main_box_width = screen_width - 20
+        main_box_height = screen_height - 80
+        main_box_x = 10
+        main_box_y = 60  # Lowered the position by 100 pixels
+
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
+
+        # Create the main box surface with its gradient
+        main_box = pygame.Surface((main_box_width, main_box_height))
+        for y in range(main_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
+            )
+            pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
+
+        # Draw the main box centered on the screen
+        state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
+
+        # Add a white border around the main box
+        border_thickness = 3
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+
+        # 3. Third Box (Small box overlapping top right corner)
+        box3_width = 200
+        box3_height = 70
+        # Calculate Box 3's position to overlap Box 2's top right corner
+        box3_x = screen_width - box3_width - 10  # Positioned at the right edge with padding
+        box3_y = 30  # Positioned to overlap the top right corner of Box 2
+
+        # Create Box 3's surface with its gradient
+        box3_surface = pygame.Surface((box3_width, box3_height))
+        for y in range(box3_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box3_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box3_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box3_height,
+            )
+            pygame.draw.line(box3_surface, color, (0, y), (box3_width, y))
+
+
+
+        # Draw Box 3 overlapping Box 2's top right corner
+        state.DISPLAY.blit(box3_surface, (box3_x, box3_y))
+        # Set the font for the text
+        font = pygame.font.Font(None, 36)  # Adjust the font size as needed
+
+        # Render the text "Equipment"
+        text_surface = font.render("Equipment", True, (255, 255, 255))  # White color for the text
+
+        # Calculate the position to center the text within Box 3
+        text_x = box3_x + (box3_width - text_surface.get_width()) // 2
+        text_y = box3_y + (box3_height - text_surface.get_height()) // 2
+
+        # Draw the text inside Box 3
+        state.DISPLAY.blit(text_surface, (text_x, text_y))
+
+        # Optionally, add a white border around Box 3 with rounded corners
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def load_game(self, state):
 
