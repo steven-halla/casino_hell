@@ -430,55 +430,63 @@ class Player(Entity):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
     def draw_player_stats(self, state):
-        # Create a black surface of size 600x600
-        stats_surface = pygame.Surface((620, 580))
-        state.DISPLAY.fill(BLUEBLACK)
+        # Define the first box dimensions
+        box_width = 220
+        box_height = 400
 
-        # Set the font for the text
-        font = pygame.font.Font(None, 36)
+        # Create the first box surface
+        menu_box = pygame.Surface((box_width, box_height))
 
-        # Define the stats to display
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
 
-        stats = [
-            f"Level: {self.level}     Exp: {self.exp}",
-            f"money: {self.money}",
-            f"Stamina: {self.stamina_points}/{self.max_stamina_points}",
-            f"Magic Points: {self.focus_points}/{self.max_focus_points}",
-            f"Magic spells: {self.magicinventory}",
-            f"Mind: {self.mind} Body: {self.body} Spirit: {self.spirit}",
-            f"Perception:" f" {self.perception} Luck: {self.luck}",
-            f"Day: {self.days}  Food: {self.food}",
-        ]
+        # Apply the gradient to the surface
+        for y in range(box_height):
+            # Calculate the color for each pixel row (reversed for the correct gradient direction)
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box_height,
+            )
+            pygame.draw.line(menu_box, color, (0, y), (box_width, y))
 
-        # Add Items to the stats list, one item per line
-        for companion in self.companions:
-            stats.append(f"Companions: {companion}")
-        for item in self.items:
-            stats.append(f"Item: {item}")
+        # Calculate the position to center the first box horizontally
+        box_x = 550
+        box_y = 50  # Starting y position, adjust as needed
 
+        # Draw the first box on the main display
+        state.DISPLAY.blit(menu_box, (box_x, box_y))
 
-        # Draw each stat on the stats_surface
-        for i, stat in enumerate(stats):
-            text = font.render(stat, True, (255, 255, 255))  # White color for the text
-            stats_surface.blit(text, (50, 30 + i * 40))  # Adjust the position as needed
+        # Optionally, draw a border around the first box
+        border_color = (255, 255, 255)  # White border
+        border_thickness = 3
+        pygame.draw.rect(state.DISPLAY, border_color, pygame.Rect(box_x, box_y, box_width, box_height), border_thickness)
 
-        # You can adjust these values to position the box as you like
-        box_x = SCREEN_WIDTH / 2 - 300  # Center the box in the middle of the screen width
-        box_y = SCREEN_HEIGHT / 2 - 290  # Center the box in the middle of the screen height
+        # Define the second box dimensions
+        second_box_height = 100
 
-        # Display the stats surface on the main display
-        state.DISPLAY.blit(stats_surface, (box_x, box_y))
+        # Create the second box surface
+        second_box = pygame.Surface((box_width, second_box_height))
 
-        border_color = (255, 255, 255)  # White color
-        border_rect = pygame.Rect(box_x, box_y, 580, 580)  # The rectangle that represents the border
-        border_thickness = 5  # Adjust the thickness as needed
-        pygame.draw.rect(state.DISPLAY, border_color, border_rect, border_thickness)
+        # Apply the gradient to the second box surface
+        for y in range(second_box_height):
+            # Calculate the color for each pixel row (reversed for the correct gradient direction)
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // second_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // second_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // second_box_height,
+            )
+            pygame.draw.line(second_box, color, (0, y), (box_width, y))
 
-        # if state.controller.isLPressed:
-        #     state.controller.isLPressed = False
-        #     print("L is pressed")
-        #     # Call the load_game function when the L key is pressed
-        #     self.load_game(state)
+        # Calculate the position to place the second box below the first one
+        box_y += box_height + 10  # Placed 10 pixels below the first box
+
+        # Draw the second box on the main display
+        state.DISPLAY.blit(second_box, (box_x, box_y))
+
+        # Optionally, draw a border around the second box
+        pygame.draw.rect(state.DISPLAY, border_color, pygame.Rect(box_x, box_y, box_width, second_box_height), border_thickness)
 
     def load_game(self, state):
 

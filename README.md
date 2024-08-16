@@ -480,6 +480,8 @@ allow 1 paid version of 500 gold membership
 # can also have 2 mini gauntlets instead of 1
 
 
+#  IMPORTANT!!!!----------------------------------------------------
+#  currently can enter status screen when talking this is not good
 
 
 
