@@ -518,8 +518,9 @@ class Player(Entity):
         # Set the font for the menu items
         font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
 
-        # Define the menu items
-        menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions"]
+        # Define the menu items - note this needs 3 more to fill the screen proper
+        # config, load,
+        menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions", "Config", "Load", "Quit"]
 
         # Starting y position for the first item
         item_y = 30  # Adjust this as needed to center vertically within the box
@@ -569,6 +570,27 @@ class Player(Entity):
         # Set the x and y positions, similar to the top box
         text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
         fourth_box.blit(text_surface, (75, 130))  # 30 pixels from the left edge and top
+
+
+
+        #######
+
+        status_text = f"Time"
+
+        # Set the x and y positions, similar to the top box
+        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+        fourth_box.blit(text_surface, (30, 170))  # 30 pixels from the left edge and top
+
+        status_text = f"00:00"
+
+        # Set the x and y positions, similar to the top box
+        text_surface = font.render(status_text, True, (255, 255, 255))  # White color for text
+        fourth_box.blit(text_surface, (75, 200))  # 30 pixels from the left edge and top
+
+
+
+
+
 
         # Display everything on the screen
         state.DISPLAY.blit(third_box, (third_box_x, third_box_y))
