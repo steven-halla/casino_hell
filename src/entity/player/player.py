@@ -653,13 +653,33 @@ class Player(Entity):
                 bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
             )
             pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        item_color = (90, 244, 244)  # A unique blue color, easy on the eyes
 
+        # Define the items to display in Box 2
+        items = ["item 1", "item 2", "companion item"]
+
+        # Starting y position for the first item (adjust as needed for vertical alignment)
+        item_y = 30  # Start a bit lower for padding
+
+        # Calculate the spacing between items
+        spacing = 10  # Adjust spacing to your preference
+
+        # Draw each item in Box 2
+        for item in items:
+            text_surface = font.render(item, True, item_color)  # Render the text in the specified color
+            main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
+            item_y += text_surface.get_height() + spacing  # Move down for the next item
         # Draw the main box centered on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
 
         # Add a white border around the main box
         border_thickness = 3
+
+
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+
+
 
         # 3. Third Box (Small box overlapping top right corner)
         box3_width = 200
