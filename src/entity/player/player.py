@@ -430,6 +430,7 @@ class Player(Entity):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
     def draw_player_stats(self, state):
+
         # Define the first box dimensions
         box_width = 220
         box_height = 400
@@ -451,11 +452,26 @@ class Player(Entity):
             )
             pygame.draw.line(menu_box, color, (0, y), (box_width, y))
 
+        # Set the font for the menu items
+        font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
+
+        # Define the menu items
+        menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions"]
+
+        # Starting y position for the first item
+        item_y = 30  # Adjust this as needed to center vertically within the box
+
+        # Draw each menu item in the box with 10 pixels between each
+        for item in menu_items:
+            text_surface = font.render(item, True, (255, 255, 255))  # White color for text
+            menu_box.blit(text_surface, (30, item_y))  # 10 pixels from the left edge
+            item_y += text_surface.get_height() + 20  # Move to the next line with 10 pixels spacing
+
         # Calculate the position to center the first box horizontally
         box_x = 550
         box_y = 50  # Starting y position, adjust as needed
 
-        # Draw the first box on the main display
+        # Now draw the first box on the main display with the text included
         state.DISPLAY.blit(menu_box, (box_x, box_y))
 
         # Optionally, draw a border around the first box
@@ -478,6 +494,22 @@ class Player(Entity):
                 bottom_color[2] + (top_color[2] - bottom_color[2]) * y // second_box_height,
             )
             pygame.draw.line(second_box, color, (0, y), (box_width, y))
+
+        # Set the font for the text
+        font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
+
+        # Create the text to display
+        gold_text = f"GP"
+
+        # Set the x and y positions, similar to the top box
+        text_surface = font.render(gold_text, True, (255, 255, 255))  # White color for text
+        second_box.blit(text_surface, (30, 30))  # 30 pixels from the left edge and top
+
+        money_text = f"{self.money}"
+
+        # Set the x and y positions, similar to the top box
+        text_surface = font.render(money_text, True, (255, 255, 255))  # White color for text
+        second_box.blit(text_surface, (75, 50))  # 30 pixels from the left edge and top
 
         # Calculate the position to place the second box below the first one
         box_y += box_height + 10  # Placed 10 pixels below the first box
