@@ -30,8 +30,10 @@ class Player(Entity):
         self.max_stamina_points = 160 + self.stamina_increase
         self.focus_points = 55
         self.max_focus_points = 10
-        self.perks = []
         self.items = ["sir leopold's paw"]
+
+        self.equipped_items = []
+
         self.npc_items = []
         self.magicinventory = ["shield",  "shake" ]
         self.companions = []
@@ -636,7 +638,7 @@ class Player(Entity):
 
         # 2. Main Box with gradient and border
         main_box_width = screen_width - 20
-        main_box_height = screen_height - 80
+        main_box_height = 220
         main_box_x = 10
         main_box_y = 60  # Lowered the position by 100 pixels
 
@@ -656,8 +658,40 @@ class Player(Entity):
         font = pygame.font.Font(None, 36)  # Adjust font size as needed
         item_color = (90, 244, 244)  # A unique blue color, easy on the eyes
 
+####
+        # Get the dimensions of the display
+
+        # Fill the entire screen with black
+
+        # 2. Main Box with gradient and border
+        bottom_box_width = screen_width - 20
+        bottom_box_height = 380
+        bottom_box_x = 10
+        bottom_box_y = 300  # Lowered the position by 100 pixels
+
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
+
+        # Create the main box surface with its gradient
+        bottom_box = pygame.Surface((bottom_box_width, bottom_box_height))
+        for y in range(bottom_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // bottom_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // bottom_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // bottom_box_height,
+            )
+            pygame.draw.line(bottom_box, color, (0, y), (bottom_box_width, y))
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        item_color = (90, 244, 244)  # A unique blue color, easy on the eyes
+
+
+
+
+
+
         # Define the items to display in Box 2
-        items = ["item 1", "item 2", "companion item"]
+        items = ["item 1", "item 2", "companion item", "LEVEL 3", "LEVEL 5"]
 
         # Starting y position for the first item (adjust as needed for vertical alignment)
         item_y = 30  # Start a bit lower for padding
@@ -670,14 +704,40 @@ class Player(Entity):
             text_surface = font.render(item, True, item_color)  # Render the text in the specified color
             main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
             item_y += text_surface.get_height() + spacing  # Move down for the next item
+
+        # Define the list of game names
+        # games = [
+        #     "black jack",
+        #     "opossum in a can",
+        #     "coin flip",
+        #     "hungry starving hippos",
+        #     "slots",
+        #     "craps",
+        #     "special"
+        # ]
+        #
+        # # Define the starting position for the first game name
+        # game_start_y = item_y + 50  # 50 pixels below the last item in the list
+        #
+        # # Calculate the spacing between the game names
+        # game_spacing = 10  # Adjust the spacing between the game names
+        #
+        # # Draw each game name in a vertical row
+        # for game in games:
+        #     text_surface = font.render(game, True, item_color)  # Render the text in the specified color
+        #     main_box.blit(text_surface, (50, game_start_y))  # Adjust x-position as needed
+        #     game_start_y += text_surface.get_height() + game_spacing  # Move down for the next game name
+
         # Draw the main box centered on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
+        state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
 
         # Add a white border around the main box
         border_thickness = 3
 
 
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(bottom_box_x, bottom_box_y, bottom_box_width, bottom_box_height), border_thickness, border_radius=7)
 
 
 
