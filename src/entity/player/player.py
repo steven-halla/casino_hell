@@ -536,7 +536,7 @@ class Player(Entity):
 
             # 4. Fourth Box (Bottom right box)
             fourth_box_width = 220
-            fourth_box_height = 270
+            fourth_box_height = 170
             fourth_box_y = third_box_y + third_box_height + 10  # 10 pixels padding below the third box
             fourth_box_x = screen_width - fourth_box_width - 10  # 10 pixels padding from the right
 
@@ -559,6 +559,15 @@ class Player(Entity):
             # Define the menu items - note this needs 3 more to fill the screen proper
             # config, load,
             menu_items = ["Equipment", "Quest Items", "Magic", "Status"]
+
+
+
+
+
+
+
+
+            ##########
 
             ###### DO NOT DELETE THE BELOW______________----------------------------------------
             # menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions", "Config", "Load", "Quit"]
@@ -869,7 +878,7 @@ class Player(Entity):
 
         # 1. Main Box with gradient and border
         main_box_width = screen_width - 20
-        main_box_height = 600
+        main_box_height = 530
         main_box_x = 10
         main_box_y = 60  # Positioned 60 pixels from the top
 
@@ -897,7 +906,7 @@ class Player(Entity):
 
         # Render "Hero"
         hero_text = font.render("Hero", True, text_color)
-        main_box.blit(hero_text, (50, 50))  # Positioning at (50, 50) inside the main box
+        main_box.blit(hero_text, (50, 30))  # Positioning at (50, 50) inside the main box
 
         # Render HP and MP
         current_level_text = font.render(f"Level: {self.level}", True, text_color)
@@ -910,17 +919,17 @@ class Player(Entity):
         perception_text = font.render(f"Perception: {self.perception}", True, text_color)
         luck_text = font.render(f"Luck: {self.luck}", True, text_color)
 
-        main_box.blit(current_level_text, (50, 100))  # Positioning MP display at (50, 150)
+        main_box.blit(current_level_text, (50, 80))  # Positioning MP display at (50, 150)
 
-        main_box.blit(hp_text, (50, 150))  # Positioning HP display at (50, 100)
-        main_box.blit(mp_text, (50, 200))  # Positioning MP display at (50, 150)
-        main_box.blit(exp_text, (50, 250))  # Positioning MP display at (50, 150)
+        main_box.blit(hp_text, (50, 130))  # Positioning HP display at (50, 100)
+        main_box.blit(mp_text, (50, 180))  # Positioning MP display at (50, 150)
+        main_box.blit(exp_text, (50, 230))  # Positioning MP display at (50, 150)
 
-        main_box.blit(body_text, (50, 300))  # Positioning MP display at (50, 150)
-        main_box.blit(mind_text, (50, 350))  # Positioning MP display at (50, 150)
-        main_box.blit(spirit_text, (50, 400))  # Positioning MP display at (50, 150)
-        main_box.blit(perception_text, (50, 450))  # Positioning MP display at (50, 150)
-        main_box.blit(luck_text, (50, 500))  # Positioning MP display at (50, 150)
+        main_box.blit(body_text, (50, 280))  # Positioning MP display at (50, 150)
+        main_box.blit(mind_text, (50, 330))  # Positioning MP display at (50, 150)
+        main_box.blit(spirit_text, (50, 380))  # Positioning MP display at (50, 150)
+        main_box.blit(perception_text, (50, 430))  # Positioning MP display at (50, 150)
+        main_box.blit(luck_text, (50, 480))  # Positioning MP display at (50, 150)
 
         # Draw the main box on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
@@ -965,7 +974,7 @@ class Player(Entity):
 
         # 1. Main Box with gradient and border
         main_box_width = screen_width - 20
-        main_box_height = 460
+        main_box_height = 420
         main_box_x = 10
         main_box_y = 60  # Positioned 60 pixels from the top
 
@@ -1011,9 +1020,9 @@ class Player(Entity):
 
         # 3. Text Box with gradient and border
         text_box_width = screen_width - 20
-        text_box_height = 120
+        text_box_height = 100
         text_box_x = 10
-        text_box_y = 560  # Positioned 560 pixels from the top
+        text_box_y = 490  # Positioned 560 pixels from the top
 
         # Create the text box surface with its gradient
         text_box = pygame.Surface((text_box_width, text_box_height))
@@ -1072,7 +1081,7 @@ class Player(Entity):
 
         # 1. Main Box with gradient and border
         main_box_width = screen_width - 20
-        main_box_height = 460
+        main_box_height = 420
         main_box_x = 10
         main_box_y = 60  # Positioned 60 pixels from the top
 
@@ -1117,9 +1126,9 @@ class Player(Entity):
 
         # 3. Text Box with gradient and border
         text_box_width = screen_width - 20
-        text_box_height = 120
+        text_box_height = 100
         text_box_x = 10
-        text_box_y = 560  # Positioned 560 pixels from the top
+        text_box_y = 490  # Positioned 560 pixels from the top
 
         # Create the text box surface with its gradient
         text_box = pygame.Surface((text_box_width, text_box_height))
@@ -1436,7 +1445,7 @@ class Player(Entity):
 
         # Assuming the text box position is already defined where you want the description to appear
         text_box_x = 10  # X position of the text box
-        text_box_y = 560  # Y position of the text box
+        text_box_y = 490  # Y position of the text box
 
         # Position the text within the text box
         text_x = 20  # X position inside the text box
@@ -1466,7 +1475,7 @@ class Player(Entity):
 
         # Assuming the text box position is already defined where you want the description to appear
         text_box_x = 10  # X position of the text box
-        text_box_y = 560  # Y position of the text box
+        text_box_y = 490  # Y position of the text box
 
         # Position the text within the text box
         text_x = 20  # X position inside the text box
