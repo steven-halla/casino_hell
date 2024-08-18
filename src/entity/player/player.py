@@ -101,6 +101,16 @@ class Player(Entity):
 
         self.quest_items_index = 0
 
+        self.exp_to_next_level = {
+            1: 100,
+            2: 300,
+            3: 600,
+            4: 1200,
+            5: 2000,
+            6: 3500,  # Continue adding levels as needed
+            # Add more levels as needed
+        }
+
     def to_dict(self, state: "GameState") -> dict:
         return {
             "level": self.level,
@@ -887,13 +897,27 @@ class Player(Entity):
         main_box.blit(hero_text, (50, 50))  # Positioning at (50, 50) inside the main box
 
         # Render HP and MP
+        current_level_text = font.render(f"Level: {self.level}", True, text_color)
         hp_text = font.render(f"HP: {self.stamina_points} / {self.max_stamina_points}", True, text_color)
         mp_text = font.render(f"MP: {self.focus_points} / {self.max_focus_points}", True, text_color)
-        exp_text = font.render(f"EXP: {self.exp} / ", True, text_color)
+        exp_text = font.render(f"EXP: {self.exp} / {self.exp_to_next_level.get(self.level, 'Max Level')}", True, text_color)
+        body_text = font.render(f"Body: {self.body}", True, text_color)
+        mind_text = font.render(f"Mind: {self.mind}", True, text_color)
+        spirit_text = font.render(f"Spirit: {self.spirit}", True, text_color)
+        perception_text = font.render(f"Perception: {self.perception}", True, text_color)
+        luck_text = font.render(f"Luck: {self.luck}", True, text_color)
 
-        main_box.blit(hp_text, (50, 100))  # Positioning HP display at (50, 100)
-        main_box.blit(mp_text, (50, 150))  # Positioning MP display at (50, 150)
-        main_box.blit(exp_text, (50, 200))  # Positioning MP display at (50, 150)
+        main_box.blit(current_level_text, (50, 100))  # Positioning MP display at (50, 150)
+
+        main_box.blit(hp_text, (50, 150))  # Positioning HP display at (50, 100)
+        main_box.blit(mp_text, (50, 200))  # Positioning MP display at (50, 150)
+        main_box.blit(exp_text, (50, 250))  # Positioning MP display at (50, 150)
+
+        main_box.blit(body_text, (50, 300))  # Positioning MP display at (50, 150)
+        main_box.blit(mind_text, (50, 350))  # Positioning MP display at (50, 150)
+        main_box.blit(spirit_text, (50, 400))  # Positioning MP display at (50, 150)
+        main_box.blit(perception_text, (50, 450))  # Positioning MP display at (50, 150)
+        main_box.blit(luck_text, (50, 500))  # Positioning MP display at (50, 150)
 
         # Draw the main box on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
