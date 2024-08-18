@@ -712,6 +712,9 @@ class Player(Entity):
                 elif self.menu_index == 2:
                     state.controller.isTPressed = False
                     self.current_screen = "magic_inventory_screen"
+                elif self.menu_index == 3:
+                    state.controller.isTPressed = False
+                    self.current_screen = "status_screen"
 
 
             # Handle menu navigation with up/down arrow keys
@@ -838,6 +841,82 @@ class Player(Entity):
                 state.controller.isBPressed = False
                 self.current_screen = "main_menu_screen"
 
+        elif self.current_screen == "status_screen":
+            if state.controller.isBPressed:
+                state.controller.isBPressed = False
+                self.current_screen = "main_menu_screen"
+            self.status_screen(state)
+
+    def status_screen(self, state):
+        screen_width = state.DISPLAY.get_width()
+        screen_height = state.DISPLAY.get_height()
+
+        # Fill the entire screen with black
+        state.DISPLAY.fill((0, 0, 0))  # Black color
+
+        # 1. Main Box with gradient and border
+        main_box_width = screen_width - 20
+        main_box_height = 600
+        main_box_x = 10
+        main_box_y = 60  # Positioned 60 pixels from the top
+
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
+
+        # Create the main box surface with its gradient
+        main_box = pygame.Surface((main_box_width, main_box_height))
+        for y in range(main_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
+            )
+            pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
+
+        # Add border to the main box
+        border_thickness = 3
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+
+        # 2. Render Magic Items in Main Box
+        font = pygame.font.Font(None, 36)  # Adjust the font size as needed
+
+
+        # Draw the main box on the screen
+        state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
+
+
+
+        # Draw the borders again to ensure visibility
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+
+        # 4. Third Box (Small box overlapping top right corner) - Render Last to Overlay
+        box3_width = 200
+        box3_height = 70
+        box3_x = screen_width - box3_width - 10  # Positioned at the right edge with padding
+        box3_y = 30  # Positioned to overlap the top right corner of Box 2
+
+        # Create Box 3's surface with its gradient
+        box3_surface = pygame.Surface((box3_width, box3_height))
+        for y in range(box3_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box3_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box3_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box3_height,
+            )
+            pygame.draw.line(box3_surface, color, (0, y), (box3_width, y))
+
+        # Draw Box 3 overlapping Box 2's top right corner
+        state.DISPLAY.blit(box3_surface, (box3_x, box3_y))
+
+        # Render the text "Magic" inside Box 3
+        text_surface = font.render("Status", True, (255, 255, 255))  # White color for the text
+        text_x = box3_x + (box3_width - text_surface.get_width()) // 2
+        text_y = box3_y + (box3_height - text_surface.get_height()) // 2
+        state.DISPLAY.blit(text_surface, (text_x, text_y))
+
+        # Add a white border around Box 3 with rounded corners
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
     def magic_inventory_screen(self, state):
         screen_width = state.DISPLAY.get_width()
         screen_height = state.DISPLAY.get_height()
