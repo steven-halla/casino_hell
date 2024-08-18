@@ -61,6 +61,9 @@ class Player(Entity):
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
         # TODO refrence the images with relative paths
+        self.sir_leopold_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
+
         self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
@@ -89,6 +92,8 @@ class Player(Entity):
 
         self.equipment_paused = False
         self.looking_at_items = False
+
+        self.index_setter = 0
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -617,6 +622,78 @@ class Player(Entity):
             pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(third_box_x, third_box_y, third_box_width, third_box_height), border_thickness, border_radius=7)
             pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(fourth_box_x, fourth_box_y, fourth_box_width, fourth_box_height), border_thickness, border_radius=7)
 
+            ######
+
+            if  "sir leopold" in state.player.companions:
+
+
+                # Get the subsurface for the area you want
+                sprite_rect = pygame.Rect(5, 6, 56, 35)
+
+                # Get the subsurface for the area you want
+                sprite = self.sir_leopold_image.subsurface(sprite_rect)
+
+                # Scale the subsurface to make it two times bigger
+                scaled_sprite = pygame.transform.scale(sprite, (70, 70))  # 44*2 = 88
+
+                # Define the position where you want to draw the sprite
+                sir_leopold_sprite_x = 43
+                sir_leopold_sprite_y = 180
+
+                # Draw the scaled sprite portion on the display
+                state.DISPLAY.blit(scaled_sprite, (sir_leopold_sprite_x, sir_leopold_sprite_y))
+                sir_leopold_name = font.render(f"Sir Leopold", True, color)
+                sir_leoplold_name_x = 140
+                sir_leoplold_name_y = 205
+                state.DISPLAY.blit(sir_leopold_name, (sir_leoplold_name_x, sir_leoplold_name_y))
+
+            hero_name = font.render(f"Hero", True, color)
+
+            hero__name_x = 170
+            hero__name_y = 50
+            state.DISPLAY.blit(hero_name, (hero__name_x, hero__name_y))
+
+            # Load the down-facing sprite of the hero
+            down_facing_hero_sprite = self.down_sprite.subsurface(pygame.Rect(*self.down_frames[0]))
+
+            # Scale the sprite if needed (optional)
+            scaled_hero_sprite = pygame.transform.scale(down_facing_hero_sprite, (64, 64))
+
+            # Calculate the position to place the hero's sprite on the screen
+            hero_sprite_x = 40  # Adjust this value to position more towards the top left
+            hero_sprite_y = 70  # Adjust this value to position more towards the top left
+
+            # Draw the hero's sprite on the screen
+            state.DISPLAY.blit(scaled_hero_sprite, (hero_sprite_x, hero_sprite_y))
+
+            # Define the font and color for the HP display
+            font = pygame.font.Font(None, 36)  # You can adjust the font size as needed
+            color = (255, 255, 255)  # White color for text
+
+            # Render the HP text into a Surface object
+            hp_display_surface = font.render(f"HP: {self.stamina_points} /", True, color)
+            hp_max_display_surface = font.render(f"{self.max_stamina_points}", True, color)
+
+            # Calculate the position to place the hero's HP text on the screen
+            hero_hp_x = 130  # Adjust this value to position more towards the top left
+            hero_hp_sprite_y = 80  # Adjust this value to position more towards the top left
+            max_hero_hp_x = 240  # Adjust this value to position more towards the top left
+            max_hero_hp_sprite_y = 80  # Adjust this value to position more towards the top left
+
+            # Blit the HP text surfaces onto the screen
+            state.DISPLAY.blit(hp_display_surface, (hero_hp_x, hero_hp_sprite_y))
+            state.DISPLAY.blit(hp_max_display_surface, (max_hero_hp_x, max_hero_hp_sprite_y))
+
+            hero_mp_x = 130  # Adjust this value to position more towards the top left
+            hero_mp_sprite_y = 110  # Adjust this value to position more towards the top left
+            max_hero_mp_x = 240  # Adjust this value to position more towards the top left
+            max_hero_mp_sprite_y = 110  # Adjust this value to position more towards the top left
+
+            mp_display_surface = font.render(f"MP: {self.focus_points} /", True, color)
+            mp_max_display_surface = font.render(f"{self.max_focus_points}", True, color)
+            # Blit the HP text surfaces onto the screen
+            state.DISPLAY.blit(mp_display_surface, (hero_mp_x, hero_mp_sprite_y))
+            state.DISPLAY.blit(mp_max_display_surface, (max_hero_mp_x, max_hero_mp_sprite_y))
 
             if state.controller.isTPressed:
                 if self.menu_index == 0:
@@ -646,6 +723,14 @@ class Player(Entity):
 
             # Handle up/down navigation
             if self.looking_at_items == True:
+
+                # Equip the selected item if T is pressed
+                if state.controller.isTPressed:
+                    state.controller.isTPressed = False
+                    self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
+                    print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
+                    self.looking_at_items = False
+
                 if state.controller.isBPressed:
                     state.controller.isBPressed = False
                     self.looking_at_items = False
@@ -666,6 +751,10 @@ class Player(Entity):
                 self.show_item_description(state)
 
             elif self.looking_at_items == False:
+
+
+
+
                 if state.controller.isBPressed:
                     state.controller.isBPressed = False
                     self.current_screen = "main_menu_screen"
@@ -840,7 +929,7 @@ class Player(Entity):
             equipped_y_start = 30  # Start at the same y-position as the arrow, or any other position
 
             # Adjust the left margin for the equipped items
-            equipped_item_margin = 250  # Adjust this to ensure there's enough space between the items and equipped items
+            equipped_item_margin = 300  # Adjust this to ensure there's enough space between the items and equipped items
 
             # Draw each item slot in Box 2 and display the equipped item next to it, if available
             item_y = equipped_y_start  # Start at the same y-position as the arrow
@@ -852,7 +941,7 @@ class Player(Entity):
                 # Display the equipped item if it exists in this slot
                 if index < len(self.equipped_items) and self.equipped_items[index]:
                     equipped_item_surface = font.render(self.equipped_items[index], True, item_color)
-                    main_box.blit(equipped_item_surface, (50 + equipped_item_margin, item_y))  # 200 pixels to the right of the slot name
+                    main_box.blit(equipped_item_surface, (equipped_item_margin, item_y))  # 200 pixels to the right of the slot name
 
                 item_y += slot_surface.get_height() + 10  # Move down for the next item slot
 
@@ -895,30 +984,6 @@ class Player(Entity):
             main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
             item_y += text_surface.get_height() + spacing  # Move down for the next item
 
-        # Define the list of game names
-        # games = [
-        #     "black jack",
-        #     "opossum in a can",
-        #     "coin flip",
-        #     "hungry starving hippos",
-        #     "slots",
-        #     "craps",
-        #     "special"
-        # ]
-        #
-        # # Define the starting position for the first game name
-        # game_start_y = item_y + 50  # 50 pixels below the last item in the list
-        #
-        # # Calculate the spacing between the game names
-        # game_spacing = 10  # Adjust the spacing between the game names
-        #
-        # # Draw each game name in a vertical row
-        # for game in games:
-        #     text_surface = font.render(game, True, item_color)  # Render the text in the specified color
-        #     main_box.blit(text_surface, (50, game_start_y))  # Adjust x-position as needed
-        #     game_start_y += text_surface.get_height() + game_spacing  # Move down for the next game name
-
-        # Draw the main box centered on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
         state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
 
