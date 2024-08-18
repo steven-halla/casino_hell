@@ -836,6 +836,26 @@ class Player(Entity):
             # Define the items, including the level-based slots
             items = ["companion item", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
 
+            # Starting y position for the first item (adjust as needed for vertical alignment)
+            equipped_y_start = 30  # Start at the same y-position as the arrow, or any other position
+
+            # Adjust the left margin for the equipped items
+            equipped_item_margin = 250  # Adjust this to ensure there's enough space between the items and equipped items
+
+            # Draw each item slot in Box 2 and display the equipped item next to it, if available
+            item_y = equipped_y_start  # Start at the same y-position as the arrow
+            for index, slot in enumerate(items):
+                # Render the item slot name
+                slot_surface = font.render(slot, True, item_color)  # Render the text in the specified color
+                main_box.blit(slot_surface, (50, item_y))  # Adjust x-position to center or align as needed
+
+                # Display the equipped item if it exists in this slot
+                if index < len(self.equipped_items) and self.equipped_items[index]:
+                    equipped_item_surface = font.render(self.equipped_items[index], True, item_color)
+                    main_box.blit(equipped_item_surface, (50 + equipped_item_margin, item_y))  # 200 pixels to the right of the slot name
+
+                item_y += slot_surface.get_height() + 10  # Move down for the next item slot
+
             # Determine the maximum index based on perception level
             if self.perception < 3:
                 max_index = 2  # Can only access up to the 2nd index (index 0, 1, and 2)
