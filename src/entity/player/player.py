@@ -878,14 +878,25 @@ class Player(Entity):
         border_thickness = 3
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
 
-        # 2. Render Magic Items in Main Box
+        # 2. Render Hero and Stats in Main Box
         font = pygame.font.Font(None, 36)  # Adjust the font size as needed
+        text_color = (255, 255, 255)  # White color for the text
 
+        # Render "Hero"
+        hero_text = font.render("Hero", True, text_color)
+        main_box.blit(hero_text, (50, 50))  # Positioning at (50, 50) inside the main box
+
+        # Render HP and MP
+        hp_text = font.render(f"HP: {self.stamina_points} / {self.max_stamina_points}", True, text_color)
+        mp_text = font.render(f"MP: {self.focus_points} / {self.max_focus_points}", True, text_color)
+        exp_text = font.render(f"EXP: {self.exp} / ", True, text_color)
+
+        main_box.blit(hp_text, (50, 100))  # Positioning HP display at (50, 100)
+        main_box.blit(mp_text, (50, 150))  # Positioning MP display at (50, 150)
+        main_box.blit(exp_text, (50, 200))  # Positioning MP display at (50, 150)
 
         # Draw the main box on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
-
-
 
         # Draw the borders again to ensure visibility
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
@@ -909,7 +920,7 @@ class Player(Entity):
         # Draw Box 3 overlapping Box 2's top right corner
         state.DISPLAY.blit(box3_surface, (box3_x, box3_y))
 
-        # Render the text "Magic" inside Box 3
+        # Render the text "Status" inside Box 3
         text_surface = font.render("Status", True, (255, 255, 255))  # White color for the text
         text_x = box3_x + (box3_width - text_surface.get_width()) // 2
         text_y = box3_y + (box3_height - text_surface.get_height()) // 2
@@ -917,6 +928,7 @@ class Player(Entity):
 
         # Add a white border around Box 3 with rounded corners
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
+
     def magic_inventory_screen(self, state):
         screen_width = state.DISPLAY.get_width()
         screen_height = state.DISPLAY.get_height()
