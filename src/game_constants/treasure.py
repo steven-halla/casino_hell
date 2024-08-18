@@ -11,3 +11,8 @@ class Treasure(Enum):
     def add_treasure_to_player(player, treasure):
         if treasure.value not in player.level_two_npc_state:
             player.level_two_npc_state.append(treasure.value)
+
+    @staticmethod
+    def add_quest_to_player(player, treasure):
+        if treasure.value not in player.quest_items:
+            player.quest_items.append(treasure.value)
