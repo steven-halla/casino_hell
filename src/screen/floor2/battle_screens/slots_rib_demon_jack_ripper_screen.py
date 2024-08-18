@@ -267,9 +267,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
         else:
             self.slot3[0] = map_to_slot_number(generated_value3)
         # for testing
-        self.slot1[0] = 8
-        self.slot2[0] = 8
-        self.slot3[0] = 8
+        # self.slot1[0] = 8
+        # self.slot2[0] = 8
+        # self.slot3[0] = 8
 
             # Check if all three slots are 0 and print "hi zeros"
         if self.slot1[0] == 0 and self.slot2[0] == 0 and self.slot3[0] == 0:
