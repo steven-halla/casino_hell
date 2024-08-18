@@ -483,6 +483,8 @@ allow 1 paid version of 500 gold membership
 #  IMPORTANT!!!!----------------------------------------------------
 #  currently can enter status screen when talking this is not good
 
+# on level up clear out player inventory that way items wont affect bonsues 
+
 
 
 

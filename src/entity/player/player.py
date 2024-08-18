@@ -83,7 +83,12 @@ class Player(Entity):
 
         self.current_screen = "main_menu_screen"
         self.item_index = 0
+
+        self.items_equipped = []
+        self.items_equipped_index = 0
+
         self.equipment_paused = False
+        self.looking_at_items = False
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -95,6 +100,7 @@ class Player(Entity):
             "max_focus_points": self.max_focus_points,
             "companions": self.companions,
             "items": self.items,
+            "equipped_items": self.equipped_items,
             "npcitems": self.npc_items,
             "magicinventory": self.magicinventory,
             "body": self.body,
@@ -542,6 +548,7 @@ class Player(Entity):
                 item_y += text_surface.get_height() + 20  # Move to the next line with 20 pixels spacing
 
             # Define the arrow symbol
+
             arrow = "->"
 
             # Render the arrow
@@ -637,23 +644,55 @@ class Player(Entity):
             self.equipment_screen(state)
 
             # Handle up/down navigation
-            if state.controller.isUpPressed:
-                self.item_index = (self.item_index - 1) % len(menu_items)
-                state.controller.isUpPressed = False
-                print(menu_items[self.item_index])  # Print the item at the current index
+            if self.looking_at_items == True:
+                # Handle up/down navigation for items
+                if state.controller.isUpPressed:
+                    self.item_index = (self.item_index - 1) % len(self.items)
+                    state.controller.isUpPressed = False
+                    print(self.items[self.item_index])  # Print the item at the current index
+                    self.show_item_description(state)
 
-            elif state.controller.isDownPressed:
-                self.item_index = (self.item_index + 1) % len(menu_items)
-                state.controller.isDownPressed = False
-                print(menu_items[self.item_index])  # Print the item at the current index
+                elif state.controller.isDownPressed:
+                    self.item_index = (self.item_index + 1) % len(self.items)
+                    state.controller.isDownPressed = False
+                    print(self.items[self.item_index])  # Print the item at the current index
+                    self.show_item_description(state)
 
-            # The `item_index` will now be updated based on the up/down input, allowing you to navigate through the `menu_items`.
+                # Update the description for the selected item
+                self.show_item_description(state)
+
+            elif self.looking_at_items == False:
+                # Determine the maximum index based on perception level
+                if self.perception < 3:
+                    max_index = 1  # Can only access up to the 2nd slot (index 0 and 1)
+                elif self.perception < 5:
+                    max_index = 2  # Can access up to the 3rd slot (index 0, 1, 2)
+                elif self.perception >= 5:
+                    max_index = 4  # Can access all slots (index 0, 1, 2, 3, 4)
+
+                # Handle up/down navigation for equipped items based on max_index
+                if state.controller.isUpPressed:
+                    self.items_equipped_index = (self.items_equipped_index - 1) % (max_index + 1)
+                    state.controller.isUpPressed = False
+                    print(f"Selected equipped item slot: {self.items_equipped_index}")  # Print the currently selected equipped item slot
+
+                elif state.controller.isDownPressed:
+                    self.items_equipped_index = (self.items_equipped_index + 1) % (max_index + 1)
+                    state.controller.isDownPressed = False
+                    print(f"Selected equipped item slot: {self.items_equipped_index}")  # Print the currently selected equipped item slot
+
+                # Print the currently selected equipped item or indicate if the slot is empty
+                if self.items_equipped_index < len(self.equipped_items):
+                    print(f"Currently selected equipped item: {self.equipped_items[self.items_equipped_index]}")
+                else:
+                    print(f"Selected slot {self.items_equipped_index} is empty.")
 
             if state.controller.isBPressed:
                 state.controller.isBPressed = False
                 self.current_screen = "main_menu_screen"
 
     def equipment_screen(self, state):
+
         # Get the dimensions of the display
         screen_width = state.DISPLAY.get_width()
         screen_height = state.DISPLAY.get_height()
@@ -763,24 +802,66 @@ class Player(Entity):
         # Print and display items in the bottom box
         # Display only the arrow next to the 0th item
         # Define the padding and spacing for the items
-        arrow_padding = 50  # Padding from the left side of the box for the arrow
-        item_y_start = 30  # The starting y-position for the items
+        # Define the padding and spacing for the items
+        # Define the padding and spacing for the items
+        inventory_arrow_padding = 50  # Padding from the left side of the box for the arrow in the inventory
+        top_box_arrow_padding = 35  # Padding from the left side of the box for the arrow in the top box
+        spacing = 10  # Spacing between items
+        inventory_arrow_padding = 50  # Padding from the left side of the box for the arrow in the inventory
+        top_box_arrow_padding = 35  # Padding from the left side of the box for the arrow in the top box
         spacing = 10  # Spacing between items
 
-        # Calculate the y-position for the arrow based on the current item_index
-        arrow_y_position = item_y_start + self.item_index * (font.get_height() + spacing)
+        if self.looking_at_items == True:
+            # Arrow should point to an item in the inventory list
+            item_y_start = 30  # The starting y-position for the items in the inventory
 
-        # Render the arrow and position it according to the current item_index
-        arrow_surface = font.render("->", True, inventory_color)
-        bottom_box.blit(arrow_surface, (item_x - arrow_padding, arrow_y_position))
+            # Calculate the y-position for the arrow based on the current item_index
+            arrow_y_position = item_y_start + self.item_index * (font.get_height() + spacing)
+
+            # Render the arrow and position it according to the current item_index
+            arrow_surface = font.render("->", True, inventory_color)
+            bottom_box.blit(arrow_surface, (item_x - inventory_arrow_padding, arrow_y_position))
+        else:
+            # Arrow should point to the currently selected equipped item
+            item_y_start = 30  # The starting y-position for the equipped items in the top box
+
+            # Define the items, including the level-based slots
+            items = ["companion item", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
+
+            # Determine the maximum index based on perception level
+            if self.perception < 3:
+                max_index = 2  # Can only access up to the 2nd index (index 0, 1, and 2)
+            elif self.perception == 3 or self.perception == 4:
+                max_index = 3  # Can access up to the 3rd index (index 0, 1, 2, and 3)
+            elif self.perception > 4:
+                max_index = 4  # Can access up to the 4th index (index 0, 1, 2, 3, and 4)
+
+            # Ensure that the items_equipped_index does not exceed the max_index
+            self.items_equipped_index = min(self.items_equipped_index, max_index)
+
+            # Calculate the y-position for the arrow based on the current equipped item index
+            arrow_y_position = item_y_start + self.items_equipped_index * (font.get_height() + spacing)
+
+            # Render the arrow in the top box at the position of the selected equipped item
+            arrow_surface = font.render("->", True, item_color)  # Assuming item_color is defined for the top box
+            main_box.blit(arrow_surface, (50 - top_box_arrow_padding, arrow_y_position))
+
+            # Print the currently selected equipped item, if it exists
+            if self.items_equipped_index < len(items):
+                print(f"Currently selected equipped item: {items[self.items_equipped_index]}")
+            else:
+                print(f"Selected slot {self.items_equipped_index} is empty or not yet equipped.")
+
+        #######################
 
         # Define the items to display in Box 2
-        items = ["item 1", "item 2", "companion item", "LEVEL 3", "LEVEL 5"]
+        items = ["companion item ", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
 
         # Starting y position for the first item (adjust as needed for vertical alignment)
-        item_y = item_y_start  # Start at the same y-position as the arrow
+        item_y_start = 30  # Start at the same y-position as the arrow, or any other position
 
         # Draw each item in Box 2
+        item_y = item_y_start  # Start at the same y-position as the arrow
         for item in items:
             text_surface = font.render(item, True, item_color)  # Render the text in the specified color
             main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
@@ -860,6 +941,36 @@ class Player(Entity):
         # Optionally, add a white border around Box 3 with rounded corners
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
+    def show_item_description(self, state):
+        # Define descriptions for each item
+        descriptions = {
+            "sir leopold's paw": "Sir Leopold can steal aces on initial draw.",
+            "opossum repellent": "Keeps those pesky opossums at bay, 1/2 bite damage.",
+            "coin flip glasses": "Get bonus money on wins + 10 per perception point."
+        }
+
+        # Get the item name based on the current index
+        current_item = self.items[self.item_index]
+
+        # Get the description for the current item
+        description_text = descriptions.get(current_item, "")
+
+        # Render the description text
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        description_color = (255, 255, 255)  # White color for the text
+        description_surface = font.render(description_text, True, description_color)
+
+        # Assuming the text box position is already defined where you want the description to appear
+        text_box_x = 10  # X position of the text box
+        text_box_y = 560  # Y position of the text box
+
+        # Position the text within the text box
+        text_x = 20  # X position inside the text box
+        text_y = 20  # Y position inside the text box
+
+        # Blit the description text onto the existing text box
+        state.DISPLAY.blit(description_surface, (text_box_x + text_x, text_box_y + text_y))
+
     def load_game(self, state):
 
         # Define the file path
@@ -885,6 +996,7 @@ class Player(Entity):
             state.player.max_focus_points = player_data['max_focus_points']
             state.player.companions = player_data['companions']
             state.player.items = player_data['items']
+            state.player.equipped_items = player_data['equipped_items']
             state.player.npc_items = player_data['npcitems']
             state.player.magicinventory = player_data['magicinventory']
             state.player.body = player_data['body']

@@ -11,9 +11,13 @@
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD"
-
     ],
     "items": [
+        "sir leopold's paw",
+        "opossum repellent",
+        "coin flip glasses"
+    ],
+      "equipped_items": [
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses"
@@ -29,7 +33,7 @@
     "body": 1,
     "mind": 1,
     "spirit": 1,
-    "perception": 1,
+    "perception": 5,
     "luck": 1,
     "money": 6000,
     "rabies": false,
