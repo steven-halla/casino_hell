@@ -99,6 +99,8 @@ class Player(Entity):
 
         self.magic_inventory_index = 0
 
+        self.quest_items_index = 0
+
     def to_dict(self, state: "GameState") -> dict:
         return {
             "level": self.level,
@@ -795,7 +797,19 @@ class Player(Entity):
                     print(f"Selected slot {self.items_equipped_index} is empty.")
 
         elif self.current_screen == "quest_items_screen":
+            if state.controller.isUpPressed:
+                self.quest_items_index = (self.quest_items_index - 1) % len(self.quest_items)
+                state.controller.isUpPressed = False
+                print(self.quest_items[self.quest_items_index])  # Print the item at the current index
+
+            elif state.controller.isDownPressed:
+                self.quest_items_index = (self.quest_items_index + 1) % len(self.quest_items)
+                state.controller.isDownPressed = False
+                print(self.quest_items[self.quest_items_index])  # Print the item at the current index
+
             self.quest_item_screen(state)
+            self.show_quest_items_description(state)
+
             if state.controller.isBPressed:
                 state.controller.isBPressed = False
                 self.current_screen = "main_menu_screen"
@@ -969,9 +983,15 @@ class Player(Entity):
         spacing = 10  # Spacing between items
         inventory_color = (155, 23, 155)  # Example color, you can change this to any RGB value
 
-        for item in state.player.quest_items:
+        for index, item in enumerate(state.player.quest_items):
             text_surface = font.render(item, True, inventory_color)  # Render the text in the specified color
             main_box.blit(text_surface, (quest_item_x, quest_item_y))  # Blit the text onto the main box
+
+            # Check if this item is the currently selected one
+            if index == self.quest_items_index:  # Assuming quest_item_index is tracking the selected index
+                arrow_surface = font.render("->", True, (255, 255, 255))  # White color for the arrow
+                main_box.blit(arrow_surface, (quest_item_x - 50, quest_item_y))  # Position the arrow 50 pixels to the left of the text
+
             quest_item_y += text_surface.get_height() + spacing  # Move down for the next item
 
         # Draw the main box on the screen
@@ -1290,6 +1310,36 @@ class Player(Entity):
 
         # Get the description for the current item
         description_text = descriptions.get(current_magic, "")
+
+        # Render the description text
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        description_color = (255, 255, 255)  # White color for the text
+        description_surface = font.render(description_text, True, description_color)
+
+        # Assuming the text box position is already defined where you want the description to appear
+        text_box_x = 10  # X position of the text box
+        text_box_y = 560  # Y position of the text box
+
+        # Position the text within the text box
+        text_x = 20  # X position inside the text box
+        text_y = 20  # Y position inside the text box
+
+        # Blit the description text onto the existing text box
+        state.DISPLAY.blit(description_surface, (text_box_x + text_x, text_box_y + text_y))
+
+    def show_quest_items_description(self, state):
+        # Define descriptions for each item
+        descriptions = {
+            "contract": "It's too bad you didnt' read it, not like anyone does",
+            "BBQ_SAUCE": "ITS THE BOSS OF SAUCE."
+
+        }
+
+        # Get the item name based on the current index
+        current_item = self.quest_items[self.quest_items_index]
+
+        # Get the description for the current item
+        description_text = descriptions.get(current_item, "")
 
         # Render the description text
         font = pygame.font.Font(None, 36)  # Adjust font size as needed
