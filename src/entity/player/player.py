@@ -620,6 +620,7 @@ class Player(Entity):
 
             if state.controller.isTPressed:
                 if self.menu_index == 0:
+                    state.controller.isTPressed = False
                     self.current_screen = "equipment_screen"
 
 
@@ -645,6 +646,9 @@ class Player(Entity):
 
             # Handle up/down navigation
             if self.looking_at_items == True:
+                if state.controller.isBPressed:
+                    state.controller.isBPressed = False
+                    self.looking_at_items = False
                 # Handle up/down navigation for items
                 if state.controller.isUpPressed:
                     self.item_index = (self.item_index - 1) % len(self.items)
@@ -662,11 +666,17 @@ class Player(Entity):
                 self.show_item_description(state)
 
             elif self.looking_at_items == False:
+                if state.controller.isBPressed:
+                    state.controller.isBPressed = False
+                    self.current_screen = "main_menu_screen"
+                if state.controller.isTPressed:
+                    state.controller.isTPressed = False
+                    self.looking_at_items = True
                 # Determine the maximum index based on perception level
                 if self.perception < 3:
-                    max_index = 1  # Can only access up to the 2nd slot (index 0 and 1)
-                elif self.perception < 5:
-                    max_index = 2  # Can access up to the 3rd slot (index 0, 1, 2)
+                    max_index = 2  # Can only access up to the 2nd slot (index 0 and 1)
+                elif self.perception == 3 or self.perception == 4:
+                    max_index = 3  # Can access up to the 3rd slot (index 0, 1, 2)
                 elif self.perception >= 5:
                     max_index = 4  # Can access all slots (index 0, 1, 2, 3, 4)
 
@@ -687,9 +697,7 @@ class Player(Entity):
                 else:
                     print(f"Selected slot {self.items_equipped_index} is empty.")
 
-            if state.controller.isBPressed:
-                state.controller.isBPressed = False
-                self.current_screen = "main_menu_screen"
+
 
     def equipment_screen(self, state):
 
