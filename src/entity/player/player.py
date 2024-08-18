@@ -802,19 +802,24 @@ class Player(Entity):
 
         elif self.current_screen == "magic_inventory_screen":
 
+            # Handle Up/Down navigation for the magic inventory
             if state.controller.isUpPressed:
                 self.magic_inventory_index = (self.magic_inventory_index - 1) % len(self.magicinventory)
                 state.controller.isUpPressed = False
                 print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
-                # self.show_item_description(state)
 
             elif state.controller.isDownPressed:
                 self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
                 state.controller.isDownPressed = False
                 print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
-                # self.show_item_description(state)
 
+            # First, render the magic inventory screen
             self.magic_inventory_screen(state)
+
+            # Then, display the description on top of the screen
+            self.show_magic_description(state)
+
+            # Handle back button press to return to the main menu
             if state.controller.isBPressed:
                 state.controller.isBPressed = False
                 self.current_screen = "main_menu_screen"
@@ -1272,6 +1277,35 @@ class Player(Entity):
             # Optionally, add a white border around Box 3 with rounded corners
             pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
+    def show_magic_description(self, state):
+        # Define descriptions for each item
+        descriptions = {
+            "reveal": "its a good show.",
+            "shield": "not a good show.",
+            "shake": "an ok show"
+        }
+
+        # Get the item name based on the current index
+        current_magic = self.magicinventory[self.magic_inventory_index]
+
+        # Get the description for the current item
+        description_text = descriptions.get(current_magic, "")
+
+        # Render the description text
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        description_color = (255, 255, 255)  # White color for the text
+        description_surface = font.render(description_text, True, description_color)
+
+        # Assuming the text box position is already defined where you want the description to appear
+        text_box_x = 10  # X position of the text box
+        text_box_y = 560  # Y position of the text box
+
+        # Position the text within the text box
+        text_x = 20  # X position inside the text box
+        text_y = 20  # Y position inside the text box
+
+        # Blit the description text onto the existing text box
+        state.DISPLAY.blit(description_surface, (text_box_x + text_x, text_box_y + text_y))
     def show_item_description(self, state):
         # Define descriptions for each item
         descriptions = {
