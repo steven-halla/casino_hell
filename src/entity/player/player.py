@@ -558,7 +558,10 @@ class Player(Entity):
 
             # Define the menu items - note this needs 3 more to fill the screen proper
             # config, load,
-            menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions", "Config", "Load", "Quit"]
+            menu_items = ["Equipment", "Quest Items", "Magic", "Status"]
+
+            ###### DO NOT DELETE THE BELOW______________----------------------------------------
+            # menu_items = ["Equipment", "Quest Items", "Magic", "Status", "Companions", "Config", "Load", "Quit"]
 
             # Starting y position for the first item
             item_y = 30  # Adjust this as needed to center vertically within the box
