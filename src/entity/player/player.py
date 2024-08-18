@@ -97,6 +97,8 @@ class Player(Entity):
         self.index_setter = 0
         self.quest_items = []
 
+        self.magic_inventory_index = 0
+
     def to_dict(self, state: "GameState") -> dict:
         return {
             "level": self.level,
@@ -705,6 +707,9 @@ class Player(Entity):
                 elif self.menu_index == 1:
                     state.controller.isTPressed = False
                     self.current_screen = "quest_items_screen"
+                elif self.menu_index == 2:
+                    state.controller.isTPressed = False
+                    self.current_screen = "magic_inventory_screen"
 
 
             # Handle menu navigation with up/down arrow keys
@@ -794,6 +799,132 @@ class Player(Entity):
             if state.controller.isBPressed:
                 state.controller.isBPressed = False
                 self.current_screen = "main_menu_screen"
+
+        elif self.current_screen == "magic_inventory_screen":
+
+            if state.controller.isUpPressed:
+                self.magic_inventory_index = (self.magic_inventory_index - 1) % len(self.magicinventory)
+                state.controller.isUpPressed = False
+                print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
+                # self.show_item_description(state)
+
+            elif state.controller.isDownPressed:
+                self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
+                state.controller.isDownPressed = False
+                print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
+                # self.show_item_description(state)
+
+            self.magic_inventory_screen(state)
+            if state.controller.isBPressed:
+                state.controller.isBPressed = False
+                self.current_screen = "main_menu_screen"
+
+    def magic_inventory_screen(self, state):
+        screen_width = state.DISPLAY.get_width()
+        screen_height = state.DISPLAY.get_height()
+
+        # Fill the entire screen with black
+        state.DISPLAY.fill((0, 0, 0))  # Black color
+
+        # 1. Main Box with gradient and border
+        main_box_width = screen_width - 20
+        main_box_height = 460
+        main_box_x = 10
+        main_box_y = 60  # Positioned 60 pixels from the top
+
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
+
+        # Create the main box surface with its gradient
+        main_box = pygame.Surface((main_box_width, main_box_height))
+        for y in range(main_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
+            )
+            pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
+
+        # Add border to the main box
+        border_thickness = 3
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+
+        # 2. Render Magic Items in Main Box
+        font = pygame.font.Font(None, 36)  # Adjust the font size as needed
+        quest_item_y = 30  # Start position from the top of the box
+        quest_item_x = 80  # Start position from the left of the box
+        spacing = 10  # Spacing between items
+        inventory_color = (155, 23, 155)  # Example color, you can change this to any RGB value
+
+        for magic in state.player.magicinventory:
+            text_surface = font.render(magic, True, inventory_color)  # Render the text in the specified color
+            main_box.blit(text_surface, (quest_item_x, quest_item_y))  # Blit the text onto the main box
+            quest_item_y += text_surface.get_height() + spacing  # Move down for the next item
+
+        # Calculate the y-position for the arrow based on the current magic_inventory_index
+        arrow_y_position = 30 + self.magic_inventory_index * (font.get_height() + spacing)
+
+        # Render the arrow in the main box at the position of the selected magic item
+        arrow_surface = font.render("->", True, inventory_color)
+        main_box.blit(arrow_surface, (quest_item_x - 40, arrow_y_position))
+
+        # Draw the main box on the screen
+        state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
+
+        # 3. Text Box with gradient and border
+        text_box_width = screen_width - 20
+        text_box_height = 120
+        text_box_x = 10
+        text_box_y = 560  # Positioned 560 pixels from the top
+
+        # Create the text box surface with its gradient
+        text_box = pygame.Surface((text_box_width, text_box_height))
+        for y in range(text_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // text_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // text_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // text_box_height,
+            )
+            pygame.draw.line(text_box, color, (0, y), (text_box_width, y))
+
+        # Add border to the text box
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(text_box_x, text_box_y, text_box_width, text_box_height), border_thickness, border_radius=7)
+
+        # Draw the text box on the screen
+        state.DISPLAY.blit(text_box, (text_box_x, text_box_y))
+
+        # Draw the borders again to ensure visibility
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(text_box_x, text_box_y, text_box_width, text_box_height), border_thickness, border_radius=7)
+
+        # 4. Third Box (Small box overlapping top right corner) - Render Last to Overlay
+        box3_width = 200
+        box3_height = 70
+        box3_x = screen_width - box3_width - 10  # Positioned at the right edge with padding
+        box3_y = 30  # Positioned to overlap the top right corner of Box 2
+
+        # Create Box 3's surface with its gradient
+        box3_surface = pygame.Surface((box3_width, box3_height))
+        for y in range(box3_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box3_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box3_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box3_height,
+            )
+            pygame.draw.line(box3_surface, color, (0, y), (box3_width, y))
+
+        # Draw Box 3 overlapping Box 2's top right corner
+        state.DISPLAY.blit(box3_surface, (box3_x, box3_y))
+
+        # Render the text "Magic" inside Box 3
+        text_surface = font.render("Magic", True, (255, 255, 255))  # White color for the text
+        text_x = box3_x + (box3_width - text_surface.get_width()) // 2
+        text_y = box3_y + (box3_height - text_surface.get_height()) // 2
+        state.DISPLAY.blit(text_surface, (text_x, text_y))
+
+        # Add a white border around Box 3 with rounded corners
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def quest_item_screen(self, state):
         screen_width = state.DISPLAY.get_width()
