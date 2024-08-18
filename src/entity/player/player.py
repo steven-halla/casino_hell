@@ -1215,9 +1215,9 @@ class Player(Entity):
 
 
             text_box_width = screen_width - 20
-            text_box_height = 120
+            text_box_height = 100
             text_box_x = 10
-            text_box_y = 560  # Lowered the position by 100 pixels
+            text_box_y = 500  # Lowered the position by 100 pixels
 
             # Define the gradient colors (top to bottom)
             text_top_color = (0, 0, 139)  # Dark blue
@@ -1251,9 +1251,9 @@ class Player(Entity):
 
             # 2. Main Box with gradient and border
             bottom_box_width = screen_width - 20
-            bottom_box_height = 240
+            bottom_box_height = 200
             bottom_box_x = 10
-            bottom_box_y = 300  # Lowered the position by 100 pixels
+            bottom_box_y = 290  # Lowered the position by 100 pixels
 
             # Define the gradient colors (top to bottom)
             top_color = (0, 0, 139)  # Dark blue
@@ -1504,7 +1504,7 @@ class Player(Entity):
 
         # Assuming the text box position is already defined where you want the description to appear
         text_box_x = 10  # X position of the text box
-        text_box_y = 560  # Y position of the text box
+        text_box_y = 500  # Y position of the text box
 
         # Position the text within the text box
         text_x = 20  # X position inside the text box
