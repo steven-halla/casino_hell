@@ -285,7 +285,7 @@ class Area2ShopKeeper(Npc):
                     state.DISPLAY.blit(self.font.render(f"Adds + 30 Stamina while equipped. ", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 3 and self.shop_items[2] == "sold out":
+                if self.selected_item_index == 3 and self.shop_items[3] == "sold out":
                     state.DISPLAY.blit(self.font.render(f"Stat POtion is Sold out", True,
                                                         (255, 255, 255)), (70, 460))
                     if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:

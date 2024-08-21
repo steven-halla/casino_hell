@@ -53,7 +53,12 @@ class ShopNpcTextBox(Entity):
         box_x: int = self.position.x
         box_y: int = self.position.y
 
+        # Draw the main black rectangle
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
+
+        # Draw the white border around the main rectangle
+        border_thickness: int = 3
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), (box_x, box_y, box_width, box_height), border_thickness)
 
         line_height: int = 40
         for i, line in enumerate(wrapped_text):
@@ -74,7 +79,12 @@ class ShopNpcTextBox(Entity):
         box_x: float = self.position.x
         box_y: float = self.position.y - box_height - 20
 
+        # Draw the main black rectangle
         pygame.draw.rect(state.DISPLAY, (0, 0, 0), (box_x, box_y, box_width, box_height))
+
+        # Draw the white border around the main rectangle
+        border_thickness: int = 3
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), (box_x, box_y, box_width, box_height), border_thickness)
 
         item_y_offset: int = 50
         item_x_offset: int = 50
@@ -94,6 +104,23 @@ class ShopNpcTextBox(Entity):
             state.DISPLAY.blit(item_surface, (box_x + item_x_offset, box_y + item_y_offset))
             state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 300, box_y + item_y_offset))
             item_y_offset += 40
+
+        # Now draw the smaller box overlapping the top-right corner of the main box
+        bot_box_width: int = 175
+        bot_box_height: int = 60
+        bot_box_x: float = box_x + box_width - bot_box_width + 30
+        bot_box_y: float = box_y - 20 # Positioned to overlap the top-right corner
+
+        # Draw the black rectangle for the bot box
+        pygame.draw.rect(state.DISPLAY, (0, 0, 0), (bot_box_x, bot_box_y, bot_box_width, bot_box_height))
+
+        # Draw the white border around the bot box
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), (bot_box_x, bot_box_y, bot_box_width, bot_box_height), border_thickness)
+
+        # Optional: Render text or graphics inside the bot box
+        bot_text: str = f"Money: {state.player.money}"
+        bot_text_surface: pygame.Surface = state.FONT.render(bot_text, True, (255, 255, 255))
+        state.DISPLAY.blit(bot_text_surface, (bot_box_x + 10, bot_box_y + 17))
 
     def is_finished(self) -> bool:
         return self.message_index == len(self.messages) - 1 and pygame.time.get_ticks() - self.time > self.delay
