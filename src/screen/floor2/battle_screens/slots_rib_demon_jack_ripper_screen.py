@@ -429,18 +429,14 @@ class SlotsRippaSnappaScreen(BattleScreen):
             if state.controller.isEPressed:
                 state.player.leveling_up = False
 
-            if state.controller.is1Pressed:
-                state.player.exp += 600
-                state.controller.is1Pressed = False
-                print(f"Your exp: " + str(state.player.exp))
-                print(f"Your leve: " + str(state.player.level))
+
 
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 
 
-            if "Lucky Shoes" in state.player.items:
-                self.bet = 50
+            # if "Lucky Shoes" in state.player.items:
+            #     self.bet = 50
             self.no_matches = True
 
             self.three_zeros = False
@@ -512,6 +508,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 controller.isTPressed = False
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
                 state.currentScreen = state.area2GamblingScreen
+                self.welcome_screen_index = 0
                 controller.isTPressed = False
 
         elif self.game_state == "level_up_screen":
