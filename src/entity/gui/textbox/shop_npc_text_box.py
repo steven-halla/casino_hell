@@ -92,7 +92,7 @@ class ShopNpcTextBox(Entity):
             item_surface: pygame.Surface = state.FONT.render(item, True, (255, 255, 255))
             price_surface: pygame.Surface = state.FONT.render(self.shop_inventory_costs[i], True, (255, 255, 255))
             state.DISPLAY.blit(item_surface, (box_x + item_x_offset, box_y + item_y_offset))
-            state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 250, box_y + item_y_offset))
+            state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 300, box_y + item_y_offset))
             item_y_offset += 40
 
     def is_finished(self) -> bool:

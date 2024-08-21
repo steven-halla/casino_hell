@@ -7,10 +7,10 @@ class Equipment(Enum):
     SOCKS_OF_PERCEPTION = "SOCKS_OF_PERCEPTION"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
 
-    COIN_SAVE = "COIN_SAVE" # BUY IN SHOP ONE TIME USE
-    RE_EQUIP = "RE_EQUIP" # BUY IN SHOP ONE TIME USE
+    COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
+    RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
     HEALTHY_GLOVES = "HEALTHY_GLOVES"   # can be bought in shop
-    STAT_POTION = "STAT_POTION" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
+    STAT_POTION_AREA_2 = "STAT_POTION_AREA_2" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
 
     DARLENES_CHICKEN_NUGGET_AMULET = "DARLENES_CHICKEN_NUGGET_AMULET" # complete main quest chicken nugger sauce
 
@@ -20,6 +20,7 @@ class Equipment(Enum):
     def add_equipment_to_player(player, equipment):
         if equipment.value not in player.items:
             player.items.append(equipment.value)
+            player.level_two_npc_state.append(equipment.value)
 
 
 

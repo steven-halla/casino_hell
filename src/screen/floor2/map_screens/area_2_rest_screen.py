@@ -12,6 +12,7 @@ from entity.npc.area2.area_2_rest_screen.area_2_rest_to_boss_area import Area2Re
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
+from entity.npc.area2.area_2_rest_screen.area_2_shop_keeper import Area2ShopKeeper
 from entity.npc.area2.area_2_rest_screen.clara import Clara
 from entity.npc.area2.area_2_rest_screen.jasper import Jasper
 from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
@@ -115,6 +116,7 @@ class Area2RestScreen(Screen):
 
             # below are shops and such
             Area2InnKeeper(16 * 101, 16 * 33),
+            Area2ShopKeeper(16 * 72, 16 * 7),
 
             # below are doors
             Area2RestToGamblingArea(16 * 17, 16 * 0),
