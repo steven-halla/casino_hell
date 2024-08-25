@@ -10,7 +10,8 @@
     ],
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_QUEST_1_REWARD"
+        "MC_NUGGET_QUEST_1_REWARD",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED"
     ],
     "items": [
         "sir leopold's paw",
@@ -39,7 +40,7 @@
     "mind": 1,
     "spirit": 1,
     "perception": 1,
-    "luck": 1,
+    "luck": 20,
     "money": 2000,
     "rabies": false,
     "immunity": true,

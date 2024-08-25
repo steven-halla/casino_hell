@@ -3,6 +3,8 @@ import pygame
 from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.events import Events
+
 
 class SlotsRippaSnappa(Npc):
     def __init__(self, x: int, y: int):
@@ -49,9 +51,8 @@ class SlotsRippaSnappa(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
 
-            if state.player.hasRabies == True:
-                self.black_jack_thomas_messages["rabies_message"].reset()
-            elif state.blackJackThomasScreen.black_jack_thomas_defeated:
+
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state:
                 self.black_jack_thomas_messages["defeated_message"].reset()
 
             else:
@@ -59,14 +60,11 @@ class SlotsRippaSnappa(Npc):
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.black_jack_thomas_messages["rabies_message"]
-            if state.player.hasRabies
-            else (
-                self.black_jack_thomas_messages["defeated_message"]
-                if state.blackJackThomasScreen.black_jack_thomas_defeated
-                else self.black_jack_thomas_messages["welcome_message"]
-            )
+            self.black_jack_thomas_messages["defeated_message"]
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state
+            else self.black_jack_thomas_messages["welcome_message"]
         )
+
         current_message.update(state)
 
 
@@ -86,7 +84,7 @@ class SlotsRippaSnappa(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
+        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value not in state.player.level_two_npc_state:
 
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -134,19 +132,17 @@ class SlotsRippaSnappa(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.black_jack_thomas_messages["rabies_message"]
-                if state.player.hasRabies
-                else (
-                    self.black_jack_thomas_messages["defeated_message"]
-                    if state.blackJackThomasScreen.black_jack_thomas_defeated
-                    else self.black_jack_thomas_messages["welcome_message"]
-                )
+                self.black_jack_thomas_messages["defeated_message"]
+                if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state
+                else self.black_jack_thomas_messages["welcome_message"]
             )
 
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False and current_message.message_at_end():
+            if current_message.is_finished() and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value not in state.player.level_two_npc_state and current_message.message_at_end():
+                print("No way")
+
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

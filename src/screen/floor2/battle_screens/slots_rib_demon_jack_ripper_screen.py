@@ -12,6 +12,13 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
 
+
+##### NEED TO SET BETTING TO 50 WHEN ITEM HAS BEEN GOTTEN
+
+
+
+
+
 #need to build status effect unlucky for rib demon when lucky strike is active
 
 class SlotsRippaSnappaScreen(BattleScreen):
@@ -167,7 +174,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
     def print_current_slots(self) -> None:
         visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]
 
-    def generate_numbers(self) -> None:
+    def generate_numbers(self, state) -> None:
         # Generate the first slot number based on a 1-100 range
         generated_values1 = [random.randint(1, 100) for _ in range(3)]
         print(f"Generated values for slot1: {generated_values1}")
@@ -248,19 +255,30 @@ class SlotsRippaSnappaScreen(BattleScreen):
             return 0  # Default value in case something goes wrong
 
         self.slot1 = [map_to_slot_number(value) for value in generated_values1]
-        # print(f"Mapped slot1 values: {self.slot1}")
 
-        # Generate the second slot number based on a 1-100 roll
         generated_value2 = random.randint(1, 100)
-        # print(f"Generated value for slot2 position 0: {generated_value2}")
+        print(generated_value2)
+        # Assuming generated_value2 is defined earlier in your code
+        for luck in range(state.player.luck):
+            if self.slot1[0] > 2:
+                generated_value2 += 2
+                print(generated_value2)
+
         if generated_value2 >= 40:  # 50% chance to match slot1
             self.slot2[0] = self.slot1[0]
         else:
             self.slot2[0] = map_to_slot_number(generated_value2)
-        # print(f"Mapped slot2 values: {self.slot2}")
 
         # Generate the third slot number based on a 1-100 roll
         generated_value3 = random.randint(1, 100)
+        print(generated_value3)
+
+        for luck in range(state.player.luck):
+            if self.slot1[0] > 2:
+                generated_value3 += 2
+                print(generated_value3)
+
+
         # print(f"Generated value for slot3 position 0: {generated_value3}")
         if generated_value3 >= 60:  # 75% chance to match slot1
             self.slot3[0] = self.slot1[0]
@@ -386,7 +404,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.stopping_second = False
                 self.spin_delay = 70
                 print("Spinning started.")
-                self.generate_numbers()  # Call the method to generate new numbers
+                self.generate_numbers(state)  # Call the method to generate new numbers
             else:
                 self.stopping = True
                 self.stop_start_time = current_time
