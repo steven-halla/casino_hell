@@ -601,8 +601,7 @@ class CoinFlipBettyScreen(Screen):
 
             elif self.player_choice != self.result:
 
-                print("Your choice is : " + self.player_choice)
-                print("Your result is :" + self.result)
+
                 if controller.isTPressed and self.debuff_vanish == False:
                     self.phase += 1
 

@@ -488,7 +488,7 @@ allow 1 paid version of 500 gold membership
 # mixing up companion and other items togther in the list
 
 
-
+# maybe require Player to stay to go to bar 1 time in order to unlock chicken girl quest
 
 
 

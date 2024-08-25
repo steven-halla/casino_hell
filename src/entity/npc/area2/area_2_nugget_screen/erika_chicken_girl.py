@@ -19,8 +19,7 @@ class ErikaChickenGirl(Npc):
                     "Erika: Hello Hero, would you like some animal parade chicken nuggies",
                     "Hero: No thank you I thinik I'm good on that",
                     "Sir Leopold: Yeah something about this feels strange",
-                    "Erika: I have a propoistion.... I need 3 ingrediants ",
-
+                    "Erika: I need 5000 COINS to start my quest"
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

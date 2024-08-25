@@ -22,7 +22,7 @@ class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
-        self.money = 2000
+        self.money = 1000
         self.deck = Deck()
 
 
@@ -39,8 +39,7 @@ class BlackJackMackScreen(Screen):
         self.second_message_display = ""
         self.third_message_display = ""
         self.game_state = "welcome_screen"
-        self.bet = 10
-        self.moneyer_bob_money = 900
+        self.bet = 50
         self.player_score = 0
         self.enemy_score = 0
         # self.player_cards_list = []
@@ -85,7 +84,7 @@ class BlackJackMackScreen(Screen):
 
         self.double_draw_casting = False
         self.player_debuff_double_draw = 0
-        self.magic_points = 3
+        self.magic_points = 1
 
 
 
@@ -415,8 +414,9 @@ class BlackJackMackScreen(Screen):
                     controller.isDownPressed = False
 
                 if self.welcome_screen_index == 0 and controller.isTPressed:
+                    controller.isTPressed = False
                     for i in range(0, self.bet, 50):
-                        state.player.stamina_points -= 4
+                        state.player.stamina_points -= 2
                     self.deck.shuffle()
 
 
@@ -431,7 +431,7 @@ class BlackJackMackScreen(Screen):
                             self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
 
-                    elif self.player_debuff_double_draw <= 0 and self.money < 1500 and self.magic_points > 0:
+                    elif self.player_debuff_double_draw <= 0 and self.money < 500 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
 
                         enemy_magic_cast_modifier = self.magic_points * 10
@@ -481,15 +481,12 @@ class BlackJackMackScreen(Screen):
             self.place_bet(state)
             if controller.isTPressed:
                 if self.bet > 70:
-                    state.player.stamina_points -= 3
                     print("-3")
                 elif self.bet < 30:
 
-                    state.player.stamina_points -= 1
 
                     print("-1")
                 elif self.bet < 70 or self.bet > 20:
-                    state.player.stamina_points -= 2
                     print("-2")
 
                 pygame.time.wait(300)
@@ -1222,8 +1219,8 @@ class BlackJackMackScreen(Screen):
             if self.defeated_textbox.message_index == 2:
                 state.player.canMove = True
 
-                state.currentScreen = state.chilliScreen
-                state.chilliScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
 
         elif self.game_state == "hero_is_desperate_state":
             self.hero_losing_money_text.draw(state)
