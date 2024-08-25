@@ -10,8 +10,7 @@
     ],
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_QUEST_1_REWARD",
-        "SLOTS_RIPPA_SNAPPA_DEFEATED"
+        "MC_NUGGET_QUEST_1_REWARD"
     ],
     "items": [
         "sir leopold's paw",

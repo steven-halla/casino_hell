@@ -14,6 +14,9 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
 ##### NEED TO SET BETTING TO 50 WHEN ITEM HAS BEEN GOTTEN
+###### NEED  to set inDICATOR WHEN LUCKY STRIKE IS ACTIVE BY CHANGING PLAYER NAME
+####### LUCkY STRIKE WONT GET INT EH WAY OF 000 BECAUSE THE RANGE IS NOT THERE
+
 
 
 
@@ -212,16 +215,13 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             elif self.lock_down > 0 and self.lucky_strike == 0:
                 slot_mapping = {
-                    range(1, 11): 0,  # lose a rib
-                    range(11, 19): 1,  # lost 50 extra coins from your state.player.money
-                    range(19, 26): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(26, 45): 3,  # add 100 coins
-                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                    range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
-                    range(72, 80): 6,  # add 200 coins
-                    range(80, 87): 7,  # lucky spin better % for jackpot
-                    range(87, 95): 8,  # get special item or 50 coins
-                    range(95, 101): 9,  # jackpot
+                    range(1, 16): 0,  # lose a rib
+                    range(16, 24): 1,  # lost 50 extra coins from your state.player.money
+                    range(24, 29): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(29, 51): 3,  # add 100 coins
+                    range(51, 62): 4,  # gain 10 hp 10 mp 100 coins
+                    range(62, 101): 5,  # gain 20 hp 20 mp 125 coins
+
                 }
 
             elif self.lucky_strike > 0 and self.bet > 50:
@@ -257,6 +257,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.slot1 = [map_to_slot_number(value) for value in generated_values1]
 
         generated_value2 = random.randint(1, 100)
+        if self.lock_down > 0:
+            if self.slot1[0] <= 2:
+                generated_value2 += 10
+                print(generated_value2)
         print(generated_value2)
         # Assuming generated_value2 is defined earlier in your code
         for luck in range(state.player.luck):
@@ -271,6 +275,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
         # Generate the third slot number based on a 1-100 roll
         generated_value3 = random.randint(1, 100)
+        if self.lock_down > 0:
+            if self.slot1[0] <= 2:
+                generated_value3 += 10
+                print(generated_value3)
         print(generated_value3)
 
         for luck in range(state.player.luck):
@@ -288,6 +296,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
         # self.slot1[0] = 8
         # self.slot2[0] = 8
         # self.slot3[0] = 8
+
+
+
 
             # Check if all three slots are 0 and print "hi zeros"
         if self.slot1[0] == 0 and self.slot2[0] == 0 and self.slot3[0] == 0:
