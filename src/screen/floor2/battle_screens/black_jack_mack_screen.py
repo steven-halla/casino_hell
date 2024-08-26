@@ -321,7 +321,6 @@ class BlackJackMackScreen(Screen):
             self.bet = state.player.money
 
     def update(self, state: "GameState"):
-        print(self.magic_points)
         if self.money <= 0:
             Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
             Events.add_event_to_player(state.player, Events.MC_NUGGET_THIRD_QUEST_COMPLETE)
@@ -435,13 +434,13 @@ class BlackJackMackScreen(Screen):
                         else:
                             self.game_state = "draw_phase"
 
-                    elif self.player_debuff_double_draw <= 0 and self.money < 500 and self.magic_points > 0:
+                    elif self.player_debuff_double_draw <= 0 and self.money < 700 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
                         print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
 
-                        enemy_magic_cast_modifier = self.magic_points * 30
+                        enemy_magic_cast_modifier = self.magic_points * 20
 
-                        if enemy_magic_cast + enemy_magic_cast_modifier >= 80:
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= 70:
                             print("436")
 
                             self.player_debuff_double_draw += 10
@@ -463,7 +462,7 @@ class BlackJackMackScreen(Screen):
 
                     controller.isTPressed = False
 
-                elif self.welcome_screen_index == 3 and controller.isTPressed:
+                elif self.welcome_screen_index == 3 and controller.isTPressed and self.player_debuff_double_draw < 1:
                     self.magic_points = 1
                     state.currentScreen = state.area2GamblingScreen
                     controller.isTPressed = False
@@ -652,7 +651,7 @@ class BlackJackMackScreen(Screen):
 
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
-            while self.enemy_score < 15:  # this is 15 in order to make game a little easier
+            while self.enemy_score < 16:  # this is 15 in order to make game a little easier
                 print("thi sis our while loop")
                 # if "sir leopolds paw" in state.player.items:
                 print("Meowwwwwwwwwwwwwwwwwwwwww")
@@ -1091,8 +1090,15 @@ class BlackJackMackScreen(Screen):
             self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
             (37, 370))
 
-        state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
-                     (37, 205))
+        if self.player_debuff_double_draw == 0:
+
+            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
+                         (37, 205))
+
+        elif self.player_debuff_double_draw > 0:
+            state.DISPLAY.blit(
+                self.font.render(f"D. Draw: {self.player_debuff_double_draw}", True, (255, 0, 0)),
+                (37, 205))
 
         black_box = pygame.Surface((200 - 10, 110 - 10))
         black_box.fill((0, 0, 0))
@@ -1173,6 +1179,12 @@ class BlackJackMackScreen(Screen):
                     self.font.render(str(choice), True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
+
+            if self.player_debuff_double_draw > 0:
+                self.welcome_screen_choices[3] = "Locked"
+            elif self.player_debuff_double_draw < 1:
+                self.welcome_screen_choices[3] = "Quit"
+
 
             if self.reveal_hand < 11:
                 self.magic_lock = True
