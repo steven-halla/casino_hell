@@ -28,9 +28,7 @@ class BlackJackMack(Npc):
                 ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
                 (50, 450, 700, 130), 36, 500),
 
-            "rabies_message": NpcTextBox(
-                ["GET AWAY FROM ME YOU FROTHY MOUTHED BASTARD."],
-                (50, 450, 700, 130), 36, 500),
+
 
         }
         self.choices = ["Yes", "No"]
@@ -63,9 +61,7 @@ class BlackJackMack(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
 
-            if state.player.hasRabies == True:
-                self.black_jack_thomas_messages["rabies_message"].reset()
-            elif state.blackJackThomasScreen.black_jack_thomas_defeated:
+            if Events.BLACK_JACK_BLACK_MACK_DEFEATED.value in state.player.level_two_npc_state:
                 self.black_jack_thomas_messages["defeated_message"].reset()
 
             else:
@@ -73,13 +69,9 @@ class BlackJackMack(Npc):
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.black_jack_thomas_messages["rabies_message"]
-            if state.player.hasRabies
-            else (
-                self.black_jack_thomas_messages["defeated_message"]
-                if state.blackJackThomasScreen.black_jack_thomas_defeated
-                else self.black_jack_thomas_messages["welcome_message"]
-            )
+            self.black_jack_thomas_messages["defeated_message"]
+            if Events.BLACK_JACK_BLACK_MACK_DEFEATED.value in state.player.level_two_npc_state
+            else self.black_jack_thomas_messages["welcome_message"]
         )
         current_message.update(state)
 
@@ -99,7 +91,7 @@ class BlackJackMack(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
+        if current_message.is_finished() and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state and current_message.message_at_end():
 
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -148,19 +140,15 @@ class BlackJackMack(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.black_jack_thomas_messages["rabies_message"]
-                if state.player.hasRabies
-                else (
-                    self.black_jack_thomas_messages["defeated_message"]
-                    if state.blackJackThomasScreen.black_jack_thomas_defeated
-                    else self.black_jack_thomas_messages["welcome_message"]
-                )
+                self.black_jack_thomas_messages["defeated_message"]
+                if Events.BLACK_JACK_BLACK_MACK_DEFEATED.value in state.player.level_two_npc_state
+                else self.black_jack_thomas_messages["welcome_message"]
             )
 
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False and current_message.message_at_end():
+            if current_message.is_finished() and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state and current_message.message_at_end():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
