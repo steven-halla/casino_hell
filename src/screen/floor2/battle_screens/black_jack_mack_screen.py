@@ -416,7 +416,7 @@ class BlackJackMackScreen(Screen):
                 if self.welcome_screen_index == 0 and controller.isTPressed:
                     controller.isTPressed = False
                     for i in range(0, self.bet, 50):
-                        state.player.stamina_points -= 2
+                        state.player.stamina_points -= 3
                     self.deck.shuffle()
 
 
@@ -427,12 +427,14 @@ class BlackJackMackScreen(Screen):
                         enemy_magic_cast_modifier = self.magic_points * 10
 
                         if enemy_magic_cast + enemy_magic_cast_modifier >= 35:
+                            print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
                             self.player_debuff_double_draw += 10
                             self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
 
                     elif self.player_debuff_double_draw <= 0 and self.money < 500 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
+                        print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
 
                         enemy_magic_cast_modifier = self.magic_points * 10
 
