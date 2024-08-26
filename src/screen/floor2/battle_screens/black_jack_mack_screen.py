@@ -22,7 +22,7 @@ class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
 
-        self.money = 1000
+        self.money = 800
         self.deck = Deck()
 
 
@@ -321,6 +321,7 @@ class BlackJackMackScreen(Screen):
             self.bet = state.player.money
 
     def update(self, state: "GameState"):
+        print(self.magic_points)
         if self.money <= 0:
             Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
             Events.add_event_to_player(state.player, Events.MC_NUGGET_THIRD_QUEST_COMPLETE)
@@ -424,19 +425,21 @@ class BlackJackMackScreen(Screen):
                     if self.player_debuff_double_draw <= 0 and self.money < 300 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
 
-                        enemy_magic_cast_modifier = self.magic_points * 10
+                        enemy_magic_cast_modifier = self.magic_points * 20
 
                         if enemy_magic_cast + enemy_magic_cast_modifier >= 35:
                             print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
                             self.player_debuff_double_draw += 10
                             self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
+                        else:
+                            self.game_state = "draw_phase"
 
                     elif self.player_debuff_double_draw <= 0 and self.money < 500 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
                         print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
 
-                        enemy_magic_cast_modifier = self.magic_points * 10
+                        enemy_magic_cast_modifier = self.magic_points * 30
 
                         if enemy_magic_cast + enemy_magic_cast_modifier >= 80:
                             print("436")
@@ -445,10 +448,11 @@ class BlackJackMackScreen(Screen):
                             self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
 
+                        else:
+                            self.game_state = "draw_phase"
+
                     else:
                         self.game_state = "draw_phase"
-
-
                     controller.isTPressed = False
                 elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
                     self.magic_screen_index = 0
@@ -460,6 +464,7 @@ class BlackJackMackScreen(Screen):
                     controller.isTPressed = False
 
                 elif self.welcome_screen_index == 3 and controller.isTPressed:
+                    self.magic_points = 1
                     state.currentScreen = state.area2GamblingScreen
                     controller.isTPressed = False
                     state.player.canMove = True
