@@ -416,7 +416,7 @@ class BlackJackMackScreen(Screen):
                 if self.welcome_screen_index == 0 and controller.isTPressed:
                     controller.isTPressed = False
                     for i in range(0, self.bet, 50):
-                        state.player.stamina_points -= 3
+                        state.player.stamina_points -= 4
                     self.deck.shuffle()
 
 

@@ -16,9 +16,10 @@ class OpossumInACanCandyScreen(Screen):
         self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 2000
-        self.money_minimum = 1500
+        self.sallyOpossumMoney = 1000
+        self.money_minimum = 500
         self.quest_coins_needed = 500
+        self.quest_money = -300
 
 
         self.opossumBite = False
@@ -28,7 +29,6 @@ class OpossumInACanCandyScreen(Screen):
 
         self.sallyOpossumIsDefeated = False
         self.magic_points = 1
-        self.quest_money = 0
 
         self.opossum_coin = False
 
@@ -349,7 +349,6 @@ class OpossumInACanCandyScreen(Screen):
 
 
             self.player_score = 0
-            self.quest_money -= 300
             if "opossum repellent" in state.player.items:
                 state.player.stamina_points -= 25
             elif "opossum repellent" not in state.player.items:
@@ -366,8 +365,9 @@ class OpossumInACanCandyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+        print("Your quest money: " + str(self.quest_money))
         if state.controller.is1Pressed:
-            self.quest_money += 500
+            self.quest_money -= 300
             print("qyest money is at: " + str(self.quest_money))
             state.controller.is1Pressed = False
 
@@ -451,6 +451,8 @@ class OpossumInACanCandyScreen(Screen):
                 if state.player.money < 300:
                     if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                        Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
+
 
                     self.game_state = "no_money_you_leave"
                     self.quest_money = 0
