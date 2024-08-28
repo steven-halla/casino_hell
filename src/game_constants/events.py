@@ -24,6 +24,6 @@ class Events(Enum):
         if event.value not in player.level_two_npc_state:
             player.level_two_npc_state.append(event.value)
 
-    def add_item_to_player(self, player, event):
-        if event.value not in player.items:
-            player.items.append(event.value)
+    def add_item_to_player(player, event):
+        if event.value not in player.quest_items:
+            player.quest_items.append(event.value)

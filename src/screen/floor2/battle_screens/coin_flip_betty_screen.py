@@ -60,7 +60,7 @@ class CoinFlipBettyScreen(Screen):
 
         self.bet = 50
         self.font = pygame.font.Font(None, 36)
-        self.money =1000
+        self.money = 1000
 
 
 
@@ -353,6 +353,7 @@ class CoinFlipBettyScreen(Screen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
+        print(self.quest_money)
 
 
         if state.musicOn == True:
@@ -434,6 +435,7 @@ class CoinFlipBettyScreen(Screen):
                 if self.quest_money >= 500 and Events.QUEST_1_BADGE.value not in state.player.level_two_npc_state:
                     print("hi")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
+                    Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
 
                 state.currentScreen = state.area2GamblingScreen
                 self.quest_money = 0
@@ -714,6 +716,7 @@ class CoinFlipBettyScreen(Screen):
                 self.coinFlipTedDefeated = True
                 if self.quest_money >= 500:
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
+                    Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
 
                 state.currentScreen = state.gamblingAreaScreen
                 state.gamblingAreaScreen.start(state)

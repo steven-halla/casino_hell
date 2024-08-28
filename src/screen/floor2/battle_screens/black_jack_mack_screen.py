@@ -463,9 +463,13 @@ class BlackJackMackScreen(Screen):
                     controller.isTPressed = False
 
                 elif self.welcome_screen_index == 3 and controller.isTPressed and self.player_debuff_double_draw < 1:
+                    controller.isTPressed = False
+                    self.welcome_screen_index = 0
+
                     self.magic_points = 1
                     state.currentScreen = state.area2GamblingScreen
-                    controller.isTPressed = False
+                    state.area2GamblingScreen.start(state)
+
                     state.player.canMove = True
 
 

@@ -721,6 +721,7 @@ class OpossumInACanCandyScreen(Screen):
                         print("719")
 
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                        Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
 
                     self.quest_money = 0
                     state.currentScreen = state.area2GamblingScreen
