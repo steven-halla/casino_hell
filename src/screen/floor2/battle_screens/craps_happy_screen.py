@@ -210,8 +210,8 @@ class CrapsHappyScreen(BattleScreen):
         self.point_roll_index = 0
         # we can also reset messages here too as needed
         self.lucky_seven = False
-        self.dice_roll_2 = 0
-        self.dice_roll_1 = 0
+        # self.dice_roll_2 = 0
+        # self.dice_roll_1 = 0
         self.point_roll_total = 0
         self.lucky_message_switch = False
         self.point_roll_total = 0
@@ -259,6 +259,8 @@ class CrapsHappyScreen(BattleScreen):
 
 
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
+        print("Displaying dice")
+
         # Define the rectangles for each dice face
         dice_faces = [
             pygame.Rect(50, 0, 133, 200),  # Dice face 1=
@@ -359,10 +361,10 @@ class CrapsHappyScreen(BattleScreen):
                 controller.isTPressed = False
 
         elif self.game_state == "bet_screen":
-            print(self.game_state)
+            # print(self.game_state)
             if controller.isUpPressed:
                 self.bet += 25
-                print(self.game_state)
+                # print(self.game_state)
 
                 if self.bet >= 75:
                     self.bet = 75
@@ -647,6 +649,8 @@ class CrapsHappyScreen(BattleScreen):
 
 
         elif self.game_state == "you_win_come_out_roll_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
 
             self.battle_messages["you_win_come_out_roll_message"].update(state)
             print("624 should follow")
@@ -1037,6 +1041,8 @@ class CrapsHappyScreen(BattleScreen):
 
         elif self.game_state == "come_out_roll_screen":
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                print("jdsajf;dljsa;lfjsa;ljfl;sjf;ljsalfj;af;lj;l")
+
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
             self.battle_messages["come_out_roll_message"].draw(state)
 
@@ -1264,6 +1270,8 @@ class CrapsHappyScreen(BattleScreen):
 
 
         elif self.game_state == "you_win_come_out_roll_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
 
             self.battle_messages["you_win_come_out_roll_message"].draw(state)
 
@@ -1290,14 +1298,6 @@ class CrapsHappyScreen(BattleScreen):
 
             # Blit the white-bordered box onto the display
             state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-
-
-
-
-
-
-
 
 
         pygame.display.flip()
