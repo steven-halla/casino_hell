@@ -655,8 +655,7 @@ class CrapsHappyScreen(BattleScreen):
             print("Your come out roll is: " + str(self.come_out_roll_total))
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
-            print(self.dice_roll_1)
-            print(self.dice_roll_2)
+
 
             self.battle_messages["you_lose_come_out_roll_message"].messages = [
                 f"roll  of {self.come_out_roll_total} you lose sorry",
