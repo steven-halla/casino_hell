@@ -191,7 +191,7 @@ class CrapsHappyScreen(BattleScreen):
 
 
     def game_reset(self, state: "GameState"):
-        print("Calling game reset")
+
         self.battle_messages["come_out_roll_message"].reset()
         self.battle_messages["point_phase_message"].reset()
         self.battle_messages["point_phase_result_message"].reset()
@@ -210,8 +210,8 @@ class CrapsHappyScreen(BattleScreen):
         self.point_roll_index = 0
         # we can also reset messages here too as needed
         self.lucky_seven = False
-        # self.dice_roll_2 = 0
-        # self.dice_roll_1 = 0
+        self.dice_roll_2 = 0
+        self.dice_roll_1 = 0
         self.point_roll_total = 0
         self.lucky_message_switch = False
         self.point_roll_total = 0
@@ -259,7 +259,6 @@ class CrapsHappyScreen(BattleScreen):
 
 
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
-        print("Displaying dice")
 
         # Define the rectangles for each dice face
         dice_faces = [
@@ -416,12 +415,15 @@ class CrapsHappyScreen(BattleScreen):
                 if self.power_meter_index >= 80:
                     self.lucky_seven = True
                 print("Your meter is:" + str(self.power_meter_index))
+                print("-----------------------------------------------------------------------------")
                 self.game_state = "come_out_roll_screen"
             self.battle_messages["power_meter_message"].update(state)
 
 
 
         if self.game_state == "come_out_roll_screen":
+            # self.battle_messages["you_win_come_out_roll_message"].reset()
+
             self.battle_messages["come_out_roll_message"].update(state)
             # if self.come_out_roll_index == 0 and self.lucky_message_switch == False:
             #     self.battle_messages["come_out_roll_message"].messages = [f"Roll the dice"]
@@ -442,13 +444,13 @@ class CrapsHappyScreen(BattleScreen):
                         self.dice_roll_2 = 6
                         self.battle_messages["come_out_roll_message"].messages = [
                             f"roll of 7 you win",
-                            f"You gain 10 exp and lose {self.bet} coins"
+                            f"You gain 10 exp and lose {self.bet} coins",
+                            ""
 
                         ]
 
                         # Check if the current message is finished and if the current message index is 2
-                        if self.battle_messages["come_out_roll_message"].message_index == 1 and \
-                                self.battle_messages["come_out_roll_message"].current_message_finished():
+                        if self.battle_messages["come_out_roll_message"].message_index == 2:
                             print("440")
                             state.player.money += self.bet
                             state.player.exp += 50
@@ -478,7 +480,7 @@ class CrapsHappyScreen(BattleScreen):
                         elif self.come_out_roll_total == 7:
                             print("line 505  roll of 7")
                             self.battle_messages["come_out_roll_message"].messages = [
-                                f"roll of 7 line 507",
+                                f"roll of 7 line 481",
                                 f"You gain 10 exp and lose {self.bet} coins"
 
                             ]
@@ -497,6 +499,25 @@ class CrapsHappyScreen(BattleScreen):
 
                         else:
                             print("line 527")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                             self.game_state = "point_phase_screen"
 
@@ -541,8 +562,7 @@ class CrapsHappyScreen(BattleScreen):
                             self.game_state = "point_phase_screen"
 
 
-                # if self.extra_dice > 0:
-                #     self.dice_roll_3 = random.randint(1, 6)
+
                 controller.isTPressed = False
                 print("Dice roll 1: ", self.dice_roll_1)
                 print("Dice roll 2: ", self.dice_roll_2)
@@ -550,8 +570,7 @@ class CrapsHappyScreen(BattleScreen):
 
 
 
-        # if self.game_state == "point_phase":
-        #     print("welcome to the point phase")
+
         if self.game_state == "point_phase_screen":
             if self.money < 1:
                 self.game_state = "game_over_screen"
@@ -591,27 +610,6 @@ class CrapsHappyScreen(BattleScreen):
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
                 print("your come out  roll total is: " + str(self.come_out_roll_total) + f"and your roll is {self.point_roll_total}")
 
-                # if self.point_roll_total == 7:
-                #     print("you rolled 7 line 625")
-                #
-                #     self.battle_messages["point_phase_message"].messages = [
-                #         f"roll of 7  you lose",
-                #         f"you win 10exp and lose {self.bet} money"
-                #
-                #     ]
-                #     self.battle_messages["point_phase_message"].update(state)
-                #
-                #     # Check if the current message is finished and if the current message index is 2
-                #     if self.battle_messages["point_phase_message"].message_index == 1 and \
-                #             self.battle_messages["point_phase_message"].current_message_finished():
-                #         state.player.money -= self.bet
-                #         self.money += self.bet
-                #         self.point_roll_total = 0
-                #
-                #         self.game_reset(state)
-                #
-                #         self.game_state = "welcome_screen"
-                #         print("You got a 7 you lose line 635")
                 if self.point_roll_total == 7:
                     print("you rolled 7 line 625")
                     self.game_state = "roll_seven_lose_screen"
@@ -689,16 +687,13 @@ class CrapsHappyScreen(BattleScreen):
 
 
         elif self.game_state == "point_bet_screen":
-            print("point bet index: " + str(self.point_bet_index))
             if controller.isUpPressed:
                 self.bet += 25
-                print("UP")
                 if self.bet > 200:
                     self.bet = 200
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
-                print("Dow n")
 
                 self.bet -= 25
                 if self.bet < 50:
@@ -1041,7 +1036,6 @@ class CrapsHappyScreen(BattleScreen):
 
         elif self.game_state == "come_out_roll_screen":
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
-                print("jdsajf;dljsa;lfjsa;ljfl;sjf;ljsalfj;af;lj;l")
 
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
             self.battle_messages["come_out_roll_message"].draw(state)
