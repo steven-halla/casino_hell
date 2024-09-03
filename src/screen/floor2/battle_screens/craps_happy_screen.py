@@ -262,7 +262,6 @@ class CrapsHappyScreen(BattleScreen):
 
 
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
-        print("hidy hoe")
 
         # Define the rectangles for each dice face
         dice_faces = [
@@ -1318,8 +1317,3 @@ class CrapsHappyScreen(BattleScreen):
 
 
         pygame.display.flip()
-
-
-
-
-
