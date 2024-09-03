@@ -188,6 +188,7 @@ class CrapsHappyScreen(BattleScreen):
         self.unlucky_message_switch = False
 
         self.reset_flag = True
+        self.come_out_roll_message_flag = True
 
 
     def game_reset(self, state: "GameState"):
@@ -424,13 +425,27 @@ class CrapsHappyScreen(BattleScreen):
         if self.game_state == "come_out_roll_screen":
             # self.battle_messages["you_win_come_out_roll_message"].reset()
 
+
             self.battle_messages["come_out_roll_message"].update(state)
             # if self.come_out_roll_index == 0 and self.lucky_message_switch == False:
             #     self.battle_messages["come_out_roll_message"].messages = [f"Roll the dice"]
             # elif self.come_out_roll_index == 1:
             #     self.battle_messages["come_out_roll_message"].messages = [f"Go back to main menu."]
 
+            if self.come_out_roll_message_flag == True:
+                self.battle_messages["come_out_roll_message"].messages = [
+                    f"Your come out roll is...",
+
+
+                ]
+
+
+
+
+
             if self.come_out_roll_index == 0 and controller.isTPressed:
+                self.come_out_roll_message_flag = False
+
                 self.battle_messages["come_out_roll_message"].update(state)
                 if self.lucky_seven == True:
                     lucky_player_bonus = state.player.luck
@@ -444,13 +459,13 @@ class CrapsHappyScreen(BattleScreen):
                         self.dice_roll_2 = 6
                         self.battle_messages["come_out_roll_message"].messages = [
                             f"roll of 7 you win",
-                            f"You gain 10 exp and lose {self.bet} coins",
-                            ""
+                            f"You gain 10 exp and lose {self.bet} coins"
+
 
                         ]
 
                         # Check if the current message is finished and if the current message index is 2
-                        if self.battle_messages["come_out_roll_message"].message_index == 2:
+                        if self.battle_messages["come_out_roll_message"].message_index == 1:
                             print("440")
                             state.player.money += self.bet
                             state.player.exp += 50
