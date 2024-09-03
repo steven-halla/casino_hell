@@ -490,11 +490,17 @@ class CrapsHappyScreen(BattleScreen):
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
 
                         if self.come_out_roll_total == 2:
+                            self.dice_roll_1 = 1
+                            self.dice_roll_1 = 1
                             self.game_state = "you_lose_come_out_roll_screen"
                         elif self.come_out_roll_total == 3:
+                            self.dice_roll_1 = 1
+                            self.dice_roll_1 = 2
                             self.game_state = "you_lose_come_out_roll_screen"
 
                         elif self.come_out_roll_total == 12:
+                            self.dice_roll_1 = 6
+                            self.dice_roll_1 = 6
                             self.game_state = "you_lose_come_out_roll_screen"
 
 
@@ -529,12 +535,18 @@ class CrapsHappyScreen(BattleScreen):
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
                         print("come out roll total: " + str(self.come_out_roll_total))
                         if self.come_out_roll_total == 2:
+                            self.dice_roll_1 = 1
+                            self.dice_roll_2 = 1
                             self.game_state = "you_lose_come_out_roll_screen"
 
                         elif self.come_out_roll_total == 3:
+                            self.dice_roll_1 = 1
+                            self.dice_roll_2 = 2
                             self.game_state = "you_lose_come_out_roll_screen"
 
                         elif self.come_out_roll_total == 12:
+                            self.dice_roll_1 = 6
+                            self.dice_roll_2 = 6
                             self.game_state = "you_lose_come_out_roll_screen"
 
 
@@ -641,6 +653,11 @@ class CrapsHappyScreen(BattleScreen):
 
         elif self.game_state == "you_lose_come_out_roll_screen":
             print("Your come out roll is: " + str(self.come_out_roll_total))
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            print(self.dice_roll_1)
+            print(self.dice_roll_2)
+
             self.battle_messages["you_lose_come_out_roll_message"].messages = [
                 f"roll  of {self.come_out_roll_total} you lose sorry",
                 f"You gain 10 exp and lose {self.bet} coins"
@@ -1236,6 +1253,8 @@ class CrapsHappyScreen(BattleScreen):
             state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
         elif self.game_state == "you_lose_come_out_roll_screen":
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
 
             self.battle_messages["you_lose_come_out_roll_message"].draw(state)
 
