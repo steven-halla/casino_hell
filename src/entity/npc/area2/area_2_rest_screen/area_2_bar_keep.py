@@ -67,13 +67,17 @@ class Area2BarKeep(Npc):
 
                 elif self.selected_item_index == 1 and state.player.money > 500 and state.player.body == 2:
                     state.player.money -= 200
-                    state.player.stamina_points += 100
-                    state.player.focus_points += 50
+                    state.player.stamina_points += 80
+                    state.player.focus_points += 40
                     state.player.food -= 1
 
 
                 elif self.selected_item_index == 2 and state.player.money > 500 and state.player.body == 2:
                     state.player.food -= 1
+                    # perhaps let player add an extra + 50 to all bets
+
+
+
 
 
 

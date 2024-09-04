@@ -491,6 +491,12 @@ allow 1 paid version of 500 gold membership
 # maybe require Player to stay to go to bar 1 time in order to unlock chicken girl quest
 
 
+# -------------------------------sept 3 ------------------------------
+# coin flip is bugging out on what its displaying
+# coin flip magic spell needs to not allow player to cast magic, also a current shield is negated
+# fix coin flip better npc so that she wont restart battle screen if her money is 0
+# iT seems you can talk to NPCS while in option menu need to fix that bug
+
 
 
 

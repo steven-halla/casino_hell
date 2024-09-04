@@ -26,12 +26,7 @@ class CoinFlipBettyScreen(Screen):
         self.magic_enemy_message_display = ""
         self.welcome_screen_index: int = 0
         self.quest_money = 0
-
-
-
         self.headstailsindex = 0
-
-
         self.magicindex = 0
         self.yes_or_no_menu = ["Yes", "No"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
@@ -225,6 +220,22 @@ class CoinFlipBettyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "spell_magic_lock_message": TextBox(
+                [
+                    "Betty: Blithering god of fools, casted out to the dark eternal vacuum of space...Silence!"
+                ],
+                (45, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
+            "you_win": TextBox(
+                [
+                    "Betty: wow you beat me in coin flip, bummer!"
+                ],
+                (45, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
 
             # You can add more game state keys and TextBox instances here
@@ -245,6 +256,8 @@ class CoinFlipBettyScreen(Screen):
         self.magic_lock = False
         self.lock_down  = 0
         self.weighted_coin = False
+        self.magic_points = 1
+        self.player_debuff_silence_counter = 0
 
         pygame.mixer.music.stop()
     def stop_music(self):
@@ -289,8 +302,8 @@ class CoinFlipBettyScreen(Screen):
         if self.bet < 50:
             self.bet = 50
 
-        if self.bet > 200:
-            self.bet = 200
+        if self.bet > 100:
+            self.bet = 100
 
         if self.bet > self.money:
             self.bet = self.money
@@ -314,7 +327,7 @@ class CoinFlipBettyScreen(Screen):
             self.phase = 1
         # evens and odds
         if self.weighted_coin == True:
-            self.result =  CoinFlipConstants.HEADS
+            self.result =  CoinFlipConstants.HEADS.value
         #
         if self.even == False and self.odd == False:
             coin_fate = random.randint(1, 2)
@@ -355,6 +368,9 @@ class CoinFlipBettyScreen(Screen):
     def update(self, state: "GameState"):
         print(self.quest_money)
 
+        if self.bet > self.money:
+            self.bet = self.money
+
 
         if state.musicOn == True:
             if self.music_on == True:
@@ -378,15 +394,23 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
+            if self.money < 500 and self.magic_points > 0:
+                self.magic_points -= 1
+                self.player_debuff_silence_counter += 10
+                self.game_state = "spell_casting"
+
+
             if controller.is1Pressed:
                 self.quest_money += 500
+                self.money -= 500
+                state.player.money += 500
                 print("qyest money is at: " + str(self.quest_money))
                 controller.is1Pressed = False
 
             self.coin_flip_messages["welcome_message"].update(state)
 
             if self.money < 1:
-               self.game_state = "game_over_screen"
+               self.game_state = "enemy_defeated_screen"
 
             if state.player.stamina_points < 1:
                 self.game_state = "game_over_screen"
@@ -440,6 +464,16 @@ class CoinFlipBettyScreen(Screen):
                 state.currentScreen = state.area2GamblingScreen
                 self.quest_money = 0
                 controller.isTPressed = False
+
+        if self.game_state == "spell_casting":
+            self.coin_flip_messages["spell_magic_lock_message"].update(state)
+            if self.coin_flip_messages["spell_magic_lock_message"].is_finished() and state.controller.isTPressed:
+                state.controller.isTPressed = False
+                print("mew mew mew mew mew mew mwem---------------------")
+                self.game_state = "welcome_screen"
+
+
+
 
 
         if self.game_state == "bet_screen":
@@ -562,6 +596,7 @@ class CoinFlipBettyScreen(Screen):
             if "coin flip glasses" in state.player.items and self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
                 if controller.isTPressed:
+
                     self.phase += 1
                     state.player.money += self.bet + 20
                     self.quest_money += self.bet + 20
@@ -576,6 +611,8 @@ class CoinFlipBettyScreen(Screen):
                         state.player.money -= 20
                         self.quest_money -= 20
                     state.controller.isTPressed = False
+                    if self.player_debuff_silence_counter > 0:
+                        self.player_debuff_silence_counter -= 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
                     self.debuff_counter -= 1
@@ -595,6 +632,8 @@ class CoinFlipBettyScreen(Screen):
                     self.quest_money += self.bet
 
                     state.controller.isTPressed = False
+                    if self.player_debuff_silence_counter > 0:
+                        self.player_debuff_silence_counter -= 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
                     self.debuff_counter -= 1
@@ -616,6 +655,8 @@ class CoinFlipBettyScreen(Screen):
                     self.quest_money -= self.bet
 
                     state.controller.isTPressed = False
+                    if self.player_debuff_silence_counter > 0:
+                        self.player_debuff_silence_counter -= 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
                     self.debuff_counter -= 1
@@ -694,8 +735,8 @@ class CoinFlipBettyScreen(Screen):
             if state.controller.isTPressed:
                 self.music_on = True
 
-                state.currentScreen = state.startScreen
-                state.startScreen.start(state)
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
 
         if self.game_state == "enemy_desperate_screen":
             if self.coin_flip_messages["enemy_desperate_message"].message_index == 3:
@@ -710,16 +751,23 @@ class CoinFlipBettyScreen(Screen):
 
                 self.game_state = "bet_screen"
 
+        # if self.game_state == "player_win_screen":
+        #     self.coin_flip_messages["you_win"].update(state)
+
+
+
         if self.game_state == "enemy_defeated_screen":
             if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
+                print("your message index might be at 3")
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
                 if self.quest_money >= 500:
+                    print("You got the 500")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
                     Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
 
 
         controller = state.controller
@@ -797,8 +845,12 @@ class CoinFlipBettyScreen(Screen):
 
         state.DISPLAY.blit(self.font.render(f"Choice: {self.player_choice}", True, (255, 255, 255)), (37, 370))
 
-        state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
-                           (37, 205 - 40))
+        if self.player_debuff_silence_counter == 0:
+            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
+                               (37, 205 - 40))
+        elif self.player_debuff_silence_counter > 0 and self.game_state != "spell_casting":
+            state.DISPLAY.blit(self.font.render(f"Silence: {self.player_debuff_silence_counter}", True, (255, 0, 0)),
+                               (37, 205 - 40))
 
         #holds enemy name
         black_box = pygame.Surface((200 - 10, 110 - 10))
@@ -963,6 +1015,11 @@ class CoinFlipBettyScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
                                (312, 545))
 
+
+
+
+        if self.game_state == "spell_casting":
+            self.coin_flip_messages["spell_magic_lock_message"].draw(state)
 
 
         if self.game_state == "heads_tails_choose_screen":
@@ -1132,6 +1189,7 @@ class CoinFlipBettyScreen(Screen):
         #     self.coin_flip_messages["results_message"].update(state)
         #     self.coin_flip_messages["results_message"].draw(state)
         if self.game_state == "results_screen":
+
             print("your results are in :  " + str(self.result))
             self.coin_flip_messages["results_message"].update(state)
             self.coin_flip_messages["results_message"].draw(state)
@@ -1174,6 +1232,8 @@ class CoinFlipBettyScreen(Screen):
             self.entered_shield_screen = False
 
 
+        # if self.game_state == "player_win_screen":
+        #     self.coin_flip_messages["you_win"].draw(state)
 
         if self.game_state == "enemy_desperate_screen":
             print("enemy is veyr desperate now")

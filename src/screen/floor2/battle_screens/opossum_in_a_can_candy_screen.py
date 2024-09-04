@@ -743,8 +743,10 @@ class OpossumInACanCandyScreen(Screen):
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
                 self.music_on = True
-                Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-
+                if self.quest_money >= 500:
+                    print("You got the 500")
+                    Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                    Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
 
@@ -754,6 +756,10 @@ class OpossumInACanCandyScreen(Screen):
             if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
                 self.music_on = True
                 # Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                if self.quest_money >= 500:
+                    print("You got the 500")
+                    Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                    Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
 
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)

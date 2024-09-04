@@ -146,6 +146,7 @@ class Area2ShopKeeper(Npc):
             # print("distance: " + str(distance))
 
             if distance < 100:
+                state.controller.isTPressed = False
                 # print("start state: talking")
 
                 self.state = "talking"

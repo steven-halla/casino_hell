@@ -33,7 +33,7 @@
     "spirit": 1,
     "perception": 1,
     "luck": 1,
-    "money": 800,
+    "money": 2300,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -41,7 +41,7 @@
     ],
     "level3reward": true,
     "food": 1,
-    "days": 8,
+    "days": 9,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
@@ -58,5 +58,12 @@
     "blackjackrumblebillmoney": 0,
     "shopkeeperpotion": true,
     "shopkeepersavecoin": true,
-    "slotsrippasnappamoney": 1000
+
+
+    "slotsrippasnappamoney": 1000,
+    "opossuminacancandymoney": 1000,
+    "coinflipbetteymoney": 1000,
+    "blackjackmackmoney": 1000,
+    "crapscrappymoney": 1000,
+
 }

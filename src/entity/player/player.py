@@ -148,6 +148,7 @@ class Player(Entity):
 
             "opossumnellymoney": state.opossumInACanNellyScreen.nellyOpossumMoney,
             "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
+            "opossuminacancandymoney": state.opossumInACanCandyScreen.candyOpossumMoney,
 
             "blackjackthomasmoney": state.blackJackThomasScreen.cheater_bob_money,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
@@ -1560,6 +1561,11 @@ class Player(Entity):
             state.coinFlipFredScreen.coinFlipFredMoney = player_data['coinflipfredmoney']
             state.opossumInACanNellyScreen.nellyOpossumMoney = player_data['opossumnellymoney']
             state.opossumInACanSallyScreen.sallyOpossumMoney = player_data['opossumsallymoney']
+
+
+            state.opossumInACanCandyScreen.candyOpossumMoney = player_data['opossuminacancandymoney']
+
+
             state.blackJackThomasScreen.cheater_bob_money = player_data['blackjackthomasmoney']
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
 
