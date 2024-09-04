@@ -128,32 +128,7 @@ class Area2ShopKeeper(Npc):
                     print(f"selected_item_index: {self.selected_item_index}")
                     print(f"selected_money_index: {self.selected_money_index}")
 
-            # if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 500:
-            #
-            #     self.input_time = pygame.time.get_ticks()
-            #     selected_item = self.shop_items[self.selected_item_index]
-            #     if state.player.money >= cost and (state.player.money - cost >= 100) and selected_item != "sold out" and self.textbox.is_finished():
-            #         self.buy_sound.play()  # Play the sound effect once
-            #
-            #         state.player.money -= cost
-            #         if selected_item not in state.player.items:
-            #             state.player.items.append(selected_item)  # Append the selected item to the player's inventory only if it's not already there
-            #         else:
-            #             # If the item is already in the inventory, remove any multiples (keep only one)
-            #             state.player.items = [item for item in state.player.items if item != selected_item]
-            #             state.player.items.append(selected_item)
-            #         self.sold_out(self.selected_item_index)  # Mark the item as sold out
-            #         print(f"Item purchased: {selected_item}. Remaining money: {state.player.money}")
-            #         print("Your inventory as it stands: " + str(state.player.items))
-            #     else:
-            #         if selected_item == "sold out":
-            #             print("This item is sold out.")
-            #
-            #         else:
-            #             print("Not enough money to purchase item.")
-            #
-            #
-            #         print("taste yum yum")
+
             self.update_talking(state)
 
     def sold_out(self, item_index: int):

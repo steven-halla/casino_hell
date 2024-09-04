@@ -1,35 +1,27 @@
 {
     "level": 4,
     "exp": 600,
-    "stamina_points": 300,
-    "max_stamina_points": 300,
-    "focus_points": 80,
-    "max_focus_points": 100,
+    "stamina_points": 320,
+    "max_stamina_points": 320,
+    "focus_points": 120,
+    "max_focus_points": 120,
     "companions": [
         "sir leopold"
-    ],
-    "leveltwonpcstate": [
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_QUEST_1_REWARD"
-
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses",
-        "moin nine wasses"
-
+        "moin nine wasses",
+        "STAT_POTION_AREA_2"
     ],
-      "equipped_items": [
+    "equipped_items": [
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses"
     ],
     "npcitems": [
-
-    ],
-     "quest_items": [
-        "contract"
+        "level 4 token"
     ],
     "magicinventory": [
         "reveal",
@@ -41,12 +33,20 @@
     "spirit": 1,
     "perception": 1,
     "luck": 1,
-    "money": 2000,
+    "money": 800,
     "rabies": false,
     "immunity": true,
+    "quest_items": [
+        "contract"
+    ],
     "level3reward": true,
     "food": 1,
-    "days": 7,
+    "days": 8,
+    "leveltwonpcstate": [
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_1_REWARD",
+        "STAT_POTION_AREA_2"
+    ],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": true,
@@ -56,9 +56,7 @@
     "opossumsallymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-
-    "slotsrippasnappamoney": 1000,
-
     "shopkeeperpotion": true,
-    "shopkeepersavecoin": true
+    "shopkeepersavecoin": true,
+    "slotsrippasnappamoney": 1000
 }

@@ -7,6 +7,7 @@ from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_rest_screen.Stew import Stew
 from entity.npc.area2.area_2_rest_screen.alex import Alex
 from entity.npc.area2.area_2_rest_screen.alice import Alice
+from entity.npc.area2.area_2_rest_screen.area_2_bar_keep import Area2BarKeep
 from entity.npc.area2.area_2_rest_screen.area_2_inn_keeper import Area2InnKeeper
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_boss_area import Area2RestToBossArea
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
@@ -117,6 +118,7 @@ class Area2RestScreen(Screen):
             # below are shops and such
             Area2InnKeeper(16 * 101, 16 * 33),
             Area2ShopKeeper(16 * 72, 16 * 7),
+            Area2BarKeep(16 * 39, 16 * 15),
 
             # below are doors
             Area2RestToGamblingArea(16 * 17, 16 * 0),
