@@ -717,9 +717,8 @@ class OpossumInACanCandyScreen(Screen):
                     self.music_on = True
                     self.debuff_keen_perception = False
                     self.play_again_or_quit_index = 0
-                    if self.sallyOpossumMoney >= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                        print("719")
-
+                    if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
+                        print("You got the 500")
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
                         Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
 
@@ -743,7 +742,7 @@ class OpossumInACanCandyScreen(Screen):
             if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
                 self.music_on = True
-                if self.quest_money >= 500:
+                if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                     print("You got the 500")
                     Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
                     Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
@@ -756,7 +755,7 @@ class OpossumInACanCandyScreen(Screen):
             if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
                 self.music_on = True
                 # Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                if self.quest_money >= 500:
+                if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                     print("You got the 500")
                     Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
                     Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
@@ -770,6 +769,10 @@ class OpossumInACanCandyScreen(Screen):
             self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
             if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
                 self.music_on = True
+                if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
+                    print("You got the 500")
+                    Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                    Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
 
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)

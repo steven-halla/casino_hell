@@ -5,6 +5,7 @@ import pygame
 
 from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, BLUEBLACK
 from entity.entity import Entity
+from game_constants.equipment import Equipment
 from game_constants.treasure import Treasure
 
 
@@ -100,6 +101,10 @@ class Player(Entity):
         self.magic_inventory_index = 0
 
         self.quest_items_index = 0
+        self.perception_boost_item = 1
+        self.base_perception = 1
+
+
 
         self.exp_to_next_level = {
             1: 100,
@@ -128,6 +133,7 @@ class Player(Entity):
             "mind": self.mind,
             "spirit": self.spirit,
             "perception": self.perception,
+            "baseperception": self.base_perception,
             "luck": self.luck,
             "money": self.money,
             "rabies": self.hasRabies,
@@ -145,13 +151,15 @@ class Player(Entity):
 
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
+            "coinflipbetteymoney": state.coinFlipBettyScreen.money,
 
             "opossumnellymoney": state.opossumInACanNellyScreen.nellyOpossumMoney,
             "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
-            "opossuminacancandymoney": state.opossumInACanCandyScreen.candyOpossumMoney,
+            "opossuminacancandymoney": state.opossumInACanCandyScreen.sallyOpossumMoney,
 
             "blackjackthomasmoney": state.blackJackThomasScreen.cheater_bob_money,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
+            "blackjackmackmoney": state.blackJackMackScreen.money,
 
             "shopkeeperpotion": self.shop_keep_potion,
             "shopkeepersavecoin": self.shop_keep_save_coin,
@@ -159,12 +167,22 @@ class Player(Entity):
 
             # level 2
             "slotsrippasnappamoney": state.slotsRippaSnappaScreen.money,
+            "crapscrappymoney": state.crapsHappyScreen.money,
 
             # Add more stats as needed
         }
 
 
     def update(self, state: "GameState"):
+
+        if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+            self.perception = self.base_perception + self.perception_boost_item
+
+        elif Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
+            self.perception = self.base_perception
+
+
+
         if state.controller.isAPressed:
 
             print("Your nPc inventory issss:::   " + str(state.player.npc_items))
@@ -654,7 +672,7 @@ class Player(Entity):
 
             ######
 
-            if  "sir leopold" in state.player.companions:
+            if "sir leopold" in state.player.companions:
 
 
                 # Get the subsurface for the area you want
@@ -767,6 +785,8 @@ class Player(Entity):
                 if state.controller.isTPressed:
                     state.controller.isTPressed = False
                     self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
+
+
                     print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
                     self.looking_at_items = False
 
@@ -1546,6 +1566,7 @@ class Player(Entity):
             state.player.mind = player_data['mind']
             state.player.spirit = player_data['spirit']
             state.player.perception = player_data['perception']
+            state.player.base_perception = player_data['baseperception']
             state.player.luck = player_data['luck']
             state.player.money = player_data['money']
             state.player.hasRabies = player_data['rabies']
@@ -1557,17 +1578,21 @@ class Player(Entity):
             state.restScreen.barscene1 = player_data['cutscene1']
             state.restScreen.barscene2 = player_data['cutscene2']
             state.gamblingAreaScreen.five_hundred_opossums = player_data['quest1complete']
+
             state.coinFlipTedScreen.coinFlipTedMoney = player_data['coinfliptedmoney']
             state.coinFlipFredScreen.coinFlipFredMoney = player_data['coinflipfredmoney']
+            state.coinFlipBettyScreen.money = player_data['coinflipbetteymoney']
+
             state.opossumInACanNellyScreen.nellyOpossumMoney = player_data['opossumnellymoney']
             state.opossumInACanSallyScreen.sallyOpossumMoney = player_data['opossumsallymoney']
-
-
-            state.opossumInACanCandyScreen.candyOpossumMoney = player_data['opossuminacancandymoney']
+            state.opossumInACanCandyScreen.sallyOpossumMoney = player_data['opossuminacancandymoney']
 
 
             state.blackJackThomasScreen.cheater_bob_money = player_data['blackjackthomasmoney']
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
+            state.blackJackMackScreen.money = player_data['blackjackmackmoney']
+
+
 
             state.player.shop_keep_potion = player_data['shopkeeperpotion']
             state.player.shop_keep_save_coin = player_data['shopkeepersavecoin']
@@ -1576,6 +1601,9 @@ class Player(Entity):
             #level 2
 
             state.slotsRippaSnappaScreen.money = player_data['slotsrippasnappamoney']
+            state.crapsHappyScreen.money = player_data['crapscrappymoney']
+
+
 
 
 

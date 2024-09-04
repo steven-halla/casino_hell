@@ -205,10 +205,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     range(21, 45): 3,  # add 100 coins
                     range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
                     range(57, 63): 5,  # gain 20 hp 20 mp 125 coins
-                    range(63, 74): 6,  # add 200 coins
-                    range(74, 82): 7,  # lucky spin better % for jackpot
-                    range(82, 95): 8,  # get special item or 50 coins
-                    range(95, 101): 9,  # jackpot
+                    range(63, 70): 6,  # add 200 coins
+                    range(70, 79): 7,  # lucky spin better % for jackpot
+                    range(79, 92): 8,  # get special item or 50 coins
+                    range(92, 101): 9,  # jackpot
                 }
 
 
@@ -531,7 +531,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 2 and controller.isTPressed and "Lucky Shoes" not in state.player.items:
+            elif self.welcome_screen_index == 2 and controller.isTPressed and Events.MC_NUGGET_QUEST_1_REWARD not in state.player.level_two_npc_state:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
@@ -871,16 +871,17 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             elif self.three_eights == True:
-                Events.add_event_to_player(state.player, Events.MC_NUGGET_FIRST_QUEST_COMPLETE)
 
-                if "Lucky Shoes" not in state.player.items:
+                if Events.MC_NUGGET_QUEST_1_REWARD.value not in state.player.level_two_npc_state:
+                    Events.add_event_to_player(state.player, Events.MC_NUGGET_FIRST_QUEST_COMPLETE)
+
                     self.battle_messages["results_message"].messages = [
                         f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} grats you got the super secret item!! + 25 exp", ""
                     ]
 
                     self.battle_messages["results_message"].update(state)
 
-                elif "Lucky Shoes" in state.player.items and self.secret_item == True:
+                elif Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and self.secret_item == True:
                     self.battle_messages["results_message"].messages = [
                         f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} too bad for you there is only 1 item.!", ""
                     ]
@@ -978,8 +979,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.lock_down -= 1
 
                 self.game_state = "welcome_screen"
-                if self.secret_item == True and "Lucky Shoes" not in state.player.items:
-                    state.player.items.append("Lucky Shoes")
+                if self.secret_item == True and Events.MC_NUGGET_QUEST_1_REWARD.value not in state.player.level_two_npc_state:
+                    state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_1_REWARD.value)
                 print(str(state.player.items))
 
     def draw(self, state: "GameState") -> None:
@@ -1060,8 +1061,6 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
-            if "Lucky Shoes" in state.player.items:
-                self.welcome_screen_choices[2] = "Locked"
 
             if self.lock_down > 0:
 
