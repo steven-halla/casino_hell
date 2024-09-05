@@ -163,6 +163,14 @@ class CrapsHappyScreen(BattleScreen):
                 36,
                 500
             ),
+            "level_up": TextBox(
+                [
+                    "Betty: wow you beat me in coin flip, bummer!"
+                ],
+                (65, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
         }
 
@@ -329,6 +337,8 @@ class CrapsHappyScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+            if state.player.leveling_up == True:
+                self.game_state = "level_up_screen"
 
             self.battle_messages["welcome_message"].update(state)
 
@@ -381,6 +391,9 @@ class CrapsHappyScreen(BattleScreen):
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 controller.isTPressed = False
+
+        elif self.game_state == "level_up_screen":
+            self.handle_level_up(state, state.controller)
 
         elif self.game_state == "bet_screen":
             # print(self.game_state)
@@ -948,6 +961,9 @@ class CrapsHappyScreen(BattleScreen):
                 if self.battle_messages["game_over_no_money_message"].message_index == 1:
                     state.currentScreen = state.area2RestScreen
                     state.area2RestScreen.start(state)
+
+        elif self.game_state == "level_up_screen":
+            self.draw_level_up(state)
 
         elif self.game_state == "bet_screen":
             black_box_height = 221 - 50  # Adjust height
