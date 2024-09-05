@@ -61,7 +61,7 @@ class Lunky(Npc):
         if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
-            if distance < 40:
+            if distance < 40 and state.player.menu_paused == False:
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
