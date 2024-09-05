@@ -18,6 +18,8 @@ class Screen:
         """Loads the tile map for the screen."""
         self.tiled_map = pytmx.load_pygame(map_path)
 
+
+
     def draw_tiles(self, state: 'GameState') -> None:
         """Draws the background and collision layers if a tile map is loaded."""
         if not self.tiled_map:

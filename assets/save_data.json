@@ -1,10 +1,10 @@
 {
     "level": 5,
-    "exp": 1131,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "exp": 1200,
+    "stamina_points": 280,
+    "max_stamina_points": 280,
+    "focus_points": 160,
+    "max_focus_points": 160,
     "companions": [
         "sir leopold"
     ],
@@ -19,7 +19,8 @@
         "opossum repellent"
     ],
     "npcitems": [
-
+        "level 4 token",
+        "level 4 token"
     ],
     "magicinventory": [
         "reveal",
@@ -32,7 +33,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 2000,
+    "money": 1800,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -40,10 +41,8 @@
     ],
     "level3reward": true,
     "food": 1,
-    "days": 11,
-    "leveltwonpcstate": [
-
-    ],
+    "days": 12,
+    "leveltwonpcstate": [],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": true,
@@ -55,7 +54,7 @@
     "opossuminacancandymoney": 500,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 50,
+    "blackjackmackmoney": 1111,
     "shopkeeperpotion": true,
     "shopkeepersavecoin": true,
     "slotsrippasnappamoney": 1000,
