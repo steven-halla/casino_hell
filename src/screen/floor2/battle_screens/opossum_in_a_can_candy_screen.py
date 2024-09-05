@@ -705,7 +705,10 @@ class OpossumInACanCandyScreen(Screen):
                         self.game_state = "spell_casting_poison"
                     else:
                         self.player_debuff_poison -= 1
-                        state.player.stamina_points -= 10
+                        if state.player.focus_points > 0:
+                            state.player.focus_points -= 10
+                            if state.player.focus_points < 0:
+                                state.player.focus_points = 0
                         print("Poison counter at: "+ str(self.player_debuff_poison))
 
                         self.game_state = "menu_screen"
