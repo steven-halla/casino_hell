@@ -472,7 +472,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     print("hi")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
                     Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
-
+                self.welcome_screen_index = 0
                 state.currentScreen = state.area2GamblingScreen
                 self.quest_money = 0
                 controller.isTPressed = False

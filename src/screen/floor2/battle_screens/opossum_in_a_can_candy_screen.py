@@ -742,6 +742,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                             Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
 
                         self.quest_money = 0
+                        self.game_state = "welcome_screen"
                         state.currentScreen = state.area2GamblingScreen
                         state.area2GamblingScreen.start(state)
 
