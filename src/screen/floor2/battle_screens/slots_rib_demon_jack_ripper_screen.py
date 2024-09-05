@@ -3,6 +3,7 @@ import random
 from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
 from game_constants.events import Events
+from game_constants.magic import Magic
 from globalclasses.exp_gain import ExpGain
 from globalclasses.game_over import GameOver
 from globalclasses.money_balancer import MoneyBalancer
@@ -70,7 +71,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
 
-        self.magic_screen_choices: list[str] = ["Hack", "Back"]
+        self.magic_screen_choices: list[str] = [ "Back"]
         self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
 
@@ -170,6 +171,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.game_over = GameOver()  # Initialize GameOver
 
         self.game_over_message = []  # Initialize game_over_message
+
+        self.slot_hack = 0
 
 
 
@@ -522,9 +525,12 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             if self.welcome_screen_index == 0 and controller.isTPressed:
                 self.game_state = "spin_screen"
+
                 state.player.stamina_points -= 4
-                state.player.money -= self.bet
-                self.money += self.bet
+                if self.slot_hack == 0:
+                    state.player.money -= self.bet
+                    self.money += self.bet
+
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
                 self.magic_screen_index = 0
@@ -555,7 +561,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
-                self.battle_messages["magic_message"].messages = [f""]
+                self.battle_messages["magic_message"].messages = [f"Put a string on a coin"]
             elif self.magic_screen_index == 1:
                 self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
             self.battle_messages["results_message"].update(state)
@@ -568,6 +574,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 controller.isDownPressed = False
             if self.magic_screen_index == 0 and controller.isTPressed:
                 controller.isTPressed = False
+                self.slot_hack += 5
+                state.player.focus_points -= 50
+                self.game_state = "welcome_screen"
+                print(self.slot_hack)
             elif self.magic_screen_index == 1 and controller.isTPressed:
                 self.battle_messages["magic_message"].update(state)
                 self.game_state = "welcome_screen"
@@ -1057,7 +1067,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
-            if "Hack" not in state.player.magicinventory:
+            if Magic.SLOTS_HACK.value not in state.player.magicinventory or self.slot_hack > 0:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
@@ -1127,6 +1137,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
+            if Magic.SLOTS_HACK.value in state.player.magicinventory and Magic.SLOTS_HACK.value not in self.magic_screen_choices:
+                # Insert Magic.SLOTS_HACK as the new 0th element and shift other elements up
+                self.magic_screen_choices.insert(0, Magic.SLOTS_HACK.value)
 
             if self.magic_screen_index == 0:
                 state.DISPLAY.blit(

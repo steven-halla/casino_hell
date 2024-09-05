@@ -681,8 +681,8 @@ class CrapsHappyScreen(BattleScreen):
             self.battle_messages["you_win_come_out_roll_message"].update(state)
             # print("643 should follow")
             if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
-                state.player.money -= self.bet
-                self.money += self.bet
+                state.player.money += self.bet
+                self.money -= self.bet
                 state.player.exp += 15
                 self.game_state = "welcome_screen"
                 self.game_reset(state)

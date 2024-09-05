@@ -1,10 +1,10 @@
 {
     "level": 5,
-    "exp": 1371,
-    "stamina_points": 400,
-    "max_stamina_points": 400,
-    "focus_points": 200,
-    "max_focus_points": 200,
+    "exp": 1606,
+    "stamina_points": 420,
+    "max_stamina_points": 420,
+    "focus_points": 220,
+    "max_focus_points": 220,
     "companions": [
         "sir leopold"
     ],
@@ -19,14 +19,16 @@
         "SOCKS_OF_PERCEPTION",
         "SOCKS_OF_PERCEPTION",
         "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION"
+        "SOCKS_OF_PERCEPTION",
+        "Black Hat"
     ],
     "equipped_items": [
         "sir leopold's paw",
-        "SOCKS_OF_PERCEPTION",
-        "coin flip glasses"
+        "coin flip glasses",
+        "SOCKS_OF_PERCEPTION"
     ],
     "npcitems": [
+        "level 4 token",
         "level 4 token",
         "level 4 token",
         "level 4 token",
@@ -46,7 +48,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 5440,
+    "money": 6190,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -55,7 +57,7 @@
     ],
     "level3reward": true,
     "food": 1,
-    "days": 18,
+    "days": 19,
     "leveltwonpcstate": [
         "STAT_POTION_AREA_2",
         "QUEST_1_COMPLETE",
@@ -75,7 +77,8 @@
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "500 Gold"
+        "500 Gold",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED"
     ],
     "cutscene1": true,
     "cutscene2": true,
@@ -91,6 +94,6 @@
     "blackjackmackmoney": 0,
     "shopkeeperpotion": true,
     "shopkeepersavecoin": true,
-    "slotsrippasnappamoney": 950,
+    "slotsrippasnappamoney": 0,
     "crapscrappymoney": 1000
 }
