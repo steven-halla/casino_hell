@@ -157,16 +157,16 @@ class MCNugg(Npc):
 
         if state.controller.isTPressed and current_message.is_finished():
 
-            if (Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state and
-                Events.MC_NUGGET_SECOND_QUEST_COMPLETE not in state.player.level_two_npc_state):
+            if (Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state and
+                Events.MC_NUGGET_QUEST_2_REWARD not in state.player.level_two_npc_state):
                 state.player.level_two_npc_state.append(Equipment.NUGG_QUEST_TWO_MONEY.value)
                 state.player.money += 500
-                state.player.level_two_npc_state.append(Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value)
+                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_2_REWARD.value)
 
             if (Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state
 
                     and Magic.SLOTS_HACK.value not in state.player.magicinventory):
-                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_2_REWARD.value)
+                state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_3_REWARD.value)
 
                 state.player.magicinventory.append(Magic.SLOTS_HACK.value)
 
