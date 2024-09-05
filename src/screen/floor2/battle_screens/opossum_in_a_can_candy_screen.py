@@ -365,10 +365,8 @@ class OpossumInACanCandyScreen(Screen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
-        print("Your quest money: " + str(self.quest_money))
         if state.controller.is1Pressed:
             self.quest_money -= 300
-            print("qyest money is at: " + str(self.quest_money))
             state.controller.is1Pressed = False
 
 
@@ -714,17 +712,18 @@ class OpossumInACanCandyScreen(Screen):
 
 
                 elif self.play_again_or_quit_index == 1:
-                    self.music_on = True
-                    self.debuff_keen_perception = False
-                    self.play_again_or_quit_index = 0
-                    if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                        print("You got the 500")
-                        Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                        Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
+                    if self.player_debuff_poison == 0:
+                        self.music_on = True
+                        self.debuff_keen_perception = False
+                        self.play_again_or_quit_index = 0
+                        if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
+                            print("You got the 500")
+                            Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
+                            Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
 
-                    self.quest_money = 0
-                    state.currentScreen = state.area2GamblingScreen
-                    state.area2GamblingScreen.start(state)
+                        self.quest_money = 0
+                        state.currentScreen = state.area2GamblingScreen
+                        state.area2GamblingScreen.start(state)
 
 
         if self.game_state == "spell_casting_poison":
@@ -926,7 +925,7 @@ class OpossumInACanCandyScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
                                (37, 205 - 40))
         else:
-            state.DISPLAY.blit(self.font.render(f"Hero - Turns: {self.player_debuff_poison}", True, (255, 255, 255)),
+            state.DISPLAY.blit(self.font.render(f"Poison: {self.player_debuff_poison}", True, (255, 0, 0)),
                                (37, 205 - 40))
 
         #the below is for enemy boxes
@@ -1231,7 +1230,11 @@ class OpossumInACanCandyScreen(Screen):
 
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
-            state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            if self.player_debuff_poison == 0:
+                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+            elif self.player_debuff_poison > 0:
+                state.DISPLAY.blit(self.font.render(f"Locked ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+
             arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
             arrow_y = text_y_yes + self.play_again_or_quit_index * 40  # Adjust based on the item's height
 
