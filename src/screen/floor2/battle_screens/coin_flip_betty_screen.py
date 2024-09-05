@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
 from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.events import Events
@@ -10,7 +11,7 @@ from screen.examples.screen import Screen
 
 # need more testing for self.quest_money
 
-class CoinFlipBettyScreen(Screen):
+class CoinFlipBettyScreen(BattleScreen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")
         self.flip_screen_initialized = True
@@ -89,7 +90,7 @@ class CoinFlipBettyScreen(Screen):
         self.music_on = True
 
 
-        self.coin_flip_messages = {
+        self.battle_messages = {
             "welcome_message": TextBox(
                 ["Press T to select options and go through T messages"],
                 (45, 460, 700, 130),  # Position and size
@@ -236,13 +237,21 @@ class CoinFlipBettyScreen(Screen):
                 36,  # Font size
                 500  # Delay
             ),
+            "level_up": TextBox(
+                [
+                    "Betty: wow you beat me in coin flip, bummer!"
+                ],
+                (45, 460, 700, 130),  # Position and size
+                36,  # Font size
+                500  # Delay
+            ),
 
 
             # You can add more game state keys and TextBox instances here
         }
         self.coin_flip_fred_messages = {}  # Prepare the dictionary but don't fill it yet
 
-        self.coin_flip_messages_initialized = False  # Add an initialization flag
+        self.battle_messages_initialized = False  # Add an initialization flag
 
         self.exp_gain = 0
         self.odd = False
@@ -394,6 +403,9 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
+            if state.player.leveling_up == True:
+                self.game_state = "level_up_screen"
+
             if self.money < 500 and self.magic_points > 0:
                 self.magic_points -= 1
                 self.player_debuff_silence_counter += 10
@@ -407,7 +419,7 @@ class CoinFlipBettyScreen(Screen):
                 print("qyest money is at: " + str(self.quest_money))
                 controller.is1Pressed = False
 
-            self.coin_flip_messages["welcome_message"].update(state)
+            self.battle_messages["welcome_message"].update(state)
 
             if self.money < 1:
                self.game_state = "enemy_defeated_screen"
@@ -446,11 +458,11 @@ class CoinFlipBettyScreen(Screen):
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
                 self.magic_screen_index = 0
-                self.coin_flip_messages["magic_message"].reset()
+                self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
             elif self.welcome_screen_index == 2 and controller.isTPressed:
-                self.coin_flip_messages["bet_message"].reset()
+                self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
 
                 controller.isTPressed = False
@@ -465,9 +477,12 @@ class CoinFlipBettyScreen(Screen):
                 self.quest_money = 0
                 controller.isTPressed = False
 
+        if self.game_state == "level_up_screen":
+            self.handle_level_up(state, state.controller)
+
         if self.game_state == "spell_casting":
-            self.coin_flip_messages["spell_magic_lock_message"].update(state)
-            if self.coin_flip_messages["spell_magic_lock_message"].is_finished() and state.controller.isTPressed:
+            self.battle_messages["spell_magic_lock_message"].update(state)
+            if self.battle_messages["spell_magic_lock_message"].is_finished() and state.controller.isTPressed:
                 state.controller.isTPressed = False
                 print("mew mew mew mew mew mew mwem---------------------")
                 self.game_state = "welcome_screen"
@@ -483,22 +498,22 @@ class CoinFlipBettyScreen(Screen):
             self.message_printed = False
             self.entered_shield_screen = False  # Add this flag
 
-            # self.coin_flip_messages["bet_message"].update(state)
-            if not self.coin_flip_messages_initialized:
+            # self.battle_messages["bet_message"].update(state)
+            if not self.battle_messages_initialized:
                 # self.initialize_text_boxes()
-                self.coin_flip_messages_initialized = True
-            self.coin_flip_messages["bet_message"].update(state)
+                self.battle_messages_initialized = True
+            self.battle_messages["bet_message"].update(state)
             self.place_bet(state)  # Call the place_bet method to handle bet adjustments
                 # Add other game state updates here
 
         if self.game_state == "heads_tails_choose_screen":
-            self.coin_flip_messages["bet_message"].update(state)
+            self.battle_messages["bet_message"].update(state)
 
-            self.coin_flip_messages["heads_tails_message"].update(state)
+            self.battle_messages["heads_tails_message"].update(state)
 
 
 
-            if self.coin_flip_messages["bet_message"].is_finished():
+            if self.battle_messages["bet_message"].is_finished():
                 if state.controller.isUpPressed:
                     self.headstailsindex -= 1
                     self.menu_movement_sound.play()  # Play the sound effect once
@@ -578,7 +593,7 @@ class CoinFlipBettyScreen(Screen):
                 # ...
                 self.flip_screen_initialized = False
 
-            self.coin_flip_messages["flip_message"].update(state)
+            self.battle_messages["flip_message"].update(state)
             # if self.coinFlipTedMoney < 10:
             #     self.game_state = "enemy_defeated_screen"
 
@@ -683,14 +698,14 @@ class CoinFlipBettyScreen(Screen):
 
             self.has_run_money_logic = True
 
-        self.coin_flip_messages["results_message"].update(state)
+        self.battle_messages["results_message"].update(state)
 
         # Construct the result message
         result_message = f"Here you go, the result of your flip: {self.result}"
         # bet_message = f"Bet amount: {self.bet}"
 
         # Update the messages in the TextBox
-        self.coin_flip_messages["results_message"].messages = [result_message]
+        self.battle_messages["results_message"].messages = [result_message]
 
 
         # if state.controller.isTPressed:
@@ -714,7 +729,7 @@ class CoinFlipBettyScreen(Screen):
                 self.coinFlipTedDefeated = True
                 self.game_state = "enemy_defeated_screen"
 
-            self.coin_flip_messages["play_again_message"].update(state)
+            self.battle_messages["play_again_message"].update(state)
             if not self.message_printed:
                 # self.giveExp(state)
                 # Set the flag to True after printing the message
@@ -739,25 +754,25 @@ class CoinFlipBettyScreen(Screen):
                 state.area2RestScreen.start(state)
 
         if self.game_state == "enemy_desperate_screen":
-            if self.coin_flip_messages["enemy_desperate_message"].message_index == 3:
+            if self.battle_messages["enemy_desperate_message"].message_index == 3:
                 self.enemy_desperate_counter = True
                 self.game_state = "bet_screen"
 
 
 
         if self.game_state == "hero_desperate_screen":
-            if self.coin_flip_messages["hero_desperate_message"].message_index == 3:
+            if self.battle_messages["hero_desperate_message"].message_index == 3:
                 self.hero_desperate_counter = True
 
                 self.game_state = "bet_screen"
 
         # if self.game_state == "player_win_screen":
-        #     self.coin_flip_messages["you_win"].update(state)
+        #     self.battle_messages["you_win"].update(state)
 
 
 
         if self.game_state == "enemy_defeated_screen":
-            if self.coin_flip_messages["enemy_defeated_message"].message_index == 3:
+            if self.battle_messages["enemy_defeated_message"].message_index == 3:
                 print("your message index might be at 3")
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True
@@ -923,25 +938,25 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
-            if not self.coin_flip_messages_initialized:
+            if not self.battle_messages_initialized:
                 # self.initialize_text_boxes()
-                self.coin_flip_messages_initialized = True
-            self.coin_flip_messages["welcome_message"].draw(state)
+                self.battle_messages_initialized = True
+            self.battle_messages["welcome_message"].draw(state)
 
             if self.money < 1:
-                self.coin_flip_messages["you_win"].draw(state)
+                self.battle_messages["you_win"].draw(state)
 
             if state.player.stamina_points < 1:
-                self.coin_flip_messages["game_over_no_stamina_message"].draw(state)
+                self.battle_messages["game_over_no_stamina_message"].draw(state)
 
             elif state.player.money <= 0:
-                self.coin_flip_messages["game_over_no_money_message"].draw(state)
+                self.battle_messages["game_over_no_money_message"].draw(state)
 
             elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.coin_flip_messages["game_over_low_stamina_message"].draw(state)
+                self.battle_messages["game_over_low_stamina_message"].draw(state)
 
             elif state.player.money < 50 and state.player.money > 0:
-                self.coin_flip_messages["game_over_low_money_message"].draw(state)
+                self.battle_messages["game_over_low_money_message"].draw(state)
 
             black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box
@@ -1005,8 +1020,8 @@ class CoinFlipBettyScreen(Screen):
 
         if self.game_state == "bet_screen":
             # print("Game state is 'bet'")  # Debugging
-            # self.coin_flip_messages["bet_message"].update(state)
-            self.coin_flip_messages["bet_message"].draw(state)
+            # self.battle_messages["bet_message"].update(state)
+            self.battle_messages["bet_message"].draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
                                                 (255, 255, 255)), (45, 550))
 
@@ -1019,12 +1034,12 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "spell_casting":
-            self.coin_flip_messages["spell_magic_lock_message"].draw(state)
+            self.battle_messages["spell_magic_lock_message"].draw(state)
 
 
         if self.game_state == "heads_tails_choose_screen":
-            self.coin_flip_messages["heads_tails_message"].update(state)
-            self.coin_flip_messages["heads_tails_message"].draw(state)
+            self.battle_messages["heads_tails_message"].update(state)
+            self.battle_messages["heads_tails_message"].draw(state)
             bet_box_width = 150
             bet_box_height = 100 + 40  # Increased height by 40 pixels
             border_width = 5
@@ -1083,20 +1098,22 @@ class CoinFlipBettyScreen(Screen):
                     self.headstailsindex = 0
                     state.controller.isTPressed = False  # Reset the button state
 
+        if self.game_state == "level_up_screen":
+            self.draw_level_up(state)
 
         if self.game_state == "magic_screen":
-            self.coin_flip_messages["magic_message"].update(state)
-            self.coin_flip_messages["magic_message"].draw(state)
+            self.battle_messages["magic_message"].update(state)
+            self.battle_messages["magic_message"].draw(state)
 
             if self.magicindex == 0:
-                self.coin_flip_messages["magic_description_shield"].update(state)
-                self.coin_flip_messages["magic_description_shield"].draw(state)
+                self.battle_messages["magic_description_shield"].update(state)
+                self.battle_messages["magic_description_shield"].draw(state)
             elif self.magicindex == 1:
-                self.coin_flip_messages["magic_description_force"].update(state)
-                self.coin_flip_messages["magic_description_force"].draw(state)
+                self.battle_messages["magic_description_force"].update(state)
+                self.battle_messages["magic_description_force"].draw(state)
             elif self.magicindex == 2:
-                self.coin_flip_messages["magic_description_back"].update(state)
-                self.coin_flip_messages["magic_description_back"].draw(state)
+                self.battle_messages["magic_description_back"].update(state)
+                self.battle_messages["magic_description_back"].draw(state)
 
             # Define new_box_x
 
@@ -1182,17 +1199,17 @@ class CoinFlipBettyScreen(Screen):
 
 
         if self.game_state == "flip_screen":
-            self.coin_flip_messages["flip_message"].update(state)
-            self.coin_flip_messages["flip_message"].draw(state)
+            self.battle_messages["flip_message"].update(state)
+            self.battle_messages["flip_message"].draw(state)
 
         # if self.game_state == "results_screen":
-        #     self.coin_flip_messages["results_message"].update(state)
-        #     self.coin_flip_messages["results_message"].draw(state)
+        #     self.battle_messages["results_message"].update(state)
+        #     self.battle_messages["results_message"].draw(state)
         if self.game_state == "results_screen":
 
             print("your results are in :  " + str(self.result))
-            self.coin_flip_messages["results_message"].update(state)
-            self.coin_flip_messages["results_message"].draw(state)
+            self.battle_messages["results_message"].update(state)
+            self.battle_messages["results_message"].draw(state)
 
             # Display the image based on self.result
             image_to_display = self.heads_image if self.result == "heads" else self.tails_image
@@ -1206,10 +1223,10 @@ class CoinFlipBettyScreen(Screen):
                                                 (255, 255, 255)), (70, 510))
 
             # Call the update method for the results_message TextBox
-            self.coin_flip_messages["results_message"].update(state)
+            self.battle_messages["results_message"].update(state)
 
             # Now, draw the results_message TextBox
-            self.coin_flip_messages["results_message"].draw(state)
+            self.battle_messages["results_message"].draw(state)
 
 
 
@@ -1217,7 +1234,7 @@ class CoinFlipBettyScreen(Screen):
             if not self.entered_shield_screen:
                 # Randomly select one of the shield messages
                 selected_message_key = random.choice(["shield_message1", "shield_message2", "shield_message3"])
-                self.selected_shield_message = self.coin_flip_messages[selected_message_key]
+                self.selected_shield_message = self.battle_messages[selected_message_key]
 
                 # Set the flag to True to avoid repeating this in the current state
                 self.entered_shield_screen = True
@@ -1233,37 +1250,37 @@ class CoinFlipBettyScreen(Screen):
 
 
         # if self.game_state == "player_win_screen":
-        #     self.coin_flip_messages["you_win"].draw(state)
+        #     self.battle_messages["you_win"].draw(state)
 
         if self.game_state == "enemy_desperate_screen":
             print("enemy is veyr desperate now")
-            self.coin_flip_messages["enemy_desperate_message"].update(state)
-            self.coin_flip_messages["enemy_desperate_message"].draw(state)
+            self.battle_messages["enemy_desperate_message"].update(state)
+            self.battle_messages["enemy_desperate_message"].draw(state)
 
         if self.game_state == "hero_desperate_screen":
             print("hero is most desperate now")
-            self.coin_flip_messages["hero_desperate_message"].update(state)
-            self.coin_flip_messages["hero_desperate_message"].draw(state)
+            self.battle_messages["hero_desperate_message"].update(state)
+            self.battle_messages["hero_desperate_message"].draw(state)
 
         if self.game_state == "enemy_defeated_screen":
             # print("you won the game")
-            self.coin_flip_messages["enemy_defeated_message"].update(state)
-            self.coin_flip_messages["enemy_defeated_message"].draw(state)
+            self.battle_messages["enemy_defeated_message"].update(state)
+            self.battle_messages["enemy_defeated_message"].draw(state)
 
 
         if self.game_state == "game_over_no_money":
 
-            self.coin_flip_messages["game_over_no_money"].update(state)
-            self.coin_flip_messages["game_over_no_money"].draw(state)
-            if self.coin_flip_messages["game_over_no_money"].is_finished():
+            self.battle_messages["game_over_no_money"].update(state)
+            self.battle_messages["game_over_no_money"].draw(state)
+            if self.battle_messages["game_over_no_money"].is_finished():
                 if state.controller.isTPressed:
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
 
         if self.game_state == "game_over_no_stamina":
-            self.coin_flip_messages["game_over_no_stamina"].update(state)
-            self.coin_flip_messages["game_over_no_stamina"].draw(state)
-            if self.coin_flip_messages["game_over_no_stamina"].is_finished():
+            self.battle_messages["game_over_no_stamina"].update(state)
+            self.battle_messages["game_over_no_stamina"].draw(state)
+            if self.battle_messages["game_over_no_stamina"].is_finished():
                 if state.controller.isTPressed:
                     state.player.money -= 100
                     self.quest_money = 0
