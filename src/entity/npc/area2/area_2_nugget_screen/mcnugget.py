@@ -60,7 +60,7 @@ class MCNugg(Npc):
             ),
             "quest_3_start": NpcTextBox(
                 [
-                    "MC Nugg: ok now its time for your final quest nugg brother",
+                    "MC Nugg: ok now its time for your final quest nugg brother, defeat the black jack dealer please",
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -163,7 +163,7 @@ class MCNugg(Npc):
                 state.player.money += 500
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_2_REWARD.value)
 
-            if (Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state
+            if (Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state
 
                     and Magic.SLOTS_HACK.value not in state.player.magicinventory):
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_3_REWARD.value)

@@ -73,7 +73,7 @@ class Alex(Npc):
             if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_1_complete"]
 
-            if Equipment.HIPPO_SHOES.value in state.player.items:
+            if Magic.HEADS_FORCE.value in state.player.magicinventory:
                 current_message = self.npc_messages["quest_1_complete_after_message"]
 
 
@@ -109,7 +109,7 @@ class Alex(Npc):
                 if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_1_complete"]
 
-                if Equipment.HIPPO_SHOES.value in state.player.items:
+                if Magic.HEADS_FORCE.value in state.player.magicinventory:
                     current_message = self.npc_messages["quest_1_complete_after_message"]
 
                 current_message.reset()
@@ -151,7 +151,7 @@ class Alex(Npc):
                 print("Hi")
                 current_message = self.npc_messages["quest_1_complete"]
 
-            if Equipment.HIPPO_SHOES.value in state.player.items:
+            if Magic.HEADS_FORCE.value in state.player.magicinventory:
                 current_message = self.npc_messages["quest_1_complete_after_message"]
 
             current_message.draw(state)
