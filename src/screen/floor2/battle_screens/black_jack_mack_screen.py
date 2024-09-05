@@ -321,6 +321,8 @@ class BlackJackMackScreen(Screen):
             self.bet = state.player.money
 
     def update(self, state: "GameState"):
+        if self.money > self.bet:
+            self.bet = self.money
         if self.money <= 0:
             Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
             Events.add_event_to_player(state.player, Events.MC_NUGGET_THIRD_QUEST_COMPLETE)
@@ -416,7 +418,7 @@ class BlackJackMackScreen(Screen):
                 if self.welcome_screen_index == 0 and controller.isTPressed:
                     controller.isTPressed = False
                     for i in range(0, self.bet, 50):
-                        state.player.stamina_points -= 4
+                        state.player.stamina_points -= 3
                     self.deck.shuffle()
 
 
@@ -481,6 +483,8 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "bet_phase":
+            if self.money > self.bet:
+                self.bet = self.money
 
             self.bet_screen_text.update(state)
 
@@ -640,7 +644,7 @@ class BlackJackMackScreen(Screen):
             if self.player_score > 21:
                 state.player.money -= self.bet
                 self.money += self.bet
-                state.player.stamina_points -= 6
+                state.player.stamina_points -= 4
                 print("Going to bust a giant busttttttttter")
 
                 state.player.exp += 10
@@ -844,6 +848,7 @@ class BlackJackMackScreen(Screen):
                 self.back_magic_explain_component.update(state)
 
                 if controller.isTPressed:
+                    self.magic_menu_index = 0
                     print(str(controller.isTPressed))
                     controller.isTPressed = False
                     print(str(controller.isTPressed))
@@ -919,14 +924,14 @@ class BlackJackMackScreen(Screen):
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                     if self.bet <= 50:
                         state.player.exp += 10
-                        state.player.stamina_points -= 5
+                        state.player.stamina_points -= 3
                         self.first_message_display = f"You gain 10 exp, 0 gold, you lose 5 HP. "
 
                     else:
                         self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
 
                         state.player.exp += 20
-                        state.player.stamina_points -= 10
+                        state.player.stamina_points -= 5
 
                     self.second_message_display = "You tie player press T when ready"
                     print("nd;LLLLLLLLLLlllll;snalfnsal;fnlsnfsanf;" + str(state.player.exp))

@@ -290,6 +290,7 @@ class Player(Entity):
                 break
 
         if self.canMove:
+            self.menu_paused = False
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
                 self.current_direction = 'left'

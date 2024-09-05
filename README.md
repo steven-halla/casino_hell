@@ -498,6 +498,8 @@ allow 1 paid version of 500 gold membership
 # iT seems you can talk to NPCS while in option menu need to fix that bug
 # i do not want to move while i am reading treasure chest text message
 # craps needs ways to exit screen when gaem over conditions
+# work on level up screen for all screens
+# fix betting for black jack - if money > bet
 
 
 
