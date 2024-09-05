@@ -3,13 +3,14 @@ from typing import List
 
 import pygame
 
+from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
 from game_constants.events import Events
 from screen.examples.screen import Screen
 
 
 
-class OpossumInACanCandyScreen(Screen):
+class OpossumInACanCandyScreen(BattleScreen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
@@ -48,7 +49,7 @@ class OpossumInACanCandyScreen(Screen):
                                     ]
 
         # person of caution drowning in a swamp of putrid decay, purge yourself of purity and become one with the rot...poison of bravery
-        self.opossumInACanMessages = {
+        self.battle_messages = {
             "welcome_message": TextBox(
                 ["Candy here, good luck to you", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
                 (45, 460, 700, 130),  # Position and size
@@ -166,6 +167,13 @@ class OpossumInACanCandyScreen(Screen):
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
+            ),
+
+            "level_up": TextBox(
+                [f"Grats you levels up. ", "", "", "", ""],
+                (65, 460, 700, 130),
+                36,
+                500
             ),
 
             # You can add more game state keys and TextBox instances here
@@ -340,11 +348,11 @@ class OpossumInACanCandyScreen(Screen):
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False
 
-            # if self.opossumInACanMessages["tally_message"].message_index == 1 and state.player.money < 1:
+            # if self.battle_messages["tally_message"].message_index == 1 and state.player.money < 1:
             #     print("No money ")
             #     self.game_state = "game_over_no_money"
             #
-            # if self.opossumInACanMessages["tally_message"].message_index == 1 and state.player.stamina < 1:
+            # if self.battle_messages["tally_message"].message_index == 1 and state.player.stamina < 1:
             #     self.game_state = "game_over_no_stamina"
 
 
@@ -435,16 +443,16 @@ class OpossumInACanCandyScreen(Screen):
 
                 self.tally_money_once = False
 
-            self.opossumInACanMessages["tally_message"].update(state)
+            self.battle_messages["tally_message"].update(state)
 
 
 
-            if self.sallyOpossumMoney < 1 and self.opossumInACanMessages["tally_message"].message_index == 1:
+            if self.sallyOpossumMoney < 1 and self.battle_messages["tally_message"].message_index == 1:
                 # print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
                 self.sallyOpossumIsDefeated = True
                 self.game_state = "real_opossum_defeated_screen"
 
-            elif self.opossumInACanMessages["tally_message"].message_index == 1:
+            elif self.battle_messages["tally_message"].message_index == 1:
 
                 if state.player.money < 300:
                     if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
@@ -459,16 +467,25 @@ class OpossumInACanCandyScreen(Screen):
                     self.game_state = "play_again_or_leave_screen"
 
         if self.game_state == "no_money_you_leave":
-            self.opossumInACanMessages["less_than_150_money"].update(state)
-            if self.opossumInACanMessages["less_than_150_money"].is_finished():
+            self.battle_messages["less_than_150_money"].update(state)
+            if self.battle_messages["less_than_150_money"].is_finished():
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
 
         if self.game_state == "welcome_screen":
-            self.opossumInACanMessages["welcome_message"].update(state)
 
-            if self.opossumInACanMessages["welcome_message"].message_index == 3:
+
+            if state.player.leveling_up == True:
+                self.game_state = "level_up_screen"
+
+            self.battle_messages["welcome_message"].update(state)
+
+            if self.battle_messages["welcome_message"].message_index == 3:
                 self.game_state = "menu_screen"
+
+
+        if self.game_state == "level_up_screen":
+            self.handle_level_up(state, state.controller)
 
         if self.game_state == "menu_screen":
             if "shake" in self.magic_menu_selector:
@@ -512,9 +529,9 @@ class OpossumInACanCandyScreen(Screen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "pick_screen":
-            self.opossumInACanMessages["pick_message"].update(state)
+            self.battle_messages["pick_message"].update(state)
 
-            if self.opossumInACanMessages["pick_message"].current_message_finished():
+            if self.battle_messages["pick_message"].current_message_finished():
 
 
                 if state.controller.isBPressed:
@@ -566,14 +583,14 @@ class OpossumInACanCandyScreen(Screen):
 
                     self.reveal_selected_box_content(state)
 
-                self.opossumInACanMessages["pick_message"].update(state)
+                self.battle_messages["pick_message"].update(state)
 
         if self.game_state == "immune_lose_screen":
 
             if self.talley_checker == False:
                 self.talley_checker = True
 
-            self.opossumInACanMessages["immune_lose_message"].update(state)
+            self.battle_messages["immune_lose_message"].update(state)
 
 
 
@@ -605,19 +622,19 @@ class OpossumInACanCandyScreen(Screen):
             # print("you gained: " + str(100) + "exp")
             # print("Your after total exp is: " + str(state.player.exp))
             #
-            # print(str(self.opossumInACanMessages["lose_message"].message_index))
+            # print(str(self.battle_messages["lose_message"].message_index))
 
 
             # Reset the message index every time you enter the lose_screen
             if not self.initialized_message:
-                self.opossumInACanMessages["lose_message"].message_index = 0
+                self.battle_messages["lose_message"].message_index = 0
                 self.initialized_message = True  # Set the flag to True to avoid resetting again
 
             # Print the current message index for debugging
-            # print(f"Current 'lose_message' index: {self.opossumInACanMessages['lose_message'].message_index}")
+            # print(f"Current 'lose_message' index: {self.battle_messages['lose_message'].message_index}")
 
             # Update the lose message after resetting the index
-            self.opossumInACanMessages["lose_message"].update(state)
+            self.battle_messages["lose_message"].update(state)
 
 
 
@@ -625,7 +642,7 @@ class OpossumInACanCandyScreen(Screen):
 
 
             # Perform actions based on the message_index
-            if self.opossumInACanMessages["lose_message"].message_index == 2:
+            if self.battle_messages["lose_message"].message_index == 2:
                 state.player.hasRabies = True
 
                 self.initializeGarbageCans()
@@ -669,7 +686,7 @@ class OpossumInACanCandyScreen(Screen):
         if self.game_state == "play_again_or_leave_screen":
             self.rabiesStaminaChecker = False
 
-            self.opossumInACanMessages["play_again_or_leave_message"].update(state)
+            self.battle_messages["play_again_or_leave_message"].update(state)
 
             if state.controller.isUpPressed:
                 self.play_again_or_quit_index -= 1
@@ -695,7 +712,7 @@ class OpossumInACanCandyScreen(Screen):
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     state.controller.isTPressed = False  # Reset the button state
-                    self.opossumInACanMessages["tally_message"].message_index = 0
+                    self.battle_messages["tally_message"].message_index = 0
                     state.player.money -= 300
                     self.sallyOpossumMoney += 300
                     self.quest_money -= 300
@@ -730,8 +747,8 @@ class OpossumInACanCandyScreen(Screen):
 
 
         if self.game_state == "spell_casting_poison":
-            self.opossumInACanMessages["player_debuff_magic_poison_message"].update(state)
-            if self.opossumInACanMessages["player_debuff_magic_poison_message"].message_index == 1:
+            self.battle_messages["player_debuff_magic_poison_message"].update(state)
+            if self.battle_messages["player_debuff_magic_poison_message"].message_index == 1:
                 self.player_debuff_poison += 5
                 self.magic_points -= 1
                 self.game_state = "menu_screen"
@@ -740,8 +757,8 @@ class OpossumInACanCandyScreen(Screen):
             self.opossumBite = True
             state.player.hasRabies = True
             state.player.stamina_points = 1
-            self.opossumInACanMessages["opossum_defeated_message"].update(state)
-            if self.opossumInACanMessages["opossum_defeated_message"].message_index == 3:
+            self.battle_messages["opossum_defeated_message"].update(state)
+            if self.battle_messages["opossum_defeated_message"].message_index == 3:
                 # Change the game state to "bet"
                 self.music_on = True
                 if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
@@ -753,8 +770,8 @@ class OpossumInACanCandyScreen(Screen):
 
         if self.game_state == "real_opossum_defeated_screen":
             self.opossumBite = True
-            self.opossumInACanMessages["real_opossum_defeated_message"].update(state)
-            if self.opossumInACanMessages["real_opossum_defeated_message"].message_index == 1:
+            self.battle_messages["real_opossum_defeated_message"].update(state)
+            if self.battle_messages["real_opossum_defeated_message"].message_index == 1:
                 self.music_on = True
                 # Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
                 if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
@@ -768,8 +785,8 @@ class OpossumInACanCandyScreen(Screen):
 
 
         if self.game_state == "hero_defeated_stamina_screen":
-            self.opossumInACanMessages["hero_defeated_stamina_message"].update(state)
-            if self.opossumInACanMessages["hero_defeated_stamina_message"].message_index == 1:
+            self.battle_messages["hero_defeated_stamina_message"].update(state)
+            if self.battle_messages["hero_defeated_stamina_message"].message_index == 1:
                 self.music_on = True
                 if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                     print("You got the 500")
@@ -783,8 +800,8 @@ class OpossumInACanCandyScreen(Screen):
 
 
         if self.game_state == "hero_defeated_money_screen":
-            self.opossumInACanMessages["hero_defeated_money_message"].update(state)
-            if self.opossumInACanMessages["hero_defeated_money_message"].message_index == 1:
+            self.battle_messages["hero_defeated_money_message"].update(state)
+            if self.battle_messages["hero_defeated_money_message"].message_index == 1:
                 # Change the game state to "bet"
                 self.music_on = True
 
@@ -794,7 +811,7 @@ class OpossumInACanCandyScreen(Screen):
 
 
 
-            # if self.opossumInACanMessages["defeat_message"].message_index == 2:
+            # if self.battle_messages["defeat_message"].message_index == 2:
             #
             #     self.game_state = "pick_screen"
 
@@ -978,15 +995,18 @@ class OpossumInACanCandyScreen(Screen):
         # print(str(self.game_state))
 
         if self.game_state == "welcome_screen":
-            # self.opossumInACanMessages["welcome_message"].update(state)
+            # self.battle_messages["welcome_message"].update(state)
 
-            self.opossumInACanMessages["welcome_message"].draw(state)
+            self.battle_messages["welcome_message"].draw(state)
+
+        if self.game_state == "level_up_screen":
+            self.draw_level_up(state)
 
         if self.game_state == "tally_screen":
-            # self.opossumInACanMessages["welcome_message"].update(state)
+            # self.battle_messages["welcome_message"].update(state)
 
-            self.opossumInACanMessages["tally_message"].draw(state)
-            if self.opossumInACanMessages["tally_message"].message_index == 0:
+            self.battle_messages["tally_message"].draw(state)
+            if self.battle_messages["tally_message"].message_index == 0:
                 # print("These are your total winnings: " + str(self.total_winnings))
                 # print("part 2: " + str(self.player_score))
                 # print("total winnings are part 2: " + str(self.total_winnings))
@@ -1066,7 +1086,7 @@ class OpossumInACanCandyScreen(Screen):
                     self.game_state = "tally_screen"
 
         if self.game_state == "spell_casting_poison":
-            self.opossumInACanMessages["player_debuff_magic_poison_message"].draw(state)
+            self.battle_messages["player_debuff_magic_poison_message"].draw(state)
 
 
 
@@ -1074,8 +1094,8 @@ class OpossumInACanCandyScreen(Screen):
         if self.game_state == "pick_screen":
 
 
-            # self.opossumInACanMessages["welcome_message"].update(state)
-            if self.opossumInACanMessages["pick_message"].message_index == 1:
+            # self.battle_messages["welcome_message"].update(state)
+            if self.battle_messages["pick_message"].message_index == 1:
                 state.DISPLAY.blit(self.font.render(f"Your pick equals :{self.trash_can_pick}", True,
                                                     (255, 255, 255)), (70, 460))
 
@@ -1086,7 +1106,7 @@ class OpossumInACanCandyScreen(Screen):
                     #     self.game_state = "play_again_or_leave_screen"
 
 
-            self.opossumInACanMessages["pick_message"].draw(state)
+            self.battle_messages["pick_message"].draw(state)
 
 
 
@@ -1165,11 +1185,11 @@ class OpossumInACanCandyScreen(Screen):
             state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
             # print(str(self.debuff_keen_perception))
             if self.magic_menu_opossum_index == 0:
-                self.opossumInACanMessages["magic_description_reveal"].update(state)
-                self.opossumInACanMessages["magic_description_reveal"].draw(state)
+                self.battle_messages["magic_description_reveal"].update(state)
+                self.battle_messages["magic_description_reveal"].draw(state)
             elif self.magic_menu_opossum_index == 1:
-                self.opossumInACanMessages["magic_description_back"].update(state)
-                self.opossumInACanMessages["magic_description_back"].draw(state)
+                self.battle_messages["magic_description_back"].update(state)
+                self.battle_messages["magic_description_back"].draw(state)
             if state.controller.isTPressed:
                 if self.magic_menu_opossum_index == 0:
                     if state.player.focus_points > 0:
@@ -1192,22 +1212,22 @@ class OpossumInACanCandyScreen(Screen):
             #         state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "immune_lose_screen":
-            # self.opossumInACanMessages["welcome_message"].update(state)
+            # self.battle_messages["welcome_message"].update(state)
 
-            self.opossumInACanMessages["immune_lose_message"].draw(state)
+            self.battle_messages["immune_lose_message"].draw(state)
 
             if state.controller.isTPressed:
                 state.controller.isTPressed = False
                 self.game_state = "play_again_or_leave_screen"
 
         if self.game_state == "lose_screen":
-            # self.opossumInACanMessages["welcome_message"].update(state)
+            # self.battle_messages["welcome_message"].update(state)
 
-            self.opossumInACanMessages["lose_message"].draw(state)
+            self.battle_messages["lose_message"].draw(state)
 
 
         if self.game_state == "play_again_or_leave_screen":
-            self.opossumInACanMessages["play_again_or_leave_message"].draw(state)
+            self.battle_messages["play_again_or_leave_message"].draw(state)
             self.tally_money_once = True
 
             bet_box_width = 150
@@ -1247,34 +1267,34 @@ class OpossumInACanCandyScreen(Screen):
         if self.game_state == "opossum_defeated_screen":
             if state.player.exp < 100:
                 state.player.exp = 100
-            self.opossumInACanMessages["opossum_defeated_message"].draw(state)
+            self.battle_messages["opossum_defeated_message"].draw(state)
 
         if self.game_state == "real_opossum_defeated_screen":
-            self.opossumInACanMessages["real_opossum_defeated_message"].draw(state)
+            self.battle_messages["real_opossum_defeated_message"].draw(state)
 
 
         if self.game_state == "hero_defeated_stamina_screen":
-            self.opossumInACanMessages["hero_defeated_stamina_message"].draw(state)
+            self.battle_messages["hero_defeated_stamina_message"].draw(state)
 
         if self.game_state == "hero_defeated_money_screen":
-            self.opossumInACanMessages["hero_defeated_stamina_screen"].draw(state)
+            self.battle_messages["hero_defeated_stamina_screen"].draw(state)
 
         if self.game_state == "no_money_you_leave":
-            self.opossumInACanMessages["less_than_150_money"].draw(state)
+            self.battle_messages["less_than_150_money"].draw(state)
 
         if self.game_state == "game_over_no_money":
-            self.opossumInACanMessages["less_than_150_money"].draw(state)
-            self.opossumInACanMessages["game_over_no_money"].update(state)
-            self.opossumInACanMessages["game_over_no_money"].draw(state)
-            if self.opossumInACanMessages["game_over_no_money"].is_finished():
+            self.battle_messages["less_than_150_money"].draw(state)
+            self.battle_messages["game_over_no_money"].update(state)
+            self.battle_messages["game_over_no_money"].draw(state)
+            if self.battle_messages["game_over_no_money"].is_finished():
                 if state.controller.isTPressed:
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
 
         if self.game_state == "game_over_no_stamina":
-            self.opossumInACanMessages["game_over_no_stamina"].update(state)
-            self.opossumInACanMessages["game_over_no_stamina"].draw(state)
-            if self.opossumInACanMessages["game_over_no_stamina"].is_finished():
+            self.battle_messages["game_over_no_stamina"].update(state)
+            self.battle_messages["game_over_no_stamina"].draw(state)
+            if self.battle_messages["game_over_no_stamina"].is_finished():
                 if state.controller.isTPressed:
                     state.player.money -= 100
                     if state.player.money < 1:
