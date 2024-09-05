@@ -139,7 +139,7 @@ class Area2ShopKeeper(Npc):
         player = state.player
 
         if state.controller.isTPressed and (
-                pygame.time.get_ticks() - self.state_start_time) > 500:
+                pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
             distance = math.sqrt(
                 (player.collision.x - self.collision.x) ** 2 + (
                             player.collision.y - self.collision.y) ** 2)

@@ -136,7 +136,7 @@ class Area2BarKeep(Npc):
                         player.collision.y - self.collision.y) ** 2)
             # print("distance: " + str(distance))
 
-            if distance < 100:
+            if distance < 100 and state.player.menu_paused == False:
                 # print("start state: talking")
 
                 self.state = "talking"
