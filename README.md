@@ -497,6 +497,7 @@ allow 1 paid version of 500 gold membership
 # fix coin flip better npc so that she wont restart battle screen if her money is 0
 # iT seems you can talk to NPCS while in option menu need to fix that bug
 # i do not want to move while i am reading treasure chest text message
+# craps needs ways to exit screen when gaem over conditions
 
 
 

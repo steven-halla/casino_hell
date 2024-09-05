@@ -1,99 +1,67 @@
 {
-    "level": 5,
-    "exp": 1606,
-    "stamina_points": 420,
-    "max_stamina_points": 420,
-    "focus_points": 220,
-    "max_focus_points": 220,
+    "level": 4,
+    "exp": 1000,
+    "stamina_points": 240,
+    "max_stamina_points": 240,
+    "focus_points": 120,
+    "max_focus_points": 120,
     "companions": [
         "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses",
-        "STAT_POTION_AREA_2",
-        "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION",
-        "SOCKS_OF_PERCEPTION",
-        "Black Hat"
+        "coin flip glasses"
+
     ],
     "equipped_items": [
         "sir leopold's paw",
         "coin flip glasses",
-        "SOCKS_OF_PERCEPTION"
+        "opossum repellent"
     ],
     "npcitems": [
         "level 4 token",
-        "level 4 token",
-        "level 4 token",
-        "level 4 token",
-        "level 4 token",
-        "level 4 token"
+        "level 5 token"
+
     ],
     "magicinventory": [
         "reveal",
         "shield",
-        "shake",
-        "HEADS_FORCE",
-        "SLOTS_HACK"
+        "shake"
+
     ],
     "body": 1,
     "mind": 1,
-    "spirit": 2,
-    "perception": 2,
+    "spirit": 1,
+    "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 6190,
+    "money": 2000,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract",
-        "BBQ_SAUCE"
+        "contract"
     ],
     "level3reward": true,
     "food": 1,
-    "days": 19,
+    "days": 10,
     "leveltwonpcstate": [
-        "STAT_POTION_AREA_2",
-        "QUEST_1_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_QUEST_1_REWARD",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "BBQ_SAUCE",
-        "MC_NUGGET_SECOND_QUEST_COMPLETE",
-        "NUGG_QUEST_TWO_MONEY",
-        "MC_NUGGET_QUEST_2_REWARD",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "BLACK_JACK_BLACK_MACK_DEFEATED",
-        "MC_NUGGET_THIRD_QUEST_COMPLETE",
-        "MC_NUGGET_QUEST_3_REWARD",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "500 Gold",
-        "SLOTS_RIPPA_SNAPPA_DEFEATED"
+
     ],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": true,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 380,
+    "coinflipbetteymoney": 1000,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 0,
+    "opossuminacancandymoney": 1000,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 0,
+    "blackjackmackmoney": 1000,
     "shopkeeperpotion": true,
     "shopkeepersavecoin": true,
-    "slotsrippasnappamoney": 0,
+    "slotsrippasnappamoney": 1000,
     "crapscrappymoney": 1000
 }

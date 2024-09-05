@@ -543,6 +543,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 controller.isTPressed = False
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
                 state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 self.welcome_screen_index = 0
                 controller.isTPressed = False
 

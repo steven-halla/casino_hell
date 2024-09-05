@@ -103,6 +103,7 @@ class Player(Entity):
         self.quest_items_index = 0
         self.perception_boost_item = 1
         self.base_perception = 1
+        self.second_floor_stamina_boost_item = 1
 
 
 
@@ -180,6 +181,11 @@ class Player(Entity):
 
         elif Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
             self.perception = self.base_perception
+
+        # if Equipment.HEALTHY_GLOVES.value in state.player.equipped_items:
+        #     self.max_stamina_points = self.max_stamina_points + 30
+        # elif Equipment.HEALTHY_GLOVES.value not in state.player.equipped_items:
+        #     self.max_stamina_points = self.max_stamina_points
 
 
 
@@ -782,13 +788,32 @@ class Player(Entity):
             if self.looking_at_items == True:
 
                 # Equip the selected item if T is pressed
+                # Equip the selected item if T is pressed
                 if state.controller.isTPressed:
                     state.controller.isTPressed = False
+
+                    # Check if the currently equipped item is HEALTHY_GLOVES and we are replacing it
+                    currently_equipped = self.equipped_items[self.items_equipped_index]
+
+                    if currently_equipped == Equipment.HEALTHY_GLOVES.value:
+                        # Unequip the gloves and reduce stamina
+                        self.max_stamina_points -= 30
+                        self.stamina_points -= 30
+                        print(f"Unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
+
+                    # Equip the new item
                     self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
 
+                    # If the newly equipped item is HEALTHY_GLOVES, add the stamina boost
+                    if self.items[self.item_index] == Equipment.HEALTHY_GLOVES.value:
+                        self.max_stamina_points += 30
+                        self.stamina_points += 30
+
+                        print(f"Equipped HEALTHY_GLOVES: Max stamina increased by 30")
 
                     print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
                     self.looking_at_items = False
+
 
                 if state.controller.isBPressed:
                     state.controller.isBPressed = False

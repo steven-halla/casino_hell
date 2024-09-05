@@ -378,7 +378,8 @@ class CrapsHappyScreen(BattleScreen):
                 controller.isTPressed = False
 
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
-                state.currentScreen = state.area2StartScreen
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 controller.isTPressed = False
 
         elif self.game_state == "bet_screen":
@@ -917,32 +918,36 @@ class CrapsHappyScreen(BattleScreen):
                 self.battle_messages["you_win"].draw(state)
 
                 if self.battle_messages["you_win"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                    state.currentScreen = state.area2GamglingScreen
+                    state.area2GamglingScreen.start(state)
 
             if state.player.stamina_points < 1:
                 self.battle_messages["game_over_no_stamina_message"].draw(state)
 
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
-
+                    state.currentScreen = state.area2RestScreen
+                    state.area2RestScreen.start(state)
             elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
                 self.battle_messages["game_over_low_stamina_message"].draw(state)
 
                 if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                    state.currentScreen = state.area2GamglingScreen
+                    state.area2GamglingScreen.start(state)
 
 
             elif state.player.money < 50 and state.player.money > 0:
                 self.battle_messages["game_over_low_money_message"].draw(state)
 
                 if self.battle_messages["game_over_low_money_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                    state.currentScreen = state.area2RestScreen
+                    state.area2RestScreen.start(state)
 
             elif state.player.money <= 0:
                 self.battle_messages["game_over_no_money_message"].draw(state)
 
                 if self.battle_messages["game_over_no_money_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                    state.currentScreen = state.area2RestScreen
+                    state.area2RestScreen.start(state)
 
         elif self.game_state == "bet_screen":
             black_box_height = 221 - 50  # Adjust height
