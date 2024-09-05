@@ -41,7 +41,7 @@ class Area2MazeToRestArea(Npc):
                              (player.collision.y - self.collision.y) ** 2)
 
         if distance < 40 and state.controller.isTPressed and \
-                (pygame.time.get_ticks() - self.state_start_time) > 500:
+                (pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
 
             self.state_start_time = pygame.time.get_ticks()
             if state.controller.isTPressed:

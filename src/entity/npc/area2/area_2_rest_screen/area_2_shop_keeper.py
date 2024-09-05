@@ -145,7 +145,7 @@ class Area2ShopKeeper(Npc):
                             player.collision.y - self.collision.y) ** 2)
             # print("distance: " + str(distance))
 
-            if distance < 100:
+            if distance < 100 :
                 state.controller.isTPressed = False
                 # print("start state: talking")
 
