@@ -267,6 +267,7 @@ class CoinFlipBettyScreen(BattleScreen):
         self.weighted_coin = False
         self.magic_points = 1
         self.player_debuff_silence_counter = 0
+        self.heads_focus = False
 
         pygame.mixer.music.stop()
     def stop_music(self):
@@ -330,10 +331,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
 
-        if self.phase > 5:
-            self.even = False
-            self.odd = False
-            self.phase = 1
+
         # evens and odds
         if self.weighted_coin == True:
             self.result = CoinFlipConstants.HEADS.value
@@ -375,8 +373,7 @@ class CoinFlipBettyScreen(BattleScreen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
-        print("Debuff counter: " + str(self.debuff_counter))
-        print("player counter: " + str(self.player_debuff_silence_counter))
+
         if self.debuff_counter < 1:
             self.debuff_vanish = False
 
@@ -605,6 +602,8 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
         if self.game_state == "results_screen":
+
+
             if self.weighted_coin == True:
                 self.result = CoinFlipConstants.HEADS.value
             # if self.coinFlipTedMoney < 10:
@@ -612,7 +611,8 @@ class CoinFlipBettyScreen(BattleScreen):
 
             # Assuming this is part of a class
 
-
+            # if self.heads_focus == True:
+            #     self.result = "heads"
 
             if "coin flip glasses" in state.player.items and self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
@@ -634,6 +634,10 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.controller.isTPressed = False
                     if self.player_debuff_silence_counter > 0:
                         self.player_debuff_silence_counter -= 1
+                    if self.phase > 5:
+                        self.even = False
+                        self.odd = False
+                        self.phase = 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
                     if self.debuff_counter > 0:
@@ -656,6 +660,10 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.controller.isTPressed = False
                     if self.player_debuff_silence_counter > 0:
                         self.player_debuff_silence_counter -= 1
+                    if self.phase > 5:
+                        self.even = False
+                        self.odd = False
+                        self.phase = 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
                     if self.debuff_counter > 0:
@@ -679,6 +687,10 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.controller.isTPressed = False
                     if self.player_debuff_silence_counter > 0:
                         self.player_debuff_silence_counter -= 1
+                    if self.phase > 5:
+                        self.even = False
+                        self.odd = False
+                        self.phase = 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
                     if self.debuff_counter > 0:
@@ -727,6 +739,8 @@ class CoinFlipBettyScreen(BattleScreen):
                 state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "play_again_screen":
+            self.heads_focus = False
+            print(self.heads_focus)
 
             if state.player.money < 1:
                 self.game_state = "game_over_no_money"
@@ -1188,7 +1202,16 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.controller.isTPressed = False  # Reset the button state
                     self.game_state = "welcome_screen"
 
+                elif self.magicindex == 1 and state.player.focus_points > 50 and Magic.HEADS_FORCE.value in state.player.magicinventory:
+                    self.weighted_coin = True
+                    state.controller.isTPressed = False  # Reset the button state
+                    print("mewlinglinglinglignlikng")
+                    self.game_state = "welcome_screen"
+
+
+
                 elif self.magicindex == 1 and state.player.focus_points > 0:
+                    print("lalalalalalallaallaalallalala")
 
 
                     self.spell_sound.play()  # Play the sound effect once
@@ -1215,7 +1238,6 @@ class CoinFlipBettyScreen(BattleScreen):
         #     self.battle_messages["results_message"].draw(state)
         if self.game_state == "results_screen":
 
-            print("your results are in :  " + str(self.result))
             self.battle_messages["results_message"].update(state)
             self.battle_messages["results_message"].draw(state)
 
