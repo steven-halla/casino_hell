@@ -1003,7 +1003,11 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.draw_hero_info_boxes(state)
 
         self.draw_grid_box(state)
-        self.draw_enemy_info_box(state)
+        if self.slot_hack == 0:
+            self.draw_enemy_info_box(state)
+        elif self.slot_hack > 0:
+            self.draw_enemy_info_box_debuff(state)
+
 
         if self.hide_numbers:
             self.draw_mask_box(state)
