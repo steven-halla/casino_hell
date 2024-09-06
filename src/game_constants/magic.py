@@ -6,7 +6,6 @@ class Magic(Enum):
     HEADS_FORCE = "HEADS_FORCE"  # this is gained from gaining level 7
     SLOTS_HACK = "SLOTS_HACK"  # this is a level 2 tier reward from mc nugg
     CRAPS_LUCKY_7 = "CRAPS_LUCKY_7"    #  this is gained with mind 2
-    OPOSSUM_AVARICE = "OPOSSUM_AVARICE"  # found in perception 3 treasure chest
 
     @staticmethod
     def add_magic_to_player(player, magic):

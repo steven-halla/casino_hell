@@ -534,9 +534,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
                 self.magic_screen_index = 0
+                # controller.isTPressed = False
+
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
-                controller.isTPressed = False
             elif self.welcome_screen_index == 2 and controller.isTPressed and Events.MC_NUGGET_QUEST_1_REWARD not in state.player.level_two_npc_state:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"

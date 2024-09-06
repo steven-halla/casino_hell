@@ -27,7 +27,8 @@
         "reveal",
         "shield",
         "shake",
-        "HEADS_FORCE"
+        "HEADS_FORCE",
+        "SLOTS_HACK"
     ],
     "body": 2,
     "mind": 1,
