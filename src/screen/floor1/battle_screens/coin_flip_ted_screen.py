@@ -507,7 +507,7 @@ class CoinFlipTedScreen(Screen):
             self.coin_flip_messages["results_message"].update(state)
 
             # Construct the result message
-            result_message = f"Here you go, the result of your flip: {self.result}"
+            # result_message = f"Here you go, the result of your flip: {self.result}"
             # bet_message = f"Bet amount: {self.bet}"
 
             # Update the messages in the TextBox

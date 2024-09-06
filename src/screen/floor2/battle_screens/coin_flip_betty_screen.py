@@ -336,7 +336,7 @@ class CoinFlipBettyScreen(BattleScreen):
             self.phase = 1
         # evens and odds
         if self.weighted_coin == True:
-            self.result =  CoinFlipConstants.HEADS.value
+            self.result = CoinFlipConstants.HEADS.value
         #
         if self.even == False and self.odd == False:
             coin_fate = random.randint(1, 2)
@@ -350,27 +350,27 @@ class CoinFlipBettyScreen(BattleScreen):
         if self.even == True and self.weighted_coin == False:
 
             if self.phase == 1:
-                self.result = CoinFlipConstants.HEADS
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 2:
-                self.result = CoinFlipConstants.TAILS
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 3:
-                self.result = CoinFlipConstants.HEADS
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 4:
-                self.result = CoinFlipConstants.TAILS
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 5:
-                self.result = CoinFlipConstants.HEADS
+                self.result = CoinFlipConstants.HEADS.value
 
         elif self.odd == True and self.weighted_coin == False:
             if self.phase == 1:
-                self.result = CoinFlipConstants.TAILS
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 2:
-                self.result = CoinFlipConstants.HEADS
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 3:
-                self.result = CoinFlipConstants.TAILS
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 4:
-                self.result = CoinFlipConstants.HEADS
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 5:
-                self.result = CoinFlipConstants.TAILS
+                self.result = CoinFlipConstants.TAILS.value
 
         self.game_state = "results_screen"
 
@@ -536,7 +536,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
         if self.game_state == "magic_screen":
-            if Magic.HEADS_FORCE in state.player.magicinventory and Magic.HEADS_FORCE not in self.magic_menu_selector:
+            if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
                 self.magic_menu_selector.insert(1, Magic.HEADS_FORCE.value )
 
             if state.controller.isUpPressed:
@@ -600,7 +600,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
         if self.game_state == "results_screen":
             if self.weighted_coin == True:
-                self.result = CoinFlipConstants.HEADS
+                self.result = CoinFlipConstants.HEADS.value
             # if self.coinFlipTedMoney < 10:
             #     self.game_state = "enemy_defeated_screen"
 
@@ -630,7 +630,8 @@ class CoinFlipBettyScreen(BattleScreen):
                         self.player_debuff_silence_counter -= 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
-                    self.debuff_counter -= 1
+                    if self.debuff_counter > 0:
+                        self.debuff_counter -= 1
 
 
 
@@ -651,8 +652,8 @@ class CoinFlipBettyScreen(BattleScreen):
                         self.player_debuff_silence_counter -= 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
-                    self.debuff_counter -= 1
-
+                    if self.debuff_counter > 0:
+                        self.debuff_counter -= 1
 
 
             elif self.player_choice != self.result:
@@ -674,7 +675,8 @@ class CoinFlipBettyScreen(BattleScreen):
                         self.player_debuff_silence_counter -= 1
                     self.game_state = "welcome_screen"
                     self.weighted_coin = False
-                    self.debuff_counter -= 1
+                    if self.debuff_counter > 0:
+                        self.debuff_counter -= 1
 
 
 
@@ -688,8 +690,8 @@ class CoinFlipBettyScreen(BattleScreen):
                     if roll > 0:
                         self.game_state = "shield_screen"
                         self.weighted_coin = False
-                        self.debuff_counter -= 1
-
+                        if self.debuff_counter > 0:
+                            self.debuff_counter -= 1
                     # elif roll <= 90:
                     #
                     #     state.player.money -= self.bet
@@ -701,11 +703,11 @@ class CoinFlipBettyScreen(BattleScreen):
         self.battle_messages["results_message"].update(state)
 
         # Construct the result message
-        result_message = f"Here you go, the result of your flip: {self.result}"
+        # result_message = f"Here you go, the result of your flip: {self.result}"
         # bet_message = f"Bet amount: {self.bet}"
 
         # Update the messages in the TextBox
-        self.battle_messages["results_message"].messages = [result_message]
+        # self.battle_messages["results_message"].messages = [result_message]
 
 
         # if state.controller.isTPressed:
@@ -1084,12 +1086,12 @@ class CoinFlipBettyScreen(BattleScreen):
 
             if state.controller.isTPressed:
                 if self.headstailsindex == 0:
-                    self.player_choice = CoinFlipConstants.HEADS
+                    self.player_choice = CoinFlipConstants.HEADS.value
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
                 elif self.headstailsindex == 1:
-                    self.player_choice = CoinFlipConstants.TAILS
+                    self.player_choice = CoinFlipConstants.TAILS.value
                     self.game_state = "flip_screen"
                     state.controller.isTPressed = False  # Reset the button state
 
