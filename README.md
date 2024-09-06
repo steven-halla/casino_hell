@@ -500,6 +500,7 @@ allow 1 paid version of 500 gold membership
 # craps needs ways to exit screen when gaem over conditions
 # work on level up screen for all screens
 # fix betting for black jack - if money > bet
+# need to handle low money responses for npcs
 
 
 

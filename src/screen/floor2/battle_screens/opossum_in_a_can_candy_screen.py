@@ -42,11 +42,17 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.magic_menu_selector_index = 0
         self.game_state = "welcome_opposum"
         self.winner_or_looser: List[str] = ["win", "win",
-                                            "win", "big win", "lose",
+                                            "big win", "big win", "lose",
                                             "lucky_star",
                                             "X3_star", "lose",
 
                                     ]
+        self.winner_or_looser_lucky: List[str] = ["win", "win",
+                                            "big win", "big win", "lose",
+                                            "lucky_star",
+                                            "X3_star", "win",
+
+                                            ]
 
         # person of caution drowning in a swamp of putrid decay, purge yourself of purity and become one with the rot...poison of bravery
         self.battle_messages = {
@@ -222,7 +228,6 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.total_winnings = 0
 
         self.green_box_index = 0  # Index of the currently green box
-        self.initializeGarbageCans()
         self.can1 = ""
         self.can2 = ""
         self.can3 = ""
@@ -272,7 +277,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         # Play the music, -1 means the music will loop indefinitely
         pygame.mixer.music.play(-1)
 
-    def initializeGarbageCans(self):
+    def initializeGarbageCans(self, state):
         self.trash_can_pick = ""
         self.result = ""
 
@@ -280,6 +285,14 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
+        lucky_draw = random.randint(0, 100)
+        print("your lucky draw is: " + str(lucky_draw))
+
+        for luck in range(state.player.luck):
+            lucky_draw += 5
+        print("your lucky draw is: " + str(lucky_draw))
+        if lucky_draw > 90:
+            shuffled_items = random.sample(self.winner_or_looser_lucky, len(self.winner_or_looser_lucky))
 
         self.can1 = shuffled_items[0]
         # print("Can 1 contains:", self.can1)
@@ -323,24 +336,24 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         if selected_box_content == "win":
             self.trash_can_pick = "win"
-            self.player_score += 50
-            self.result = "+50"
+            self.player_score += 60
+            self.result = "+60"
 
         if selected_box_content == "big win":
             self.trash_can_pick = "win"
-            self.player_score += 100
-            self.result = "+50"
+            self.player_score += 120
+            self.result = "+120"
 
         if selected_box_content == "X3_star":
             self.trash_can_pick = "X3_star"
             self.result = "X3"
 
-            self.player_score *= 4
+            self.player_score *= 3
 
         if selected_box_content == "lucky_star":
             self.trash_can_pick = "lucky_star"
-            self.player_score += 200
-            self.result = "+200"
+            self.player_score += 250
+            self.result = "+250"
 
         if selected_box_content == "lose":
             self.result = "lose"
@@ -365,7 +378,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
             self.refresh()
-            self.initializeGarbageCans()
+            self.initializeGarbageCans(state)
             self.game_state = "immune_lose_screen"
 
 
@@ -373,6 +386,8 @@ class OpossumInACanCandyScreen(BattleScreen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+
+
         if state.controller.is1Pressed:
             self.quest_money -= 300
             state.controller.is1Pressed = False
@@ -386,7 +401,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
 
         if self.fill_cans == True:
-            self.initializeGarbageCans()
+            self.initializeGarbageCans(state)
             self.fill_cans = False
             state.player.money -= 300
             self.sallyOpossumMoney += 300
@@ -645,7 +660,7 @@ class OpossumInACanCandyScreen(BattleScreen):
             if self.battle_messages["lose_message"].message_index == 2:
                 state.player.hasRabies = True
 
-                self.initializeGarbageCans()
+                self.initializeGarbageCans(state)
                 self.initialized_message = False
 
                 if state.player.hasRabies == True and state.player.rabiesImmunity == False:
@@ -716,12 +731,12 @@ class OpossumInACanCandyScreen(BattleScreen):
                     state.player.money -= 300
                     self.sallyOpossumMoney += 300
                     self.quest_money -= 300
-                    self.initializeGarbageCans()
-
+                    self.initializeGarbageCans(state)
                     if self.magic_points > 0 and self.sallyOpossumMoney < 1000:
                         self.game_state = "spell_casting_poison"
                     else:
-                        self.player_debuff_poison -= 1
+                        if self.player_debuff_poison > 0:
+                            self.player_debuff_poison -= 1
                         if state.player.focus_points > 0:
                             state.player.focus_points -= 10
                             if state.player.focus_points < 0:
@@ -1083,7 +1098,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                     # self.sallyOpossumMoney -= self.player_score
                     state.controller.isTPressed = False
                     # self.refresh()
-                    self.initializeGarbageCans()
+                    self.initializeGarbageCans(state)
                     self.game_state = "tally_screen"
 
         if self.game_state == "spell_casting_poison":
@@ -1251,6 +1266,7 @@ class OpossumInACanCandyScreen(BattleScreen):
             text_y_no = text_y_yes + 40
             # Draw the box on the screen
             state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+            print(self.player_debuff_poison)
 
             # Draw the text on the screen (over the box)
             state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))

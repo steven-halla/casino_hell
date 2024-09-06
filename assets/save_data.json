@@ -33,7 +33,7 @@
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
-    "luck": 1,
+    "luck": 5,
     "money": 1600,
     "rabies": false,
     "immunity": true,

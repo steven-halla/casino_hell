@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="items are now displaying">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed welcome screen indexes so when quitting the curser now rest on 0th element">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/opossum_in_a_can_candy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/opossum_in_a_can_candy_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,35 +55,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.$AffectedModuleNames$.executor": "Run",
-    "Python.Unnamed.executor": "Run",
-    "Python.blackjack.executor": "Run",
-    "Python.cindy_long_hair.executor": "Run",
-    "Python.constants.executor": "Run",
-    "Python.fff.executor": "Run",
-    "Python.game.executor": "Run",
-    "Python.game_state.executor": "Run",
-    "Python.main (1).executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main.py.executor": "Run",
-    "Python.nukeem.executor": "Run",
-    "Python.opposuminacan.executor": "Run",
-    "Python.playground.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/src/entity/player",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.sourceCode",
-    "ts.external.directory.path": "/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.$AffectedModuleNames$.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cindy_long_hair.executor&quot;: &quot;Run&quot;,
+    &quot;Python.constants.executor&quot;: &quot;Run&quot;,
+    &quot;Python.craps_happy_screen.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.fff.executor&quot;: &quot;Run&quot;,
+    &quot;Python.game.executor&quot;: &quot;Run&quot;,
+    &quot;Python.game_state.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.nukeem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.opposuminacan.executor&quot;: &quot;Run&quot;,
+    &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/src/entity/player&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/entity/player" />
@@ -138,6 +141,30 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/blackjack.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="craps_happy_screen" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="casino_hell" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9 (casino_hell)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -241,29 +268,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="opposuminacan" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="nfeGame" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/opposuminacan.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="playground" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="nfeGame" />
       <option name="ENV_FILES" value="" />
@@ -289,19 +293,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.craps_happy_screen" />
       <item itemvalue="Python.blackjack" />
       <item itemvalue="Python.fff" />
       <item itemvalue="Python.nukeem" />
-      <item itemvalue="Python.opposuminacan" />
       <item itemvalue="Python.playground" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.craps_happy_screen" />
         <item itemvalue="Python.fff" />
         <item itemvalue="Python.playground" />
         <item itemvalue="Python.blackjack" />
         <item itemvalue="Python.nukeem" />
-        <item itemvalue="Python.opposuminacan" />
       </list>
     </recent_temporary>
   </component>
@@ -366,6 +370,7 @@
       <workItem from="1714066053339" duration="1464000" />
       <workItem from="1715111741652" duration="609000" />
       <workItem from="1718826618166" duration="343743000" />
+      <workItem from="1725645837107" duration="2646000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -710,7 +715,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="804" />
+    <option name="localTasksCounter" value="860" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -739,32 +744,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="had data leak with treasure chest that i had to get rid of" />
-    <MESSAGE value="CAN now have message displayed" />
-    <MESSAGE value="message is sitll not displaying using this as a save point" />
-    <MESSAGE value="chest goes away and message is displying" />
-    <MESSAGE value="fixed area and updated BBQ with new way of doing treasure" />
-    <MESSAGE value="all chest so far are deleted properly and messages are dispkying good" />
-    <MESSAGE value="fixed game balance for when to give out magic items equipment" />
-    <MESSAGE value="made some changes had to addd power potion back as it broke stuff" />
-    <MESSAGE value="about to make sweeeping changes creating a level up system" />
-    <MESSAGE value="so far level up system is working to at least display a message" />
-    <MESSAGE value="level up system works for  me" />
-    <MESSAGE value="creating level up screeen all choices are there along with arrow movements" />
-    <MESSAGE value="level up system is now created and working proper" />
-    <MESSAGE value="improved code by putting level up method in parent class like a boss" />
-    <MESSAGE value="now cant move when in status screen" />
-    <MESSAGE value="updating player  menu better graphcis" />
-    <MESSAGE value="updated menu with text" />
-    <MESSAGE value="menu is updated" />
-    <MESSAGE value="menu is updated for full screen" />
-    <MESSAGE value="good 1st iteration of box" />
-    <MESSAGE value="making progress save point" />
-    <MESSAGE value="good progress on status screen" />
-    <MESSAGE value="implenting rest of menu starting with equipment" />
-    <MESSAGE value="equpiment page created" />
-    <MESSAGE value="items are now displaying" />
-    <option name="LAST_COMMIT_MESSAGE" value="items are now displaying" />
+    <MESSAGE value="save point for craps" />
+    <MESSAGE value="craps is now displaying come out roll messages correctly but not displaying DICE" />
+    <MESSAGE value="FINALLY fixed the issue with dice not displaying after 2nd iteration" />
+    <MESSAGE value="saved" />
+    <MESSAGE value="game is now working correctly" />
+    <MESSAGE value="now displaying dice on unlucky roll" />
+    <MESSAGE value="fixing up bar keep" />
+    <MESSAGE value="allowing saving of new enemy data, fixed bugs for getting quest to work after getting money" />
+    <MESSAGE value="now we have base perception and chagnes to quest" />
+    <MESSAGE value="fixed quest" />
+    <MESSAGE value="fixed mc nugget quest so he only gives money 1 time" />
+    <MESSAGE value="fixed mc nugget and alex npcs with bug fixes for messages" />
+    <MESSAGE value="improved slots interaction wtih magic and fixed bug in craps that wasn't adding money to player" />
+    <MESSAGE value="can now equip healthy gloves, minor bug changes" />
+    <MESSAGE value="fixed bug with shop menu mixing with player menu" />
+    <MESSAGE value="fixing bug with npc interaction adn player menus mixing" />
+    <MESSAGE value="minor bug fixes, fixed up quest to work, fixed bug with npc that No option would not end convo also vfixed bug with message ending premature" />
+    <MESSAGE value="fixed betting so its not grater than money in black jack, also did minor balance changes for black jack for stamnia loss" />
+    <MESSAGE value="fixing poison for opossum in a can , player can no longer leaver, fixed text error, red text included while infected" />
+    <MESSAGE value="poison now takes away from player focus points" />
+    <MESSAGE value="level up now works for black jack" />
+    <MESSAGE value="level up now works for opssum in a can" />
+    <MESSAGE value="coin flip now level up works" />
+    <MESSAGE value="craps now has level up screen" />
+    <MESSAGE value="fixed welcome screen indexes so when quitting the curser now rest on 0th element" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed welcome screen indexes so when quitting the curser now rest on 0th element" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -794,19 +799,16 @@
           <line>394</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py</url>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1723845704474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1725648910533" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/nfeGame$nukeem.coverage" NAME="nukeem Coverage Results" MODIFIED="1702952394073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1703706369250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
