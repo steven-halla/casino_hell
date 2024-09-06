@@ -376,8 +376,14 @@ class CoinFlipBettyScreen(BattleScreen):
 
     def update(self, state: "GameState"):
         print("Debuff counter: " + str(self.debuff_counter))
+        print("player counter: " + str(self.player_debuff_silence_counter))
         if self.debuff_counter < 1:
             self.debuff_vanish = False
+
+        if self.player_debuff_silence_counter > 0:
+            self.debuff_counter = 0
+            self.debuff_vanish = False
+
 
         if self.bet > self.money:
             self.bet = self.money
@@ -453,23 +459,21 @@ class CoinFlipBettyScreen(BattleScreen):
                 for i in range(0, self.bet, 50):
                     state.player.stamina_points -= 4
                 self.game_state = "heads_tails_choose_screen"
-
-
-
-
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
+
+            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False and self.player_debuff_silence_counter == 0:
                 self.magic_screen_index = 0
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
+
             elif self.welcome_screen_index == 2 and controller.isTPressed:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
 
                 controller.isTPressed = False
 
-            elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
+            elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0 and self.player_debuff_silence_counter == 0:
                 if self.quest_money >= 500 and Events.QUEST_1_BADGE.value not in state.player.level_two_npc_state:
                     print("hi")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)

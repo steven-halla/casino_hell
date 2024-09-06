@@ -26,7 +26,8 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake"
+        "shake",
+        "HEADS_FORCE"
     ],
     "body": 2,
     "mind": 1,
@@ -49,7 +50,7 @@
     "quest1complete": true,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1000,
+    "coinflipbetteymoney": 555,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
     "opossuminacancandymoney": 500,

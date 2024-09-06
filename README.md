@@ -492,8 +492,10 @@ allow 1 paid version of 500 gold membership
 
 
 # -------------------------------sept 3 ------------------------------
-# coin flip is bugging out on what its displaying
 # coin flip magic spell needs to not allow player to cast magic, also a current shield is negated
+# coin flip  spell silence needs to be finished up 
+# need to do work for heads force
+# need to work on level up system it appears every tiem on a level up
 # fix coin flip better npc so that she wont restart battle screen if her money is 0
 # iT seems you can talk to NPCS while in option menu need to fix that bug
 # i do not want to move while i am reading treasure chest text message
@@ -501,6 +503,8 @@ allow 1 paid version of 500 gold membership
 # work on level up screen for all screens
 # fix betting for black jack - if money > bet
 # need to handle low money responses for npcs
+# need to fix descriptiosn for items/magic and other things in player status menus
+
 
 
 
