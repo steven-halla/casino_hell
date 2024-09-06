@@ -375,7 +375,9 @@ class CoinFlipBettyScreen(BattleScreen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
-        print(self.quest_money)
+        print("Debuff counter: " + str(self.debuff_counter))
+        if self.debuff_counter < 1:
+            self.debuff_vanish = False
 
         if self.bet > self.money:
             self.bet = self.money
