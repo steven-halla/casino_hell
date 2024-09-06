@@ -928,11 +928,14 @@ class CoinFlipBettyScreen(BattleScreen):
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
                                             (255, 255, 255)), (37, 70))
 
-        if self.debuff_counter == 0:
+        if self.debuff_counter == 0 and self.weighted_coin == False:
             state.DISPLAY.blit(self.font.render(f"Status: normal", True,
                                                 (255, 255, 255)), (37, 110))
         elif self.debuff_counter > 0:
             state.DISPLAY.blit(self.font.render(f"unlucky: {self.debuff_counter}  ", True,
+                                                (255, 255, 255)), (37, 110))
+        elif self.weighted_coin == True:
+            state.DISPLAY.blit(self.font.render(f"H.Force: 1  ", True,
                                                 (255, 255, 255)), (37, 110))
 
 
@@ -1013,6 +1016,9 @@ class CoinFlipBettyScreen(BattleScreen):
                 )
 
             if self.debuff_counter > 0:
+                self.magic_lock = True
+                self.welcome_screen_choices[1] = "Locked"
+            elif self.weighted_coin == True:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
             else:
