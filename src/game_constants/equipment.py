@@ -12,7 +12,7 @@ class Equipment(Enum):
     HEALTHY_GLOVES = "HEALTHY_GLOVES"   # can be bought in shop
     STAT_POTION_AREA_2 = "STAT_POTION_AREA_2" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
 
-    DARLENES_CHICKEN_NUGGET_AMULET = "DARLENES_CHICKEN_NUGGET_AMULET" # complete main quest chicken nugger sauce
+    DARLENES_CHICKEN_NUGGER_AMULET = "DARLENES_CHICKEN_NUGGER_AMULET" # complete main quest chicken nugger sauce
 
 
 

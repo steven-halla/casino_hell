@@ -4,6 +4,7 @@ import pygame
 
 from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.text_box import TextBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 from globalclasses.money_balancer import MoneyBalancer
@@ -385,16 +386,14 @@ class CrapsHappyScreen(BattleScreen):
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)  # Call the method to display the dice roll
 
                 state.player.stamina_points -= 4
-                # state.player.money -= self.bet
-                # self.money += self.bet
+
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
-                print("I'm going to torture you forever man, forever man")
-
                 self.magic_screen_index = 0
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
+
             elif self.welcome_screen_index == 2 and controller.isTPressed:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
@@ -526,10 +525,21 @@ class CrapsHappyScreen(BattleScreen):
                             self.dice_roll_1 = 1
                             self.dice_roll_1 = 1
                             self.game_state = "you_lose_come_out_roll_screen"
+
+
                         elif self.come_out_roll_total == 3:
-                            self.dice_roll_1 = 1
-                            self.dice_roll_1 = 2
-                            self.game_state = "you_lose_come_out_roll_screen"
+
+                            if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.equipped_items:
+                                self.dice_roll_1 = 1
+                                self.dice_roll_1 = 2
+                                self.game_state = "you_lose_come_out_roll_screen"
+                            else:
+                                print("you guarded against a loss******************************************---------------------------------------------------------------")
+
+                                self.dice_roll_1 = 5
+                                self.dice_roll_2 = 5
+                                self.come_out_roll_total = 10
+                                self.game_state = "point_phase_screen"
 
                         elif self.come_out_roll_total == 12:
                             self.dice_roll_1 = 6
@@ -574,9 +584,19 @@ class CrapsHappyScreen(BattleScreen):
                             self.game_state = "you_lose_come_out_roll_screen"
 
                         elif self.come_out_roll_total == 3:
-                            self.dice_roll_1 = 1
-                            self.dice_roll_2 = 2
-                            self.game_state = "you_lose_come_out_roll_screen"
+
+                            if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.equipped_items:
+                                self.dice_roll_1 = 1
+                                self.dice_roll_1 = 2
+                                self.game_state = "you_lose_come_out_roll_screen"
+                            else:
+                                print("you guarded against a loss***********************************************----------------------------------------------------")
+
+                                self.dice_roll_1 = 3
+                                self.dice_roll_2 = 3
+                                self.come_out_roll_total = 6
+
+                                self.game_state = "point_phase_screen"
 
                         elif self.come_out_roll_total == 12:
                             self.dice_roll_1 = 6
@@ -657,11 +677,9 @@ class CrapsHappyScreen(BattleScreen):
 
                 self.dice_roll_1 = random.randint(1, 6)
                 self.dice_roll_2 = random.randint(1, 6)
-                print("Dice roll 1 is ******************" + str(self.dice_roll_1))
-                print("Dice roll 2 is ******************" + str(self.dice_roll_2))
+
 
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
-                print("your come out  roll total is: " + str(self.come_out_roll_total) + f"and your roll is {self.point_roll_total}")
 
 
                 if self.lucky_seven_buff_counter > 0 and self.point_roll_total != self.come_out_roll_total and self.point_roll_total != 7:
@@ -708,7 +726,6 @@ class CrapsHappyScreen(BattleScreen):
 
 
         elif self.game_state == "you_lose_come_out_roll_screen":
-            print("Your come out roll is: " + str(self.come_out_roll_total))
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
 

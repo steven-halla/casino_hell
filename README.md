@@ -514,6 +514,8 @@ allow 1 paid version of 500 gold membership
 # mouth wash technique: a secret dice rollign technique useful in craps
 # ewwwww do you know where those have been
 
+# boss come out rolls should suffer somehow 
+
 
 
 
