@@ -75,40 +75,47 @@ class HungryStarvingHippos(Screen):
         screen_width, screen_height = state.DISPLAY.get_size()
         box_width, box_height = 300, len(self.bet_selection) * 40  # Adjust height based on the number of items
 
-        top_left_x = (screen_width - box_width) // 2
+        top_left_x = (screen_width - box_width) // 2 - 120  # Move box 120 pixels to the left
         top_left_y = (screen_height - box_height) // 2 - 50  # Move up by 50 pixels
-        arrow_x_axis = top_left_x - 30 + 100  # Move arrow to the right by 100 pixels
+        arrow_x_axis = top_left_x - 50 + 100  # Adjust arrow position
+
+        # Dictionary holding unique stats for each human
+        human_stats = {
+            "A1": {"name": "A1", "speed": 10, "stamina": 7, "win_chance": 30},
+            "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
+            "C1": {"name": "C1", "speed": 9, "stamina": 5, "win_chance": 20},
+            "D1": {"name": "D1", "speed": 8, "stamina": 8, "win_chance": 35},
+            "E1": {"name": "E1", "speed": 9, "stamina": 6, "win_chance": 25},
+            "A2": {"name": "A2", "speed": 10, "stamina": 5, "win_chance": 50},
+            "B2": {"name": "B2", "speed": 6, "stamina": 9, "win_chance": 15},
+            "C2": {"name": "C2", "speed": 9, "stamina": 7, "win_chance": 45},
+            "D2": {"name": "D2", "speed": 8, "stamina": 8, "win_chance": 30},
+            "E2": {"name": "E2", "speed": 7, "stamina": 9, "win_chance": 20},
+        }
 
         # Update the bet_message with selected humans
         selected_humans_text = "Press A when ready: Selected humans: " + ", ".join(self.human_picks)
         self.battle_messages["bet_message"].messages = [selected_humans_text]
 
         for i, item in enumerate(self.bet_selection):
-            # Ensure the human exists in self.humans
-            if item not in self.humans:
-                print(f"Initializing human {item}")
-                self.humans[item] = {"pos": [0, 0]}  # Initialize with dummy position
+            human = human_stats[item]
 
-            # Assign a unique speed for each human in this method
-            if "speed" not in self.humans[item]:
-                move_speed = random.randint(5, 10)  # Assign a speed if it hasn't been set
-                self.humans[item]["speed"] = move_speed
-
-            # Render human label
+            # Render human label (A1, B1, etc.) and move it 30 pixels further left to prevent overlap
             color = (0, 255, 0) if i == self.bet_selection_index else (255, 255, 255)  # Green for selected item
-            text_surface = self.font.render(item, True, color)
-            text_rect = text_surface.get_rect(center=(top_left_x + box_width // 2, top_left_y + (i * 40) + 20))
+            text_surface = self.font.render(f"{human['name']}", True, color)
+            text_rect = text_surface.get_rect(center=(top_left_x + box_width // 2 - 50, top_left_y + (i * 40) + 20))
             state.DISPLAY.blit(text_surface, text_rect)
 
-            # Display speed next to the human label (20 pixels to the right)
-            speed = self.humans[item]["speed"]
-            speed_surface = self.font.render(f"Speed: {speed}", True, (255, 255, 255))
-            speed_rect = speed_surface.get_rect(center=(text_rect.centerx + 100, text_rect.centery))
-            state.DISPLAY.blit(speed_surface, speed_rect)
+            # Display speed, stamina, and win chance next to the human's name
+            stats_surface = self.font.render(
+                f"Speed: {human['speed']}, Stamina: {human['stamina']}, Win %: {human['win_chance']}%", True, (255, 255, 255)
+            )
+            stats_rect = stats_surface.get_rect(center=(text_rect.centerx + 250, text_rect.centery))
+            state.DISPLAY.blit(stats_surface, stats_rect)
 
             if i == self.bet_selection_index:
                 arrow_surface = self.font.render("->", True, (255, 255, 255))
-                arrow_rect = arrow_surface.get_rect(center=(arrow_x_axis, top_left_y + (i * 40) + 20))
+                arrow_rect = arrow_surface.get_rect(center=(arrow_x_axis, top_left_y + (i * 40) + 16))
                 state.DISPLAY.blit(arrow_surface, arrow_rect)
 
     def initialize_human_position(self, state) -> None:
