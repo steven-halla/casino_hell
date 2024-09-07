@@ -406,4 +406,3 @@ class HungryStarvingHippos(Screen):
             # i should build a counter for every human eating incrase counter by +1 for every even numbers, create the message.
             # i need to give exp for each human that  lives that the player bet on
             # need a final report after the race for the user as well as a prize award
-

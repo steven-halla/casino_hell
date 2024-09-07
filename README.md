@@ -516,6 +516,9 @@ allow 1 paid version of 500 gold membership
 
 # boss come out rolls should suffer somehow 
 
+# maybe have coins you can get from games like hungry hippos, slots, random treasure chest, and quest. 
+# these coins can be used to buy items
+
 
 
 

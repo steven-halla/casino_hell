@@ -137,6 +137,7 @@ class Area2GamblingScreen(Screen):
     def update(self, state: "GameState"):
 
 
+
         controller = state.controller
         player = state.player
         obstacle = state.obstacle
