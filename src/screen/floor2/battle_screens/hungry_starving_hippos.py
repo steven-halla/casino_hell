@@ -70,11 +70,8 @@ class HungryStarvingHippos(Screen):
         self.bet_selection_index = 0 #important
         self.human_picks = []
 
-
-
-
-
     def draw_bet_selection(self, state: "GameState") -> None:
+        print("Drawing bet selection")
         screen_width, screen_height = state.DISPLAY.get_size()
         box_width, box_height = 300, len(self.bet_selection) * 40  # Adjust height based on the number of items
 
@@ -87,10 +84,27 @@ class HungryStarvingHippos(Screen):
         self.battle_messages["bet_message"].messages = [selected_humans_text]
 
         for i, item in enumerate(self.bet_selection):
+            # Ensure the human exists in self.humans
+            if item not in self.humans:
+                print(f"Initializing human {item}")
+                self.humans[item] = {"pos": [0, 0]}  # Initialize with dummy position
+
+            # Assign a unique speed for each human in this method
+            if "speed" not in self.humans[item]:
+                move_speed = random.randint(5, 10)  # Assign a speed if it hasn't been set
+                self.humans[item]["speed"] = move_speed
+
+            # Render human label
             color = (0, 255, 0) if i == self.bet_selection_index else (255, 255, 255)  # Green for selected item
             text_surface = self.font.render(item, True, color)
             text_rect = text_surface.get_rect(center=(top_left_x + box_width // 2, top_left_y + (i * 40) + 20))
             state.DISPLAY.blit(text_surface, text_rect)
+
+            # Display speed next to the human label (20 pixels to the right)
+            speed = self.humans[item]["speed"]
+            speed_surface = self.font.render(f"Speed: {speed}", True, (255, 255, 255))
+            speed_rect = speed_surface.get_rect(center=(text_rect.centerx + 100, text_rect.centery))
+            state.DISPLAY.blit(speed_surface, speed_rect)
 
             if i == self.bet_selection_index:
                 arrow_surface = self.font.render("->", True, (255, 255, 255))
@@ -98,7 +112,7 @@ class HungryStarvingHippos(Screen):
                 state.DISPLAY.blit(arrow_surface, arrow_rect)
 
     def initialize_human_position(self, state) -> None:
-        # Set the initial position of the balls
+        # Set the initial position of the humans
         width, height = 600, 300
         y_axis_position_adjuster = 80
         top_left_x = (800 - width) // 2
@@ -108,24 +122,14 @@ class HungryStarvingHippos(Screen):
         self.box_bottom_right = (top_left[0] + width, top_left[1] + height)
 
         labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
-        player_luck = state.player.luck  # Get the player's luck stat
 
-
-        # label is each human in the labels ,
+        # Assign positions to each human (no speed here)
         for i, label in enumerate(labels):
             initial_x = self.box_bottom_right[0] - self.human_size - 20
             initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 - (i * 20) + 60  # Move down by 60 pixels
-            move_speed = random.randint(5, 10)  # Assign a unique speed for each human
 
-            print(f"Human {label} initial speed: {move_speed}")  # Print initial speed
-
-            # Increase the speed for the chosen humans based on player's luck
-            if label in self.human_picks[0]:
-                move_speed += player_luck
-
-            print(f"Human {label} final speed after luck boost: {move_speed}")  # Print final speed after luck boost
-
-            self.humans[label] = {"pos": [initial_x, initial_y], "speed": move_speed}
+            # Assign only the position, speed is handled elsewhere
+            self.humans[label] = {"pos": [initial_x, initial_y]}
 
     def initialize_hippo_position(self) -> None:
         width, height = 600, 200
