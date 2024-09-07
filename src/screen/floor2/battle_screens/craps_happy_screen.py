@@ -565,7 +565,7 @@ class CrapsHappyScreen(BattleScreen):
                     unlucky_two_roll = random.randint(1, 100)
                     print("unlucky two roll is: " + str(unlucky_two_roll))
                     if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items:
-                        unlucky_two_roll += 10
+                        unlucky_two_roll -= 10
                     print("unlucky two roll is: " + str(unlucky_two_roll))
 
                     if unlucky_two_roll >= 60:
@@ -576,7 +576,7 @@ class CrapsHappyScreen(BattleScreen):
                         print("line 562")
                         self.game_state = "you_lose_come_out_roll_screen"
 
-                    elif unlucky_two_roll < 80:
+                    elif unlucky_two_roll < 60:
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
                         print("line 568")
