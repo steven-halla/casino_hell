@@ -7,6 +7,7 @@ from entity.gui.screen.battle_screen import BattleScreen
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.gui.textbox.text_box import TextBox
 from game_constants.coin_flip_constants import CoinFlipConstants
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from screen.examples.screen import Screen
 from deck import Deck
@@ -707,6 +708,9 @@ class BlackJackMackScreen(Screen):
             if self.enemy_score > 20:
                 self.enemy_black_jack_win = True
 
+
+
+
             if state.player.luck > 0:
                 # the below has a 15% chance per new hand to trigger
                 if self.player_score > 12 and self.player_score < 17:
@@ -812,14 +816,22 @@ class BlackJackMackScreen(Screen):
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21:
-                state.player.money -= self.bet
-                self.money += self.bet
-                state.player.stamina_points -= 4
-                print("Going to bust a giant busttttttttter")
+                if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
+                    state.player.money -= self.bet
+                    self.money += self.bet
+                    state.player.stamina_points -= 4
+                    print("Going to bust a giant busttttttttter")
 
-                state.player.exp += 10
-                self.first_message_display = f"You lose -6 HP."
-                self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
+                    state.player.exp += 10
+                    self.first_message_display = f"You lose -6 HP."
+                    self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
+                #
+                # elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
+                #     lucky_roll = random.randint(1,10)
+                #     print("Lucky roll is: " + str(lucky_roll)
+                #     if lucky_roll == 5:
+                #         print("hi")
+
 
 
             if self.bust_protection == True:

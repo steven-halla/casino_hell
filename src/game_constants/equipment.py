@@ -3,7 +3,7 @@ from enum import Enum
 
 class Equipment(Enum):
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
-    HIPPO_SHOES = "HIPPO_SHOES"  # reward from Alex
+    HIPPO_SHOES = "HIPPO_SHOES"  # testing only
     SOCKS_OF_PERCEPTION = "SOCKS_OF_PERCEPTION"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
 

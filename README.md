@@ -492,19 +492,24 @@ allow 1 paid version of 500 gold membership
 
 
 # -------------------------------sept 3 ------------------------------
-# coin flip magic spell needs to not allow player to cast magic, also a current shield is negated
-# coin flip  spell silence needs to be finished up 
-# need to do work for heads force
 # need to work on level up system it appears every tiem on a level up
 # fix coin flip better npc so that she wont restart battle screen if her money is 0
-# iT seems you can talk to NPCS while in option menu need to fix that bug
 # i do not want to move while i am reading treasure chest text message
 # craps needs ways to exit screen when gaem over conditions
 # work on level up screen for all screens
-# fix betting for black jack - if money > bet
+# check betting for all screens make sure that bet has to be == money if money > bet
 # need to handle low money responses for npcs
 # need to fix descriptiosn for items/magic and other things in player status menus
+# need to fix status screen equipment so you can equip one more item with perception of 3
+# need to include ways to start angry hangry starving hippos
+# need to check each screen to make sure magic buffs are not persisting
+# im thinking of including 1 more reawrd for rib demon slots 2nd screen
+# need to fix speaking so that you have to face NPC
+# need to reset bet for all screens when leaving
+# make sure to fix how equpimetn works, so its pulling from constants
+# make sure to check exp for all screens and such
 
+# 831 PM is a good stopping post
 
 
 

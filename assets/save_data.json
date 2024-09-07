@@ -28,12 +28,13 @@
         "shield",
         "shake",
         "HEADS_FORCE",
-        "SLOTS_HACK"
+        "SLOTS_HACK",
+        "CRAPS_LUCKY_7"
     ],
     "body": 2,
     "mind": 1,
     "spirit": 1,
-    "perception": 1,
+    "perception": 3,
     "baseperception": 1,
     "luck": 5,
     "money": 1600,
