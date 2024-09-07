@@ -816,6 +816,8 @@ class BlackJackMackScreen(Screen):
             print("Player hand is now" + str(self.player_hand))
             print("Player score is now" + str(self.player_score))
             if self.player_score > 21:
+                print(self.player_hand)
+                print(self.player_hand[-1])
                 if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
                     state.player.money -= self.bet
                     self.money += self.bet
@@ -825,12 +827,38 @@ class BlackJackMackScreen(Screen):
                     state.player.exp += 10
                     self.first_message_display = f"You lose -6 HP."
                     self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
-                #
-                # elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
-                #     lucky_roll = random.randint(1,10)
-                #     print("Lucky roll is: " + str(lucky_roll)
-                #     if lucky_roll == 5:
-                #         print("hi")
+
+
+                elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
+                    lucky_roll = random.randint(1,5)
+                    print("Lucky roll is: " + str(lucky_roll))
+                    if lucky_roll == 5:
+                        print("Player score is ------------------------------------------------: " + str(self.player_score))
+                        # self.player_score -= self.deck.compute_hand_value(self.player_hand[-1])
+                        print("Player score is----------------------------: " + str(self.player_score))
+
+                        self.player_hand.pop()
+                        self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+                        print("Player score is---------------: " + str(self.player_score))
+
+                        self.first_message_display = f"You almost went over 21."
+                        lucky_roll = 0
+                    else:
+
+                        state.player.money -= self.bet
+                        self.money += self.bet
+                        state.player.stamina_points -= 4
+                        print("sdlfj;sdjf----------------------------------------------------")
+
+                        state.player.exp += 10
+                        self.first_message_display = f"You lose -6 HP."
+                        self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
+
+                    # for card in range(self.player_hand):
+                    #     self.player_hand[-1]
+
+
 
 
 

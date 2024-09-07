@@ -508,8 +508,11 @@ allow 1 paid version of 500 gold membership
 # need to reset bet for all screens when leaving
 # make sure to fix how equpimetn works, so its pulling from constants
 # make sure to check exp for all screens and such
+# for boss unlock lucky shake for craps come out roll, rock the d pad left and right, when you stop the dice goes, charge up the meter
 
 # 831 PM is a good stopping post
+# mouth wash technique: a secret dice rollign technique useful in craps
+# ewwwww do you know where those have been
 
 
 
