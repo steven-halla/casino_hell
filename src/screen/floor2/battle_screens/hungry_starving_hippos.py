@@ -14,6 +14,18 @@ class HungryStarvingHippos(Screen):
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
         self.commentary = False
         self.comment_to_use = 0
+        self.human_stats = {
+            "A1": {"name": "A1", "speed": 44, "stamina": 7, "win_chance": 30},
+            "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
+            "C1": {"name": "C1", "speed": 9, "stamina": 5, "win_chance": 20},
+            "D1": {"name": "D1", "speed": 8, "stamina": 8, "win_chance": 35},
+            "E1": {"name": "E1", "speed": 9, "stamina": 6, "win_chance": 25},
+            "A2": {"name": "A2", "speed": 10, "stamina": 5, "win_chance": 50},
+            "B2": {"name": "B2", "speed": 6, "stamina": 9, "win_chance": 15},
+            "C2": {"name": "C2", "speed": 9, "stamina": 7, "win_chance": 45},
+            "D2": {"name": "D2", "speed": 8, "stamina": 8, "win_chance": 30},
+            "E2": {"name": "E2", "speed": 7, "stamina": 9, "win_chance": 20},
+        }
 
         self.battle_messages: Dict[str, TextBox] = {
             "bet_message": TextBox(
@@ -70,6 +82,37 @@ class HungryStarvingHippos(Screen):
         self.bet_selection_index = 0 #important
         self.human_picks = []
 
+    def human_stamina(self) -> None:
+        # Ensure human stamina reduction only starts after the initial 10 seconds
+        if not hasattr(self, 'stamina_start_time'):
+            self.stamina_start_time = time.time()
+
+        # Calculate elapsed time
+        elapsed_time = time.time() - self.stamina_start_time
+
+        # After 10 seconds, start reducing stamina every 3 seconds
+        if elapsed_time > 10:
+            # Calculate how many 3-second intervals have passed
+            stamina_intervals = int((elapsed_time - 10) // 3)
+
+            # Reduce stamina for each human based on the number of intervals passed
+            for label, data in self.humans.items():
+                if not hasattr(data, 'last_stamina_tick'):
+                    data['last_stamina_tick'] = 0  # Initialize if not already set
+
+                # Check if it's time to reduce stamina
+                if stamina_intervals > data['last_stamina_tick']:
+                    data['last_stamina_tick'] = stamina_intervals
+                    # Reduce stamina by 1
+                    if data['stamina'] > 0:
+                        data['stamina'] -= 1
+                        print(f"Reduced stamina for {label} to {data['stamina']}")
+
+                    # If stamina reaches 0, reduce speed by 4
+                    if data['stamina'] == 0 and data['speed'] > 4:
+                        data['speed'] -= 2
+                        print(f"{label}'s speed reduced to {data['speed']} due to low stamina.")
+
     def draw_bet_selection(self, state: "GameState") -> None:
         print("Drawing bet selection")
         screen_width, screen_height = state.DISPLAY.get_size()
@@ -80,8 +123,8 @@ class HungryStarvingHippos(Screen):
         arrow_x_axis = top_left_x - 50 + 100  # Adjust arrow position
 
         # Dictionary holding unique stats for each human
-        human_stats = {
-            "A1": {"name": "A1", "speed": 10, "stamina": 7, "win_chance": 30},
+        self.human_stats = {
+            "A1": {"name": "A1", "speed": 44, "stamina": 7, "win_chance": 30},
             "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
             "C1": {"name": "C1", "speed": 9, "stamina": 5, "win_chance": 20},
             "D1": {"name": "D1", "speed": 8, "stamina": 8, "win_chance": 35},
@@ -98,7 +141,10 @@ class HungryStarvingHippos(Screen):
         self.battle_messages["bet_message"].messages = [selected_humans_text]
 
         for i, item in enumerate(self.bet_selection):
-            human = human_stats[item]
+            # Change this line
+
+            # To this line, since `human_stats` is a class attribute
+            human = self.human_stats[item]
 
             # Render human label (A1, B1, etc.) and move it 30 pixels further left to prevent overlap
             color = (0, 255, 0) if i == self.bet_selection_index else (255, 255, 255)  # Green for selected item
@@ -130,13 +176,32 @@ class HungryStarvingHippos(Screen):
 
         labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
 
-        # Assign positions to each human (no speed here)
+        # Human stats to be initialized with each human
+        self.human_stats = {
+            "A1": {"speed": 22, "stamina": 10, "win_chance": 30},
+            "B1": {"speed": 7, "stamina": 10, "win_chance": 40},
+            "C1": {"speed": 9, "stamina": 5, "win_chance": 20},
+            "D1": {"speed": 8, "stamina": 8, "win_chance": 35},
+            "E1": {"speed": 9, "stamina": 6, "win_chance": 25},
+            "A2": {"speed": 10, "stamina": 5, "win_chance": 50},
+            "B2": {"speed": 6, "stamina": 9, "win_chance": 15},
+            "C2": {"speed": 9, "stamina": 7, "win_chance": 45},
+            "D2": {"speed": 8, "stamina": 8, "win_chance": 30},
+            "E2": {"speed": 7, "stamina": 9, "win_chance": 20},
+        }
+
+        # Assign positions and sttats to each human
         for i, label in enumerate(labels):
             initial_x = self.box_bottom_right[0] - self.human_size - 20
             initial_y = self.box_top_left[1] + height // 2 - self.human_size // 2 - (i * 20) + 60  # Move down by 60 pixels
 
-            # Assign only the position, speed is handled elsewhere
-            self.humans[label] = {"pos": [initial_x, initial_y]}
+            # Assign position and stats
+            self.humans[label] = {
+                "pos": [initial_x, initial_y],
+                "speed": self.human_stats[label]["speed"],
+                "stamina": self.human_stats[label]["stamina"],
+                "win_chance": self.human_stats[label]["win_chance"]
+            }
 
     def initialize_hippo_position(self) -> None:
         width, height = 600, 200
@@ -228,8 +293,11 @@ class HungryStarvingHippos(Screen):
             delta_time = current_time - self.last_time
             self.last_time = current_time
 
+            self.human_stamina()
+
             # Initialize hippo position after 10 seconds
             if self.hippo is None and current_time - self.start_time >= 10:
+                print("its hippo time")
                 self.initialize_hippo_position()
 
             # Move the humans
@@ -340,27 +408,39 @@ class HungryStarvingHippos(Screen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
     def move_human(self, delta_time: float) -> None:
+        # print("Moving humans...")
+
         # If the race just started, set the start time
         if not hasattr(self, 'human_race_start_time'):
             self.human_race_start_time = time.time()
 
         # Calculate the elapsed time
         elapsed_time = time.time() - self.human_race_start_time
+        # print(f"Elapsed time: {elapsed_time}")
 
         # Wait for 2 seconds before allowing humans to move
         if elapsed_time < 2.0:
+            # print("Humans cannot move yet, waiting for 2 seconds.")
             return
 
+        # print(f"Humans before move: {self.humans}")  # Debug to ensure humans are initialized
+
         for label, data in list(self.humans.items()):
-            # Move the balls left by their speed scaled by delta_time
+            # Print human position before moving
+            # print(f"Before move - {label}: {data['pos'][0]}")
+
+            # Move the humans left by their speed scaled by delta_time
             data["pos"][0] -= data["speed"] * delta_time
 
-            # Check for collision with the left line of the box (indicating they've reached the boundary)
+            # Print human position after moving
+            # print(f"After move - {label}: {data['pos'][0]}")
+
+            # Check if the human reached the finish line
             if data["pos"][0] <= self.box_top_left[0]:
                 data["pos"][0] = self.box_top_left[0]
                 self.winners.append(label)  # Add the human to the winners list
                 del self.humans[label]  # Remove the human from the dictionary
-                print(str(self.winners))
+                # print(f"{label} reached the finish line!")
 
     def move_hippo(self, delta_time: float) -> None:
         # Check if the hippo is currently eating
@@ -387,6 +467,9 @@ class HungryStarvingHippos(Screen):
 
         # Check for collision and remove human if collided
         self.check_collisions()
+
+        print(f"Hippo pos before move: {self.hippo['pos'][0]}")
+        print(f"Hippo pos after move: {self.hippo['pos'][0]}")
 
     def check_collisions(self) -> None:
         hippo_rect = pygame.Rect(self.hippo["pos"][0], self.hippo["pos"][1], self.human_size, self.human_size)
