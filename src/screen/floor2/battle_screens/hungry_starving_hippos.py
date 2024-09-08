@@ -15,16 +15,17 @@ class HungryStarvingHippos(Screen):
         self.commentary = False
         self.comment_to_use = 0
         self.human_stats = {
-            "A1": {"name": "A1", "speed": 44, "stamina": 7, "win_chance": 30},
+            "A1": {"name": "A1", "speed": 22, "stamina": 7, "win_chance": 30},
             "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
             "C1": {"name": "C1", "speed": 9, "stamina": 5, "win_chance": 20},
-            "D1": {"name": "D1", "speed": 8, "stamina": 8, "win_chance": 35},
             "E1": {"name": "E1", "speed": 9, "stamina": 6, "win_chance": 25},
             "A2": {"name": "A2", "speed": 10, "stamina": 5, "win_chance": 50},
             "B2": {"name": "B2", "speed": 6, "stamina": 9, "win_chance": 15},
             "C2": {"name": "C2", "speed": 9, "stamina": 7, "win_chance": 45},
             "D2": {"name": "D2", "speed": 8, "stamina": 8, "win_chance": 30},
             "E2": {"name": "E2", "speed": 7, "stamina": 9, "win_chance": 20},
+            "D1": {"name": "D1", "speed": 6, "stamina": 8, "win_chance": 35},
+
         }
 
         self.battle_messages: Dict[str, TextBox] = {
@@ -93,7 +94,7 @@ class HungryStarvingHippos(Screen):
         # After 10 seconds, start reducing stamina every 3 seconds
         if elapsed_time > 10:
             # Calculate how many 3-second intervals have passed
-            stamina_intervals = int((elapsed_time - 10) // 3)
+            stamina_intervals = int((elapsed_time - 10) // 5)
 
             # Reduce stamina for each human based on the number of intervals passed
             for label, data in self.humans.items():
@@ -103,15 +104,16 @@ class HungryStarvingHippos(Screen):
                 # Check if it's time to reduce stamina
                 if stamina_intervals > data['last_stamina_tick']:
                     data['last_stamina_tick'] = stamina_intervals
+
                     # Reduce stamina by 1
-                    if data['stamina'] > 0:
-                        data['stamina'] -= 1
-                        print(f"Reduced stamina for {label} to {data['stamina']}")
+                    if self.human_stats[label]['stamina'] > 0:  # Make sure you reference `self.human_stats`
+                        self.human_stats[label]['stamina'] -= 1
+                        print(f"Reduced stamina for {label} to {self.human_stats[label]['stamina']}")
 
                     # If stamina reaches 0, reduce speed by 4
-                    if data['stamina'] == 0 and data['speed'] > 4:
-                        data['speed'] -= 2
-                        print(f"{label}'s speed reduced to {data['speed']} due to low stamina.")
+                    if self.human_stats[label]['stamina'] == 0 and self.human_stats[label]['speed'] > 4:
+                        self.human_stats[label]['speed'] -= 4
+                        print(f"{label}'s speed reduced to {self.human_stats[label]['speed']} due to low stamina.")
 
     def draw_bet_selection(self, state: "GameState") -> None:
         print("Drawing bet selection")
@@ -124,16 +126,17 @@ class HungryStarvingHippos(Screen):
 
         # Dictionary holding unique stats for each human
         self.human_stats = {
-            "A1": {"name": "A1", "speed": 44, "stamina": 7, "win_chance": 30},
+            "A1": {"name": "A1", "speed": 10, "stamina": 7, "win_chance": 30},
             "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
             "C1": {"name": "C1", "speed": 9, "stamina": 5, "win_chance": 20},
-            "D1": {"name": "D1", "speed": 8, "stamina": 8, "win_chance": 35},
             "E1": {"name": "E1", "speed": 9, "stamina": 6, "win_chance": 25},
             "A2": {"name": "A2", "speed": 10, "stamina": 5, "win_chance": 50},
             "B2": {"name": "B2", "speed": 6, "stamina": 9, "win_chance": 15},
             "C2": {"name": "C2", "speed": 9, "stamina": 7, "win_chance": 45},
             "D2": {"name": "D2", "speed": 8, "stamina": 8, "win_chance": 30},
             "E2": {"name": "E2", "speed": 7, "stamina": 9, "win_chance": 20},
+            "D1": {"name": "D1", "speed": 6, "stamina": 8, "win_chance": 35},
+
         }
 
         # Update the bet_message with selected humans
@@ -154,7 +157,7 @@ class HungryStarvingHippos(Screen):
 
             # Display speed, stamina, and win chance next to the human's name
             stats_surface = self.font.render(
-                f"Speed: {human['speed']}, Stamina: {human['stamina']}, Win %: {human['win_chance']}%", True, (255, 255, 255)
+                f"Speed: {human['speed']}, Stamina: {human['stamina']}", True, (255, 255, 255)
             )
             stats_rect = stats_surface.get_rect(center=(text_rect.centerx + 250, text_rect.centery))
             state.DISPLAY.blit(stats_surface, stats_rect)
@@ -176,19 +179,29 @@ class HungryStarvingHippos(Screen):
 
         labels = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]
 
-        # Human stats to be initialized with each human
+        # DO NOT ERASE THE BELOW EVER
+        # THE BELOW IS WHAT ACTUALLY SETS FOR THE GAME
         self.human_stats = {
-            "A1": {"speed": 22, "stamina": 10, "win_chance": 30},
-            "B1": {"speed": 7, "stamina": 10, "win_chance": 40},
-            "C1": {"speed": 9, "stamina": 5, "win_chance": 20},
-            "D1": {"speed": 8, "stamina": 8, "win_chance": 35},
-            "E1": {"speed": 9, "stamina": 6, "win_chance": 25},
-            "A2": {"speed": 10, "stamina": 5, "win_chance": 50},
-            "B2": {"speed": 6, "stamina": 9, "win_chance": 15},
-            "C2": {"speed": 9, "stamina": 7, "win_chance": 45},
+            "A1": {"speed": 10, "stamina": 4, "win_chance": 30},
+            "B1": {"speed": 6, "stamina": 10, "win_chance": 40},
+            "C1": {"speed": 7, "stamina": 6, "win_chance": 20},
+            "E1": {"speed": 9, "stamina": 4, "win_chance": 25},
+            "A2": {"speed": 5, "stamina": 15, "win_chance": 50},
+            "B2": {"speed": 6, "stamina": 11, "win_chance": 15},
+            "C2": {"speed": 6, "stamina": 7, "win_chance": 45},
             "D2": {"speed": 8, "stamina": 8, "win_chance": 30},
             "E2": {"speed": 7, "stamina": 9, "win_chance": 20},
+            "D1": {"speed": 6, "stamina": 8, "win_chance": 35},
+
         }
+
+        if state.player.luck == 1:
+            for label in self.human_stats:
+                self.human_stats[label]["speed"] += 1  # Increase speed by 1
+        elif state.player.luck == 2:
+            for label in self.human_stats:
+                self.human_stats[label]["speed"] += 1  # Increase speed by 1
+                self.human_stats[label]["stamina"] += 1  # Increase stamina by 1
 
         # Assign positions and sttats to each human
         for i, label in enumerate(labels):
@@ -199,8 +212,8 @@ class HungryStarvingHippos(Screen):
             self.humans[label] = {
                 "pos": [initial_x, initial_y],
                 "speed": self.human_stats[label]["speed"],
-                "stamina": self.human_stats[label]["stamina"],
-                "win_chance": self.human_stats[label]["win_chance"]
+                "stamina": self.human_stats[label]["stamina"]
+                # "win_chance": self.human_stats[label]["win_chance"]
             }
 
     def initialize_hippo_position(self) -> None:
@@ -240,6 +253,7 @@ class HungryStarvingHippos(Screen):
         return closest_human
 
     def update(self, state: "GameState") -> None:
+        # print(self.human_stats)
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -282,11 +296,16 @@ class HungryStarvingHippos(Screen):
         if self.game_state == "human_race":
             if not self.humans:
                 print("All humans have been eaten or escaped!")
+                print(self.winners)
+                print(self.human_picks)
+                print(self.human_stats)
                 self.game_state = "game_over"  # Example: Change the game state or take another action
-                for bet in self.bet_selection:
+                for bet in self.winners:
                     if bet in self.human_picks:
                         print("Yay, you won!")
                         break  # Exit the loop after finding the first match
+                    else:
+                        print("sorry you lost")
 
             # Calculate delta_time
             current_time = time.time()
@@ -321,6 +340,7 @@ class HungryStarvingHippos(Screen):
 
 
     def draw(self, state: "GameState") -> None:
+        print(self.human_stats)
         state.DISPLAY.fill((0, 0, 51))
         self.draw_bottom_black_box(state)
 
@@ -468,8 +488,8 @@ class HungryStarvingHippos(Screen):
         # Check for collision and remove human if collided
         self.check_collisions()
 
-        print(f"Hippo pos before move: {self.hippo['pos'][0]}")
-        print(f"Hippo pos after move: {self.hippo['pos'][0]}")
+        # print(f"Hippo pos before move: {self.hippo['pos'][0]}")
+        # print(f"Hippo pos after move: {self.hippo['pos'][0]}")
 
     def check_collisions(self) -> None:
         hippo_rect = pygame.Rect(self.hippo["pos"][0], self.hippo["pos"][1], self.human_size, self.human_size)
