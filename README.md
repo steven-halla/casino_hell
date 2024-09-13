@@ -519,8 +519,21 @@ allow 1 paid version of 500 gold membership
 # maybe have coins you can get from games like hungry hippos, slots, random treasure chest, and quest. 
 # these coins can be used to buy items
 
+# for level 2 maze:
+# there is one enemy in the maze, as more time passes more enemies come in 
+# there are a few points where you pay money or stamina if you guess wrong more enemies are added
+
+ #  more enemies can be added for the other part based on time, so players need to complete the maze fast
+#  however lets add a little puzzle element to solve, such as moving blocks to destroy other blocks
+
+# lets have a hide and seek section as well, stand in certain blocks and enemy cant see you
+# the longer you wait the more damage you take so players have to also move fast
 
 
+# create a bank that allows player to store 500 coins, if its empty you cant save, 
+# also doesn't allow player to buy items, point being its easier to code and easier
+# for player to understand.
+# putting money in bank could be a quest for level 1
 
 
 

@@ -505,13 +505,13 @@ class CrapsHappyScreen(BattleScreen):
                     lucky_player_bonus = state.player.luck
                     lucky_7_roll = random.randint(1, 100) + (lucky_player_bonus * 2)
                     print(f"Your lucky roll is: " + str(lucky_7_roll))
-                    if lucky_7_roll >= 80:
+                    if lucky_7_roll >= 85:
                         self.unlucky_seven_flag = True
 
                         print("505 come out roll total 7")
                         self.game_state = "you_win_come_out_roll_screen"
 
-                    elif lucky_7_roll < 80:
+                    elif lucky_7_roll < 85:
                         self.battle_messages["come_out_roll_message_unlucky_7"].update(state)
 
                         print("482 lucky roll below 80")

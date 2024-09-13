@@ -25,7 +25,7 @@ class ErikaChickenGirl(Npc):
             ),
             "quest_message": NpcTextBox(
                 [
-                    "Erika: Bawk Bawk",
+                    "Erika: Time to battle",
                \
 
                 ],
@@ -84,8 +84,12 @@ class ErikaChickenGirl(Npc):
                 # Reset the message based on player state
                 current_message = self.npc_messages["default_message"]
 
-                if state.player.money >= 6000:
+                if state.player.money >= 5000:
                     current_message = self.npc_messages["quest_message"]
+                    state.controller.isTPressed = False
+                    state.player.money = 1500
+                    state.currentScreen = state.crapsBossScreen
+                    # state.crapsBossScreen.start(state)
 
                 current_message.reset()
 

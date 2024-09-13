@@ -128,9 +128,9 @@ class Area2RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
-        if state.controller.isPPressed:
-            state.currentScreen = state.hungryStarvingHippos
-            state.hungryStarvingHippos.start(state)
+        # if state.controller.isPPressed:
+        #     state.currentScreen = state.hungryStarvingHippos
+        #     state.hungryStarvingHippos.start(state)
 
         # if state.player.menu_paused == True:
         #     state.player.canMove = False

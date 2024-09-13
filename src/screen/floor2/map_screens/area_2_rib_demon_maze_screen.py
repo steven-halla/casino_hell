@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.demon.demon1 import Demon1
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
@@ -26,7 +27,7 @@ class Area2RibDemonMazeScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/area_2_rest_area_map.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/ribdemonhideroom.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False
@@ -36,9 +37,7 @@ class Area2RibDemonMazeScreen(Screen):
         self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
-
-
-
+        self.poison_counter = 0
         self.clock = pygame.time.Clock()  # Initialize the clock
 
 
@@ -72,8 +71,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         if state.area_2_rest_area_to_rib_demon_maze_point == True:
             print("nuggggggggggggggg;f")
-            player_start_x = 16 * 1  # Desired X coordinate
-            player_start_y = 16 * 1 # Desired Y coordinate
+            player_start_x = 16 * 22  # Desired X coordinate
+            player_start_y = 16 * 37 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 
@@ -93,11 +92,23 @@ class Area2RibDemonMazeScreen(Screen):
         #     state.player = Player(player_start_x, player_start_y)
 
         if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
-                and state.player.perception > 1):
+                and state.player.perception > 3):
             state.treasurechests = [
             SlotsVest(16 * 36, 16 * 10),
 
 
+        ]
+
+
+        state.demons = [
+
+            # Demon2(16 * 20, 14 * 79),
+            # Demon3(16 * 20, 14 * 85),
+            # Demon4(16 * 20, 14 * 10),
+            # Demon3(16 * 20, 14 * 76),
+            # Demon2(16 * 55, 16 * 13),
+            # Demon3(16 * 55, 16 * 23),
+            # Demon4(16 * 55, 16 * 33),
         ]
 
 
@@ -120,15 +131,14 @@ class Area2RibDemonMazeScreen(Screen):
         controller.update()
 
 
-        #the below speeds up text speech
-        # for npc in state.npcs:
-        #     npc.update(state)
-        #     if isinstance(npc, Nurgle) and npc.to_be_deleted:
-        #         state.npcs.remove(npc)
+
 
         for npc in state.npcs:
             npc.update(state)
 
+
+        for demon in state.demons:
+            demon.update(state)
 
 
 
@@ -140,42 +150,7 @@ class Area2RibDemonMazeScreen(Screen):
 
 
 
-        #
-        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
-        #     coinMonicle = "coin monicle"
-        #     state.player.items.append(coinMonicle)
 
-        # if controller.isUpPressed:
-        #
-        #     self.y_up_move = True
-        #
-        #     self.y_down_move = False
-        #     self.x_left_move = False
-        #     self.x_right_move = False
-        #
-        # elif controller.isDownPressed:
-        #     self.y_down_move = True
-        #     self.y_up_move = False
-        #     self.x_left_move = False
-        #     self.x_right_move = False
-        #
-        # elif controller.isLeftPressed:
-        #     self.x_left_move = True
-        #     self.y_up_move = False
-        #     self.y_down_move = False
-        #     self.x_right_move = False
-        #
-        # elif controller.isRightPressed:
-        #     self.x_right_move = True
-        #     self.y_up_move = False
-        #     self.y_down_move = False
-        #     self.x_left_move = False
-
-        # else:
-        #     self.y_up_move = False
-        #     self.y_down_move = False
-        #     self.x_left_move = False
-        #     self.x_right_move = False
 
         player.update(state)
 
@@ -185,6 +160,15 @@ class Area2RibDemonMazeScreen(Screen):
             collision_layer = self.tiled_map.get_layer_by_name("collision")
 
             for x, y, image in collision_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    state.player.undoLastMove()
+                for demon in state.demons:
+                    if demon.collision.isOverlap(tile_rect):
+                        demon.undoLastMove()
+
+            for x,y, image in collision_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
@@ -238,10 +222,23 @@ class Area2RibDemonMazeScreen(Screen):
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
+            hiding_layer = self.tiled_map.get_layer_by_name("hide")
+            for x, y, image in hiding_layer.tiles():
+                pos_x = x * tile_width + state.camera.x
+                pos_y = y * tile_height + state.camera.y
+
+                scaled_image = pygame.transform.scale(image,(
+                    tile_width * 1.3, tile_height * 1.3))
+
+                state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
+
 
 
         for npc in state.npcs:
             npc.draw(state)
+
+        for demon in state.demons:
+            demon.draw(state)
 
 
 

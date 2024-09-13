@@ -6,11 +6,12 @@ import random
 import math
 from typing import Dict, Tuple, List, Optional,Union ,  Any
 
-# its possible to eat two humans need unique oen for htat
+# its possible to eat two humans need unique message for that
 class HungryStarvingHippos(Screen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"
+        self.money_reward = 500
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
         self.commentary = False
         self.comment_to_use = 0
@@ -116,7 +117,6 @@ class HungryStarvingHippos(Screen):
                         print(f"{label}'s speed reduced to {self.human_stats[label]['speed']} due to low stamina.")
 
     def draw_bet_selection(self, state: "GameState") -> None:
-        print("Drawing bet selection")
         screen_width, screen_height = state.DISPLAY.get_size()
         box_width, box_height = 300, len(self.bet_selection) * 40  # Adjust height based on the number of items
 
@@ -276,7 +276,6 @@ class HungryStarvingHippos(Screen):
             if controller.isBPressed and self.human_picks:
                 controller.isBPressed = False
                 self.human_picks.pop()
-                print(f"Human picks: {self.human_picks}")
 
             if controller.isDownPressed:
                 controller.isDownPressed = False
@@ -289,7 +288,6 @@ class HungryStarvingHippos(Screen):
 
             if controller.isAPressed and len(self.human_picks) == 3:
                 self.game_state = "human_race"
-                print("Game state changed to human_race")
                 self.initialize_human_position(state)  # Ensure humans are initialized for the race
                 self.start_time = time.time()  # Reset the timer for the race
 
@@ -298,10 +296,11 @@ class HungryStarvingHippos(Screen):
                 print("All humans have been eaten or escaped!")
                 print(self.winners)
                 print(self.human_picks)
-                print(self.human_stats)
+
                 self.game_state = "game_over"  # Example: Change the game state or take another action
                 for bet in self.winners:
                     if bet in self.human_picks:
+                        state.player.money += self.money_reward
                         print("Yay, you won!")
                         break  # Exit the loop after finding the first match
                     else:
@@ -316,7 +315,6 @@ class HungryStarvingHippos(Screen):
 
             # Initialize hippo position after 10 seconds
             if self.hippo is None and current_time - self.start_time >= 10:
-                print("its hippo time")
                 self.initialize_hippo_position()
 
             # Move the humans
@@ -340,7 +338,6 @@ class HungryStarvingHippos(Screen):
 
 
     def draw(self, state: "GameState") -> None:
-        print(self.human_stats)
         state.DISPLAY.fill((0, 0, 51))
         self.draw_bottom_black_box(state)
 

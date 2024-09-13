@@ -82,6 +82,9 @@ class Demon1(Demon):
             sprite_rect = pygame.Rect(1, 40, 22, 31.5)
         elif self.facing_right == True:
             sprite_rect = pygame.Rect(111, 40, 22, 31)
+        else:
+            # Default sprite rectangle if neither facing_left nor facing_right is set
+            sprite_rect = pygame.Rect(1, 40, 22, 31)  # Adjust these values if needed
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
@@ -110,13 +113,4 @@ class Demon1(Demon):
             pygame.draw.line(state.DISPLAY, (255, 255, 255), start_pos_h, end_pos_h, 1)  # Horizontal
             pygame.draw.line(state.DISPLAY, (255, 255, 255), start_pos_v, end_pos_v, 1)  # Vertical
 
-    # def draw(self, state):
-    #     if self.isSpeaking:
-    #         self.textbox.draw(state)
-    #     rect = (
-    #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-    #     self.collision.width, self.collision.height)
-    #     pygame.draw.rect(state.DISPLAY, self.color, rect)
-    #     distance = math.sqrt(
-    #         (state.player.collision.x - self.collision.x) ** 2 + (
-    #                     state.player.collision.y - self.collision.y) ** 2)
+

@@ -1,10 +1,10 @@
 {
     "level": 5,
     "exp": 1,
-    "stamina_points": 300,
-    "max_stamina_points": 300,
-    "focus_points": 180,
-    "max_focus_points": 180,
+    "stamina_points": 240,
+    "max_stamina_points": 240,
+    "focus_points": 120,
+    "max_focus_points": 120,
     "companions": [
         "sir leopold"
     ],
@@ -37,7 +37,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 1600,
+    "money": 6666,
     "rabies": false,
     "immunity": true,
     "quest_items": [
