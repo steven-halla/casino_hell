@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
+from entity.demon.demon6 import Demon6
 from entity.demon.demon8 import Demon8
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
@@ -103,7 +104,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.demons = [
 
-            Demon8(16 * 20, 14 * 5)
+            # Demon8(16 * 20, 16 * 5),
+            Demon6(16 * 10, 16 * 50)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -192,6 +194,12 @@ class Area2RibDemonMazeScreen(Screen):
                         elif demon.facing_right == True:
                             demon.facing_right = False
                             demon.facing_left = True
+                        elif demon.facing_up == True:
+                            demon.facing_up = False
+                            demon.facing_down = True
+                        elif demon.facing_down == True:
+                            demon.facing_down = False
+                            demon.facing_up = True
 
 
 

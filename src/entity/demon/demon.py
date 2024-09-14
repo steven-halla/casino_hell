@@ -31,6 +31,8 @@ class Demon(Entity):
 
         self.facing_right = False
         self.facing_left = False
+        self.facing_up = False
+        self.facing_down = False
 
 
     def move_randomly(self, state):
@@ -209,6 +211,18 @@ class Demon(Entity):
         # Reset velocity after moving
 
     def draw(self, state):
+        # if self.facing_left:
+        #     sprite_rect = pygame.Rect(1, 40, 22, 31)
+        # elif self.facing_right:
+        #     sprite_rect = pygame.Rect(111, 40, 22, 31)
+        # else:
+        #     # Default sprite rectangle if neither facing_left nor facing_right is set
+        #     sprite_rect = pygame.Rect(1, 40, 22, 31)  # Adjust these values if needed
+
+        # if self.facing_up:
+        #     sprite_rect = pygame.Rect(80, 1, 22, 31)  # Adjust these values if needed
+        # elif self.facing_down:
+        #     sprite_rect = pygame.Rect(5, 1, 22, 31)  # Adjust these values if needed
         rect = (
             self.collision.x + state.camera.x, self.collision.y + state.camera.y,
             self.collision.width, self.collision.height)
