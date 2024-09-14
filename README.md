@@ -535,7 +535,7 @@ allow 1 paid version of 500 gold membership
 # putting money in bank could be a quest for level 1
 # need somehting for rib demon rib protector, rib vest
 # need to create rib lock status
-
+# when in menu still taking poison damage from area 2 rib demon maze
 
 
 

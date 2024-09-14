@@ -40,15 +40,15 @@ class Area2RibDemonMazeScreen(Screen):
         self.npcs = []  # Initialize the NPCs list as empty
         self.poison_counter = 0
         self.clock = pygame.time.Clock()  # Initialize the clock
-
+        self.penalty_poison_counter = 5
 
 
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
-
-
+        self.total_elapsed_time = 0  # Total elapsed time in milliseconds
+        self.last_interval_count = 0  # Number of 5-second intervals that have passed
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -124,6 +124,19 @@ class Area2RibDemonMazeScreen(Screen):
         # ]
 
     def update(self, state: "GameState"):
+        delta_time = self.clock.tick(60)  # 60 FPS cap
+
+        # Update the total elapsed time
+        self.total_elapsed_time += delta_time
+
+        # Calculate the current interval count using integer division
+        current_interval_count = self.total_elapsed_time // 5000  # 5000 ms = 5 seconds
+
+        # Check if a new 5-second interval has started
+        if current_interval_count > self.last_interval_count:
+            print("5 seconds have passed")
+            state.player.stamina_points -= 20
+            self.last_interval_count = current_interval_count
 
 
         controller = state.controller
