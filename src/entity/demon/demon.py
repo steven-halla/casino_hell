@@ -13,7 +13,7 @@ class Demon(Entity):
         self.color: Tuple[int, int, int] = GREEN
         self.last_move_time = pygame.time.get_ticks()
         self.move_interval = 5555  # 3 seconds in milliseconds
-        self.move_distance = 10  # distance to move each step
+        self.move_distance = 2  # distance to move each step
         self.last_color_change_time = pygame.time.get_ticks()
         self.color_change_interval = 3000
         self.LOScounter = 0

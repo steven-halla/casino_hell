@@ -503,7 +503,6 @@ allow 1 paid version of 500 gold membership
 # need to fix status screen equipment so you can equip one more item with perception of 3
 # need to include ways to start angry hangry starving hippos
 # need to check each screen to make sure magic buffs are not persisting
-# im thinking of including 1 more reawrd for rib demon slots 2nd screen
 # need to fix speaking so that you have to face NPC
 # need to reset bet for all screens when leaving
 # make sure to fix how equpimetn works, so its pulling from constants
@@ -534,6 +533,8 @@ allow 1 paid version of 500 gold membership
 # also doesn't allow player to buy items, point being its easier to code and easier
 # for player to understand.
 # putting money in bank could be a quest for level 1
+# need somehting for rib demon rib protector, rib vest
+# need to create rib lock status
 
 
 

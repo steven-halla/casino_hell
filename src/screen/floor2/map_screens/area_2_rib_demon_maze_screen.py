@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
+from entity.demon.demon8 import Demon8
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
@@ -102,7 +103,7 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.demons = [
 
-            # Demon2(16 * 20, 14 * 79),
+            Demon8(16 * 20, 14 * 5)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -144,6 +145,10 @@ class Area2RibDemonMazeScreen(Screen):
 
 
 
+
+
+
+
         if controller.isExitPressed is True:
             state.isRunning = False
 
@@ -165,17 +170,17 @@ class Area2RibDemonMazeScreen(Screen):
                 if state.player.collision.isOverlap(tile_rect):
                     state.player.undoLastMove()
                 for demon in state.demons:
-                    if demon.collision.isOverlap(tile_rect):
-                        demon.undoLastMove()
 
-            for x,y, image in collision_layer.tiles():
-                tile_rect.x = x * 16
-                tile_rect.y = y * 16
-                if state.player.collision.isOverlap(tile_rect):
-                    state.player.undoLastMove()
-                for demon in state.demons:
                     if demon.collision.isOverlap(tile_rect):
                         demon.undoLastMove()
+                        if demon.facing_left == True:
+                            demon.facing_left = False
+                            demon.facing_right = True
+                        elif demon.facing_right == True:
+                            demon.facing_right = False
+                            demon.facing_left = True
+
+
 
 
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
