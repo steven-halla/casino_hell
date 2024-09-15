@@ -30,6 +30,7 @@ class Demon8(Demon):
         # Additional attributes
         self.move_player_down = False
         self.player_spotted = False
+        self.los_radius = 300  # Line-of-sight radius
 
         # For testing; do not delete
         self.show_los = False  # LOS visibility flag
@@ -38,6 +39,9 @@ class Demon8(Demon):
         ).convert_alpha()
 
     def update(self, state):
+        # Call the LOS method to check for player detection
+        self.LOSLeft(state)
+
         # Store the last position before moving
         self.last_position.x = self.position.x
         self.last_position.y = self.position.y
@@ -80,6 +84,9 @@ class Demon8(Demon):
             self.textbox.update(state)
 
     def draw(self, state):
+        # Draw the aura around the demon
+        self.drawAura(state)
+
         # Draw the demon itself
         if self.facing_left:
             sprite_rect = pygame.Rect(1, 40, 22, 31)
@@ -88,8 +95,6 @@ class Demon8(Demon):
         else:
             # Default sprite rectangle if neither facing_left nor facing_right is set
             sprite_rect = pygame.Rect(1, 40, 22, 31)  # Adjust these values if needed
-
-
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
@@ -133,5 +138,31 @@ class Demon8(Demon):
         return self.collision.isOverlap(other_rect)
 
     def LOSLeft(self, state):
-        # Implement LOS logic if needed
-        pass
+        # Calculate the distance between the demon and the player
+        dx = self.collision.x - state.player.collision.x
+        dy = self.collision.y - state.player.collision.y
+        distance = math.hypot(dx, dy)
+
+        # Check if the player is within line-of-sight and not hiding
+        if distance <= self.los_radius and not state.area2RibDemonMazeScreen.player_hiding:
+            print("found you")
+            self.player_spotted = True
+        else:
+            self.player_spotted = False
+
+    def drawAura(self, state):
+        # Transparent grey color (adjust the alpha value for more or less transparency)
+        grey_with_alpha = (128, 128, 128, 128)
+
+        # Create a surface for the aura with the same dimensions as the LOS radius
+        aura_surface = pygame.Surface((self.los_radius * 2, self.los_radius * 2), pygame.SRCALPHA)
+
+        # Draw a transparent circle on the surface
+        pygame.draw.circle(aura_surface, grey_with_alpha, (self.los_radius, self.los_radius), self.los_radius)
+
+        # Calculate the position of the aura based on the demon's position and camera offset
+        aura_x = self.collision.x + state.camera.x - self.los_radius
+        aura_y = self.collision.y + state.camera.y - self.los_radius
+
+        # Blit the aura surface onto the main display
+        state.DISPLAY.blit(aura_surface, (aura_x, aura_y))

@@ -74,8 +74,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         if state.area_2_rest_area_to_rib_demon_maze_point == True:
             print("nuggggggggggggggg;f")
-            player_start_x = 16 * 22  # Desired X coordinate
-            player_start_y = 16 * 37 # Desired Y coordinate
+            player_start_x = 16 * 5  # Desired X coordinate
+            player_start_y = 16 * 55 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 
@@ -105,8 +105,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.demons = [
 
-            # Demon8(16 * 20, 16 * 5),
-            Demon6(16 * 10, 16 * 50)
+            Demon8(16 * 20, 16 * 5),
+            Demon6(16 * 20, 16 * 50)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -287,7 +287,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.obstacle.draw(state)
 
-        state.player.draw(state)
+        if self.player_hiding == False:
+            state.player.draw(state)
 
 
 
