@@ -50,6 +50,7 @@ class Area2RibDemonMazeScreen(Screen):
         self.initialize_music()
         self.total_elapsed_time = 0  # Total elapsed time in milliseconds
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
+        self.player_hiding = False
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -201,6 +202,22 @@ class Area2RibDemonMazeScreen(Screen):
                             demon.facing_down = False
                             demon.facing_up = True
 
+            hide_layer = self.tiled_map.get_layer_by_name("hide")
+
+            for x, y, image in hide_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+                    self.player_hiding = True
+
+            main_layer = self.tiled_map.get_layer_by_name("bg")
+
+            for x, y, image in main_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                if state.player.collision.isOverlap(tile_rect):
+
+                    self.player_hiding = False
 
 
 

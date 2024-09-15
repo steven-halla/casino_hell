@@ -30,6 +30,8 @@ class Demon6(Demon):
         # Additional attributes
         self.move_player_down = False
         self.player_spotted = False
+        self.los_radius = 300  # You can adjust this value for the aura size
+
 
         # For testing; do not delete
         self.show_los = False  # LOS visibility flag
@@ -38,6 +40,8 @@ class Demon6(Demon):
         ).convert_alpha()
 
     def update(self, state):
+        self.LOSLeft(state)
+
         # Store the last position before moving
         self.last_position.x = self.position.x
         self.last_position.y = self.position.y
@@ -63,23 +67,54 @@ class Demon6(Demon):
             print("Demon bumped, starting conversation...")
             self.move_player_down = True  # This is the flag to indicate the player needs to move down.
 
-        if self.player_spotted:
-            print("Player spot detected")
-            self.isSpeaking = True
-            state.player.canMove = False
-            if self.textbox.is_finished() and state.controller.isTPressed:
-                self.move_player_down = True  # This is the flag to indicate the player needs to move down.
-                state.controller.isTPressed = False
-                self.isSpeaking = False
-                self.player_spotted = False
-                state.player.setPosition(660, 2800)  # Set the player's position to fixed coordinates
-                state.player.canMove = True
+        # if self.player_spotted:
+        #     print("Player spot detected")
+        #     self.isSpeaking = True
+        #     state.player.canMove = False
+        #     if self.textbox.is_finished() and state.controller.isTPressed:
+        #         self.move_player_down = True  # This is the flag to indicate the player needs to move down.
+        #         state.controller.isTPressed = False
+        #         self.isSpeaking = False
+        #         self.player_spotted = False
+        #         state.player.setPosition(660, 2800)  # Set the player's position to fixed coordinates
+        #         state.player.canMove = True
 
         # Update the textbox visibility based on the demon's speaking state
-        if self.isSpeaking:
-            self.textbox.update(state)
+        # if self.isSpeaking:
+        #     self.textbox.update(state)
+
+
+    def drawAura(self, state):
+        # Transparent grey color (adjust the alpha value for more or less transparency)
+        grey_with_alpha = (128, 128, 128, 128)
+
+        # Create a surface for the aura with the same dimensions as the LOS radius
+        aura_surface = pygame.Surface((self.los_radius * 2, self.los_radius * 2), pygame.SRCALPHA)
+
+        # Draw a transparent circle on the surface
+        pygame.draw.circle(aura_surface, grey_with_alpha, (self.los_radius, self.los_radius), self.los_radius)
+
+        # Calculate the position of the aura based on the demon's position and camera offset
+        aura_x = self.collision.x + state.camera.x - self.los_radius
+        aura_y = self.collision.y + state.camera.y - self.los_radius
+
+        # Blit the aura surface onto the main display
+        state.DISPLAY.blit(aura_surface, (aura_x, aura_y))
+
+    def LOSLeft(self, state):
+        # Remade method as per your instructions
+        dx = self.collision.x - state.player.collision.x
+        dy = self.collision.y - state.player.collision.y
+        distance = math.hypot(dx, dy)
+
+        if distance <= 300 and state.area2RibDemonMazeScreen.player_hiding == False:
+            print("found you")
+            self.player_spotted = True
+        else:
+            self.player_spotted = False
 
     def draw(self, state):
+        self.drawAura(state)
         # Draw the demon itself
         if self.facing_up:
             sprite_rect = pygame.Rect(80, 1, 22, 31)  # Adjust these values if needed
@@ -130,6 +165,4 @@ class Demon6(Demon):
         # Check if the demon's collision rectangle overlaps with another rectangle
         return self.collision.isOverlap(other_rect)
 
-    def LOSLeft(self, state):
-        # Implement LOS logic if needed
-        pass
+

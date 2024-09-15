@@ -89,6 +89,8 @@ class Demon8(Demon):
             # Default sprite rectangle if neither facing_left nor facing_right is set
             sprite_rect = pygame.Rect(1, 40, 22, 31)  # Adjust these values if needed
 
+
+
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
 
