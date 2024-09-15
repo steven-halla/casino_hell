@@ -53,6 +53,7 @@ from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
 from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemonMazeScreen
+from screen.floor2.map_screens.area_2_rib_demon_maze_screen2 import Area2RibDemonMazeScreen2
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
@@ -137,6 +138,7 @@ class GameState:
         self.area2GamblingScreen = Area2GamblingScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
+        self.area2RibDemonMazeScreen2 = Area2RibDemonMazeScreen2()
         self.area2BossScreen = Area2BossScreen()
 
 

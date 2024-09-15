@@ -19,7 +19,7 @@ class Demon8(Demon):
             ],
             (50, 450, 50, 45), 30, 500
         )
-        self.move_distance = 2  # Movement speed
+        self.move_distance = 1.8  # Movement speed
         self.facing_left = True  # Start facing left
         self.facing_right = False
         self.velocity = pygame.math.Vector2(0, 0)
@@ -30,7 +30,7 @@ class Demon8(Demon):
         # Additional attributes
         self.move_player_down = False
         self.player_spotted = False
-        self.los_radius = 300  # Line-of-sight radius
+        self.los_radius = 210  # Line-of-sight radius
 
         # For testing; do not delete
         self.show_los = False  # LOS visibility flag
@@ -62,26 +62,26 @@ class Demon8(Demon):
             state.player.collision.x - self.collision.x,
             state.player.collision.y - self.collision.y
         )
-        if state.player.collision.x - self.collision.x < 0 and distance < 30:
-            self.isSpeaking = True
-            print("Demon bumped, starting conversation...")
-            self.move_player_down = True  # This is the flag to indicate the player needs to move down.
-
-        if self.player_spotted:
-            print("Player spot detected")
-            self.isSpeaking = True
-            state.player.canMove = False
-            if self.textbox.is_finished() and state.controller.isTPressed:
-                self.move_player_down = True  # This is the flag to indicate the player needs to move down.
-                state.controller.isTPressed = False
-                self.isSpeaking = False
-                self.player_spotted = False
-                state.player.setPosition(660, 2800)  # Set the player's position to fixed coordinates
-                state.player.canMove = True
+        # if state.player.collision.x - self.collision.x < 0 and distance < 30:
+        #     self.isSpeaking = True
+        #     print("Demon bumped, starting conversation...")
+        #     self.move_player_down = True  # This is the flag to indicate the player needs to move down.
+        #
+        # if self.player_spotted:
+        #     print("Player spot detected")
+        #     self.isSpeaking = True
+        #     state.player.canMove = False
+        #     if self.textbox.is_finished() and state.controller.isTPressed:
+        #         self.move_player_down = True  # This is the flag to indicate the player needs to move down.
+        #         state.controller.isTPressed = False
+        #         self.isSpeaking = False
+        #         self.player_spotted = False
+        #         state.player.setPosition(660, 2800)  # Set the player's position to fixed coordinates
+        #         state.player.canMove = True
 
         # Update the textbox visibility based on the demon's speaking state
-        if self.isSpeaking:
-            self.textbox.update(state)
+        # if self.isSpeaking:
+        #     self.textbox.update(state)
 
     def draw(self, state):
         # Draw the aura around the demon

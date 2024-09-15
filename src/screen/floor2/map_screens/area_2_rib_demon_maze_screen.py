@@ -87,6 +87,7 @@ class Area2RibDemonMazeScreen(Screen):
             self.initialize_music()
         super().start(state)
         state.npcs.clear()
+        state.treasurechests.clear()
 
         # Check if a player instance already exists
         # if not hasattr(state, 'player') or state.player is None:
@@ -94,10 +95,12 @@ class Area2RibDemonMazeScreen(Screen):
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
 
+        state.treasurechests = []
+
         if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
-                and state.player.perception > 3):
+                and state.player.perception > 2):
             state.treasurechests = [
-            SlotsVest(16 * 36, 16 * 10),
+            SlotsVest(16 * 29, 16 * 35),
 
 
         ]
@@ -106,7 +109,7 @@ class Area2RibDemonMazeScreen(Screen):
         state.demons = [
 
             Demon8(16 * 20, 16 * 5),
-            Demon6(16 * 20, 16 * 50)
+            Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -138,7 +141,7 @@ class Area2RibDemonMazeScreen(Screen):
         # Check if a new 5-second interval has started
         if current_interval_count > self.last_interval_count:
             print("5 seconds have passed")
-            state.player.stamina_points -= 20
+            state.player.stamina_points -= 3
             self.last_interval_count = current_interval_count
 
 
@@ -156,6 +159,9 @@ class Area2RibDemonMazeScreen(Screen):
 
         for demon in state.demons:
             demon.update(state)
+
+        for treasure in state.treasurechests:
+            treasure.update(state)
 
 
 
@@ -179,10 +185,25 @@ class Area2RibDemonMazeScreen(Screen):
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
+            teleport_layer = self.tiled_map.get_layer_by_name("teleport")
+
+            for x, y, image in teleport_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+
+                if state.player.collision.isOverlap(tile_rect):
+                    state.area_2_rest_area_to_rib_demon_maze_point2 = True
+                    state.currentScreen = state.area2RibDemonMazeScreen2
+                    state.area2RibDemonMazeScreen2.start(state)
+
+                    print("They want you as a new recruit")
+
 
             for x, y, image in collision_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
+
+
                 if state.player.collision.isOverlap(tile_rect):
                     state.player.undoLastMove()
                 for demon in state.demons:
@@ -282,6 +303,9 @@ class Area2RibDemonMazeScreen(Screen):
 
         for demon in state.demons:
             demon.draw(state)
+
+        for treasure in state.treasurechests:
+            treasure.draw(state)
 
 
 

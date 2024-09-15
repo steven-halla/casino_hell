@@ -536,6 +536,8 @@ allow 1 paid version of 500 gold membership
 # need somehting for rib demon rib protector, rib vest
 # need to create rib lock status
 # when in menu still taking poison damage from area 2 rib demon maze
+# relic: these are boost, such as opossum shot and rib defender need to put this on status screen
+# we should not dleete quest items if player has both at same time
 
 
 

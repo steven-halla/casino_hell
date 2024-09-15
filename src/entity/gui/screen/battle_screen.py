@@ -64,7 +64,7 @@ class BattleScreen:
                     state.player.spirit += 1
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
                     state.player.perception += 1
-                    state.player.base_perception += 1
+                    # state.player.base_perception += 1
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
                     state.player.luck += 1
 

@@ -178,11 +178,11 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
 
-        if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-            self.perception = self.base_perception + self.perception_boost_item
-
-        elif Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
-            self.perception = self.base_perception
+        # if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+        #     self.perception = self.base_perception + self.perception_boost_item
+        #
+        # elif Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
+        #     self.perception = self.base_perception
 
         # if Equipment.HEALTHY_GLOVES.value in state.player.equipped_items:
         #     self.max_stamina_points = self.max_stamina_points + 30
