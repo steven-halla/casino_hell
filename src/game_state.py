@@ -156,7 +156,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.startLoadScreen
+        self.currentScreen = self.area2RibDemonMazeScreen2
 
 
 
@@ -183,6 +183,7 @@ class GameState:
         self.area_2_rest_area_to_nugget_point = False
         self.area_2_rest_area_to_gambling_point = False
         self.area_2_rest_area_to_rib_demon_maze_point = False
+        self.area_2_rest_area_to_rib_demon_maze_point2 = False
         self.area_2_rest_area_to_boss_point = False
 
 

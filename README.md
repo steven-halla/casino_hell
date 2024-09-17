@@ -539,6 +539,24 @@ allow 1 paid version of 500 gold membership
 # relic: these are boost, such as opossum shot and rib defender need to put this on status screen
 # we should not dleete quest items if player has both at same time
 
+# I need to build at least 1 more sve, maybe 2
+# at least we need chapter start save
+
+
+-------------------------------demon 9 --------------
+When creating a box:
+
+We need the x and y position
+we need height and width
+we need box color
+box_x = 100
+box_y = 100
+red_color = (255, 0, 0)  # RGB color for red
+
+box_width = 100
+box_height = 100
+we need to dro the code to create the rect and passs all these as paramaters
+
 
 
 
