@@ -1,3 +1,5 @@
+import math
+
 import pygame
 import pytmx
 
@@ -51,6 +53,23 @@ class Area2RibDemonMazeScreen2(Screen):
         self.total_elapsed_time = 0  # Total elapsed time in milliseconds
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
+
+        self.box_1_height = 100
+        self.box_1_width = 50
+        self.box_1_color = (255, 0, 0)
+        self.box_1_x_pos = 555.0
+        self.box_1_y_pos = 25.0
+
+        self.box_2_height = 100
+        self.box_2_width = 50
+        self.box_2_color = (0,255,0)
+        self.box_2_x_pos = 75.0
+        self.box_2_y_pos = 25.0
+
+        self.box_1_rect = pygame.Rect(self.box_1_x_pos, self.box_1_y_pos, self.box_1_width, self.box_1_height)
+
+        self.box_2_speed = 1
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -136,6 +155,20 @@ class Area2RibDemonMazeScreen2(Screen):
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+
+        box_2_direction_x = self.box_1_x_pos - self.box_2_x_pos
+        box_2_direction_y = self.box_1_y_pos - self.box_2_y_pos
+        distance = math.hypot(box_2_direction_x, box_2_direction_y)
+
+        if distance != 0:
+            normalized_x = box_2_direction_x / distance
+            normalized_y = box_2_direction_y / distance
+        else:
+            normalized_x = 0
+            normalized_y  = 0
+
+        self.box_2_x_pos += normalized_x * self.box_2_speed
+        self.box_2_y_pos += normalized_y * self.box_2_speed
 
         # Update the total elapsed time
         self.total_elapsed_time += delta_time
@@ -251,6 +284,7 @@ class Area2RibDemonMazeScreen2(Screen):
     def draw(self, state: "GameState"):
 
         state.DISPLAY.fill(BLUEBLACK)
+
         # state.DISPLAY.blit(state.FONT.render(
         #     f"player money: {state.player.money}",
         #     True, (255, 255, 255)), (333, 333))
@@ -314,6 +348,23 @@ class Area2RibDemonMazeScreen2(Screen):
 
         if self.player_hiding == False:
             state.player.draw(state)
+
+        adjusted_box_1_x = self.box_1_x_pos + state.camera.x
+        adjusted_box_1_y = self.box_1_y_pos + state.camera.y
+
+        # Create a new Rect with the adjusted position
+        adjusted_box_1_rect = pygame.Rect(adjusted_box_1_x, adjusted_box_1_y, self.box_1_width, self.box_1_height)
+
+        # Draw the rectangle after all other elements
+        pygame.draw.rect(state.DISPLAY, self.box_1_color, adjusted_box_1_rect)
+
+
+
+        adjusted_box_2_x = self.box_2_x_pos + state.camera.x
+        adjusted_box_2_y = self.box_2_y_pos + state.camera.y
+
+        adjusted_box_2_rect = pygame.Rect(adjusted_box_2_x, adjusted_box_2_y, self.box_2_width, self.box_2_height)
+        pygame.draw.rect(state.DISPLAY, self.box_2_color, adjusted_box_2_rect)
 
 
 

@@ -7,6 +7,7 @@ import math
 from typing import Dict, Tuple, List, Optional,Union ,  Any
 
 # its possible to eat two humans need unique message for that
+# hippo should appear at random locations to make it more fare
 class HungryStarvingHippos(Screen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
