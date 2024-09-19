@@ -18,6 +18,7 @@ from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRipp
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 from entity.npc.area2.area_2_nugget_screen.area_2_nugget_to_rest_area import Area2NuggetToRestArea
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_1 import Switch1
 
 from entity.player.player import Player
 from entity.treasurechests.slots_vest import SlotsVest
@@ -70,6 +71,13 @@ class Area2RibDemonMazeScreen2(Screen):
         # self.box_1_rect = pygame.Rect(self.box_1_x_pos, self.box_1_y_pos, self.box_1_width, self.box_1_height)
         #
         # self.box_2_speed = 1
+
+        self.switch_1 = False
+        self.switch_2 = False
+        self.switch_3 = False
+        self.switch_4 = False
+        self.switch_5 = False
+        self.all_switches_on = False
 
 
     def stop_music(self):
@@ -133,7 +141,7 @@ class Area2RibDemonMazeScreen2(Screen):
 
         state.demons = [
 
-            Demon9(16 * 70, 16 * 5),
+            # Demon9(16 * 70, 16 * 5),
             # Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
@@ -148,11 +156,10 @@ class Area2RibDemonMazeScreen2(Screen):
 
         # state.npcs = []
 
-        # state.npcs = [
-        #     MCNugg(16 * 15, 16 * 5),
-        #     Area2NuggetToRestArea(16 * 35, 16 * 34),
-        #
-        # ]
+        state.npcs = [
+            Switch1(16 * 40, 16 * 15),
+
+        ]
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap

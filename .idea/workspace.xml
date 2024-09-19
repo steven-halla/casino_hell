@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="heads force now displays on enemy status, and locks user out of further magic casts">
-      <change beforePath="$PROJECT_DIR$/src/game_constants/magic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/magic.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="demon now chases player, included code for slow tiles to slow demon down">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +55,12 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor": "Run",
+    "Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor": "Run",
     "Python.$AffectedModuleNames$.executor": "Run",
     "Python.Unnamed.executor": "Run",
     "Python.blackjack.executor": "Run",
@@ -63,6 +70,8 @@
     "Python.fff.executor": "Run",
     "Python.game.executor": "Run",
     "Python.game_state.executor": "Run",
+    "Python.hangry_angry_starving_hippos_test.executor": "Run",
+    "Python.hungry_starving_hippos.executor": "Run",
     "Python.main (1).executor": "Run",
     "Python.main.executor": "Run",
     "Python.main.py.executor": "Run",
@@ -123,8 +132,8 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="blackjack" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="nfeGame" />
+    <configuration name="hangry_angry_starving_hippos_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -132,12 +141,13 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="SDK_NAME" value="Python 3.9 (casino_hell)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/blackjack.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/hangry_angry_starving_hippos_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -146,7 +156,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="craps_happy_screen" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="hungry_starving_hippos" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -161,35 +171,11 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/screen/floor2/battle_screens/hungry_starving_hippos.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="fff" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="nfeGame" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="false" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="true" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
       <method v="2" />
@@ -242,67 +228,69 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="nukeem" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="nfeGame" />
+    <configuration name="Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nukeem.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;hangry_angry_starving_hippos_test.HungryStarvingHipposTest&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="playground" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="nfeGame" />
+    <configuration name="Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/playground.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Python tests in hangry_angry_starving_hippos_test.py" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="casino_hell" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;$PROJECT_DIR$/tests/hangry_angry_starving_hippos_test.py&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.craps_happy_screen" />
-      <item itemvalue="Python.blackjack" />
-      <item itemvalue="Python.fff" />
-      <item itemvalue="Python.nukeem" />
-      <item itemvalue="Python.playground" />
+      <item itemvalue="Python.hangry_angry_starving_hippos_test" />
+      <item itemvalue="Python.hungry_starving_hippos" />
+      <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest" />
+      <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome" />
+      <item itemvalue="Python tests.Python tests in hangry_angry_starving_hippos_test.py" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.craps_happy_screen" />
-        <item itemvalue="Python.fff" />
-        <item itemvalue="Python.playground" />
-        <item itemvalue="Python.blackjack" />
-        <item itemvalue="Python.nukeem" />
+        <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome" />
+        <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest" />
+        <item itemvalue="Python.hungry_starving_hippos" />
+        <item itemvalue="Python tests.Python tests in hangry_angry_starving_hippos_test.py" />
+        <item itemvalue="Python.hangry_angry_starving_hippos_test" />
       </list>
     </recent_temporary>
   </component>
@@ -369,6 +357,7 @@
       <workItem from="1718826618166" duration="343743000" />
       <workItem from="1725645837107" duration="3654000" />
       <workItem from="1725649923355" duration="5653000" />
+      <workItem from="1725655762755" duration="89895000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -713,7 +702,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="866" />
+    <option name="localTasksCounter" value="888" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -742,32 +731,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixing up bar keep" />
-    <MESSAGE value="allowing saving of new enemy data, fixed bugs for getting quest to work after getting money" />
-    <MESSAGE value="now we have base perception and chagnes to quest" />
-    <MESSAGE value="fixed quest" />
-    <MESSAGE value="fixed mc nugget quest so he only gives money 1 time" />
-    <MESSAGE value="fixed mc nugget and alex npcs with bug fixes for messages" />
-    <MESSAGE value="improved slots interaction wtih magic and fixed bug in craps that wasn't adding money to player" />
-    <MESSAGE value="can now equip healthy gloves, minor bug changes" />
-    <MESSAGE value="fixed bug with shop menu mixing with player menu" />
-    <MESSAGE value="fixing bug with npc interaction adn player menus mixing" />
-    <MESSAGE value="minor bug fixes, fixed up quest to work, fixed bug with npc that No option would not end convo also vfixed bug with message ending premature" />
-    <MESSAGE value="fixed betting so its not grater than money in black jack, also did minor balance changes for black jack for stamnia loss" />
-    <MESSAGE value="fixing poison for opossum in a can , player can no longer leaver, fixed text error, red text included while infected" />
-    <MESSAGE value="poison now takes away from player focus points" />
-    <MESSAGE value="level up now works for black jack" />
-    <MESSAGE value="level up now works for opssum in a can" />
-    <MESSAGE value="coin flip now level up works" />
-    <MESSAGE value="craps now has level up screen" />
-    <MESSAGE value="fixed welcome screen indexes so when quitting the curser now rest on 0th element" />
-    <MESSAGE value="added luck stat to opssum in a can" />
-    <MESSAGE value="fixed message bug that was double printing messages and labling messages incorrect" />
-    <MESSAGE value="fixed bug with debuff not going away when counter reached 0" />
     <MESSAGE value="silence now works" />
     <MESSAGE value="phases now work  heads force now works" />
     <MESSAGE value="heads force now displays on enemy status, and locks user out of further magic casts" />
-    <option name="LAST_COMMIT_MESSAGE" value="heads force now displays on enemy status, and locks user out of further magic casts" />
+    <MESSAGE value="fixed bug for magic spell hack" />
+    <MESSAGE value="hacked status now shows" />
+    <MESSAGE value="fixed craps, roll of 7 on unlucky strike success now goes to win screen, also fixed magic spell which now fully functions" />
+    <MESSAGE value="black jack hat now gives a 1/5 chance to delete the last card if bust" />
+    <MESSAGE value="chicken nugger amulet now guards against 3's on come out roll, a 5.5% chance advantage for player" />
+    <MESSAGE value="chicken nugger amulet now adds + 10 to unlucky roll bonus, also lowered unlucky two roll to 60 in favor of enemy" />
+    <MESSAGE value="fixed bug was giving enemy advangate with amulet" />
+    <MESSAGE value="save point" />
+    <MESSAGE value="save point speed done" />
+    <MESSAGE value="much big improvement to hungry hippos picking menu" />
+    <MESSAGE value="save point, working on getting stamina to work" />
+    <MESSAGE value="stats worked out for hangry angry hippos" />
+    <MESSAGE value="boss created" />
+    <MESSAGE value="demons now bounce left and right" />
+    <MESSAGE value="player now takes damage every 5 seconds while in maze" />
+    <MESSAGE value="movement is now handled with correct facin with images" />
+    <MESSAGE value="creating hiding spots" />
+    <MESSAGE value="improved demon 8 class for site handling" />
+    <MESSAGE value="setting up next part of puzzle maze" />
+    <MESSAGE value="about to do some practice, this is my save point" />
+    <MESSAGE value="box now chases" />
+    <MESSAGE value="demon now chases player, included code for slow tiles to slow demon down" />
+    <option name="LAST_COMMIT_MESSAGE" value="demon now chases player, included code for slow tiles to slow demon down" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -788,14 +777,9 @@
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/screen/floor2/battle_screens/hungry_starving_hippos.py</url>
-          <line>379</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/screen/floor2/battle_screens/hungry_starving_hippos.py</url>
-          <line>394</line>
-          <option name="timeStamp" value="18" />
+          <url>file://$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen2.py</url>
+          <line>270</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -803,10 +787,13 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1725655178505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1726707533939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/casino_hell$hungry_starving_hippos.coverage" NAME="hungry_starving_hippos Coverage Results" MODIFIED="1725751052954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
+    <SUITE FILE_PATH="coverage/casino_hell$hangry_angry_starving_hippos_test.coverage" NAME="hangry_angry_starving_hippos_test Coverage Results" MODIFIED="1725750182884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/nfeGame$nukeem.coverage" NAME="nukeem Coverage Results" MODIFIED="1702952394073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1703706369250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
