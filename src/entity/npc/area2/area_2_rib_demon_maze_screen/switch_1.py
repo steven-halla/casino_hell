@@ -15,7 +15,7 @@ class Switch1(Npc):
         self.t_pressed = False
 
         self.rect_height = 50
-        self.rect_width = 50
+        self.rect_width = 25
         self.switch_color_off = (255, 0, 0)  # Red for off
         self.switch_color_on = (0, 255, 0)  # Green for on
 

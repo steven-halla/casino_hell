@@ -19,6 +19,10 @@ from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import Oposs
 from entity.npc.area2.area_2_nugget_screen.area_2_nugget_to_rest_area import Area2NuggetToRestArea
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
 from entity.npc.area2.area_2_rib_demon_maze_screen.switch_1 import Switch1
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_2 import Switch2
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_3 import Switch3
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_4 import Switch4
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_5 import Switch5
 
 from entity.player.player import Player
 from entity.treasurechests.slots_vest import SlotsVest
@@ -157,12 +161,19 @@ class Area2RibDemonMazeScreen2(Screen):
         # state.npcs = []
 
         state.npcs = [
-            Switch1(16 * 40, 16 * 15),
+            Switch1(108,  92),
+            Switch2( 1150,  30),
+            Switch3(764, 560),
+            Switch4(16 * 50, 16 * 11),
+            Switch5(16 * 22, 16 * 35)
 
         ]
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+
+        print(f"Player's X position: {state.player.collision.x}, Player's Y position: {state.player.collision.y}")
+
         #
         # box_2_direction_x = self.box_1_x_pos - self.box_2_x_pos
         # box_2_direction_y = self.box_1_y_pos - self.box_2_y_pos
