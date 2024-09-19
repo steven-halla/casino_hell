@@ -11,7 +11,7 @@ from game_constants.treasure import Treasure
 class NuggieSauceIngrediant1(TreasureChest):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, "Water Bottle")
-        self.hidden_item = "Nuggie Sauce 1"
+        self.hidden_item = "Rib Demon Sauce  found....you dont wanna know how they made it."
         self.isOpened = False
         self.state_start_time = pygame.time.get_ticks()
         self.treasure_open_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/open_treasure.mp3")
@@ -58,6 +58,9 @@ class NuggieSauceIngrediant1(TreasureChest):
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
                 print("mew")
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
+
         else:
             self.open_chest(state)
 

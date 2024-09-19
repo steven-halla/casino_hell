@@ -186,8 +186,8 @@ class Area2RibDemonMazeScreen2(Screen):
 
 
         if self.all_switches_on == True:
-            state.currentScreen = state.area2RestScreen
-            state.area2RestScreen.start(state)
+            state.currentScreen = state.area2RibDemonMazeScreen3
+            state.area2RibDemonMazeScreen3.start(state)
 
         # for npc in state.npcs:
 

@@ -19,4 +19,5 @@ in the future we need to make sure that all screens operate at the same speed, f
 i need start screens
 ]
 
-
+##############################
+WHEN MAKING MAPS DO NOT USE DOUBLE LAYERS IE BG AND HIDE in same squaare

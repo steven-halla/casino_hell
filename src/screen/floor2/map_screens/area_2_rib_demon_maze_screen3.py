@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
+from entity.demon.demon10 import Demon10
 from entity.demon.demon6 import Demon6
 from entity.demon.demon8 import Demon8
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
@@ -24,12 +25,12 @@ from physics.rectangle import Rectangle
 
 
 
-class Area2RibDemonMazeScreen(Screen):
+class Area2RibDemonMazeScreen3(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/ribdemonhideroom.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/ribdemonhideroom3.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False
@@ -51,6 +52,8 @@ class Area2RibDemonMazeScreen(Screen):
         self.total_elapsed_time = 0  # Total elapsed time in milliseconds
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
+        self.rally_point = (16 * 85, 16 * 55)  # Set the rally point here
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -73,10 +76,12 @@ class Area2RibDemonMazeScreen(Screen):
         print(str(state.area_2_rest_area_to_gambling_point))
         # state.area_2_rest_area_to_rib_demon_maze_point = True
 
-        if state.area_2_rest_area_to_rib_demon_maze_point == True:
+        state.area_2_rest_area_to_rib_demon_maze_point3 = True
+
+        if state.area_2_rest_area_to_rib_demon_maze_point3 == True:
             print("nuggggggggggggggg;f")
             player_start_x = 16 * 5  # Desired X coordinate
-            player_start_y = 16 * 55 # Desired Y coordinate
+            player_start_y = 16 * 35 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 
@@ -109,8 +114,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.demons = [
 
-            Demon8(16 * 20, 16 * 5),
-            Demon6(16 * 20, 16 * 30)
+            Demon10(16 * 85, 16 * 55),
+            # Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -186,18 +191,18 @@ class Area2RibDemonMazeScreen(Screen):
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
-            teleport_layer = self.tiled_map.get_layer_by_name("teleport")
-
-            for x, y, image in teleport_layer.tiles():
-                tile_rect.x = x * 16
-                tile_rect.y = y * 16
-
-                if state.player.collision.isOverlap(tile_rect):
-                    state.area_2_rest_area_to_rib_demon_maze_point2 = True
-                    state.currentScreen = state.area2RibDemonMazeScreen2
-                    state.area2RibDemonMazeScreen2.start(state)
-
-                    print("They want you as a new recruit")
+            # teleport_layer = self.tiled_map.get_layer_by_name("teleport")
+            #
+            # for x, y, image in teleport_layer.tiles():
+            #     tile_rect.x = x * 16
+            #     tile_rect.y = y * 16
+            #
+            #     if state.player.collision.isOverlap(tile_rect):
+            #         state.area_2_rest_area_to_rib_demon_maze_point2 = True
+            #         state.currentScreen = state.area2RibDemonMazeScreen2
+            #         state.area2RibDemonMazeScreen2.start(state)
+            #
+            #         print("They want you as a new recruit")
 
 
             for x, y, image in collision_layer.tiles():
@@ -231,6 +236,9 @@ class Area2RibDemonMazeScreen(Screen):
                 tile_rect.y = y * 16
                 if state.player.collision.isOverlap(tile_rect):
                     self.player_hiding = True
+                    # for demon in state.demons:
+                    #     if isinstance(demon, Demon10):
+                    #         demon.move_to_rally()
 
             main_layer = self.tiled_map.get_layer_by_name("bg")
 
