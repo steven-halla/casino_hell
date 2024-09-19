@@ -22,6 +22,9 @@ class Switch1(Npc):
         self.switch_activated = False  # Track if the switch is activated (permanently on)
 
     def update(self, state: "GameState"):
+
+        if state.area2RibDemonMazeScreen2.switch_1 == False:
+            self.switch_activated = False
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
@@ -39,10 +42,24 @@ class Switch1(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
             # Activate the switch permanently
-            self.switch_activated = True
+            if state.area2RibDemonMazeScreen2.switch_2 == False and \
+                state.area2RibDemonMazeScreen2.switch_3 == False and \
+                state.area2RibDemonMazeScreen2.switch_4 == False and \
+                state.area2RibDemonMazeScreen2.switch_5 == False:
+                    self.switch_activated = True
+                    state.area2RibDemonMazeScreen2.switch_1 = True
+            else:
+                self.switch_activated = False
+                state.area2RibDemonMazeScreen2.switch_1 = False
+                state.area2RibDemonMazeScreen2.switch_2 = False
+                state.area2RibDemonMazeScreen2.switch_3 = False
+                state.area2RibDemonMazeScreen2.switch_4 = False
+                state.area2RibDemonMazeScreen2.switch_5 = False
 
-            print("Switch activated!")
-            state.area2RibDemonMazeScreen2.switch_1 = True
+
+
+            print("Switch 1 activated!")
+            # state.area2RibDemonMazeScreen2.switch_1 = True
             # You can trigger any other logic related to the switch being activated here
 
     def update_talking(self, state: "GameState"):

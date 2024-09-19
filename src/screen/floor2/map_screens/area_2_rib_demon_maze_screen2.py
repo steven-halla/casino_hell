@@ -82,7 +82,18 @@ class Area2RibDemonMazeScreen2(Screen):
         self.switch_4 = False
         self.switch_5 = False
         self.all_switches_on = False
+        self.reset_switches = False
 
+
+
+    def reset_all_switches(self, state: "GameState"):
+        print("Resetting all switches!")
+        self.current_switch = 1  # Reset the current switch to the first one
+
+        # Reset the state of all switches
+        for npc in state.npcs:
+            if isinstance(npc, (Switch1, Switch2, Switch3, Switch4, Switch5)):
+                npc.switch_activated = False
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -145,7 +156,7 @@ class Area2RibDemonMazeScreen2(Screen):
 
         state.demons = [
 
-            # Demon9(16 * 70, 16 * 5),
+            Demon9(16 * 70, 16 * 5),
             # Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
@@ -171,23 +182,24 @@ class Area2RibDemonMazeScreen2(Screen):
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+        print(delta_time)
 
-        print(f"Player's X position: {state.player.collision.x}, Player's Y position: {state.player.collision.y}")
 
-        #
-        # box_2_direction_x = self.box_1_x_pos - self.box_2_x_pos
-        # box_2_direction_y = self.box_1_y_pos - self.box_2_y_pos
-        # distance = math.hypot(box_2_direction_x, box_2_direction_y)
+        if self.all_switches_on == True:
+            state.currentScreen = state.area2RestScreen
+            state.area2RestScreen.start(state)
 
-        # if distance != 0:
-        #     normalized_x = box_2_direction_x / distance
-        #     normalized_y = box_2_direction_y / distance
-        # else:
-        #     normalized_x = 0
-        #     normalized_y  = 0
-        #
-        # self.box_2_x_pos += normalized_x * self.box_2_speed
-        # self.box_2_y_pos += normalized_y * self.box_2_speed
+        # for npc in state.npcs:
+
+
+        # Define the correct order of switches
+
+
+        # Track if switches are pressed correctly in order
+        if self.switch_1 == True:
+
+            pass
+
 
         # Update the total elapsed time
         self.total_elapsed_time += delta_time
@@ -197,7 +209,7 @@ class Area2RibDemonMazeScreen2(Screen):
 
         # Check if a new 5-second interval has started
         if current_interval_count > self.last_interval_count:
-            print("5 seconds have passed")
+            # print("5 seconds have passed")
             state.player.stamina_points -= 3
             self.last_interval_count = current_interval_count
 
@@ -293,7 +305,7 @@ class Area2RibDemonMazeScreen2(Screen):
                 for demon in state.demons:
 
                     if demon.collision.isOverlap(tile_rect):
-                        print(demon.move_distance)
+                        # print(demon.move_distance)
 
                         demon.move_distance = 1
                     # elif demon.collision.isOverlap(tile_rect) != True:
@@ -308,7 +320,7 @@ class Area2RibDemonMazeScreen2(Screen):
                 for demon in state.demons:
 
                     if demon.collision.isOverlap(tile_rect):
-                        print(demon.move_distance)
+                        # print(demon.move_distance)
 
                         demon.move_distance = 3.8
 

@@ -54,6 +54,7 @@ from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemonMazeScreen
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen2 import Area2RibDemonMazeScreen2
+from screen.floor2.map_screens.area_2_rib_demon_maze_screen3 import Area2RibDemonMazeScreen3
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
@@ -139,6 +140,7 @@ class GameState:
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
         self.area2RibDemonMazeScreen2 = Area2RibDemonMazeScreen2()
+        self.area2RibDemonMazeScreen3 = Area2RibDemonMazeScreen3()
         self.area2BossScreen = Area2BossScreen()
 
 
@@ -156,7 +158,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.area2RibDemonMazeScreen2
+        self.currentScreen = self.area2RibDemonMazeScreen3
 
 
 
@@ -184,6 +186,7 @@ class GameState:
         self.area_2_rest_area_to_gambling_point = False
         self.area_2_rest_area_to_rib_demon_maze_point = False
         self.area_2_rest_area_to_rib_demon_maze_point2 = False
+        self.area_2_rest_area_to_rib_demon_maze_point3 = False
         self.area_2_rest_area_to_boss_point = False
 
 
