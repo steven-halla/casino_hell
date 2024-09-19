@@ -7,6 +7,7 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
 from entity.demon.demon6 import Demon6
 from entity.demon.demon8 import Demon8
+from entity.demon.demon9 import Demon9
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
@@ -54,21 +55,21 @@ class Area2RibDemonMazeScreen2(Screen):
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
 
-        self.box_1_height = 100
-        self.box_1_width = 50
-        self.box_1_color = (255, 0, 0)
-        self.box_1_x_pos = 555.0
-        self.box_1_y_pos = 25.0
-
-        self.box_2_height = 100
-        self.box_2_width = 50
-        self.box_2_color = (0,255,0)
-        self.box_2_x_pos = 75.0
-        self.box_2_y_pos = 25.0
-
-        self.box_1_rect = pygame.Rect(self.box_1_x_pos, self.box_1_y_pos, self.box_1_width, self.box_1_height)
-
-        self.box_2_speed = 1
+        # self.box_1_height = 100
+        # self.box_1_width = 50
+        # self.box_1_color = (255, 0, 0)
+        # self.box_1_x_pos = 555.0
+        # self.box_1_y_pos = 25.0
+        #
+        # self.box_2_height = 100
+        # self.box_2_width = 50
+        # self.box_2_color = (0,255,0)
+        # self.box_2_x_pos = 75.0
+        # self.box_2_y_pos = 25.0
+        #
+        # self.box_1_rect = pygame.Rect(self.box_1_x_pos, self.box_1_y_pos, self.box_1_width, self.box_1_height)
+        #
+        # self.box_2_speed = 1
 
 
     def stop_music(self):
@@ -132,7 +133,7 @@ class Area2RibDemonMazeScreen2(Screen):
 
         state.demons = [
 
-            # Demon8(16 * 20, 16 * 5),
+            Demon9(16 * 70, 16 * 5),
             # Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
@@ -155,20 +156,20 @@ class Area2RibDemonMazeScreen2(Screen):
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+        #
+        # box_2_direction_x = self.box_1_x_pos - self.box_2_x_pos
+        # box_2_direction_y = self.box_1_y_pos - self.box_2_y_pos
+        # distance = math.hypot(box_2_direction_x, box_2_direction_y)
 
-        box_2_direction_x = self.box_1_x_pos - self.box_2_x_pos
-        box_2_direction_y = self.box_1_y_pos - self.box_2_y_pos
-        distance = math.hypot(box_2_direction_x, box_2_direction_y)
-
-        if distance != 0:
-            normalized_x = box_2_direction_x / distance
-            normalized_y = box_2_direction_y / distance
-        else:
-            normalized_x = 0
-            normalized_y  = 0
-
-        self.box_2_x_pos += normalized_x * self.box_2_speed
-        self.box_2_y_pos += normalized_y * self.box_2_speed
+        # if distance != 0:
+        #     normalized_x = box_2_direction_x / distance
+        #     normalized_y = box_2_direction_y / distance
+        # else:
+        #     normalized_x = 0
+        #     normalized_y  = 0
+        #
+        # self.box_2_x_pos += normalized_x * self.box_2_speed
+        # self.box_2_y_pos += normalized_y * self.box_2_speed
 
         # Update the total elapsed time
         self.total_elapsed_time += delta_time
@@ -223,14 +224,15 @@ class Area2RibDemonMazeScreen2(Screen):
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
-            teleport_layer = self.tiled_map.get_layer_by_name("teleport")
+            # teleport_layer = self.tiled_map.get_layer_by_name("teleport")
 
-            for x, y, image in teleport_layer.tiles():
-                tile_rect.x = x * 16
-                tile_rect.y = y * 16
 
-                if state.player.collision.isOverlap(tile_rect):
-                    print("They want you as a new recruit")
+            # for x, y, image in teleport_layer.tiles():
+            #     tile_rect.x = x * 16
+            #     tile_rect.y = y * 16
+            #
+            #     if state.player.collision.isOverlap(tile_rect):
+            #         print("They want you as a new recruit")
 
 
             for x, y, image in collision_layer.tiles():
@@ -265,11 +267,33 @@ class Area2RibDemonMazeScreen2(Screen):
                 if state.player.collision.isOverlap(tile_rect):
                     self.player_hiding = True
 
+            slow_layer = self.tiled_map.get_layer_by_name("slow")
+
+            for x, y, image in slow_layer.tiles():
+                tile_rect.x = x * 16
+                tile_rect.y = y * 16
+                for demon in state.demons:
+
+                    if demon.collision.isOverlap(tile_rect):
+                        print(demon.move_distance)
+
+                        demon.move_distance = 1
+                    # elif demon.collision.isOverlap(tile_rect) != True:
+                    #     demon.move_distance = 3
+
             main_layer = self.tiled_map.get_layer_by_name("bg")
 
             for x, y, image in main_layer.tiles():
                 tile_rect.x = x * 16
                 tile_rect.y = y * 16
+
+                for demon in state.demons:
+
+                    if demon.collision.isOverlap(tile_rect):
+                        print(demon.move_distance)
+
+                        demon.move_distance = 3.8
+
                 if state.player.collision.isOverlap(tile_rect):
 
                     self.player_hiding = False
@@ -349,22 +373,22 @@ class Area2RibDemonMazeScreen2(Screen):
         if self.player_hiding == False:
             state.player.draw(state)
 
-        adjusted_box_1_x = self.box_1_x_pos + state.camera.x
-        adjusted_box_1_y = self.box_1_y_pos + state.camera.y
+        # adjusted_box_1_x = self.box_1_x_pos + state.camera.x
+        # adjusted_box_1_y = self.box_1_y_pos + state.camera.y
+        #
+        # # Create a new Rect with the adjusted position
+        # adjusted_box_1_rect = pygame.Rect(adjusted_box_1_x, adjusted_box_1_y, self.box_1_width, self.box_1_height)
+        #
+        # # Draw the rectangle after all other elements
+        # pygame.draw.rect(state.DISPLAY, self.box_1_color, adjusted_box_1_rect)
 
-        # Create a new Rect with the adjusted position
-        adjusted_box_1_rect = pygame.Rect(adjusted_box_1_x, adjusted_box_1_y, self.box_1_width, self.box_1_height)
-
-        # Draw the rectangle after all other elements
-        pygame.draw.rect(state.DISPLAY, self.box_1_color, adjusted_box_1_rect)
 
 
-
-        adjusted_box_2_x = self.box_2_x_pos + state.camera.x
-        adjusted_box_2_y = self.box_2_y_pos + state.camera.y
-
-        adjusted_box_2_rect = pygame.Rect(adjusted_box_2_x, adjusted_box_2_y, self.box_2_width, self.box_2_height)
-        pygame.draw.rect(state.DISPLAY, self.box_2_color, adjusted_box_2_rect)
+        # adjusted_box_2_x = self.box_2_x_pos + state.camera.x
+        # adjusted_box_2_y = self.box_2_y_pos + state.camera.y
+        #
+        # adjusted_box_2_rect = pygame.Rect(adjusted_box_2_x, adjusted_box_2_y, self.box_2_width, self.box_2_height)
+        # pygame.draw.rect(state.DISPLAY, self.box_2_color, adjusted_box_2_rect)
 
 
 

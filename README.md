@@ -541,6 +541,8 @@ allow 1 paid version of 500 gold membership
 
 # I need to build at least 1 more sve, maybe 2
 # at least we need chapter start save
+# for switches in rib demon maze part 2, i could either give all clues in one text box
+# or i could give it throughout the normal level and have NPCs give it
 
 
 -------------------------------demon 9 --------------
