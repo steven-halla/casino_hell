@@ -52,7 +52,7 @@ class Area2RibDemonMazeScreen3(Screen):
         self.total_elapsed_time = 0  # Total elapsed time in milliseconds
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
-        self.rally_point = (16 * 85, 16 * 55)  # Set the rally point here
+        self.rally_point = (16 * 85, 16 * 10)  # Set the rally point here
 
 
     def stop_music(self):
@@ -81,7 +81,7 @@ class Area2RibDemonMazeScreen3(Screen):
         if state.area_2_rest_area_to_rib_demon_maze_point3 == True:
             print("nuggggggggggggggg;f")
             player_start_x = 16 * 5  # Desired X coordinate
-            player_start_y = 16 * 35 # Desired Y coordinate
+            player_start_y = 16 * 5 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 
@@ -114,7 +114,7 @@ class Area2RibDemonMazeScreen3(Screen):
 
         state.demons = [
 
-            Demon10(16 * 85, 16 * 55),
+            Demon10(16 * 85, 16 * 10),
             # Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
