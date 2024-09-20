@@ -44,7 +44,7 @@ class Alice(Npc):
             ),
             "quest_2_complete_after_message": NpcTextBox(
                 [
-                    "Alice: I can give you a hint.",
+                    "Alice: Thank you for completing my quest.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

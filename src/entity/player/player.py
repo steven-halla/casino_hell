@@ -1509,9 +1509,9 @@ class Player(Entity):
     def show_magic_description(self, state):
         # Define descriptions for each item
         descriptions = {
-            "reveal": "its a good show.",
-            "shield": "not a good show.",
-            "shake": "an ok show"
+            "reveal": "Black Jack: Reveals score of enemy hand.",
+            "shield": "Coin Flip: Guards against Bad calls.",
+            "shake": "Opossum in a can: Reveals 1 rabid opossum and 1 lucky star"
         }
 
         # Get the item name based on the current index
