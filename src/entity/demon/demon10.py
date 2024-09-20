@@ -86,7 +86,7 @@ class Demon10(Demon):
             # You can keep the player chasing or other logic as you have written
             pass
 
-        if state.area2RibDemonMazeScreen3.player_hiding == False:
+        if state.area2RibDemonMazeScreen3.player_hiding == False and state.area2RibDemonMazeScreen3.all_switches_on == False:
 
 
             # Calculate the direction vector towards the player

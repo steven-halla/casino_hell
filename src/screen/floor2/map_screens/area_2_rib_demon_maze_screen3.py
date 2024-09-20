@@ -59,6 +59,10 @@ class Area2RibDemonMazeScreen3(Screen):
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
         self.rally_point = (16 * 85, 16 * 10)  # Set the rally point here
+        self.switch_6_on = False
+        self.switch_7_on = False
+        self.switch_8_on = False
+        self.all_switches_on = False
 
 
     def stop_music(self):
@@ -122,9 +126,8 @@ class Area2RibDemonMazeScreen3(Screen):
 
         state.demons = [
             #
-            # Demon10(16 * 85, 16 * 10),
-            # Demon6(16 * 40, 16 * 55),
-            # Demon6(16 * 75, 16 * 95)
+            Demon10(16 * 85, 16 * 10)
+
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -138,8 +141,8 @@ class Area2RibDemonMazeScreen3(Screen):
 
         state.npcs = [
             Switch6(16 * 96, 16 * 5),
-            Switch7(16 * 70, 16 * 55),
-            Switch8(16 * 20, 16 * 85)
+            Switch7(16 * 58, 16 * 57),
+            Switch8(16 * 20, 16 * 94)
         ]
 
         # state.npcs = [
@@ -150,6 +153,13 @@ class Area2RibDemonMazeScreen3(Screen):
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+
+        if self.switch_6_on and self.switch_7_on and self.switch_8_on:
+            self.all_switches_on = True
+
+
+
+
 
         # Update the total elapsed time
         self.total_elapsed_time += delta_time

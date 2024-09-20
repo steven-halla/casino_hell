@@ -42,8 +42,9 @@ class Switch6(Npc):
 
             # Activate the switch permanently
             self.switch_activated = True
+            state.area2RibDemonMazeScreen3.switch_6_on = True
 
-            print("Switch 1 activated!")
+            print("Switch 6 activated!")
             # state.area2RibDemonMazeScreen2.switch_1 = True
             # You can trigger any other logic related to the switch being activated here
 
