@@ -36,6 +36,7 @@ class Area2ShopKeeper(Npc):
         self.character_sprite_image = pygame.image.load(
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Tool Shop Owner.png").convert_alpha()
         self.selected_money_index = 0  # New attribute to track selected item index
+        self.stat_point_increase = False
 
 
     def show_shop(self, state: "GameState"):
@@ -110,6 +111,7 @@ class Area2ShopKeeper(Npc):
                         print("HI")
                         Equipment.STAT_POTION_AREA_2.add_equipment_to_player(state.player, Equipment.STAT_POTION_AREA_2)
                         state.player.money -= 1000
+                        self.stat_point_increase = True
 
 
                 if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
@@ -184,7 +186,6 @@ class Area2ShopKeeper(Npc):
         cost = int(self.shop_costs[self.selected_item_index])
         # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
 
-
     def draw(self, state):
         sprite_rect = pygame.Rect(5, 6, 18, 25)
 
@@ -201,89 +202,41 @@ class Area2ShopKeeper(Npc):
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        # rect = (
-        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        # self.collision.width, self.collision.height)
-        # pygame.draw.rect(state.DISPLAY, self.color, rect)
-
         if self.state == "waiting":
             pass
         elif self.state == "talking":
-            # print("is talking")
             self.textbox.draw(state)
             if self.state == "talking":
-                # state.DISPLAY.blit(self.font.render(f"Hurry and buy something", True,
-                #                                     (255, 255, 255)), (70, 460))
+                # Handle drawing the shop interaction text
 
+                if self.stat_point_increase == True:
+                    # Draw a box on the far right end of the screen, 400 pixels wide and 400 pixels high
+                    box_width = 250
+                    box_height = 250
+                    border_width = 5
+                    start_x = state.DISPLAY.get_width() - box_width - 25  # Far right of the screen
+                    start_y = state.DISPLAY.get_height() // 2 - box_height // 2  # Centered vertically
 
-                if self.selected_item_index == 0 and self.shop_items[0] == "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Save Coin Is Sold Out", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
+                    # Create the black box
+                    black_box = pygame.Surface((box_width, box_height))
+                    black_box.fill((0, 0, 0))
 
-                elif self.selected_item_index == 0 and state.player.money < 900 and self.shop_items[0] != "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 700 post purchase", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
+                    # Create a white border
+                    white_border = pygame.Surface(
+                        (box_width + 2 * border_width, box_height + 2 * border_width)
+                    )
+                    white_border.fill((255, 255, 255))
+                    white_border.blit(black_box, (border_width, border_width))
 
-                elif self.selected_item_index == 0:
-                    state.DISPLAY.blit(self.font.render(f"Saves your game,saves after buying", True,
-                                                        (255, 255, 255)), (70, 460))
+                    # Draw the box on the far right
+                    state.DISPLAY.blit(white_border, (start_x - border_width, start_y - border_width))
 
+                    # You can also draw text or options inside the box if needed
+                    state.DISPLAY.blit(self.font.render("Max Value 2:", True, (255, 255, 255)), (start_x + 10, start_y + 20))
 
-                if self.selected_item_index == 1 and self.shop_items[1] == "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Hippo Hour glass is sold out", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_item_index == 1 and state.player.money < 900 and self.shop_items[1] != "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 700 post purchase", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
-                elif self.selected_item_index == 1 and self.shop_items[1] != "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Hippos take an extra 50% time to appear", True,
-                                                        (255, 255, 255)), (70, 460))
-
-                if self.selected_item_index == 2 and self.shop_items[2] == "sold out":
-                    state.DISPLAY.blit(self.font.render(f"HEalthy Gloves is Sold out", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_item_index == 2 and state.player.money < 1700:
-                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 700 post purchase", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_item_index == 2:
-                    state.DISPLAY.blit(self.font.render(f"Adds + 30 Stamina while equipped. ", True,
-                                                        (255, 255, 255)), (70, 460))
-
-                if self.selected_item_index == 3 and self.shop_items[3] == "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Stat POtion is Sold out", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_item_index == 3 and state.player.money < 1700:
-                    state.DISPLAY.blit(self.font.render(f"Money cannot fall below 700 post purchase", True,
-                                                        (255, 255, 255)), (70, 460))
-                    if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
-                        state.controller.isTPressed = False
-                        self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_item_index == 3:
-                    state.DISPLAY.blit(self.font.render(f"Adds +1 stat point of your choice,min stat 1. ", True,
-                                                        (255, 255, 255)), (70, 460))
+                    # You can add more drawing logic for the stat choices inside this box
+                    # For example, you can draw a list of stats like:
+                    stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
+                    for idx, stat in enumerate(stats):
+                        y_position = start_y + 60 + idx * 40  # Adjust vertical spacing
+                        state.DISPLAY.blit(self.font.render(stat, True, (255, 255, 255)), (start_x + 60, y_position))

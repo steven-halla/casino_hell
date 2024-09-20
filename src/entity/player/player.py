@@ -118,7 +118,7 @@ class Player(Entity):
             5: 1000,
             6: 1500,
             7: 2100,  # Continue adding levels as needed
-            8: 3000,  # Continue adding levels as needed
+            8: 2800,  # Continue adding levels as needed
             # Add more levels as needed
         }
 
@@ -303,7 +303,7 @@ class Player(Entity):
 
             return
 
-        if self.exp >= 3000 and self.level8checker == False:
+        if self.exp >= 2800 and self.level8checker == False:
             print("grats you leveld up to level 7")
             if "level 8 token" not in state.player.npc_items:
                 # if "shield" not in self.magicinventory:
