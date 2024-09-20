@@ -1,5 +1,5 @@
 {
-    "level": 5,
+    "level": 4,
     "exp": 1,
     "stamina_points": 240,
     "max_stamina_points": 240,
@@ -41,7 +41,8 @@
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "rib demon key"
     ],
     "level3reward": true,
     "food": 1,

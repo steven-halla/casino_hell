@@ -566,7 +566,17 @@ we need to dro the code to create the rect and passs all these as paramaters
 
 
 
-
+# ------------------------------thur sept 19th---------------------------
+Here are my thoughts going forward:
+1) I need to create the cut scenes for the game. I want at least 3
+2) the first cut scene is for starting the chicken quest
+3) the 2nd cut scene is afterwards where it details what must be done in order to proceed
+4) could use a small random scene between hiro and sir leopold, 
+5) i need to build improved maps for rest area, chicken areea and gambling area
+6) need new music
+7) i need to go through entire game testing everything outside of battle screens to make sure that  
+8) everything is good to go
+9) i need to create the bank -- ill do this for level 3
 
 
 

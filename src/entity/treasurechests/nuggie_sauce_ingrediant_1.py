@@ -58,6 +58,7 @@ class NuggieSauceIngrediant1(TreasureChest):
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
                 print("mew")
+                # this needs to teleport player ot hungry starving hipppos game
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
 

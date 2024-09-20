@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="switches created">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="rib demon maze complete">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/map/ribdemonhideroom3.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/ribdemonhideroom3.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/demon/demon10.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/demon/demon10.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rib_demon_maze_screen/switch_6.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rib_demon_maze_screen/switch_6.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rib_demon_maze_screen/switch_7.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rib_demon_maze_screen/switch_7.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rib_demon_maze_screen/switch_8.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rib_demon_maze_screen/switch_8.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen3.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_rest_to_rib_demon_maze_area.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_rest_to_rib_demon_maze_area.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/treasurechests/nuggie_sauce_ingrediant_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/treasurechests/nuggie_sauce_ingrediant_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -362,7 +361,7 @@
       <workItem from="1718826618166" duration="343743000" />
       <workItem from="1725645837107" duration="3654000" />
       <workItem from="1725649923355" duration="5653000" />
-      <workItem from="1725655762755" duration="111081000" />
+      <workItem from="1725655762755" duration="115128000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -707,7 +706,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="894" />
+    <option name="localTasksCounter" value="895" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -736,7 +735,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed craps, roll of 7 on unlucky strike success now goes to win screen, also fixed magic spell which now fully functions" />
     <MESSAGE value="black jack hat now gives a 1/5 chance to delete the last card if bust" />
     <MESSAGE value="chicken nugger amulet now guards against 3's on come out roll, a 5.5% chance advantage for player" />
     <MESSAGE value="chicken nugger amulet now adds + 10 to unlucky roll bonus, also lowered unlucky two roll to 60 in favor of enemy" />
@@ -761,7 +759,8 @@
     <MESSAGE value="switches now working" />
     <MESSAGE value="demon 10 now goes back to rally point when player hiding" />
     <MESSAGE value="switches created" />
-    <option name="LAST_COMMIT_MESSAGE" value="switches created" />
+    <MESSAGE value="rib demon maze complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="rib demon maze complete" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -792,7 +791,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1726793414976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1726850766152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

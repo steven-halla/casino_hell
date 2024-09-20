@@ -158,7 +158,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.area2RibDemonMazeScreen3
+        self.currentScreen = self.startLoadScreen
 
 
 
