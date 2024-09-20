@@ -41,8 +41,7 @@
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract",
-        "rib demon key"
+        "contract"
     ],
     "level3reward": true,
     "food": 1,

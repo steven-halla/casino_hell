@@ -242,7 +242,8 @@ class Area2RestScreen(Screen):
             treasurechest.draw(state)
 
         state.obstacle.draw(state)
-        state.player.draw(state)
+        if state.player.hide_player == False:
+            state.player.draw(state)
 
         if state.controller.isPPressed:
             state.player.canMove = False

@@ -106,6 +106,7 @@ class Player(Entity):
         self.perception_boost_item = 1
         self.base_perception = 1
         self.second_floor_stamina_boost_item = 1
+        self.hide_player = False
 
 
 

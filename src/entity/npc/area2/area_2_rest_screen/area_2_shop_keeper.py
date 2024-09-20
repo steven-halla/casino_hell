@@ -51,6 +51,8 @@ class Area2ShopKeeper(Npc):
             self.update_waiting(state)
         elif self.state == "talking":
 
+            state.player.hide_player = True
+
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[0] = "sold out"
 
@@ -137,6 +139,8 @@ class Area2ShopKeeper(Npc):
 
     def update_waiting(self, state: "GameState"):
         player = state.player
+
+        player.hide_player = False
 
         if state.controller.isTPressed and (
                 pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
