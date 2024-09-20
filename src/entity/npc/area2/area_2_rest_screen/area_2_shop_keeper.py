@@ -92,6 +92,7 @@ class Area2ShopKeeper(Npc):
                         print("HI")
                         Equipment.COIN_SAVE_AREA_2.add_equipment_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
                         state.player.money -= 200
+                        state.save_game(state.player, state)  # Call the save_game function
 
                     if state.player.money > 899 and self.selected_item_index == 1 and Equipment.RE_EQUIP_AREA_2.value not in state.player.level_two_npc_state:
                         print("HI")

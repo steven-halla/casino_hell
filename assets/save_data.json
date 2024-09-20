@@ -12,7 +12,8 @@
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses",
-        "Black Hat"
+        "Black Hat",
+        "COIN_SAVE_AREA_2"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -21,7 +22,6 @@
     ],
     "npcitems": [
         "level 4 token"
-
     ],
     "magicinventory": [
         "reveal",
@@ -36,17 +36,19 @@
     "spirit": 1,
     "perception": 3,
     "baseperception": 1,
-    "luck": 1,
-    "money": 6666,
+    "luck": 2,
+    "money": 6066,
     "rabies": false,
     "immunity": true,
     "quest_items": [
         "contract"
     ],
     "level3reward": true,
-    "food": 1,
+    "food": 0,
     "days": 13,
-    "leveltwonpcstate": [],
+    "leveltwonpcstate": [
+        "COIN_SAVE_AREA_2"
+    ],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": true,
