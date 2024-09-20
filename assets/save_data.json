@@ -1,9 +1,9 @@
 {
     "level": 4,
     "exp": 1,
-    "stamina_points": 144,
+    "stamina_points": 240,
     "max_stamina_points": 240,
-    "focus_points": 111,
+    "focus_points": 120,
     "max_focus_points": 120,
     "companions": [
         "sir leopold"

@@ -49,9 +49,10 @@ class Area2ShopKeeper(Npc):
 
         if self.state == "waiting":
             self.update_waiting(state)
+            state.player.canMove = True
         elif self.state == "talking":
-
             state.player.hide_player = True
+            print(state.player.hide_player)
 
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[0] = "sold out"
@@ -164,6 +165,7 @@ class Area2ShopKeeper(Npc):
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         self.show_shop(state)
+        state.player.canMove = False
 
         if state.controller.isTPressed and self.textbox.is_finished():
             # Exiting the shop conversation

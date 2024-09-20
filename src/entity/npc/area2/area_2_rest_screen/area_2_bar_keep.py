@@ -79,10 +79,16 @@ class Area2BarKeep(Npc):
 
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
-                state.player.canMove = True
                 self.state = "waiting"
                 print("Leaving the shop...")
                 self.textbox.reset()
+                state.controller.isBPressed = False
+
+                state.player.hide_player = False
+                state.player.canMove = True
+                print(state.player.canMove)
+
+
 
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
@@ -120,9 +126,7 @@ class Area2BarKeep(Npc):
     def update_waiting(self, state: "GameState"):
         player = state.player
 
-        player.hide_player = False
 
-        player.canMove = True
 
         if state.controller.isTPressed and (
                 pygame.time.get_ticks() - self.state_start_time) > 500:
@@ -145,10 +149,13 @@ class Area2BarKeep(Npc):
         self.textbox.update(state)
         self.show_shop(state)
 
+
         if state.controller.isTPressed and self.textbox.is_finished():
             # Exiting the shop conversation
             # self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
+
+
             # Allow the player to move again (new)
             # state.player.canMove = True  # Ensure this attribute exists in your Player class
             # self.textbox.reset()
