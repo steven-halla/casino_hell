@@ -48,6 +48,8 @@ class Area2BarKeep(Npc):
             self.update_waiting(state)
         elif self.state == "talking":
 
+            state.player.hide_player = True
+
 
             if state.controller.isTPressed and state.player.food > 0:
                 state.controller.isTPressed = False
@@ -128,6 +130,10 @@ class Area2BarKeep(Npc):
 
     def update_waiting(self, state: "GameState"):
         player = state.player
+
+        player.hide_player = False
+
+        player.canMove = True
 
         if state.controller.isTPressed and (
                 pygame.time.get_ticks() - self.state_start_time) > 500:
