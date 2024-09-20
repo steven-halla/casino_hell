@@ -12,8 +12,7 @@
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses",
-        "Black Hat",
-        "COIN_SAVE_AREA_2"
+        "Black Hat"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -47,7 +46,6 @@
     "food": 0,
     "days": 13,
     "leveltwonpcstate": [
-        "COIN_SAVE_AREA_2"
     ],
     "cutscene1": true,
     "cutscene2": true,

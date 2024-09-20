@@ -28,9 +28,9 @@ class Area2ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["COIN_SAVE_AREA_2", "RE_EQUIP_AREA_2", "HEALTHY_GLOVES", "STAT_POTION_AREA_2"]
+        self.shop_items = ["COIN_SAVE_AREA_2", "Hippo Hour Glass", "HEALTHY_GLOVES", "STAT_POTION_AREA_2"]
 
-        self.shop_costs = ["200", "200", "1000", "1000"]
+        self.shop_costs = ["200", "500", "1000", "1000"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -52,12 +52,11 @@ class Area2ShopKeeper(Npc):
             state.player.canMove = True
         elif self.state == "talking":
             state.player.hide_player = True
-            print(state.player.hide_player)
 
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[0] = "sold out"
 
-            if Equipment.RE_EQUIP_AREA_2.value in state.player.level_two_npc_state:
+            if Equipment.HIPPO_HOUR_GLASS.value in state.player.level_two_npc_state:
                 self.shop_items[1] = "sold out"
 
             if Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
@@ -94,10 +93,13 @@ class Area2ShopKeeper(Npc):
                         state.player.money -= 200
                         state.save_game(state.player, state)  # Call the save_game function
 
-                    if state.player.money > 899 and self.selected_item_index == 1 and Equipment.RE_EQUIP_AREA_2.value not in state.player.level_two_npc_state:
-                        print("HI")
-                        Equipment.RE_EQUIP_AREA_2.add_equipment_to_player(state.player, Equipment.RE_EQUIP_AREA_2)
-                        state.player.money -= 200
+                    if state.player.money > 1199 and self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.level_two_npc_state:
+                        print("HIPPOOOOOOOOOOOOOO")
+                        Equipment.HIPPO_HOUR_GLASS.add_equipment_to_player(state.player, Equipment.HIPPO_HOUR_GLASS)
+                        state.player.money -= 500
+                        print(state.player.level_two_npc_state)
+
+
 
                     if state.player.money > 1699 and self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value not in state.player.level_two_npc_state:
                         print("HI")
@@ -234,7 +236,7 @@ class Area2ShopKeeper(Npc):
 
 
                 if self.selected_item_index == 1 and self.shop_items[1] == "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Re Equ is Sold out", True,
+                    state.DISPLAY.blit(self.font.render(f"Hippo Hour glass is sold out", True,
                                                         (255, 255, 255)), (70, 460))
                     if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
                         state.controller.isTPressed = False
@@ -246,8 +248,8 @@ class Area2ShopKeeper(Npc):
                     if state.controller.isTPressed == True and self.textbox.is_finished() and pygame.time.get_ticks() - self.input_time > 150:
                         state.controller.isTPressed = False
                         self.cant_buy_sound.play()  # Play the sound effect once
-                elif self.selected_item_index == 1 and self.shop_items[0] != "sold out":
-                    state.DISPLAY.blit(self.font.render(f"Re equip yourself with no cost to days, 1 time use", True,
+                elif self.selected_item_index == 1 and self.shop_items[1] != "sold out":
+                    state.DISPLAY.blit(self.font.render(f"Hippos take an extra 50% time to appear", True,
                                                         (255, 255, 255)), (70, 460))
 
                 if self.selected_item_index == 2 and self.shop_items[2] == "sold out":

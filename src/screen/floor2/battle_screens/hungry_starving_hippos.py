@@ -1,5 +1,6 @@
 import pygame
 from entity.gui.textbox.text_box import TextBox
+from game_constants.equipment import Equipment
 from screen.examples.screen import Screen
 import time
 import random
@@ -9,7 +10,7 @@ from typing import Dict, Tuple, List, Optional,Union ,  Any
 # its possible to eat two humans need unique message for that
 # hippo should appear at random locations to make it more fare
 class HungryStarvingHippos(Screen):
-    def __init__(self, screenName: str = "Casino Slots Screen") -> None:
+    def __init__(self, screenName: str = "Casino Hippo Screen") -> None:
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"
         self.money_reward = 500
@@ -203,6 +204,10 @@ class HungryStarvingHippos(Screen):
             for label in self.human_stats:
                 self.human_stats[label]["speed"] += 1  # Increase speed by 1
                 self.human_stats[label]["stamina"] += 1  # Increase stamina by 1
+        elif state.player.luck == 3:
+            for label in self.human_stats:
+                self.human_stats[label]["speed"] += 2  # Increase speed by 1
+                self.human_stats[label]["stamina"] += 2  # Increase stamina by 1
 
         # Assign positions and sttats to each human
         for i, label in enumerate(labels):
@@ -315,8 +320,13 @@ class HungryStarvingHippos(Screen):
             self.human_stamina()
 
             # Initialize hippo position after 10 seconds
-            if self.hippo is None and current_time - self.start_time >= 10:
+            if self.hippo is None and current_time - self.start_time >= 10 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.equipped_items:
                 self.initialize_hippo_position()
+                print("No item equipped")
+
+            elif self.hippo is None and current_time - self.start_time >= 15 and Equipment.HIPPO_HOUR_GLASS.value in state.player.equipped_items:
+                self.initialize_hippo_position()
+                print("Item is equipped")
 
             # Move the humans
             self.move_human(delta_time)
