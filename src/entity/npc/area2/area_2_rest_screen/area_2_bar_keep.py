@@ -28,9 +28,9 @@ class Area2BarKeep(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["Ribs", "Beer", "Carion Nachos"]
+        self.shop_items = [ "Hoppy Brew", "Carrion Nachos"]
 
-        self.shop_costs = ["200", "200", "200"]
+        self.shop_costs = ["200", "200"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -57,32 +57,21 @@ class Area2BarKeep(Npc):
                 if self.selected_item_index == 0 and state.player.money > 500:
                     print("mew")
                     state.player.money -= 200
-                    state.player.focus_points += 50
-                    state.player.food -= 1
-                    if state.player.focus_points > state.player.max_focus_points:
-                        state.player.focus_points = state.player.max_focus_points
-
-                    state.player.stamina_points += 100
+                    state.player.stamina_points += 150
                     if state.player.stamina_points > state.player.max_stamina_points:
                         state.player.stamina_points = state.player.max_stamina_points
+                    state.player.focus_points += 75
+                    if state.player.focus_points > state.player.max_focus_points:
+                        state.player.focus_points = state.player.max_focus_points
+                    state.player.food -= 1
+
 
 
                 elif self.selected_item_index == 1 and state.player.money > 500 and state.player.body == 2:
                     state.player.money -= 200
-                    state.player.stamina_points += 80
-                    state.player.focus_points += 40
+                    state.player.luck += 1
+                    state.player.enhanced_luck = True
                     state.player.food -= 1
-
-
-                elif self.selected_item_index == 2 and state.player.money > 500 and state.player.body == 2:
-                    state.player.food -= 1
-                    # perhaps let player add an extra + 50 to all bets
-
-
-
-
-
-
 
 
 
@@ -203,16 +192,20 @@ class Area2BarKeep(Npc):
 
 
                 if self.selected_item_index == 0:
-                    state.DISPLAY.blit(self.font.render(f"What animal did they get these ribs from?", True,
+                    state.DISPLAY.blit(self.font.render(f"Made from the vomit of  hopping gluttons.", True,
+                                                        (255, 255, 255)), (70, 460))
+                    state.DISPLAY.blit(self.font.render(f"Restores 150 HP and 75 Magic.", True,
+                                                        (255, 255, 255)), (70, 510))
+
+
+                if self.selected_item_index == 1 and state.player.body == 2:
+                    state.DISPLAY.blit(self.font.render(f"Nachos with extra maggots. ", True,
                                                         (255, 255, 255)), (70, 460))
 
 
-                if self.selected_item_index == 1:
-                    state.DISPLAY.blit(self.font.render(f"Made from the vomit of gluttons", True,
-                                                        (255, 255, 255)), (70, 460))
+                    state.DISPLAY.blit(self.font.render(f" Adds +1 luck till next rest. ", True,
+                                                        (255, 255, 255)), (70, 510))
 
 
 
-                if self.selected_item_index == 2:
-                    state.DISPLAY.blit(self.font.render(f"Nachoes with extra maggots ", True,
-                                                        (255, 255, 255)), (70, 460))
+

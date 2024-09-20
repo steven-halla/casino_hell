@@ -1,9 +1,9 @@
 {
     "level": 4,
     "exp": 1,
-    "stamina_points": 240,
+    "stamina_points": 144,
     "max_stamina_points": 240,
-    "focus_points": 120,
+    "focus_points": 111,
     "max_focus_points": 120,
     "companions": [
         "sir leopold"
@@ -36,7 +36,7 @@
     "spirit": 1,
     "perception": 3,
     "baseperception": 1,
-    "luck": 2,
+    "luck": 1,
     "money": 6666,
     "rabies": false,
     "immunity": true,

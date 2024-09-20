@@ -107,6 +107,7 @@ class Player(Entity):
         self.base_perception = 1
         self.second_floor_stamina_boost_item = 1
         self.hide_player = False
+        self.enhanced_luck = False
 
 
 
@@ -994,7 +995,7 @@ class Player(Entity):
         hp_text = font.render(f"HP: {self.stamina_points} / {self.max_stamina_points}", True, text_color)
         mp_text = font.render(f"MP: {self.focus_points} / {self.max_focus_points}", True, text_color)
         exp_text = font.render(f"EXP: {self.exp} / {self.exp_to_next_level.get(self.level, 'Max Level')}", True, text_color)
-        body_text = font.render(f"Body: {self.body}", True, text_color)
+        body_text = font.render(f"Body: {self.body}        Food:{self.food}", True, text_color)
         mind_text = font.render(f"Mind: {self.mind}", True, text_color)
         spirit_text = font.render(f"Spirit: {self.spirit}", True, text_color)
         perception_text = font.render(f"Perception: {self.perception}", True, text_color)

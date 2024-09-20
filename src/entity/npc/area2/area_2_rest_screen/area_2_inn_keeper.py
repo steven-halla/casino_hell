@@ -90,11 +90,11 @@ class Area2InnKeeper(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                if Events.QUEST_1_COIN.value in state.player.level_two_npc_state:
+                if Events.QUEST_1_COIN.value in state.player.level_two_npc_state and Events.QUEST_1_BADGE.value not in state.player.level_two_npc_state:
                     state.player.level_two_npc_state.remove(Events.QUEST_1_COIN.value)
                     state.player.quest_items.remove(Events.QUEST_1_COIN.value)
 
-                if Events.QUEST_1_BADGE.value in state.player.level_two_npc_state:
+                if Events.QUEST_1_BADGE.value in state.player.level_two_npc_state and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                     state.player.level_two_npc_state.remove(Events.QUEST_1_BADGE.value)
                     state.player.quest_items.remove(Events.QUEST_1_BADGE.value)
 
@@ -102,6 +102,9 @@ class Area2InnKeeper(Npc):
                 self.sleep_sound.play()  # Play the sound effect once
 
                 state.player.money -= 200
+                if state.player.enhanded_luck == True:
+                    state.player.luck -= 1
+                    state.player.enhanded_luck = False
 
 
 
