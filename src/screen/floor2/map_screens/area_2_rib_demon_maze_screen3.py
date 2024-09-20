@@ -5,7 +5,9 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.demon.demon1 import Demon1
 from entity.demon.demon10 import Demon10
 from entity.demon.demon6 import Demon6
+from entity.demon.demon7 import Demon7
 from entity.demon.demon8 import Demon8
+from entity.demon.demon9 import Demon9
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
@@ -16,8 +18,12 @@ from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRipp
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 from entity.npc.area2.area_2_nugget_screen.area_2_nugget_to_rest_area import Area2NuggetToRestArea
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_6 import Switch6
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_7 import Switch7
+from entity.npc.area2.area_2_rib_demon_maze_screen.switch_8 import Switch8
 
 from entity.player.player import Player
+from entity.treasurechests.nuggie_sauce_ingrediant_1 import NuggieSauceIngrediant1
 from entity.treasurechests.slots_vest import SlotsVest
 from game_constants.events import Events
 from screen.examples.screen import Screen
@@ -81,7 +87,7 @@ class Area2RibDemonMazeScreen3(Screen):
         if state.area_2_rest_area_to_rib_demon_maze_point3 == True:
             print("nuggggggggggggggg;f")
             player_start_x = 16 * 5  # Desired X coordinate
-            player_start_y = 16 * 5 # Desired Y coordinate
+            player_start_y = 16 * 10 # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_rest_area_to_rib_demon_maze_point = False
 
@@ -100,22 +106,25 @@ class Area2RibDemonMazeScreen3(Screen):
         #     player_start_x = 300
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
-
-        state.treasurechests = []
-
-        if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
-                and state.player.perception > 2):
-            state.treasurechests = [
-            SlotsVest(16 * 29, 16 * 35),
-
-
+        #
+        state.treasurechests = [
+            NuggieSauceIngrediant1(16* 95, 16 * 95)
         ]
+        #
+        # if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
+        #         and state.player.perception > 2):
+        #     state.treasurechests = [
+        #     SlotsVest(16 * 29, 16 * 35),
+        #
+        #
+        # ]
 
 
         state.demons = [
-
-            Demon10(16 * 85, 16 * 10),
-            # Demon6(16 * 20, 16 * 30)
+            #
+            # Demon10(16 * 85, 16 * 10),
+            # Demon6(16 * 40, 16 * 55),
+            # Demon6(16 * 75, 16 * 95)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),
@@ -127,7 +136,11 @@ class Area2RibDemonMazeScreen3(Screen):
 
         # Check the value of state.player.body
 
-        # state.npcs = []
+        state.npcs = [
+            Switch6(16 * 96, 16 * 5),
+            Switch7(16 * 70, 16 * 55),
+            Switch8(16 * 20, 16 * 85)
+        ]
 
         # state.npcs = [
         #     MCNugg(16 * 15, 16 * 5),
