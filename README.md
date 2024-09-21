@@ -578,8 +578,7 @@ Here are my thoughts going forward:
 8) everything is good to go
 9) i need to create the bank -- ill do this for level 3
 
-
-
+add a 2nd rib demon slots that has 0 money, this is just to get more EXP or the super secret item
 
 
 
