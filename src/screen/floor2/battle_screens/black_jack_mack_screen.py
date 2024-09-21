@@ -650,7 +650,7 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "bet_phase":
-            if self.money > self.bet:
+            if self.money < self.bet:
                 self.bet = self.money
 
             self.bet_screen_text.update(state)

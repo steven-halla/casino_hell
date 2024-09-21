@@ -195,9 +195,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
                             range(21, 42): 3,  # add 100 coins
                             range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
                             range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
-                            range(66, 74): 6,  # add 200 coins
-                            range(74, 83): 7,  # lucky spin better % for jackpot
-                            range(83, 95): 8,  # get special item or 50 coins
+                            range(66, 76): 6,  # add 200 coins
+                            range(76, 85): 7,  # lucky spin better % for jackpot
+                            range(85, 95): 8,  # get special item or 50 coins
                             range(95, 101): 9,  # jackpot
                 }
             elif self.lucky_strike == 0 and self.bet > 50:
