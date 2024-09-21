@@ -429,6 +429,12 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
     def update(self, state: "GameState") -> None:
+        if self.secret_item == True:
+            self.bet = 50
+
+        if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            self.secret_item = True
+
         # if state.controller.is1Pressed:
         # self.slot1 = [8, 8, 8]
         # self.slot2 = [8, 8, 8]
@@ -456,6 +462,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+
+
             state.player.update(state)
 
             if state.controller.isEPressed:
@@ -526,7 +534,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
             if self.welcome_screen_index == 0 and controller.isTPressed:
                 self.game_state = "spin_screen"
 
-                state.player.stamina_points -= 4
+                state.player.stamina_points -= 10
                 if self.slot_hack == 0:
                     state.player.money -= self.bet
                     self.money += self.bet
@@ -538,7 +546,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
-            elif self.welcome_screen_index == 2 and controller.isTPressed and Events.MC_NUGGET_QUEST_1_REWARD not in state.player.level_two_npc_state:
+            elif (self.welcome_screen_index == 2 and controller.isTPressed \
+                  and Events.MC_NUGGET_QUEST_1_REWARD not in state.player.level_two_npc_state) and self.secret_item == False:
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
@@ -617,60 +626,66 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
         if self.game_state == "results_screen":
             if self.no_matches == True:
+                # Assuming you want to display the amount of experience gained
+                exp_amount = 5  # This should be the amount of exp gained
                 self.battle_messages["results_message"].messages = [
-                    f"Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you gain 10 exp", ""
+                    f"No Matches! Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you gain {exp_amount} exp", ""
                 ]
+
+                # self.battle_messages["results_message"].update(state)
+
+                if self.resolve_penalty == False:
+                    self.exp_gain.gain_exp(state, exp_amount)  # Use the exp_amount variable
+                    self.resolve_penalty = True
 
                 self.battle_messages["results_message"].update(state)
 
-                if self.resolve_penalty == False:
-                    self.exp_gain.gain_exp(state, 10)  # Adjust the amount of experience points as needed
-                    self.resolve_penalty = True
+
 
             elif self.three_zeros == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take 50 damage and gain 30 exp", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take 50 damage and gain 50 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     state.player.stamina_points -= 50
-                    self.exp_gain.gain_exp(state, 30)  # Adjust the amount of experience points as needed
+                    self.exp_gain.gain_exp(state, 50)  # Adjust the amount of experience points as needed
 
                     self.resolve_penalty = True
 
             elif self.three_ones == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and lose 50 gold and gain 20 exp", ""
+                    f"You fail,  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and lose 100 gold and gain 20 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
-                    state.player.money -= 50
-                    self.exp_gain.gain_exp(state, 20)  # Adjust the amount of experience points as needed
+                    state.player.money -= 100
+                    self.exp_gain.gain_exp(state, 25)  # Adjust the amount of experience points as needed
 
-                    self.money += 50
+                    self.money += 100
                     self.resolve_penalty = True
 
             elif self.three_twos == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Your locked in, your ribs are now tingling with fear,  and gain 15 exp ", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Your locked in, your ribs are now tingling with fear,  and gain 25 exp ", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
                     print("player lock")
-                    self.exp_gain.gain_exp(state, 15)  # Adjust the amount of experience points as needed
+                    self.exp_gain.gain_exp(state, 25)  # Adjust the amount of experience points as needed
 
                     self.resolve_penalty = True
                     self.lock_down = 5
 
             elif self.three_threes == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You win 150 Coins! and 10 exp", ""
+                    f"You win!  Spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You win 150 Coins! and 10 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -748,11 +763,11 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     # Update the enemy's money after balancing
                     self.money = self.money_balancer.money
                     if state.player.stamina_points < state.player.max_stamina_points:
-                        state.player.stamina_points += 30
+                        state.player.stamina_points += 10
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
                     if state.player.focus_points < state.player.max_focus_points:
-                        state.player.focus_points += 10
+                        state.player.focus_points += 5
                         if state.player.focus_points > state.player.max_focus_points:
                             state.player.focus_points = state.player.max_focus_points
 
@@ -974,11 +989,11 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.money = self.money_balancer.money
 
                     if state.player.stamina_points < state.player.max_stamina_points:
-                        state.player.stamina_points += 50
+                        state.player.stamina_points += 30
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
                     if state.player.focus_points < state.player.max_focus_points:
-                        state.player.focus_points += 20
+                        state.player.focus_points += 15
                         if state.player.focus_points > state.player.max_focus_points:
                             state.player.focus_points = state.player.max_focus_points
 
@@ -1082,6 +1097,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             if Magic.SLOTS_HACK.value not in state.player.magicinventory:
                 self.welcome_screen_choices[1] = "Locked"
+
+            if self.secret_item == True:
+                self.welcome_screen_choices[2] = "Locked"
 
 
             if self.lock_down > 0:
