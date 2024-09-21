@@ -6,6 +6,7 @@ import pygame
 from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, BLUEBLACK
 from entity.entity import Entity
 from game_constants.equipment import Equipment
+from game_constants.magic import Magic
 from game_constants.treasure import Treasure
 
 
@@ -108,6 +109,16 @@ class Player(Entity):
         self.second_floor_stamina_boost_item = 1
         self.hide_player = False
         self.enhanced_luck = False
+
+        self.level_1_body_stamina_increase = 20
+        self.level_2_body_stamina_increase = 30
+
+        self.level_1_mind_focus_increase = 10
+        self.level_1_mind_spell_gain = Magic.REVEAL.value
+
+        self.level_2_mind_focus_increase = 15
+        self.level_2_mind_spell_gain = Magic.CRAPS_LUCKY_7.value
+
 
 
 

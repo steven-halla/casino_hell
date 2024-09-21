@@ -6,6 +6,7 @@ from entity.gui.textbox.shop_npc_text_box import ShopNpcTextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
+from game_constants.magic import Magic
 
 
 class Area2ShopKeeper(Npc):
@@ -72,9 +73,17 @@ class Area2ShopKeeper(Npc):
 
                 if self.stat_point_increase_index == 0 and state.player.body < 2:
                     state.player.body += 1
+                    state.player.max_stamina_points += state.player.level_2_body_stamina_increase
+                    state.player.stamina_points += state.player.level_2_body_stamina_increase
+
                     self.stat_point_increase = False
+
                 elif self.stat_point_increase_index == 1 and state.player.mind < 2:
                     state.player.mind += 1
+                    state.player.max_focus_points += state.player.level_2_mind_focus_increase
+                    state.player.focus_points += state.player.level_2_mind_focus_increase
+                    Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
+
                     self.stat_point_increase = False
 
                 elif self.stat_point_increase_index == 2 and state.player.spirit < 2:
