@@ -37,7 +37,7 @@ class Area2ShopKeeper(Npc):
             "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Tool Shop Owner.png").convert_alpha()
         self.selected_money_index = 0  # New attribute to track selected item index
         self.stat_point_increase = False
-
+        self.stat_point_increase_index = 0
 
     def show_shop(self, state: "GameState"):
         # This method passes the shop items to the textbox
@@ -46,6 +46,56 @@ class Area2ShopKeeper(Npc):
 
 
     def update(self, state: "GameState"):
+        stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
+        # print(self.stat_point_increase)
+
+        if self.stat_point_increase == True:
+            if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
+                self.input_time = pygame.time.get_ticks()
+                self.stat_point_increase_index = (self.stat_point_increase_index - 1) % len(stats)
+                state.controller.isUpPressed = False
+                print(self.stat_point_increase_index)
+
+            elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
+                self.input_time = pygame.time.get_ticks()
+                self.stat_point_increase_index = (self.stat_point_increase_index + 1) % len(stats)
+                state.controller.isDownPressed = False
+                print(self.stat_point_increase_index)
+
+
+            # Handle selection confirmation (e.g., with 'T' press)
+            if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 400:
+                selected_stat = stats[self.stat_point_increase_index]
+                print(f"Player selected: {selected_stat}")
+                # Handle the logic for applying the stat point increase
+                state.controller.isTPressed = False
+
+                if self.stat_point_increase_index == 0 and state.player.body < 2:
+                    state.player.body += 1
+                    self.stat_point_increase = False
+                elif self.stat_point_increase_index == 1 and state.player.mind < 2:
+                    state.player.mind += 1
+                    self.stat_point_increase = False
+
+                elif self.stat_point_increase_index == 2 and state.player.spirit < 2:
+                    state.player.spirit += 1
+                    self.stat_point_increase = False
+
+                elif self.stat_point_increase_index == 3 and state.player.perception < 2 and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
+                    state.player.perception += 1
+                    self.stat_point_increase = False
+
+                elif self.stat_point_increase_index == 3 and state.player.perception < 3 and Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+                    state.player.perception += 1
+                    self.stat_point_increase = False
+
+                elif self.stat_point_increase_index == 4 and state.player.luck < 2 and state.player.enhanced_luck == False:
+                    state.player.luck += 1
+                    self.stat_point_increase = False
+
+                elif self.stat_point_increase_index == 4 and state.player.luck < 3 and state.player.enhanced_luck == True:
+                    state.player.luck += 1
+                    self.stat_point_increase = False
 
 
         if self.state == "waiting":
@@ -71,12 +121,13 @@ class Area2ShopKeeper(Npc):
             cost = int(self.shop_costs[self.selected_item_index])
 
 
-            if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+            if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500 and self.stat_point_increase == False:
                 self.input_time = pygame.time.get_ticks()
                 state.player.canMove = True
                 self.state = "waiting"
                 print("Leaving the shop...")
                 self.textbox.reset()
+                self.stat_point_increase = False
                 if "mega potion" in state.player.items:
                     state.player.items.remove("mega potion")
                     state.player.max_stamina_points += 10
@@ -210,9 +261,9 @@ class Area2ShopKeeper(Npc):
                 # Handle drawing the shop interaction text
 
                 if self.stat_point_increase == True:
-                    # Draw a box on the far right end of the screen, 400 pixels wide and 400 pixels high
-                    box_width = 250
-                    box_height = 250
+                    # Draw a box on the far right end of the screen, 260 pixels wide and 260 pixels high
+                    box_width = 260
+                    box_height = 260
                     border_width = 5
                     start_x = state.DISPLAY.get_width() - box_width - 25  # Far right of the screen
                     start_y = state.DISPLAY.get_height() // 2 - box_height // 2  # Centered vertically
@@ -231,12 +282,19 @@ class Area2ShopKeeper(Npc):
                     # Draw the box on the far right
                     state.DISPLAY.blit(white_border, (start_x - border_width, start_y - border_width))
 
-                    # You can also draw text or options inside the box if needed
+                    # You can also draw text or options inside the box
                     state.DISPLAY.blit(self.font.render("Max Value 2:", True, (255, 255, 255)), (start_x + 10, start_y + 20))
 
-                    # You can add more drawing logic for the stat choices inside this box
-                    # For example, you can draw a list of stats like:
+                    # Define the list of stats and the vertical position for each
                     stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
                     for idx, stat in enumerate(stats):
                         y_position = start_y + 60 + idx * 40  # Adjust vertical spacing
                         state.DISPLAY.blit(self.font.render(stat, True, (255, 255, 255)), (start_x + 60, y_position))
+
+                    # Draw the arrow next to the currently selected stat based on stat_point_increase_index
+                    arrow_y_positions = [60, 100, 140, 180, 220]  # Y positions for the arrow, matching the stats' Y positions
+                    arrow_x = start_x + 20  # X position for the arrow
+                    arrow_y = start_y + arrow_y_positions[self.stat_point_increase_index]
+
+                    # Draw the arrow ('->') at the current stat's position
+                    state.DISPLAY.blit(self.font.render("->", True, (255, 255, 255)), (arrow_x, arrow_y))
