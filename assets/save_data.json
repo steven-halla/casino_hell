@@ -58,7 +58,6 @@
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
         "MC_NUGGET_BETA_QUEST_COMPLETE",
-        "BLACK_JACK_BLACK_MACK_DEFEATED",
         "MC_NUGGET_THIRD_QUEST_COMPLETE",
         "BBQ_SAUCE",
         "MC_NUGGET_SECOND_QUEST_COMPLETE",
@@ -66,11 +65,9 @@
         "NUGG_QUEST_TWO_MONEY",
         "MC_NUGGET_QUEST_2_REWARD",
         "MC_NUGGET_QUEST_3_REWARD",
-        "SLOTS_RIPPA_SNAPPA_DEFEATED",
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
-        "QUEST_1_COMPLETE",
-        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
+        "QUEST_1_COMPLETE"
     ],
     "cutscene1": true,
     "cutscene2": true,
@@ -80,12 +77,12 @@
     "coinflipbetteymoney": 1110,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 0,
+    "opossuminacancandymoney": 1110,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 0,
+    "blackjackmackmoney": 1110,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 0,
+    "slotsrippasnappamoney": 1110,
     "crapscrappymoney": 1500
 }

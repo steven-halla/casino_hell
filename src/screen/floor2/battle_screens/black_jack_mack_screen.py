@@ -634,6 +634,12 @@ class BlackJackMackScreen(Screen):
                 elif self.welcome_screen_index == 3 and controller.isTPressed and self.player_debuff_double_draw < 1:
                     controller.isTPressed = False
                     self.welcome_screen_index = 0
+                    self.reveal_hand = 0
+                    self.magic_lock = False
+
+
+                    # self.player_status = "Normal"
+                    # self.enemy_status = "Normal"
 
                     self.magic_points = 1
                     state.currentScreen = state.area2GamblingScreen
@@ -1339,8 +1345,13 @@ class BlackJackMackScreen(Screen):
 
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
                                       (255, 255, 255)), (37, 70))
-        state.DISPLAY.blit(self.font.render(f"Status: {self.enemy_status}", True,
-                                      (255, 255, 255)), (37, 110))
+
+        if self.reveal_hand == 0:
+            state.DISPLAY.blit(self.font.render(f"Status: Normal", True,
+                                          (255, 255, 255)), (37, 110))
+        elif self.reveal_hand > 0:
+            state.DISPLAY.blit(self.font.render(f"Reveal: {self.reveal_hand}", True,
+                                                (255, 255, 255)), (37, 110))
 
         if self.reveal_hand < 11:
             state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
@@ -1405,7 +1416,7 @@ class BlackJackMackScreen(Screen):
                 self.welcome_screen_choices[3] = "Quit"
 
 
-            if self.reveal_hand < 11:
+            if self.reveal_hand < 11 and self.reveal_hand > 0:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"   # if I use a constant it shows it as the full name not the string part
             else:
