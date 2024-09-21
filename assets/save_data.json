@@ -57,9 +57,7 @@
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
         "MC_NUGGET_BETA_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+
         "STAT_POTION_AREA_2",
         "BLACK_JACK_BLACK_MACK_DEFEATED",
         "MC_NUGGET_THIRD_QUEST_COMPLETE",
@@ -72,15 +70,14 @@
         "SLOTS_RIPPA_SNAPPA_DEFEATED",
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
-        "QUEST_1_COMPLETE",
-        "COIN_FLIP_BETTY_DEFEATED"
+        "QUEST_1_COMPLETE"
     ],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 0,
+    "coinflipbetteymoney": 1110,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
     "opossuminacancandymoney": 190,

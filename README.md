@@ -584,9 +584,16 @@ slots hacked is buggedd
 opssum in a can candy  and coin flip better is buged shouldt give me message to play again after defeat
 coin flip magic menu is bugged in many ways, clicking back casts spell , cannot exit 
 phase on coin flip is bugged it shouldnt be reading 6, this was during a magic cast, not consistant
+shop need to label stat points for player
+i am not gaining exp  opposum in a can 
 
-i am not gaining exp on coin flip or opposum in a can 
+minor bug in coin flip is exp gain not showing up in first coin flip as the value displays
+before value is set
 
+fix the below
+
+            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+                self.game_state = "game_over_screen"
 
 
 

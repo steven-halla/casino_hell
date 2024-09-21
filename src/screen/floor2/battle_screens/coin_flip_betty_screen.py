@@ -253,7 +253,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
         self.battle_messages_initialized = False  # Add an initialization flag
 
-        self.exp_gain = 0
+        self.exp_gain = 10
         self.odd = False
         self.even = False
         self.turn_1 = False
@@ -415,24 +415,23 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.game_state = "spell_casting"
 
 
-            if controller.is1Pressed:
-                self.quest_money += 500
-                self.money -= 500
-                state.player.money += 500
-                print("qyest money is at: " + str(self.quest_money))
-                controller.is1Pressed = False
+            # if controller.is1Pressed:
+            #     self.quest_money += 500
+            #     self.money -= 500
+            #     state.player.money += 500
+            #     print("qyest money is at: " + str(self.quest_money))
+            #     controller.is1Pressed = False
 
             self.battle_messages["welcome_message"].update(state)
 
             if self.money < 1:
                self.game_state = "enemy_defeated_screen"
 
-            if state.player.stamina_points < 1:
-                self.game_state = "game_over_screen"
 
 
-            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
-                self.game_state = "game_over_screen"
+
+            if state.player.stamina_points <= 6:
+                self.game_state = "game_over_no_stamina"
 
 
 
@@ -540,6 +539,8 @@ class CoinFlipBettyScreen(BattleScreen):
             if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
                 self.magic_menu_selector.insert(1, Magic.HEADS_FORCE.value )
 
+
+
             if state.controller.isUpPressed:
                 self.magicindex -= 1
                 self.menu_movement_sound.play()  # Play the sound effect once
@@ -620,6 +621,9 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.player.money += self.bet + 20
                     self.quest_money += self.bet + 20
                     self.money -= self.bet + 20
+                    state.player.exp += 10
+                    self.exp_gain = 10
+
                     if self.money == -10:
                         self.money = 0
                         state.player.money -= 10
@@ -651,6 +655,9 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
                     state.player.money += self.bet
+                    state.player.exp += 10
+                    self.exp_gain = 10
+
 
                     self.money -= self.bet
                     self.quest_money += self.bet
@@ -673,6 +680,8 @@ class CoinFlipBettyScreen(BattleScreen):
 
                 if controller.isTPressed and self.debuff_vanish == False:
                     self.phase += 1
+                    state.player.exp += 15
+                    self.exp_gain = 15
 
 
 
@@ -1132,15 +1141,25 @@ class CoinFlipBettyScreen(BattleScreen):
             self.battle_messages["magic_message"].update(state)
             self.battle_messages["magic_message"].draw(state)
 
-            if self.magicindex == 0:
-                self.battle_messages["magic_description_shield"].update(state)
-                self.battle_messages["magic_description_shield"].draw(state)
-            elif self.magicindex == 1:
-                self.battle_messages["magic_description_force"].update(state)
-                self.battle_messages["magic_description_force"].draw(state)
-            elif self.magicindex == 2:
-                self.battle_messages["magic_description_back"].update(state)
-                self.battle_messages["magic_description_back"].draw(state)
+            if Magic.HEADS_FORCE.value in state.player.magicinventory:
+                if self.magicindex == 0:
+                    self.battle_messages["magic_description_shield"].update(state)
+                    self.battle_messages["magic_description_shield"].draw(state)
+                elif self.magicindex == 1:
+                    self.battle_messages["magic_description_force"].update(state)
+                    self.battle_messages["magic_description_force"].draw(state)
+                elif self.magicindex == 2:
+                    self.battle_messages["magic_description_back"].update(state)
+                    self.battle_messages["magic_description_back"].draw(state)
+            else:
+                if self.magicindex == 0:
+                    self.battle_messages["magic_description_shield"].update(state)
+                    self.battle_messages["magic_description_shield"].draw(state)
+
+                elif self.magicindex == 1:
+                    self.battle_messages["magic_description_back"].update(state)
+                    self.battle_messages["magic_description_back"].draw(state)
+
 
             # Define new_box_x
 
@@ -1193,46 +1212,60 @@ class CoinFlipBettyScreen(BattleScreen):
                     (start_x_right_box + 12, start_y_right_box + 92)
                 )
 
+            if Magic.HEADS_FORCE.value in state.player.magicinventory:
 
 
-            if state.controller.isTPressed:
-                if self.magicindex == 0 and state.player.focus_points > 0:
+                if state.controller.isTPressed:
+                    if self.magicindex == 0 and state.player.focus_points > 0:
 
 
-                    self.spell_sound.play()  # Play the sound effect once
+                        self.spell_sound.play()  # Play the sound effect once
 
-                    self.debuff_vanish = True
-                    self.debuff_counter += 3
-                    state.player.focus_points -= 10
-                    state.controller.isTPressed = False  # Reset the button state
-                    self.game_state = "welcome_screen"
+                        self.debuff_vanish = True
+                        self.debuff_counter += 3
+                        state.player.focus_points -= 10
+                        state.controller.isTPressed = False  # Reset the button state
+                        self.game_state = "welcome_screen"
 
-                elif self.magicindex == 1 and state.player.focus_points > 50 and Magic.HEADS_FORCE.value in state.player.magicinventory:
-                    self.weighted_coin = True
-                    state.controller.isTPressed = False  # Reset the button state
-                    print("mewlinglinglinglignlikng")
-                    self.game_state = "welcome_screen"
-
-
-
-                elif self.magicindex == 1 and state.player.focus_points > 0:
-                    print("lalalalalalallaallaalallalala")
-
-
-                    self.spell_sound.play()  # Play the sound effect once
-
-                    self.weighted_coin = True
-                    self.debuff_counter += 1
-                    state.player.focus_points -= 10
-                    state.controller.isTPressed = False  # Reset the button state
-                    self.game_state = "welcome_screen"
+                    elif self.magicindex == 1 and state.player.focus_points > 50 and Magic.HEADS_FORCE.value in state.player.magicinventory:
+                        self.weighted_coin = True
+                        state.controller.isTPressed = False  # Reset the button state
+                        print("mewlinglinglinglignlikng")
+                        self.game_state = "welcome_screen"
 
 
 
-                elif self.magicindex == 2:
-                    self.game_state = "welcome_screen"
-                    state.controller.isTPressed = False  # Reset the button state
+                    elif self.magicindex == 1 and state.player.focus_points > 0:
+                        print("lalalalalalallaallaalallalala")
 
+
+                        self.spell_sound.play()  # Play the sound effect once
+
+                        self.weighted_coin = True
+                        self.debuff_counter += 1
+                        state.player.focus_points -= 10
+                        state.controller.isTPressed = False  # Reset the button state
+                        self.game_state = "welcome_screen"
+
+
+
+                    elif self.magicindex == 2:
+                        self.game_state = "welcome_screen"
+                        state.controller.isTPressed = False  # Reset the button state
+            else:
+                if state.controller.isTPressed:
+                    if self.magicindex == 0 and state.player.focus_points > 0:
+                        self.spell_sound.play()  # Play the sound effect once
+
+                        self.debuff_vanish = True
+                        self.debuff_counter += 3
+                        state.player.focus_points -= 10
+                        state.controller.isTPressed = False  # Reset the button state
+                        self.game_state = "welcome_screen"
+
+                    elif self.magicindex == 1:
+                        self.game_state = "welcome_screen"
+                        state.controller.isTPressed = False  # Reset the button state
 
         if self.game_state == "flip_screen":
             self.battle_messages["flip_message"].update(state)
