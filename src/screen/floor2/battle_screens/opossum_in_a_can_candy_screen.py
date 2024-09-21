@@ -113,7 +113,7 @@ class OpossumInACanCandyScreen(BattleScreen):
             ),
 
             "immune_lose_message": TextBox(
-                ["chompy! You Gain 10 exp"],
+                ["chompy! You Gain 15 exp"],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -257,6 +257,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.food_luck = False
 
         self.player_debuff_poison = 0
+        self.exp_gain = 15
 
 
 
@@ -360,6 +361,8 @@ class OpossumInACanCandyScreen(BattleScreen):
 
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False
+            self.exp_gain = 15
+            state.player.exp += 15
 
             # if self.battle_messages["tally_message"].message_index == 1 and state.player.money < 1:
             #     print("No money ")
@@ -430,9 +433,19 @@ class OpossumInACanCandyScreen(BattleScreen):
                 # state.player.stamina_points -= 3
 
                 # print("Your before  total exp is: " + str(state.player.exp))
+                if self.player_score == 0:
+                    state.player.exp += 1
+                    self.exp_gain = 1
 
-                state.player.exp += 10
+                if self.player_score < 1000 and self.player_score != 0:
+                    state.player.exp += 15
+                    self.exp_gain = 10
+
                 self.talley_checker = True
+
+                if self.player_score > 999:
+                    self.exp_gain = 50
+                    state.player.exp += 50
 
                 return
 
@@ -990,8 +1003,10 @@ class OpossumInACanCandyScreen(BattleScreen):
                                             (255, 255, 255)), (37, 70))
 
 
-        state.DISPLAY.blit(self.font.render(f"Status: normal", True,
-                                                (255, 255, 255)), (37, 110))
+        # state.DISPLAY.blit(self.font.render(f"Status: normal", True,
+        #                                         (255, 255, 255)), (37, 110))
+        state.DISPLAY.blit(self.font.render(f"Exp: {state.player.exp}", True,
+                                            (255, 255, 255)), (37, 110))
 
 
         #this creates the text box for our below messages
@@ -1027,7 +1042,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                 # print("part 2: " + str(self.player_score))
                 # print("total winnings are part 2: " + str(self.total_winnings))
 
-                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are::{self.total_winnings} and 10 exp", True,
+                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are:{self.total_winnings} and {self.exp_gain} exp.", True,
                                                     (255, 255, 255)), (45, 460))
 
         if self.game_state == "menu_screen":
