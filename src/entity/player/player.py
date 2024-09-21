@@ -827,6 +827,7 @@ class Player(Entity):
                 # Equip the selected item if T is pressed
                 # Equip the selected item if T is pressed
                 if state.controller.isTPressed:
+
                     state.controller.isTPressed = False
 
                     # Check if the currently equipped item is HEALTHY_GLOVES and we are replacing it
@@ -838,6 +839,10 @@ class Player(Entity):
                         self.stamina_points -= 30
                         print(f"Unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
 
+                    if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
+                        self.perception -= 1
+
+
                     # Equip the new item
                     self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
 
@@ -847,6 +852,9 @@ class Player(Entity):
                         self.stamina_points += 30
 
                         print(f"Equipped HEALTHY_GLOVES: Max stamina increased by 30")
+
+                    if self.items[self.item_index] == Equipment.SOCKS_OF_PERCEPTION.value:
+                        self.perception += 1
 
                     print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
                     self.looking_at_items = False

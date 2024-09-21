@@ -11,7 +11,8 @@
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses"
+        "coin flip glasses",
+        "SOCKS_OF_PERCEPTION"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -40,7 +41,7 @@
         "contract"
     ],
     "level3reward": true,
-    "food": 0,
+    "food": 1,
     "days": 13,
     "leveltwonpcstate": [
     ],
