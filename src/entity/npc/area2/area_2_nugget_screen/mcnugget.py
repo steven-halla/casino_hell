@@ -117,7 +117,7 @@ class MCNugg(Npc):
 
                 if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_1_finish"]
-                if Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state:
+                if Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_start"]
                 if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
@@ -139,7 +139,7 @@ class MCNugg(Npc):
 
         if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_1_finish"]
-        if Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state:
+        if Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_start"]
         if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
@@ -174,7 +174,7 @@ class MCNugg(Npc):
             if (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and
                     Events.MC_NUGGET_FIRST_QUEST_COMPLETE not in state.player.level_two_npc_state):
                 state.player.items.append(Equipment.SOCKS_OF_PERCEPTION.value)
-
+                Events.add_event_to_player(state.player, Events.MC_NUGGET_BETA_QUEST_COMPLETE)
 
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value)
 
@@ -199,7 +199,8 @@ class MCNugg(Npc):
 
             if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_1_finish"]
-            if Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state:
+            if Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                print("Yippy")
                 current_message = self.npc_messages["quest_2_start"]
             if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]

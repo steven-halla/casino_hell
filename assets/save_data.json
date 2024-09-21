@@ -1,6 +1,6 @@
 {
     "level": 4,
-    "exp": 600,
+    "exp": 625,
     "stamina_points": 240,
     "max_stamina_points": 240,
     "focus_points": 135,
@@ -11,9 +11,7 @@
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses",
-        "SOCKS_OF_PERCEPTION",
-        "STAT_POTION_AREA_2"
+        "coin flip glasses"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -26,8 +24,7 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake",
-        "CRAPS_LUCKY_7"
+        "shake"
     ],
     "body": 1,
     "mind": 2,
@@ -35,22 +32,22 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1300,
+    "money": 1250,
     "rabies": false,
     "immunity": true,
     "quest_items": [
         "contract"
     ],
-    "level3reward": true,
+    "level3reward": false,
     "food": 1,
-    "days": 14,
+    "days": 15,
     "leveltwonpcstate": [
-        "500 Gold",
-        "STAT_POTION_AREA_2"
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_1_REWARD"
     ],
     "cutscene1": true,
     "cutscene2": true,
-    "quest1complete": true,
+    "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
     "coinflipbetteymoney": 1000,
@@ -60,8 +57,8 @@
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "blackjackmackmoney": 1000,
-    "shopkeeperpotion": true,
-    "shopkeepersavecoin": true,
-    "slotsrippasnappamoney": 1000,
+    "shopkeeperpotion": false,
+    "shopkeepersavecoin": false,
+    "slotsrippasnappamoney": 850,
     "crapscrappymoney": 1000
 }

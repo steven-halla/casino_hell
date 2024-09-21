@@ -430,9 +430,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
     def update(self, state: "GameState") -> None:
         # if state.controller.is1Pressed:
-        #     self.slot1 = [8, 8, 8]
-        #     self.slot2 = [8, 8, 8]
-        #     self.slot3 = [8, 8, 8]
+        # self.slot1 = [8, 8, 8]
+        # self.slot2 = [8, 8, 8]
+        # self.slot3 = [8, 8, 8]
         #     self.three_eights = True
         #     self.no_matches = False
         #
