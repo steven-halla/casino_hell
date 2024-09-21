@@ -4,6 +4,8 @@ import pygame
 import pytmx
 
 from constants import BLUEBLACK
+from game_constants.equipment import Equipment
+
 
 class BattleScreen:
     def __init__(self, screenName: str, map_path: str = None):
@@ -15,10 +17,10 @@ class BattleScreen:
         self.lock_down = 0
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
         self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
-
+        self.stat_increase = False
 
     def start(self, state: 'GameState') -> None:
-            pygame.display.set_caption(self.screenName)
+        pygame.display.set_caption(self.screenName)
 
     def update(self, state: 'GameState') -> None:
         pass
@@ -58,22 +60,61 @@ class BattleScreen:
 
                 if selected_stat == "Body" and state.controller.isTPressed and state.player.body < 2:
                     state.player.body += 1
-                elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
-                    state.player.mind += 1
-                elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
-                    state.player.spirit += 1
-                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
-                    state.player.perception += 1
-                    # state.player.base_perception += 1
-                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
-                    state.player.luck += 1
-
-                if state.controller.isTPressed:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
                     self.game_state = "welcome_screen"
+
+                elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
+                    state.player.mind += 1
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
+                elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
+                    state.player.spirit += 1
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
+                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
+                    state.player.perception += 1
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
+                    # state.player.base_perception += 1
+                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
+                        Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+                    state.player.perception += 1
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
+
+                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
+                    state.player.luck += 1
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
+
+                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
+                        state.player.enhanced_luck == True:
+                    state.player.luck += 1
+                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    state.controller.isTPressed = False
+                    state.player.leveling_up = False
+                    self.battle_messages["level_up"].reset()
+                    self.game_state = "welcome_screen"
+
+
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
 
@@ -147,7 +188,6 @@ class BattleScreen:
 
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
-
     def draw_enemy_info_box_debuff(self, state: "GameState") -> None:
         black_box = pygame.Surface((200 - 10, 110 - 10))
         black_box.fill((0, 0, 0))
@@ -171,9 +211,6 @@ class BattleScreen:
         state.DISPLAY.blit(self.font.render(f"Status: HACKED {state.slotsRippaSnappaScreen.slot_hack}", True, (255, 255, 255)), (37, 110))
 
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
-
-
-
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
         black_box = pygame.Surface((200 - 10, 180 - 10))
@@ -200,8 +237,6 @@ class BattleScreen:
         elif self.lock_down > 0:
             state.DISPLAY.blit(self.font.render(f"Locked Down:{self.lock_down}", True, (255, 0, 0)), (37, 205))
 
-
-
     def draw_bottom_black_box(self, state: "GameState") -> None:
         black_box_height = 130
         black_box_width = 700
@@ -219,5 +254,3 @@ class BattleScreen:
         black_box_y = screen_height - black_box_height - 20 - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-
