@@ -1,6 +1,6 @@
 {
     "level": 4,
-    "exp": 625,
+    "exp": 999,
     "stamina_points": 240,
     "max_stamina_points": 240,
     "focus_points": 135,
@@ -19,6 +19,8 @@
         "opossum repellent"
     ],
     "npcitems": [
+        "level 2 token",
+        "level 3 token",
         "level 4 token"
     ],
     "magicinventory": [
@@ -27,11 +29,11 @@
         "shake"
     ],
     "body": 1,
-    "mind": 2,
+    "mind": 1,
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
-    "luck": 1,
+    "luck": 2,
     "money": 1250,
     "rabies": false,
     "immunity": true,
