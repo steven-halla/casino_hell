@@ -191,14 +191,14 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 slot_mapping = {
                             range(1, 7): 0,  # lose a rib
                             range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                            range(15, 50): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                            range(51, 101): 3,  # add 100 coins
-                            # range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                            # range(57, 70): 5,  # gain 20 hp 20 mp 125 coins
-                            # range(70, 78): 6,  # add 200 coins
-                            # range(78, 87): 7,  # lucky spin better % for jackpot
-                            # range(87, 95): 8,  # get special item or 50 coins
-                            # range(95, 101): 9,  # jackpot
+                            range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                            range(21, 45): 3,  # add 100 coins
+                            range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
+                            range(57, 70): 5,  # gain 20 hp 20 mp 125 coins
+                            range(70, 78): 6,  # add 200 coins
+                            range(78, 87): 7,  # lucky spin better % for jackpot
+                            range(87, 95): 8,  # get special item or 50 coins
+                            range(95, 101): 9,  # jackpot
                 }
             elif self.lucky_strike == 0 and self.bet > 50:
                 slot_mapping = {

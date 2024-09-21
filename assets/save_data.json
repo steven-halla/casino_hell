@@ -3,8 +3,8 @@
     "exp": 600,
     "stamina_points": 240,
     "max_stamina_points": 240,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "focus_points": 135,
+    "max_focus_points": 135,
     "companions": [
         "sir leopold"
     ],
@@ -12,7 +12,8 @@
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses",
-        "SOCKS_OF_PERCEPTION"
+        "SOCKS_OF_PERCEPTION",
+        "STAT_POTION_AREA_2"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -25,16 +26,16 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake"
-
+        "shake",
+        "CRAPS_LUCKY_7"
     ],
     "body": 1,
-    "mind": 1,
+    "mind": 2,
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 2000,
+    "money": 1300,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -42,8 +43,10 @@
     ],
     "level3reward": true,
     "food": 1,
-    "days": 13,
+    "days": 14,
     "leveltwonpcstate": [
+        "500 Gold",
+        "STAT_POTION_AREA_2"
     ],
     "cutscene1": true,
     "cutscene2": true,

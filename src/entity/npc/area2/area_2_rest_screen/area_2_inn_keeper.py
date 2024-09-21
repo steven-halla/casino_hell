@@ -102,9 +102,9 @@ class Area2InnKeeper(Npc):
                 self.sleep_sound.play()  # Play the sound effect once
 
                 state.player.money -= 200
-                if state.player.enhanded_luck == True:
+                if state.player.enhanced_luck == True:
                     state.player.luck -= 1
-                    state.player.enhanded_luck = False
+                    state.player.enhanced_luck = False
 
 
 
