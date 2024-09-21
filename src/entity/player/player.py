@@ -123,13 +123,14 @@ class Player(Entity):
 
 
         self.exp_to_next_level = {
-            2: 100,
-            3: 300,
-            4: 600,
-            5: 1000,
-            6: 1500,
-            7: 2100,  # Continue adding levels as needed
-            8: 2800,  # Continue adding levels as needed
+            1: 100,
+            2: 300,
+            3: 600,
+            4: 1000,
+            5: 1500,
+            6: 2100,
+            7: 2800,  # Continue adding levels as needed
+            8: 3600,  # Continue adding levels as needed
             # Add more levels as needed
         }
 

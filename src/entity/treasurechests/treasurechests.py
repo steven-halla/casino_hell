@@ -82,6 +82,7 @@ class TreasureChest(Entity):
                 self.treasure_open_sound.play()  # Play the sound effect once
                 self.isOpened = True
 
+
     def give_item(self, state: "GameState"):
         print(f"Received item: {self.treasure_item}")
         state.player.items.append(self.treasure_item)

@@ -213,6 +213,12 @@ class Area2BarKeep(Npc):
                     state.DISPLAY.blit(self.font.render(f" Adds +1 luck till next rest. ", True,
                                                         (255, 255, 255)), (70, 510))
 
+                elif self.selected_item_index == 1 and state.player.body == 1:
+                    state.DISPLAY.blit(self.font.render(f"You need a body of 2 to eat or you'll barf it up. ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+
+
 
 
 

@@ -50,9 +50,11 @@ class Area2MoneyBag(TreasureChest):
             return  # Do nothing if the message has been closed
         if self.isOpened:
             self.current_message.update(state)
+            state.player.canMove = False
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
                 print("mew")
+                state.player.canMove = True
         else:
             self.open_chest(state)
 

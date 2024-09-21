@@ -19,13 +19,13 @@ class ErikaChickenGirl(Npc):
                     "Erika: Hello Hero, would you like some animal parade chicken nuggies",
                     "Hero: No thank you I thinik I'm good on that",
                     "Sir Leopold: Yeah something about this feels strange",
-                    "Erika: I need 5000 COINS to start my quest"
+                    "Erika: I need 3000 COINS to start my quest, I can give you the best item on this floor."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_message": NpcTextBox(
                 [
-                    "Erika: Time to battle",
+                    "Erika: Great time to start my quest, you should update this in the game",
                \
 
                 ],
@@ -53,7 +53,7 @@ class ErikaChickenGirl(Npc):
             # Determine which message to use based on player state
             current_message = self.npc_messages["default_message"]
 
-            if state.player.money >= 6000:
+            if state.player.money >= 3000:
                 current_message = self.npc_messages["quest_message"]
 
             if current_message.message_index == 1:
@@ -84,11 +84,11 @@ class ErikaChickenGirl(Npc):
                 # Reset the message based on player state
                 current_message = self.npc_messages["default_message"]
 
-                if state.player.money >= 5000:
+                if state.player.money >= 3000:
                     current_message = self.npc_messages["quest_message"]
                     state.controller.isTPressed = False
-                    state.player.money = 1500
-                    state.currentScreen = state.crapsBossScreen
+                    state.player.money -= 2000
+                    # state.currentScreen = state.crapsBossScreen
                     # state.crapsBossScreen.start(state)
 
                 current_message.reset()
