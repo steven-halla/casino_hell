@@ -64,10 +64,11 @@ class BattleScreen:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
-                    state.player.max_stamina_points += 20
-                    state.player.stamina_points += 20
+                    state.player.max_stamina_points += state.player.level_2_body_stamina_increase
+                    state.player.stamina_points += state.player.level_2_body_stamina_increase
                     self.battle_messages["level_up"].reset()
                     self.game_state = "welcome_screen"
+
 
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
                     state.player.mind += 1
@@ -76,8 +77,8 @@ class BattleScreen:
                     state.player.leveling_up = False
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
                     self.battle_messages["level_up"].reset()
-                    state.player.max_focus_points += 20
-                    state.player.focus_points += 20
+                    state.player.max_focus_points += state.player.level_2_mind_focus_increase
+                    state.player.focus_points += state.player.level_2_mind_focus_increase
                     self.game_state = "welcome_screen"
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
                     state.player.spirit += 1
