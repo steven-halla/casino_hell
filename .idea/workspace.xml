@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed level up so now we correctly raise stats">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="NOW correctly displays stat numbers">
       <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/entity/gui/screen/battle_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/screen/battle_screen.py" afterDir="false" />
     </list>
@@ -703,7 +702,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="914" />
+    <option name="localTasksCounter" value="915" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -732,7 +731,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="switch created" />
     <MESSAGE value="switches updated, positions updated" />
     <MESSAGE value="switches now working" />
     <MESSAGE value="demon 10 now goes back to rally point when player hiding" />
@@ -757,7 +755,8 @@
     <MESSAGE value="fixed nugg brother quest line" />
     <MESSAGE value="fixed bug where player was leveling up screen everytime we started the game again" />
     <MESSAGE value="fixed level up so now we correctly raise stats" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed level up so now we correctly raise stats" />
+    <MESSAGE value="NOW correctly displays stat numbers" />
+    <option name="LAST_COMMIT_MESSAGE" value="NOW correctly displays stat numbers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -788,7 +787,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1726943498185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1726943855709" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
