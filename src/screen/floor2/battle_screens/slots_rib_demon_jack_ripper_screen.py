@@ -192,12 +192,12 @@ class SlotsRippaSnappaScreen(BattleScreen):
                             range(1, 7): 0,  # lose a rib
                             range(7, 15): 1,  # lost 50 extra coins from your state.player.money
                             range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                            range(21, 45): 3,  # add 100 coins
-                            range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                            range(57, 70): 5,  # gain 20 hp 20 mp 125 coins
-                            range(70, 78): 6,  # add 200 coins
-                            range(78, 87): 7,  # lucky spin better % for jackpot
-                            range(87, 95): 8,  # get special item or 50 coins
+                            range(21, 42): 3,  # add 100 coins
+                            range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
+                            range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
+                            range(66, 74): 6,  # add 200 coins
+                            range(74, 83): 7,  # lucky spin better % for jackpot
+                            range(83, 95): 8,  # get special item or 50 coins
                             range(95, 101): 9,  # jackpot
                 }
             elif self.lucky_strike == 0 and self.bet > 50:
@@ -205,12 +205,12 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     range(1, 7): 0,  # lose a rib
                     range(7, 15): 1,  # lost 50 extra coins from your state.player.money
                     range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(21, 45): 3,  # add 100 coins
-                    range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-                    range(57, 63): 5,  # gain 20 hp 20 mp 125 coins
-                    range(63, 70): 6,  # add 200 coins
-                    range(70, 79): 7,  # lucky spin better % for jackpot
-                    range(79, 92): 8,  # get special item or 50 coins
+                    range(21, 42): 3,  # add 100 coins
+                    range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
+                    range(53, 60): 5,  # gain 20 hp 20 mp 125 coins
+                    range(60, 67): 6,  # add 200 coins
+                    range(67, 76): 7,  # lucky spin better % for jackpot
+                    range(76, 92): 8,  # get special item or 50 coins
                     range(92, 101): 9,  # jackpot
                 }
 
