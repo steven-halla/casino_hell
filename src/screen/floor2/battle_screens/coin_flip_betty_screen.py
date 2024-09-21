@@ -393,10 +393,8 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.music_on = False
 
 
-        if self.money < 10:
-            self.coinFlipFredDefeated = True
-
-
+        if self.money < 1:
+            Events.add_event_to_player(state.player, Events.COIN_FLIP_BETTY_DEFEATED)
 
         if state.controller.isQPressed:
             state.currentScreen = state.startScreen
@@ -899,7 +897,8 @@ class CoinFlipBettyScreen(BattleScreen):
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 20))
 
-        state.DISPLAY.blit(self.font.render(f"Enemy-Phase {self.phase}" , True, (255, 255, 255)), (37, 33))
+        # state.DISPLAY.blit(self.font.render(f"Enemy-Phase {self.phase}" , True, (255, 255, 255)), (37, 33))
+        state.DISPLAY.blit(self.font.render(f"exp {state.player.exp}" , True, (255, 255, 255)), (37, 33))
 
         #holds enemy status, money and other info
         # Original dimensions

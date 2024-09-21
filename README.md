@@ -579,8 +579,13 @@ Here are my thoughts going forward:
 9) i need to create the bank -- ill do this for level 3
 
 add a 2nd rib demon slots that has 0 money, this is just to get more EXP or the super secret item
+i think the mcnugget 2nd quest can be skipped I need to check all quest to make sure you cant skip em
+slots hacked is buggedd
+opssum in a can candy  and coin flip better is buged shouldt give me message to play again after defeat
+coin flip magic menu is bugged in many ways, clicking back casts spell , cannot exit 
+phase on coin flip is bugged it shouldnt be reading 6, this was during a magic cast, not consistant
 
-
+i am not gaining exp on coin flip or opposum in a can 
 
 
 

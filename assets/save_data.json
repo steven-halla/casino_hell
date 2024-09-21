@@ -1,6 +1,6 @@
 {
     "level": 6,
-    "exp": 1515,
+    "exp": 1831,
     "stamina_points": 280,
     "max_stamina_points": 280,
     "focus_points": 140,
@@ -12,8 +12,9 @@
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses",
-        "SOCKS_OF_PERCEPTION"
-
+        "SOCKS_OF_PERCEPTION",
+        "STAT_POTION_AREA_2",
+        "Black Hat"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -30,45 +31,64 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake"
+        "shake",
+        "SLOTS_HACK",
+        "HEADS_FORCE"
     ],
     "body": 2,
     "mind": 1,
     "spirit": 2,
     "perception": 2,
     "baseperception": 1,
-    "luck": 1,
-    "money": 2420,
+    "luck": 2,
+    "money": 2960,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "BBQ_SAUCE",
+        "QUEST_1_BADGE",
+        "QUEST_1_COIN"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 17,
+    "days": 21,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
         "MC_NUGGET_BETA_QUEST_COMPLETE",
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_FIRST_QUEST_COMPLETE"
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "STAT_POTION_AREA_2",
+        "BLACK_JACK_BLACK_MACK_DEFEATED",
+        "MC_NUGGET_THIRD_QUEST_COMPLETE",
+        "BBQ_SAUCE",
+        "MC_NUGGET_SECOND_QUEST_COMPLETE",
+        "500 Gold",
+        "NUGG_QUEST_TWO_MONEY",
+        "MC_NUGGET_QUEST_2_REWARD",
+        "MC_NUGGET_QUEST_3_REWARD",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "QUEST_1_BADGE",
+        "QUEST_1_COIN",
+        "QUEST_1_COMPLETE",
+        "COIN_FLIP_BETTY_DEFEATED"
     ],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1000,
+    "coinflipbetteymoney": 0,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 1000,
+    "opossuminacancandymoney": 190,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1000,
+    "blackjackmackmoney": 0,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 680,
+    "slotsrippasnappamoney": 0,
     "crapscrappymoney": 1500
 }
