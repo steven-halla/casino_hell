@@ -70,8 +70,7 @@
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
         "QUEST_1_COMPLETE",
-        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
-        "STAT_POTION_AREA_2"
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
     ],
     "cutscene1": true,
     "cutscene2": true,

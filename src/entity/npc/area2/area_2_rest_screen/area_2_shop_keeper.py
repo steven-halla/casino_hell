@@ -273,7 +273,7 @@ class Area2ShopKeeper(Npc):
                     box_height = 260
                     border_width = 5
                     start_x = state.DISPLAY.get_width() - box_width - 25  # Far right of the screen
-                    start_y = state.DISPLAY.get_height() // 2 - box_height // 2  # Centered vertically
+                    start_y = state.DISPLAY.get_height() // 2 - box_height // 2 + 10  # Centered vertically
 
                     # Create the black box
                     black_box = pygame.Surface((box_width, box_height))
@@ -289,14 +289,28 @@ class Area2ShopKeeper(Npc):
                     # Draw the box on the far right
                     state.DISPLAY.blit(white_border, (start_x - border_width, start_y - border_width))
 
-                    # You can also draw text or options inside the box
+                    # Draw the label for maximum stat value
                     state.DISPLAY.blit(self.font.render("Max Value 2:", True, (255, 255, 255)), (start_x + 10, start_y + 20))
 
                     # Define the list of stats and the vertical position for each
                     stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
+                    stat_values = [
+                        state.player.body,
+                        state.player.mind,
+                        state.player.spirit,
+                        state.player.perception - 1 if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items else state.player.perception,
+                        state.player.luck - 1 if state.player.enhanced_luck else state.player.luck,
+                    ]
+
+                    # Display the stats names
                     for idx, stat in enumerate(stats):
                         y_position = start_y + 60 + idx * 40  # Adjust vertical spacing
                         state.DISPLAY.blit(self.font.render(stat, True, (255, 255, 255)), (start_x + 60, y_position))
+
+                    # Display the player's current stat values 30 pixels to the right of the stat names
+                    for idx, stat_value in enumerate(stat_values):
+                        y_position = start_y + 60 + idx * 40  # Adjust vertical spacing
+                        state.DISPLAY.blit(self.font.render(str(stat_value), True, (255, 255, 255)), (start_x + 200, y_position))
 
                     # Draw the arrow next to the currently selected stat based on stat_point_increase_index
                     arrow_y_positions = [60, 100, 140, 180, 220]  # Y positions for the arrow, matching the stats' Y positions
