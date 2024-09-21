@@ -1,10 +1,10 @@
 {
     "level": 6,
     "exp": 1861,
-    "stamina_points": 280,
-    "max_stamina_points": 280,
-    "focus_points": 140,
-    "max_focus_points": 140,
+    "stamina_points": 310,
+    "max_stamina_points": 310,
+    "focus_points": 155,
+    "max_focus_points": 155,
     "companions": [
         "sir leopold"
     ],
@@ -13,8 +13,8 @@
         "opossum repellent",
         "coin flip glasses",
         "SOCKS_OF_PERCEPTION",
-        "STAT_POTION_AREA_2",
-        "Black Hat"
+        "Black Hat",
+        "STAT_POTION_AREA_2"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -33,15 +33,16 @@
         "shield",
         "shake",
         "SLOTS_HACK",
-        "HEADS_FORCE"
+        "HEADS_FORCE",
+        "CRAPS_LUCKY_7"
     ],
     "body": 2,
     "mind": 1,
-    "spirit": 2,
-    "perception": 2,
+    "spirit": 1,
+    "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 2561,
+    "money": 4355,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -52,12 +53,11 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 23,
+    "days": 26,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
         "MC_NUGGET_BETA_QUEST_COMPLETE",
-        "STAT_POTION_AREA_2",
         "BLACK_JACK_BLACK_MACK_DEFEATED",
         "MC_NUGGET_THIRD_QUEST_COMPLETE",
         "BBQ_SAUCE",
@@ -70,7 +70,8 @@
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
         "QUEST_1_COMPLETE",
-        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "STAT_POTION_AREA_2"
     ],
     "cutscene1": true,
     "cutscene2": true,

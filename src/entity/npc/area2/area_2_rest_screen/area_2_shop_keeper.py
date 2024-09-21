@@ -6,6 +6,7 @@ from entity.gui.textbox.shop_npc_text_box import ShopNpcTextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from game_constants.magic import Magic
 
 
@@ -137,10 +138,7 @@ class Area2ShopKeeper(Npc):
                 print("Leaving the shop...")
                 self.textbox.reset()
                 self.stat_point_increase = False
-                if "mega potion" in state.player.items:
-                    state.player.items.remove("mega potion")
-                    state.player.max_stamina_points += 10
-                return
+
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
 
