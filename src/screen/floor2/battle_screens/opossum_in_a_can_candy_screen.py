@@ -389,6 +389,9 @@ class OpossumInACanCandyScreen(BattleScreen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+        if self.sallyOpossumMoney == 0:
+            self.sallyOpossumIsDefeated = True
+            Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
 
 
         if state.controller.is1Pressed:
@@ -452,6 +455,8 @@ class OpossumInACanCandyScreen(BattleScreen):
             if self.sallyOpossumMoney < 0:
                 self.sallyOpossumMoney = 0
                 self.sallyOpossumIsDefeated = True
+                Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
+
 
             while self.tally_money_once == True:
                 if self.player_score <= self.sallyOpossumMoney:

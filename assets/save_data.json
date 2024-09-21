@@ -1,6 +1,6 @@
 {
     "level": 6,
-    "exp": 1831,
+    "exp": 1861,
     "stamina_points": 280,
     "max_stamina_points": 280,
     "focus_points": 140,
@@ -41,7 +41,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 2,
-    "money": 2960,
+    "money": 2561,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -52,12 +52,11 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 21,
+    "days": 23,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
         "MC_NUGGET_BETA_QUEST_COMPLETE",
-
         "STAT_POTION_AREA_2",
         "BLACK_JACK_BLACK_MACK_DEFEATED",
         "MC_NUGGET_THIRD_QUEST_COMPLETE",
@@ -70,7 +69,8 @@
         "SLOTS_RIPPA_SNAPPA_DEFEATED",
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
-        "QUEST_1_COMPLETE"
+        "QUEST_1_COMPLETE",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
     ],
     "cutscene1": true,
     "cutscene2": true,
@@ -80,7 +80,7 @@
     "coinflipbetteymoney": 1110,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 190,
+    "opossuminacancandymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "blackjackmackmoney": 0,

@@ -23,4 +23,5 @@ i need start screens
 WHEN MAKING MAPS DO NOT USE DOUBLE LAYERS IE BG AND HIDE in same squaare
 
 coin flip has best way to handle EXP in terms of display
-self.exp gain and use that throughout code
+self.exp gain and use that throughout code'
+in addition to a start screen I should also have an end screen for battle screens
