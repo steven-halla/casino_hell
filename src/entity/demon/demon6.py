@@ -108,8 +108,19 @@ class Demon6(Demon):
         distance = math.hypot(dx, dy)
 
         if distance <= 300 and state.area2RibDemonMazeScreen.player_hiding == False:
-            print("found you")
+            print("found you HERO KUN")
             self.player_spotted = True
+            if state.area2RibDemonMazeScreen.maze_1 == True:
+                state.area2RibDemonMazeScreen.player_caught = True
+                state.player.stamina_points -= 10
+            elif state.area2RibDemonMazeScreen2.maze_2 == True:
+                state.area2RibDemonMazeScreen2.player_caught = True
+                state.player.stamina_points -= 10
+            elif state.area2RibDemonMazeScreen3.maze_3 == True:
+                state.area2RibDemonMazeScreen3.player_caught = True
+                state.player.stamina_points -= 10
+
+
         else:
             self.player_spotted = False
 

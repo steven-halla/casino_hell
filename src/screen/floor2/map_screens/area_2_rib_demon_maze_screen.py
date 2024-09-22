@@ -51,6 +51,8 @@ class Area2RibDemonMazeScreen(Screen):
         self.total_elapsed_time = 0  # Total elapsed time in milliseconds
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
+        self.player_caught = False
+        self.maze_1 = True
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -70,6 +72,7 @@ class Area2RibDemonMazeScreen(Screen):
 
     def start(self, state: "GameState"):
         print("this is for our nuggy area")
+        self.player_caught = False
         print(str(state.area_2_rest_area_to_gambling_point))
         # state.area_2_rest_area_to_rib_demon_maze_point = True
 
@@ -134,6 +137,15 @@ class Area2RibDemonMazeScreen(Screen):
         delta_time = self.clock.tick(60)  # 60 FPS cap
         state.player.canMove = True
 
+
+
+        if self.player_caught == True:
+            state.area_2_rest_area_to_rib_demon_maze_point = True
+            state.currentScreen = state.area2RibDemonMazeScreen
+            state.area2RibDemonMazeScreen.start(state)
+            self.player_caught = False
+
+
         # Update the total elapsed time
         self.total_elapsed_time += delta_time
 
@@ -197,6 +209,7 @@ class Area2RibDemonMazeScreen(Screen):
                     state.area_2_rest_area_to_rib_demon_maze_point2 = True
                     state.currentScreen = state.area2RibDemonMazeScreen2
                     state.area2RibDemonMazeScreen2.start(state)
+                    self.maze_1 = False
 
                     print("They want you as a new recruit")
 

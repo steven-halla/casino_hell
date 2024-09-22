@@ -147,6 +147,15 @@ class Demon8(Demon):
         if distance <= self.los_radius and not state.area2RibDemonMazeScreen.player_hiding:
             print("found you")
             self.player_spotted = True
+            if state.area2RibDemonMazeScreen.maze_1 == True:
+                state.area2RibDemonMazeScreen.player_caught = True
+                state.player.stamina_points -= 10
+            elif state.area2RibDemonMazeScreen2.maze_2 == True:
+                state.area2RibDemonMazeScreen2.player_caught = True
+                state.player.stamina_points -= 10
+            elif state.area2RibDemonMazeScreen3.maze_3 == True:
+                state.area2RibDemonMazeScreen3.player_caught = True
+                state.player.stamina_points -= 10
         else:
             self.player_spotted = False
 

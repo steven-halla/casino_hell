@@ -28,7 +28,7 @@ class Demon9(Demon):
         # Additional attributes
         self.move_player_down = False
         self.player_spotted = False
-        self.los_radius = 210  # Line-of-sight radius
+        self.los_radius = 5  # Line-of-sight radius
 
         # For testing; do not delete
         self.show_los = False  # LOS visibility flag
@@ -41,6 +41,9 @@ class Demon9(Demon):
         self.facing_right = True
 
     def update(self, state):
+
+        self.LOSLeft(state)
+
         # Store the last position before moving (to allow undoing movement)
         self.last_position.x = self.position.x
         self.last_position.y = self.position.y
@@ -127,6 +130,23 @@ class Demon9(Demon):
         # Assuming that you want the player to be spotted if they're within a certain distance
         if distance <= self.los_radius:
             self.player_spotted = True
+            print("Nuggyyyyyyy")
+
+            if state.area2RibDemonMazeScreen.maze_1 == True:
+                print("you are on level 1 maze")
+
+                state.area2RibDemonMazeScreen.player_caught = True
+                state.player.stamina_points -= 10
+            elif state.area2RibDemonMazeScreen2.maze_2 == True:
+                print("you are on level 2 maze")
+
+                state.area2RibDemonMazeScreen2.player_caught = True
+                state.player.stamina_points -= 10
+            elif state.area2RibDemonMazeScreen3.maze_3 == True:
+                print("you are on level 3 maze")
+
+                state.area2RibDemonMazeScreen3.player_caught = True
+                state.player.stamina_points -= 10
         else:
             self.player_spotted = False
 

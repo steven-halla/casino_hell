@@ -64,6 +64,9 @@ class Area2RibDemonMazeScreen3(Screen):
         self.switch_8_on = False
         self.all_switches_on = False
 
+        self.player_caught = False
+        self.maze_3 = True
+
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -82,6 +85,8 @@ class Area2RibDemonMazeScreen3(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        self.player_caught = False
+
         print("this is for our nuggy area")
         print(str(state.area_2_rest_area_to_gambling_point))
         # state.area_2_rest_area_to_rib_demon_maze_point = True
@@ -153,6 +158,12 @@ class Area2RibDemonMazeScreen3(Screen):
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+
+        if self.player_caught == True:
+            state.area_2_rest_area_to_rib_demon_maze_point3 = True
+            state.currentScreen = state.area2RibDemonMazeScreen3
+            state.area2RibDemonMazeScreen3.start(state)
+            self.player_caught = False
 
         if self.switch_6_on and self.switch_7_on and self.switch_8_on:
             self.all_switches_on = True

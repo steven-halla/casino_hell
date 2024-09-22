@@ -61,6 +61,7 @@ class NuggieSauceIngrediant1(TreasureChest):
                 # this needs to teleport player ot hungry starving hipppos game
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
+                state.area2RibDemonMazeScreen3.maze_3 = False
 
         else:
             self.open_chest(state)
