@@ -6,6 +6,7 @@ from entity.gui.textbox.shop_npc_text_box import ShopNpcTextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
+from game_constants.treasure import Treasure
 
 
 class Area2BarKeep(Npc):
@@ -54,6 +55,8 @@ class Area2BarKeep(Npc):
             if state.controller.isTPressed and state.player.food > 0:
                 state.controller.isTPressed = False
 
+
+
                 if self.selected_item_index == 0 and state.player.money > 500:
                     print("mew")
                     state.player.money -= 200
@@ -72,6 +75,14 @@ class Area2BarKeep(Npc):
                     state.player.luck += 1
                     state.player.enhanced_luck = True
                     state.player.food -= 1
+
+                if Treasure.INVITATION.value in state.player.quest_items:
+                    print("Your invited")
+                    state.currentScreen = state.area2BarCutScene1
+                    state.area2BarCutScene1.start(state)
+
+
+
 
 
 
