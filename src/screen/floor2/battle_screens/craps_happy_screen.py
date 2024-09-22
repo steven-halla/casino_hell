@@ -188,14 +188,12 @@ class CrapsHappyScreen(BattleScreen):
         self.come_out_roll_index: int = 0
         self.point_roll_index: int = 0
         self.point_bet_index: int = 0
-        self.magic_magnet = 0
         self.bet = 75
 
         self.money_balancer = MoneyBalancer(self.money)
 
         self.game_over_message = []  # Initialize game_over_message
 
-        self.lucky_seven = False
         self.magic_lock = False
         self.extra_dice = 5
         self.poison = 1
@@ -356,14 +354,17 @@ class CrapsHappyScreen(BattleScreen):
             self.battle_messages["welcome_message"].update(state)
 
             if self.money < 1:
+
                self.game_state = "game_over_screen"
 
             if state.player.stamina_points < 1:
+                self.lucky_seven_buff_counter = 0
+                # self.magic_lock = False
                 self.game_state = "game_over_screen"
 
 
-            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
-                self.game_state = "game_over_screen"
+            # elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+            #     self.game_state = "game_over_screen"
 
 
 
@@ -402,6 +403,8 @@ class CrapsHappyScreen(BattleScreen):
 
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
                 self.welcome_screen_index = 0
+                self.lucky_seven_buff_counter = 0
+                self.magic_lock = False
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 controller.isTPressed = False
@@ -925,7 +928,33 @@ class CrapsHappyScreen(BattleScreen):
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
         self.draw_hero_info_boxes(state)
-        self.draw_enemy_info_box(state)
+        black_box = pygame.Surface((200 - 10, 110 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 20))
+
+        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
+
+        black_box = pygame.Surface((200 - 10, 130 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 60))
+
+        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 70))
+        if self.lucky_seven_buff_counter == 0:
+            state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
+        elif self.lucky_seven_buff_counter > 0:
+            state.DISPLAY.blit(self.font.render(f"Double Dice: {self.lucky_seven_buff_counter} ", True, (255, 255, 255)), (37, 110))
+        state.DISPLAY.blit(self.font.render(f"Hero EXP:{state.player.exp} ", True, (255, 255, 255)), (37, 150))
+
+        state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
+        # self.draw_enemy_info_box(state)
 
 
         self.draw_bottom_black_box(state)
@@ -986,6 +1015,10 @@ class CrapsHappyScreen(BattleScreen):
 
             if self.magic_lock == True:
                 self.welcome_screen_choices[1] = "Locked"
+
+            elif self.magic_lock == False:
+                self.welcome_screen_choices[1] = "Magic"
+
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
