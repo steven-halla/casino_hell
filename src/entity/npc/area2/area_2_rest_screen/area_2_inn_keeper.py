@@ -52,7 +52,7 @@ class Area2InnKeeper(Npc):
             # Reset the message depending on the game state
             if state.player.hasRabies == True:
                 self.flipping_ted_messages["rabies_message"].reset()
-            elif state.player.money < 400:
+            elif state.player.money < 700:
                 self.flipping_ted_messages["low_money_message"].reset()
             else:
                 self.flipping_ted_messages["welcome_message"].reset()
@@ -60,7 +60,7 @@ class Area2InnKeeper(Npc):
 
     def update_talking(self, state: "GameState"):
         current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
-        if state.player.money < 400:
+        if state.player.money < 700:
             current_message = self.flipping_ted_messages["low_money_message"]
 
         current_message.update(state)
@@ -187,7 +187,7 @@ class Area2InnKeeper(Npc):
 
         if self.state == "talking":
             current_message = self.flipping_ted_messages["rabies_message"] if state.player.hasRabies == True else self.flipping_ted_messages["welcome_message"]
-            if state.player.money < 800:
+            if state.player.money < 700:
                 current_message = self.flipping_ted_messages["low_money_message"]
             current_message.draw(state)
 
