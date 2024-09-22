@@ -504,6 +504,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             if state.player.stamina_points < 1:
+                self.lock_down = False
+                self.slot_hack = 0
                 self.battle_messages["game_over_no_stamina_message"].update(state)
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
                     state.currentScreen = Area2StartScreen()
@@ -540,9 +542,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.money += self.bet
 
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 1 and controller.isTPressed and self.lock_down == 0 and Magic.SLOTS_HACK.value in state.player.magicinventory:
+            elif self.welcome_screen_index == 1 and controller.isTPressed and self.slot_hack == 0 and Magic.SLOTS_HACK.value in state.player.magicinventory:
                 self.magic_screen_index = 0
-                # controller.isTPressed = False
+                controller.isTPressed = False
 
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
@@ -555,6 +557,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 self.welcome_screen_index = 0
+                self.lock_down = False
+                self.slot_hack = 0
+                self.lucky_strike = 0
+
                 controller.isTPressed = False
 
         elif self.game_state == "level_up_screen":
@@ -1088,12 +1094,21 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     self.font.render(choice, True, (255, 255, 255)),
                     (start_x_right_box + 60, y_position + 15)
                 )
-            if Magic.SLOTS_HACK.value not in state.player.magicinventory or self.slot_hack > 0:
+            if Magic.SLOTS_HACK.value not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
+            # if self.slot_hack > 0:
+            #     self.magic_lock = True
+            #     self.welcome_screen_choices[1] = "Locked"
+
             if self.lock_down == 0 and Magic.SLOTS_HACK.value in state.player.magicinventory:
                 self.welcome_screen_choices[1] = "Magic"
+
+            if self.slot_hack > 0:
+                self.magic_lock = True
+
+                self.welcome_screen_choices[1] = "Locked"
 
             if Magic.SLOTS_HACK.value not in state.player.magicinventory:
                 self.welcome_screen_choices[1] = "Locked"

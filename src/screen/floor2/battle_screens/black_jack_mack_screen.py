@@ -1375,6 +1375,14 @@ class BlackJackMackScreen(Screen):
             if state.player.money < 1:
                 self.game_state = "game_over_no_money"
             elif state.player.stamina_points < 1:
+                self.reveal_hand = 0
+                self.magic_lock = False
+
+                # self.player_status = "Normal"
+                # self.enemy_status = "Normal"
+
+                self.magic_points = 1
+                self.player_debuff_double_draw = 0
                 self.game_state = "game_over_no_stamina"
             #
             black_box_height = 221 - 50  # Adjust height
@@ -1694,6 +1702,7 @@ class BlackJackMackScreen(Screen):
 
 
             if state.player.money < 1:
+
                 self.game_state = "game_over_no_money"
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"

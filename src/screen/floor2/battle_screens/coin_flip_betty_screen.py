@@ -475,6 +475,12 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.welcome_screen_index = 0
                 state.currentScreen = state.area2GamblingScreen
                 self.quest_money = 0
+                self.magic_lock = False
+                self.debuff_counter = 0
+                self.lock_down = False
+                self.weighted_coin = False
+                self.debuff_vanish = 0
+                self.player_debuff_silence_counter = 0
                 controller.isTPressed = False
 
         if self.game_state == "level_up_screen":
@@ -1351,6 +1357,12 @@ class CoinFlipBettyScreen(BattleScreen):
             if self.battle_messages["game_over_no_stamina"].is_finished():
                 if state.controller.isTPressed:
                     state.player.money -= 100
+                    self.magic_lock = False
+                    self.debuff_counter = 0
+                    self.lock_down = False
+                    self.weighted_coin = False
+                    self.debuff_vanish = 0
+                    self.player_debuff_silence_counter = 0
                     self.quest_money = 0
                     if state.player.money < 1:
                         state.currentScreen = state.gameOverScreen

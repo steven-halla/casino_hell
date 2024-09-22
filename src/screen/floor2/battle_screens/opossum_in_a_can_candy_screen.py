@@ -1289,9 +1289,9 @@ class OpossumInACanCandyScreen(BattleScreen):
             print(self.player_debuff_poison)
 
             # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+            state.DISPLAY.blit(self.font.render(f"Play", True, (255, 255, 255)), (text_x, text_y_yes))
             if self.player_debuff_poison == 0:
-                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+                state.DISPLAY.blit(self.font.render(f"Leave ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
             elif self.player_debuff_poison > 0:
                 state.DISPLAY.blit(self.font.render(f"Locked ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
 
@@ -1311,6 +1311,10 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
         if self.game_state == "hero_defeated_stamina_screen":
+            self.lock_down = False
+            self.player_debuff_poison = 0
+            self.magic_points = 1
+            self.shake = False
             self.battle_messages["hero_defeated_stamina_message"].draw(state)
 
         if self.game_state == "hero_defeated_money_screen":

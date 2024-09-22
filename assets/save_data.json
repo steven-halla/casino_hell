@@ -3,8 +3,8 @@
     "exp": 1861,
     "stamina_points": 310,
     "max_stamina_points": 310,
-    "focus_points": 155,
-    "max_focus_points": 155,
+    "focus_points": 170,
+    "max_focus_points": 170,
     "companions": [
         "sir leopold"
     ],
@@ -37,12 +37,12 @@
         "CRAPS_LUCKY_7"
     ],
     "body": 2,
-    "mind": 1,
+    "mind": 2,
     "spirit": 1,
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 4355,
+    "money": 3155,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -53,7 +53,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 26,
+    "days": 27,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
@@ -67,7 +67,8 @@
         "MC_NUGGET_QUEST_3_REWARD",
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
-        "QUEST_1_COMPLETE"
+        "QUEST_1_COMPLETE",
+        "STAT_POTION_AREA_2"
     ],
     "cutscene1": true,
     "cutscene2": true,
