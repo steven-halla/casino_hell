@@ -5,6 +5,7 @@ import time  # Import the time module
 from constants import PLAYER_OFFSET, BLUEBLACK
 from cut_scene_manager.cut_scene_movement import CutSceneMovement
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
 from entity.npc.battle_screen.Guy import Guy
 
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
@@ -15,6 +16,7 @@ from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
 
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.player.player import Player
+from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 from concurrent.futures import ThreadPoolExecutor
@@ -25,11 +27,11 @@ class Area2BarCutScene1(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/casinomaingame4.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
 
-        self.player = Player(333, 555)
         move_player_down_flag = False
-        self.npcs = []
+        self.npcs = [
+        ]
 
         self.timer_paused = False
         self.fixed_time = None
@@ -54,8 +56,33 @@ class Area2BarCutScene1(Screen):
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
-                    "Hero: So what is it going to take,to get some rule changes around here?",
-                    "Hero: So what is it going to tak to get some stiches down here ?",
+                    "Erika: Hello Hero its so good to see you finally, I've been wanting to chat with you for a while now",
+                    # "Hero: Oh yeah? Can you tell me whats up",
+                    # "Sir Leopold: I hope this is worth the 2000 coins, hero had to work hard for every coin",
+                    # "Erika: Oh yes, this is very much worth it. I need you to go to the rib demon maze and get me their special treasure",
+                    # "Hero: Wel that sounds easy enough",
+                    # "SIr leopold: Yeah, a little too easy, what's the catch?",
+                    # "Erika: Catch....well the entire place is filled with a poison mist, I would go there myself,but my tiny wittle chicken lungs wouldn't be able to handle it?",
+                    # "Erika: I was need you to fetch the super secret rib demon ultimate rib sauce",
+                    # "Hero: Sounds like I'm risking my life for something thats not that important",
+                    # "Eria: Oh your not risking your life, but your soul will be bound to 'the wall' if you fail and they'll eat your ribs for all eternity if you perhish",
+                    # "Eria: It may  sound like your risking your immortal for something small, but it's really really important to get that recipe",
+                    # "Sir Leopold: Hero i don't think you should do it, sounds too dangerous",
+                    # "Hero: Oh come now have more faith in me, Im feeling lucky",
+                    # "ERika: oh very nice hero I knew it in my chicken nuggy heart you would help",
+                    # "ERika: I'lll give you some advice on how to complete your task",
+                    # "ERika:There are 3 floors to the maze, the first of which has blind and deaf demons, but they can detect changes in air density in a small radius",
+                    # "ERika: There are barrels you can climb inside of that will protect you",
+                    # "Erika: The second floor will have swithes that you'll need to press in a certain order",
+                    # "Sir Leopold:What order does he need to press them in?",
+                    # "Erika: Honestly I don't know, you'll have to guess....just be aware of the stalker demon, you can hide from him too",
+                    # "Hero: How do you know all of this if you've never been there before?",
+                    # "Erika: How long do you think I've been here? Not like I dont have anything better to do than get info?",
+                    # "Erika: On the 3rd and final level there are 3 switches to press, do so and you'll disable the stalker demon?",
+                    # "Erika: Good luck Hero, and the other one will need to stay out, or he'll die",
+                    # "Sir leopold: My name is sir leopoold",
+                    "erika: I already forgot your name...I'll call you hedgy....good luck hero! And before I Froget here's the key",
+
 
 
 
@@ -80,7 +107,7 @@ class Area2BarCutScene1(Screen):
         ]
         self.event_counter = 0
 
-        self.game_state = "step_1"
+        self.game_state = "step_3"
         self.state_start_time = None
         self.state_duration = 1  # Duration for each state
 
@@ -96,49 +123,22 @@ class Area2BarCutScene1(Screen):
 
         # Check if a player instance already exists
         # times 16
-        player_start_x = 300
-        player_start_y = 300
-        state.player = Player(player_start_x, player_start_y)
 
-        state.npcs = []
+
+        state.npcs = [
+            SirLeopoldTheHedgeHog(549, 323),
+            ErikaChickenGirl(690, 323)
+
+        ]
 
     def update(self, state: "GameState"):
 
         current_time = time.time()
 
-        if self.game_state == "step_1":
-            if self.state_start_time is None:
-                self.state_start_time = current_time
-                self.state_duration = 1  # Set the duration for step_1
 
-            elapsed_time = current_time - self.state_start_time
-            print(f"STEP 1: Elapsed Time: {elapsed_time:.2f} seconds")
 
-            if elapsed_time < self.state_duration:
-                self.cut_scene_movement.move_right(state.player, duration=1)  # Trigger movement
-            else:
-                print("Timer set for STEP 1")
-                self.cut_scene_movement.reset_movement()  # Reset the movement flag
-                self.game_state = "step_2"  # Move to the next step
-                self.state_start_time = None  # Reset timer for the next step
 
-        elif self.game_state == "step_2":
-            if self.state_start_time is None:
-                self.state_start_time = current_time
-                self.state_duration = 1  # Set the duration for step_2
-
-            elapsed_time = current_time - self.state_start_time
-            print(f"STEP 2: Elapsed Time: {elapsed_time:.2f} seconds")
-
-            if elapsed_time < self.state_duration:
-                self.cut_scene_movement.move_up(state.player, duration=1)  # Trigger movement
-            else:
-                print("Timer set for STEP 2")
-                self.cut_scene_movement.reset_movement()  # Reset the movement flag
-                self.game_state = "step_3"  # Move to the next step
-                self.state_start_time = None  # Reset timer for the next step
-
-        elif self.game_state == "step_3":
+        if self.game_state == "step_3":
 
             print(f"STEP 3")
 
@@ -147,8 +147,11 @@ class Area2BarCutScene1(Screen):
             if self.current_message.is_finished() and state.controller.isTPressed:
                 print("hi")
                 self.game_state = "step_4"
-                state.controller.isTPressed = False
+                Treasure.add_quest_to_player(state.player, Treasure.RIB_DEMON_KEY)
 
+                state.controller.isTPressed = False
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
 
         # state.player.canMove = False
         controller = state.controller
