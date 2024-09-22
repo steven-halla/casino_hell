@@ -631,6 +631,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
         if self.game_state == "results_screen":
+
             if self.no_matches == True:
                 # Assuming you want to display the amount of experience gained
                 exp_amount = 5  # This should be the amount of exp gained
@@ -1010,6 +1011,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.resolve_penalty = False
                 if self.lock_down > 0:
                     self.lock_down -= 1
+
+                if self.slot_hack > 0:
+                    self.slot_hack -= 1
 
                 self.game_state = "welcome_screen"
                 if self.secret_item == True and Events.MC_NUGGET_QUEST_1_REWARD.value not in state.player.level_two_npc_state:
