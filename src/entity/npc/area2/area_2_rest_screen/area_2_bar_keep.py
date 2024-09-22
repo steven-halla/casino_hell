@@ -76,7 +76,7 @@ class Area2BarKeep(Npc):
                     state.player.enhanced_luck = True
                     state.player.food -= 1
 
-                if Treasure.INVITATION.value in state.player.quest_items:
+                if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
                     print("Your invited")
                     state.currentScreen = state.area2BarCutScene1
                     state.area2BarCutScene1.start(state)

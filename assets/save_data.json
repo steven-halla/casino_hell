@@ -1,8 +1,8 @@
 {
     "level": 6,
     "exp": 1861,
-    "stamina_points": 310,
-    "max_stamina_points": 310,
+    "stamina_points": 300,
+    "max_stamina_points": 300,
     "focus_points": 170,
     "max_focus_points": 170,
     "companions": [

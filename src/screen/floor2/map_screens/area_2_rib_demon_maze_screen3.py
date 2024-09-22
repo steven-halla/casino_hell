@@ -348,14 +348,22 @@ class Area2RibDemonMazeScreen3(Screen):
 
 
 
-        if state.controller.isPPressed == True:
+        # if state.controller.isPPressed == True:
+        #
+        #     state.player.draw_player_stats(state)
+        #
+        #     if state.controller.isBPressed == True:
+        #         if state.controller.isPPressed:
+        #             state.controller.isPPressed = False
+        #             return
 
-            state.player.draw_player_stats(state)
+        font = pygame.font.Font(None, 36)
 
-            if state.controller.isBPressed == True:
-                if state.controller.isPPressed:
-                    state.controller.isPPressed = False
-                    return
+        # Step 2: Render the player's stamina points as text
+        stamina_text = font.render(f"HP: {state.player.stamina_points} ", True, (177, 255, 255))  # White color
+
+        # Step 3: Blit the text on the display at (50, 50)
+        state.DISPLAY.blit(stamina_text, (50, 50))
 
         # Update the display
         pygame.display.update()
