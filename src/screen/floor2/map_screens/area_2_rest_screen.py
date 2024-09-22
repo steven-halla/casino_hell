@@ -128,7 +128,6 @@ class Area2RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
-        print(f"Player's position: x = {state.player.collision.x}, y = {state.player.collision.y}")
 
         # delta_time = self.clock.tick(60)  # 60 FPS cap
         # print(delta_time)

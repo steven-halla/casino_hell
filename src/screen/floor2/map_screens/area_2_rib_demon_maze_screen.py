@@ -252,6 +252,17 @@ class Area2RibDemonMazeScreen(Screen):
     def draw(self, state: "GameState"):
 
         state.DISPLAY.fill(BLUEBLACK)
+
+        # Step 1: Create a font object (adjust size if necessary)
+        font = pygame.font.Font(None, 36)
+
+        # Step 2: Render the player's stamina points as text
+        stamina_text = font.render(f"Stamina: {state.player.stamina_points} /", True, (255, 255, 255))  # White color
+        stamina_text2 = font.render(f": {state.player.max_stamina_points}", True, (255, 255, 255))  # White color
+
+        # Step 3: Blit the text on the display at (50, 50)
+        state.DISPLAY.blit(stamina_text, (50, 50))
+        state.DISPLAY.blit(stamina_text2, (220, 50))
         # state.DISPLAY.blit(state.FONT.render(
         #     f"player money: {state.player.money}",
         #     True, (255, 255, 255)), (333, 333))
@@ -318,14 +329,14 @@ class Area2RibDemonMazeScreen(Screen):
 
 
 
-        if state.controller.isPPressed == True:
-
-            state.player.draw_player_stats(state)
-
-            if state.controller.isBPressed == True:
-                if state.controller.isPPressed:
-                    state.controller.isPPressed = False
-                    return
+        # if state.controller.isPPressed == True:
+        #
+        #     state.player.draw_player_stats(state)
+        #
+        #     if state.controller.isBPressed == True:
+        #         if state.controller.isPPressed:
+        #             state.controller.isPPressed = False
+        #             return
 
         # Update the display
         pygame.display.update()
