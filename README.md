@@ -584,6 +584,7 @@ phase on coin flip is bugged it shouldnt be reading 6, this was during a magic c
 
 equipment menu needs two fixes:
 need to be able to scroll down
+for some reason rib demon key is deleteing items in my quest, maybe because there are a certian number?
 equiping anything in 4th slot caues game to crash
 
 

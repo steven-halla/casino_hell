@@ -132,6 +132,7 @@ class Area2RibDemonMazeScreen(Screen):
 
     def update(self, state: "GameState"):
         delta_time = self.clock.tick(60)  # 60 FPS cap
+        state.player.canMove = True
 
         # Update the total elapsed time
         self.total_elapsed_time += delta_time

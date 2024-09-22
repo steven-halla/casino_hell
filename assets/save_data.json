@@ -42,7 +42,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 955,
+    "money": 1044,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -50,11 +50,12 @@
         "BBQ_SAUCE",
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
-        "Invitation"
+        "Invitation",
+        "rib demon key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 28,
+    "days": 29,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
