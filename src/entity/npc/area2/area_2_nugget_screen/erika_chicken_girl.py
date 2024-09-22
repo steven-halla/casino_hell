@@ -26,7 +26,15 @@ class ErikaChickenGirl(Npc):
                 [
                     "Erika: I have a very special quest for you, can you pay me 2000 coins?(You need to be holding"
                     "3000 coins)",
-               \
+
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
+            "accepted_message": NpcTextBox(
+                [
+                    "Erika:Excellent news, go buy something at the bar and I'll meet you there, in case you forget I'll give you this invitation, check your quest items for it.."
+                    ,""
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -38,6 +46,8 @@ class ErikaChickenGirl(Npc):
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.font = pygame.font.Font(None, 36)
+        self.quest_accepted = False
+        self.current_screen = "welcome"
 
 
 
@@ -52,10 +62,33 @@ class ErikaChickenGirl(Npc):
             self.update_waiting(state)
 
         elif self.state == "talking":
-            # Determine which message to use based on player state
+            # Initialize current_message to avoid UnboundLocalError
+            current_message = self.npc_messages["default_message"]
 
+            # Determine which message to use based on player state
             if state.player.money >= 3000:
-                current_message = self.npc_messages["quest_message"]
+                if self.menu_index == 0 and state.controller.isTPressed:
+                    if state.player.money >= 3000:
+                        state.player.money -= 2000
+                        self.quest_accepted = True
+
+                        self.state = "accepted"
+                        # Reset the accepted_message to display gradually
+                        self.npc_messages["accepted_message"].reset()
+
+                # Handle moving the arrow when the up/down keys are pressed
+                if state.controller.isUpPressed:
+                    self.menu_index = (self.menu_index - 1) % len(self.choices)
+                    state.controller.isUpPressed = False
+
+                elif state.controller.isDownPressed:
+                    self.menu_index = (self.menu_index + 1) % len(self.choices)
+                    state.controller.isDownPressed = False
+
+                # Choose the appropriate message based on quest acceptance
+                if self.quest_accepted == False:
+                    current_message = self.npc_messages["quest_message"]
+
             else:
                 current_message = self.npc_messages["default_message"]
 
@@ -63,15 +96,26 @@ class ErikaChickenGirl(Npc):
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
-
-
                 elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
             self.update_talking(state, current_message)
 
+        elif self.state == "accepted":
+            current_message = self.npc_messages["accepted_message"]
+
+            # Update the accepted message gradually
+            current_message.update(state)
+
+            if current_message.message_index == 1:
+                state.player.level_two_npc_state.append(Events.CHICKEN_QUEST_START.value)
+                state.player.canMove = True
+                print("Yes sir")
+                print(state.player.canMove)
+            self.update_talking(state, current_message)
     def update_waiting(self, state: "GameState"):
+
         player = state.player
         min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
@@ -82,11 +126,19 @@ class ErikaChickenGirl(Npc):
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40 and state.player.menu_paused == False:
+                self.menu_index = 0
+                state.controller.isTPressed = False
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
-                if state.player.money >= 3000:
+                if state.player.money >= 3000 and self.quest_accepted == False:
                     current_message = self.npc_messages["quest_message"]
+
+                elif self.quest_accepted == True:
+                    current_message = self.npc_messages["accepted_message"]
+                    state.player.canMove = True
+
+
                 else:
                     current_message = self.npc_messages["default_message"]
 
@@ -96,11 +148,11 @@ class ErikaChickenGirl(Npc):
         current_message.update(state)
         state.player.canMove = False
 
-        if state.controller.isTPressed and current_message.is_finished():
-            if state.player.money >= 3000:
-                state.player.money -= 2000
 
-                state.player.level_two_npc_state.append(Events.CHICKEN_QUEST_START.value)
+
+        if state.controller.isTPressed and current_message.is_finished():
+            print("we are here at player waiting")
+
 
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
@@ -145,10 +197,8 @@ class ErikaChickenGirl(Npc):
         pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
                             [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
 
-
     def draw(self, state):
         # Draw character sprite
-
         sprite_rect = pygame.Rect(147, 6, 16, 28)
 
         # Get the subsurface for the area you want
@@ -166,11 +216,19 @@ class ErikaChickenGirl(Npc):
 
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
-            if state.player.money >= 3000:
+            if state.player.money >= 3000 and self.quest_accepted == False:
                 self.yes_no_text_box(state)
                 current_message = self.npc_messages["quest_message"]
+
             else:
                 current_message = self.npc_messages["default_message"]
-
             current_message.draw(state)
+
+        elif self.state == "accepted":
+            current_message = self.npc_messages["accepted_message"]
+
+            # Gradually display the accepted message
+            current_message.draw(state)
+
+
 

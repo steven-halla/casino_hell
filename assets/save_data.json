@@ -42,18 +42,19 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 3155,
+    "money": 955,
     "rabies": false,
     "immunity": true,
     "quest_items": [
         "contract",
         "BBQ_SAUCE",
         "QUEST_1_BADGE",
-        "QUEST_1_COIN"
+        "QUEST_1_COIN",
+        "Invitation"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 27,
+    "days": 28,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
@@ -68,7 +69,8 @@
         "QUEST_1_BADGE",
         "QUEST_1_COIN",
         "QUEST_1_COMPLETE",
-        "STAT_POTION_AREA_2"
+        "STAT_POTION_AREA_2",
+        "CHICKEN_QUEST_START"
     ],
     "cutscene1": true,
     "cutscene2": true,

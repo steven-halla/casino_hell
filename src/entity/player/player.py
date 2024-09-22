@@ -130,7 +130,6 @@ class Player(Entity):
             5: 1500,
             6: 2100,
             7: 2800,  # Continue adding levels as needed
-            8: 3600,  # Continue adding levels as needed
             # Add more levels as needed
         }
 

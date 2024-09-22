@@ -16,6 +16,7 @@ from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
 
 from entity.player.player import Player
 from game_constants.events import Events
+from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
@@ -132,11 +133,9 @@ class Area2NuggetScreen(Screen):
             if Events.CHICKEN_QUEST_START.value in state.player.level_two_npc_state:
                 if isinstance(npc, ErikaChickenGirl):
                     state.npcs.remove(npc)
-
-
-
-
-
+                    state.player.canMove = True
+                    print(state.player.canMove)
+                    Treasure.add_quest_to_player(state.player, Treasure.INVITATION)
 
         if controller.isExitPressed is True:
             state.isRunning = False

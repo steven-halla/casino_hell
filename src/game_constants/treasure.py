@@ -4,6 +4,7 @@ class Treasure(Enum):
     FIVE_HUNDRED_GOLD = "500 Gold"  # perception 1 reward
     BBQ_SAUCE = "BBQ_SAUCE"   # needed for mcnuggets 2nd quest
     SLOTS_VEST = "SLOTS-VEST"   #perception 2 chest
+    INVITATION = "Invitation"
 
 
 
