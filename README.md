@@ -580,18 +580,11 @@ Here are my thoughts going forward:
 
 add a 2nd rib demon slots that has 0 money, this is just to get more EXP or the super secret item
 i think the mcnugget 2nd quest can be skipped I need to check all quest to make sure you cant skip em
-opssum in a can candy is buged shouldt give me message to play again after defeat
 phase on coin flip is bugged it shouldnt be reading 6, this was during a magic cast, not consistant
-shop need to label stat points for player
-i am not gaining exp  opposum in a can 
 
-before value is set
-
-fix the below
-
-            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
-                self.game_state = "game_over_screen"
-
+equipment menu needs two fixes:
+need to be able to scroll down
+equiping anything in 4th slot caues game to crash
 
 
 

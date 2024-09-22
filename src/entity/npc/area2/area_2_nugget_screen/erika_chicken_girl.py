@@ -18,14 +18,14 @@ class ErikaChickenGirl(Npc):
                 [
                     "Erika: Hello Hero, would you like some animal parade chicken nuggies",
                     "Hero: No thank you I thinik I'm good on that",
-                    "Sir Leopold: Yeah something about this feels strange",
                     "Erika: I need 3000 COINS to start my quest, I can give you the best item on this floor."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_message": NpcTextBox(
                 [
-                    "Erika: Great time to start my quest, you should update this in the game",
+                    "Erika: I have a very special quest for you, can you pay me 2000 coins?(You need to be holding"
+                    "3000 coins)",
                \
 
                 ],
@@ -37,6 +37,8 @@ class ErikaChickenGirl(Npc):
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.font = pygame.font.Font(None, 36)
+
 
 
         self.character_sprite_image = pygame.image.load(
@@ -51,10 +53,11 @@ class ErikaChickenGirl(Npc):
 
         elif self.state == "talking":
             # Determine which message to use based on player state
-            current_message = self.npc_messages["default_message"]
 
             if state.player.money >= 3000:
                 current_message = self.npc_messages["quest_message"]
+            else:
+                current_message = self.npc_messages["default_message"]
 
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -82,14 +85,10 @@ class ErikaChickenGirl(Npc):
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
-                current_message = self.npc_messages["default_message"]
-
                 if state.player.money >= 3000:
                     current_message = self.npc_messages["quest_message"]
-                    state.controller.isTPressed = False
-                    state.player.money -= 2000
-                    # state.currentScreen = state.crapsBossScreen
-                    # state.crapsBossScreen.start(state)
+                else:
+                    current_message = self.npc_messages["default_message"]
 
                 current_message.reset()
 
@@ -98,14 +97,54 @@ class ErikaChickenGirl(Npc):
         state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
-            if state.player.money >= 5000:
-                state.player.money -= 4000
+            if state.player.money >= 3000:
+                state.player.money -= 2000
 
                 state.player.level_two_npc_state.append(Events.CHICKEN_QUEST_START.value)
 
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
+
+    def yes_no_text_box(self, state):
+        # Use the exact box dimensions, positions, and variables as specified
+        bet_box_width = 150
+        bet_box_height = 100
+        border_width = 5
+
+        screen_width, screen_height = state.DISPLAY.get_size()
+        bet_box_x = screen_width - bet_box_width - border_width - 48
+        bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+        # Create the black box for Yes/No
+        bet_box = pygame.Surface((bet_box_width, bet_box_height))
+        bet_box.fill((0, 0, 0))
+
+        # Create a white border for the black box
+        white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(bet_box, (border_width, border_width))
+
+        # Draw the white-bordered box
+        state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+        # Calculate text positions
+        text_x = bet_box_x + 50 + border_width
+        text_y_yes = bet_box_y + 20
+        text_y_no = text_y_yes + 40
+
+        # Draw the text on the screen (over the box)
+        state.DISPLAY.blit(self.font.render("Yes", True, (255, 255, 255)), (text_x, text_y_yes))
+        state.DISPLAY.blit(self.font.render("No", True, (255, 255, 255)), (text_x, text_y_no))
+
+        # Arrow position logic based on self.menu_index
+        arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
+        arrow_y = text_y_yes + self.menu_index * 40  # Adjust based on the current menu index
+
+        # Draw the arrow next to the Yes/No options
+        pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                            [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+
 
     def draw(self, state):
         # Draw character sprite
@@ -127,11 +166,11 @@ class ErikaChickenGirl(Npc):
 
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
-            current_message = self.npc_messages["default_message"]
-
-
-            if state.player.money >= 6000:
+            if state.player.money >= 3000:
+                self.yes_no_text_box(state)
                 current_message = self.npc_messages["quest_message"]
+            else:
+                current_message = self.npc_messages["default_message"]
 
             current_message.draw(state)
 
