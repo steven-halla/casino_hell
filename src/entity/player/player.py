@@ -1406,7 +1406,9 @@ class Player(Entity):
             )
             pygame.draw.line(bottom_box, color, (0, y), (bottom_box_width, y))
         font = pygame.font.Font(None, 36)  # Adjust font size as needed
-        inventory_color = (155, 23, 155)  # A unique blue color, easy on the eyes
+
+        inventory_color = (155, 23, 155)  # A unique purple color, easy on the eyes
+        inventory_color_equipped = (255, 0, 0)  # A unique blue color, easy on the eyes
 
         # Print and display items in the bottom box
         item_y = 30  # Start 30 pixels from the top of the bottom box
@@ -1414,7 +1416,11 @@ class Player(Entity):
         spacing = 10  # Spacing between items
 
         for item in self.items:
-            text_surface = font.render(item, True, inventory_color)  # Render the text in the specified color
+            # Check if the item is equipped and set the color accordingly
+            if item in self.equipped_items:
+                text_surface = font.render(item, True, inventory_color_equipped)  # Red for equipped items
+            else:
+                text_surface = font.render(item, True, inventory_color)
             bottom_box.blit(text_surface, (item_x, item_y))  # 30 pixels margin from the left
             item_y += text_surface.get_height() + spacing  # Move down for the next item
 
@@ -1512,6 +1518,7 @@ class Player(Entity):
         # Draw each item in Box 2
         item_y = item_y_start  # Start at the same y-position as the arrow
         for item in items:
+
             text_surface = font.render(item, True, item_color)  # Render the text in the specified color
             main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
             item_y += text_surface.get_height() + spacing  # Move down for the next item
