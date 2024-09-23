@@ -128,9 +128,11 @@ class MCNugg(Npc):
                         and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
                 elif Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state \
-                        and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state:
+                        and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state \
+                        and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_start"]
-                elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                        and Magic.SLOTS_HACK.value not in state.player.magicinventory:
                     current_message = self.npc_messages["quest_3_finish"]
                 elif Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["final_message"]
@@ -156,9 +158,11 @@ class MCNugg(Npc):
                 and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
         elif Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state \
-                and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state:
+                and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state \
+                and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_start"]
-        elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+        elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                and Magic.SLOTS_HACK.value not in state.player.magicinventory:
             current_message = self.npc_messages["quest_3_finish"]
         elif Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["final_message"]
@@ -176,15 +180,17 @@ class MCNugg(Npc):
                 state.player.money += 500
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_2_REWARD.value)
 
-            if (Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state
+            elif (Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state
 
-                    and Magic.SLOTS_HACK.value not in state.player.magicinventory):
+                    and Magic.SLOTS_HACK.value not in state.player.magicinventory and \
+                    Equipment.SOCKS_OF_PERCEPTION.value in state.player.items and \
+                    Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state):
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_3_REWARD.value)
 
                 state.player.magicinventory.append(Magic.SLOTS_HACK.value)
 
 
-            if (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and
+            elif (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and
                     Equipment.SOCKS_OF_PERCEPTION.value not in state.player.items):
                 print("niggles")
                 state.player.items.append(Equipment.SOCKS_OF_PERCEPTION.value)
@@ -223,9 +229,11 @@ class MCNugg(Npc):
                     and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]
             elif Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state \
-                    and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state:
+                    and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state \
+                    and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_start"]
-            elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                    and Magic.SLOTS_HACK.value not in state.player.magicinventory:
                 current_message = self.npc_messages["quest_3_finish"]
             elif Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["final_message"]
