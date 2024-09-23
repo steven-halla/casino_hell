@@ -582,16 +582,24 @@ add a 2nd rib demon slots that has 0 money, this is just to get more EXP or the 
 i think the mcnugget 2nd quest can be skipped I need to check all quest to make sure you cant skip em
 phase on coin flip is bugged it shouldnt be reading 6, this was during a magic cast, not consistant
 
-equipment menu needs two fixes:
-need to be able to scroll down
-for some reason rib demon key is deleteing items in my quest, maybe because there are a certian number?
-equiping anything in 4th slot caues game to crash
+need to be able to scroll down on equipment
+shop bug: when scrolling for stats the index for shop menu  also chnages, easy fix, put a boolean check to stop arrow
+while in menu
+
+i am not gaining exp during craps at come out roll if it matches
+rolling a 7 on point roll doesnt give exp
 
 
+i shouldnt be able to roll 9s if on lock down on rib demon slots
+if increased chance of jack pot need to display this perhaps
 
+stat potion area 2 is still being addedto player inventory
 
+coin flip need to have quit changed to locked during silence
 
-
+3rd rib demon maze has some bugs, there is something blocking near the bottom , 2nd to last hiding spot to the right
+the treasure chest needs to teleport player to hungry starving hippos, and from there to cut scene
+make 3rd compnaion a real pain in the ass stickler for rules, like a rules lawyer
 
 
 

@@ -8,6 +8,7 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.treasure import Treasure
 
 
 # there should be 3 quest
@@ -115,17 +116,23 @@ class MCNugg(Npc):
 
                 current_message = self.npc_messages["level_6_quest"]
 
-                if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                        and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.items:
                     current_message = self.npc_messages["quest_1_finish"]
-                if Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                elif Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                        and Treasure.BBQ_SAUCE.value not in state.player.quest_items:
+
+                    print("Yippy")
                     current_message = self.npc_messages["quest_2_start"]
-                if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                elif Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                        and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_2_finish"]
-                if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state:
+                elif Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state \
+                        and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_start"]
-                if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+                elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_3_finish"]
-                if Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
+                elif Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["final_message"]
 
                 current_message.reset()
@@ -137,28 +144,34 @@ class MCNugg(Npc):
 
         current_message = self.npc_messages["level_6_quest"]
 
-        if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+        if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.items:
             current_message = self.npc_messages["quest_1_finish"]
-        if Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+        elif Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                and Treasure.BBQ_SAUCE.value not in state.player.quest_items:
+
+            print("Yippy")
             current_message = self.npc_messages["quest_2_start"]
-        if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+        elif Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_2_finish"]
-        if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state:
+        elif Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state \
+                and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_start"]
-        if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+        elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["quest_3_finish"]
-        if Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
+        elif Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
             current_message = self.npc_messages["final_message"]
-
-
 
         current_message.update(state)
         state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
+            state.controller.isTPressed = False
 
             if (Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state and
-                Events.MC_NUGGET_QUEST_2_REWARD.value not in state.player.level_two_npc_state):
+                Events.MC_NUGGET_QUEST_2_REWARD.value not in state.player.level_two_npc_state) and \
+                Equipment.SOCKS_OF_PERCEPTION.value in state.player.items:
                 state.player.level_two_npc_state.append(Equipment.NUGG_QUEST_TWO_MONEY.value)
                 state.player.money += 500
                 state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_2_REWARD.value)
@@ -172,7 +185,8 @@ class MCNugg(Npc):
 
 
             if (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and
-                    Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value not in state.player.level_two_npc_state):
+                    Equipment.SOCKS_OF_PERCEPTION.value not in state.player.items):
+                print("niggles")
                 state.player.items.append(Equipment.SOCKS_OF_PERCEPTION.value)
                 Events.add_event_to_player(state.player, Events.MC_NUGGET_BETA_QUEST_COMPLETE)
 
@@ -197,18 +211,23 @@ class MCNugg(Npc):
 
             current_message = self.npc_messages["level_6_quest"]
 
-            if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                    and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.items:
                 current_message = self.npc_messages["quest_1_finish"]
-            if Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            elif Events.MC_NUGGET_BETA_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                    and Treasure.BBQ_SAUCE.value not in state.player.quest_items:
+
                 print("Yippy")
                 current_message = self.npc_messages["quest_2_start"]
-            if Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            elif Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value in state.player.level_two_npc_state \
+                    and Equipment.NUGG_QUEST_TWO_MONEY.value not in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_2_finish"]
-            if Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state:
+            elif Events.MC_NUGGET_QUEST_2_REWARD.value in state.player.level_two_npc_state \
+                    and Equipment.NUGG_QUEST_TWO_MONEY.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_start"]
-            if Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
+            elif Events.MC_NUGGET_THIRD_QUEST_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_3_finish"]
-            if Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
+            elif Events.MC_NUGGET_QUEST_3_REWARD.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["final_message"]
 
             current_message.draw(state)
