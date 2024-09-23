@@ -661,7 +661,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.game_state = "game_over_screen"
 
 
-            elif state.player.stamina_points <= 2 and state.player.stamina_points > 0:
+            elif state.player.stamina_points <= 2:
                 self.game_state = "game_over_screen"
 
             # print("point phase target" + str(point_phase_target))
@@ -802,6 +802,8 @@ class CrapsHappyScreen(BattleScreen):
                 self.money += self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
+                state.player.exp += 20
+
 
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
@@ -839,7 +841,10 @@ class CrapsHappyScreen(BattleScreen):
             if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
                 state.player.money += self.bet
                 self.money -= self.bet
+                print("player before gets exp of 15" + str(state.player.exp))
                 state.player.exp += 15
+                print("player after gets exp of 15" + str(state.player.exp))
+
                 self.game_state = "welcome_screen"
                 self.game_reset(state)
 
@@ -880,6 +885,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.money += self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
+                state.player.exp += 20
 
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
@@ -893,6 +899,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.money -= self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
+                state.player.exp += 15
 
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False

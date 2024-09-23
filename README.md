@@ -579,7 +579,6 @@ Here are my thoughts going forward:
 9) i need to create the bank -- ill do this for level 3
 
 add a 2nd rib demon slots that has 0 money, this is just to get more EXP or the super secret item
-i think the mcnugget 2nd quest can be skipped I need to check all quest to make sure you cant skip em
 phase on coin flip is bugged it shouldnt be reading 6, this was during a magic cast, not consistant
 
 need to be able to scroll down on equipment
