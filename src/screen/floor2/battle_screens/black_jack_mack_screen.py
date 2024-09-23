@@ -1361,8 +1361,10 @@ class BlackJackMackScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)),
                          (37, 150))
 
-        state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
-                     (37, 30))
+        # state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
+        #              (37, 30))
+        state.DISPLAY.blit(self.font.render(f"Exo {state.player.exp}", True, (255, 255, 255)),
+                           (37, 30))
 
         self.main_bordered_box.draw(state)
         # state.DISPLAY.blit(character_image, (633, 15))

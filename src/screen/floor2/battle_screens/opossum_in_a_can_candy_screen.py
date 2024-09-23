@@ -992,7 +992,8 @@ class OpossumInACanCandyScreen(BattleScreen):
         white_border.fill((255, 255, 255))
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 20))
-        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
+        # state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
+        state.DISPLAY.blit(self.font.render(f"Exp: {state.player.exp}", True, (255, 255, 255)), (37, 33))
         box_width = 200 - 10
         box_height = 130 - 10
         new_box_height = box_height - 40

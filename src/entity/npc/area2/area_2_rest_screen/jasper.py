@@ -14,10 +14,11 @@ class Jasper(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Jasper: My wife lost in the slots game, and was dragged to the maze on this floor",
-                    "Hero: what kind of maze is it",
-                    "Jasper: It's a happy place, where nothing bad ever happens, it's not a living nightmare. It's not a nightmare, not a nightmare. ",
-                    "Hero: ...",
+                    "Jasper: Your bet size wont affect EXP gained.  Sometimes Stamina will be affected.",
+                    "Jasper: Its up to you to think on when its best to bet high and low.",
+                    "Jasper: In craps on your come out rolll betting high is not always the best idea. ",
+                    "Jasper: If your point is set at 6 or 8, then betting high is ideal. ",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

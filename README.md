@@ -585,7 +585,6 @@ need to be able to scroll down on equipment
 shop bug: when scrolling for stats the index for shop menu  also chnages, easy fix, put a boolean check to stop arrow
 while in menu
 
-i am not gaining exp during craps at come out roll if it matches
 rolling a 7 on point roll doesnt give exp
 
 
@@ -599,6 +598,8 @@ coin flip need to have quit changed to locked during silence
 3rd rib demon maze has some bugs, there is something blocking near the bottom , 2nd to last hiding spot to the right
 the treasure chest needs to teleport player to hungry starving hippos, and from there to cut scene
 make 3rd compnaion a real pain in the ass stickler for rules, like a rules lawyer
+
+when is betting affecting stamina?
 
 
 
