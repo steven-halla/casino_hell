@@ -828,13 +828,22 @@ class Player(Entity):
 
 
         if self.current_screen == "equipment_screen":
-            print(f"Initial length of equipped_items: {len(self.equipped_items)}")
-            if self.perception >= 3 and len(self.equipped_items) == 3:
-                self.equipped_items.append(None)  # Add an extra slot when perception is 3 or higher
-            elif self.perception < 3 and len(self.equipped_items) > 3:
-                self.equipped_items = self.equipped_items[:3]  # Limit equipped items to 3 slots if perception is less than 3
 
-            print(f"Adjusted length of equipped_items: {len(self.equipped_items)}")
+
+
+            # the below doesnt' handle 4 and higher perceptiont his will be an issue going forward
+            # Adjust equipped_items length based on perception
+            if self.perception >= 5 and len(self.equipped_items) == 4:
+                self.equipped_items.append(None)  # Add a fifth slot when perception is 5 or higher
+            elif self.perception >= 3 and len(self.equipped_items) == 3:
+                self.equipped_items.append(None)  # Add a fourth slot when perception is 3 or higher
+            elif self.perception < 3 and len(self.equipped_items) > 3:
+                self.equipped_items = self.equipped_items[:3]  # Reduce to 3 slots if perception is below 3
+            elif self.perception < 5 and len(self.equipped_items) > 4:
+                self.equipped_items = self.equipped_items[:4]  # Reduce to 4 slots if perception is below 5
+            # Limit equipped items to 3 slots if perception is less than 3
+
+            # print(f"Adjusted length of equipped_items: {len(self.equipped_items)}")
 
             # Ensure that self.item_index is initialized outside of this method (e.g., in the __init__ method of your class)
 
@@ -856,36 +865,39 @@ class Player(Entity):
 
                     state.controller.isTPressed = False
 
-                    # Check if the currently equipped item is HEALTHY_GLOVES and we are replacing it
-                    currently_equipped = self.equipped_items[self.items_equipped_index]
+                    # Check if the selected item is already equipped
+                    if self.items[self.item_index] in self.equipped_items:
+                        print("Item is already equipped, skipping this item.")
+                    else:
+                        # Proceed with equipping the item
 
-                    if currently_equipped == Equipment.HEALTHY_GLOVES.value:
-                        # Unequip the gloves and reduce stamina
-                        self.max_stamina_points -= 30
-                        self.stamina_points -= 30
-                        print(f"Unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
+                        # Check if the currently equipped item is HEALTHY_GLOVES and we are replacing it
+                        currently_equipped = self.equipped_items[self.items_equipped_index]
 
-                    if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
-                        self.perception -= 1
+                        if currently_equipped == Equipment.HEALTHY_GLOVES.value:
+                            # Unequip the gloves and reduce stamina
+                            self.max_stamina_points -= 30
+                            self.stamina_points -= 30
+                            print(f"Unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
 
+                        if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
+                            self.perception -= 1
 
+                        # Equip the new item
+                        self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
 
-                    # Equip the new item
-                    self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
+                        # If the newly equipped item is HEALTHY_GLOVES, add the stamina boost
+                        if self.items[self.item_index] == Equipment.HEALTHY_GLOVES.value:
+                            self.max_stamina_points += 30
+                            self.stamina_points += 30
 
+                            print(f"Equipped HEALTHY_GLOVES: Max stamina increased by 30")
 
-                    # If the newly equipped item is HEALTHY_GLOVES, add the stamina boost
-                    if self.items[self.item_index] == Equipment.HEALTHY_GLOVES.value:
-                        self.max_stamina_points += 30
-                        self.stamina_points += 30
+                        if self.items[self.item_index] == Equipment.SOCKS_OF_PERCEPTION.value:
+                            self.perception += 1
 
-                        print(f"Equipped HEALTHY_GLOVES: Max stamina increased by 30")
-
-                    if self.items[self.item_index] == Equipment.SOCKS_OF_PERCEPTION.value:
-                        self.perception += 1
-
-                    print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
-                    self.looking_at_items = False
+                        print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
+                        self.looking_at_items = False
 
 
                 if state.controller.isBPressed:
@@ -940,6 +952,7 @@ class Player(Entity):
                     # print(f"Currently selected equipped item: {self.equipped_items[self.items_equipped_index]}")
                 else:
                     pass
+
                     # print(f"Selected slot {self.items_equipped_index} is empty.")
 
         elif self.current_screen == "quest_items_screen":
