@@ -13,12 +13,11 @@
         "opossum repellent",
         "coin flip glasses",
         "SOCKS_OF_PERCEPTION",
-        "Black Hat",
-        "STAT_POTION_AREA_2"
+        "Black Hat"
     ],
     "equipped_items": [
         "sir leopold's paw",
-        "SOCKS_OF_PERCEPTION",
+        "Black Hat",
         "opossum repellent"
     ],
     "npcitems": [
@@ -39,7 +38,7 @@
     "body": 2,
     "mind": 2,
     "spirit": 1,
-    "perception": 3,
+    "perception": 2,
     "baseperception": 1,
     "luck": 2,
     "money": 2000,

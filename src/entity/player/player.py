@@ -828,6 +828,14 @@ class Player(Entity):
 
 
         if self.current_screen == "equipment_screen":
+            print(f"Initial length of equipped_items: {len(self.equipped_items)}")
+            if self.perception >= 3 and len(self.equipped_items) == 3:
+                self.equipped_items.append(None)  # Add an extra slot when perception is 3 or higher
+            elif self.perception < 3 and len(self.equipped_items) > 3:
+                self.equipped_items = self.equipped_items[:3]  # Limit equipped items to 3 slots if perception is less than 3
+
+            print(f"Adjusted length of equipped_items: {len(self.equipped_items)}")
+
             # Ensure that self.item_index is initialized outside of this method (e.g., in the __init__ method of your class)
 
             # Set the number of menu items
@@ -838,6 +846,9 @@ class Player(Entity):
 
             # Handle up/down navigation
             if self.looking_at_items == True:
+                # Check the length of self.equipped_items
+                print(f"Length of equipped_items: {len(self.equipped_items)}")
+                print(f"Current items_equipped_index: {self.items_equipped_index}")
 
                 # Equip the selected item if T is pressed
                 # Equip the selected item if T is pressed
@@ -858,8 +869,10 @@ class Player(Entity):
                         self.perception -= 1
 
 
+
                     # Equip the new item
                     self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
+
 
                     # If the newly equipped item is HEALTHY_GLOVES, add the stamina boost
                     if self.items[self.item_index] == Equipment.HEALTHY_GLOVES.value:
@@ -923,9 +936,11 @@ class Player(Entity):
 
                 # Print the currently selected equipped item or indicate if the slot is empty
                 if self.items_equipped_index < len(self.equipped_items):
-                    print(f"Currently selected equipped item: {self.equipped_items[self.items_equipped_index]}")
+                    pass
+                    # print(f"Currently selected equipped item: {self.equipped_items[self.items_equipped_index]}")
                 else:
-                    print(f"Selected slot {self.items_equipped_index} is empty.")
+                    pass
+                    # print(f"Selected slot {self.items_equipped_index} is empty.")
 
         elif self.current_screen == "quest_items_screen":
             if state.controller.isUpPressed:
@@ -1285,250 +1300,258 @@ class Player(Entity):
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def equipment_screen(self, state):
-
-            # Get the dimensions of the display
-            screen_width = state.DISPLAY.get_width()
-            screen_height = state.DISPLAY.get_height()
-
-            # Fill the entire screen with black
-            state.DISPLAY.fill((0, 0, 0))  # Black color
-
-            # 2. Main Box with gradient and border
-            main_box_width = screen_width - 20
-            main_box_height = 220
-            main_box_x = 10
-            main_box_y = 60  # Lowered the position by 100 pixels
-
-            # Define the gradient colors (top to bottom)
-            top_color = (0, 0, 139)  # Dark blue
-            bottom_color = (135, 206, 250)  # Light blue
-
-            # Create the main box surface with its gradient
-            main_box = pygame.Surface((main_box_width, main_box_height))
-            for y in range(main_box_height):
-                color = (
-                    bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
-                    bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
-                    bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
-                )
-                pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
-            font = pygame.font.Font(None, 36)  # Adjust font size as needed
-            item_color = (90, 244, 244)  # A unique blue color, easy on the eyes
-            #########
+        print(f"Length of equipped_items: {len(self.equipped_items)}")
+        print(f"Current items_equipped_index: {self.items_equipped_index}")
 
 
+        # Get the dimensions of the display
+        screen_width = state.DISPLAY.get_width()
+        screen_height = state.DISPLAY.get_height()
 
+        # Fill the entire screen with black
+        state.DISPLAY.fill((0, 0, 0))  # Black color
 
+        # 2. Main Box with gradient and border
+        main_box_width = screen_width - 20
+        main_box_height = 220
+        main_box_x = 10
+        main_box_y = 60  # Lowered the position by 100 pixels
 
-            text_box_width = screen_width - 20
-            text_box_height = 100
-            text_box_x = 10
-            text_box_y = 500  # Lowered the position by 100 pixels
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
 
-            # Define the gradient colors (top to bottom)
-            text_top_color = (0, 0, 139)  # Dark blue
-            text_bottom_color = (135, 206, 250)  # Light blue
-
-            # Create the main box surface with its gradient
-            text_box = pygame.Surface((text_box_width, text_box_height))
-            for y in range(text_box_height):
-                color = (
-                    bottom_color[0] + (top_color[0] - bottom_color[0]) * y // text_box_height,
-                    bottom_color[1] + (top_color[1] - bottom_color[1]) * y // text_box_height,
-                    bottom_color[2] + (top_color[2] - bottom_color[2]) * y // text_box_height,
-                )
-                pygame.draw.line(text_box, color, (0, y), (text_box_width, y))
-            font = pygame.font.Font(None, 36)  # Adjust font size as needed
-
-
-            # Draw the main and bottom boxes on the screen
-            state.DISPLAY.blit(text_box, (text_box_x, text_box_y))
+        # Create the main box surface with its gradient
+        main_box = pygame.Surface((main_box_width, main_box_height))
+        for y in range(main_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // main_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // main_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // main_box_height,
+            )
+            pygame.draw.line(main_box, color, (0, y), (main_box_width, y))
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        item_color = (90, 244, 244)  # A unique blue color, easy on the eyes
+        #########
 
 
 
 
 
+        text_box_width = screen_width - 20
+        text_box_height = 100
+        text_box_x = 10
+        text_box_y = 500  # Lowered the position by 100 pixels
+
+        # Define the gradient colors (top to bottom)
+        text_top_color = (0, 0, 139)  # Dark blue
+        text_bottom_color = (135, 206, 250)  # Light blue
+
+        # Create the main box surface with its gradient
+        text_box = pygame.Surface((text_box_width, text_box_height))
+        for y in range(text_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // text_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // text_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // text_box_height,
+            )
+            pygame.draw.line(text_box, color, (0, y), (text_box_width, y))
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
 
 
-            ####
-            # Get the dimensions of the display
+        # Draw the main and bottom boxes on the screen
+        state.DISPLAY.blit(text_box, (text_box_x, text_box_y))
 
-            # Fill the entire screen with black
 
-            # 2. Main Box with gradient and border
-            bottom_box_width = screen_width - 20
-            bottom_box_height = 200
-            bottom_box_x = 10
-            bottom_box_y = 290  # Lowered the position by 100 pixels
 
-            # Define the gradient colors (top to bottom)
-            top_color = (0, 0, 139)  # Dark blue
-            bottom_color = (135, 206, 250)  # Light blue
 
-            # Create the main box surface with its gradient
-            bottom_box = pygame.Surface((bottom_box_width, bottom_box_height))
-            for y in range(bottom_box_height):
-                color = (
-                    bottom_color[0] + (top_color[0] - bottom_color[0]) * y // bottom_box_height,
-                    bottom_color[1] + (top_color[1] - bottom_color[1]) * y // bottom_box_height,
-                    bottom_color[2] + (top_color[2] - bottom_color[2]) * y // bottom_box_height,
-                )
-                pygame.draw.line(bottom_box, color, (0, y), (bottom_box_width, y))
-            font = pygame.font.Font(None, 36)  # Adjust font size as needed
-            inventory_color = (155, 23, 155)  # A unique blue color, easy on the eyes
 
-            # Print and display items in the bottom box
-            item_y = 30  # Start 30 pixels from the top of the bottom box
-            item_x = 80  # Start 30 pixels from the top of the bottom box
-            spacing = 10  # Spacing between items
 
-            for item in self.items:
-                text_surface = font.render(item, True, inventory_color)  # Render the text in the specified color
-                bottom_box.blit(text_surface, (item_x, item_y))  # 30 pixels margin from the left
-                item_y += text_surface.get_height() + spacing  # Move down for the next item
 
-            # Draw the main and bottom boxes on the screen
-            state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
-            state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
+        ####
+        # Get the dimensions of the display
 
-            # Print and display items in the bottom box
-            # Print and display items in the bottom box
-            # Display only the arrow next to the 0th item
-            # Define the padding and spacing for the items
-            # Define the padding and spacing for the items
-            # Define the padding and spacing for the items
-            inventory_arrow_padding = 50  # Padding from the left side of the box for the arrow in the inventory
-            top_box_arrow_padding = 35  # Padding from the left side of the box for the arrow in the top box
-            spacing = 10  # Spacing between items
-            inventory_arrow_padding = 50  # Padding from the left side of the box for the arrow in the inventory
-            top_box_arrow_padding = 35  # Padding from the left side of the box for the arrow in the top box
-            spacing = 10  # Spacing between items
+        # Fill the entire screen with black
 
-            if self.looking_at_items == True:
-                # Arrow should point to an item in the inventory list
-                item_y_start = 30  # The starting y-position for the items in the inventory
+        # 2. Main Box with gradient and border
+        bottom_box_width = screen_width - 20
+        bottom_box_height = 200
+        bottom_box_x = 10
+        bottom_box_y = 290  # Lowered the position by 100 pixels
 
-                # Calculate the y-position for the arrow based on the current item_index
-                arrow_y_position = item_y_start + self.item_index * (font.get_height() + spacing)
+        # Define the gradient colors (top to bottom)
+        top_color = (0, 0, 139)  # Dark blue
+        bottom_color = (135, 206, 250)  # Light blue
 
-                # Render the arrow and position it according to the current item_index
-                arrow_surface = font.render("->", True, inventory_color)
-                bottom_box.blit(arrow_surface, (item_x - inventory_arrow_padding, arrow_y_position))
-            else:
-                # Arrow should point to the currently selected equipped item
-                item_y_start = 30  # The starting y-position for the equipped items in the top box
+        # Create the main box surface with its gradient
+        bottom_box = pygame.Surface((bottom_box_width, bottom_box_height))
+        for y in range(bottom_box_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // bottom_box_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // bottom_box_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // bottom_box_height,
+            )
+            pygame.draw.line(bottom_box, color, (0, y), (bottom_box_width, y))
+        font = pygame.font.Font(None, 36)  # Adjust font size as needed
+        inventory_color = (155, 23, 155)  # A unique blue color, easy on the eyes
 
-                # Define the items, including the level-based slots
-                items = ["companion item", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
+        # Print and display items in the bottom box
+        item_y = 30  # Start 30 pixels from the top of the bottom box
+        item_x = 80  # Start 30 pixels from the top of the bottom box
+        spacing = 10  # Spacing between items
 
-                # Starting y position for the first item (adjust as needed for vertical alignment)
-                equipped_y_start = 30  # Start at the same y-position as the arrow, or any other position
+        for item in self.items:
+            text_surface = font.render(item, True, inventory_color)  # Render the text in the specified color
+            bottom_box.blit(text_surface, (item_x, item_y))  # 30 pixels margin from the left
+            item_y += text_surface.get_height() + spacing  # Move down for the next item
 
-                # Adjust the left margin for the equipped items
-                equipped_item_margin = 300  # Adjust this to ensure there's enough space between the items and equipped items
+        # Draw the main and bottom boxes on the screen
+        state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
+        state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
 
-                # Draw each item slot in Box 2 and display the equipped item next to it, if available
-                item_y = equipped_y_start  # Start at the same y-position as the arrow
-                for index, slot in enumerate(items):
-                    # Render the item slot name
-                    slot_surface = font.render(slot, True, item_color)  # Render the text in the specified color
-                    main_box.blit(slot_surface, (50, item_y))  # Adjust x-position to center or align as needed
+        # Print and display items in the bottom box
+        # Print and display items in the bottom box
+        # Display only the arrow next to the 0th item
+        # Define the padding and spacing for the items
+        # Define the padding and spacing for the items
+        # Define the padding and spacing for the items
+        inventory_arrow_padding = 50  # Padding from the left side of the box for the arrow in the inventory
+        top_box_arrow_padding = 35  # Padding from the left side of the box for the arrow in the top box
+        spacing = 10  # Spacing between items
+        inventory_arrow_padding = 50  # Padding from the left side of the box for the arrow in the inventory
+        top_box_arrow_padding = 35  # Padding from the left side of the box for the arrow in the top box
+        spacing = 10  # Spacing between items
 
-                    # Display the equipped item if it exists in this slot
-                    if index < len(self.equipped_items) and self.equipped_items[index]:
-                        equipped_item_surface = font.render(self.equipped_items[index], True, item_color)
-                        main_box.blit(equipped_item_surface, (equipped_item_margin, item_y))  # 200 pixels to the right of the slot name
+        if self.looking_at_items == True:
+            # Check the length of self.equipped_items
+            print(f"Length of equipped_items: {len(self.equipped_items)}")
+            print(f"Current items_equipped_index: {self.items_equipped_index}")
+            # Arrow should point to an item in the inventory list
+            item_y_start = 30  # The starting y-position for the items in the inventory
 
-                    item_y += slot_surface.get_height() + 10  # Move down for the next item slot
+            # Calculate the y-position for the arrow based on the current item_index
+            arrow_y_position = item_y_start + self.item_index * (font.get_height() + spacing)
 
-                # Determine the maximum index based on perception level
-                if self.perception < 3:
-                    max_index = 2  # Can only access up to the 2nd index (index 0, 1, and 2)
-                elif self.perception == 3 or self.perception == 4:
-                    max_index = 3  # Can access up to the 3rd index (index 0, 1, 2, and 3)
-                elif self.perception > 4:
-                    max_index = 4  # Can access up to the 4th index (index 0, 1, 2, 3, and 4)
+            # Render the arrow and position it according to the current item_index
+            arrow_surface = font.render("->", True, inventory_color)
+            bottom_box.blit(arrow_surface, (item_x - inventory_arrow_padding, arrow_y_position))
+        else:
+            # Arrow should point to the currently selected equipped item
+            item_y_start = 30  # The starting y-position for the equipped items in the top box
 
-                # Ensure that the items_equipped_index does not exceed the max_index
-                self.items_equipped_index = min(self.items_equipped_index, max_index)
-
-                # Calculate the y-position for the arrow based on the current equipped item index
-                arrow_y_position = item_y_start + self.items_equipped_index * (font.get_height() + spacing)
-
-                # Render the arrow in the top box at the position of the selected equipped item
-                arrow_surface = font.render("->", True, item_color)  # Assuming item_color is defined for the top box
-                main_box.blit(arrow_surface, (50 - top_box_arrow_padding, arrow_y_position))
-
-                # Print the currently selected equipped item, if it exists
-                if self.items_equipped_index < len(items):
-                    print(f"Currently selected equipped item: {items[self.items_equipped_index]}")
-                else:
-                    print(f"Selected slot {self.items_equipped_index} is empty or not yet equipped.")
-
-            #######################
-
-            # Define the items to display in Box 2
-            items = ["companion item ", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
+            # Define the items, including the level-based slots
+            items = ["companion item", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
 
             # Starting y position for the first item (adjust as needed for vertical alignment)
-            item_y_start = 30  # Start at the same y-position as the arrow, or any other position
+            equipped_y_start = 30  # Start at the same y-position as the arrow, or any other position
 
-            # Draw each item in Box 2
-            item_y = item_y_start  # Start at the same y-position as the arrow
-            for item in items:
-                text_surface = font.render(item, True, item_color)  # Render the text in the specified color
-                main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
-                item_y += text_surface.get_height() + spacing  # Move down for the next item
+            # Adjust the left margin for the equipped items
+            equipped_item_margin = 300  # Adjust this to ensure there's enough space between the items and equipped items
 
-            state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
-            state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
+            # Draw each item slot in Box 2 and display the equipped item next to it, if available
+            item_y = equipped_y_start  # Start at the same y-position as the arrow
+            for index, slot in enumerate(items):
+                # Render the item slot name
+                slot_surface = font.render(slot, True, item_color)  # Render the text in the specified color
+                main_box.blit(slot_surface, (50, item_y))  # Adjust x-position to center or align as needed
 
-            # Add a white border around the main box
-            border_thickness = 3
+                # Display the equipped item if it exists in this slot
+                if index < len(self.equipped_items) and self.equipped_items[index]:
+                    equipped_item_surface = font.render(self.equipped_items[index], True, item_color)
+                    main_box.blit(equipped_item_surface, (equipped_item_margin, item_y))  # 200 pixels to the right of the slot name
+
+                item_y += slot_surface.get_height() + 10  # Move down for the next item slot
+
+            # Determine the maximum index based on perception level
+            if self.perception < 3:
+                max_index = 2  # Can only access up to the 2nd index (index 0, 1, and 2)
+            elif self.perception == 3 or self.perception == 4:
+                max_index = 3  # Can access up to the 3rd index (index 0, 1, 2, and 3)
+            elif self.perception > 4:
+                max_index = 4  # Can access up to the 4th index (index 0, 1, 2, 3, and 4)
+
+            # Ensure that the items_equipped_index does not exceed the max_index
+            self.items_equipped_index = min(self.items_equipped_index, max_index)
+
+            # Calculate the y-position for the arrow based on the current equipped item index
+            arrow_y_position = item_y_start + self.items_equipped_index * (font.get_height() + spacing)
+
+            # Render the arrow in the top box at the position of the selected equipped item
+            arrow_surface = font.render("->", True, item_color)  # Assuming item_color is defined for the top box
+            main_box.blit(arrow_surface, (50 - top_box_arrow_padding, arrow_y_position))
+
+            # Print the currently selected equipped item, if it exists
+            if self.items_equipped_index < len(items):
+                pass
+                # print(f"Currently selected equipped item: {items[self.items_equipped_index]}")
+            else:
+                pass
+                # print(f"Selected slot {self.items_equipped_index} is empty or not yet equipped.")
+
+        #######################
+
+        # Define the items to display in Box 2
+        items = ["companion item ", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
+
+        # Starting y position for the first item (adjust as needed for vertical alignment)
+        item_y_start = 30  # Start at the same y-position as the arrow, or any other position
+
+        # Draw each item in Box 2
+        item_y = item_y_start  # Start at the same y-position as the arrow
+        for item in items:
+            text_surface = font.render(item, True, item_color)  # Render the text in the specified color
+            main_box.blit(text_surface, (50, item_y))  # Adjust x-position to center or align as needed
+            item_y += text_surface.get_height() + spacing  # Move down for the next item
+
+        state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
+        state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
+
+        # Add a white border around the main box
+        border_thickness = 3
 
 
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(bottom_box_x, bottom_box_y, bottom_box_width, bottom_box_height), border_thickness, border_radius=7)
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(text_box_x, text_box_y, text_box_width, text_box_height), border_thickness, border_radius=7)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(main_box_x, main_box_y, main_box_width, main_box_height), border_thickness, border_radius=7)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(bottom_box_x, bottom_box_y, bottom_box_width, bottom_box_height), border_thickness, border_radius=7)
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(text_box_x, text_box_y, text_box_width, text_box_height), border_thickness, border_radius=7)
 
 
 
-            # 3. Third Box (Small box overlapping top right corner)
-            box3_width = 200
-            box3_height = 70
-            # Calculate Box 3's position to overlap Box 2's top right corner
-            box3_x = screen_width - box3_width - 10  # Positioned at the right edge with padding
-            box3_y = 30  # Positioned to overlap the top right corner of Box 2
+        # 3. Third Box (Small box overlapping top right corner)
+        box3_width = 200
+        box3_height = 70
+        # Calculate Box 3's position to overlap Box 2's top right corner
+        box3_x = screen_width - box3_width - 10  # Positioned at the right edge with padding
+        box3_y = 30  # Positioned to overlap the top right corner of Box 2
 
-            # Create Box 3's surface with its gradient
-            box3_surface = pygame.Surface((box3_width, box3_height))
-            for y in range(box3_height):
-                color = (
-                    bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box3_height,
-                    bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box3_height,
-                    bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box3_height,
-                )
-                pygame.draw.line(box3_surface, color, (0, y), (box3_width, y))
+        # Create Box 3's surface with its gradient
+        box3_surface = pygame.Surface((box3_width, box3_height))
+        for y in range(box3_height):
+            color = (
+                bottom_color[0] + (top_color[0] - bottom_color[0]) * y // box3_height,
+                bottom_color[1] + (top_color[1] - bottom_color[1]) * y // box3_height,
+                bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box3_height,
+            )
+            pygame.draw.line(box3_surface, color, (0, y), (box3_width, y))
 
 
 
-            # Draw Box 3 overlapping Box 2's top right corner
-            state.DISPLAY.blit(box3_surface, (box3_x, box3_y))
-            # Set the font for the text
-            font = pygame.font.Font(None, 36)  # Adjust the font size as needed
+        # Draw Box 3 overlapping Box 2's top right corner
+        state.DISPLAY.blit(box3_surface, (box3_x, box3_y))
+        # Set the font for the text
+        font = pygame.font.Font(None, 36)  # Adjust the font size as needed
 
-            # Render the text "Equipment"
-            text_surface = font.render("Equipment", True, (255, 255, 255))  # White color for the text
+        # Render the text "Equipment"
+        text_surface = font.render("Equipment", True, (255, 255, 255))  # White color for the text
 
-            # Calculate the position to center the text within Box 3
-            text_x = box3_x + (box3_width - text_surface.get_width()) // 2
-            text_y = box3_y + (box3_height - text_surface.get_height()) // 2
+        # Calculate the position to center the text within Box 3
+        text_x = box3_x + (box3_width - text_surface.get_width()) // 2
+        text_y = box3_y + (box3_height - text_surface.get_height()) // 2
 
-            # Draw the text inside Box 3
-            state.DISPLAY.blit(text_surface, (text_x, text_y))
+        # Draw the text inside Box 3
+        state.DISPLAY.blit(text_surface, (text_x, text_y))
 
-            # Optionally, add a white border around Box 3 with rounded corners
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
+        # Optionally, add a white border around Box 3 with rounded corners
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def show_magic_description(self, state):
         # Define descriptions for each item
