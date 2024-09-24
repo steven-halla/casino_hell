@@ -602,6 +602,8 @@ make 3rd compnaion a real pain in the ass stickler for rules, like a rules lawye
 when is betting affecting stamina?
 
 
+hungry starving hippos: need to highlisth player chocies 
+
 
 
 

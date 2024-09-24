@@ -26,6 +26,7 @@ from entity.player.player import Player
 from entity.treasurechests.nuggie_sauce_ingrediant_1 import NuggieSauceIngrediant1
 from entity.treasurechests.slots_vest import SlotsVest
 from game_constants.events import Events
+from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
@@ -116,9 +117,10 @@ class Area2RibDemonMazeScreen3(Screen):
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
         #
-        state.treasurechests = [
-            NuggieSauceIngrediant1(16* 95, 16 * 95)
-        ]
+        if Events.NUGGIE_SAUCE_1_FOUND.value not in state.player.level_two_npc_state:
+            state.treasurechests = [
+                NuggieSauceIngrediant1(16* 95, 16 * 95)
+            ]
         #
         # if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
         #         and state.player.perception > 2):

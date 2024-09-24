@@ -38,6 +38,18 @@ class HungryStarvingHippos(Screen):
                 36,
                 500
             ),
+            "you_win": TextBox(
+                ["Congrats on your win here is 500 coins and a special coin", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "you_lose": TextBox(
+                ["Better luck next time"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
             "hippo_message_1": TextBox(
                 ["Oh wow folks it's total carnage did you see him rip that human in half? The blood is in the water today for sure, it's too bad humans are terrible at swimming.  "],
                 (65, 460, 700, 130),
@@ -85,6 +97,7 @@ class HungryStarvingHippos(Screen):
         self.bet_selection = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"] #important
         self.bet_selection_index = 0 #important
         self.human_picks = []
+        self.win = False
 
     def human_stamina(self) -> None:
         # Ensure human stamina reduction only starts after the initial 10 seconds
@@ -183,17 +196,30 @@ class HungryStarvingHippos(Screen):
 
         # DO NOT ERASE THE BELOW EVER
         # THE BELOW IS WHAT ACTUALLY SETS FOR THE GAME
+        # self.human_stats = {
+        #     "A1": {"speed": 10, "stamina": 4, "win_chance": 30},
+        #     "B1": {"speed": 6, "stamina": 10, "win_chance": 40},
+        #     "C1": {"speed": 7, "stamina": 6, "win_chance": 20},
+        #     "E1": {"speed": 9, "stamina": 4, "win_chance": 25},
+        #     "A2": {"speed": 5, "stamina": 15, "win_chance": 50},
+        #     "B2": {"speed": 6, "stamina": 11, "win_chance": 15},
+        #     "C2": {"speed": 6, "stamina": 7, "win_chance": 45},
+        #     "D2": {"speed": 8, "stamina": 8, "win_chance": 30},
+        #     "E2": {"speed": 7, "stamina": 9, "win_chance": 20},
+        #     "D1": {"speed": 6, "stamina": 8, "win_chance": 35},
+        #
+        # }
         self.human_stats = {
-            "A1": {"speed": 10, "stamina": 4, "win_chance": 30},
-            "B1": {"speed": 6, "stamina": 10, "win_chance": 40},
-            "C1": {"speed": 7, "stamina": 6, "win_chance": 20},
-            "E1": {"speed": 9, "stamina": 4, "win_chance": 25},
-            "A2": {"speed": 5, "stamina": 15, "win_chance": 50},
-            "B2": {"speed": 6, "stamina": 11, "win_chance": 15},
-            "C2": {"speed": 6, "stamina": 7, "win_chance": 45},
-            "D2": {"speed": 8, "stamina": 8, "win_chance": 30},
-            "E2": {"speed": 7, "stamina": 9, "win_chance": 20},
-            "D1": {"speed": 6, "stamina": 8, "win_chance": 35},
+            "A1": {"speed": 33, "stamina": 4, "win_chance": 30},
+            "B1": {"speed": 33, "stamina": 10, "win_chance": 40},
+            "C1": {"speed": 33, "stamina": 6, "win_chance": 20},
+            "E1": {"speed": 33, "stamina": 4, "win_chance": 25},
+            "A2": {"speed": 33, "stamina": 15, "win_chance": 50},
+            "B2": {"speed": 33, "stamina": 11, "win_chance": 15},
+            "C2": {"speed": 33, "stamina": 7, "win_chance": 45},
+            "D2": {"speed": 33, "stamina": 8, "win_chance": 30},
+            "E2": {"speed": 33, "stamina": 9, "win_chance": 20},
+            "D1": {"speed": 33, "stamina": 8, "win_chance": 35},
 
         }
 
@@ -259,6 +285,7 @@ class HungryStarvingHippos(Screen):
         return closest_human
 
     def update(self, state: "GameState") -> None:
+        print(state.player.money)
         # print(self.human_stats)
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
@@ -308,9 +335,11 @@ class HungryStarvingHippos(Screen):
                     if bet in self.human_picks:
                         state.player.money += self.money_reward
                         print("Yay, you won!")
-                        break  # Exit the loop after finding the first match
-                    else:
-                        print("sorry you lost")
+                        self.game_state = "you_win_screen"
+                        break  # Exit the loop after finding a winning bet
+                else:
+                    self.game_state = "you_lose_screen"
+                    print("Sorry, you lost.")
 
             # Calculate delta_time
             current_time = time.time()
@@ -344,6 +373,20 @@ class HungryStarvingHippos(Screen):
                 elif self.comment_to_use == 3:
                     self.battle_messages["hippo_message_3"].update(state)
 
+        if self.game_state == "you_win_screen":
+            print("you win scren is here")
+            self.battle_messages["you_win"].update(state)
+
+            if self.battle_messages["you_win"].message_index == 1:
+                state.area_2_gambling_area_to_rest_point = True
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
+                state.area_2_gambling_area_to_rest_point = False
+
+        if self.game_state == "you_lose_screen":
+            print("you lose scren is here")
+
+            self.battle_messages["you_lose"].update(state)
 
 
 
@@ -369,6 +412,13 @@ class HungryStarvingHippos(Screen):
                     self.battle_messages["hippo_message_2"].draw(state)
                 elif self.comment_to_use == 3:
                     self.battle_messages["hippo_message_3"].draw(state)
+
+        if self.game_state == "you_win_screen":
+            self.battle_messages["you_win"].draw(state)
+
+        if self.game_state == "you_lose_screen":
+            self.battle_messages["you_lose"].draw(state)
+
 
         pygame.display.flip()
 
@@ -400,13 +450,21 @@ class HungryStarvingHippos(Screen):
         self.box_bottom_right = (top_left[0] + width, top_left[1] + height)
 
     def draw_human(self, state: "GameState") -> None:
-        # Define the color for the text
+        # Define the default color for the text (white)
         color = (255, 255, 255)
+        # Define the color for the player's choice (green)
+        player_choice_color = (0, 255, 0)
 
         for label, data in self.humans.items():
-            # Render the text
-            text_surface = self.font.render(label, True, color)
-            # Get the text's rectangle and set its position to the ball's position
+            # Check if the current human is in the player's picks
+            if label in self.human_picks:
+                # Use green for picked humans
+                text_surface = self.font.render(label, True, player_choice_color)
+            else:
+                # Use white for other humans
+                text_surface = self.font.render(label, True, color)
+
+            # Get the text's rectangle and set its position to the human's position
             text_rect = text_surface.get_rect(center=(data["pos"][0] + self.human_size // 2, data["pos"][1] + self.human_size // 2))
             # Draw the text
             state.DISPLAY.blit(text_surface, text_rect)
@@ -528,3 +586,7 @@ class HungryStarvingHippos(Screen):
             # i should build a counter for every human eating incrase counter by +1 for every even numbers, create the message.
             # i need to give exp for each human that  lives that the player bet on
             # need a final report after the race for the user as well as a prize award
+
+    def end_screen(self) -> None:
+
+        pass

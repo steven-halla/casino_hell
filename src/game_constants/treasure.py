@@ -6,6 +6,7 @@ class Treasure(Enum):
     SLOTS_VEST = "SLOTS-VEST"   #perception 2 chest
     INVITATION = "Invitation"
     RIB_DEMON_KEY = "rib demon key"
+    NUGGIE_SAUCE_RECIPE = "NUGGIE_SAUCE_RECIPE"
 
 
 

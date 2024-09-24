@@ -34,6 +34,7 @@ class NuggieSauceIngrediant1(TreasureChest):
 
         # Treasure.add_treasure_to_player(state.player, Treasure.BBQ_SAUCE)
         Events.add_event_to_player(state.player, Events.NUGGIE_SAUCE_1_FOUND)
+        Events.add_event_to_player(state.player, Events.NUGGIE_SAUCE_1_FOUND)
 
         self.isOpened = True
         self.message_displayed = True
@@ -59,8 +60,8 @@ class NuggieSauceIngrediant1(TreasureChest):
                 self.message_closed = True  # Set the flag to indicate the message is closed
                 print("mew")
                 # this needs to teleport player ot hungry starving hipppos game
-                state.currentScreen = state.area2RestScreen
-                state.area2RestScreen.start(state)
+                state.currentScreen = state.hungryStarvingHippos
+                state.hungryStarvingHippos.start(state)
                 state.area2RibDemonMazeScreen3.maze_3 = False
 
         else:

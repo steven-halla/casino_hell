@@ -158,7 +158,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.startLoadScreen
+        self.currentScreen = self.hungryStarvingHippos
 
 
 
