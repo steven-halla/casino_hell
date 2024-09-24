@@ -19,7 +19,7 @@ class Demon8(Demon):
             ],
             (50, 450, 50, 45), 30, 500
         )
-        self.move_distance = 1.8  # Movement speed
+        self.move_distance = 1.7  # Movement speed
         self.facing_left = True  # Start facing left
         self.facing_right = False
         self.velocity = pygame.math.Vector2(0, 0)

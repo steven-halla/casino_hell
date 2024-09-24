@@ -19,7 +19,7 @@ class Demon6(Demon):
             ],
             (50, 450, 50, 45), 30, 500
         )
-        self.move_distance = 1.8  # Movement speed
+        self.move_distance = 1.7  # Movement speed
         self.facing_up = True  # Start facing up
         self.facing_down = False
         self.velocity = pygame.math.Vector2(0, 0)
@@ -30,7 +30,7 @@ class Demon6(Demon):
         # Additional attributes
         self.move_player_down = False
         self.player_spotted = False
-        self.los_radius = 270  # You can adjust this value for the aura size
+        self.los_radius = 255  # You can adjust this value for the aura size
 
 
         # For testing; do not delete

@@ -23,7 +23,7 @@ class SlotsVest(TreasureChest):
 
         self.text_box_messages = {
             "default_message": NpcTextBox(
-                [f"You have received {self.hidden_item} !"],
+                [f"You have received {self.hidden_item} ! 1/2 damage from slots 0,0,0 attack,it's always on"],
                 (50, 450, 50, 45), 30, 500
             )
         }
@@ -48,6 +48,7 @@ class SlotsVest(TreasureChest):
             if distance < 40:
                 print("Yo ho ho and a bottle of rum")
                 self.give_item(state)
+                state.player.slots_vest = True
 
     def update(self, state: "GameState"):
         if self.message_closed:

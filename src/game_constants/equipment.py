@@ -23,6 +23,11 @@ class Equipment(Enum):
             player.items.append(equipment.value)
             player.level_two_npc_state.append(equipment.value)
 
+    @staticmethod
+    def add_potion_to_player(player, equipment):
+        if equipment.value not in player.items:
+            player.level_two_npc_state.append(equipment.value)
+
 
 
 

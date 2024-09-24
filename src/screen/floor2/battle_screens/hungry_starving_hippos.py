@@ -202,32 +202,32 @@ class HungryStarvingHippos(Screen):
 
         # DO NOT ERASE THE BELOW EVER
         # THE BELOW IS WHAT ACTUALLY SETS FOR THE GAME
-        # self.human_stats = {
-        #     "A1": {"speed": 10, "stamina": 4, "win_chance": 30},
-        #     "B1": {"speed": 6, "stamina": 10, "win_chance": 40},
-        #     "C1": {"speed": 7, "stamina": 6, "win_chance": 20},
-        #     "E1": {"speed": 9, "stamina": 4, "win_chance": 25},
-        #     "A2": {"speed": 5, "stamina": 15, "win_chance": 50},
-        #     "B2": {"speed": 6, "stamina": 11, "win_chance": 15},
-        #     "C2": {"speed": 6, "stamina": 7, "win_chance": 45},
-        #     "D2": {"speed": 8, "stamina": 8, "win_chance": 30},
-        #     "E2": {"speed": 7, "stamina": 9, "win_chance": 20},
-        #     "D1": {"speed": 6, "stamina": 8, "win_chance": 35},
-        #
-        # }
         self.human_stats = {
-            "A1": {"speed": 2, "stamina": 4, "win_chance": 30},
-            "B1": {"speed": 2, "stamina": 10, "win_chance": 40},
-            "C1": {"speed": 2, "stamina": 6, "win_chance": 20},
-            "E1": {"speed": 2, "stamina": 4, "win_chance": 25},
-            "A2": {"speed": 2, "stamina": 15, "win_chance": 50},
-            "B2": {"speed": 2, "stamina": 11, "win_chance": 15},
-            "C2": {"speed": 2, "stamina": 7, "win_chance": 45},
-            "D2": {"speed": 2, "stamina": 8, "win_chance": 30},
-            "E2": {"speed": 2, "stamina": 9, "win_chance": 20},
-            "D1": {"speed": 2, "stamina": 8, "win_chance": 35},
+            "A1": {"speed": 10, "stamina": 4, "win_chance": 30},
+            "B1": {"speed": 6, "stamina": 10, "win_chance": 40},
+            "C1": {"speed": 7, "stamina": 6, "win_chance": 20},
+            "E1": {"speed": 9, "stamina": 4, "win_chance": 25},
+            "A2": {"speed": 5, "stamina": 15, "win_chance": 50},
+            "B2": {"speed": 6, "stamina": 11, "win_chance": 15},
+            "C2": {"speed": 6, "stamina": 7, "win_chance": 45},
+            "D2": {"speed": 8, "stamina": 8, "win_chance": 30},
+            "E2": {"speed": 7, "stamina": 9, "win_chance": 20},
+            "D1": {"speed": 6, "stamina": 8, "win_chance": 35},
 
         }
+        # self.human_stats = {
+        #     "A1": {"speed": 2, "stamina": 4, "win_chance": 30},
+        #     "B1": {"speed": 2, "stamina": 10, "win_chance": 40},
+        #     "C1": {"speed": 2, "stamina": 6, "win_chance": 20},
+        #     "E1": {"speed": 2, "stamina": 4, "win_chance": 25},
+        #     "A2": {"speed": 2, "stamina": 15, "win_chance": 50},
+        #     "B2": {"speed": 2, "stamina": 11, "win_chance": 15},
+        #     "C2": {"speed": 2, "stamina": 7, "win_chance": 45},
+        #     "D2": {"speed": 2, "stamina": 8, "win_chance": 30},
+        #     "E2": {"speed": 2, "stamina": 9, "win_chance": 20},
+        #     "D1": {"speed": 2, "stamina": 8, "win_chance": 35},
+        #
+        # }
 
         if state.player.luck == 1:
             for label in self.human_stats:

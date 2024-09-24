@@ -524,23 +524,29 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
 
+
             if state.player.stamina_points < 1:
                 self.lock_down = False
                 self.slot_hack = 0
                 self.battle_messages["game_over_no_stamina_message"].update(state)
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
                     state.currentScreen = Area2StartScreen()
+                    self.reset()
 
             elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
                 self.battle_messages["game_over_low_stamina_message"].update(state)
                 if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
                     state.currentScreen = Area2GamblingScreen()
+                    self.reset()
+
 
 
             elif state.player.money < 50 and state.player.money > 0:
                 self.battle_messages["game_over_low_money_message"].update(state)
                 if self.battle_messages["game_over_low_money_message"].message_index == 1:
                     state.currentScreen = Area2GamblingScreen()
+                    self.reset()
+
 
             elif state.player.money <= 0:
                 self.battle_messages["game_over_no_money_message"].update(state)
@@ -578,9 +584,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 self.welcome_screen_index = 0
-                self.lock_down = False
-                self.slot_hack = 0
-                self.lucky_strike = 0
+                self.reset()
 
                 controller.isTPressed = False
 
@@ -1347,6 +1351,15 @@ class SlotsRippaSnappaScreen(BattleScreen):
         black_box_y = screen_height - black_box_height - 20 - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+    def reset(self):
+        self.lock_down = 0
+        self.lucky_strike = 0
+        self.magic_lock = False
+        self.slot_hack = 0
+        self.game_state: str = "welcome_screen"
+        self.bet: int = 50
+        self.welcome_screen_index = 0
 
     # def test(self) -> None:
     #     match_counts = {i: 0 for i in range(10)}

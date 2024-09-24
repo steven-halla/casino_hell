@@ -591,18 +591,20 @@ rolling a 7 on point roll doesnt give exp
 i shouldnt be able to roll 9s if on lock down on rib demon slots
 if increased chance of jack pot need to display this perhaps
 
-stat potion area 2 is still being addedto player inventory
 
 coin flip need to have quit changed to locked during silence
 
-3rd rib demon maze has some bugs, there is something blocking near the bottom , 2nd to last hiding spot to the right
-the treasure chest needs to teleport player to hungry starving hippos, and from there to cut scene
 make 3rd compnaion a real pain in the ass stickler for rules, like a rules lawyer
 
 when is betting affecting stamina?
 
+FINAL TESTING
+I am now in the testing phase, the game is almost nearly playable:
+testing for: SLots:
+i need to ensure that things are put to value of 0 when needed.
 
-hungry starving hippos: need to highlisth player chocies 
+
+
 
 
 

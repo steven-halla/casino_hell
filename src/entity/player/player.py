@@ -82,8 +82,8 @@ class Player(Entity):
         self.level_two_npc_state = []
         self.leveling_up = False
 
-        self.stamina_increase_from_level = 0
-        self.focus_increase_from_level = 0
+        self.stamina_increase_from_level = 20
+        self.focus_increase_from_level = 10
         self.stat_point_increase = False
         self.menu_index = 0
         self.menu_paused = False
@@ -118,6 +118,8 @@ class Player(Entity):
 
         self.level_2_mind_focus_increase = 15
         self.level_2_mind_spell_gain = Magic.CRAPS_LUCKY_7.value
+
+        self.slots_vest = False
 
 
 
@@ -160,6 +162,7 @@ class Player(Entity):
             "food": self.food,
             "days": self.days,
             "leveltwonpcstate": self.level_two_npc_state,
+            "slots_vest": self.slots_vest,
 
             "cutscene1": state.restScreen.barscene1,
             "cutscene2": state.restScreen.barscene2,
@@ -1678,6 +1681,7 @@ class Player(Entity):
 
             # Update player's stats with the loaded data
             state.player.level_two_npc_state = player_data['leveltwonpcstate']
+            state.player.slots_vest = player_data['slots_vest']
 
             state.player.level = player_data['level']
             state.player.exp = player_data['exp']
