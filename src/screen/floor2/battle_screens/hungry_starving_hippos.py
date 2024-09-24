@@ -390,6 +390,7 @@ class HungryStarvingHippos(Screen):
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
+                self.end_screen()
 
         if self.game_state == "you_lose_screen":
             print("you lose scren is here")
@@ -402,6 +403,8 @@ class HungryStarvingHippos(Screen):
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
+                self.end_screen()
+
 
 
 
@@ -605,5 +608,98 @@ class HungryStarvingHippos(Screen):
             # need a final report after the race for the user as well as a prize award
 
     def end_screen(self) -> None:
+        self.game_state: str = "welcome_screen"
+        self.money_reward = 500
+        self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
+        self.commentary = False
+        self.comment_to_use = 0
+        self.human_stats = {
+            "A1": {"name": "A1", "speed": 22, "stamina": 7, "win_chance": 30},
+            "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
+            "C1": {"name": "C1", "speed": 9, "stamina": 5, "win_chance": 20},
+            "E1": {"name": "E1", "speed": 9, "stamina": 6, "win_chance": 25},
+            "A2": {"name": "A2", "speed": 10, "stamina": 5, "win_chance": 50},
+            "B2": {"name": "B2", "speed": 6, "stamina": 9, "win_chance": 15},
+            "C2": {"name": "C2", "speed": 9, "stamina": 7, "win_chance": 45},
+            "D2": {"name": "D2", "speed": 8, "stamina": 8, "win_chance": 30},
+            "E2": {"name": "E2", "speed": 7, "stamina": 9, "win_chance": 20},
+            "D1": {"name": "D1", "speed": 6, "stamina": 8, "win_chance": 35},
+
+        }
+
+        self.battle_messages: Dict[str, TextBox] = {
+            "bet_message": TextBox(
+                ["Select whom you think is going to win"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "you_win": TextBox(
+                ["Congrats on your win here is 500 coins and a special coin", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "you_lose": TextBox(
+                ["Better luck next time", ""],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_1": TextBox(
+                ["Oh wow folks it's total carnage did you see him rip that human in half? The blood is in the water today for sure, it's too bad humans are terrible at swimming.  "],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_2": TextBox(
+                ["I would like to remind everyone watching that hungry starving hipppos is sponsored by chicken nuggz. The only nuggz you need is chicken nuggz."],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_3": TextBox(
+                ["That one is going in the books for sure folks, the way he tosssed her in the air and swallowed her whole!"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_4": TextBox(
+                ["That human must be a pop star because they just exploded"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+
+        }
+
+        # Second hippo attributes
+        self.hippo2: Optional[Dict[str, Any]] = None
+        self.hippo2_charge_used: bool = False
+        self.hippo2_charge_start_time: Optional[float] = None
+
+        # human attributes
+        self.human_size: int = 20
+        self.humans: Dict[str, Dict[str, Any]] = {}  # Dictionary to store ball positions and speeds
+        self.hippo: Optional[Dict[str, Any]] = None  # Dictionary to store hippo position and speed
+        self.hippo_stopping_eating: float = 0  # Time when the hippo starts eating
+
+        # Initialize box attributes
+        self.box_top_left: Tuple[int, int] = (0, 0)
+        self.box_bottom_right: Tuple[int, int] = (0, 0)
+
+        # Initialize ball positions (this should be done only once)
+        # self.initialize_human_position()
+
+        self.last_time: float = time.time()
+        self.start_time: float = time.time()  # Timer to track elapsed time
+
+        self.winners = []  # important
+        self.game_state: str = "bet_screen"  # important
+        self.bet_selection = ["A1", "B1", "C1", "D1", "E1", "A2", "B2", "C2", "D2", "E2"]  # important
+        self.bet_selection_index = 0  # important
+        self.human_picks = []
+        self.win = False
+
 
         pass

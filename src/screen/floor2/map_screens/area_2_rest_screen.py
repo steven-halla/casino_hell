@@ -129,6 +129,10 @@ class Area2RestScreen(Screen):
 
     def update(self, state: "GameState"):
 
+        # if state.controller.isBPressed:
+        #     state.currentScreen = state.hungryStarvingHippos
+        #     state.hungryStarvingHippos.start(state)
+
         # delta_time = self.clock.tick(60)  # 60 FPS cap
         # print(delta_time)
         # self.total_elapsed_time += delta_time
