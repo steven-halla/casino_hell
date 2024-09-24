@@ -45,7 +45,7 @@ class HungryStarvingHippos(Screen):
                 500
             ),
             "you_lose": TextBox(
-                ["Better luck next time"],
+                ["Better luck next time", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -64,6 +64,12 @@ class HungryStarvingHippos(Screen):
             ),
             "hippo_message_3": TextBox(
                 ["That one is going in the books for sure folks, the way he tosssed her in the air and swallowed her whole!"],
+                (65, 460, 700, 130),
+                36,
+                500
+            ),
+            "hippo_message_4": TextBox(
+                ["That human must be a pop star because they just exploded"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -210,16 +216,16 @@ class HungryStarvingHippos(Screen):
         #
         # }
         self.human_stats = {
-            "A1": {"speed": 33, "stamina": 4, "win_chance": 30},
-            "B1": {"speed": 33, "stamina": 10, "win_chance": 40},
-            "C1": {"speed": 33, "stamina": 6, "win_chance": 20},
-            "E1": {"speed": 33, "stamina": 4, "win_chance": 25},
-            "A2": {"speed": 33, "stamina": 15, "win_chance": 50},
-            "B2": {"speed": 33, "stamina": 11, "win_chance": 15},
-            "C2": {"speed": 33, "stamina": 7, "win_chance": 45},
-            "D2": {"speed": 33, "stamina": 8, "win_chance": 30},
-            "E2": {"speed": 33, "stamina": 9, "win_chance": 20},
-            "D1": {"speed": 33, "stamina": 8, "win_chance": 35},
+            "A1": {"speed": 2, "stamina": 4, "win_chance": 30},
+            "B1": {"speed": 2, "stamina": 10, "win_chance": 40},
+            "C1": {"speed": 2, "stamina": 6, "win_chance": 20},
+            "E1": {"speed": 2, "stamina": 4, "win_chance": 25},
+            "A2": {"speed": 2, "stamina": 15, "win_chance": 50},
+            "B2": {"speed": 2, "stamina": 11, "win_chance": 15},
+            "C2": {"speed": 2, "stamina": 7, "win_chance": 45},
+            "D2": {"speed": 2, "stamina": 8, "win_chance": 30},
+            "E2": {"speed": 2, "stamina": 9, "win_chance": 20},
+            "D1": {"speed": 2, "stamina": 8, "win_chance": 35},
 
         }
 
@@ -285,7 +291,6 @@ class HungryStarvingHippos(Screen):
         return closest_human
 
     def update(self, state: "GameState") -> None:
-        print(state.player.money)
         # print(self.human_stats)
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
@@ -373,6 +378,9 @@ class HungryStarvingHippos(Screen):
                 elif self.comment_to_use == 3:
                     self.battle_messages["hippo_message_3"].update(state)
 
+                elif self.comment_to_use == 4:
+                    self.battle_messages["hippo_message_4"].update(state)
+
         if self.game_state == "you_win_screen":
             print("you win scren is here")
             self.battle_messages["you_win"].update(state)
@@ -385,8 +393,15 @@ class HungryStarvingHippos(Screen):
 
         if self.game_state == "you_lose_screen":
             print("you lose scren is here")
-
             self.battle_messages["you_lose"].update(state)
+
+            if self.battle_messages["you_lose"].message_index == 1:
+
+                self.battle_messages["you_lose"].update(state)
+                state.area_2_gambling_area_to_rest_point = True
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
+                state.area_2_gambling_area_to_rest_point = False
 
 
 
@@ -412,6 +427,8 @@ class HungryStarvingHippos(Screen):
                     self.battle_messages["hippo_message_2"].draw(state)
                 elif self.comment_to_use == 3:
                     self.battle_messages["hippo_message_3"].draw(state)
+                elif self.comment_to_use == 4:
+                    self.battle_messages["hippo_message_4"].draw(state)
 
         if self.game_state == "you_win_screen":
             self.battle_messages["you_win"].draw(state)
