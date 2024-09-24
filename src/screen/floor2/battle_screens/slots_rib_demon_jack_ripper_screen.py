@@ -187,7 +187,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
         # Map the generated values to slot numbers 0-9
         def map_to_slot_number(value: int) -> int:
-            if self.lock_down == 0 and self.lucky_strike == 0:
+            if self.lock_down == 0 and self.lucky_strike == 0 and self.bet < 60:
+                print("self.lockdown == 0 and self.luck_strike == 0 and self.bet < 60")
                 slot_mapping = {
                             range(1, 7): 0,  # lose a rib
                             range(7, 15): 1,  # lost 50 extra coins from your state.player.money
@@ -200,7 +201,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
                             range(85, 95): 8,  # get special item or 50 coins
                             range(95, 101): 9,  # jackpot
                 }
+
             elif self.lucky_strike == 0 and self.bet > 50:
+                print("Lucky strike == 0 and self.bet > 50")
                 slot_mapping = {
                     range(1, 7): 0,  # lose a rib
                     range(7, 15): 1,  # lost 50 extra coins from your state.player.money
@@ -217,6 +220,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             elif self.lock_down > 0 and self.lucky_strike == 0:
+                print("elif self.lock_down > 0 and self.lucky_strike == 0:")
                 slot_mapping = {
                     range(1, 16): 0,  # lose a rib
                     range(16, 24): 1,  # lost 50 extra coins from your state.player.money
@@ -228,6 +232,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 }
 
             elif self.lucky_strike > 0 and self.bet > 50:
+                print("elif self.lucky_strike > 0 and self.bet > 50:")
                 slot_mapping = {
 
                     range(1, 30): 3,  # add 100 coins
@@ -239,6 +244,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 }
 
             elif self.lucky_strike > 0:
+                print("elif self.lucky_strike > 0:")
                 slot_mapping = {
 
                     range(1, 30): 3,  # add 100 coins
@@ -247,6 +253,21 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     range(50, 60): 6,  # add 200 coins
                     range(60, 85): 8,  # get special item or 50 coins
                     range(85, 101): 9,  # jackpot
+                }
+
+            else:
+                print("else default just in case")
+                slot_mapping = {
+                    range(1, 7): 0,  # lose a rib
+                    range(7, 15): 1,  # lost 50 extra coins from your state.player.money
+                    range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(21, 42): 3,  # add 100 coins
+                    range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
+                    range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
+                    range(66, 76): 6,  # add 200 coins
+                    range(76, 85): 7,  # lucky spin better % for jackpot
+                    range(85, 95): 8,  # get special item or 50 coins
+                    range(95, 101): 9,  # jackpot
                 }
 
             # for key in slot_mapping:
@@ -1025,7 +1046,36 @@ class SlotsRippaSnappaScreen(BattleScreen):
         if not self.hide_numbers:
             self.draw_mask_box(state)
 
-        self.draw_hero_info_boxes(state)
+        black_box = pygame.Surface((200 - 10, 180 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 235))
+
+        black_box = pygame.Surface((200 - 10, 45 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 195))
+
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, (255, 255, 255)), (37, 250))
+        state.DISPLAY.blit(self.font.render(f"HP: {state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
+        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True, (255, 255, 255)), (37, 330))
+        if self.lucky_strike > 0:
+            state.DISPLAY.blit(self.font.render(f"Lucky {self.lucky_strike}", True, (255, 255, 255)), (37, 205))
+
+        elif self.lock_down < 1:
+            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
+        elif self.lock_down > 0:
+            state.DISPLAY.blit(self.font.render(f"Locked Down:{self.lock_down}", True, (255, 0, 0)), (37, 205))
+
+
+        #
+        # self.draw_hero_info_boxes(state)
 
         self.draw_grid_box(state)
         if self.slot_hack == 0:

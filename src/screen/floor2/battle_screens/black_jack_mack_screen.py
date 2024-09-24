@@ -893,12 +893,7 @@ class BlackJackMackScreen(Screen):
                     state.player.money += self.bet
                     self.money -= self.bet
                     print("enemy bust")
-                    if state.player.level == 1:
-                        state.player.exp += 12
-                        self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
-                    elif state.player.level == 2:
-                        state.player.exp += 6
-                        self.first_message_display = f"You gain 6 exp and lose {self.bet} gold "
+                    state.player.exp += 25
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 

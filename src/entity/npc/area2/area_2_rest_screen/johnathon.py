@@ -28,10 +28,8 @@ class Johnathon(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Johnathon:The nugg koop only allows player level 6 or higher.",
-                    "Johnathon: Once you're in, You can eat all the delcious crispy chicken nuggz your heart destires",
-                    "Hero: Whats the catch?",
-                    "Johnathon: oh no catch, you just might not like where they come from",
+                    "Johnathon:You have 10 days to win or its game over.",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

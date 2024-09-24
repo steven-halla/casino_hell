@@ -167,7 +167,7 @@ class Area2ShopKeeper(Npc):
 
                     if state.player.money > 1699 and self.selected_item_index == 3 and Equipment.STAT_POTION_AREA_2.value not in state.player.level_two_npc_state:
                         print("HI")
-                        Equipment.STAT_POTION_AREA_2.add_equipment_to_player(state.player, Equipment.STAT_POTION_AREA_2)
+                        # Equipment.STAT_POTION_AREA_2.add_equipment_to_player(state.player, Equipment.STAT_POTION_AREA_2)
                         state.player.money -= 1000
                         self.stat_point_increase = True
 
