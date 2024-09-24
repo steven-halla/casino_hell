@@ -1,6 +1,6 @@
 {
     "level": 4,
-    "exp": 1130,
+    "exp": 1245,
     "stamina_points": 240,
     "max_stamina_points": 240,
     "focus_points": 120,
@@ -36,28 +36,33 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 1,
-    "money": 930,
+    "money": 2220,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "QUEST_1_COIN",
+        "QUEST_1_BADGE"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 7,
+    "days": 8,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
-        "MC_NUGGET_QUEST_1_REWARD"
+        "MC_NUGGET_QUEST_1_REWARD",
+        "QUEST_1_COIN",
+        "QUEST_1_BADGE",
+        "QUEST_1_COMPLETE"
     ],
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1000,
+    "coinflipbetteymoney": 500,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 1000,
+    "opossuminacancandymoney": 10,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "blackjackmackmoney": 2210,

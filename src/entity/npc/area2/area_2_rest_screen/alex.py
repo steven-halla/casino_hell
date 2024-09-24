@@ -24,7 +24,7 @@ class Alex(Npc):
             "default_message": NpcTextBox(
                 [
                     "Alex: I have  a simple quest for you: win 500 coins from the coin flip and oppossum in a can game in ONE SITTING",
-                    "Hero: So no saving/resting of any sort in between?",
+                    "Hero: So no saving/resting of ANY sort in between?",
                     "Alex: Thats right ,so no cheating on this task, go big or go home....I really want to go home...I dont remember what my children look like",
 
                 ],
@@ -33,7 +33,7 @@ class Alex(Npc):
                 "quest_1_complete": NpcTextBox(
                 [
                     "Alex: I see you did as I asked I'll give you this new magic spell heads force , its great for a last push",
-                    "Hero: Thank you for this friend. "
+                    "Hero: Thank you for this friend. ", ""
 
 
                 ],
@@ -72,6 +72,9 @@ class Alex(Npc):
 
             if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_1_complete"]
+                if self.npc_messages["quest_1_complete"].message_index == 2:
+                    state.currentScreen = state.hungryStarvingHippos
+                    state.hungryStarvingHippos.start(state)
 
             if Magic.HEADS_FORCE.value in state.player.magicinventory:
                 current_message = self.npc_messages["quest_1_complete_after_message"]
