@@ -14,7 +14,6 @@ class OpossumInACanCandyScreen(BattleScreen):
     def __init__(self):
         super().__init__("Opossum in a can screen")
         self.third_message_display = ""
-        self.desperate = False
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
         self.sallyOpossumMoney = 1000
@@ -220,11 +219,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         self.play_again_or_quit_index = 0
 
-        self.bluff_activated = 0
-        self.bottom_message = ""
-        self.opossum_rader = False
 
-        self.luck_activated = 0
         self.total_winnings = 0
 
         self.green_box_index = 0  # Index of the currently green box
@@ -258,6 +253,13 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         self.player_debuff_poison = 0
         self.exp_gain = 15
+
+
+
+    def reset(self):
+        self.player_debuff_poison = 0
+        self.choices_index = 0
+        self.magic_points = 1
 
 
 
@@ -389,6 +391,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+        print(self.magic_points)
         if self.sallyOpossumMoney == 0:
             self.sallyOpossumIsDefeated = True
             Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
@@ -826,7 +829,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                     print("You got the 500")
                     Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
                     Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
-
+                print("Hi")
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.player.stamina_points = 1
@@ -1346,9 +1349,12 @@ class OpossumInACanCandyScreen(BattleScreen):
                         self.game_state = "welcome_screen"
                         state.player.canMove = True
                         state.start_area_to_rest_area_entry_point = True
+                        self.magic_points = 1
+                        self.player_debuff_poison = 0
+                        self.initializeGarbageCans(state)
 
-                        state.currentScreen = state.restScreen
-                        state.restScreen.start(state)
+                        state.currentScreen = state.area2RestScreen
+                        state.area2RestScreen.start(state)
                         state.player.stamina_points = 1
 
         pygame.display.flip()
