@@ -389,7 +389,8 @@ class CrapsHappyScreen(BattleScreen):
                 state.player.stamina_points -= 4
 
                 controller.isTPressed = False
-            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
+            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False \
+                    and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
                 self.magic_screen_index = 0
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
@@ -1019,6 +1020,9 @@ class CrapsHappyScreen(BattleScreen):
             if Magic.CRAPS_LUCKY_7.value not in state.player.magicinventory:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
+
+            elif Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
+                self.welcome_screen_choices[1] = "Magic"
 
             if self.magic_lock == True:
                 self.welcome_screen_choices[1] = "Locked"

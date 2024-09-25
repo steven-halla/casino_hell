@@ -1037,12 +1037,23 @@ class CoinFlipBettyScreen(BattleScreen):
             if self.debuff_counter > 0:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
+            elif self.player_debuff_silence_counter > 0:
+                self.magic_lock = True
+                self.welcome_screen_choices[1] = "Locked"
+
             elif self.weighted_coin == True:
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
             else:
                 self.magic_lock = False
                 self.welcome_screen_choices[1] = "Magic"
+
+            if self.player_debuff_silence_counter > 0:
+                self.welcome_screen_choices[3] = "Locked"
+            elif self.player_debuff_silence_counter == 0:
+                self.welcome_screen_choices[3] = "Quit"
+
+
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
