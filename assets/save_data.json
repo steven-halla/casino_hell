@@ -1,7 +1,7 @@
 {
     "level": 4,
-    "exp": 825,
-    "stamina_points": 240,
+    "exp": 835,
+    "stamina_points": 15,
     "max_stamina_points": 240,
     "focus_points": 120,
     "max_focus_points": 120,
@@ -35,7 +35,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 933,
+    "money": 803,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -43,7 +43,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 5,
+    "days": 6,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD"
@@ -54,7 +54,7 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1000,
+    "coinflipbetteymoney": 222,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
     "opossuminacancandymoney": 911,

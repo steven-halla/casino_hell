@@ -65,9 +65,6 @@ class CoinFlipBettyScreen(BattleScreen):
         self.coinFlipFredDefeated = False
         self.food_luck = False
 
-
-
-
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
@@ -430,12 +427,19 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
 
-            if state.player.stamina_points <= 6:
+            if state.player.stamina_points < 1:
+                self.magic_points = 1
+                self.phase = 1
+
+                self.magic_points = 1
+                self.player_debuff_silence_counter = 0
+
                 self.game_state = "game_over_no_stamina"
 
 
 
             elif state.player.money < 50 and state.player.money > 0:
+
                 self.game_state = "game_over_screen"
 
 
@@ -482,6 +486,7 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.debuff_vanish = 0
                 self.player_debuff_silence_counter = 0
                 controller.isTPressed = False
+                self.magic_points = 1
 
         if self.game_state == "level_up_screen":
             self.handle_level_up(state, state.controller)
@@ -986,13 +991,13 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.battle_messages["you_win"].draw(state)
 
             if state.player.stamina_points < 1:
-                self.battle_messages["game_over_no_stamina_message"].draw(state)
+                self.battle_messages["game_over_no_stamina"].draw(state)
 
             elif state.player.money <= 0:
                 self.battle_messages["game_over_no_money_message"].draw(state)
 
-            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].draw(state)
+            elif state.player.stamina_points < 1:
+                self.battle_messages["game_over_no_stamina"].draw(state)
 
             elif state.player.money < 50 and state.player.money > 0:
                 self.battle_messages["game_over_low_money_message"].draw(state)
@@ -1361,7 +1366,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     self.debuff_counter = 0
                     self.lock_down = False
                     self.weighted_coin = False
-                    self.debuff_vanish = 0
+                    self.debuff_vanish = False
                     self.player_debuff_silence_counter = 0
                     self.quest_money = 0
                     if state.player.money < 1:
@@ -1373,9 +1378,15 @@ class CoinFlipBettyScreen(BattleScreen):
                         state.player.canMove = True
                         state.start_area_to_rest_area_entry_point = True
 
-                        state.currentScreen = state.restScreen
-                        state.restScreen.start(state)
+                        state.currentScreen = state.area2RestScreen
+                        state.area2RestScreen.start(state)
                         state.player.stamina_points = 1
+                        self.magic_points = 1
+                        self.phase = 1
+
+                        self.magic_points = 1
+                        self.player_debuff_silence_counter = 0
+
 
         pygame.display.flip()
 
