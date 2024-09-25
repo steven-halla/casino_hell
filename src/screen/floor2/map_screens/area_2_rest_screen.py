@@ -48,6 +48,7 @@ class Area2RestScreen(Screen):
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
+        self.shop_lock = False
 
     def stop_music(self):
         pygame.mixer.music.stop()

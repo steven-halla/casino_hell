@@ -23,11 +23,11 @@ class ShopNpcTextBox(Entity):
         key_scroll_delay: int = 400
 
         if self.is_finished():
-            if state.controller.isUpPressed and (current_time - self.last_key_time > key_scroll_delay):
+            if state.controller.isUpPressed and (current_time - self.last_key_time > key_scroll_delay) and state.area2RestScreen.shop_lock == False:
                 self.selected_item_index = max(0, self.selected_item_index - 1)
                 self.last_key_time = current_time
 
-            elif state.controller.isDownPressed and (current_time - self.last_key_time > key_scroll_delay):
+            elif state.controller.isDownPressed and (current_time - self.last_key_time > key_scroll_delay) and state.area2RestScreen.shop_lock == False:
                 self.selected_item_index = min(len(self.shop_items) - 1, self.selected_item_index + 1)
                 self.last_key_time = current_time
 

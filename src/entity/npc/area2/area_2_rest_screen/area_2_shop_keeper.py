@@ -52,6 +52,7 @@ class Area2ShopKeeper(Npc):
         # print(self.stat_point_increase)
 
         if self.stat_point_increase == True:
+            state.area2RestScreen.shop_lock = True
             if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
                 self.input_time = pygame.time.get_ticks()
                 self.stat_point_increase_index = (self.stat_point_increase_index - 1) % len(stats)
@@ -78,6 +79,8 @@ class Area2ShopKeeper(Npc):
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
 
                     self.stat_point_increase = False
+                    state.area2RestScreen.shop_lock = False
+
 
                 elif self.stat_point_increase_index == 1 and state.player.mind < 2:
                     state.player.mind += 1
@@ -86,27 +89,37 @@ class Area2ShopKeeper(Npc):
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
 
                     self.stat_point_increase = False
+                    state.area2RestScreen.shop_lock = False
+
 
                 elif self.stat_point_increase_index == 2 and state.player.spirit < 2:
                     state.player.spirit += 1
                     self.stat_point_increase = False
+                    state.area2RestScreen.shop_lock = False
+
 
                 elif self.stat_point_increase_index == 3 and state.player.perception < 2 and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
                     state.player.perception += 1
                     self.stat_point_increase = False
+                    state.area2RestScreen.shop_lock = False
+
 
                 elif self.stat_point_increase_index == 3 and state.player.perception < 3 and Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
                     state.player.perception += 1
                     self.stat_point_increase = False
+                    state.area2RestScreen.shop_lock = False
+
 
                 elif self.stat_point_increase_index == 4 and state.player.luck < 2 and state.player.enhanced_luck == False:
                     state.player.luck += 1
                     self.stat_point_increase = False
+                    state.area2RestScreen.shop_lock = False
+
 
                 elif self.stat_point_increase_index == 4 and state.player.luck < 3 and state.player.enhanced_luck == True:
                     state.player.luck += 1
                     self.stat_point_increase = False
-
+                    state.area2RestScreen.shop_lock = False
 
         if self.state == "waiting":
             self.update_waiting(state)
@@ -173,7 +186,7 @@ class Area2ShopKeeper(Npc):
 
 
 
-                if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
+                if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400 and self.stat_point_increase == False:
                     self.input_time = pygame.time.get_ticks()
                     # Decrement the index but prevent it from going below 0
                     if self.selected_item_index > 0:
@@ -184,7 +197,7 @@ class Area2ShopKeeper(Npc):
                     print(f"selected_item_index: {self.selected_item_index}")
                     print(f"selected_money_index: {self.selected_money_index}")
 
-                elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
+                elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400 and self.stat_point_increase == False:
                     self.input_time = pygame.time.get_ticks()
                     # Increment the index but prevent it from exceeding the length of the list - 1
                     if self.selected_item_index < len(self.shop_items) - 1:
