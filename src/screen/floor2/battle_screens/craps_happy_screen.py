@@ -42,7 +42,7 @@ class CrapsHappyScreen(BattleScreen):
             ),
 
             "bet_message": TextBox(
-                ["Time to take a crap with some craps"],
+                ["Max bet of 75 during Come out Roll. Point Roll Max is 200"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -214,6 +214,7 @@ class CrapsHappyScreen(BattleScreen):
         self.unlucky_seven_flag = False
 
         self.lucky_seven_buff_counter = 0
+        self.lucky_seven = False
 
 
     def game_reset(self, state: "GameState"):
@@ -358,7 +359,10 @@ class CrapsHappyScreen(BattleScreen):
                self.game_state = "game_over_screen"
 
             if state.player.stamina_points < 1:
+                self.welcome_screen_index = 0
                 self.lucky_seven_buff_counter = 0
+                self.magic_lock = False
+                self.bet = 50
                 # self.magic_lock = False
                 self.game_state = "game_over_screen"
 
@@ -397,7 +401,7 @@ class CrapsHappyScreen(BattleScreen):
                 controller.isTPressed = False
 
             elif self.welcome_screen_index == 2 and controller.isTPressed:
-                self.battle_messages["bet_message"].reset()
+                # self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
 
                 controller.isTPressed = False
@@ -406,6 +410,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.welcome_screen_index = 0
                 self.lucky_seven_buff_counter = 0
                 self.magic_lock = False
+                self.bet = 50
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 controller.isTPressed = False
@@ -414,6 +419,10 @@ class CrapsHappyScreen(BattleScreen):
             self.handle_level_up(state, state.controller)
 
         elif self.game_state == "bet_screen":
+
+            self.battle_messages["bet_message"].update(state)
+            # self.battle_messages["bet_message"].reset()
+
             # print(self.game_state)
             if controller.isUpPressed:
                 self.bet += 25
@@ -777,6 +786,8 @@ class CrapsHappyScreen(BattleScreen):
 
 
         elif self.game_state == "point_bet_screen":
+            self.battle_messages["bet_message"].update(state)
+
             if controller.isUpPressed:
                 self.bet += 25
                 if self.bet > 200:
@@ -860,6 +871,8 @@ class CrapsHappyScreen(BattleScreen):
 
 
         elif self.game_state == "point_bet_screen":
+            self.battle_messages["bet_message"].update(state)
+
             if controller.isUpPressed:
                 self.bet += 25
                 if self.bet > 200:
@@ -1116,6 +1129,9 @@ class CrapsHappyScreen(BattleScreen):
             self.draw_level_up(state)
 
         elif self.game_state == "bet_screen":
+            self.battle_messages["bet_message"].draw(state)
+
+
             black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box
             border_width = 5
@@ -1152,9 +1168,6 @@ class CrapsHappyScreen(BattleScreen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, start_y_right_box + 12)
                 )
-
-
-
 
         elif self.game_state == "magic_screen":
             self.battle_messages["magic_message"].draw(state)
@@ -1276,6 +1289,8 @@ class CrapsHappyScreen(BattleScreen):
 
         elif self.game_state == "point_bet_screen":
             print("drawing point bet")
+            self.battle_messages["bet_message"].draw(state)
+
 
             black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box
@@ -1453,6 +1468,7 @@ class CrapsHappyScreen(BattleScreen):
 
             # Blit the white-bordered box onto the display
             state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
 
 
 
