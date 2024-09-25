@@ -1,7 +1,7 @@
 {
     "level": 4,
     "exp": 835,
-    "stamina_points": 15,
+    "stamina_points": 22,
     "max_stamina_points": 240,
     "focus_points": 120,
     "max_focus_points": 120,
@@ -60,7 +60,7 @@
     "opossuminacancandymoney": 911,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1000,
+    "blackjackmackmoney": 333,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
     "slotsrippasnappamoney": 1200,

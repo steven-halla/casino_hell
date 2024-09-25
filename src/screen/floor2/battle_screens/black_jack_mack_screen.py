@@ -636,6 +636,9 @@ class BlackJackMackScreen(Screen):
                     self.welcome_screen_index = 0
                     self.reveal_hand = 0
                     self.magic_lock = False
+                    self.bet = 50
+
+
 
 
                     # self.player_status = "Normal"
@@ -1677,7 +1680,10 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "game_over_no_stamina":
-            self.reveal_hand = 11
+            self.reveal_hand = 0
+            self.bet = 50
+            self.magic_points = 1
+
             self.magic_lock = False
 
             self.player_no_stamina.update(state)
@@ -1693,8 +1699,8 @@ class BlackJackMackScreen(Screen):
                         state.player.canMove = True
                         state.start_area_to_rest_area_entry_point = True
 
-                        state.currentScreen = state.restScreen
-                        state.restScreen.start(state)
+                        state.currentScreen = state.area2RestScreen
+                        state.area2RestScreen.start(state)
                         state.player.stamina_points = 1
 
 
