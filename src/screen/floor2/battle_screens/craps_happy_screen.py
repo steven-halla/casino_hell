@@ -188,7 +188,7 @@ class CrapsHappyScreen(BattleScreen):
         self.come_out_roll_index: int = 0
         self.point_roll_index: int = 0
         self.point_bet_index: int = 0
-        self.bet = 75
+        self.bet = 50
 
         self.money_balancer = MoneyBalancer(self.money)
 
@@ -234,7 +234,7 @@ class CrapsHappyScreen(BattleScreen):
         self.power_meter_speed = 2
         self.power_meter_index = 0
 
-        self.bet = 75
+        self.bet = 50
         self.point_phase_win = False
 
         self.welcome_screen_index = 0
@@ -671,8 +671,6 @@ class CrapsHappyScreen(BattleScreen):
                 self.game_state = "game_over_screen"
 
 
-            elif state.player.stamina_points <= 2:
-                self.game_state = "game_over_screen"
 
             # print("point phase target" + str(point_phase_target))
 
@@ -926,11 +924,14 @@ class CrapsHappyScreen(BattleScreen):
 
             if state.player.stamina_points < 1:
                 self.battle_messages["game_over_no_stamina_message"].update(state)
+                self.lucky_seven = False
+                self.bet = 50
 
 
 
-            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].update(state)
+            #
+            # elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+            #     self.battle_messages["game_over_low_stamina_message"].update(state)
 
 
 
@@ -992,9 +993,9 @@ class CrapsHappyScreen(BattleScreen):
 
             elif state.player.money <= 0:
                 self.battle_messages["game_over_no_money_message"].draw(state)
-
-            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].draw(state)
+            #
+            # elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+            #     self.battle_messages["game_over_low_stamina_message"].draw(state)
 
             elif state.player.money < 50 and state.player.money > 0:
                 self.battle_messages["game_over_low_money_message"].draw(state)
@@ -1094,6 +1095,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.battle_messages["you_win"].draw(state)
 
                 if self.battle_messages["you_win"].message_index == 1:
+
                     state.currentScreen = state.area2GamglingScreen
                     state.area2GamglingScreen.start(state)
 
@@ -1103,12 +1105,18 @@ class CrapsHappyScreen(BattleScreen):
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
                     state.currentScreen = state.area2RestScreen
                     state.area2RestScreen.start(state)
-            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].draw(state)
+                    state.player.stamina_points = 1
+                    state.player.money -= 100
+                    self.game_state = "welcome_screen"
+                    self.game_reset(state)
 
-                if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
-                    state.currentScreen = state.area2GamglingScreen
-                    state.area2GamglingScreen.start(state)
+
+            # elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+            #     self.battle_messages["game_over_low_stamina_message"].draw(state)
+            #
+            #     if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
+            #         state.currentScreen = state.area2GamglingScreen
+            #         state.area2GamglingScreen.start(state)
 
 
             elif state.player.money < 50 and state.player.money > 0:
