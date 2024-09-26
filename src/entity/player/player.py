@@ -1426,7 +1426,15 @@ class Player(Entity):
         # Define scrolling parameters
         max_visible_items = 5  # Maximum number of items visible at once
         total_items = len(self.items)  # Total number of items in the equipment list
-        visible_start_index = max(0, self.item_index - (self.item_index % max_visible_items))  # Start index of visible items
+
+        # Ensure the item_index is within the valid range
+        self.item_index = max(0, min(self.item_index, total_items - 1))
+
+        # Calculate the start index of visible items
+        if self.item_index < max_visible_items:
+            visible_start_index = 0
+        else:
+            visible_start_index = self.item_index - max_visible_items + 1
 
         # Print and display items in the bottom box
         item_y = 30  # Start 30 pixels from the top of the bottom box
@@ -1445,13 +1453,19 @@ class Player(Entity):
             item_y += text_surface.get_height() + spacing  # Move down for the next item
 
         # Draw the arrow for the currently selected item
-        arrow_y_position = 30 + (self.item_index % max_visible_items) * (font.get_height() + spacing)
+        arrow_y_position = 30 + (self.item_index - visible_start_index) * (font.get_height() + spacing)
         arrow_surface = font.render("->", True, inventory_color)
         bottom_box.blit(arrow_surface, (item_x - 50, arrow_y_position))  # Draw arrow next to selected item
 
         # Draw the main and bottom boxes on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
         state.DISPLAY.blit(bottom_box, (bottom_box_x, bottom_box_y))
+
+
+
+
+
+
 
         # Print and display items in the bottom box
         # Print and display items in the bottom box
