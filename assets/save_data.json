@@ -6,7 +6,8 @@
     "focus_points": 150,
     "max_focus_points": 150,
     "companions": [
-        "sir leopold"
+        "sir leopold",
+        "erika"
     ],
     "items": [
         "sir leopold's paw",
@@ -14,7 +15,8 @@
         "coin flip glasses",
         "SOCKS_OF_PERCEPTION",
         "HEALTHY_GLOVES",
-        "Delete me"
+        "Delete me",
+        "DARLENES_CHICKEN_NUGGER_AMULET"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -43,7 +45,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 1545,
+    "money": 1145,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -58,7 +60,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 9,
+    "days": 10,
     "leveltwonpcstate": [
         "STAT_POTION_AREA_2",
         "500 Gold",
@@ -83,7 +85,8 @@
         "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
         "QUEST_1_COIN",
         "QUEST_1_COMPLETE",
-        "HEALTHY_GLOVES"
+        "HEALTHY_GLOVES",
+        "DARLENES_CHICKEN_NUGGER_AMULET"
     ],
     "slots_vest": true,
     "cutscene1": true,

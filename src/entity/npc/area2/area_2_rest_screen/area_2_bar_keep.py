@@ -86,13 +86,7 @@ class Area2BarKeep(Npc):
                     print("Your invited")
                     state.currentScreen = state.area2BarCutScene2
                     state.area2BarCutScene2.start(state)
-
-
-
-
-
-
-
+                    state.player.companions.append("erika")
 
             cost = int(self.shop_costs[self.selected_item_index])
 

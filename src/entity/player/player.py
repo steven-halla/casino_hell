@@ -65,9 +65,12 @@ class Player(Entity):
         self.left_animation_frames = []  # Holds frames for left movement animation
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
+        self.erika_sprite_image = pygame.image.load(
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
         # TODO refrence the images with relative paths
         self.sir_leopold_image = pygame.image.load(
             "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
+
 
         self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
@@ -733,6 +736,29 @@ class Player(Entity):
 
             ######
 
+            if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.items:
+                # Get the subsurface for the area you want
+                sprite_rect = pygame.Rect(147, 6, 16, 26)
+
+                # Get the subsurface for the area you want
+                sprite = self.erika_sprite_image.subsurface(sprite_rect)
+
+                # Scale the subsurface to make it two times bigger
+                scaled_sprite = pygame.transform.scale(sprite, (70, 70))  # 44*2 = 88
+
+                # Define the position where you want to draw the sprite
+                erika_sprite_x = 43
+                erika_sprite_y = 320
+
+                # Draw the scaled sprite portion on the display
+                state.DISPLAY.blit(scaled_sprite, (erika_sprite_x, erika_sprite_y))
+                erika_name = font.render(f"Erika", True, color)
+                erika_name_x = 140
+                erika_name_y = 345
+                state.DISPLAY.blit(erika_name, (erika_name_x, erika_name_y))
+
+
+
             if "sir leopold" in state.player.companions:
 
 
@@ -873,10 +899,17 @@ class Player(Entity):
 
                     state.controller.isTPressed = False
 
+
                     # Check if the selected item is already equipped
                     if self.items[self.item_index] in self.equipped_items:
                         print("Item is already equipped, skipping this item.")
+
+                    elif (self.items[self.item_index] == "sir leopold's paw" or self.items[self.item_index] == Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value) and self.items_equipped_index > 0:
+                        print(f"{self.items[self.item_index]} can only be equipped in the 0th slot! Skipping.")
+
+
                     else:
+
                         # Proceed with equipping the item
 
                         # Check if the currently equipped item is HEALTHY_GLOVES and we are replacing it
@@ -893,6 +926,8 @@ class Player(Entity):
 
                         # Equip the new item
                         self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
+
+
 
                         # If the newly equipped item is HEALTHY_GLOVES, add the stamina boost
                         if self.items[self.item_index] == Equipment.HEALTHY_GLOVES.value:
