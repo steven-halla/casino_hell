@@ -134,7 +134,7 @@ class Area2RibDemonMazeScreen3(Screen):
 
         state.demons = [
             #
-            Demon10(16 * 85, 16 * 10)
+            # Demon10(16 * 85, 16 * 10)
 
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),

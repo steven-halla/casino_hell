@@ -73,6 +73,8 @@ class Alex(Npc):
             if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state:
                 current_message = self.npc_messages["quest_1_complete"]
                 if self.npc_messages["quest_1_complete"].message_index == 2:
+                    if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state and Magic.HEADS_FORCE.value not in state.player.magicinventory:
+                        state.player.magicinventory.append(Magic.HEADS_FORCE.value)
                     state.currentScreen = state.hungryStarvingHippos
                     state.hungryStarvingHippos.start(state)
 
@@ -112,6 +114,8 @@ class Alex(Npc):
                 if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state:
                     current_message = self.npc_messages["quest_1_complete"]
 
+
+
                 if Magic.HEADS_FORCE.value in state.player.magicinventory:
                     current_message = self.npc_messages["quest_1_complete_after_message"]
 
@@ -122,8 +126,7 @@ class Alex(Npc):
         state.player.canMove = False
 
         if state.controller.isTPressed and current_message.is_finished():
-            if Events.QUEST_1_COMPLETE.value in state.player.level_two_npc_state and Magic.HEADS_FORCE.value not in state.player.magicinventory:
-                state.player.magicinventory.append(Magic.HEADS_FORCE.value)
+
 
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()

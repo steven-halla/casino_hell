@@ -9,6 +9,7 @@ from entity.gui.textbox.text_box import TextBox
 from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
+from game_constants.magic import Magic
 from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
@@ -422,8 +423,12 @@ class BlackJackMackScreen(Screen):
 
                 if selected_stat == "Body" and state.controller.isTPressed and state.player.body < 2:
                     state.player.body += 1
+                    state.player.stamina_points += 20
+                    state.player.max_stamina_points += 20
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
                     state.player.mind += 1
+                    state.player.focus_points += 10
+                    state.player.max_focus_points += 10
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
                     state.player.spirit += 1
@@ -476,8 +481,8 @@ class BlackJackMackScreen(Screen):
         if self.bet < 50:
             self.bet = 50
 
-        if self.bet > 200:
-            self.bet = 200
+        if self.bet > 125:
+            self.bet = 125
 
         if self.bet > self.money:
             self.bet = self.money

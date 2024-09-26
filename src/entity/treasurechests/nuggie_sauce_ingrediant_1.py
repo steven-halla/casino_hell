@@ -11,7 +11,7 @@ from game_constants.treasure import Treasure
 class NuggieSauceIngrediant1(TreasureChest):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, "Water Bottle")
-        self.hidden_item = "Rib Demon Sauce  found....you dont wanna know how they made it."
+        self.hidden_item = "Rib Demon Sauce  found....I should go back to the bar and order more food."
         self.isOpened = False
         self.state_start_time = pygame.time.get_ticks()
         self.treasure_open_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/open_treasure.mp3")
@@ -60,8 +60,8 @@ class NuggieSauceIngrediant1(TreasureChest):
                 self.message_closed = True  # Set the flag to indicate the message is closed
                 print("mew")
                 # this needs to teleport player ot hungry starving hipppos game
-                state.currentScreen = state.hungryStarvingHippos
-                state.hungryStarvingHippos.start(state)
+                state.currentScreen = state.hungryStarvingHippos2
+                state.hungryStarvingHippos2.start(state)
                 state.area2RibDemonMazeScreen3.maze_3 = False
 
         else:

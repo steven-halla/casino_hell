@@ -390,6 +390,7 @@ class HungryStarvingHippos(Screen):
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
+                print("yupper")
                 self.end_screen()
 
         if self.game_state == "you_lose_screen":
@@ -702,4 +703,3 @@ class HungryStarvingHippos(Screen):
         self.win = False
 
 
-        pass

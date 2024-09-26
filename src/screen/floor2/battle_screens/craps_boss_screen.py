@@ -780,8 +780,8 @@ class CrapsBossScreen(BattleScreen):
         elif self.game_state == "point_bet_screen":
             if controller.isUpPressed:
                 self.bet += 25
-                if self.bet > 200:
-                    self.bet = 200
+                if self.bet > 150:
+                    self.bet = 150
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:

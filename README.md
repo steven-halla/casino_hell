@@ -604,6 +604,15 @@ testing for: SLots:
 i need to ensure that things are put to value of 0 when needed.
 
 
+-------------------------------------------------------------------------------
+bet screen in one of teh games is reading bad info
+for hungry hungry hippos need to mix uup the humans randomly
+is coin flip giving money when item is not equippeed?Is it items or equipped items?
+i need to set it to where you need a spirit of 2 to equip amulet of erika
+on slots hacked the first spin never reads out message
+oppposum in a can not levling me up i have over 2100 exp for level 7
+test exp for all screens for all levels
+
 
 
 

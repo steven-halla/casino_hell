@@ -34,7 +34,7 @@ class SlotsVest(TreasureChest):
 
         Treasure.add_treasure_to_player(state.player, Treasure.SLOTS_VEST)
         Events.add_event_to_player(state.player, Events.SLOTS_VEST_FOUND)
-        Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
+        Events.add_item_to_player(state.player, Events.SLOTS_VEST_FOUND)
 
         self.isOpened = True
         self.message_displayed = True

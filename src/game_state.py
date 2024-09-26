@@ -45,6 +45,7 @@ from screen.floor2.battle_screens.craps_boss_screen import CrapsBossScreen
 
 from screen.floor2.battle_screens.craps_happy_screen import CrapsHappyScreen
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
+from screen.floor2.battle_screens.hungry_starving_hippos2 import HungryStarvingHippos2
 from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
 from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_1 import Area2BarCutScene1
@@ -148,6 +149,7 @@ class GameState:
 
         self.slotsRippaSnappaScreen = SlotsRippaSnappaScreen()
         self.hungryStarvingHippos = HungryStarvingHippos()
+        self.hungryStarvingHippos2 = HungryStarvingHippos2()
         self.crapsHappyScreen = CrapsHappyScreen()
         self.crapsBossScreen = CrapsBossScreen()
         self.coinFlipBettyScreen = CoinFlipBettyScreen()
