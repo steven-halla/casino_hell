@@ -1101,8 +1101,8 @@ class CrapsHappyScreen(BattleScreen):
 
                 if self.battle_messages["you_win"].message_index == 1:
 
-                    state.currentScreen = state.area2GamglingScreen
-                    state.area2GamglingScreen.start(state)
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
 
             if state.player.stamina_points < 1:
                 self.battle_messages["game_over_no_stamina_message"].draw(state)
