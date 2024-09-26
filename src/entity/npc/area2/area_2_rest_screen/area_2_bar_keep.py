@@ -6,6 +6,7 @@ from entity.gui.textbox.shop_npc_text_box import ShopNpcTextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from game_constants.treasure import Treasure
 
 
@@ -80,6 +81,13 @@ class Area2BarKeep(Npc):
                     print("Your invited")
                     state.currentScreen = state.area2BarCutScene1
                     state.area2BarCutScene1.start(state)
+
+                if Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
+                    print("Your invited")
+                    state.currentScreen = state.area2BarCutScene2
+                    state.area2BarCutScene2.start(state)
+
+
 
 
 

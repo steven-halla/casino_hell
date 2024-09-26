@@ -1640,7 +1640,10 @@ class Player(Entity):
         descriptions = {
             "sir leopold's paw": "Sir Leopold can steal aces on initial draw.",
             "opossum repellent": "Keeps those pesky opossums at bay, 1/2 bite damage.",
-            "coin flip glasses": "Get bonus money on wins + 10 per perception point."
+            "coin flip glasses": "Get bonus money on wins + 10 per perception point.",
+            Equipment.SOCKS_OF_PERCEPTION.value: "Adds +1 to perception.",
+            Equipment.HEALTHY_GLOVES.value: "Adds +30 to Stamina.",
+            Treasure.COMPANION_ERIKA_AMULET.value: "Guards against 3s and unlucky rolls(failed power meter) on come out point.",
         }
 
         # Get the item name based on the current index

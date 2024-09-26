@@ -107,7 +107,7 @@ class Demon6(Demon):
         dy = self.collision.y - state.player.collision.y
         distance = math.hypot(dx, dy)
 
-        if distance <= 300 and state.area2RibDemonMazeScreen.player_hiding == False:
+        if distance <= self.los_radius and state.area2RibDemonMazeScreen.player_hiding == False:
             print("found you HERO KUN")
             self.player_spotted = True
             if state.area2RibDemonMazeScreen.maze_1 == True:

@@ -7,6 +7,7 @@ class Treasure(Enum):
     INVITATION = "Invitation"
     RIB_DEMON_KEY = "rib demon key"
     NUGGIE_SAUCE_RECIPE = "NUGGIE_SAUCE_RECIPE"
+    COMPANION_ERIKA_AMULET = "Erika's Amulet"
 
 
 
@@ -19,3 +20,8 @@ class Treasure(Enum):
     def add_quest_to_player(player, treasure):
         if treasure.value not in player.quest_items:
             player.quest_items.append(treasure.value)
+
+    @staticmethod
+    def add_item_to_player(player, treasure):
+        if treasure.value not in player.items:
+            player.items.append(treasure.value)
