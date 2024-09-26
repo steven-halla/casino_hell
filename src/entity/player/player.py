@@ -831,8 +831,12 @@ class Player(Entity):
 
 
         if self.current_screen == "equipment_screen":
+            # Define variables related to item scrolling within the equipment section
 
-
+            visible_start_index = 0  # Starting index of the visible items in the equipment list
+            max_visible_items = 5  # Max number of items that can be displayed at one time
+            selected_item_index = 0  # Tracks which item is currently selected in the full list
+            total_items = len(self.items)  # Total number of items in the equipment list
 
             # the below doesnt' handle 4 and higher perceptiont his will be an issue going forward
             # Adjust equipped_items length based on perception
@@ -859,8 +863,9 @@ class Player(Entity):
             # Handle up/down navigation
             if self.looking_at_items == True:
                 # Check the length of self.equipped_items
-                print(f"Length of equipped_items: {len(self.equipped_items)}")
-                print(f"Current items_equipped_index: {self.items_equipped_index}")
+                print("Howdy")
+                # print(f"Length of equipped_items: {len(self.equipped_items)}")
+                # print(f"Current items_equipped_index: {self.items_equipped_index}")
 
                 # Equip the selected item if T is pressed
                 # Equip the selected item if T is pressed
@@ -1414,18 +1419,35 @@ class Player(Entity):
         inventory_color_equipped = (255, 0, 0)  # A unique blue color, easy on the eyes
 
         # Print and display items in the bottom box
+        # item_y = 30  # Start 30 pixels from the top of the bottom box
+        # item_x = 80  # Start 30 pixels from the top of the bottom box
+        # spacing = 10  # Spacing between items
+
+        # Define scrolling parameters
+        max_visible_items = 5  # Maximum number of items visible at once
+        total_items = len(self.items)  # Total number of items in the equipment list
+        visible_start_index = max(0, self.item_index - (self.item_index % max_visible_items))  # Start index of visible items
+
+        # Print and display items in the bottom box
         item_y = 30  # Start 30 pixels from the top of the bottom box
         item_x = 80  # Start 30 pixels from the top of the bottom box
         spacing = 10  # Spacing between items
 
-        for item in self.items:
+        # Loop through the visible items only
+        for i in range(visible_start_index, min(visible_start_index + max_visible_items, total_items)):
             # Check if the item is equipped and set the color accordingly
-            if item in self.equipped_items:
-                text_surface = font.render(item, True, inventory_color_equipped)  # Red for equipped items
+            if self.items[i] in self.equipped_items:
+                text_surface = font.render(self.items[i], True, inventory_color_equipped)  # Red for equipped items
             else:
-                text_surface = font.render(item, True, inventory_color)
-            bottom_box.blit(text_surface, (item_x, item_y))  # 30 pixels margin from the left
+                text_surface = font.render(self.items[i], True, inventory_color)
+
+            bottom_box.blit(text_surface, (item_x, item_y))  # Draw the item in the box
             item_y += text_surface.get_height() + spacing  # Move down for the next item
+
+        # Draw the arrow for the currently selected item
+        arrow_y_position = 30 + (self.item_index % max_visible_items) * (font.get_height() + spacing)
+        arrow_surface = font.render("->", True, inventory_color)
+        bottom_box.blit(arrow_surface, (item_x - 50, arrow_y_position))  # Draw arrow next to selected item
 
         # Draw the main and bottom boxes on the screen
         state.DISPLAY.blit(main_box, (main_box_x, main_box_y))
@@ -1555,6 +1577,10 @@ class Player(Entity):
                 bottom_color[2] + (top_color[2] - bottom_color[2]) * y // box3_height,
             )
             pygame.draw.line(box3_surface, color, (0, y), (box3_width, y))
+
+
+
+
 
 
 
