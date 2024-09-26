@@ -173,6 +173,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.game_over_message = []  # Initialize game_over_message
 
         self.slot_hack = 0
+        self.rib_demon_attack_damage = 50
 
 
 
@@ -679,8 +680,11 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             elif self.three_zeros == True:
+                if Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
+                    self.rib_demon_attack_damage = 25
+
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take 50 damage and gain 50 exp", ""
+                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take {self.rib_demon_attack_damage} damage and gain 50 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
