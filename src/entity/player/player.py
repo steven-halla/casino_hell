@@ -908,6 +908,10 @@ class Player(Entity):
                         print(f"{self.items[self.item_index]} can only be equipped in the 0th slot! Skipping.")
 
 
+                    # New elif to prevent non-companion items from being equipped in the companion slot (0th index)
+                    elif self.items_equipped_index == 0 and self.items[self.item_index] not in ["sir leopold's paw", Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value]:
+                        print(f"{self.items[self.item_index]} cannot be equipped in the companion slot! Skipping.")
+
                     else:
 
                         # Proceed with equipping the item
