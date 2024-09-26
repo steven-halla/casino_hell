@@ -188,7 +188,7 @@ class CrapsHappyScreen(BattleScreen):
         self.come_out_roll_index: int = 0
         self.point_roll_index: int = 0
         self.point_bet_index: int = 0
-        self.bet = 50
+        self.bet = 75
 
         self.money_balancer = MoneyBalancer(self.money)
 
@@ -234,7 +234,7 @@ class CrapsHappyScreen(BattleScreen):
         self.power_meter_speed = 2
         self.power_meter_index = 0
 
-        self.bet = 50
+        self.bet = 75
         self.point_phase_win = False
 
         self.welcome_screen_index = 0
@@ -328,6 +328,11 @@ class CrapsHappyScreen(BattleScreen):
     # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
+
+        if self.bet > self.money:
+            print("money")
+            self.bet = self.money
+
         if self.lucky_seven_buff_counter > 0:
             self.magic_lock = True
         elif self.lucky_seven_buff_counter == 0:

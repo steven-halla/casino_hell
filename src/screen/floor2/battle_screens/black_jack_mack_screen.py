@@ -424,6 +424,7 @@ class BlackJackMackScreen(Screen):
                     state.player.body += 1
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
                     state.player.mind += 1
+                    Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
                     state.player.spirit += 1
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:

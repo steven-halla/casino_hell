@@ -470,6 +470,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
         #     state.controller.is1Pressed = False
 
 
+
+
         pygame.mixer.music.stop()
         current_time: int = pygame.time.get_ticks()  # local variable
         if state.controller.isBPressed:
@@ -533,11 +535,11 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     state.currentScreen = Area2StartScreen()
                     self.reset()
 
-            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].update(state)
-                if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
-                    state.currentScreen = Area2GamblingScreen()
-                    self.reset()
+            # elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
+            #     self.battle_messages["game_over_low_stamina_message"].update(state)
+            #     if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
+            #         state.currentScreen = Area2GamblingScreen()
+            #         self.reset()
 
 
 
@@ -571,7 +573,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.slot_hack == 0 and Magic.SLOTS_HACK.value in state.player.magicinventory:
                 self.magic_screen_index = 0
-                controller.isTPressed = False
+                # controller.isTPressed = False
 
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
@@ -615,10 +617,12 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
             if self.magic_screen_index == 0 and controller.isTPressed:
-                controller.isTPressed = False
+                print("hi there line 618")
                 self.slot_hack += 5
                 state.player.focus_points -= 50
                 self.game_state = "welcome_screen"
+                controller.isTPressed = False
+
                 print(self.slot_hack)
             elif self.magic_screen_index == 1 and controller.isTPressed:
                 self.battle_messages["magic_message"].update(state)
@@ -682,7 +686,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.battle_messages["results_message"].update(state)
 
                 if self.resolve_penalty == False:
-                    state.player.stamina_points -= 50
+                    if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
+                        state.player.stamina_points -= 50
+                    elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
+                        state.player.stamina_points -= 25
                     self.exp_gain.gain_exp(state, 50)  # Adjust the amount of experience points as needed
 
                     self.resolve_penalty = True
@@ -714,6 +721,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
                     self.resolve_penalty = True
                     self.lock_down = 5
+                    self.lucky_strike = 0
 
             elif self.three_threes == True:
                 self.battle_messages["results_message"].messages = [
