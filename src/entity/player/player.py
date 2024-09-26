@@ -889,7 +889,7 @@ class Player(Entity):
             # Handle up/down navigation
             if self.looking_at_items == True:
                 # Check the length of self.equipped_items
-                print("Howdy")
+                # print("Howdy")
                 # print(f"Length of equipped_items: {len(self.equipped_items)}")
                 # print(f"Current items_equipped_index: {self.items_equipped_index}")
 
@@ -923,6 +923,12 @@ class Player(Entity):
 
                         if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
                             self.perception -= 1
+                            for i in range(3, len(self.equipped_items)):
+                                if self.equipped_items[i] == Equipment.HEALTHY_GLOVES.value:
+                                    self.max_stamina_points -= 30
+                                    self.stamina_points = min(self.stamina_points, self.max_stamina_points)  # Ensure stamina doesn't exceed max
+                                    print(f"Auto-unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
+                                    self.equipped_items[i] = None  # Unequip the Healthy Gloves
 
                         # Equip the new item
                         self.equipped_items[self.items_equipped_index] = self.items[self.item_index]
@@ -1356,8 +1362,8 @@ class Player(Entity):
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def equipment_screen(self, state):
-        print(f"Length of equipped_items: {len(self.equipped_items)}")
-        print(f"Current items_equipped_index: {self.items_equipped_index}")
+        # print(f"Length of equipped_items: {len(self.equipped_items)}")
+        # print(f"Current items_equipped_index: {self.items_equipped_index}")
 
 
         # Get the dimensions of the display
@@ -1517,8 +1523,8 @@ class Player(Entity):
 
         if self.looking_at_items == True:
             # Check the length of self.equipped_items
-            print(f"Length of equipped_items: {len(self.equipped_items)}")
-            print(f"Current items_equipped_index: {self.items_equipped_index}")
+            # print(f"Length of equipped_items: {len(self.equipped_items)}")
+            # print(f"Current items_equipped_index: {self.items_equipped_index}")
             # Arrow should point to an item in the inventory list
             item_y_start = 30  # The starting y-position for the items in the inventory
 
