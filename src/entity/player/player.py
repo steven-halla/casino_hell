@@ -926,6 +926,8 @@ class Player(Entity):
                             for i in range(3, len(self.equipped_items)):
                                 if self.equipped_items[i] == Equipment.HEALTHY_GLOVES.value:
                                     self.max_stamina_points -= 30
+                                    self.stamina_points -= 30
+
                                     self.stamina_points = min(self.stamina_points, self.max_stamina_points)  # Ensure stamina doesn't exceed max
                                     print(f"Auto-unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
                                     self.equipped_items[i] = None  # Unequip the Healthy Gloves
