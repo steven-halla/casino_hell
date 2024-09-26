@@ -632,7 +632,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.player.money += self.bet + 20
                     self.quest_money += self.bet + 20
                     self.money -= self.bet + 20
-                    state.player.exp += 10
+                    state.player.exp += 15
                     self.exp_gain = 10
 
                     if self.money == -10:
@@ -666,7 +666,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
                     state.player.money += self.bet
-                    state.player.exp += 10
+                    state.player.exp += 15
                     self.exp_gain = 10
 
 

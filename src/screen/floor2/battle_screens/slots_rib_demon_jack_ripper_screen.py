@@ -664,7 +664,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             if self.no_matches == True:
                 # Assuming you want to display the amount of experience gained
-                exp_amount = 5  # This should be the amount of exp gained
+                exp_amount = 7  # This should be the amount of exp gained
                 self.battle_messages["results_message"].messages = [
                     f"No Matches! Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you gain {exp_amount} exp", ""
                 ]

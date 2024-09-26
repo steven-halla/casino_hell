@@ -44,7 +44,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 1555,
+    "money": 1145,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -102,6 +102,6 @@
     "blackjackmackmoney": 0,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 930,
+    "slotsrippasnappamoney": 1555,
     "crapscrappymoney": 0
 }

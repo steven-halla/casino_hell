@@ -1133,7 +1133,6 @@ class BlackJackMackScreen(Screen):
                     else:
                         state.player.money += self.money
                         self.money = 0
-                    print("nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
@@ -1149,19 +1148,18 @@ class BlackJackMackScreen(Screen):
                         state.player.stamina_points -= 5
 
                     self.second_message_display = "You tie player press T when ready"
-                    print("nd;LLLLLLLLLLlllll;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                    if self.bet <= 50:
+                    if self.bet <= 49:
                         state.player.exp += 10
                         state.player.stamina_points -= 15
                         self.first_message_display = f"You gain 10 exp and lose {self.bet * 2} gold."
                         self.thrid_message_display = f"You Lose 25 HP "
                     else:
-                        state.player.exp += 15
+                        state.player.exp += 20
                         state.player.stamina_points -= 25
                         self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold."
                         self.thrid_message_display = f"You Lose 25 HP "
@@ -1171,25 +1169,23 @@ class BlackJackMackScreen(Screen):
                     state.player.money -= self.bet * 2
                     self.money += self.bet * 2
 
-                    print("nd;3434343434343;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
 
 
                 elif self.player_score > self.enemy_score and self.player_score < 22:
-                    if self.bet <= 50:
+                    if self.bet <= 49:
                         state.player.exp += 5
                         self.first_message_display = f"You gain 5 exp and {self.bet} gold "
                     else:
-                        state.player.exp += 10
+                        state.player.exp += 20
                         self.first_message_display = f"You gain 10 exp and {self.bet} gold "
                     self.second_message_display = "You win player press T when ready"
 
                     state.player.money += self.bet
                     self.money -= self.bet
 
-                    print("nd;lsnjfl;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
@@ -1200,38 +1196,35 @@ class BlackJackMackScreen(Screen):
                         self.first_message_display = f"You gain 3 exp and lose {self.bet} gold and -4 HP"
 
                     else:
-                        state.player.exp += 5
+                        state.player.exp += 6
                         state.player.stamina_points -= 8
                         self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
 
                     self.second_message_display = "You lose player press T when ready"
                     state.player.money -= self.bet
                     self.money += self.bet
-                    print("nd;bbbbbababab;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
 
 
 
                 elif self.player_score == self.enemy_score:
-                    if self.bet <= 50:
+                    if self.bet <= 49:
                         state.player.exp += 4
                         state.player.stamina_points -= 2
                         self.first_message_display = f"You gain 8 exp and 0 gold, and lose -2 HP "
 
                     else:
-                        state.player.exp += 8
+                        state.player.exp += 15
                         state.player.stamina_points -= 4
                         self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
 
                     self.second_message_display = "It's a draw nobody wins press T when Ready"
 
-                    print("adffdfeafe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
 
                 if self.reveal_hand < 11:
                     self.reveal_hand -= 1
 
                 if self.reveal_hand == 0:
-                    print("Magic time")
                     self.reveal_hand = 11
                     self.magic_lock = False
 
@@ -1239,7 +1232,6 @@ class BlackJackMackScreen(Screen):
                     self.luck_of_jack -= 1
 
                 if self.luck_of_jack == 0:
-                    print("Magic time")
                     self.luck_of_jack = 6
                     self.avatar_of_luck = False
                     self.magic_lock = False

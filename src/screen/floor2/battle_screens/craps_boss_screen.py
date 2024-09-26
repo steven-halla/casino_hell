@@ -763,7 +763,7 @@ class CrapsBossScreen(BattleScreen):
             if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
                 state.player.money += self.bet
                 self.money -= self.bet
-                state.player.exp += 15
+                state.player.exp += 25
                 self.game_state = "welcome_screen"
                 self.game_reset(state)
 
