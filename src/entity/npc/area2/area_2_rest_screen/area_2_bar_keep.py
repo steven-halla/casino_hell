@@ -88,6 +88,10 @@ class Area2BarKeep(Npc):
                     state.area2BarCutScene2.start(state)
                     state.player.companions.append("erika")
 
+                if Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items:
+                    state.currentScreen = state.area2BarCutScene3
+                    state.area2BarCutScene3.start(state)
+
             cost = int(self.shop_costs[self.selected_item_index])
 
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:

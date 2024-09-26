@@ -309,7 +309,7 @@ class Player(Entity):
             return
 
         if self.exp >= 2100 and self.level6checker == False and "level 7 token" not in state.player.npc_items:
-            print("grats you leveld up to level 6")
+            print("grats you leveld up to level 7")
             if "level 7 token" not in state.player.npc_items:
                 # if "shield" not in self.magicinventory:
                 state.player.npc_items.append("level 7 token")

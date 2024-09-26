@@ -611,7 +611,9 @@ is coin flip giving money when item is not equippeed?Is it items or equipped ite
 i need to set it to where you need a spirit of 2 to equip amulet of erika
 on slots hacked the first spin never reads out message
 oppposum in a can not levling me up i have over 2100 exp for level 7
-test exp for all screens for all levels
+tested exp for all levels,there is a rogue exp bug that didnt' level me up
+
+lets rebalance game so if you bring rib demon below 1000 you get the item
 
 
 

@@ -86,12 +86,16 @@ class Alice(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 if state.player.spirit >= 2:
+                    state.player.quest_items.append(Events.SPIRIT_TWO_ALICE_QUEST.value)
+
                     current_message = self.npc_messages["default_message"]
                 else:
                     current_message = self.npc_messages["no_spirit_2"]
 
-                if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
+                if Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
                     current_message = self.npc_messages["quest_2_complete"]
+
+
 
 
                 if Equipment.BLACK_JACK_HAT.value in state.player.items:
@@ -105,7 +109,7 @@ class Alice(Npc):
             current_message = self.npc_messages["default_message"]
         else:
             current_message = self.npc_messages["no_spirit_2"]
-        if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
+        if Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
             current_message = self.npc_messages["quest_2_complete"]
         if Equipment.BLACK_JACK_HAT.value in state.player.items:
             current_message = self.npc_messages["quest_2_complete_after_message"]
@@ -123,7 +127,6 @@ class Alice(Npc):
             if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and Equipment.BLACK_JACK_HAT.value not in state.player.items and state.player.spirit >= 2:
                 print("jadsjfl")
 
-                state.player.items.append(Equipment.BLACK_JACK_HAT.value)
 
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
@@ -144,7 +147,7 @@ class Alice(Npc):
                 current_message = self.npc_messages["default_message"]
             else:
                 current_message = self.npc_messages["no_spirit_2"]
-            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
+            if Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value in state.player.level_two_npc_state and state.player.spirit >= 2:
                 current_message = self.npc_messages["quest_2_complete"]
             if Equipment.BLACK_JACK_HAT.value in state.player.items:
                 current_message = self.npc_messages["quest_2_complete_after_message"]
