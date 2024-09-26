@@ -339,7 +339,7 @@ class CrapsHappyScreen(BattleScreen):
             self.magic_lock = False
 
         if self.money <= 0:
-            Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
+            Events.add_event_to_player(state.player, Events.CRAPS_HAPPY_DEFEATED)
 
         # self.lucky_seven = state.player.luck * 2
         pygame.mixer.music.stop()

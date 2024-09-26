@@ -1,8 +1,8 @@
 {
     "level": 7,
-    "exp": 2285,
-    "stamina_points": 330,
-    "max_stamina_points": 330,
+    "exp": 2340,
+    "stamina_points": 360,
+    "max_stamina_points": 360,
     "focus_points": 150,
     "max_focus_points": 150,
     "companions": [
@@ -12,13 +12,14 @@
         "sir leopold's paw",
         "opossum repellent",
         "coin flip glasses",
-        "SOCKS_OF_PERCEPTION"
+        "SOCKS_OF_PERCEPTION",
+        "HEALTHY_GLOVES"
     ],
     "equipped_items": [
         "sir leopold's paw",
         "opossum repellent",
         "SOCKS_OF_PERCEPTION",
-        "coin flip glasses"
+        "HEALTHY_GLOVES"
     ],
     "npcitems": [
         "level 2 token",
@@ -41,7 +42,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 1,
-    "money": 2795,
+    "money": 2145,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -55,7 +56,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 7,
+    "days": 8,
     "leveltwonpcstate": [
         "STAT_POTION_AREA_2",
         "500 Gold",
@@ -68,6 +69,7 @@
         "MC_NUGGET_BETA_QUEST_COMPLETE",
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "NUGG_QUEST_TWO_MONEY",
+        "CRAPS_HAPPY_DEFEATED",
         "MC_NUGGET_QUEST_2_REWARD",
         "MC_NUGGET_QUEST_3_REWARD",
         "CHICKEN_QUEST_START",
@@ -78,7 +80,8 @@
         "QUEST_1_BADGE",
         "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
         "QUEST_1_COIN",
-        "QUEST_1_COMPLETE"
+        "QUEST_1_COMPLETE",
+        "HEALTHY_GLOVES"
     ],
     "slots_vest": true,
     "cutscene1": true,
@@ -96,5 +99,5 @@
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
     "slotsrippasnappamoney": 930,
-    "crapscrappymoney": 50
+    "crapscrappymoney": 0
 }

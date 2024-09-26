@@ -62,9 +62,7 @@ class CrapsHappy(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
 
-            if state.player.hasRabies == True:
-                self.black_jack_thomas_messages["rabies_message"].reset()
-            elif state.blackJackThomasScreen.black_jack_thomas_defeated:
+            if Events.CRAPS_HAPPY_DEFEATED.value in state.player.level_two_npc_state:
                 self.black_jack_thomas_messages["defeated_message"].reset()
 
             else:
@@ -76,7 +74,7 @@ class CrapsHappy(Npc):
             if state.player.hasRabies
             else (
                 self.black_jack_thomas_messages["defeated_message"]
-                if state.blackJackThomasScreen.black_jack_thomas_defeated
+                if Events.CRAPS_HAPPY_DEFEATED.value in state.player.level_two_npc_state
                 else self.black_jack_thomas_messages["welcome_message"]
             )
         )
@@ -98,7 +96,7 @@ class CrapsHappy(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
+        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and Events.CRAPS_HAPPY_DEFEATED.value not in state.player.level_two_npc_state:
 
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -144,21 +142,23 @@ class CrapsHappy(Npc):
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
+
         if self.state == "talking":
             current_message = (
                 self.black_jack_thomas_messages["rabies_message"]
                 if state.player.hasRabies
                 else (
                     self.black_jack_thomas_messages["defeated_message"]
-                    if state.blackJackThomasScreen.black_jack_thomas_defeated
+                    if Events.CRAPS_HAPPY_DEFEATED.value in state.player.level_two_npc_state
                     else self.black_jack_thomas_messages["welcome_message"]
                 )
             )
 
+
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False and current_message.message_at_end():
+            if current_message.is_finished() and Events.CRAPS_HAPPY_DEFEATED.value not in state.player.level_two_npc_state and state.player.hasRabies == False and current_message.message_at_end():
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
