@@ -158,6 +158,8 @@ class Area2RibDemonMazeScreen2(Screen):
         # ]
 
 
+
+
         state.demons = [
 
             Demon9(16 * 70, 16 * 5),

@@ -2,6 +2,8 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.equipment import Equipment
+
 
 class Area2RestToRibDemonMazeArea(Npc):
     def __init__(self, x: int, y: int):
@@ -12,7 +14,7 @@ class Area2RestToRibDemonMazeArea(Npc):
                 ["You need a key`"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Going to Gambling area"],
+                ["You have no reason to come here."],
                 (50, 450, 700, 130), 36, 500)
         }
         self.choices = ["Yes", "No"]
@@ -34,6 +36,8 @@ class Area2RestToRibDemonMazeArea(Npc):
             self.update_waiting(state)
         elif self.state == "talking":
             current_message = self.flipping_ted_messages["welcome_message"]
+            if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.items:
+                current_message = self.flipping_ted_messages["defeated_message"]
 
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -62,13 +66,15 @@ class Area2RestToRibDemonMazeArea(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.flipping_ted_messages["welcome_message"]
+                if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.items:
+                    current_message = self.flipping_ted_messages["defeated_message"]
 
                 current_message.reset()
 
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False
-        if "rib demon key" in state.player.quest_items:
+        if "rib demon key" in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
             state.area_2_rest_area_to_rib_demon_maze_point = True
 
             state.currentScreen = state.area2RibDemonMazeScreen
@@ -86,7 +92,14 @@ class Area2RestToRibDemonMazeArea(Npc):
 
     def draw(self, state):
 
-        if self.state == "talking" and "rib demon key" not in state.player.quest_items:
-            current_message = self.flipping_ted_messages["welcome_message"]
+
+        if self.state == "talking" and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.items:
+            current_message = self.flipping_ted_messages["defeated_message"]
 
             current_message.draw(state)
+
+        elif self.state == "talking" and "rib demon key" not in state.player.quest_items:
+            current_message = self.flipping_ted_messages["welcome_message"]
+            current_message.draw(state)
+
+
