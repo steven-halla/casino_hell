@@ -28,6 +28,11 @@ class Equipment(Enum):
         if equipment.value not in player.items:
             player.level_two_npc_state.append(equipment.value)
 
+    @staticmethod
+    def add_item_to_quest_state(player, equipment):
+        if equipment.value not in player.quest_items:
+            player.quest_items.append(equipment.value)
+
 
 
 

@@ -354,11 +354,11 @@ class HungryStarvingHippos(Screen):
             self.human_stamina()
 
             # Initialize hippo position after 10 seconds
-            if self.hippo is None and current_time - self.start_time >= 10 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.equipped_items:
+            if self.hippo is None and current_time - self.start_time >= 10 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
                 self.initialize_hippo_position()
                 print("No item equipped")
 
-            elif self.hippo is None and current_time - self.start_time >= 15 and Equipment.HIPPO_HOUR_GLASS.value in state.player.equipped_items:
+            elif self.hippo is None and current_time - self.start_time >= 15 and Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
                 self.initialize_hippo_position()
                 print("Item is equipped")
 

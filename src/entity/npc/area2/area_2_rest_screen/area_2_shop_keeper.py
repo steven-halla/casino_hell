@@ -130,7 +130,7 @@ class Area2ShopKeeper(Npc):
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[0] = "sold out"
 
-            if Equipment.HIPPO_HOUR_GLASS.value in state.player.level_two_npc_state:
+            if Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
                 self.shop_items[1] = "sold out"
 
             if Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
@@ -165,11 +165,11 @@ class Area2ShopKeeper(Npc):
                         state.player.money -= 200
                         state.save_game(state.player, state)  # Call the save_game function
 
-                    if state.player.money > 1199 and self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.level_two_npc_state:
+                    if state.player.money > 1199 and self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
                         print("HIPPOOOOOOOOOOOOOO")
-                        Equipment.HIPPO_HOUR_GLASS.add_equipment_to_player(state.player, Equipment.HIPPO_HOUR_GLASS)
+                        Equipment.HIPPO_HOUR_GLASS.add_item_to_quest_state(state.player, Equipment.HIPPO_HOUR_GLASS)
                         state.player.money -= 500
-                        print(state.player.level_two_npc_state)
+                        print(state.player.quest_items)
 
 
 
