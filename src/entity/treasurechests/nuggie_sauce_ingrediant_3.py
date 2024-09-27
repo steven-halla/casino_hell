@@ -57,7 +57,6 @@ class NuggieSauceIngrediant3(TreasureChest):
             self.current_message.update(state)
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
-                print("mew")
         else:
             self.open_chest(state)
 

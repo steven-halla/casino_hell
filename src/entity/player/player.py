@@ -215,6 +215,7 @@ class Player(Entity):
 
             print("Your nPc inventory issss:::   " + str(state.player.npc_items))
             print("Your level 2 NPC state  issss:::   " + str(state.player.level_two_npc_state))
+            print("Your level 2 Quest items state  issss:::   " + str(state.player.quest_items))
 
 
 
@@ -308,7 +309,7 @@ class Player(Entity):
 
             return
 
-        if self.exp >= 2100 and self.level6checker == False and "level 7 token" not in state.player.npc_items:
+        if self.exp >= 2100 and self.level7checker == False and "level 7 token" not in state.player.npc_items:
             print("grats you leveld up to level 7")
             if "level 7 token" not in state.player.npc_items:
                 # if "shield" not in self.magicinventory:
@@ -446,7 +447,7 @@ class Player(Entity):
         for treasurechests in state.treasurechests:
             # print("p(" + str(state.player.collision.x) + "," + str(state.player.collision.x) + "),n(" + str(npc.collision.x) + "," + str(npc.collision.x) + ")")
             if self.collision.isOverlap(treasurechests.collision) :
-                print("collide with chests: " + str(treasurechests.collision.toTuple()))
+                # print("collide with chests: " + str(treasurechests.collision.toTuple()))
                 self.undoLastMove()
                 break
 
@@ -1103,7 +1104,7 @@ class Player(Entity):
         mp_text = font.render(f"MP: {self.focus_points} / {self.max_focus_points}", True, text_color)
         exp_text = font.render(f"EXP: {self.exp} / {self.exp_to_next_level.get(self.level, 'Max Level')}", True, text_color)
         body_text = font.render(f"Body: {self.body}        Food:{self.food}", True, text_color)
-        mind_text = font.render(f"Mind: {self.mind}", True, text_color)
+        mind_text = font.render(f"Mind: {self.mind}        Day:{self.days}", True, text_color)
         spirit_text = font.render(f"Spirit: {self.spirit}", True, text_color)
         perception_text = font.render(f"Perception: {self.perception}", True, text_color)
         luck_text = font.render(f"Luck: {self.luck}", True, text_color)

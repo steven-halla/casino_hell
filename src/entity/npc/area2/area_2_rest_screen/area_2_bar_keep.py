@@ -59,7 +59,7 @@ class Area2BarKeep(Npc):
 
 
                 if self.selected_item_index == 0 and state.player.money > 500:
-                    print("mew")
+                    # print("mew")
                     state.player.money -= 200
                     state.player.stamina_points += 150
                     if state.player.stamina_points > state.player.max_stamina_points:

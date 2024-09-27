@@ -259,7 +259,6 @@ class StartScreen(Screen):
             if state.controller.isBPressed == True:
                 if state.controller.isPPressed:
                     state.controller.isPPressed = False
-                    print("Mew")
                     return
         pygame.display.update()
 

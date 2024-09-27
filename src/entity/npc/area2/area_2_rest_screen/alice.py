@@ -86,7 +86,8 @@ class Alice(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 if state.player.spirit >= 2:
-                    state.player.quest_items.append(Events.SPIRIT_TWO_ALICE_QUEST.value)
+                    if Events.SPIRIT_TWO_ALICE_QUEST.value not in state.player.quest_items:
+                        state.player.quest_items.append(Events.SPIRIT_TWO_ALICE_QUEST.value)
 
                     current_message = self.npc_messages["default_message"]
                 else:

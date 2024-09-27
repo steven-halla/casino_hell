@@ -613,11 +613,12 @@ on slots hacked the first spin never reads out message
 oppposum in a can not levling me up i have over 2100 exp for level 7
 tested exp for all levels,there is a rogue exp bug that didnt' level me up
 
-lets rebalance game so if you bring rib demon below 1000 you get the item
 
 rib demon slots keeps bringing me bck to rest screen
 
-l
+back jack double draw is not giving money on lose if you bust
+
+
 
 
 

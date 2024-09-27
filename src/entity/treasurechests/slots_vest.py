@@ -59,7 +59,7 @@ class SlotsVest(TreasureChest):
             self.current_message.update(state)
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
-                print("mew")
+                # print("mew")
         else:
             self.open_chest(state)
 
