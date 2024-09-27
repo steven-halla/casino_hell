@@ -371,6 +371,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
     def update(self, state: "GameState"):
 
+
         if self.debuff_counter < 1:
             self.debuff_vanish = False
 
@@ -400,9 +401,12 @@ class CoinFlipBettyScreen(BattleScreen):
 
         controller = state.controller
         controller.update()
+        state.player.update(state)
+
 
 
         if self.game_state == "welcome_screen":
+            print("state.player.leveling_up" + str(state.player.leveling_up))
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 

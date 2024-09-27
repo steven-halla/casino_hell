@@ -351,6 +351,8 @@ class CrapsHappyScreen(BattleScreen):
 
         controller = state.controller
         controller.update()
+        state.player.update(state)
+
 
 
 

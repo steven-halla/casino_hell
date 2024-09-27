@@ -19,7 +19,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.sallyOpossumMoney = 1000
         self.money_minimum = 500
         self.quest_coins_needed = 500
-        self.quest_money = -300
+        self.quest_money = -250
 
 
         self.opossumBite = False
@@ -253,6 +253,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         self.player_debuff_poison = 0
         self.exp_gain = 15
+        self.entry_cost = 250
 
 
 
@@ -391,14 +392,14 @@ class OpossumInACanCandyScreen(BattleScreen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
-        print(self.magic_points)
+
         if self.sallyOpossumMoney == 0:
             self.sallyOpossumIsDefeated = True
             Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
 
 
         if state.controller.is1Pressed:
-            self.quest_money -= 300
+            self.quest_money -= 250
             state.controller.is1Pressed = False
 
 
@@ -412,8 +413,8 @@ class OpossumInACanCandyScreen(BattleScreen):
         if self.fill_cans == True:
             self.initializeGarbageCans(state)
             self.fill_cans = False
-            state.player.money -= 300
-            self.sallyOpossumMoney += 300
+            state.player.money -= self.entry_cost
+            self.sallyOpossumMoney += self.entry_cost
 
 
         if state.controller.isQPressed:
@@ -636,7 +637,7 @@ class OpossumInACanCandyScreen(BattleScreen):
             elif state.player.stamina_points < 1:
                 self.game_state = "game_over_no_stamina"
 
-            elif state.player.money < 300:
+            elif state.player.money < self.entry_cost:
                 self.game_state = "no_money_you_leave"
 
             # state.currentScreen = state.gamblingAreaScreen
@@ -749,9 +750,9 @@ class OpossumInACanCandyScreen(BattleScreen):
 
                     state.controller.isTPressed = False  # Reset the button state
                     self.battle_messages["tally_message"].message_index = 0
-                    state.player.money -= 300
-                    self.sallyOpossumMoney += 300
-                    self.quest_money -= 300
+                    state.player.money -= self.entry_cost
+                    self.sallyOpossumMoney += self.entry_cost
+                    self.quest_money -= self.entry_cost
                     self.initializeGarbageCans(state)
                     if self.magic_points > 0 and self.sallyOpossumMoney < 1000:
                         self.game_state = "spell_casting_poison"
@@ -856,6 +857,9 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         controller = state.controller
         controller.update()
+        state.player.update(state)
+        print(self.game_state)
+
 
 
     def draw(self, state: "GameState"):

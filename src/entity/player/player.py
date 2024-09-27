@@ -198,6 +198,7 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
 
+
         # if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
         #     self.perception = self.base_perception + self.perception_boost_item
         #
@@ -302,6 +303,7 @@ class Player(Entity):
                 # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
                 self.max_stamina_points += 20
                 self.max_focus_points += 10
+
             self.level6checker = True
             self.level += 1
             self.leveling_up = True
