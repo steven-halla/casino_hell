@@ -154,6 +154,7 @@ class Area2BarCutScene2(Screen):
                 # Treasure.add_item_to_player(state.player, Treasure.COMPANION_ERIKA_AMULET)
 
                 state.controller.isTPressed = False
+                state.player.food = 0
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
 

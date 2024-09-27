@@ -220,6 +220,9 @@ class CrapsBossScreen(BattleScreen):
         self.lucky_seven_buff_counter = 0
         self.money: int = 1500  # Add this line
 
+        self.double_dice_cast_cost = 50
+
+
 
 
 
@@ -449,8 +452,9 @@ class CrapsBossScreen(BattleScreen):
             elif controller.isDownPressed:
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
-            if self.magic_screen_index == 0 and controller.isTPressed:
+            if self.magic_screen_index == 0 and controller.isTPressed and state.player.focus_points >= self.double_dice_cast_cost:
                 self.lucky_seven_buff_counter = 10
+                state.player.focus_points -= self.double_dice_cast_cost
                 self.magic_lock = True
                 controller.isTPressed = False
                 self.game_state = "welcome_screen"

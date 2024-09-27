@@ -45,7 +45,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.secret_item = False
 
         self.lock_down: int = 0
-        self.lucky_strike = 0
+
+
 
         self.no_matches = True
 
@@ -174,6 +175,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
         self.slot_hack = 0
         self.rib_demon_attack_damage = 50
+        self.lucky_strike = 0
+        self.hack_cast_cost = 50
+
 
 
 
@@ -617,10 +621,10 @@ class SlotsRippaSnappaScreen(BattleScreen):
             elif controller.isDownPressed:
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
-            if self.magic_screen_index == 0 and controller.isTPressed:
+            if self.magic_screen_index == 0 and controller.isTPressed and state.player.focus_points >= self.hack_cast_cost:
                 print("hi there line 618")
                 self.slot_hack += 5
-                state.player.focus_points -= 50
+                state.player.focus_points -= self.hack_cast_cost
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
@@ -1046,6 +1050,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.battle_messages["welcome_message"].reset()
                 self.battle_messages["results_message"].reset()
                 self.resolve_penalty = False
+                if self.lucky_strike > 0:
+                    self.lucky_strike -= 1
                 if self.lock_down > 0:
                     self.lock_down -= 1
 

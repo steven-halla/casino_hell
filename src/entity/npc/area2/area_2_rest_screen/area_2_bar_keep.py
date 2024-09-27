@@ -88,7 +88,7 @@ class Area2BarKeep(Npc):
                     state.area2BarCutScene2.start(state)
                     state.player.companions.append("erika")
 
-                if Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items:
+                if Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
                     state.currentScreen = state.area2BarCutScene3
                     state.area2BarCutScene3.start(state)
 

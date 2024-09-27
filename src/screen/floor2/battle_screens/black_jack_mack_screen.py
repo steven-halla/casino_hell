@@ -281,6 +281,7 @@ class BlackJackMackScreen(Screen):
 
         self.exp_gain = 0
         self.food_luck = False
+        self.stat_point_allocated = False
 
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
         self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
@@ -423,26 +424,47 @@ class BlackJackMackScreen(Screen):
 
                 if selected_stat == "Body" and state.controller.isTPressed and state.player.body < 2:
                     state.player.body += 1
-                    state.player.stamina_points += 20
-                    state.player.max_stamina_points += 20
+                    state.player.stamina_points += state.player.level_2_body_stamina_increase
+                    state.player.max_stamina_points += state.player.level_2_body_stamina_increase
+                    self.stat_point_allocated = True
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
                     state.player.mind += 1
-                    state.player.focus_points += 10
-                    state.player.max_focus_points += 10
+                    self.stat_point_allocated = True
+
+                    state.player.focus_points += state.player.level_2_mind_focus_increase
+                    state.player.max_focus_points += state.player.level_2_mind_focus_increase
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
                     state.player.spirit += 1
+                    self.stat_point_allocated = True
+
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
                     state.player.perception += 1
+                    self.stat_point_allocated = True
+
+                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
+                     Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+                    state.player.perception += 1
+                    self.stat_point_allocated = True
+
                     # state.player.base_perception += 1
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
                     state.player.luck += 1
+                    self.stat_point_allocated = True
 
-                if state.controller.isTPressed:
+
+                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
+                        state.player.enhanced_luck == True:
+                    state.player.luck += 1
+                    self.stat_point_allocated = True
+
+
+                if state.controller.isTPressed and self.stat_point_allocated == True:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.level_up_messages.reset()
+                    self.stat_point_allocated = False
                     self.game_state = "welcome_screen"
 
     def stop_music(self):
@@ -845,9 +867,10 @@ class BlackJackMackScreen(Screen):
 
 
                 elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
-                    lucky_roll = random.randint(1,5)
+                    lucky_roll = random.randint(1,4)
                     print("Lucky roll is: " + str(lucky_roll))
-                    if lucky_roll == 5:
+                    if lucky_roll == 4:
+                        print("GUARIDAN POP MODE ACTIVATED")
                         print("Player score is ------------------------------------------------: " + str(self.player_score))
                         # self.player_score -= self.deck.compute_hand_value(self.player_hand[-1])
                         print("Player score is----------------------------: " + str(self.player_score))
@@ -860,6 +883,8 @@ class BlackJackMackScreen(Screen):
                         self.first_message_display = f"You almost went over 21."
                         lucky_roll = 0
                     else:
+                        print("GUARIDAN POP MODE IS NOT ACTIVATED")
+
 
                         state.player.money -= self.bet
                         self.money += self.bet

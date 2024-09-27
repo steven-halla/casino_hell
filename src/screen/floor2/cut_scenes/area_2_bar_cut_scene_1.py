@@ -151,6 +151,8 @@ class Area2BarCutScene1(Screen):
                 Treasure.add_quest_to_player(state.player, Treasure.RIB_DEMON_KEY)
 
                 state.controller.isTPressed = False
+                state.player.food = 0
+
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
 
