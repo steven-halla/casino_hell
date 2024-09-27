@@ -284,7 +284,7 @@ class BlackJackMackScreen(Screen):
         self.stat_point_allocated = False
 
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
-        self.level_screen_stats = ["Body", "Mind", "Spirit", "Percep.", "Luck"]
+        self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         self.level_up_messages = TextBox(
             [
                 f"Grats you leveled up to level 1!",
@@ -347,7 +347,7 @@ class BlackJackMackScreen(Screen):
         if state.player.stat_point_increase and self.game_state == "level_up_screen":
             if self.level_up_messages.message_index == 3:  # Access level_up_messages
                 black_box_height = 261 - 50  # Adjust height
-                black_box_width = 200 - 10  # Adjust width to match the left box
+                black_box_width = 240 - 10  # Adjust width to match the left box
                 border_width = 5
                 start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
                 start_y_right_box = 200  # Adjust vertical alignment
@@ -475,7 +475,7 @@ class BlackJackMackScreen(Screen):
                     self.stat_point_allocated = True
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
-                     Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+                        Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
                     state.player.perception += 1
                     self.stat_point_allocated = True
 
@@ -877,6 +877,8 @@ class BlackJackMackScreen(Screen):
                 self.player_hand += self.deck.player_draw_hand(1)
                 self.deck.compute_hand_value(self.player_hand)
                 self.player_score = self.deck.compute_hand_value(self.player_hand)
+                # if self.player_score > 21:
+
 
             if self.player_score > 10:
                 print("hi greater than 10")

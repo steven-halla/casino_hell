@@ -1,18 +1,17 @@
 {
     "level": 4,
-    "exp": 999,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "exp": 1111,
+    "stamina_points": 310,
+    "max_stamina_points": 310,
+    "focus_points": 140,
+    "max_focus_points": 140,
     "companions": [
         "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses",
-        "Black Hat"
+        "coin flip glasses"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -31,21 +30,20 @@
     ],
     "body": 1,
     "mind": 1,
-    "spirit": 2,
+    "spirit": 1,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1600,
+    "money": 2000,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "SPIRIT_TWO_ALICE_QUEST"
     ],
     "level3reward": false,
     "food": 1,
     "days": 2,
     "leveltwonpcstate": [
-        "SPIRIT_TWO_ALICE_QUEST_FINISHED"
+
     ],
     "slots_vest": false,
     "cutscene1": true,
@@ -59,9 +57,9 @@
     "opossuminacancandymoney": 1500,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1000,
+    "blackjackmackmoney": 1500,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 1430,
+    "slotsrippasnappamoney": 1500,
     "crapscrappymoney": 1500
 }
