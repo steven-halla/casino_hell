@@ -17,7 +17,7 @@ class BattleScreen:
         self.bet: int = 50  # Add this line
         self.lock_down = 0
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
-        self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
+        self.level_screen_stats = ["Body", "Mind", "Spirit", "Percep.", "Luck"]
         self.stat_increase = False
 
     def start(self, state: 'GameState') -> None:

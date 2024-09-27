@@ -284,7 +284,7 @@ class BlackJackMackScreen(Screen):
         self.stat_point_allocated = False
 
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
-        self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
+        self.level_screen_stats = ["Body", "Mind", "Spirit", "Percep.", "Luck"]
         self.level_up_messages = TextBox(
             [
                 f"Grats you leveled up to level 1!",
@@ -385,6 +385,38 @@ class BlackJackMackScreen(Screen):
                     self.font.render("->", True, (255, 255, 255)),
                     (start_x_right_box + 12, arrow_y)
                 )
+
+                # Draw the player's current stats (just the numbers) to the right of the menu (30 pixels to the right)
+                stats_x_position = start_x_right_box + black_box_width - 30
+
+                # Calculate the actual stats, taking into account equipment and enhancements
+                perception = state.player.perception
+                luck = state.player.luck
+
+                # Handle enhanced luck (do not show +1 when displaying luck stat)
+                if state.player.enhanced_luck:
+                    luck -= 1  # Do not show the temporary +1 from enhanced luck
+
+                # Handle perception enhancement (do not show +1 when "Socks of Perception" are equipped)
+                if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+                    perception -= 1  # Do not show the temporary +1 from the item
+
+                # Display just the numbers next to the level-up screen
+                current_stats = [
+                    state.player.body,
+                    state.player.mind,
+                    state.player.spirit,
+                    perception,  # Adjusted perception
+                    luck  # Adjusted luck
+                ]
+
+                # Display the stats numbers only
+                for idx, stat_value in enumerate(current_stats):
+                    y_position = start_y_right_box + idx * 40  # Same vertical spacing as the level-up menu
+                    state.DISPLAY.blit(
+                        self.font.render(f"{stat_value}", True, (255, 255, 255)),
+                        (stats_x_position, y_position + 15)
+                    )
 
         # Continue drawing the level-up messages
         self.level_up_messages.draw(state)

@@ -1,6 +1,6 @@
 {
     "level": 4,
-    "exp": 600,
+    "exp": 1111,
     "stamina_points": 240,
     "max_stamina_points": 240,
     "focus_points": 120,
@@ -31,7 +31,7 @@
     "body": 1,
     "mind": 1,
     "spirit": 1,
-    "perception": 1,
+    "perception": 2,
     "baseperception": 1,
     "luck": 1,
     "money": 2000,
