@@ -1,17 +1,18 @@
 {
-    "level": 4,
-    "exp": 1111,
-    "stamina_points": 310,
-    "max_stamina_points": 310,
-    "focus_points": 140,
-    "max_focus_points": 140,
+    "level": 5,
+    "exp": 1305,
+    "stamina_points": 260,
+    "max_stamina_points": 260,
+    "focus_points": 130,
+    "max_focus_points": 130,
     "companions": [
         "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses"
+        "coin flip glasses",
+        "SOCKS_OF_PERCEPTION"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -21,7 +22,8 @@
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token"
+        "level 4 token",
+        "level 5 token"
     ],
     "magicinventory": [
         "reveal",
@@ -30,20 +32,30 @@
     ],
     "body": 1,
     "mind": 1,
-    "spirit": 1,
+    "spirit": 2,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 2000,
+    "money": 2430,
     "rabies": false,
     "immunity": true,
     "quest_items": [
+        "contract",
+        "BBQ_SAUCE"
     ],
     "level3reward": false,
     "food": 1,
     "days": 2,
     "leveltwonpcstate": [
-
+        "500 Gold",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_1_REWARD",
+        "MC_NUGGET_BETA_QUEST_COMPLETE",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "BBQ_SAUCE",
+        "MC_NUGGET_SECOND_QUEST_COMPLETE",
+        "NUGG_QUEST_TWO_MONEY",
+        "MC_NUGGET_QUEST_2_REWARD"
     ],
     "slots_vest": false,
     "cutscene1": true,
@@ -60,6 +72,6 @@
     "blackjackmackmoney": 1500,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 1500,
+    "slotsrippasnappamoney": 1870,
     "crapscrappymoney": 1500
 }

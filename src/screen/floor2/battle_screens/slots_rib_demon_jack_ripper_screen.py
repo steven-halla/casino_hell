@@ -197,8 +197,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 slot_mapping = {
                             range(1, 7): 0,  # lose a rib
                             range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                            range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                            range(21, 42): 3,  # add 100 coins
+                            range(15, 24): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                            range(24, 42): 3,  # add 100 coins
                             range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
                             range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
                             range(66, 76): 6,  # add 200 coins
@@ -212,8 +212,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 slot_mapping = {
                     range(1, 7): 0,  # lose a rib
                     range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                    range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(21, 42): 3,  # add 100 coins
+                    range(15, 24): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(24, 42): 3,  # add 100 coins
                     range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
                     range(53, 60): 5,  # gain 20 hp 20 mp 125 coins
                     range(60, 67): 6,  # add 200 coins
@@ -265,8 +265,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 slot_mapping = {
                     range(1, 7): 0,  # lose a rib
                     range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                    range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(21, 42): 3,  # add 100 coins
+                    range(15, 24): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(24, 42): 3,  # add 100 coins
                     range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
                     range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
                     range(66, 76): 6,  # add 200 coins

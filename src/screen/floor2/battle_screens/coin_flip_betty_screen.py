@@ -406,7 +406,7 @@ class CoinFlipBettyScreen(BattleScreen):
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 
-            if self.money < 500 and self.magic_points > 0:
+            if self.money < 400 and self.magic_points > 0:
                 self.magic_points -= 1
                 self.player_debuff_silence_counter += 10
                 self.game_state = "spell_casting"
