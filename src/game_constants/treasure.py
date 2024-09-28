@@ -8,6 +8,8 @@ class Treasure(Enum):
     RIB_DEMON_KEY = "rib demon key"
     NUGGIE_SAUCE_RECIPE = "NUGGIE_SAUCE_RECIPE"
     COMPANION_ERIKA_AMULET = "Erika's Amulet"
+    BOSS_KEY = "boss key"
+    FOCUS_BOOST = "focus boost"
 
 
 

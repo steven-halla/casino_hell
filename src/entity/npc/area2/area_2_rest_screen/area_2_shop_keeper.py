@@ -30,9 +30,9 @@ class Area2ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = ["COIN_SAVE_AREA_2", "Hippo Hour Glass", "HEALTHY_GLOVES", "STAT_POTION_AREA_2"]
+        self.shop_items = ["COIN_SAVE_AREA_2", "Hippo Hour Glass", "HEALTHY_GLOVES", "STAT_POTION_AREA_2", "Boss Key"]
 
-        self.shop_costs = ["200", "500", "1000", "1000"]
+        self.shop_costs = ["200", "500", "1000", "1000", "1000"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -139,6 +139,9 @@ class Area2ShopKeeper(Npc):
             if Equipment.STAT_POTION_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[3] = "sold out"
 
+            if Equipment.BOSS_KEY.value in state.player.quest_items:
+                self.shop_items[4] = "sold out"
+
 
 
             cost = int(self.shop_costs[self.selected_item_index])
@@ -187,6 +190,10 @@ class Area2ShopKeeper(Npc):
                         Equipment.STAT_POTION_AREA_2.add_potion_to_player(state.player, Equipment.STAT_POTION_AREA_2)
                         state.player.money -= 1000
                         self.stat_point_increase = True
+
+                    if state.player.money > 1001 and self.selected_item_index == 4 and Equipment.BOSS_KEY.value not in state.player.quest_items:
+                        Equipment.BOSS_KEY.add_item_to_quest_state(state.player, Equipment.BOSS_KEY)
+                        state.player.money -= 1000
 
 
 

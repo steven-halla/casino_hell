@@ -3,8 +3,8 @@
     "exp": 3370,
     "stamina_points": 390,
     "max_stamina_points": 390,
-    "focus_points": 210,
-    "max_focus_points": 210,
+    "focus_points": 220,
+    "max_focus_points": 220,
     "companions": [
         "sir leopold",
         "erika"
@@ -47,7 +47,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 1,
-    "money": 3000,
+    "money": 2800,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -60,11 +60,12 @@
         "rib demon key",
         "SLOTS_VEST_FOUND",
         "NUGGIE_SAUCE_1_FOUND",
-        "HIPPO_HOUR_GLASS"
+        "HIPPO_HOUR_GLASS",
+        "boss key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 9,
+    "days": 10,
     "leveltwonpcstate": [
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
         "MC_NUGGET_QUEST_1_REWARD",
@@ -93,7 +94,8 @@
         "COIN_FLIP_BETTY_DEFEATED",
         "SLOTS_RIPPA_SNAPPA_DEFEATED",
         "COIN_SAVE_AREA_2",
-        "CRAPS_HAPPY_DEFEATED"
+        "CRAPS_HAPPY_DEFEATED",
+        "focus boost"
     ],
     "slots_vest": true,
     "cutscene1": true,

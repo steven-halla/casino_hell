@@ -612,7 +612,6 @@ i need to ensure that things are put to value of 0 when needed.
 need to fix slots and craps so player doens't move
 fix black jack betting so its 100 max bet
 fix slots message for betting
-need to check black jack, oposum in a can and coin flip for item equipped
-
+check meter speed for both craps versions
 
 

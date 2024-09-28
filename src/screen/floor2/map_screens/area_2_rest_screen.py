@@ -22,6 +22,7 @@ from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_rest_screen.paul import Paul
 
 from entity.player.player import Player
+from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
 from entity.treasurechests.area_2_money_bag import Area2MoneyBag
 from game_constants.events import Events
 from game_constants.treasure import Treasure
@@ -102,6 +103,9 @@ class Area2RestScreen(Screen):
             state.treasurechests = [
                 Area2MoneyBag(16 * 5, 14 * 5),
             ]
+
+        if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
+            state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
 
         state.npcs = [
             Alice(16 * 5, 16 * 15),

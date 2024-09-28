@@ -2,6 +2,8 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.equipment import Equipment
+
 
 class Area2RestToBossArea(Npc):
     def __init__(self, x: int, y: int):
@@ -68,7 +70,7 @@ class Area2RestToBossArea(Npc):
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False
-        if "boss key" in state.player.quest_items:
+        if Equipment.BOSS_KEY.value in state.player.quest_items:
             state.area_2_rest_area_to_boss_point = True
 
             state.currentScreen = state.area2BossScreen

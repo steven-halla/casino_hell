@@ -120,7 +120,7 @@ class Player(Entity):
         self.level_1_mind_focus_increase = 10
         self.level_1_mind_spell_gain = Magic.REVEAL.value
 
-        self.level_2_mind_focus_increase = 40
+        self.level_2_mind_focus_increase = 20
         self.level_2_mind_spell_gain = Magic.CRAPS_LUCKY_7.value
 
         self.slots_vest = False

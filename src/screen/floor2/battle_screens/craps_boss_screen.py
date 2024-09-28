@@ -37,7 +37,7 @@ class CrapsBossScreen(BattleScreen):
 
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
-                ["It's too bad you didn't take this serious enough."],
+                ["Erika: Try all you want Hero, your not leaving this place, you're going to stay here....FOREVER."],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -98,9 +98,12 @@ class CrapsBossScreen(BattleScreen):
             ),
 
             "hand_cramp_message": TextBox(
-                ["Jack: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad.",
-                 "Sir Leopold: That bastard just cursed you,your come out roll meter is not only sped up but the margin of success is lower.",
-                 "Hero:  He's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Jack."],
+                ["Erika: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad.",
+                 "Sir Leopold: She just cursed you...your come out roll meter is not only sped up but the margin of success is lower.",
+                 "Hero:  She's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...you chicken nuggets suck!!!",
+                 "Erika:Say what you want 'Hero', i'm going to be the one to beat you.","Hero: I was hoping to not have to use this technique so early...a little parlor trick my Daddy taught me.",
+                 "Sir Leopold: Hero, oh my god what are you. Did he just put those dice in his mouth!!!!","Erika: Oh my god that is disgusting, do you know where those dice have been? You DIrty disgusting filthy"
+                                                                                                    "rotten human", "...I think I'm going to puke.",""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -218,9 +221,12 @@ class CrapsBossScreen(BattleScreen):
         self.unlucky_seven_flag = False
 
         self.lucky_seven_buff_counter = 0
-        self.money: int = 1500  # Add this line
+        self.money: int = 777  # Add this line
+        self.player_money = 777
 
         self.double_dice_cast_cost = 50
+        self.intro = True
+
 
 
 
@@ -337,6 +343,7 @@ class CrapsBossScreen(BattleScreen):
     # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
+        # print(self.gam)
         if self.lucky_seven_buff_counter > 0:
             self.magic_lock = True
         elif self.lucky_seven_buff_counter == 0:
@@ -355,9 +362,23 @@ class CrapsBossScreen(BattleScreen):
         controller = state.controller
         controller.update()
 
+        if self.intro == True:
+            self.game_state = "intro_screen"
 
+        if self.game_state == "intro_screen":
+            self.battle_messages["hand_cramp_message"].update(state)
+            if self.battle_messages["hand_cramp_message"].message_index == len(self.battle_messages["hand_cramp_message"].messages) - 1:
+                print("yaw")
+                self.game_state = "welcome_screen"
+                self.intro = False
 
         if self.game_state == "welcome_screen":
+
+
+
+
+
+
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 
@@ -423,8 +444,8 @@ class CrapsBossScreen(BattleScreen):
                 self.bet += 25
                 # print(self.game_state)
 
-                if self.bet >= 75:
-                    self.bet = 75
+                if self.bet >= 50:
+                    self.bet = 50
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
@@ -475,7 +496,7 @@ class CrapsBossScreen(BattleScreen):
                 self.power_meter_speed = 0
                 self.power_meter_index = self.power_meter_index
                 controller.isPPressed = False
-                if self.power_meter_index >= 80:
+                if self.power_meter_index >= 85:
                     self.lucky_seven = True
                 print("Your meter is:" + str(self.power_meter_index))
                 print("-----------------------------------------------------------------------------")
@@ -939,8 +960,13 @@ class CrapsBossScreen(BattleScreen):
 
         self.draw_bottom_black_box(state)
 
+        if self.game_state == "intro_screen":
+            self.battle_messages["hand_cramp_message"].draw(state)
 
         if self.game_state == "welcome_screen":
+
+
+
             self.battle_messages["welcome_message"].draw(state)
 
             if self.money < 1:

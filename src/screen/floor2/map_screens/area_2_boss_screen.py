@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.area2.area_2_boss_screen.erika_boss import ErikaBoss
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
@@ -63,13 +64,13 @@ class Area2BossScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
-        print("this is for our start area")
-        print(str(state.area_2_rest_area_to_gambling_point))
+
 
 
         if state.area_2_rest_area_to_boss_point == True:
+            state.player.canMove = True
             player_start_x = 16 * 27  # Desired X coordinate
-            player_start_y = 16 * 37  # Desired Y coordinate
+            player_start_y = 16 * 32  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.rest_area_to_boss_area_entry_point = False
 
@@ -98,6 +99,7 @@ class Area2BossScreen(Screen):
         # state.npcs = []
 
         state.npcs = [
+            ErikaBoss(16 * 12, 16 * 12)
             # BlackJackMack(16 * 5, 16 * 5),
             # OpossumInACanCandy(16 * 15, 16 * 5),
             # CoinFlipBetty(16 * 25, 16 * 5),

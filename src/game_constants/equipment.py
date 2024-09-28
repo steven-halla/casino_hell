@@ -7,6 +7,7 @@ class Equipment(Enum):
     HIPPO_HOUR_GLASS = "HIPPO_HOUR_GLASS"  # level 3 perception
     SOCKS_OF_PERCEPTION = "SOCKS_OF_PERCEPTION"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
+    BOSS_KEY = "boss key"
 
     COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
     RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
