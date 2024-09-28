@@ -67,8 +67,10 @@ class BattleScreen:
                     state.player.max_stamina_points += state.player.level_2_body_stamina_increase
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
                     self.battle_messages["level_up"].reset()
-                    self.game_state = "welcome_screen"
-
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
 
 
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
@@ -80,22 +82,37 @@ class BattleScreen:
                     self.battle_messages["level_up"].reset()
                     state.player.max_focus_points += state.player.level_2_mind_focus_increase
                     state.player.focus_points += state.player.level_2_mind_focus_increase
-                    self.game_state = "welcome_screen"
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
+
+
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
                     state.player.spirit += 1
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
-                    self.game_state = "welcome_screen"
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
+
+
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
                     state.player.perception += 1
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
-                    self.game_state = "welcome_screen"
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
                     # state.player.base_perception += 1
+
+
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
                         Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
                     state.player.perception += 1
@@ -103,7 +120,10 @@ class BattleScreen:
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
-                    self.game_state = "welcome_screen"
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
                     state.player.luck += 1
@@ -111,7 +131,10 @@ class BattleScreen:
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
-                    self.game_state = "welcome_screen"
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
                         state.player.enhanced_luck == True:
@@ -120,7 +143,11 @@ class BattleScreen:
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
-                    self.game_state = "welcome_screen"
+                    if state.opossumInACanCandyScreen.level_anchor == True:
+
+                        self.game_state = "play_again_or_leave_screen"
+                    else:
+                        self.game_state = "welcome_screen"
 
 
     def draw(self, state: 'GameState') -> None:

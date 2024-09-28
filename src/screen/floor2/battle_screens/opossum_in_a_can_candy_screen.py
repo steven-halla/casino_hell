@@ -254,6 +254,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.player_debuff_poison = 0
         self.exp_gain = 15
         self.entry_cost = 250
+        self.level_anchor = False
 
 
 
@@ -399,9 +400,9 @@ class OpossumInACanCandyScreen(BattleScreen):
             Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
 
 
-        if state.controller.is1Pressed:
-            self.quest_money -= 250
-            state.controller.is1Pressed = False
+        # if state.controller.is1Pressed:
+        #     self.quest_money -= 250
+        #     state.controller.is1Pressed = False
 
 
         if state.musicOn == True:
@@ -492,7 +493,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
             elif self.battle_messages["tally_message"].message_index == 1:
 
-                if state.player.money < 300:
+                if state.player.money < self.entry_cost:
                     if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
                         Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
                         Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
@@ -729,10 +730,13 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
         if self.game_state == "play_again_or_leave_screen":
+            self.level_anchor = False
+
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 
             if self.game_state == "level_up_screen":
+                self.level_anchor = True
                 self.handle_level_up(state, state.controller)
             self.rabiesStaminaChecker = False
 
