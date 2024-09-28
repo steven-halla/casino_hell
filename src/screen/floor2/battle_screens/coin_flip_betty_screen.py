@@ -630,7 +630,7 @@ class CoinFlipBettyScreen(BattleScreen):
             # if self.heads_focus == True:
             #     self.result = "heads"
 
-            if "coin flip glasses" in state.player.items and self.player_choice == self.result:
+            if "coin flip glasses" in state.player.equipped_items and self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
                 if controller.isTPressed:
 

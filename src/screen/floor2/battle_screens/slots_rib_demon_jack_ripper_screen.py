@@ -1003,7 +1003,6 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     # Update the enemy's money after balancing
                     self.money = self.money_balancer.money
 
-                    print(str(state.player.items))
                     self.resolve_penalty = True
 
             elif self.three_nines:

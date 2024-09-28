@@ -111,6 +111,7 @@ class Player(Entity):
         self.base_perception = 1
         self.second_floor_stamina_boost_item = 1
         self.hide_player = False
+
         self.enhanced_luck = False
 
         self.level_1_body_stamina_increase = 10
@@ -119,7 +120,7 @@ class Player(Entity):
         self.level_1_mind_focus_increase = 10
         self.level_1_mind_spell_gain = Magic.REVEAL.value
 
-        self.level_2_mind_focus_increase = 20
+        self.level_2_mind_focus_increase = 40
         self.level_2_mind_spell_gain = Magic.CRAPS_LUCKY_7.value
 
         self.slots_vest = False
@@ -325,9 +326,11 @@ class Player(Entity):
             self.leveling_up = True
             self.stat_point_increase = True
 
+
             return
 
         if self.exp >= 2800 and self.level8checker == False and "level 8 token" not in state.player.npc_items:
+            state.player.stat_point_increase = False
             print("grats you leveld up to level 8")
             if "level 8 token" not in state.player.npc_items:
                 # if "shield" not in self.magicinventory:
@@ -336,7 +339,7 @@ class Player(Entity):
                 # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
                 self.max_stamina_points += 40
                 self.max_focus_points += 20
-            self.level7checker = True
+            self.level8checker = True
             self.level += 1
             self.leveling_up = True
 

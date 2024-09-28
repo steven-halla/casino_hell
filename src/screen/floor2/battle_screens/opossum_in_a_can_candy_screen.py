@@ -47,7 +47,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
                                     ]
         self.winner_or_looser_lucky: List[str] = ["win", "win",
-                                            "big win", "big win", "lose",
+                                            "big win", "big win", "win",
                                             "lucky_star",
                                             "X3_star", "win",
 
@@ -303,25 +303,18 @@ class OpossumInACanCandyScreen(BattleScreen):
         # print("Can 1 contains:", self.can1)
 
         self.can2 = shuffled_items[1]
-        # print("Can 2 contains:", self.can2)
 
         self.can3 = shuffled_items[2]
-        # print("Can 3 contains:", self.can3)
 
         self.can4 = shuffled_items[3]
-        # print("Can 4 contains:", self.can4)
 
         self.can5 = shuffled_items[4]
-        # print("Can 5 contains:", self.can5)
 
         self.can6 = shuffled_items[5]
-        # print("Can 6 contains:", self.can6)
 
         self.can7 = shuffled_items[6]
-        # print("Can 7 contains:", self.can7)
 
         self.can8 = shuffled_items[7]
-        # print("Can 8 contains:", self.can8)
 
     def refresh(self):
         self.bet = 20
@@ -377,9 +370,9 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
             self.player_score = 0
-            if "opossum repellent" in state.player.items:
+            if "opossum repellent" in state.player.equipped_items:
                 state.player.stamina_points -= 25
-            elif "opossum repellent" not in state.player.items:
+            elif "opossum repellent" not in state.player.equipped_items:
                 state.player.stamina_points -= 50
 
 
@@ -393,7 +386,6 @@ class OpossumInACanCandyScreen(BattleScreen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
-        print(self.game_state)
         state.player.canMove = False
 
         if self.sallyOpossumMoney == 0:
@@ -442,7 +434,6 @@ class OpossumInACanCandyScreen(BattleScreen):
             if self.player_score >= 0 and self.talley_checker == False:
                 # state.player.stamina_points -= 3
 
-                # print("Your before  total exp is: " + str(state.player.exp))
                 if self.player_score == 0:
                     state.player.exp += 1
                     self.exp_gain = 1
@@ -532,8 +523,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         if self.game_state == "menu_screen":
             # state.player.update(state)
-            print(self.game_state)
-            print(state.player.leveling_up)
+
 
 
 

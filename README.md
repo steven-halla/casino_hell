@@ -458,6 +458,10 @@ craps boss
 we can add a day anytime player wants to re arm their items
 allow 1 paid version of 500 gold membership
 
+state.player.enhanced_luck this is not saved so if you use coin save and reset game
+you lose the luck bonus, in the future will need to have enhnaced stats be saved
+
+
 
 
 ------------------------TO DO LIST CREATED AUG 4TH--------------------------------------------
@@ -605,25 +609,10 @@ i need to ensure that things are put to value of 0 when needed.
 
 
 -------------------------------------------------------------------------------
-bet screen in one of teh games is reading bad info
-for hungry hungry hippos need to mix uup the humans randomly
-is coin flip giving money when item is not equippeed?Is it items or equipped items?
-i need to set it to where you need a spirit of 2 to equip amulet of erika
-on slots hacked the first spin never reads out message
-oppposum in a can not levling me up i have over 2100 exp for level 7
-tested exp for all levels,there is a rogue exp bug that didnt' level me up
-
-
-rib demon slots keeps bringing me bck to rest screen
-
-back jack double draw is not giving money on lose if you bust
-
-save coin adds to items need to not do that
-
-
-
-
-
+need to fix slots and craps so player doens't move
+fix black jack betting so its 100 max bet
+fix slots message for betting
+need to check black jack, oposum in a can and coin flip for item equipped
 
 
 

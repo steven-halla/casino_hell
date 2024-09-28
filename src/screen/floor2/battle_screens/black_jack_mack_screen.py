@@ -795,7 +795,7 @@ class BlackJackMackScreen(Screen):
                         print(" New Player score is: " + str(self.player_score))
                         self.critical_hit = True
 
-            if "sir leopold's paw" in state.player.items:
+            if "sir leopold's paw" in state.player.equipped_items:
                 roll = random.randint(1, 100)  # Get a random number between 1 and 100
                 if roll >= 40:  # Check if the roll is less than or equal to 30
                     self.enemy_black_jack_win = False
@@ -944,9 +944,7 @@ class BlackJackMackScreen(Screen):
         elif self.game_state == "enemy_draw_one_card":
             print("this is the start of enemy draw one card")
             while self.enemy_score < 16:  # this is 15 in order to make game a little easier
-                print("thi sis our while loop")
-                # if "sir leopolds paw" in state.player.items:
-                print("Meowwwwwwwwwwwwwwwwwwwwww")
+
                 self.enemy_hand += self.deck.enemy_draw_hand(1)
                 self.deck.compute_hand_value(self.enemy_hand)
 

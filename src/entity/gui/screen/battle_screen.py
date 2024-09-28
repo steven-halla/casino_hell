@@ -27,6 +27,7 @@ class BattleScreen:
         pass
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
+
         if state.player.stat_point_increase == False:
             self.battle_messages["level_up"].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
