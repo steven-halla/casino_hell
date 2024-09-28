@@ -392,6 +392,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         setattr(self, selected_can_attribute, "")
 
     def update(self, state: "GameState"):
+        print(self.game_state)
 
         if self.sallyOpossumMoney == 0:
             self.sallyOpossumIsDefeated = True
@@ -512,8 +513,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         if self.game_state == "welcome_screen":
 
 
-            if state.player.leveling_up == True:
-                self.game_state = "level_up_screen"
+
 
             self.battle_messages["welcome_message"].update(state)
 
@@ -521,10 +521,18 @@ class OpossumInACanCandyScreen(BattleScreen):
                 self.game_state = "menu_screen"
 
 
-        if self.game_state == "level_up_screen":
+        elif self.game_state == "level_up_screen":
             self.handle_level_up(state, state.controller)
 
+
+
         if self.game_state == "menu_screen":
+            # state.player.update(state)
+            print(self.game_state)
+            print(state.player.leveling_up)
+
+
+
             if "shake" in self.magic_menu_selector:
                 if state.controller.isUpPressed:
                     self.opossum_index -= 1
@@ -721,6 +729,11 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
         if self.game_state == "play_again_or_leave_screen":
+            if state.player.leveling_up == True:
+                self.game_state = "level_up_screen"
+
+            if self.game_state == "level_up_screen":
+                self.handle_level_up(state, state.controller)
             self.rabiesStaminaChecker = False
 
             self.battle_messages["play_again_or_leave_message"].update(state)
@@ -739,7 +752,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                 pygame.time.delay(200)
 
             if state.controller.isTPressed:
-                if self.play_again_or_quit_index == 0:
+                if self.play_again_or_quit_index == 0 and state.player.leveling_up == False:
 
                     self.debuff_keen_perception = False
 

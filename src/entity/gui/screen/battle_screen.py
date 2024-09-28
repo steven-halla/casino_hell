@@ -17,7 +17,7 @@ class BattleScreen:
         self.bet: int = 50  # Add this line
         self.lock_down = 0
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
-        self.level_screen_stats = ["Body", "Mind", "Spirit", "Percep.", "Luck"]
+        self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         self.stat_increase = False
 
     def start(self, state: 'GameState') -> None:
@@ -68,6 +68,7 @@ class BattleScreen:
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
                     self.battle_messages["level_up"].reset()
                     self.game_state = "welcome_screen"
+
 
 
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
