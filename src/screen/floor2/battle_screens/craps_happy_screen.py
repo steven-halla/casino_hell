@@ -653,7 +653,7 @@ class CrapsHappyScreen(BattleScreen):
                             if self.battle_messages["come_out_roll_message_unlucky_7"].message_index == 2:
                                 print("469 ---------------")
                                 state.player.money += self.bet
-                                state.player.exp += 50
+                                state.player.exp += 47
                                 self.game_state = "welcome_screen"
                                 self.battle_messages["come_out_roll_message"].reset()
 
@@ -763,7 +763,7 @@ class CrapsHappyScreen(BattleScreen):
             if self.battle_messages["you_lose_come_out_roll_message"].message_index == 1:
                 state.player.money -= self.bet
                 self.money += self.bet
-                state.player.exp += 15
+                state.player.exp += 13
                 self.game_state = "welcome_screen"
                 self.game_reset(state)
 
@@ -822,7 +822,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.money += self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
-                state.player.exp += 20
+                state.player.exp += 17
 
 
                 self.game_state = "welcome_screen"
@@ -861,9 +861,7 @@ class CrapsHappyScreen(BattleScreen):
             if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
                 state.player.money += self.bet
                 self.money -= self.bet
-                print("player before gets exp of 15" + str(state.player.exp))
-                state.player.exp += 15
-                print("player after gets exp of 15" + str(state.player.exp))
+                state.player.exp += 12
 
                 self.game_state = "welcome_screen"
                 self.game_reset(state)
@@ -907,7 +905,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.money += self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
-                state.player.exp += 20
+                state.player.exp += 18
 
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False

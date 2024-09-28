@@ -1,6 +1,6 @@
 {
     "level": 8,
-    "exp": 3426,
+    "exp": 3551,
     "stamina_points": 370,
     "max_stamina_points": 370,
     "focus_points": 185,
@@ -48,7 +48,7 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 3030,
+    "money": 4200,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -65,7 +65,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 8,
+    "days": 9,
     "leveltwonpcstate": [
         "500 Gold",
         "MC_NUGGET_FIRST_QUEST_COMPLETE",
@@ -92,7 +92,9 @@
         "CRAPS_HAPPY_DEFEATED",
         "QUEST_1_COIN",
         "QUEST_1_BADGE",
-        "QUEST_1_COMPLETE"
+        "QUEST_1_COMPLETE",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "COIN_FLIP_BETTY_DEFEATED"
     ],
     "slots_vest": true,
     "cutscene1": true,
@@ -100,10 +102,10 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 400,
+    "coinflipbetteymoney": 0,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 970,
+    "opossuminacancandymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "blackjackmackmoney": 0,

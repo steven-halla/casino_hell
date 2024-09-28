@@ -161,9 +161,13 @@ class Area2ShopKeeper(Npc):
 
                     if state.player.money > 899 and self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value not in state.player.level_two_npc_state:
                         print("HI")
-                        Equipment.COIN_SAVE_AREA_2.add_equipment_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
+                        if state.player.enhanced_luck == True:
+                            state.player.luck -= 1
+                        Equipment.COIN_SAVE_AREA_2.add_potion_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
                         state.player.money -= 200
                         state.save_game(state.player, state)  # Call the save_game function
+                        if state.player.enhanced_luck == True:
+                            state.player.luck += 1
 
                     if state.player.money > 1199 and self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
                         print("HIPPOOOOOOOOOOOOOO")
