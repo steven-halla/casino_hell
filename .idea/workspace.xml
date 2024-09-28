@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fied issue of sending player o wrong screen it was a typo">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="exp balance changs as well as balance changes to lvel up, more MP less HP by a factor of 10">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_shop_keeper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -703,7 +701,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="988" />
+    <option name="localTasksCounter" value="989" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -732,7 +730,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed craps bug that sent player to wrong screen" />
     <MESSAGE value="FIXED bugs for craps npc and the game, now everything works proper" />
     <MESSAGE value="fully implemented new companion item" />
     <MESSAGE value="currently working on getting itmes to display properly" />
@@ -757,7 +754,8 @@
     <MESSAGE value="fixed perception. and fixed oppsum in a can level up" />
     <MESSAGE value="fixed issue of playing moving while playing games" />
     <MESSAGE value="fied issue of sending player o wrong screen it was a typo" />
-    <option name="LAST_COMMIT_MESSAGE" value="fied issue of sending player o wrong screen it was a typo" />
+    <MESSAGE value="exp balance changs as well as balance changes to lvel up, more MP less HP by a factor of 10" />
+    <option name="LAST_COMMIT_MESSAGE" value="exp balance changs as well as balance changes to lvel up, more MP less HP by a factor of 10" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -781,6 +779,11 @@
           <url>file://$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen2.py</url>
           <line>306</line>
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/entity/gui/screen/battle_screen.py</url>
+          <line>121</line>
+          <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

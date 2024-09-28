@@ -895,7 +895,7 @@ class BlackJackMackScreen(Screen):
                     state.player.stamina_points -= 4
                     print("Going to bust a giant busttttttttter")
 
-                    state.player.exp += self.low_exp_gain
+                    state.player.exp += 10
                     self.first_message_display = f"You lose -6 HP."
                     self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
 
@@ -925,7 +925,7 @@ class BlackJackMackScreen(Screen):
                         state.player.stamina_points -= 4
                         print("sdlfj;sdjf----------------------------------------------------")
 
-                        state.player.exp += self.low_exp_gain
+                        state.player.exp += 10
                         self.first_message_display = f"You lose -6 HP."
                         self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
 
@@ -961,7 +961,7 @@ class BlackJackMackScreen(Screen):
                     state.player.money += self.bet
                     self.money -= self.bet
                     print("enemy bust")
-                    state.player.exp += 20
+                    state.player.exp += 25
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
@@ -1278,7 +1278,7 @@ class BlackJackMackScreen(Screen):
                         self.first_message_display = f"You gain 8 exp and 0 gold, and lose -2 HP "
 
                     else:
-                        state.player.exp += 13
+                        state.player.exp += 15
                         state.player.stamina_points -= 4
                         self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
 
