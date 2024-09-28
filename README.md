@@ -618,6 +618,8 @@ rib demon slots keeps bringing me bck to rest screen
 
 back jack double draw is not giving money on lose if you bust
 
+save coin adds to items need to not do that
+
 
 
 

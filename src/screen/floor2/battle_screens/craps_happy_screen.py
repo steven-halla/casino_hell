@@ -215,6 +215,8 @@ class CrapsHappyScreen(BattleScreen):
 
         self.lucky_seven_buff_counter = 0
         self.lucky_seven = False
+        self.double_dice_cast_cost = 50
+
 
 
     def game_reset(self, state: "GameState"):
@@ -249,7 +251,6 @@ class CrapsHappyScreen(BattleScreen):
         self.lucky_message_switch = False
         self.point_roll_total = 0
         self.come_out_roll_total = 0
-        self.double_dice_cast_cost = 50
 
 
 

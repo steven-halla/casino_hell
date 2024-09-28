@@ -370,7 +370,7 @@ class CoinFlipBettyScreen(BattleScreen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
-
+        state.player.canMove = False
 
         if self.debuff_counter < 1:
             self.debuff_vanish = False
@@ -482,6 +482,8 @@ class CoinFlipBettyScreen(BattleScreen):
                     Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
                 self.welcome_screen_index = 0
                 state.currentScreen = state.area2GamblingScreen
+                state.player.canMove = True
+
                 self.quest_money = 0
                 self.magic_lock = False
                 self.debuff_counter = 0
@@ -765,8 +767,11 @@ class CoinFlipBettyScreen(BattleScreen):
             print(self.heads_focus)
 
             if state.player.money < 1:
+
                 self.game_state = "game_over_no_money"
             elif state.player.stamina_points < 1:
+                state.player.canMove = True
+
                 self.game_state = "game_over_no_stamina"
 
             if self.money < 10:
@@ -816,6 +821,8 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
         if self.game_state == "enemy_defeated_screen":
+            state.player.canMove = True
+
             if self.battle_messages["enemy_defeated_message"].message_index == 3:
                 print("your message index might be at 3")
                 self.enemy_defeated_counter = True

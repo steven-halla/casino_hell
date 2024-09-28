@@ -394,6 +394,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
     def update(self, state: "GameState"):
         print(self.game_state)
+        state.player.canMove = False
 
         if self.sallyOpossumMoney == 0:
             self.sallyOpossumIsDefeated = True
@@ -508,6 +509,8 @@ class OpossumInACanCandyScreen(BattleScreen):
         if self.game_state == "no_money_you_leave":
             self.battle_messages["less_than_150_money"].update(state)
             if self.battle_messages["less_than_150_money"].is_finished():
+                state.player.canMove = True
+
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
 
@@ -698,8 +701,8 @@ class OpossumInACanCandyScreen(BattleScreen):
                     state.player.stamina_points = 1
                     self.music_on = True
 
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
 
                 self.game_state = "play_again_or_leave_screen"
 
@@ -786,6 +789,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
                 elif self.play_again_or_quit_index == 1:
+
                     if self.player_debuff_poison == 0:
                         self.music_on = True
                         self.debuff_keen_perception = False
@@ -797,6 +801,8 @@ class OpossumInACanCandyScreen(BattleScreen):
 
                         self.quest_money = 0
                         self.game_state = "welcome_screen"
+                        state.player.canMove = True
+
                         state.currentScreen = state.area2GamblingScreen
                         state.area2GamblingScreen.start(state)
 
@@ -809,6 +815,8 @@ class OpossumInACanCandyScreen(BattleScreen):
                 self.game_state = "menu_screen"
 
         if self.game_state == "opossum_defeated_screen":
+            state.player.canMove = True
+
             self.opossumBite = True
             state.player.hasRabies = True
             state.player.stamina_points = 1
@@ -824,6 +832,8 @@ class OpossumInACanCandyScreen(BattleScreen):
                 state.area2GamblingScreen.start(state)
 
         if self.game_state == "real_opossum_defeated_screen":
+            state.player.canMove = True
+
             self.opossumBite = True
             self.battle_messages["real_opossum_defeated_message"].update(state)
             if self.battle_messages["real_opossum_defeated_message"].message_index == 1:
@@ -840,6 +850,8 @@ class OpossumInACanCandyScreen(BattleScreen):
 
 
         if self.game_state == "hero_defeated_stamina_screen":
+            state.player.canMove = True
+
             self.battle_messages["hero_defeated_stamina_message"].update(state)
             if self.battle_messages["hero_defeated_stamina_message"].message_index == 1:
                 self.music_on = True
