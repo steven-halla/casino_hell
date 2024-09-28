@@ -527,8 +527,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 if self.battle_messages["you_win"].message_index == 1:
                     Events.add_event_to_player(state.player, Events.SLOTS_RIPPA_SNAPPA_DEFEATED)
 
-                    state.currentScreen = Area2GamblingScreen()
-
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
 
 
 
@@ -537,7 +537,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.slot_hack = 0
                 self.battle_messages["game_over_no_stamina_message"].update(state)
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
-                    state.currentScreen = Area2StartScreen()
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
+
                     self.reset()
 
             # elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
@@ -551,7 +553,9 @@ class SlotsRippaSnappaScreen(BattleScreen):
             elif state.player.money < 50 and state.player.money > 0:
                 self.battle_messages["game_over_low_money_message"].update(state)
                 if self.battle_messages["game_over_low_money_message"].message_index == 1:
-                    state.currentScreen = Area2GamblingScreen()
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
+
                     self.reset()
 
 
