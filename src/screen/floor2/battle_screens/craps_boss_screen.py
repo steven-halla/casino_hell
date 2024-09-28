@@ -396,11 +396,11 @@ class CrapsBossScreen(BattleScreen):
 
 
 
-            elif state.player.money < 50 and state.player.money > 0:
+            elif self.player_money < 50 and self.player_money > 0:
                 self.game_state = "game_over_screen"
 
 
-            elif state.player.money <= 0:
+            elif self.player_money <= 0:
                 self.game_state = "game_over_screen"
 
             if controller.isUpPressed:
@@ -659,7 +659,7 @@ class CrapsBossScreen(BattleScreen):
                             # Check if the current message is finished and if the current message index is 2
                             if self.battle_messages["come_out_roll_message_unlucky_7"].message_index == 2:
                                 print("469 ---------------")
-                                state.player.money += self.bet
+                                self.player_money += self.bet
                                 state.player.exp += 50
                                 self.game_state = "welcome_screen"
                                 self.battle_messages["come_out_roll_message"].reset()
@@ -705,7 +705,7 @@ class CrapsBossScreen(BattleScreen):
                 self.point_roll_index = (self.point_roll_index + 1) % len(self.point_roll_choices)
                 controller.isDownPressed = False
             if self.point_roll_index == 0 and controller.isTPressed:
-                state.player.stamina_points -= 2
+                state.player.stamina_points -= 4
                 # self.come_out_roll total is what i need to match
                 # self.point_roll_total = random.randint(1, 6)
 
@@ -770,7 +770,7 @@ class CrapsBossScreen(BattleScreen):
             ]
             self.battle_messages["you_lose_come_out_roll_message"].update(state)
             if self.battle_messages["you_lose_come_out_roll_message"].message_index == 1:
-                state.player.money -= self.bet
+                self.player_money -= self.bet
                 self.money += self.bet
                 state.player.exp += 15
                 self.game_state = "welcome_screen"
@@ -786,7 +786,7 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["you_win_come_out_roll_message"].update(state)
             # print("643 should follow")
             if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
-                state.player.money += self.bet
+                self.player_money += self.bet
                 self.money -= self.bet
                 state.player.exp += 25
                 self.game_state = "welcome_screen"
@@ -825,7 +825,7 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["you_lose_seven_message"].update(state)
 
             if controller.isTPressed:
-                state.player.money -= self.bet
+                self.player_money -= self.bet
                 self.money += self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
@@ -848,7 +848,7 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["you_lose_come_out_roll_message"].update(state)
             print("629 should follow")
             if self.battle_messages["you_lose_come_out_roll_message"].message_index == 1:
-                state.player.money -= self.bet
+                self.player_money -= self.bet
                 self.money += self.bet
                 state.player.exp += 15
                 self.game_state = "welcome_screen"
@@ -864,7 +864,7 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["you_win_come_out_roll_message"].update(state)
             # print("643 should follow")
             if self.battle_messages["you_win_come_out_roll_message"].message_index == 1:
-                state.player.money += self.bet
+                self.player_money += self.bet
                 self.money -= self.bet
                 state.player.exp += 15
                 self.game_state = "welcome_screen"
@@ -903,7 +903,7 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["you_lose_seven_message"].update(state)
 
             if controller.isTPressed:
-                state.player.money -= self.bet
+                self.player_money -= self.bet
                 self.money += self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
@@ -916,7 +916,7 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["you_win_matching_message"].update(state)
 
             if controller.isTPressed:
-                state.player.money += self.bet
+                self.player_money += self.bet
                 self.money -= self.bet
                 self.point_roll_total = 0
                 self.game_reset(state)
@@ -940,12 +940,12 @@ class CrapsBossScreen(BattleScreen):
 
 
 
-            elif state.player.money < 50 and state.player.money > 0:
+            elif self.player_money < 50 and self.player_money > 0:
                 self.battle_messages["game_over_low_money_message"].update(state)
 
 
 
-            elif state.player.money <= 0:
+            elif self.player_money <= 0:
                 self.battle_messages["game_over_no_money_message"].update(state)
 
 
@@ -975,13 +975,13 @@ class CrapsBossScreen(BattleScreen):
             if state.player.stamina_points < 1:
                 self.battle_messages["game_over_no_stamina_message"].draw(state)
 
-            elif state.player.money <= 0:
+            elif self.player_money <= 0:
                 self.battle_messages["game_over_no_money_message"].draw(state)
 
             elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
                 self.battle_messages["game_over_low_stamina_message"].draw(state)
 
-            elif state.player.money < 50 and state.player.money > 0:
+            elif self.player_money < 50 and self.player_money > 0:
                 self.battle_messages["game_over_low_money_message"].draw(state)
 
             black_box_height = 221 - 50  # Adjust height
@@ -1089,14 +1089,14 @@ class CrapsBossScreen(BattleScreen):
                     state.area2GamglingScreen.start(state)
 
 
-            elif state.player.money < 50 and state.player.money > 0:
+            elif self.player_money < 50 and self.player_money > 0:
                 self.battle_messages["game_over_low_money_message"].draw(state)
 
                 if self.battle_messages["game_over_low_money_message"].message_index == 1:
                     state.currentScreen = state.area2RestScreen
                     state.area2RestScreen.start(state)
 
-            elif state.player.money <= 0:
+            elif self.player_money <= 0:
                 self.battle_messages["game_over_no_money_message"].draw(state)
 
                 if self.battle_messages["game_over_no_money_message"].message_index == 1:
