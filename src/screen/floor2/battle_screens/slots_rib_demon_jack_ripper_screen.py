@@ -489,6 +489,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
 
+
+
         if self.game_state == "welcome_screen":
 
 
