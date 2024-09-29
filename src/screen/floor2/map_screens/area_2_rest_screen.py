@@ -34,7 +34,8 @@ class Area2RestScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
+        # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False
@@ -121,9 +122,9 @@ class Area2RestScreen(Screen):
             Karn(16 * 60, 16 * 45),
 
             # below are shops and such
-            Area2InnKeeper(16 * 101, 16 * 33),
+            Area2InnKeeper(16 * 140, 16 * 95),
             Area2ShopKeeper(16 * 72, 16 * 7),
-            Area2BarKeep(16 * 39, 16 * 15),
+            Area2BarKeep(16 * 130, 16 * 4),
 
             # below are doors
             Area2RestToGamblingArea(16 * 17, 16 * 0),

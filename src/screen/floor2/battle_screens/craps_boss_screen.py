@@ -184,10 +184,10 @@ class CrapsBossScreen(BattleScreen):
 
         }
 
-        self.come_out_roll_choices: list[str] = ["Roll"]
+        self.come_out_roll_choices: list[str] = ["Spit Roll"]
         self.point_roll_choices: list[str] = ["Play", "Bet"]
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-        self.magic_screen_choices: list[str] = ["CRAPS_LUCKY_7", "Back"]
+        self.magic_screen_choices: list[str] = [Magic.CRAPS_LUCKY_7.value, "Back"]
         self.bet_screen_choices: list[str] = ["Back"]
 
         self.welcome_screen_index: int = 0

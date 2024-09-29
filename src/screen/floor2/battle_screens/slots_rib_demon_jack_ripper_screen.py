@@ -615,15 +615,6 @@ class SlotsRippaSnappaScreen(BattleScreen):
         elif self.game_state == "level_up_screen":
             self.handle_level_up(state, state.controller)
 
-            # print("This is the level up screen")
-
-
-                    #
-                    #
-
-
-
-
 
         elif self.game_state == "magic_screen":
             if self.magic_screen_index == 0:
