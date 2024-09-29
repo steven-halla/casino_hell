@@ -8,9 +8,12 @@ from entity.npc.area2.area_2_rest_screen.Amber import Amber
 from entity.npc.area2.area_2_rest_screen.April import April
 from entity.npc.area2.area_2_rest_screen.JanetP import JanetP
 from entity.npc.area2.area_2_rest_screen.Lurger import Lurger
+from entity.npc.area2.area_2_rest_screen.NatNat import NatNat
 from entity.npc.area2.area_2_rest_screen.Natalie import Natalie
 from entity.npc.area2.area_2_rest_screen.Samantha import Samantha
+from entity.npc.area2.area_2_rest_screen.Sasquatch import Sasquatch
 from entity.npc.area2.area_2_rest_screen.Stew import Stew
+from entity.npc.area2.area_2_rest_screen.TommyBoy import TommyBoy
 from entity.npc.area2.area_2_rest_screen.alex import Alex
 from entity.npc.area2.area_2_rest_screen.alice import Alice
 from entity.npc.area2.area_2_rest_screen.area_2_bar_keep import Area2BarKeep
@@ -118,11 +121,21 @@ class Area2RestScreen(Screen):
             Johnathon(16 * 15, 16 * 15), # fin
 
             Natalie(16 * 25, 16 * 15), # fin
+
             JanetP(16 * 35, 16 * 15), # fin
             Amber(16 * 45, 16 * 15), # fin
-            April(16 * 55, 16 * 15), # fin
-            Samantha(16 * 65, 16 * 15), # fin
+
+
+
+            April(16 * 45, 16 * 5), # fin
+
+
+            Samantha(16 * 45, 16 * 25), # fin
+
             Lurger(16 * 14, 16 * 25), # fin
+            Sasquatch(16 * 25, 16 * 25), # fin
+            NatNat(16 * 35, 16 * 25), # fin
+            TommyBoy(16 * 45, 16 * 25), # fin
 
 
             Alice(16 * 39, 16 * 46),   # fin

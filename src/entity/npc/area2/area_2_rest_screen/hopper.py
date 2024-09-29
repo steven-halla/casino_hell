@@ -4,22 +4,23 @@ from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class Amber(Npc):
+class Hopper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
-        self.black_jack_thomas_messages = {
+        self.sally_opossum_messages = {
             "welcome_message": NpcTextBox(
-                ["Amber: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
+                ["Sally: This game is super easy and chill, go ahead and play yeah, just 150 coins."],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Amber That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["As far as men go you are the worst, trash, scum, idiot, scoundrel."],
                 (50, 450, 700, 130), 36, 500),
-
+            "money_message": NpcTextBox(
+                ["You need at least 150 coins to play, so stop wasting my time you scum"],
+                (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
-                ["Amber GET AWAY FROM ME YOU FROTHY MOUTHED BASTARD."],
+                ["Oh you don't look so good, it's too bad the doctor 'lost' her blue flower, looks like no antidote for you opossum-kun"],
                 (50, 450, 700, 130), 36, 500),
-
 
         }
         self.choices = ["Yes", "No"]
@@ -27,15 +28,13 @@ class Amber(Npc):
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
-        self.black_jack_thomas_defeated = False
+        self.sallyOpossumIsDefeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
 
-
-
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Mayor.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Nina.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -52,27 +51,36 @@ class Amber(Npc):
                 (pygame.time.get_ticks() - self.state_start_time) > 500:
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
+            # Reset the message depending on the game state
 
             if state.player.hasRabies == True:
-                self.black_jack_thomas_messages["rabies_message"].reset()
-            elif state.blackJackThomasScreen.black_jack_thomas_defeated:
-                self.black_jack_thomas_messages["defeated_message"].reset()
-
+                self.sally_opossum_messages["rabies_message"].reset()
+            elif state.player.money < 150:
+                self.sally_opossum_messages["money_message"].reset()
+            elif state.opossumInACanSallyScreen.sallyOpossumIsDefeated:
+                self.sally_opossum_messages["defeated_message"].reset()
             else:
-                self.black_jack_thomas_messages["welcome_message"].reset()
+                self.sally_opossum_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.black_jack_thomas_messages["rabies_message"]
+            self.sally_opossum_messages["rabies_message"]
             if state.player.hasRabies
-            else (
-                self.black_jack_thomas_messages["defeated_message"]
-                if state.blackJackThomasScreen.black_jack_thomas_defeated
-                else self.black_jack_thomas_messages["welcome_message"]
+            else(
+                self.sally_opossum_messages["money_message"]
+                if state.player.money < 150
+                else (
+                    self.sally_opossum_messages["defeated_message"]
+                    if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
+                    else (
+                        self.sally_opossum_messages["no_play_message"]
+                        if state.player.money < 150
+                        else self.sally_opossum_messages["welcome_message"]
+                )
             )
         )
+    )
         current_message.update(state)
-
 
         # Lock the player in place while talking
         state.player.canMove = False
@@ -84,21 +92,25 @@ class Amber(Npc):
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
                 state.controller.isUpPressed = False
 
-
             elif state.controller.isDownPressed:
                 self.arrow_index = (self.arrow_index + 1) % len(self.choices)
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
+        if current_message.is_finished() and state.controller.isTPressed and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 149:
+            # Handle the selected option
 
+            # with that many condditions i should make a variable set to true/false
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
-            # Check if the selected option is "Yes" and execute the code you provided
+            # need to add a check here for the item work
+            ##
+            ##
+            ##look above its imoprtant !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             if selected_option == "Yes":
-                state.currentScreen = state.blackJackThomasScreen
-                state.blackJackThomasScreen.start(state)
+                state.currentScreen = state.opossumInACanSallyScreen
+                state.opossumInACanSallyScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -121,7 +133,7 @@ class Amber(Npc):
         #     self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        sprite_rect = pygame.Rect(7, 6, 16.4, 24)
+        sprite_rect = pygame.Rect(5, 6, 23, 24)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
@@ -138,19 +150,27 @@ class Amber(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.black_jack_thomas_messages["rabies_message"]
+                self.sally_opossum_messages["rabies_message"]
                 if state.player.hasRabies
                 else (
-                    self.black_jack_thomas_messages["defeated_message"]
-                    if state.blackJackThomasScreen.black_jack_thomas_defeated
-                    else self.black_jack_thomas_messages["welcome_message"]
+                    self.sally_opossum_messages["money_message"]
+                    if state.player.money < 150
+                    else (
+                        self.sally_opossum_messages["defeated_message"]
+                        if state.opossumInACanSallyScreen.sallyOpossumIsDefeated
+                        else (
+                            self.sally_opossum_messages["no_play_message"]
+                            if state.player.money < 150
+                            else self.sally_opossum_messages["welcome_message"]
+                        )
+                    )
                 )
             )
-
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False and current_message.message_at_end():
+            if current_message.is_finished() and current_message.message_at_end() and state.opossumInACanSallyScreen.sallyOpossumIsDefeated == False and state.player.hasRabies == False and state.player.money > 149:
+                print("better not see this shit")
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

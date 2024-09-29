@@ -11,7 +11,7 @@ class Natalie(Npc):
         self.cindy_long_hair_messages = {
             'textbox': NpcTextBox(
                 [
-                    "Cindy:Hi there I'm Cindy, you should know,  Cheating Ted is a real bastard. Because of him my boyfriend is making beer.",
+                    "Natalie:Hi there I'm Cindy, you should know,  Cheating Ted is a real bastard. Because of him my boyfriend is making beer.",
 
                 ],
                 (50, 450, 50, 45), 36, 500
@@ -19,7 +19,7 @@ class Natalie(Npc):
             'reward_message': NpcTextBox(
                 [
                     "",
-                    "Cindy: Oh cool look at you, time for your reward (inn badge). I have something else for you too, I don't just be giving these out.",
+                    "Natalie: Oh cool look at you, time for your reward (inn badge). I have something else for you too, I don't just be giving these out.",
 
 
                 ],
@@ -29,7 +29,7 @@ class Natalie(Npc):
             'final_message': NpcTextBox(
                 [
                     "",
-                    "Cindy: Watching you take him down was so satisfying thank you.",
+                    "Natalie: Watching you take him down was so satisfying thank you.",
 
                 ],
                 (50, 450, 50, 45), 36, 500
@@ -37,7 +37,7 @@ class Natalie(Npc):
             'rabies_message': NpcTextBox(
                 [
                     "",
-                    "That witch Sally took the doctor's blue flower, I just know it.",
+                    "Natalie That witch Sally took the doctor's blue flower, I just know it.",
                     "Why else was she snooping around her office? You can't trust those opossum girls."
                 ],
                 (50, 450, 50, 45), 36, 500
@@ -45,7 +45,7 @@ class Natalie(Npc):
             'sir_leopold_message': NpcTextBox(
                 [
                     "",
-                    "I was so scared...you have a knack for defying the odds.",
+                    "Natalie I was so scared...you have a knack for defying the odds.",
                     "Hero: What can I say, I guess Lady Luck is on my side.",
 
                 ],

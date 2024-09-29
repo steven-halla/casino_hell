@@ -4,40 +4,40 @@ from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 
-class Amber(Npc):
+class TommyBoy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Amber: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
+                ["TommyBoy: You may think your ready for me, but your not , better be careful", "Are you ready to lose?!"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Amber That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["TommyBoy Looks like you defeated me, how sad :("],
                 (50, 450, 700, 130), 36, 500),
-
-            "rabies_message": NpcTextBox(
-                ["Amber GET AWAY FROM ME YOU FROTHY MOUTHED BASTARD."],
+            "not_worthy_message": NpcTextBox(
+                ["TommyBoy Defeat Sandy and Ichi first and then come talk to me you worm."],
                 (50, 450, 700, 130), 36, 500),
-
-
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()
         self.state = "waiting"
-        self.black_jack_thomas_defeated = False
+        self.flipping_ted_defeated = False
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
+        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Hawker and Peddler ALPHA.png").convert_alpha()
 
+        self.isWorthy = False
 
-
-        self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Mayor.png").convert_alpha()
 
     def update(self, state: "GameState"):
+
+        if state.coinFlipSandyScreen.coinFlipSandyDefeated == True and state.opossumInACanIchiScreen.ichiOpossumIsDefeated == True:
+            self.isWorthy = True
+
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
@@ -52,53 +52,45 @@ class Amber(Npc):
                 (pygame.time.get_ticks() - self.state_start_time) > 500:
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
-
-            if state.player.hasRabies == True:
-                self.black_jack_thomas_messages["rabies_message"].reset()
+            # Reset the message depending on the game state
+            if self.isWorthy == False:
+                self.black_jack_thomas_messages["not_worthy_message"].reset()
             elif state.blackJackThomasScreen.black_jack_thomas_defeated:
                 self.black_jack_thomas_messages["defeated_message"].reset()
-
             else:
                 self.black_jack_thomas_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        current_message = (
-            self.black_jack_thomas_messages["rabies_message"]
-            if state.player.hasRabies
-            else (
-                self.black_jack_thomas_messages["defeated_message"]
-                if state.blackJackThomasScreen.black_jack_thomas_defeated
-                else self.black_jack_thomas_messages["welcome_message"]
-            )
-        )
-        current_message.update(state)
+        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackJaredScreen.black_jack_jared_defeated else self.black_jack_thomas_messages["welcome_message"]
+        if self.isWorthy == False:
+            current_message = self.black_jack_thomas_messages["not_worthy_message"]
 
+        current_message.update(state)
 
         # Lock the player in place while talking
         state.player.canMove = False
 
         # Check for keypresses only once per frame
-        if current_message.is_finished() and current_message.message_at_end():
+        if current_message.is_finished():
 
             if state.controller.isUpPressed:
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
                 state.controller.isUpPressed = False
-
 
             elif state.controller.isDownPressed:
                 self.arrow_index = (self.arrow_index + 1) % len(self.choices)
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False:
-
+        if current_message.is_finished() and state.controller.isTPressed and self.isWorthy == True and state.blackJackJaredScreen.black_jack_jared_defeated == False:
+            # Handle the selected option
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes":
-                state.currentScreen = state.blackJackThomasScreen
-                state.blackJackThomasScreen.start(state)
+                state.currentScreen = state.blackJackJaredScreen
+                state.blackJackJaredScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -108,8 +100,6 @@ class Amber(Npc):
             state.controller.isTPressed = False
             # Exiting the conversation
             self.state = "waiting"
-            self.menu_index = 0
-            self.arrow_index = 0
             self.state_start_time = pygame.time.get_ticks()
 
             # Unlock the player to allow movement
@@ -121,42 +111,28 @@ class Amber(Npc):
         #     self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        sprite_rect = pygame.Rect(7, 6, 16.4, 24)
 
-        # Get the subsurface for the area you want
+        sprite_rect = pygame.Rect(116, 144, 15, 23)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            current_message = (
-                self.black_jack_thomas_messages["rabies_message"]
-                if state.player.hasRabies
-                else (
-                    self.black_jack_thomas_messages["defeated_message"]
-                    if state.blackJackThomasScreen.black_jack_thomas_defeated
-                    else self.black_jack_thomas_messages["welcome_message"]
-                )
-            )
-
+            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackJaredScreen.black_jack_jared_defeated else self.black_jack_thomas_messages["welcome_message"]
+            if self.isWorthy == False:
+                current_message = self.black_jack_thomas_messages["not_worthy_message"]
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and state.blackJackThomasScreen.black_jack_thomas_defeated == False and state.player.hasRabies == False and current_message.message_at_end():
+            if current_message.is_finished() and self.isWorthy == True:
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
 
                 screen_width, screen_height = state.DISPLAY.get_size()
-                bet_box_x = screen_width - bet_box_width - border_width - 48
+                bet_box_x = screen_width - bet_box_width - border_width - 30
                 bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
 
                 bet_box = pygame.Surface((bet_box_width, bet_box_height))
@@ -166,7 +142,7 @@ class Amber(Npc):
                 white_border.blit(bet_box, (border_width, border_width))
 
                 # Calculate text positions
-                text_x = bet_box_x + 50 + border_width
+                text_x = bet_box_x + 40 + border_width
                 text_y_yes = bet_box_y + 20
                 text_y_no = text_y_yes + 40
                 # Draw the box on the screen
@@ -175,7 +151,7 @@ class Amber(Npc):
                 # Draw the text on the screen (over the box)
                 state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
                 state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-                arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
+                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
                 arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
 
                 # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
