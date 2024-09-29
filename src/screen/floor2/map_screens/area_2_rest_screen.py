@@ -4,6 +4,12 @@ import pytmx
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
 from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
+from entity.npc.area2.area_2_rest_screen.Amber import Amber
+from entity.npc.area2.area_2_rest_screen.April import April
+from entity.npc.area2.area_2_rest_screen.JanetP import JanetP
+from entity.npc.area2.area_2_rest_screen.Lurger import Lurger
+from entity.npc.area2.area_2_rest_screen.Natalie import Natalie
+from entity.npc.area2.area_2_rest_screen.Samantha import Samantha
 from entity.npc.area2.area_2_rest_screen.Stew import Stew
 from entity.npc.area2.area_2_rest_screen.alex import Alex
 from entity.npc.area2.area_2_rest_screen.alice import Alice
@@ -109,18 +115,27 @@ class Area2RestScreen(Screen):
             state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
 
         state.npcs = [
-            Alice(16 * 5, 16 * 15),
-            Johnathon(16 * 15, 16 * 15),
-            Nibblet(16 * 25, 16 * 15),
-            Alex(16 * 94, 16 * 7),
+            Johnathon(16 * 15, 16 * 15), # fin
+
+            Natalie(16 * 25, 16 * 15), # fin
+            JanetP(16 * 35, 16 * 15), # fin
+            Amber(16 * 45, 16 * 15), # fin
+            April(16 * 55, 16 * 15), # fin
+            Samantha(16 * 65, 16 * 15), # fin
+            Lurger(16 * 14, 16 * 25), # fin
+
+
+            Alice(16 * 39, 16 * 46),   # fin
+            Nibblet(16 * 48, 16 * 63),  # fin
+            Alex(16 * 94, 16 * 7),  # fin
             Lunky(16 * 84, 16 * 9),   # fin
             Jasper(16 * 55, 16 * 14), # fin
 
-            Natasha(16 * 3, 16 * 93),
-            Clara(16 * 3, 16 * 83),
-            Stew(16 * 31, 16 * 85),
-            Paul(16 * 35, 16 * 95),
-            Karn(16 * 22, 16 * 96),
+            Natasha(16 * 3, 16 * 93),# fin
+            Clara(16 * 3, 16 * 83),# fin
+            Stew(16 * 31, 16 * 85),# fin
+            Paul(16 * 35, 16 * 95),# fin
+            Karn(16 * 22, 16 * 96),# fin
 
             # below are shops and such
             Area2InnKeeper(16 * 140, 16 * 95), # fin
