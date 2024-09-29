@@ -26,6 +26,7 @@ class CrapsBossScreen(BattleScreen):
         self.game_state: str = "welcome_screen"
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
 
+
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.dice_roll_3 = 0
@@ -98,12 +99,12 @@ class CrapsBossScreen(BattleScreen):
             ),
 
             "hand_cramp_message": TextBox(
-                ["Erika: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad.",
-                 "Sir Leopold: She just cursed you...your come out roll meter is not only sped up but the margin of success is lower.",
-                 "Hero:  She's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...you chicken nuggets suck!!!",
-                 "Erika:Say what you want 'Hero', i'm going to be the one to beat you.","Hero: I was hoping to not have to use this technique so early...a little parlor trick my Daddy taught me.",
-                 "Sir Leopold: Hero, oh my god what are you. Did he just put those dice in his mouth!!!!","Erika: Oh my god that is disgusting, do you know where those dice have been? You DIrty disgusting filthy"
-                                                                                                    "rotten human", "...I think I'm going to puke.",""],
+                ["Erika: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad. It hurts to move them, this is bad, real bad.",
+                 "Sir Leopold: She just cursed you...your come out roll meter is not only sped up but the margin of success is lower. What a dirty trick!",
+                 "Hero:  She's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
+                 "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.","Hero: I was hoping to not have to use this technique so early, but I don't have much of a choice.","A little parlor trick my Father taught me.",
+                 "Sir Leopold: Hero, oh my god what are you. Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is disgusting, do you know where those dice have been? You Dirty degenerate filthy"
+                                                                                                    " rotten human", "...I think I'm going to puke.",""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -194,7 +195,7 @@ class CrapsBossScreen(BattleScreen):
         self.point_roll_index: int = 0
         self.point_bet_index: int = 0
         self.magic_magnet = 0
-        self.bet = 75
+        self.bet = 50
 
         self.money_balancer = MoneyBalancer(self.money)
 
@@ -221,11 +222,13 @@ class CrapsBossScreen(BattleScreen):
         self.unlucky_seven_flag = False
 
         self.lucky_seven_buff_counter = 0
-        self.money: int = 777  # Add this line
-        self.player_money = 777
+        self.money: int = 666  # Add this line
+        self.player_money = 666
 
         self.double_dice_cast_cost = 50
         self.intro = True
+        self.stamina_drain = 4
+
 
 
 
@@ -249,7 +252,7 @@ class CrapsBossScreen(BattleScreen):
         self.power_meter_speed = 2.4
         self.power_meter_index = 0
 
-        self.bet = 75
+        self.bet = 50
         self.point_phase_win = False
 
         self.welcome_screen_index = 0
@@ -350,7 +353,8 @@ class CrapsBossScreen(BattleScreen):
             self.magic_lock = False
 
         if self.money <= 0:
-            Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
+            self.lucky_seven_buff_counter = 0
+
 
         # self.lucky_seven = state.player.luck * 2
         pygame.mixer.music.stop()
@@ -385,18 +389,20 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["welcome_message"].update(state)
 
             if self.money < 1:
+               self.lucky_seven_buff_counter = 0
                self.game_state = "game_over_screen"
 
             if state.player.stamina_points < 1:
+                self.lucky_seven_buff_counter = 0
+
                 self.game_state = "game_over_screen"
 
 
-            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
-                self.game_state = "game_over_screen"
 
 
 
-            elif self.player_money < 50 and self.player_money > 0:
+
+            elif self.player_money < 25 and self.player_money > 0:
                 self.game_state = "game_over_screen"
 
 
@@ -414,7 +420,7 @@ class CrapsBossScreen(BattleScreen):
                 self.game_state = "power_meter_screen"
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)  # Call the method to display the dice roll
 
-                state.player.stamina_points -= 4
+                state.player.stamina_points -= self.stamina_drain
 
                 controller.isTPressed = False
             elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
@@ -430,10 +436,7 @@ class CrapsBossScreen(BattleScreen):
                 controller.isTPressed = False
 
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
-                self.welcome_screen_index = 0
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
-                controller.isTPressed = False
+                print("no way you running away ")
 
         elif self.game_state == "level_up_screen":
             self.handle_level_up(state, state.controller)
@@ -450,8 +453,8 @@ class CrapsBossScreen(BattleScreen):
 
             if controller.isDownPressed:
                 self.bet -= 25
-                if self.bet <= 50:
-                    self.bet = 50
+                if self.bet <= 25:
+                    self.bet = 25
                 controller.isDownPressed = False
 
             if controller.isTPressed:
@@ -598,7 +601,7 @@ class CrapsBossScreen(BattleScreen):
                         unlucky_two_roll -= 10
                     print("unlucky two roll is: " + str(unlucky_two_roll))
 
-                    if unlucky_two_roll >= 55:
+                    if unlucky_two_roll >= 60:
                         self.dice_roll_1 = 1
                         self.dice_roll_2 = 1
                         self.come_out_roll_total = 2
@@ -606,7 +609,7 @@ class CrapsBossScreen(BattleScreen):
                         print("line 562")
                         self.game_state = "you_lose_come_out_roll_screen"
 
-                    elif unlucky_two_roll < 55:
+                    elif unlucky_two_roll < 60:
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
                         print("line 568")
@@ -705,7 +708,7 @@ class CrapsBossScreen(BattleScreen):
                 self.point_roll_index = (self.point_roll_index + 1) % len(self.point_roll_choices)
                 controller.isDownPressed = False
             if self.point_roll_index == 0 and controller.isTPressed:
-                state.player.stamina_points -= 4
+                state.player.stamina_points -= self.stamina_drain
                 # self.come_out_roll total is what i need to match
                 # self.point_roll_total = random.randint(1, 6)
 
@@ -805,15 +808,15 @@ class CrapsBossScreen(BattleScreen):
         elif self.game_state == "point_bet_screen":
             if controller.isUpPressed:
                 self.bet += 25
-                if self.bet > 150:
-                    self.bet = 150
+                if self.bet > 125:
+                    self.bet = 125
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
 
                 self.bet -= 25
-                if self.bet < 50:
-                    self.bet = 50
+                if self.bet < 25:
+                    self.bet = 25
                 controller.isDownPressed = False
 
             if self.point_bet_index == 0 and controller.isTPressed:
@@ -935,12 +938,12 @@ class CrapsBossScreen(BattleScreen):
 
 
 
-            elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].update(state)
+            # elif state.player.stamina_points <= 6 and state.player.stamina_points > 0:
+            #     self.battle_messages["game_over_low_stamina_message"].update(state)
 
 
 
-            elif self.player_money < 50 and self.player_money > 0:
+            elif self.player_money < 25 and self.player_money > 0:
                 self.battle_messages["game_over_low_money_message"].update(state)
 
 
@@ -1019,8 +1022,16 @@ class CrapsBossScreen(BattleScreen):
                 self.magic_lock = True
                 self.welcome_screen_choices[1] = "Locked"
 
+            elif Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
+                self.welcome_screen_choices[1] = "Magic"
+
+
             if self.magic_lock == True:
                 self.welcome_screen_choices[1] = "Locked"
+
+            self.welcome_screen_choices[3] = "Locked"
+
+
 
             if self.welcome_screen_index == 0:
                 state.DISPLAY.blit(
@@ -1085,8 +1096,8 @@ class CrapsBossScreen(BattleScreen):
                 self.battle_messages["game_over_low_stamina_message"].draw(state)
 
                 if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
-                    state.currentScreen = state.area2GamglingScreen
-                    state.area2GamglingScreen.start(state)
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
 
 
             elif self.player_money < 50 and self.player_money > 0:
