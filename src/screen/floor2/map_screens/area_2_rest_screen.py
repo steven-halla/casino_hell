@@ -122,20 +122,15 @@ class Area2RestScreen(Screen):
 
             Natalie(16 * 25, 16 * 15), # fin
 
-            JanetP(16 * 35, 16 * 15), # fin
-            Amber(16 * 45, 16 * 15), # fin
 
 
 
             April(16 * 45, 16 * 5), # fin
 
 
-            Samantha(16 * 45, 16 * 25), # fin
 
-            Lurger(16 * 14, 16 * 25), # fin
-            Sasquatch(16 * 25, 16 * 25), # fin
-            NatNat(16 * 35, 16 * 25), # fin
-            TommyBoy(16 * 45, 16 * 25), # fin
+            Lurger(16 * 111, 16 * 66), # fin
+            Sasquatch(16 * 65, 16 * 93), # fin
 
 
             Alice(16 * 39, 16 * 46),   # fin
@@ -143,6 +138,15 @@ class Area2RestScreen(Screen):
             Alex(16 * 94, 16 * 7),  # fin
             Lunky(16 * 84, 16 * 9),   # fin
             Jasper(16 * 55, 16 * 14), # fin
+
+            TommyBoy(16 * 76, 16 * 45),  # fin
+
+            Amber(16 * 133, 16 * 17),  # fin
+
+            JanetP(16 * 133, 16 * 63), # fin
+            NatNat(16 * 113, 16 * 45), # fin
+
+            Samantha(16 * 122, 16 * 11),  # fin
 
             Natasha(16 * 3, 16 * 93),# fin
             Clara(16 * 3, 16 * 83),# fin

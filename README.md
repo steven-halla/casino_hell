@@ -614,4 +614,6 @@ fix black jack betting so its 100 max bet
 fix slots message for betting
 check meter speed for both craps versions
 
+i need to make generic NPCs using all resources I currently have
+
 

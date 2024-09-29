@@ -164,7 +164,7 @@ class GameState:
 
 
 
-        self.currentScreen = self.startLoadScreen
+        self.currentScreen = self.area2GamblingScreen
         # the below is the default of what i need
         # self.currentScreen = self.startLoadScreen
 

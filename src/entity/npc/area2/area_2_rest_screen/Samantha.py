@@ -45,7 +45,7 @@ class Samantha(Npc):
             'sir_leopold_message': NpcTextBox(
                 [
                     "",
-                    "I was so scared...you have a knack for defying the odds.",
+                    "Samantha I was so scared...you have a knack for defying the odds.",
                     "Hero: What can I say, I guess Lady Luck is on my side.",
 
                 ],

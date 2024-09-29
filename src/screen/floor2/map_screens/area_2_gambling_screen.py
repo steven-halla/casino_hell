@@ -24,7 +24,7 @@ class Area2GamblingScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/gamblingarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/gambling_area_level_2.tmx")
         self.y_up_move = False
         self.powerpotiongotten = False
         self.y_down_move = False
@@ -80,10 +80,12 @@ class Area2GamblingScreen(Screen):
             print("yoyoyo")
             state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE.value)
 
+        # state.area_2_gambling_area_to_rest_point = True
+
         if state.area_2_gambling_area_to_rest_point == True:
             print("hdshfa;ljflksja;f")
             player_start_x = 16 * 19  # Desired X coordinate
-            player_start_y = 16 * 52  # Desired Y coordinate
+            player_start_y = 16 * 22  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_gambling_area_to_rest_point = False
 
@@ -123,14 +125,19 @@ class Area2GamblingScreen(Screen):
 
 
         state.npcs = [
-            BlackJackMack(16 * 5, 16 * 5),
-            OpossumInACanCandy(16 * 15, 16 * 5),
-            CoinFlipBetty(16 * 25, 16 * 5),
-            SlotsRippaSnappa(16 * 35, 16 * 5),
-            CrapsHappy(16 * 5, 16 * 28),
-            Nibblet(16 * 15, 16 * 28),
-            Lunky(16 * 25, 16 * 28),
-            Area2GamblingToRestArea(16 * 19, 16 * 54),
+            BlackJackMack(16 * 110, 16 * 7),
+
+            OpossumInACanCandy(16 * 9, 16 * 9),
+
+            CoinFlipBetty(16 * 36, 16 * 6),
+
+            SlotsRippaSnappa(16 * 61, 16 * 7),
+
+            CrapsHappy(16 * 81, 16 * 5),
+
+            Nibblet(16 * 20, 16 * 31),
+            Lunky(16 * 60, 16 * 31),
+            Area2GamblingToRestArea(16 * 1, 16 * 54),
 
         ]
 

@@ -1,124 +1,160 @@
 import math
-
 import pygame
-
+from entity.gui.textbox.text_box import TextBox
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
-
 
 class Sasquatch(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.guy_messages = {
-            "default_message": NpcTextBox(
-                [
-                    "SAS: It's hard to find good clothes down here which is why I always wear a bib when I eat.",
-                    "Every day is chili day, mixed with lots of hedge hogs. And....everything....else....."
-                    "I can't....stand it anymore....someone....get me out of here.",
-                    "I'll stop skipping church, I'll treat my wife and kids better, I'll stop drinking, please help me god."
-                ],
-                (50, 450, 50, 45), 30, 500
-            ),
-
-            "sir_leopold_message": NpcTextBox(
-                ["SAS: I'm going to miss the little hedge hogger."],
-                (50, 450, 700, 130), 36, 500
-            ),
-
-
+        self.selected_item_index = 0
+        self.black_jack_thomas_messages = {
+            "welcome_message": NpcTextBox(
+                ["Sas: You may think your ready for me, but your not , better be careful", "Are you ready to lose?!"],
+                (50, 450, 700, 130), 36, 500),
+            "defeated_message": NpcTextBox(
+                ["Sas Looks like you defeated me, how sad :("],
+                (50, 450, 700, 130), 36, 500),
+            "not_worthy_message": NpcTextBox(
+                ["Sas Defeat Sandy and Ichi first and then come talk to me you worm."],
+                (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
+        self.state_start_time = pygame.time.get_ticks()
+        self.state = "waiting"
+        self.flipping_ted_defeated = False
+        self.font = pygame.font.Font(None, 36)
+        self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
+        self.t_pressed = False
+        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Hawker and Peddler ALPHA.png").convert_alpha()
 
-        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.state = "waiting"  # states = "waiting" | "talking" | "finished"
-        self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Ellens Parents.png").convert_alpha()
+        self.isWorthy = False
+
 
     def update(self, state: "GameState"):
+
+        if state.coinFlipSandyScreen.coinFlipSandyDefeated == True and state.opossumInACanIchiScreen.ichiOpossumIsDefeated == True:
+            self.isWorthy = True
+
         if self.state == "waiting":
-
-            player = state.player
             self.update_waiting(state)
-
         elif self.state == "talking":
-
-            # Determine which message to use based on player state
-            current_message = self.guy_messages["default_message"]
-            if "sir leopold" in state.player.companions:
-                current_message = self.guy_messages["sir_leopold_message"]
-            if current_message.message_index == 1:
-                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
-
-                    state.player.money -= 100
-                    state.player.stamina_points += 500
-                    if state.player.stamina_points > 100:
-                        state.player.stamina_points = 100
-                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
-                    self.input_time = pygame.time.get_ticks()
-                    self.state = "waiting"
-
-            self.update_talking(state, current_message)
+            self.update_talking(state)
 
     def update_waiting(self, state: "GameState"):
-
         player = state.player
-        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+        distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
+                             (player.collision.y - self.collision.y) ** 2)
 
-        if min_distance < 10:
-            print("nooo")
+        if distance < 40 and state.controller.isTPressed and \
+                (pygame.time.get_ticks() - self.state_start_time) > 500:
+            self.state = "talking"
+            self.state_start_time = pygame.time.get_ticks()
+            # Reset the message depending on the game state
+            if self.isWorthy == False:
+                self.black_jack_thomas_messages["not_worthy_message"].reset()
+            elif state.blackJackThomasScreen.black_jack_thomas_defeated:
+                self.black_jack_thomas_messages["defeated_message"].reset()
+            else:
+                self.black_jack_thomas_messages["welcome_message"].reset()
 
-        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
-            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+    def update_talking(self, state: "GameState"):
+        current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackJaredScreen.black_jack_jared_defeated else self.black_jack_thomas_messages["welcome_message"]
+        if self.isWorthy == False:
+            current_message = self.black_jack_thomas_messages["not_worthy_message"]
 
-            if distance < 40:
-                self.state = "talking"
-                state.player.canMove = False
-
-                self.state_start_time = pygame.time.get_ticks()
-                # Reset the message based on player state
-                current_message =  self.guy_messages["default_message"]
-                if "sir leopold" in state.player.companions:
-                    current_message = self.guy_messages["sir_leopold_message"]
-                current_message.reset()
-
-    def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
 
+        # Lock the player in place while talking
+        state.player.canMove = False
+
+        # Check for keypresses only once per frame
+        if current_message.is_finished():
+
+            if state.controller.isUpPressed:
+                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+                state.controller.isUpPressed = False
+
+            elif state.controller.isDownPressed:
+                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
+                state.controller.isDownPressed = False
+
+        # Check if the "T" key is pressed and the flag is not set
+        if current_message.is_finished() and state.controller.isTPressed and self.isWorthy == True and state.blackJackJaredScreen.black_jack_jared_defeated == False:
+            # Handle the selected option
+            selected_option = self.choices[self.arrow_index]
+            print(f"Selected option: {selected_option}")
+
+            # Check if the selected option is "Yes" and execute the code you provided
+            if selected_option == "Yes":
+                state.currentScreen = state.blackJackJaredScreen
+                state.blackJackJaredScreen.start(state)
+
+            # Reset the flag when the "T" key is released
+            if not state.controller.isTPressed:
+                self.t_pressed = False
+
         if state.controller.isTPressed and current_message.is_finished():
+            state.controller.isTPressed = False
+            # Exiting the conversation
             self.state = "waiting"
+            self.state_start_time = pygame.time.get_ticks()
+
+            # Unlock the player to allow movement
             state.player.canMove = True
 
-            self.state_start_time = pygame.time.get_ticks()
-    # def isOverlap(self, entity: "Entity") -> bool:
-    #     print("Overlap called")
-    #     return self.collision.isOverlap(entity.collision)
-
     def draw(self, state):
-        sprite_rect = pygame.Rect(108, 5, 22, 26)
-
-        # Get the subsurface for the area you want
-        sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
         # rect = (
-        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        # self.collision.width, self.collision.height)
+        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
+        #     self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
+
+        sprite_rect = pygame.Rect(116, 144, 15, 23)
+        sprite = self.character_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        sprite_x = self.collision.x + state.camera.x - 20
+        sprite_y = self.collision.y + state.camera.y - 10
+        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+
         if self.state == "talking":
-            current_message =  self.guy_messages["default_message"]
-            if "sir leopold" in state.player.companions:
-                current_message = self.guy_messages["sir_leopold_message"]
+            current_message = self.black_jack_thomas_messages["defeated_message"] if state.blackJackJaredScreen.black_jack_jared_defeated else self.black_jack_thomas_messages["welcome_message"]
+            if self.isWorthy == False:
+                current_message = self.black_jack_thomas_messages["not_worthy_message"]
             current_message.draw(state)
+
+            # Draw the "Yes/No" box only on the last message
+            if current_message.is_finished() and self.isWorthy == True:
+                bet_box_width = 150
+                bet_box_height = 100
+                border_width = 5
+
+                screen_width, screen_height = state.DISPLAY.get_size()
+                bet_box_x = screen_width - bet_box_width - border_width - 30
+                bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
+
+                bet_box = pygame.Surface((bet_box_width, bet_box_height))
+                bet_box.fill((0, 0, 0))
+                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+                white_border.fill((255, 255, 255))
+                white_border.blit(bet_box, (border_width, border_width))
+
+                # Calculate text positions
+                text_x = bet_box_x + 40 + border_width
+                text_y_yes = bet_box_y + 20
+                text_y_no = text_y_yes + 40
+                # Draw the box on the screen
+                state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
+
+                # Draw the text on the screen (over the box)
+                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
+                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+                arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
+                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+
+                # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
+                # Here's a simple example using a triangle:
+                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
+                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])

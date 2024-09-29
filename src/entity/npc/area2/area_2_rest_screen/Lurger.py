@@ -10,13 +10,13 @@ class Lurger(Npc):
         self.selected_item_index = 0
         self.coin_flip_fred_messages = {
             "welcome_message": NpcTextBox(
-                ["Freddy: My coin flips are so good it'll give you nightmares. You ready for this?"],
+                ["Lurger: My coin flips are so good it'll give you nightmares. You ready for this?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Maybe I should retire from coin flip. I need to take a nap."],
+                ["Lurger Maybe I should retire from coin flip. I need to take a nap."],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
-                ["Oh my god, your eyes are blood red....GET AWAY FROM ME!!!!"],
+                ["Lurger Oh my god, your eyes are blood red....GET AWAY FROM ME!!!!"],
                 (50, 450, 700, 130), 36, 500),
         }
         self.choices = ["Yes", "No"]
