@@ -330,6 +330,7 @@ class CrapsHappyScreen(BattleScreen):
     # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
+        state.player.canMove = False
 
         if self.bet > self.money:
             print("money")
@@ -368,6 +369,8 @@ class CrapsHappyScreen(BattleScreen):
                self.game_state = "game_over_screen"
 
             if state.player.stamina_points < 1:
+                state.player.canMove = True
+
                 self.welcome_screen_index = 0
                 self.lucky_seven_buff_counter = 0
                 self.magic_lock = False
@@ -382,10 +385,13 @@ class CrapsHappyScreen(BattleScreen):
 
 
             elif state.player.money < 50 and state.player.money > 0:
+                state.player.canMove = True
                 self.game_state = "game_over_screen"
 
 
             elif state.player.money <= 0:
+                state.player.canMove = True
+
                 self.game_state = "game_over_screen"
 
             if controller.isUpPressed:
@@ -420,6 +426,8 @@ class CrapsHappyScreen(BattleScreen):
                 self.lucky_seven_buff_counter = 0
                 self.magic_lock = False
                 self.bet = 50
+                state.player.canMove = True
+
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 controller.isTPressed = False
@@ -929,10 +937,14 @@ class CrapsHappyScreen(BattleScreen):
 
         elif self.game_state == "game_over_screen":
             if self.money < 1:
+                state.player.canMove = True
+
                 self.battle_messages["you_win"].update(state)
 
 
             if state.player.stamina_points < 1:
+                state.player.canMove = True
+
                 self.battle_messages["game_over_no_stamina_message"].update(state)
                 self.lucky_seven = False
                 self.bet = 50
@@ -946,11 +958,15 @@ class CrapsHappyScreen(BattleScreen):
 
 
             elif state.player.money < 50 and state.player.money > 0:
+                state.player.canMove = True
+
                 self.battle_messages["game_over_low_money_message"].update(state)
 
 
 
             elif state.player.money <= 0:
+                state.player.canMove = True
+
                 self.battle_messages["game_over_no_money_message"].update(state)
 
 

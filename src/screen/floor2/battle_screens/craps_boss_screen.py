@@ -99,12 +99,13 @@ class CrapsBossScreen(BattleScreen):
             ),
 
             "hand_cramp_message": TextBox(
-                ["Erika: Potential hero of legend, corrupted with eternal fear. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad. It hurts to move them, this is bad, real bad.",
-                 "Sir Leopold: She just cursed you...your come out roll meter is not only sped up but the margin of success is lower. What a dirty trick!",
+                ["Erika: Potential hero of legend, strip yourself of all valor and tremble. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad. It hurts to move them, this is bad, real bad.",
+                 "Sir Leopold: She just cursed you, I knew there was something fowl about her,  What a dirty trick!",
                  "Hero:  She's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
-                 "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.","Hero: I was hoping to not have to use this technique so early, but I don't have much of a choice.","A little parlor trick my Father taught me.",
+                 "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.","Hero: I was hoping to not have to use this technique so early, but I don't have much of a choice.A little parlor trick my Father taught me.",
                  "Sir Leopold: Hero, oh my god what are you. Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is disgusting, do you know where those dice have been? You Dirty degenerate filthy"
-                                                                                                    " rotten human", "...I think I'm going to puke.",""],
+                                                                                                    " rotten human", "...I think I'm going to puke.","Sir Leopold: Your power meter is going to be faster, and the margin of error will be lower, stay focused and you can win this."
+                 ,""],
                 (65, 460, 700, 130),
                 36,
                 500

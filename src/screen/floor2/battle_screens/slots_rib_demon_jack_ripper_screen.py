@@ -455,6 +455,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
     def update(self, state: "GameState") -> None:
+        state.player.canMove = False
         if self.secret_item == True:
             self.bet = 50
 
@@ -528,6 +529,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.battle_messages["you_win"].update(state)
                 if self.battle_messages["you_win"].message_index == 1:
                     Events.add_event_to_player(state.player, Events.SLOTS_RIPPA_SNAPPA_DEFEATED)
+                    state.player.canMove = True
 
                     state.currentScreen = state.area2GamblingScreen
                     state.area2GamblingScreen.start(state)
@@ -535,10 +537,13 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             if state.player.stamina_points < 1:
+
                 self.lock_down = False
                 self.slot_hack = 0
                 self.battle_messages["game_over_no_stamina_message"].update(state)
                 if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
+                    state.player.canMove = True
+
                     state.currentScreen = state.area2GamblingScreen
                     state.area2GamblingScreen.start(state)
 
@@ -555,6 +560,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
             elif state.player.money < 50 and state.player.money > 0:
                 self.battle_messages["game_over_low_money_message"].update(state)
                 if self.battle_messages["game_over_low_money_message"].message_index == 1:
+                    state.player.canMove = True
+
                     state.currentScreen = state.area2GamblingScreen
                     state.area2GamblingScreen.start(state)
 
@@ -562,6 +569,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
             elif state.player.money <= 0:
+                state.player.canMove = True
+
                 self.battle_messages["game_over_no_money_message"].update(state)
                 if self.battle_messages["game_over_no_money_message"].message_index == 1:
                     state.currentScreen = GameOver()
@@ -594,6 +603,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.game_state = "bet_screen"
                 controller.isTPressed = False
             elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
+                state.player.canMove = True
+
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
                 self.welcome_screen_index = 0
