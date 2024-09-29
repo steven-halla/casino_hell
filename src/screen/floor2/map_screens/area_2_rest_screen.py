@@ -112,19 +112,20 @@ class Area2RestScreen(Screen):
             Alice(16 * 5, 16 * 15),
             Johnathon(16 * 15, 16 * 15),
             Nibblet(16 * 25, 16 * 15),
-            Alex(16 * 26, 16 * 45),
-            Lunky(16 * 36, 16 * 45),
-            Jasper(16 * 52, 16 * 15),
-            Natasha(16 * 70, 16 * 45),
-            Clara(16 * 80, 16 * 45),
-            Stew(16 * 90, 16 * 45),
-            Paul(16 * 100, 16 * 45),
-            Karn(16 * 60, 16 * 45),
+            Alex(16 * 94, 16 * 7),
+            Lunky(16 * 84, 16 * 9),   # fin
+            Jasper(16 * 55, 16 * 14), # fin
+
+            Natasha(16 * 3, 16 * 93),
+            Clara(16 * 3, 16 * 83),
+            Stew(16 * 31, 16 * 85),
+            Paul(16 * 35, 16 * 95),
+            Karn(16 * 22, 16 * 96),
 
             # below are shops and such
-            Area2InnKeeper(16 * 140, 16 * 95),
-            Area2ShopKeeper(16 * 72, 16 * 7),
-            Area2BarKeep(16 * 130, 16 * 4),
+            Area2InnKeeper(16 * 140, 16 * 95), # fin
+            Area2ShopKeeper(16 * 44, 16 * 87), # fin
+            Area2BarKeep(16 * 130, 16 * 4),  # fin
 
             # below are doors
             Area2RestToGamblingArea(16 * 17, 16 * 0),
