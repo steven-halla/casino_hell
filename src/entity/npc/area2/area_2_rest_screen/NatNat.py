@@ -22,8 +22,8 @@ class NatNat(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "NatNat: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "NatNat: So many people come here with friends and family, I've seen so many torn apart by this place.",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

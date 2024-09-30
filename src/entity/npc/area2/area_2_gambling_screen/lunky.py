@@ -24,8 +24,8 @@ class Lunky(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Lunky: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Lunky: Certain dealers have magic points, if you leave thier game they get back thier MP",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

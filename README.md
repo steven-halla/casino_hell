@@ -609,11 +609,20 @@ i need to ensure that things are put to value of 0 when needed.
 
 
 -------------------------------------------------------------------------------
-need to fix slots and craps so player doens't move
 fix black jack betting so its 100 max bet
 fix slots message for betting
 check meter speed for both craps versions
 
+fix npcs so you cant move while chatting
+update bar tender area so player at least knows what carrion nachos do
 i need to make generic NPCs using all resources I currently have
 
+Need item descriptions for shop
 
+when doing quest food is taking away but do not gain the benfits, i had body of 1
+and it still let me click it
+
+
+need to redo bar cut scenes
+need to fix doors so they go to correct place
+fix treaure chest locations

@@ -25,8 +25,8 @@ class Nibblet(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Nibblet: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Nibblet: You can go and buy the boss key at this point, no need to beat everyone here, you can do it hero!",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

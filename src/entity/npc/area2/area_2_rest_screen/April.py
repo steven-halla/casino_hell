@@ -22,8 +22,8 @@ class April(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "April: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "April: Hello Hero, I'm sorry for being rude earlier, you just had those 'i want to steal her corner' look in your eyes.",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

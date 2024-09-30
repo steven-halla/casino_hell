@@ -113,8 +113,11 @@ class BlackJackMackScreen(Screen):
 
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
 
+        self.low_exp_gain = 7
+        self.med_exp_gain = 14
+        self.high_exp_gain = 21
 
-        self.low_exp_gain = 5
+
 
         self.messages = {
             "welcome_screen": ["Mack: Time to take out the trash.",
@@ -657,7 +660,7 @@ class BlackJackMackScreen(Screen):
 
                         if enemy_magic_cast + enemy_magic_cast_modifier >= 35:
                             print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
-                            self.player_debuff_double_draw += 10
+                            self.player_debuff_double_draw += 7
                             self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
                         else:
@@ -672,7 +675,7 @@ class BlackJackMackScreen(Screen):
                         if enemy_magic_cast + enemy_magic_cast_modifier >= 70:
                             print("436")
 
-                            self.player_debuff_double_draw += 10
+                            self.player_debuff_double_draw += 7
                             self.magic_points -= 1
                             self.game_state = "double_draw_casting_phase"
 
@@ -895,7 +898,7 @@ class BlackJackMackScreen(Screen):
                     state.player.stamina_points -= 4
                     print("Going to bust a giant busttttttttter")
 
-                    state.player.exp += 10
+                    state.player.exp += self.low_exp_gain
                     self.first_message_display = f"You lose -6 HP."
                     self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
 
@@ -925,7 +928,7 @@ class BlackJackMackScreen(Screen):
                         state.player.stamina_points -= 4
                         print("sdlfj;sdjf----------------------------------------------------")
 
-                        state.player.exp += 10
+                        state.player.exp += self.low_exp_gain
                         self.first_message_display = f"You lose -6 HP."
                         self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
 
@@ -959,7 +962,7 @@ class BlackJackMackScreen(Screen):
                     state.player.money += self.bet
                     self.money -= self.bet
                     print("enemy bust")
-                    state.player.exp += 25
+                    state.player.exp += self.low_exp_gain
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
@@ -1180,13 +1183,13 @@ class BlackJackMackScreen(Screen):
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                     if self.bet <= 50:
-                        state.player.exp += 20
+                        state.player.exp += self.high_exp_gain
                         self.first_message_display = f"Gain 20 exp and win {self.bet * 2} gold "
 
                     else:
                         self.first_message_display = f"Gain 40 exp and win {self.bet * 2} gold "
 
-                        state.player.exp += 40
+                        state.player.exp += self.high_exp_gain
 
                     self.second_message_display = "Player deals a CRITICAL HIT!!! "
                     if self.bet * 2 < self.money:
@@ -1199,14 +1202,14 @@ class BlackJackMackScreen(Screen):
 
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                     if self.bet <= 50:
-                        state.player.exp += 10
+                        state.player.exp += self.low_exp_gain
                         state.player.stamina_points -= 3
                         self.first_message_display = f"You gain 10 exp, 0 gold, you lose 5 HP. "
 
                     else:
                         self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
 
-                        state.player.exp += 20
+                        state.player.exp += self.med_exp_gain
                         state.player.stamina_points -= 5
 
                     self.second_message_display = "You tie player press T when ready"
@@ -1216,13 +1219,13 @@ class BlackJackMackScreen(Screen):
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                     if self.bet <= 49:
-                        state.player.exp += 10
+                        state.player.exp += self.low_exp_gain
                         state.player.stamina_points -= 15
                         self.first_message_display = f"You gain 10 exp and lose {self.bet * 2} gold."
                         self.thrid_message_display = f"You Lose 25 HP "
                     else:
-                        state.player.exp += 20
-                        state.player.stamina_points -= 25
+                        state.player.exp += self.high_exp_gain
+                        state.player.stamina_points -= 20
                         self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold."
                         self.thrid_message_display = f"You Lose 25 HP "
 
@@ -1238,10 +1241,10 @@ class BlackJackMackScreen(Screen):
 
                 elif self.player_score > self.enemy_score and self.player_score < 22:
                     if self.bet <= 49:
-                        state.player.exp += 5
+                        state.player.exp += self.low_exp_gain
                         self.first_message_display = f"You gain 5 exp and {self.bet} gold "
                     else:
-                        state.player.exp += 20
+                        state.player.exp += self.med_exp_gain
                         self.first_message_display = f"You gain 10 exp and {self.bet} gold "
                     self.second_message_display = "You win player press T when ready"
 
@@ -1252,15 +1255,11 @@ class BlackJackMackScreen(Screen):
 
 
                 elif self.player_score < self.enemy_score and self.enemy_score < 22:
-                    if self.bet <= 50:
-                        state.player.exp += 3
-                        state.player.stamina_points -= 4
-                        self.first_message_display = f"You gain 3 exp and lose {self.bet} gold and -4 HP"
 
-                    else:
-                        state.player.exp += 6
-                        state.player.stamina_points -= 8
-                        self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
+
+                    state.player.exp += self.med_exp_gain
+                    state.player.stamina_points -= 8
+                    self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
 
                     self.second_message_display = "You lose player press T when ready"
                     state.player.money -= self.bet
@@ -1276,7 +1275,7 @@ class BlackJackMackScreen(Screen):
                         self.first_message_display = f"You gain 8 exp and 0 gold, and lose -2 HP "
 
                     else:
-                        state.player.exp += 15
+                        state.player.exp += self.med_exp_gain
                         state.player.stamina_points -= 4
                         self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
 

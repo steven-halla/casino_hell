@@ -21,8 +21,7 @@ class TommyBoy(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "TommyBoy: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "TommyBoy: Sometimes the demons come here and dare us to do things for their amusement. One time I saw a guy drink a liter of rat juice. ",
 
                 ],
                 (50, 450, 50, 45), 30, 500

@@ -21,8 +21,7 @@ class Sasquatch(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Sasquatcht: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Sasquatcht: I keep sweeping till my hands bleed, I'll never forget the evil deed that I did but, I didn't have a choice.  ",
 
                 ],
                 (50, 450, 50, 45), 30, 500

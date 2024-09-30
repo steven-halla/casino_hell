@@ -62,13 +62,28 @@ class Area2BarKeep(Npc):
                 if self.selected_item_index == 0 and state.player.money > 500:
                     # print("mew")
                     state.player.money -= 200
-                    state.player.stamina_points += 150
+                    state.player.stamina_points += 400
                     if state.player.stamina_points > state.player.max_stamina_points:
                         state.player.stamina_points = state.player.max_stamina_points
-                    state.player.focus_points += 75
+                    state.player.focus_points += 400
                     if state.player.focus_points > state.player.max_focus_points:
                         state.player.focus_points = state.player.max_focus_points
                     state.player.food -= 1
+
+                    if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
+                        print("Your invited")
+                        state.currentScreen = state.area2BarCutScene1
+                        state.area2BarCutScene1.start(state)
+
+                    elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
+                        print("Your invited")
+                        state.currentScreen = state.area2BarCutScene2
+                        state.area2BarCutScene2.start(state)
+                        state.player.companions.append("erika")
+
+                    elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
+                        state.currentScreen = state.area2BarCutScene3
+                        state.area2BarCutScene3.start(state)
 
 
 
@@ -78,20 +93,20 @@ class Area2BarKeep(Npc):
                     state.player.enhanced_luck = True
                     state.player.food -= 1
 
-                if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
-                    print("Your invited")
-                    state.currentScreen = state.area2BarCutScene1
-                    state.area2BarCutScene1.start(state)
+                    if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
+                        print("Your invited")
+                        state.currentScreen = state.area2BarCutScene1
+                        state.area2BarCutScene1.start(state)
 
-                elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
-                    print("Your invited")
-                    state.currentScreen = state.area2BarCutScene2
-                    state.area2BarCutScene2.start(state)
-                    state.player.companions.append("erika")
+                    elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
+                        print("Your invited")
+                        state.currentScreen = state.area2BarCutScene2
+                        state.area2BarCutScene2.start(state)
+                        state.player.companions.append("erika")
 
-                elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
-                    state.currentScreen = state.area2BarCutScene3
-                    state.area2BarCutScene3.start(state)
+                    elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
+                        state.currentScreen = state.area2BarCutScene3
+                        state.area2BarCutScene3.start(state)
 
             cost = int(self.shop_costs[self.selected_item_index])
 

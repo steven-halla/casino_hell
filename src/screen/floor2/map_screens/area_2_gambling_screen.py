@@ -136,8 +136,8 @@ class Area2GamblingScreen(Screen):
             CrapsHappy(16 * 81, 16 * 5),
 
             Nibblet(16 * 20, 16 * 31),
-            Lunky(16 * 60, 16 * 31),
-            Area2GamblingToRestArea(16 * 1, 16 * 54),
+            Lunky(16 * 60, 16 * 28),
+            Area2GamblingToRestArea(16 * 36, 16 * 39),
 
         ]
 

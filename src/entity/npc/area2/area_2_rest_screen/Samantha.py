@@ -20,8 +20,7 @@ class Samantha(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Samantha: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Samantha: Coin flip dealers have to follow the rule of 5 for their phases ",
 
                 ],
                 (50, 450, 50, 45), 30, 500

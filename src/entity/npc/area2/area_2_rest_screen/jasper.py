@@ -26,7 +26,7 @@ class Jasper(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Jasper: With a perception of 3 you can equip more items. Did you remember to do this?",
+                    "Jasper: The black jack dealer doesn't mess around, he's probably going to be your toughest opponet on this floor",
 
 
                 ],

@@ -14,14 +14,14 @@ class Lurger(Npc):
                 [
                     "Lurger: I'm so sick of the smelll of BBQ sauce and chickens, nuggets, hay, You can't escape the smell of the nugg Koop",
                     "I would give my left leg for a small reprieve, if only for a minute.",
+                    "Here is a tip: if you are winning a game try betting low so that you dont lose your lead if the enemy starts getting lucky.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Lurger: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Lurger: I dont want to know where they get the meat for the nachos, even I have to admit they do smell rather tasty. "
 
                 ],
                 (50, 450, 50, 45), 30, 500

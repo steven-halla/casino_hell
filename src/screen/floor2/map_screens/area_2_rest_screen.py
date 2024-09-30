@@ -108,14 +108,14 @@ class Area2RestScreen(Screen):
         super().start(state)
         state.npcs.clear()
 
-        # if (state.player.perception >= 1
-        #         and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
-        #     state.treasurechests = [
-        #         Area2MoneyBag(16 * 5, 14 * 5),
-        #     ]
+        if (state.player.perception >= 1
+                and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
+            state.treasurechests = [
+                Area2MoneyBag(16 * 5, 14 * 5),
+            ]
 
-        # if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
-        #     state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
+        if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
+            state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
 
         state.npcs = [
             Johnathon(16 * 15, 16 * 15), # fin

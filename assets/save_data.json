@@ -1,52 +1,97 @@
 {
-    "level": 4,
-    "exp": 600,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "level": 8,
+    "exp": 3749,
+    "stamina_points": 390,
+    "max_stamina_points": 390,
+    "focus_points": 210,
+    "max_focus_points": 210,
     "companions": [
-        "sir leopold"
+        "sir leopold",
+        "erika"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses"
+        "coin flip glasses",
+        "Black Hat",
+        "SOCKS_OF_PERCEPTION",
+        "HEALTHY_GLOVES",
+        "DARLENES_CHICKEN_NUGGER_AMULET"
     ],
     "equipped_items": [
-        "sir leopold's paw",
-        "opossum repellent",
-        "coin flip glasses"
+        "DARLENES_CHICKEN_NUGGER_AMULET",
+        "coin flip glasses",
+        "HEALTHY_GLOVES"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token"
+        "level 4 token",
+        "level 5 token",
+        "level 6 token",
+        "level 7 token",
+        "level 8 token"
     ],
     "magicinventory": [
         "reveal",
         "shield",
-        "shake"
-
+        "shake",
+        "SLOTS_HACK",
+        "CRAPS_LUCKY_7",
+        "HEADS_FORCE"
     ],
-    "body": 1,
-    "mind": 1,
-    "spirit": 1,
+    "body": 2,
+    "mind": 2,
+    "spirit": 2,
     "perception": 1,
     "baseperception": 1,
-    "luck": 1,
-    "money": 2000,
+    "luck": 2,
+    "money": 1950,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "SPIRIT_TWO_ALICE_QUEST",
+        "BBQ_SAUCE",
+        "QUEST_1_COIN",
+        "QUEST_1_BADGE",
+        "Invitation",
+        "rib demon key",
+        "HIPPO_HOUR_GLASS",
+        "NUGGIE_SAUCE_1_FOUND",
+        "boss key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 1,
+    "days": 10,
     "leveltwonpcstate": [
-
-
+        "STAT_POTION_AREA_2",
+        "SPIRIT_TWO_ALICE_QUEST_FINISHED",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_1_REWARD",
+        "MC_NUGGET_BETA_QUEST_COMPLETE",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "BBQ_SAUCE",
+        "MC_NUGGET_SECOND_QUEST_COMPLETE",
+        "NUGG_QUEST_TWO_MONEY",
+        "MC_NUGGET_QUEST_2_REWARD",
+        "focus boost",
+        "500 Gold",
+        "BLACK_JACK_BLACK_MACK_DEFEATED",
+        "MC_NUGGET_THIRD_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_3_REWARD",
+        "HEALTHY_GLOVES",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "QUEST_1_COIN",
+        "QUEST_1_BADGE",
+        "QUEST_1_COMPLETE",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "COIN_FLIP_BETTY_DEFEATED",
+        "CHICKEN_QUEST_START",
+        "NUGGIE_SAUCE_1_FOUND",
+        "DARLENES_CHICKEN_NUGGER_AMULET",
+        "COIN_SAVE_AREA_2",
+        "CRAPS_HAPPY_DEFEATED"
     ],
     "slots_vest": false,
     "cutscene1": true,
@@ -54,15 +99,15 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1000,
+    "coinflipbetteymoney": 0,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 1000,
+    "opossuminacancandymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1500,
+    "blackjackmackmoney": 0,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 1500,
-    "crapscrappymoney": 1500
+    "slotsrippasnappamoney": 0,
+    "crapscrappymoney": 0
 }

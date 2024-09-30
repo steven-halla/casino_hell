@@ -19,8 +19,8 @@ class JanetP(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "JanetP: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "JanetP: Why do you have a chickden and a hedge hog following you? What are you a rancher?",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

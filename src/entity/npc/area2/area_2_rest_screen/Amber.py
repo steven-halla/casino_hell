@@ -20,8 +20,8 @@ class Amber(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Amber: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Amber: I have faith you'll make it to the next floor, if you do please dont forget us.",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500
