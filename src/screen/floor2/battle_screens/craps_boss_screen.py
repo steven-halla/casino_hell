@@ -26,13 +26,22 @@ class CrapsBossScreen(BattleScreen):
         self.game_state: str = "welcome_screen"
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
 
-
+        self.spell_effect = True
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.dice_roll_3 = 0
         self.power_meter_index: int = 0  # Example initial power level
         self.come_out_roll_total = 0
         self.point_roll_total = 0
+        self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect.set_volume(0.6)
+
+        self.successful_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect.set_volume(0.6)
+
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+
 
         # self.point_phase_target = self.dice_roll_1 + self.dice_roll_2
 
@@ -373,6 +382,12 @@ class CrapsBossScreen(BattleScreen):
 
         if self.game_state == "intro_screen":
             self.battle_messages["hand_cramp_message"].update(state)
+            if self.battle_messages["hand_cramp_message"].message_index == 1 and self.spell_effect == True:
+                self.spell_sound.play()  # Play the sound effect once
+                print("dm;lsfjlsadf;jdsa;f;ldsjfsafj;sad")
+                self.spell_effect = False
+
+
             if self.battle_messages["hand_cramp_message"].message_index == len(self.battle_messages["hand_cramp_message"].messages) - 1:
                 print("yaw")
                 self.game_state = "welcome_screen"
@@ -483,6 +498,8 @@ class CrapsBossScreen(BattleScreen):
                 state.player.focus_points -= self.double_dice_cast_cost
                 self.magic_lock = True
                 controller.isTPressed = False
+                self.spell_sound.play()  # Play the sound effect once
+
                 self.game_state = "welcome_screen"
 
             elif self.magic_screen_index == 1 and controller.isTPressed:
@@ -502,7 +519,12 @@ class CrapsBossScreen(BattleScreen):
                 self.power_meter_index = self.power_meter_index
                 controller.isPPressed = False
                 if self.power_meter_index >= 85:
+                    self.successful_power_strike_sound_effect.play()  # Play the sound effect once
+
                     self.lucky_seven = True
+                elif self.power_meter_index < 85:
+                    self.failed_power_strike_sound_effect.play()  # Play the sound effect once
+
                 print("Your meter is:" + str(self.power_meter_index))
                 print("-----------------------------------------------------------------------------")
                 self.game_state = "come_out_roll_screen"

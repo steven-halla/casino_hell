@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated NPC dialog">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated boss dialog, perfect run of game about to put sound back in">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_boss_screen.py" afterDir="false" />
     </list>
@@ -100,11 +100,11 @@
       <recent name="$PROJECT_DIR$/src/entity/demon" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/music" />
       <recent name="$PROJECT_DIR$/src/entity/npc/area2/area_2_nugget_screen" />
       <recent name="$PROJECT_DIR$/src/entity/npc/area2/area_2_gambling_screen" />
       <recent name="$PROJECT_DIR$/src/game_constants" />
       <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/constants" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -358,7 +358,7 @@
       <workItem from="1725645837107" duration="3654000" />
       <workItem from="1725649923355" duration="5653000" />
       <workItem from="1725655762755" duration="131867000" />
-      <workItem from="1727627005751" duration="35322000" />
+      <workItem from="1727627005751" duration="36856000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -703,7 +703,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1009" />
+    <option name="localTasksCounter" value="1010" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -732,7 +732,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="improved box look for leveling up in bllack jack, minor bug hunting fixing" />
     <MESSAGE value="lowed threshold for coin flip magic to proc and added 3% chance for rib lock status on slots" />
     <MESSAGE value="fixed bug with lvel up , now updates player in update non stop" />
     <MESSAGE value="fixed perception. and fixed oppsum in a can" />
@@ -757,7 +756,8 @@
     <MESSAGE value="took out two npcs and moved one to a better location" />
     <MESSAGE value="created print statement for FPS game is a little on slow side at 55 FPS, its the maps that are doing it" />
     <MESSAGE value="updated NPC dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated NPC dialog" />
+    <MESSAGE value="updated boss dialog, perfect run of game about to put sound back in" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated boss dialog, perfect run of game about to put sound back in" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -799,7 +799,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727737079752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727738800586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
