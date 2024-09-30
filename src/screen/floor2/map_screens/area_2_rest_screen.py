@@ -120,12 +120,10 @@ class Area2RestScreen(Screen):
         state.npcs = [
             Johnathon(16 * 15, 16 * 15), # fin
             Natalie(16 * 25, 16 * 15), # fin
-            April(16 * 45, 16 * 5),
-            Nibblet(16 * 48, 16 * 63),
+            April(16 * 48, 16 * 62),
             Lurger(16 * 111, 16 * 66),
             Sasquatch(16 * 65, 16 * 93),
             Alex(16 * 94, 16 * 7),
-            Lunky(16 * 84, 16 * 9),   # fin
             Jasper(16 * 55, 16 * 14), # fin
             TommyBoy(16 * 76, 16 * 45),  # fin
             Amber(16 * 138, 16 * 16),  # fin
