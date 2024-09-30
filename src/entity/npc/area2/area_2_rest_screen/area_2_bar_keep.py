@@ -46,6 +46,7 @@ class Area2BarKeep(Npc):
 
     def update(self, state: "GameState"):
 
+
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
@@ -82,13 +83,13 @@ class Area2BarKeep(Npc):
                     state.currentScreen = state.area2BarCutScene1
                     state.area2BarCutScene1.start(state)
 
-                if Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
+                elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
                     print("Your invited")
                     state.currentScreen = state.area2BarCutScene2
                     state.area2BarCutScene2.start(state)
                     state.player.companions.append("erika")
 
-                if Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
+                elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
                     state.currentScreen = state.area2BarCutScene3
                     state.area2BarCutScene3.start(state)
 

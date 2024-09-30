@@ -142,6 +142,9 @@ class Area2GamblingScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        # delta_time = self.clock.tick(60)  # 60 FPS cap
+        # fps = 1000 / delta_time
+        # print(fps)
 
 
 
