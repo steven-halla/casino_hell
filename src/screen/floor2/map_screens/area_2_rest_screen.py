@@ -123,17 +123,13 @@ class Area2RestScreen(Screen):
             April(16 * 45, 16 * 5),
             Nibblet(16 * 48, 16 * 63),
             Lurger(16 * 111, 16 * 66),
-
             Sasquatch(16 * 65, 16 * 93),
-
-
             Alex(16 * 94, 16 * 7),
             Lunky(16 * 84, 16 * 9),   # fin
             Jasper(16 * 55, 16 * 14), # fin
-
             TommyBoy(16 * 76, 16 * 45),  # fin
 
-            Amber(16 * 133, 16 * 17),  # fin
+            Amber(16 * 140, 16 * 17),  # fin
 
             JanetP(16 * 133, 16 * 63), # fin
             NatNat(16 * 113, 16 * 45), # fin

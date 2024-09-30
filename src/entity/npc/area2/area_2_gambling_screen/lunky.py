@@ -4,6 +4,7 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.events import Events
 
 
 class Lunky(Npc):
@@ -14,10 +15,20 @@ class Lunky(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Lunky: Sometimes you'll get dragged into  a secret layer where you can play some happy starving hippos , how it happens nobody knows.",
+                    "Lunky:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
+                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+
                 ],
                 (50, 450, 50, 45), 30, 500
-            )
+            ),
+            "erika_in_party": NpcTextBox(
+                [
+                    "Lunky: Well I see that you have chicken girl in your part",
+                    "Hero: Thank you for this friend. "
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
         }
 
         self.choices = ["Yes", "No"]
@@ -37,7 +48,8 @@ class Lunky(Npc):
         elif self.state == "talking":
             # Determine which message to use based on player state
             current_message = self.npc_messages["default_message"]
-
+            if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                current_message = self.npc_messages["erika_in_party"]
 
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -66,6 +78,8 @@ class Lunky(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.npc_messages["default_message"]
+                if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                    current_message = self.npc_messages["erika_in_party"]
 
                 current_message.reset()
 
@@ -96,7 +110,10 @@ class Lunky(Npc):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         # Draw the correct message box based on the state of the NPC
+
         if self.state == "talking":
             current_message = self.npc_messages["default_message"]
+            if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                current_message = self.npc_messages["erika_in_party"]
             current_message.draw(state)
 
