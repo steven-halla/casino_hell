@@ -12,16 +12,23 @@ class Natalie(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natalie:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Natalie: Have you ever wondered how you should bet in craps during the point roll phase.",
+                    "Rolling a 7 has the highest probability of of 16.66%,so the house always has the edge on you. Seems unfair doesn't it?",
+                    "If you roll a 6 or 8 that has the highest probablity of 13.89%, so bet high",
+                    "If you roll a 5 or 9 then going a medium kind of bet is best with a 11.11% probability.",
+                    "A roll of 4 and 10 has a probablity of 8.33% so bet low",
+                    "A roll of 3 and 11 has a probablity of 5.56% so bet  low if you roll an 11",
+                    "A roll of 2 and 12 has a probablity of 2.78% ,though that wont matter much as you cant st that as point roll ",
+
+
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Nataliet: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Nataliet: Have you had a chance to equip your companion item? It'll help a lot in winning craps",
+                    "WIth a spirit of 2  you can equip it, but you knew that already didn't you? "
 
                 ],
                 (50, 450, 50, 45), 30, 500

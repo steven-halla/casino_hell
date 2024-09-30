@@ -16,16 +16,18 @@ class Jasper(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Jasper:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
-
+                    "Jasper: If you increase your perception outside of gambling, be sure to leave the area and come back, or the treasure chest wont reveal themselves",
+                    "Hero: why is that? That doens't make any sense?",
+                    "Jasper: The treasure chest  are shy, they dont like to show themselves coming out of hiding",
+                    "Hero: Wait the treasure chest are alive??? ",
+                    "Jasper: Well yeah of course they are, why do you think they vanish after you open them? "
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Jasper: Well I see that you have chicken girl in your part",
-                    "Hero: Thank you for this friend. "
+                    "Jasper: With a perception of 3 you can equip more items. Did you remember to do this?",
+
 
                 ],
                 (50, 450, 50, 45), 30, 500

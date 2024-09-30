@@ -4,10 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="took out two npcs and moved one to a better location">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="created print statement for FPS game is a little on slow side at 55 FPS, its the maps that are doing it">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/map/rest_area_2_final_map.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/rest_area_2_final_map.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_bar_keep.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_bar_keep.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/April.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/April.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/JanetP.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/JanetP.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Lurger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Lurger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/NatNat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/NatNat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Natalie.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Natalie.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Sasquatch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Sasquatch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/TommyBoy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/TommyBoy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_shop_keeper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/area_2_shop_keeper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/jasper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/jasper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/karn.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/karn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rest_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -360,7 +370,7 @@
       <workItem from="1725645837107" duration="3654000" />
       <workItem from="1725649923355" duration="5653000" />
       <workItem from="1725655762755" duration="131867000" />
-      <workItem from="1727627005751" duration="19256000" />
+      <workItem from="1727627005751" duration="25394000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -705,7 +715,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1006" />
+    <option name="localTasksCounter" value="1007" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -734,7 +744,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="black jacklevle up now shows players stats, fixed bug so now  you cant click on stat you have a 2 on" />
     <MESSAGE value="several changes, fixed alice quest" />
     <MESSAGE value="improved box look for leveling up in bllack jack, minor bug hunting fixing" />
     <MESSAGE value="lowed threshold for coin flip magic to proc and added 3% chance for rib lock status on slots" />
@@ -759,7 +768,8 @@
     <MESSAGE value="fixing npcs sothey are more uniform" />
     <MESSAGE value="all NPCS fixed" />
     <MESSAGE value="took out two npcs and moved one to a better location" />
-    <option name="LAST_COMMIT_MESSAGE" value="took out two npcs and moved one to a better location" />
+    <MESSAGE value="created print statement for FPS game is a little on slow side at 55 FPS, its the maps that are doing it" />
+    <option name="LAST_COMMIT_MESSAGE" value="created print statement for FPS game is a little on slow side at 55 FPS, its the maps that are doing it" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -801,7 +811,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727659509933" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727725342004" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

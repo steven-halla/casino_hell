@@ -12,8 +12,8 @@ class Samantha(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Samantha:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Samantha: For slots if you increase your bet you'll increase your chances to get the super secret item.",
+                    "Samantha: The demon is very generous, they wont let you bet high once you have the item, how considerate.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

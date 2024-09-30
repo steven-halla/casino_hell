@@ -15,8 +15,9 @@ class Lunky(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Lunky:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Lunky: All of the gamblers gathered here, though you dont have to defeat all 5. Take things at your own pace.",
+                    "Lunky: If a game is too hard try coming back later when you acheive higher levels, better items or magic spells.",
+                    "Lunky: You did talk to everyone in the rest area and nugg koop? It would be awful if you missed a quest.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

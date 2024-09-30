@@ -12,8 +12,8 @@ class Lurger(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Lurger:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Lurger: I'm so sick of the smelll of BBQ sauce and chickens, nuggets, hay, You can't escape the smell of the nugg Koop",
+                    "I would give my left leg for a small reprieve, if only for a minute.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

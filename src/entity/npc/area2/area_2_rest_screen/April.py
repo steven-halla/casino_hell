@@ -13,8 +13,9 @@ class April(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "April:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "April: Get away from me, this is my corner, you can't have it, I saw it first. You demons may have taking away my husband",
+                    "from me but you'll never ever EVER take my corner away from me. Its been mine for 224 years, 3 months, 24 days, 15 hours, 12 minutes and....43 seconds.",
+                    "Hero: (I guess even on level 2 there is no escaping insanity)."
 
                 ],
                 (50, 450, 50, 45), 30, 500

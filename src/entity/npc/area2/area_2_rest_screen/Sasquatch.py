@@ -13,8 +13,8 @@ class Sasquatch(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Sasquatch:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Sasquatch:I have to keep the dirt off the red floor, its the only way to keep the insanity away",
+                    "the random architecture is meant to make us go crazy, why else would they do it? ","WHY CANT ANYTHING BE UNIFORM HERE???"
 
                 ],
                 (50, 450, 50, 45), 30, 500

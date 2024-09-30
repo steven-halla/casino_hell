@@ -12,8 +12,7 @@ class JanetP(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "JanetP:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "JanetP: If you want to build up exp try betting low. There are only 5 gamblers on this floor so keep this in mind.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

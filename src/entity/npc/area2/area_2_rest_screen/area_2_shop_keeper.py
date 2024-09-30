@@ -191,7 +191,7 @@ class Area2ShopKeeper(Npc):
                         state.player.money -= 1000
                         self.stat_point_increase = True
 
-                    if state.player.money > 1001 and self.selected_item_index == 4 and Equipment.BOSS_KEY.value not in state.player.quest_items:
+                    if state.player.money > 1001 and self.selected_item_index == 4 and Equipment.BOSS_KEY.value not in state.player.quest_items and Events.ERIKA_IN_PARTY.value in state.player.companions:
                         Equipment.BOSS_KEY.add_item_to_quest_state(state.player, Equipment.BOSS_KEY)
                         state.player.money -= 1000
 

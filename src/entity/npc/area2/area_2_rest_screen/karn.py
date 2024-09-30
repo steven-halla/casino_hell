@@ -14,8 +14,8 @@ class Karn(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Karn: Out of the 5 stats LUCK is the most important stat ",
-                    "Luck gives global boness to all games, how could you beat that?",
+                    "Karn: Out of the 5 attributes LUCK is the most important stat ",
+                    "Luck gives global bonuses to all games (except coin flip for now). How could you beat that?",
 
 
                 ],

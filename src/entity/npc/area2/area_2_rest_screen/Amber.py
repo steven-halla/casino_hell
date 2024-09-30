@@ -13,8 +13,7 @@ class Amber(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Amber:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Amber:The food here is disgusting buts its better than the 1st floor, I heard floor 3 has sardines, fine wine, pizza, hamburgers,and ice cream.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

@@ -16,8 +16,9 @@ class Nibblet(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Nibblet:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "Nibblet:You can gain a total of 4 stat points, so distribute them wisely.The quintuplets in the rest area can tell you all about stats.",
+                    "Hero: It'll be hard for me to choose which stat to neglect",
+                    "Nibblet: Also be aware you cant raise a state above 2 on this floor, outside of equipping items or eatting food at the bar.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

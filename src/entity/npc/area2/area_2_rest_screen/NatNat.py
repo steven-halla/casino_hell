@@ -13,8 +13,9 @@ class NatNat(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "NatNat:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
-                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
+                    "NatNat: The demons are nice enough to give us the clothes of people that lose all their money.",
+                    "I'll never part with my daughter's clothing, it's the only thing I have to remember her by. ",
+                    "Now what was her name again, I can't seem to remember it...Did I really have a daughter?"
 
                 ],
                 (50, 450, 50, 45), 30, 500
