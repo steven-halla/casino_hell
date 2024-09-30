@@ -119,22 +119,15 @@ class Area2RestScreen(Screen):
 
         state.npcs = [
             Johnathon(16 * 15, 16 * 15), # fin
-
             Natalie(16 * 25, 16 * 15), # fin
+            April(16 * 45, 16 * 5),
+            Nibblet(16 * 48, 16 * 63),
+            Lurger(16 * 111, 16 * 66),
+
+            Sasquatch(16 * 65, 16 * 93),
 
 
-
-
-            April(16 * 45, 16 * 5), # fin
-
-
-
-            Lurger(16 * 111, 16 * 66), # fin
-            Sasquatch(16 * 65, 16 * 93), # fin
-
-
-            Nibblet(16 * 48, 16 * 63),  # fin
-            Alex(16 * 94, 16 * 7),  # fin
+            Alex(16 * 94, 16 * 7),
             Lunky(16 * 84, 16 * 9),   # fin
             Jasper(16 * 55, 16 * 14), # fin
 
@@ -162,7 +155,7 @@ class Area2RestScreen(Screen):
             Area2BarKeep(16 * 130, 16 * 4),  # fin
 
             # below are doors
-            Area2RestToGamblingArea(16 * 10, 16 * 4),
+            Area2RestToGamblingArea(16 * 11, 16 * 1),
             Area2RestToNuggetArea(16 * 39, 16 * 69),
             Area2RestToRibDemonMazeArea(16 * 148, 16 * 2),
             Area2RestToBossArea(16 * 71, 16 * 98),

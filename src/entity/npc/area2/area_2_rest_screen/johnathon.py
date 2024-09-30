@@ -4,6 +4,7 @@ import math
 import pygame
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.events import Events
 
 
 class Johnathon(Npc):
@@ -12,32 +13,29 @@ class Johnathon(Npc):
         # the below is how i will implement this in the future
 
 
-        # DEFAULT_MESSAGE = "default_message"
-        #
-        # self.npc_messages = {
-        #     DEFAULT_MESSAGE: NpcTextBox(
-        #         [
-        #             "Johnathon:If you want in the nugg den you need to prove yourself, reach level 6 and I'll let you inside to have all the juicy crispy chicken nuggies your little heart desires",
-        #             "Opossum in ao teach you.....it will be less so.",
-        #         ],
-        #         (50, 450, 50, 45), 30, 500
-        #     )
-        # }
+
 
         # Integrated textbox content into guy_messages
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Johnathon:You have 10 days to win or its game over.",
+                    "Johnathon:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
+                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
 
 
                 ],
                 (50, 450, 50, 45), 30, 500
-            )
+            ),
+            "erika_in_party": NpcTextBox(
+                [
+                    "Johnathon: Well I see that you have chicken girl in your part",
+                    "Hero: Thank you for this friend. "
+
+                ],
+                (50, 450, 50, 45), 30, 500
+            ),
         }
 
-        self.choices = ["Yes", "No"]
-        self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
 
         self.character_sprite_image = pygame.image.load(
@@ -53,7 +51,8 @@ class Johnathon(Npc):
         elif self.state == "talking":
             # Determine which message to use based on player state
             current_message = self.npc_messages["default_message"]
-
+            if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                current_message = self.npc_messages["erika_in_party"]
 
             if current_message.message_index == 1:
                 if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
@@ -82,6 +81,8 @@ class Johnathon(Npc):
                 self.state_start_time = pygame.time.get_ticks()
                 # Reset the message based on player state
                 current_message = self.npc_messages["default_message"]
+                if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                    current_message = self.npc_messages["erika_in_party"]
 
                 current_message.reset()
 
@@ -106,5 +107,7 @@ class Johnathon(Npc):
         # Draw the correct message box based on the state of the NPC
         if self.state == "talking":
             current_message = self.npc_messages["default_message"]
+            if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                current_message = self.npc_messages["erika_in_party"]
             current_message.draw(state)
 

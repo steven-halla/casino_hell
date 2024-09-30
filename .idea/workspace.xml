@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="all areas redid with new maps in mind">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="all doors are now placed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/map/rest_area_2_final_map.tmx" beforeDir="false" afterPath="$PROJECT_DIR$/assets/map/rest_area_2_final_map.tmx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_gambling_screen/nibblet.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_gambling_screen/nibblet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/April.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/April.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Lurger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Lurger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Natalie.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Natalie.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Sasquatch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Sasquatch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/johnathon.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/johnathon.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_constants/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/events.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rest_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rest_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,44 +61,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.$AffectedModuleNames$.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
-    &quot;Python.cindy_long_hair.executor&quot;: &quot;Run&quot;,
-    &quot;Python.constants.executor&quot;: &quot;Run&quot;,
-    &quot;Python.craps_happy_screen.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.fff.executor&quot;: &quot;Run&quot;,
-    &quot;Python.game.executor&quot;: &quot;Run&quot;,
-    &quot;Python.game_state.executor&quot;: &quot;Run&quot;,
-    &quot;Python.hangry_angry_starving_hippos_test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.hungry_starving_hippos.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.nukeem.executor&quot;: &quot;Run&quot;,
-    &quot;Python.opposuminacan.executor&quot;: &quot;Run&quot;,
-    &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/src/entity/player&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor": "Run",
+    "Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor": "Run",
+    "Python.$AffectedModuleNames$.executor": "Run",
+    "Python.Unnamed.executor": "Run",
+    "Python.blackjack.executor": "Run",
+    "Python.cindy_long_hair.executor": "Run",
+    "Python.constants.executor": "Run",
+    "Python.craps_happy_screen.executor": "Debug",
+    "Python.fff.executor": "Run",
+    "Python.game.executor": "Run",
+    "Python.game_state.executor": "Run",
+    "Python.hangry_angry_starving_hippos_test.executor": "Run",
+    "Python.hungry_starving_hippos.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main.py.executor": "Run",
+    "Python.nukeem.executor": "Run",
+    "Python.opposuminacan.executor": "Run",
+    "Python.playground.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/src/entity/player",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "Errors",
+    "ts.external.directory.path": "/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/entity/player" />
@@ -360,7 +366,7 @@
       <workItem from="1725645837107" duration="3654000" />
       <workItem from="1725649923355" duration="5653000" />
       <workItem from="1725655762755" duration="131867000" />
-      <workItem from="1727627005751" duration="15031000" />
+      <workItem from="1727627005751" duration="16588000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -705,7 +711,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1001" />
+    <option name="localTasksCounter" value="1002" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -734,7 +740,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed damage shower for rib demon attack" />
     <MESSAGE value="boosted EXP gains across the board, was down by 700 from level 8 when I want to be at least 500+ above it." />
     <MESSAGE value="lots of bug/balance changes" />
     <MESSAGE value="changed quest line for alice made is easier just stay at bar" />
@@ -759,7 +764,8 @@
     <MESSAGE value="more npcs added" />
     <MESSAGE value="redid gambling area" />
     <MESSAGE value="all areas redid with new maps in mind" />
-    <option name="LAST_COMMIT_MESSAGE" value="all areas redid with new maps in mind" />
+    <MESSAGE value="all doors are now placed" />
+    <option name="LAST_COMMIT_MESSAGE" value="all doors are now placed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -789,11 +795,6 @@
           <line>122</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Natalie.py</url>
-          <line>35</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -806,7 +807,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727654584982" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727656270550" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
