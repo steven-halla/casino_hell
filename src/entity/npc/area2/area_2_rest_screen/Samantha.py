@@ -3,53 +3,28 @@ import pygame
 
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.events import Events
 
 
 class Samantha(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.cindy_long_hair_messages = {
-            'textbox': NpcTextBox(
+        self.npc_messages = {
+            "default_message": NpcTextBox(
                 [
-                    "Cindy:Hi there I'm Cindy, you should know,  Cheating Ted is a real bastard. Because of him my boyfriend is making beer.",
+                    "Samantha:You have 10 days to win or its game over. Going to the Inn will put the day up by 1. There is 1 save coin on this floor.",
+                    "You can buy it from the merchant, and it wont add any days when you  buy it, so use it wisely."
 
                 ],
-                (50, 450, 50, 45), 36, 500
+                (50, 450, 50, 45), 30, 500
             ),
-            'reward_message': NpcTextBox(
+            "erika_in_party": NpcTextBox(
                 [
-                    "",
-                    "Cindy: Oh cool look at you, time for your reward (inn badge). I have something else for you too, I don't just be giving these out.",
-
+                    "Samantha: Well I see that you have chicken girl in your part",
+                    "Hero: Thank you for this friend. "
 
                 ],
-
-                (50, 450, 50, 45), 36, 500
-            ),
-            'final_message': NpcTextBox(
-                [
-                    "",
-                    "Cindy: Watching you take him down was so satisfying thank you.",
-
-                ],
-                (50, 450, 50, 45), 36, 500
-            ),
-            'rabies_message': NpcTextBox(
-                [
-                    "",
-                    "That witch Sally took the doctor's blue flower, I just know it.",
-                    "Why else was she snooping around her office? You can't trust those opossum girls."
-                ],
-                (50, 450, 50, 45), 36, 500
-            ),
-            'sir_leopold_message': NpcTextBox(
-                [
-                    "",
-                    "Samantha I was so scared...you have a knack for defying the odds.",
-                    "Hero: What can I say, I guess Lady Luck is on my side.",
-
-                ],
-                (50, 450, 50, 45), 36, 500
+                (50, 450, 50, 45), 30, 500
             ),
         }
         self.choices = ["Yes", "No"]
@@ -83,64 +58,56 @@ class Samantha(Npc):
 
 
     def update(self, state: "GameState"):
-
         if self.state == "waiting":
+            player = state.player
             self.update_waiting(state)
+
         elif self.state == "talking":
-            self.update_talking(state)
+            # Determine which message to use based on player state
+            current_message = self.npc_messages["default_message"]
+            if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                current_message = self.npc_messages["erika_in_party"]
+
+            if current_message.message_index == 1:
+                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+
+                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+                    self.input_time = pygame.time.get_ticks()
+                    self.state = "waiting"
+
+            self.update_talking(state, current_message)
 
     def update_waiting(self, state: "GameState"):
-
         player = state.player
-        min_distance = math.sqrt(
-            (player.collision.x - self.collision.x) ** 2 + (
-                        player.collision.y - self.collision.y) ** 2)
+        min_distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
         if min_distance < 10:
             print("nooo")
 
         if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
-            distance = math.sqrt(
-                (player.collision.x - self.collision.x) ** 2 + (
-                            player.collision.y - self.collision.y) ** 2)
-            if distance < 40:
+            distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
+
+            if distance < 40 and state.player.menu_paused == False:
                 self.state = "talking"
                 self.state_start_time = pygame.time.get_ticks()
-                self.cindy_long_hair_messages['textbox'].reset()
+                # Reset the message based on player state
+                current_message = self.npc_messages["default_message"]
+                if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                    current_message = self.npc_messages["erika_in_party"]
 
+                current_message.reset()
 
-
-    def update_talking(self, state: "GameState"):
-
+    def update_talking(self, state: "GameState", current_message):
+        current_message.update(state)
         state.player.canMove = False
 
-
-        if state.player.rabiesImmunity == True:
-            current_message = self.cindy_long_hair_messages["sir_leopold_message"]
-
-        elif state.player.hasRabies == True:
-            current_message = self.cindy_long_hair_messages['rabies_message']
-
-        elif self.coinFlipTedReward == True or state.restScreen.inn_badge_recieved_tracker == True:
-            current_message = self.cindy_long_hair_messages['final_message']
-        elif state.coinFlipTedScreen.coinFlipTedDefeated:
-            if "reveal" not in state.player.magicinventory:
-                state.player.magicinventory.append("reveal")
-                state.player.npc_items.append("inn badge")
-            if state.player.mind < 1:
-                state.player.mind += 1
-
-            current_message = self.cindy_long_hair_messages['reward_message']
-        else:
-            current_message = self.cindy_long_hair_messages['textbox']
-        current_message.update(state)
         if state.controller.isTPressed and current_message.is_finished():
             self.state = "waiting"
-            state.player.canMove = True
-
             self.state_start_time = pygame.time.get_ticks()
-            current_message.reset()  # Ensure the message is reset for the next interaction
-            if "reveal" in state.player.magicinventory:
-                self.coinFlipTedReward = True
+            state.player.canMove = True
 
 
     def draw(self, state):
@@ -160,33 +127,11 @@ class Samantha(Npc):
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-
-
-
-
         if self.state == "talking":
-            sprite_rect = pygame.Rect(0, 0, 136, 186)  # Top left section with width and height of 100 pixels
-
-            if state.player.rabiesImmunity == True:
-                current_message = self.cindy_long_hair_messages["sir_leopold_message"]
-
-            elif state.player.hasRabies == True:
-                current_message = self.cindy_long_hair_messages['rabies_message']
-            elif self.coinFlipTedReward == True or state.restScreen.inn_badge_recieved_tracker == True:
-
-                current_message = self.cindy_long_hair_messages['final_message']
-            elif state.coinFlipTedScreen.coinFlipTedDefeated:
-                current_message = self.cindy_long_hair_messages['reward_message']
-            else:
-                current_message = self.cindy_long_hair_messages['textbox']
+            current_message = self.npc_messages["default_message"]
+            if Events.ERIKA_IN_PARTY.value in state.player.companions:
+                current_message = self.npc_messages["erika_in_party"]
             current_message.draw(state)
-            while state.coinFlipTedScreen.coinFlipTedDefeated == True and "black jack reveal" not in state.player.magicinventory:
-
-                print(state.player.magicinventory)
-                print(state.player.mind)
-                # self.coinFlipTedReward = True
-
-                return
 
 
 

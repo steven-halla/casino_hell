@@ -128,12 +128,9 @@ class Area2RestScreen(Screen):
             Lunky(16 * 84, 16 * 9),   # fin
             Jasper(16 * 55, 16 * 14), # fin
             TommyBoy(16 * 76, 16 * 45),  # fin
-
-            Amber(16 * 140, 16 * 17),  # fin
-
+            Amber(16 * 138, 16 * 16),  # fin
             JanetP(16 * 133, 16 * 63), # fin
             NatNat(16 * 113, 16 * 45), # fin
-
             Samantha(16 * 122, 16 * 11),  # fin
 
             Natasha(16 * 3, 16 * 93),# fin
