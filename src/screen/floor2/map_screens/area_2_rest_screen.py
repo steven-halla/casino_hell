@@ -108,14 +108,14 @@ class Area2RestScreen(Screen):
         super().start(state)
         state.npcs.clear()
 
-        if (state.player.perception >= 1
-                and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
-            state.treasurechests = [
-                Area2MoneyBag(16 * 5, 14 * 5),
-            ]
+        # if (state.player.perception >= 1
+        #         and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
+        #     state.treasurechests = [
+        #         Area2MoneyBag(16 * 5, 14 * 5),
+        #     ]
 
-        if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
-            state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
+        # if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
+        #     state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
 
         state.npcs = [
             Johnathon(16 * 15, 16 * 15), # fin
@@ -133,7 +133,6 @@ class Area2RestScreen(Screen):
             Sasquatch(16 * 65, 16 * 93), # fin
 
 
-            Alice(16 * 39, 16 * 46),   # fin
             Nibblet(16 * 48, 16 * 63),  # fin
             Alex(16 * 94, 16 * 7),  # fin
             Lunky(16 * 84, 16 * 9),   # fin
@@ -154,16 +153,19 @@ class Area2RestScreen(Screen):
             Paul(16 * 35, 16 * 95),# fin
             Karn(16 * 22, 16 * 96),# fin
 
+
+            Alice(16 * 39, 16 * 46),  # fin
+
             # below are shops and such
             Area2InnKeeper(16 * 140, 16 * 95), # fin
             Area2ShopKeeper(16 * 44, 16 * 87), # fin
             Area2BarKeep(16 * 130, 16 * 4),  # fin
 
             # below are doors
-            Area2RestToGamblingArea(16 * 17, 16 * 0),
-            Area2RestToNuggetArea(16 * 95, 16 * 0),
-            Area2RestToRibDemonMazeArea(16 * 15, 16 * 49),
-            Area2RestToBossArea(16 * 64, 16 * 49),
+            Area2RestToGamblingArea(16 * 10, 16 * 4),
+            Area2RestToNuggetArea(16 * 39, 16 * 69),
+            Area2RestToRibDemonMazeArea(16 * 148, 16 * 2),
+            Area2RestToBossArea(16 * 71, 16 * 98),
         ]
 
     def update(self, state: "GameState"):
