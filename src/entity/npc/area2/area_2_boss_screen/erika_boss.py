@@ -101,6 +101,9 @@ class ErikaBoss(Npc):
             if selected_option == "Yes":
                 print("YES")
 
+                # state.currentScreen = state.crapsBossScreen
+                # state.crapsBossScreen.start(state)
+
                 state.currentScreen = state.crapsBossScreen
                 state.crapsBossScreen.start(state)
 

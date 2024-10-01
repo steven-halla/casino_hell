@@ -23,6 +23,8 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 class CrapsBossScreen(BattleScreen):
     def __init__(self, screenName: str = "Casino Slots Screen") -> None:
         super().__init__(screenName)
+
+
         self.game_state: str = "welcome_screen"
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
 
@@ -33,6 +35,7 @@ class CrapsBossScreen(BattleScreen):
         self.power_meter_index: int = 0  # Example initial power level
         self.come_out_roll_total = 0
         self.point_roll_total = 0
+
         self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
         self.failed_power_strike_sound_effect.set_volume(0.6)
 
@@ -41,6 +44,15 @@ class CrapsBossScreen(BattleScreen):
 
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
+
+
+
+
+
 
 
         # self.point_phase_target = self.dice_roll_1 + self.dice_roll_2
@@ -112,8 +124,8 @@ class CrapsBossScreen(BattleScreen):
                  "Sir Leopold: She just cursed you, I knew there was something fowl about her,  What a dirty trick!",
                  "Hero:  She's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
                  "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.",
-                 "Hero: I was hoping to not have to use this technique so early, but I don't have much of a choice. I'll show you the power of my secret technique",
-                 "Sir Leopold: Hero, oh my god what are you. Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is disgusting, do you know where those dice have been? You Dirty degenerate filthy"
+                 "Hero: I was hoping to not have to use this  so early, but I don't have much of a choice. I'll show you the power of my secret  technique",
+                 "Sir Leopold: Hero, oh my god what are you. Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
                                                                                                     " rotten human", "...I think I'm going to puke.","Sir Leopold: Your power meter is going to be faster, and the margin of error will be lower, stay focused and you can win this."
                  ,""],
                 (65, 460, 700, 130),
@@ -240,6 +252,11 @@ class CrapsBossScreen(BattleScreen):
         self.intro = True
         self.stamina_drain = 4
 
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/demonboss.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        self.initialize_music()
+        self.music_on = True
+
 
 
 
@@ -356,7 +373,28 @@ class CrapsBossScreen(BattleScreen):
     # Example:
     # self.display_dice(state, self.dice_roll_1)
 
+    def stop_music(self):
+        pygame.mixer.music.stop()
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
+
     def update(self, state: "GameState") -> None:
+        if state.musicOn == True:
+            if self.music_on == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
+
         # print(self.gam)
         if self.lucky_seven_buff_counter > 0:
             self.magic_lock = True
@@ -367,8 +405,10 @@ class CrapsBossScreen(BattleScreen):
             self.lucky_seven_buff_counter = 0
 
 
+
+
         # self.lucky_seven = state.player.luck * 2
-        pygame.mixer.music.stop()
+        # pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
@@ -427,11 +467,14 @@ class CrapsBossScreen(BattleScreen):
                 self.game_state = "game_over_screen"
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
                 self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
                 controller.isDownPressed = False
+                self.menu_movement_sound.play()  # Play the sound effect once
 
             if self.welcome_screen_index == 0 and controller.isTPressed:
                 self.game_state = "power_meter_screen"
@@ -461,6 +504,8 @@ class CrapsBossScreen(BattleScreen):
         elif self.game_state == "bet_screen":
             # print(self.game_state)
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet += 25
                 # print(self.game_state)
 
@@ -469,6 +514,8 @@ class CrapsBossScreen(BattleScreen):
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet -= 25
                 if self.bet <= 25:
                     self.bet = 25
@@ -488,9 +535,13 @@ class CrapsBossScreen(BattleScreen):
                 self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
             self.battle_messages["magic_message"].update(state)
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
             if self.magic_screen_index == 0 and controller.isTPressed and state.player.focus_points >= self.double_dice_cast_cost:
@@ -725,10 +776,14 @@ class CrapsBossScreen(BattleScreen):
             self.battle_messages["point_phase_message"].update(state)
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.point_roll_index = (self.point_roll_index - 1) % len(self.point_roll_choices)
                 print(str(self.point_roll_index))
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.point_roll_index = (self.point_roll_index + 1) % len(self.point_roll_choices)
                 controller.isDownPressed = False
             if self.point_roll_index == 0 and controller.isTPressed:
@@ -831,12 +886,15 @@ class CrapsBossScreen(BattleScreen):
 
         elif self.game_state == "point_bet_screen":
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet += 25
                 if self.bet > 125:
                     self.bet = 125
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.bet -= 25
                 if self.bet < 25:
