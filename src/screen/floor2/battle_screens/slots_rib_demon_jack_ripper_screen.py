@@ -510,6 +510,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+            self.music_volume = 0.5  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
 
 
             state.player.update(state)
@@ -634,6 +636,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 controller.isTPressed = False
 
         elif self.game_state == "level_up_screen":
+            self.music_volume = 0  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
 
 
