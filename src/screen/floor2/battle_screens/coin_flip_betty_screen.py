@@ -1276,6 +1276,8 @@ class CoinFlipBettyScreen(BattleScreen):
 
                     elif self.magicindex == 1 and state.player.focus_points > 50 and Magic.HEADS_FORCE.value in state.player.magicinventory:
                         self.weighted_coin = True
+                        self.spell_sound.play()  # Play the sound effect once
+
                         state.controller.isTPressed = False  # Reset the button state
                         print("mewlinglinglinglignlikng")
                         self.game_state = "welcome_screen"

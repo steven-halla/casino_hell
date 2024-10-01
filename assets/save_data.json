@@ -26,7 +26,8 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake"
+        "shake",
+        "HEADS_FORCE"
     ],
     "body": 1,
     "mind": 1,
