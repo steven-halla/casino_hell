@@ -217,6 +217,17 @@ class CrapsHappyScreen(BattleScreen):
         self.lucky_seven = False
         self.double_dice_cast_cost = 50
 
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
+        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        # self.music_volume = 0.5  # Adjust as needed
+        # self.initialize_music()
+        self.music_on = True
+
 
 
     def game_reset(self, state: "GameState"):
@@ -395,9 +406,13 @@ class CrapsHappyScreen(BattleScreen):
                 self.game_state = "game_over_screen"
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
                 controller.isDownPressed = False
 
@@ -442,6 +457,8 @@ class CrapsHappyScreen(BattleScreen):
 
             # print(self.game_state)
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet += 25
                 # print(self.game_state)
 
@@ -450,6 +467,8 @@ class CrapsHappyScreen(BattleScreen):
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet -= 25
                 if self.bet <= 50:
                     self.bet = 50
@@ -469,13 +488,19 @@ class CrapsHappyScreen(BattleScreen):
                 self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
             self.battle_messages["magic_message"].update(state)
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
             if self.magic_screen_index == 0 and controller.isTPressed and state.player.focus_points >= self.double_dice_cast_cost:
                 self.lucky_seven_buff_counter = 10
+                self.spell_sound.play()  # Play the sound effect once
+
                 state.player.focus_points -= self.double_dice_cast_cost
                 self.magic_lock = True
                 controller.isTPressed = False
@@ -697,10 +722,14 @@ class CrapsHappyScreen(BattleScreen):
             self.battle_messages["point_phase_message"].update(state)
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.point_roll_index = (self.point_roll_index - 1) % len(self.point_roll_choices)
                 print(str(self.point_roll_index))
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.point_roll_index = (self.point_roll_index + 1) % len(self.point_roll_choices)
                 controller.isDownPressed = False
             if self.point_roll_index == 0 and controller.isTPressed:
@@ -805,12 +834,15 @@ class CrapsHappyScreen(BattleScreen):
             self.battle_messages["bet_message"].update(state)
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet += 25
                 if self.bet > 200:
                     self.bet = 200
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.bet -= 25
                 if self.bet < 50:

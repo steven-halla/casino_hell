@@ -27,7 +27,8 @@
         "reveal",
         "shield",
         "shake",
-        "HEADS_FORCE"
+        "HEADS_FORCE",
+        "CRAPS_LUCKY_7"
     ],
     "body": 1,
     "mind": 1,
