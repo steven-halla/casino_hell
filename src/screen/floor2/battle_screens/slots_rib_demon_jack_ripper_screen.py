@@ -178,6 +178,21 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.lucky_strike = 0
         self.hack_cast_cost = 50
 
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
+        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        # self.music_volume = 0.5  # Adjust as needed
+        # self.initialize_music()
+        self.music_on = True
+
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/slots_music.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        pygame.mixer.music.stop()
+
 
 
 
@@ -450,11 +465,29 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 self.stop_start_time = current_time
                 print("Stopping initiated.")
 
+    def stop_music(self):
+        pygame.mixer.music.stop()
 
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
 
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
 
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
 
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
     def update(self, state: "GameState") -> None:
+        if state.musicOn == True:
+            if self.music_on == True:
+                print("djslfjldsjfj;as")
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
+
         state.player.canMove = False
         if self.secret_item == True:
             self.bet = 50
@@ -462,23 +495,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
         if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
             self.secret_item = True
 
-        # if state.controller.is1Pressed:
-        # self.slot1 = [8, 8, 8]
-        # self.slot2 = [8, 8, 8]
-        # self.slot3 = [8, 8, 8]
-        #     self.three_eights = True
-        #     self.no_matches = False
-        #
-        #     state.controller.is1Pressed = False
 
-        # if state.controller.is1Pressed:
-        #     self.money = 0
-        #     state.controller.is1Pressed = False
-
-
-
-
-        pygame.mixer.music.stop()
         current_time: int = pygame.time.get_ticks()  # local variable
         if state.controller.isBPressed:
             self.hide_numbers = not self.hide_numbers
@@ -576,9 +593,13 @@ class SlotsRippaSnappaScreen(BattleScreen):
                     state.currentScreen = GameOver()
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
                 controller.isDownPressed = False
 
@@ -624,13 +645,19 @@ class SlotsRippaSnappaScreen(BattleScreen):
             self.battle_messages["results_message"].update(state)
             self.battle_messages["magic_message"].update(state)
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
                 controller.isDownPressed = False
             if self.magic_screen_index == 0 and controller.isTPressed and state.player.focus_points >= self.hack_cast_cost:
                 print("hi there line 618")
+                self.spell_sound.play()  # Play the sound effect once
+
                 self.slot_hack += 5
                 state.player.focus_points -= self.hack_cast_cost
                 self.game_state = "welcome_screen"
@@ -645,11 +672,15 @@ class SlotsRippaSnappaScreen(BattleScreen):
         if self.game_state == "bet_screen":
             self.battle_messages["bet_message"].update(state)
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet += 10
                 if self.bet > 60:
                     self.bet = 60
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.bet -= 10
                 if self.bet < 50:
                     self.bet = 50
