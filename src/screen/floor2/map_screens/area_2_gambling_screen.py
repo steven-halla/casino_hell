@@ -62,6 +62,9 @@ class Area2GamblingScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        print("jdfsajf;dsjfjsa;jlsajf;asfj;sjfljas;fjlksajfl;kajs;klfjdslf;ldjsa")
+        self.stop_music()
+
 
         state.treasurechests = [
 

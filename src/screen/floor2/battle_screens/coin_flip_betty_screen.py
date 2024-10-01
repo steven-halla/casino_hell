@@ -370,6 +370,12 @@ class CoinFlipBettyScreen(BattleScreen):
         self.game_state = "results_screen"
 
     def update(self, state: "GameState"):
+
+        if state.musicOn == True:
+            if self.music_on == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
         state.player.canMove = False
 
         if self.debuff_counter < 1:
@@ -383,11 +389,10 @@ class CoinFlipBettyScreen(BattleScreen):
         if self.bet > self.money:
             self.bet = self.money
 
-
         if state.musicOn == True:
             if self.music_on == True:
                 self.stop_music()
-                # self.initialize_music()
+                self.initialize_music()
                 self.music_on = False
 
 
@@ -426,12 +431,13 @@ class CoinFlipBettyScreen(BattleScreen):
             self.battle_messages["welcome_message"].update(state)
 
             if self.money < 1:
+
                self.game_state = "enemy_defeated_screen"
-
-
-
+               self.stop_music()
 
             if state.player.stamina_points < 1:
+                self.stop_music()
+
                 self.magic_points = 1
                 self.phase = 1
 
@@ -443,6 +449,8 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
             elif state.player.money < 50 and state.player.money > 0:
+                self.stop_music()
+
 
                 self.game_state = "game_over_screen"
 
@@ -451,9 +459,13 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.game_state = "game_over_screen"
 
             if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
                 controller.isDownPressed = False
 
@@ -481,7 +493,9 @@ class CoinFlipBettyScreen(BattleScreen):
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
                     Events.add_item_to_player(state.player, Events.QUEST_1_BADGE)
                 self.welcome_screen_index = 0
+
                 state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 state.player.canMove = True
 
                 self.quest_money = 0
