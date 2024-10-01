@@ -506,18 +506,17 @@ class BlackJackMackScreen(Screen):
         pygame.mixer.music.stop()
 
     def initialize_music(self):
-        pass
-        # Initialize the mixer
-        # pygame.mixer.init()
-        #
-        # # Load the music file
-        # pygame.mixer.music.load(self.music_file)
-        #
-        # # Set the volume for the music (0.0 to 1.0)
-        # pygame.mixer.music.set_volume(self.music_volume)
-        #
-        # # Play the music, -1 means the music will loop indefinitely
-        # pygame.mixer.music.play(-1)
+
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
 
     def place_bet(self, state: "GameState"):
         if state.controller.isUpPressed:
@@ -554,10 +553,11 @@ class BlackJackMackScreen(Screen):
             Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
             Events.add_event_to_player(state.player, Events.MC_NUGGET_THIRD_QUEST_COMPLETE)
 
-        if self.music_on == True:
-            self.stop_music()
-            self.initialize_music()
-            self.music_on = False
+        if state.musicOn == True:
+            if self.music_on == True:
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
 
         state.player.canMove = False
         if self.money < 10:

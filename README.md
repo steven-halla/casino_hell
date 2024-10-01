@@ -54,27 +54,11 @@ Games:
 7) nuke em
 8) slots
 
-Every 3 levels gain a new spell
-1, 4, 7,10, 13 ,16,19,
-
-
-
-
 
 How to start program:
 
  python src/main.py 
  
-
-rib demon slots:
-every time you lose you get plucked, but its hell so it regrows.
-we cna have rib demons do 1/4 player HP damage or something like that
-damage is done if all 3 spins land on a rib demon
-having a high body  can deflect the rib snatchers  or even reduce damage
-
-each game needs 2 stats attached to it
-
-
 
 when using gimp be sure to set image to RGB values
 https://graphicdesign.stackexchange.com/questions/39014/pngs-made-in-gimp-not-coming-out-transparent
