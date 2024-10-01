@@ -647,6 +647,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
             if controller.isUpPressed:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
+
                 self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
                 controller.isUpPressed = False
             elif controller.isDownPressed:

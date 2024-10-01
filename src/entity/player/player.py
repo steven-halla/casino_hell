@@ -80,8 +80,12 @@ class Player(Entity):
         self.up_frames = [(29, 172, 18, 26), (47, 172, 18, 26), (64, 172, 17.9, 26)]
         # Set the initial direction and frame index.
         self.current_direction = 'down'  # Default direction
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
-        self.music_volume = 0.5  # Adjust as needed
+        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
+        # self.music_volume = 0.5  # Adjust as needed
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
         self.level_two_npc_state = []
         self.leveling_up = False
 

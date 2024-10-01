@@ -72,6 +72,10 @@ class BlackJackMackScreen(Screen):
         self.music_loop = True
 
         self.despair = False
+
+        self.music_file_level_up = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")  # Adjust the path as needed
+
+        self.music_level_up_volume = 0.3  # Adjust as needed
         # self.despair = True
 
         self.hero_losing_text_state = False
@@ -285,6 +289,8 @@ class BlackJackMackScreen(Screen):
         self.exp_gain = 0
         self.food_luck = False
         self.stat_point_allocated = False
+        self.level_up_checker_sound = True
+
 
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
         self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
@@ -425,6 +431,11 @@ class BlackJackMackScreen(Screen):
         self.level_up_messages.draw(state)
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
+
+
+        if self.level_up_checker_sound == True:
+            self.music_file_level_up.play()  # Play the sound effect once
+            self.level_up_checker_sound = False
         if not state.player.stat_point_increase:
             # Update the level_up_messages with actual player stats
             self.level_up_messages.messages = [
@@ -436,6 +447,8 @@ class BlackJackMackScreen(Screen):
             self.level_up_messages.update(state)
             if self.level_up_messages.is_finished():
                 state.player.leveling_up = False
+                self.level_up_checker_sound = True
+
                 self.level_up_messages.reset()
                 self.game_state = "welcome_screen"
         else:
@@ -462,9 +475,12 @@ class BlackJackMackScreen(Screen):
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
                     state.player.max_stamina_points += state.player.level_2_body_stamina_increase
                     self.stat_point_allocated = True
+                    self.level_up_checker_sound = True
+
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
                     state.player.mind += 1
                     self.stat_point_allocated = True
+                    self.level_up_checker_sound = True
 
                     state.player.focus_points += state.player.level_2_mind_focus_increase
                     state.player.max_focus_points += state.player.level_2_mind_focus_increase
@@ -472,27 +488,35 @@ class BlackJackMackScreen(Screen):
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
                     state.player.spirit += 1
                     self.stat_point_allocated = True
+                    self.level_up_checker_sound = True
+
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
                     state.player.perception += 1
                     self.stat_point_allocated = True
+                    self.level_up_checker_sound = True
+
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
                         Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
                     state.player.perception += 1
+                    self.level_up_checker_sound = True
+
                     self.stat_point_allocated = True
 
                     # state.player.base_perception += 1
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
                     state.player.luck += 1
                     self.stat_point_allocated = True
+                    self.level_up_checker_sound = True
+
 
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
                         state.player.enhanced_luck == True:
                     state.player.luck += 1
                     self.stat_point_allocated = True
-
+                    self.level_up_checker_sound = True
 
                 if state.controller.isTPressed and self.stat_point_allocated == True:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
@@ -500,6 +524,8 @@ class BlackJackMackScreen(Screen):
                     state.player.leveling_up = False
                     self.level_up_messages.reset()
                     self.stat_point_allocated = False
+                    self.level_up_checker_sound = True
+
                     self.game_state = "welcome_screen"
 
     def stop_music(self):
@@ -575,6 +601,8 @@ class BlackJackMackScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
+            self.music_volume = 0.5  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
 
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
@@ -866,6 +894,8 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "level_up_screen":
+            self.music_volume = 0  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
 
 

@@ -20,6 +20,14 @@ class BattleScreen:
         self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         self.stat_increase = False
 
+        self.level_up_checker_sound = True
+
+        self.music_file_level_up = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")  # Adjust the path as needed
+
+        self.music_level_up_volume = 0.3  # Adjust as needed
+
+
+
     def start(self, state: 'GameState') -> None:
         pygame.display.set_caption(self.screenName)
 
@@ -27,6 +35,10 @@ class BattleScreen:
         pass
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
+
+        if self.level_up_checker_sound == True:
+            self.music_file_level_up.play()  # Play the sound effect once
+            self.level_up_checker_sound = False
 
         if state.player.stat_point_increase == False:
             self.battle_messages["level_up"].messages = [
@@ -39,9 +51,18 @@ class BattleScreen:
             if self.battle_messages["level_up"].is_finished():
                 state.player.leveling_up = False
                 self.battle_messages["level_up"].reset()
-                self.game_state = "welcome_screen"
+                if state.opossumInACanCandyScreen.level_anchor == True:
+                    self.game_state = "play_again_or_leave_screen"
+                    self.level_up_checker_sound = True
+
+                else:
+                    self.game_state = "welcome_screen"
+                    self.level_up_checker_sound = True
+
 
         elif state.player.stat_point_increase == True:
+
+
             self.battle_messages["level_up"].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
                 f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
@@ -65,12 +86,17 @@ class BattleScreen:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
+
                     state.player.max_stamina_points += state.player.level_2_body_stamina_increase
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
                     self.battle_messages["level_up"].reset()
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
 
 
@@ -84,8 +110,12 @@ class BattleScreen:
                     state.player.max_focus_points += state.player.level_2_mind_focus_increase
                     state.player.focus_points += state.player.level_2_mind_focus_increase
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
 
 
@@ -96,8 +126,12 @@ class BattleScreen:
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
 
 
@@ -108,8 +142,12 @@ class BattleScreen:
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
                     # state.player.base_perception += 1
 
@@ -122,8 +160,12 @@ class BattleScreen:
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
@@ -133,8 +175,12 @@ class BattleScreen:
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
@@ -145,9 +191,12 @@ class BattleScreen:
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
                     if state.opossumInACanCandyScreen.level_anchor == True:
+                        self.level_up_checker_sound = True
 
                         self.game_state = "play_again_or_leave_screen"
                     else:
+                        self.level_up_checker_sound = True
+
                         self.game_state = "welcome_screen"
 
 

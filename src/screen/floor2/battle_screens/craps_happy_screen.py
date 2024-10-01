@@ -403,6 +403,10 @@ class CrapsHappyScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+            self.music_volume = 0.5  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
+
+
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 
@@ -481,6 +485,8 @@ class CrapsHappyScreen(BattleScreen):
                 controller.isTPressed = False
 
         elif self.game_state == "level_up_screen":
+            self.music_volume = 0  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
 
         elif self.game_state == "bet_screen":

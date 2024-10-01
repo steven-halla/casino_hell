@@ -83,6 +83,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
+
         # self.initialize_music()
         self.music_on = True
 
@@ -411,8 +412,14 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
         if self.game_state == "welcome_screen":
+            self.music_volume = 0.5  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
+
             print("state.player.leveling_up" + str(state.player.leveling_up))
             if state.player.leveling_up == True:
+
+
+
                 self.game_state = "level_up_screen"
 
             if self.money < 400 and self.magic_points > 0:
@@ -509,6 +516,9 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.magic_points = 1
 
         if self.game_state == "level_up_screen":
+            self.music_volume = 0  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
+
             self.handle_level_up(state, state.controller)
 
         if self.game_state == "spell_casting":
