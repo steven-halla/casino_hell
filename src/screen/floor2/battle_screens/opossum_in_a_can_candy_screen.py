@@ -736,6 +736,8 @@ class OpossumInACanCandyScreen(BattleScreen):
             self.battle_messages["play_again_or_leave_message"].update(state)
 
             if state.controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.play_again_or_quit_index -= 1
                 self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -743,6 +745,8 @@ class OpossumInACanCandyScreen(BattleScreen):
                     self.play_again_or_quit_index = len(self.play_again_or_quit) - 1  # Wrap around to the last item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
             elif state.controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
                 self.play_again_or_quit_index += 1
                 if self.play_again_or_quit_index >= len(self.play_again_or_quit):
                     self.play_again_or_quit_index = 0  # Wrap around to the first item
