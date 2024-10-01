@@ -228,6 +228,19 @@ class CrapsHappyScreen(BattleScreen):
         # self.initialize_music()
         self.music_on = True
 
+        self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect.set_volume(0.6)
+
+        self.successful_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect.set_volume(0.6)
+
+        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/craps_music.mp3"
+        self.music_volume = 0.5  # Adjust as needed
+        pygame.mixer.music.stop()
+
+
+        # self.initialize_music()
+
 
 
     def game_reset(self, state: "GameState"):
@@ -271,6 +284,21 @@ class CrapsHappyScreen(BattleScreen):
 
 
 
+    def stop_music(self):
+        pygame.mixer.music.stop()
+
+    def initialize_music(self):
+        # Initialize the mixer
+        pygame.mixer.init()
+
+        # Load the music file
+        pygame.mixer.music.load(self.music_file)
+
+        # Set the volume for the music (0.0 to 1.0)
+        pygame.mixer.music.set_volume(self.music_volume)
+
+        # Play the music, -1 means the music will loop indefinitely
+        pygame.mixer.music.play(-1)
 
 
     def create_meter(self, state: "GameState", power: int) -> None:
@@ -341,6 +369,12 @@ class CrapsHappyScreen(BattleScreen):
     # self.display_dice(state, self.dice_roll_1)
 
     def update(self, state: "GameState") -> None:
+        if state.musicOn == True:
+            if self.music_on == True:
+                print("djslfjldsjfj;as")
+                self.stop_music()
+                self.initialize_music()
+                self.music_on = False
         state.player.canMove = False
 
         if self.bet > self.money:
@@ -356,7 +390,6 @@ class CrapsHappyScreen(BattleScreen):
             Events.add_event_to_player(state.player, Events.CRAPS_HAPPY_DEFEATED)
 
         # self.lucky_seven = state.player.luck * 2
-        pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
             state.mainScreen.start(state)
@@ -523,7 +556,12 @@ class CrapsHappyScreen(BattleScreen):
                 self.power_meter_index = self.power_meter_index
                 controller.isPPressed = False
                 if self.power_meter_index >= 80:
+                    self.successful_power_strike_sound_effect.play()  # Play the sound effect once
+
                     self.lucky_seven = True
+
+                elif self.power_meter_index < 80:
+                    self.failed_power_strike_sound_effect.play()  # Play the sound effect once
                 print("Your meter is:" + str(self.power_meter_index))
                 print("-----------------------------------------------------------------------------")
                 self.game_state = "come_out_roll_screen"
@@ -574,7 +612,7 @@ class CrapsHappyScreen(BattleScreen):
 
                         self.dice_roll_1 = random.randint(1, 6)
                         self.dice_roll_2 = random.randint(1, 6)
-                        print("485")
+                        print("615")
                         self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
 
                         if self.come_out_roll_total == 2:
@@ -751,8 +789,9 @@ class CrapsHappyScreen(BattleScreen):
                     self.dice_roll_2 = self.dice_roll_3
                     self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
 
-                    print("hey hey hey")
-                    print("Your dice rolls are:")
+                    print("dice roll of 2 is:")
+                    print(original_dice)
+                    print("Your dice rolls are 3rd dice")
                     print(self.dice_roll_3)
 
 
