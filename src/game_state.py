@@ -164,9 +164,9 @@ class GameState:
 
 
 
-        self.currentScreen = self.crapsBossScreen
+        # self.currentScreen = self.crapsBossScreen
         # the below is the default of what i need
-        # self.currentScreen = self.startLoadScreen
+        self.currentScreen = self.startLoadScreen
 
 
 
