@@ -104,8 +104,8 @@ class Area2NuggetScreen(Screen):
         # If the CHICKEN_QUEST_START event is not in level_two_npc_state, populate state.npcs
 
         state.npcs = [
-            MCNugg(16 * 15, 16 * 5),
-            ErikaChickenGirl(16 * 25, 16 * 5),
+            MCNugg(16 * 7, 16 * 17),
+            ErikaChickenGirl(16 * 25, 16 * 3),
             Area2NuggetToRestArea(16 * 35, 16 * 34),
         ]
 

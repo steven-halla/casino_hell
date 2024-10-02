@@ -52,7 +52,7 @@ class ErikaChickenGirl(Npc):
 
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/chicken_sprites.png").convert_alpha()
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
 
@@ -199,13 +199,14 @@ class ErikaChickenGirl(Npc):
 
     def draw(self, state):
         # Draw character sprite
-        sprite_rect = pygame.Rect(147, 6, 16, 28)
+        # Coordinates of the sprite right of the white chicken
+        sprite_rect = pygame.Rect(335, 65, 30, 30)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
 
         # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+        scaled_sprite = pygame.transform.scale(sprite, (55, 55))
 
         # Define the position where you want to draw the sprite
         sprite_x = self.collision.x + state.camera.x - 20
