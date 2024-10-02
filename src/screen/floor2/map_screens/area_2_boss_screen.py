@@ -266,7 +266,28 @@ class Area2BossScreen(Screen):
                     return
 
         if self.black_screen == True:
-            state.DISPLAY.fill(BLACK)
+            # Black out the entire screen except the message box area
+            BLACK = (0, 0, 0)
+
+            # Coordinates of the message box (50, 450, 50, 45)
+            message_box_x = 45
+            message_box_y = 445
+            message_box_width = 710  # Example width
+            message_box_height = 130  # Example height
+
+            # Fill the areas around the message box with black
+
+            # Top black area
+            pygame.draw.rect(state.DISPLAY, BLACK, (0, 0, state.DISPLAY.get_width(), message_box_y))
+
+            # Bottom black area
+            pygame.draw.rect(state.DISPLAY, BLACK, (0, message_box_y + message_box_height, state.DISPLAY.get_width(), state.DISPLAY.get_height() - (message_box_y + message_box_height)))
+
+            # Left black area
+            pygame.draw.rect(state.DISPLAY, BLACK, (0, message_box_y, message_box_x, message_box_height))
+
+            # Right black area
+            pygame.draw.rect(state.DISPLAY, BLACK, (message_box_x + message_box_width, message_box_y, state.DISPLAY.get_width() - (message_box_x + message_box_width), message_box_height))
 
         # Update the display
         pygame.display.update()
