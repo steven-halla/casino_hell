@@ -101,13 +101,6 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.treasurechests = []
 
-        if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
-                and state.player.perception > 2):
-            state.treasurechests = [
-            SlotsVest(16 * 29, 16 * 35),
-
-
-        ]
 
 
 

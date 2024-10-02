@@ -1,20 +1,17 @@
 {
     "level": 4,
-    "exp": 999,
+    "exp": 600,
     "stamina_points": 240,
     "max_stamina_points": 240,
     "focus_points": 120,
     "max_focus_points": 120,
     "companions": [
-        "sir leopold",
-
-        "erika"
+        "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses",
-        "DARLENES_CHICKEN_NUGGER_AMULET"
+        "coin flip glasses"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -29,18 +26,15 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake",
-        "HEADS_FORCE",
-        "CRAPS_LUCKY_7",
-        "SLOTS_HACK"
+        "shake"
     ],
-    "body": 2,
+    "body": 1,
     "mind": 1,
     "spirit": 1,
-    "perception": 1,
+    "perception": 3,
     "baseperception": 1,
     "luck": 1,
-    "money": 1444,
+    "money": 1500,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -51,7 +45,8 @@
     "food": 1,
     "days": 1,
     "leveltwonpcstate": [
-        "COIN_SAVE_AREA_2"
+        "COIN_SAVE_AREA_2",
+        "MC_NUGGET_QUEST_1_REWARD"
     ],
     "slots_vest": false,
     "cutscene1": true,

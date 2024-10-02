@@ -15,6 +15,7 @@ from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChicke
 from entity.npc.area2.area_2_nugget_screen.mcnugget import MCNugg
 
 from entity.player.player import Player
+from entity.treasurechests.slots_vest import SlotsVest
 from game_constants.events import Events
 from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
@@ -52,25 +53,10 @@ class Area2NuggetScreen(Screen):
 
 
 
-    # def stop_music(self):
-    #     pygame.mixer.music.stop()
-    #
-    # def initialize_music(self):
-    #     # Initialize the mixer
-    #     pygame.mixer.init()
-    #
-    #     # Load the music file
-    #     pygame.mixer.music.load(self.music_file)
-    #
-    #     # Set the volume for the music (0.0 to 1.0)
-    #     pygame.mixer.music.set_volume(self.music_volume)
-    #
-    #     # Play the music, -1 means the music will loop indefinitely
-    #     pygame.mixer.music.play(-1)
+
 
     def start(self, state: "GameState"):
-        print("this is for our nuggy area")
-        print(str(state.area_2_rest_area_to_gambling_point))
+
 
         if state.area_2_rest_area_to_nugget_point == True:
             print("nuggggggggggggggg;f")
@@ -94,11 +80,15 @@ class Area2NuggetScreen(Screen):
         #     player_start_y = 200
         #     state.player = Player(player_start_x, player_start_y)
 
-        state.treasurechests = [
 
-            # WaterBottle(16 * 36, 16 * 10),
 
-        ]
+        if (Events.SLOTS_VEST_FOUND.value not in state.player.level_two_npc_state
+                and state.player.perception > 2):
+            state.treasurechests = [
+                SlotsVest(16 * 5, 16 * 5),
+
+            ]
+
         # Check the value of state.player.body
 
         # If the CHICKEN_QUEST_START event is not in level_two_npc_state, populate state.npcs
@@ -136,6 +126,9 @@ class Area2NuggetScreen(Screen):
                     state.player.canMove = True
                     print(state.player.canMove)
                     Treasure.add_quest_to_player(state.player, Treasure.INVITATION)
+
+        for treasurechest in state.treasurechests:
+            treasurechest.update(state)
 
         if controller.isExitPressed is True:
             state.isRunning = False
@@ -245,6 +238,9 @@ class Area2NuggetScreen(Screen):
 
         for npc in state.npcs:
             npc.draw(state)
+
+        for treasurechest in state.treasurechests:
+            treasurechest.draw(state)
 
 
 

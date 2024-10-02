@@ -118,7 +118,7 @@ class Area2GamblingScreen(Screen):
 
             state.treasurechests = [
 
-                BBQSauce(16 * 21, 14 * 39),
+                BBQSauce(16 * 55, 14 * 42),
 
             ]
 

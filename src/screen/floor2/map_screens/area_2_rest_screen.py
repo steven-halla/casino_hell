@@ -111,11 +111,11 @@ class Area2RestScreen(Screen):
         if (state.player.perception >= 1
                 and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
             state.treasurechests = [
-                Area2MoneyBag(16 * 5, 14 * 5),
+                Area2MoneyBag(16 * 97, 14 * 55),
             ]
 
         if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
-            state.treasurechests.append(Area2FocusBoost(16 * 18, 14 * 18))
+            state.treasurechests.append(Area2FocusBoost(16 * 111, 14 * 111))
 
         state.npcs = [
             Johnathon(16 * 15, 16 * 15), # fin
@@ -154,28 +154,9 @@ class Area2RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
-        print(state.player.canMove)
-        # the below will measure FPS
-        # delta_time = self.clock.tick(60)  # 60 FPS cap
-        # fps = 1000 / delta_time
-        # print(fps)
 
-        # if state.controller.isBPressed:
-        #     state.currentScreen = state.hungryStarvingHippos
-        #     state.hungryStarvingHippos.start(state)
 
-        # delta_time = self.clock.tick(60)  # 60 FPS cap
-        # print(delta_time)
-        # self.total_elapsed_time += delta_time
 
-        # if state.controller.isPPressed:
-        #     state.currentScreen = state.hungryStarvingHippos
-        #     state.hungryStarvingHippos.start(state)
-
-        # if state.player.menu_paused == True:
-        #     state.player.canMove = False
-        # elif state.player.menu_paused == False:
-        #     state.player.canMove = True
 
         controller = state.controller
         player = state.player
