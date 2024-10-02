@@ -154,6 +154,7 @@ class Area2RestScreen(Screen):
         ]
 
     def update(self, state: "GameState"):
+        print(state.player.canMove)
         # the below will measure FPS
         # delta_time = self.clock.tick(60)  # 60 FPS cap
         # fps = 1000 / delta_time

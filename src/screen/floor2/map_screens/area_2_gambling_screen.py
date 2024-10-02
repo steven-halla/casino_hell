@@ -10,6 +10,7 @@ from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
 from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
 from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
 from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
+from entity.npc.area2.area_2_rest_screen.Natalie import Natalie
 
 from entity.player.player import Player
 from entity.treasurechests.bbqsauce import BBQSauce
@@ -137,7 +138,7 @@ class Area2GamblingScreen(Screen):
 
             Nibblet(16 * 20, 16 * 31),
             Lunky(16 * 60, 16 * 28),
-            Area2GamblingToRestArea(16 * 36, 16 * 39),
+            Area2GamblingToRestArea(16 * 36, 16 * 39)
 
         ]
 

@@ -105,6 +105,7 @@ class Natalie(Npc):
 
                 current_message.reset()
 
+
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False

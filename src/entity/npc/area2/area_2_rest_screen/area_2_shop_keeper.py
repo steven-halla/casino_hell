@@ -126,7 +126,7 @@ class Area2ShopKeeper(Npc):
 
         if self.state == "waiting":
             self.update_waiting(state)
-            state.player.canMove = True
+            # state.player.canMove = True
         elif self.state == "talking":
             state.player.hide_player = True
 
