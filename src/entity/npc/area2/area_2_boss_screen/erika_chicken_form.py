@@ -17,10 +17,9 @@ class ErikaChickenForm(Npc):
             "welcome_message": NpcTextBox(
                 [
                     "Erika: You don't have to do this hero, fighting the boss I'm worried for you, can't we just go up to the 3rd level?.",
-                    "Hero: Why are you so worried for Erika? I'm here to bankrupt the boss of this floor and make a deal. I can handle myself fine",
-                    "Sir Leopold:Hero My nose is itchy, something is off, she's acting weird, more so than usual, be on your guard",
-                    "Erika:That's a real shame, I'll go ahead and introduce you to the boss, close your eyes, no peeking.",
-                    "Remember no peeking you perverts"
+                    "Remember no peeking you perverts",
+                    "Ok you can go ahead and look now",
+                    ""
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
@@ -62,6 +61,7 @@ class ErikaChickenForm(Npc):
             self.npc_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
+
         print(state.area2BossScreen.black_screen)
 
         current_message = (
@@ -74,11 +74,21 @@ class ErikaChickenForm(Npc):
         )
         current_message.update(state)
 
-        if self.npc_messages["welcome_message"].message_index == len(self.npc_messages["welcome_message"].messages) - 1:
+        if self.npc_messages["welcome_message"].message_index == 1:
             state.area2BossScreen.black_screen = True
 
+        if self.npc_messages["welcome_message"].message_index == len(self.npc_messages["welcome_message"].messages) - 1:
+            state.currentScreen = state.area2BossAfterRevealScreen
+            state.area2BossAfterRevealScreen.start(state)
+            state.player.canMove = True
+            self.state = "waiting"
+
+
+
+
         # Lock the player in place while talking
-        state.player.canMove = False
+        if self.state is "talking":
+            state.player.canMove = False
 
         # Check for keypresses only once per frame
 

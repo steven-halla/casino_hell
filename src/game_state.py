@@ -52,6 +52,7 @@ from screen.floor2.cut_scenes.area_2_bar_cut_scene_1 import Area2BarCutScene1
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_2 import Area2BarCutScene2
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_3 import Area2BarCutScene3
 from screen.floor2.map_screens.area_2_boss_screen import Area2BossScreen
+from screen.floor2.map_screens.area_2_boss_screen_after_reveal import Area2BossAfterRevealScreen
 from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
 from screen.floor2.map_screens.area_2_nugget_screen import Area2NuggetScreen
 from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
@@ -145,6 +146,7 @@ class GameState:
         self.area2RibDemonMazeScreen2 = Area2RibDemonMazeScreen2()
         self.area2RibDemonMazeScreen3 = Area2RibDemonMazeScreen3()
         self.area2BossScreen = Area2BossScreen()
+        self.area2BossAfterRevealScreen = Area2BossAfterRevealScreen()
 
 
 

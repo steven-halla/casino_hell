@@ -19,7 +19,7 @@ from physics.rectangle import Rectangle
 
 
 
-class Area2BossScreen(Screen):
+class Area2BossAfterRevealScreen(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -68,14 +68,17 @@ class Area2BossScreen(Screen):
     #     pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        state.player.canMove = True
+
 
 
 
         if state.area_2_rest_area_to_boss_point == True:
             state.player.canMove = True
-            player_start_x = 16 * 27  # Desired X coordinate
-            player_start_y = 16 * 32  # Desired Y coordinate
+            player_start_x = 16 * 25  # Desired X coordinate
+            player_start_y = 16 * 22  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
+            state.rest_area_to_boss_area_entry_point = False
 
 
 
@@ -104,20 +107,15 @@ class Area2BossScreen(Screen):
 
 
         state.npcs = [
-            ErikaChickenForm(16 * 25, 16 * 12)
+            ErikaBoss(16 * 25, 16 * 12)
 
-            # BlackJackMack(16 * 5, 16 * 5),
-            # OpossumInACanCandy(16 * 15, 16 * 5),
-            # CoinFlipBetty(16 * 25, 16 * 5),
-            # SlotsRippaSnappa(16 * 35, 16 * 5),
-            # CrapsHappy(16 * 5, 16 * 28),
-            # Nibblet(16 * 15, 16 * 28),
-            # Lunky(16 * 25, 16 * 28),
-            # Area2GamblingToRestArea(16 * 19, 16 * 54),
 
         ]
 
+
     def update(self, state: "GameState"):
+        print(state.player.canMove)
+
 
 
         controller = state.controller
@@ -266,32 +264,7 @@ class Area2BossScreen(Screen):
                     state.controller.isPPressed = False
                     return
 
-        if self.black_screen == True:
-            # Black out the entire screen except the message box area
-            BLACK = (0, 0, 0)
 
-            # Coordinates of the message box (50, 450, 50, 45)
-            message_box_x = 45
-            message_box_y = 445
-            message_box_width = 710  # Example width
-            message_box_height = 130  # Example height
-
-            # Fill the areas around the message box with black
-
-            # Top black area
-            pygame.draw.rect(state.DISPLAY, BLACK, (0, 0, state.DISPLAY.get_width(), message_box_y))
-
-            # Bottom black area
-            pygame.draw.rect(state.DISPLAY, BLACK, (0, message_box_y + message_box_height, state.DISPLAY.get_width(), state.DISPLAY.get_height() - (message_box_y + message_box_height)))
-
-            # Left black area
-            pygame.draw.rect(state.DISPLAY, BLACK, (0, message_box_y, message_box_x, message_box_height))
-
-            # Right black area
-            pygame.draw.rect(state.DISPLAY, BLACK, (message_box_x + message_box_width, message_box_y, state.DISPLAY.get_width() - (message_box_x + message_box_width), message_box_height))
-
-            if self.black_screen == False:
-                self.draw(state)
 
         # Update the display
         pygame.display.update()
