@@ -66,7 +66,7 @@ class Player(Entity):
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
         self.erika_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/chicken_sprites.png").convert_alpha()
         # TODO refrence the images with relative paths
         self.sir_leopold_image = pygame.image.load(
             "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
@@ -748,13 +748,20 @@ class Player(Entity):
 
             if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.items:
                 # Get the subsurface for the area you want
-                sprite_rect = pygame.Rect(147, 6, 16, 26)
+                sprite_rect = pygame.Rect(335, 65, 30, 30)
 
                 # Get the subsurface for the area you want
                 sprite = self.erika_sprite_image.subsurface(sprite_rect)
 
                 # Scale the subsurface to make it two times bigger
-                scaled_sprite = pygame.transform.scale(sprite, (70, 70))  # 44*2 = 88
+                scaled_sprite = pygame.transform.scale(sprite, (59, 59))
+
+                # Define the position where you want to draw the sprite
+                sprite_x = self.collision.x + state.camera.x - 20
+                sprite_y = self.collision.y + state.camera.y - 10
+
+                # Draw the scaled sprite portion on the display
+                # state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
                 # Define the position where you want to draw the sprite
                 erika_sprite_x = 43
