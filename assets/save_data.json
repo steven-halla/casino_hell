@@ -31,13 +31,13 @@
         "CRAPS_LUCKY_7",
         "SLOTS_HACK"
     ],
-    "body": 1,
+    "body": 2,
     "mind": 1,
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 2000,
+    "money": 1444,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -47,8 +47,7 @@
     "food": 1,
     "days": 1,
     "leveltwonpcstate": [
-
-
+        "COIN_SAVE_AREA_2"
     ],
     "slots_vest": false,
     "cutscene1": true,

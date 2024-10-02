@@ -14,6 +14,7 @@ class BarKeep(Npc):
         self.buy_sound.set_volume(0.3)
         self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
         self.cant_buy_sound.set_volume(0.5)
+
         self.textbox = ShopNpcTextBox(
             [
              ""],

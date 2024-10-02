@@ -20,6 +20,9 @@ class Area2BarKeep(Npc):
         self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
         self.cant_buy_sound.set_volume(0.5)
 
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
         self.textbox = ShopNpcTextBox(
             [
                 ""],
@@ -58,8 +61,29 @@ class Area2BarKeep(Npc):
                 state.controller.isTPressed = False
 
 
+                if self.selected_money_index == 0 and state.player.money < 500:
+
+                    self.cant_buy_sound.play()  # Play the sound effect once
+
+
+                elif self.selected_money_index == 0 and state.player.food < 1:
+                    self.cant_buy_sound.play()  # Play the sound effect once
+
+
+                elif self.selected_money_index == 1 and state.player.money < 500:
+                    self.cant_buy_sound.play()  # Play the sound effect once
+
+                elif self.selected_money_index == 1 and state.player.food < 1:
+                    self.cant_buy_sound.play()  # Play the sound effect once
+
+                elif self.selected_money_index == 1 and state.player.body < 2:
+                    self.cant_buy_sound.play()  # Play the sound effect once
+
+
 
                 if self.selected_item_index == 0 and state.player.money > 500:
+                    self.buy_sound.play()  # Play the sound effect once
+
                     # print("mew")
                     state.player.money -= 200
                     state.player.stamina_points += 400
@@ -88,6 +112,7 @@ class Area2BarKeep(Npc):
 
 
                 elif self.selected_item_index == 1 and state.player.money > 500 and state.player.body == 2:
+                    self.buy_sound.play()  # Play the sound effect once
                     state.player.money -= 200
                     state.player.luck += 1
                     state.player.enhanced_luck = True
@@ -133,6 +158,8 @@ class Area2BarKeep(Npc):
 
                 if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
                     self.input_time = pygame.time.get_ticks()
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     # Decrement the index but prevent it from going below 0
                     if self.selected_item_index > 0:
                         self.selected_item_index -= 1
@@ -144,6 +171,8 @@ class Area2BarKeep(Npc):
 
                 elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
                     self.input_time = pygame.time.get_ticks()
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     # Increment the index but prevent it from exceeding the length of the list - 1
                     if self.selected_item_index < len(self.shop_items) - 1:
                         self.selected_item_index += 1

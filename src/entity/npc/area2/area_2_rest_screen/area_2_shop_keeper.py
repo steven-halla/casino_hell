@@ -20,6 +20,9 @@ class Area2ShopKeeper(Npc):
         self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
         self.cant_buy_sound.set_volume(0.5)
 
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+
         self.textbox = ShopNpcTextBox(
             [
              ""],
@@ -164,6 +167,8 @@ class Area2ShopKeeper(Npc):
 
                     if state.player.money > 899 and self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value not in state.player.level_two_npc_state:
                         print("HI")
+                        self.buy_sound.play()  # Play the sound effect once
+
                         if state.player.enhanced_luck == True:
                             state.player.luck -= 1
                         Equipment.COIN_SAVE_AREA_2.add_potion_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
@@ -171,34 +176,74 @@ class Area2ShopKeeper(Npc):
                         state.save_game(state.player, state)  # Call the save_game function
                         if state.player.enhanced_luck == True:
                             state.player.luck += 1
+                        state.controller.isTPressed = False
+                    else:
+                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+
 
                     if state.player.money > 1199 and self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
                         print("HIPPOOOOOOOOOOOOOO")
+                        self.buy_sound.play()  # Play the sound effect once
+
                         Equipment.HIPPO_HOUR_GLASS.add_item_to_quest_state(state.player, Equipment.HIPPO_HOUR_GLASS)
                         state.player.money -= 500
                         print(state.player.quest_items)
+                        state.controller.isTPressed = False
+
+                    else:
+                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
 
 
 
                     if state.player.money > 1699 and self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value not in state.player.level_two_npc_state:
                         print("HI")
+                        self.buy_sound.play()  # Play the sound effect once
+
                         Equipment.HEALTHY_GLOVES.add_equipment_to_player(state.player, Equipment.HEALTHY_GLOVES)
                         state.player.money -= 1000
+                        state.controller.isTPressed = False
+                    else:
+                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
 
                     if state.player.money > 1699 and self.selected_item_index == 3 and Equipment.STAT_POTION_AREA_2.value not in state.player.level_two_npc_state:
                         print("HI")
+                        self.buy_sound.play()  # Play the sound effect once
+
                         Equipment.STAT_POTION_AREA_2.add_potion_to_player(state.player, Equipment.STAT_POTION_AREA_2)
                         state.player.money -= 1000
                         self.stat_point_increase = True
+                        state.controller.isTPressed = False
+                    else:
+                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+
+
 
                     if state.player.money > 1001 and self.selected_item_index == 4 and Equipment.BOSS_KEY.value not in state.player.quest_items and Events.ERIKA_IN_PARTY.value in state.player.companions:
                         Equipment.BOSS_KEY.add_item_to_quest_state(state.player, Equipment.BOSS_KEY)
                         state.player.money -= 1000
+                        self.buy_sound.play()  # Play the sound effect once
+                        state.controller.isTPressed = False
+
+                    else:
+                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+
 
 
 
                 if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400 and self.stat_point_increase == False:
                     self.input_time = pygame.time.get_ticks()
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     # Decrement the index but prevent it from going below 0
                     if self.selected_item_index > 0:
                         self.selected_item_index -= 1
@@ -210,6 +255,8 @@ class Area2ShopKeeper(Npc):
 
                 elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400 and self.stat_point_increase == False:
                     self.input_time = pygame.time.get_ticks()
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
                     # Increment the index but prevent it from exceeding the length of the list - 1
                     if self.selected_item_index < len(self.shop_items) - 1:
                         self.selected_item_index += 1
