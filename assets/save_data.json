@@ -44,7 +44,8 @@
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "boss key"
     ],
     "level3reward": false,
     "food": 1,

@@ -42,9 +42,10 @@ class ErikaBoss(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
+        self.screen_black = False
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/erika_demon_sprites.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -128,13 +129,13 @@ class ErikaBoss(Npc):
         #     self.collision.width, self.collision.height)
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
-        sprite_rect = pygame.Rect(7, 6, 16.4, 24)
+        sprite_rect = pygame.Rect(7, 6, 84, 80)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
 
         # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+        scaled_sprite = pygame.transform.scale(sprite, (77, 77))  # 44*2 = 88
 
         # Define the position where you want to draw the sprite
         sprite_x = self.collision.x + state.camera.x - 20

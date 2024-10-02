@@ -1,8 +1,9 @@
 import pygame
 import pytmx
 
-from constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK, BLACK
 from entity.npc.area2.area_2_boss_screen.erika_boss import ErikaBoss
+from entity.npc.area2.area_2_boss_screen.erika_chicken_form import ErikaChickenForm
 from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
 from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
 from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
@@ -37,6 +38,8 @@ class Area2BossScreen(Screen):
 
 
         self.clock = pygame.time.Clock()  # Initialize the clock
+
+        self.black_screen = False
 
 
 
@@ -99,7 +102,9 @@ class Area2BossScreen(Screen):
         # state.npcs = []
 
         state.npcs = [
-            ErikaBoss(16 * 12, 16 * 12)
+            ErikaBoss(16 * 12, 16 * 12),
+            ErikaChickenForm(16 * 25, 16 * 12),
+
             # BlackJackMack(16 * 5, 16 * 5),
             # OpossumInACanCandy(16 * 15, 16 * 5),
             # CoinFlipBetty(16 * 25, 16 * 5),
@@ -259,6 +264,9 @@ class Area2BossScreen(Screen):
                 if state.controller.isPPressed:
                     state.controller.isPPressed = False
                     return
+
+        if self.black_screen == True:
+            state.DISPLAY.fill(BLACK)
 
         # Update the display
         pygame.display.update()
