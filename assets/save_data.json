@@ -11,11 +11,7 @@
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses",
-        "HEALTHY_GLOVES",
-        "SOCKS_OF_PERCEPTION",
-        "Black Hat",
-        "DARLENES_CHICKEN_NUGGER_AMULET"
+        "coin flip glasses"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -25,11 +21,7 @@
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token",
-        "level 5 token",
-        "level 6 token",
-        "level 7 token",
-        "level 8 token"
+        "level 4 token"
     ],
     "magicinventory": [
         "reveal",
@@ -42,16 +34,17 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 3355,
+    "money": 2955,
     "rabies": false,
     "immunity": true,
     "quest_items": [
         "contract",
-        "Invitation"
+        "Invitation",
+        "rib demon key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 10,
+    "days": 11,
     "leveltwonpcstate": [
         "CHICKEN_QUEST_START"
     ],

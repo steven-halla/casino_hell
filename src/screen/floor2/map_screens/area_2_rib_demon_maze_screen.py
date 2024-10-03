@@ -44,7 +44,7 @@ class Area2RibDemonMazeScreen(Screen):
         self.penalty_poison_counter = 5
 
 
-        self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
+        self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/rib_demon_maze.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
@@ -107,8 +107,8 @@ class Area2RibDemonMazeScreen(Screen):
 
         state.demons = [
 
-            # Demon8(16 * 20, 16 * 5),
-            # Demon6(16 * 20, 16 * 30)
+            Demon8(16 * 20, 16 * 5),
+            Demon6(16 * 20, 16 * 30)
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
             # Demon3(16 * 20, 14 * 76),

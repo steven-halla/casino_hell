@@ -30,6 +30,10 @@ craps:
 Assembly
 Tim_Kulig_Free_Music
 
+rib demon maze:
+Mechropolis
+DSTechnician
+
 
 demons:
 https://www.spriters-resource.com/snes/demonscrest/

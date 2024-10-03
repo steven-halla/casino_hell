@@ -52,10 +52,10 @@ class Area2RibDemonMazeScreen3(Screen):
         self.penalty_poison_counter = 5
 
 
-        self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
-
-        self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
+        # self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
+        #
+        # self.music_volume = 0.5  # Adjust as needed
+        # self.initialize_music()
         self.total_elapsed_time = 0  # Total elapsed time in milliseconds
         self.last_interval_count = 0  # Number of 5-second intervals that have passed
         self.player_hiding = False
@@ -69,21 +69,21 @@ class Area2RibDemonMazeScreen3(Screen):
         self.maze_3 = True
 
 
-    def stop_music(self):
-        pygame.mixer.music.stop()
-
-    def initialize_music(self):
-        # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
+    # def stop_music(self):
+    #     pygame.mixer.music.stop()
+    #
+    # def initialize_music(self):
+    #     # Initialize the mixer
+    #     pygame.mixer.init()
+    #
+    #     # Load the music file
+    #     pygame.mixer.music.load(self.music_file)
+    #
+    #     # Set the volume for the music (0.0 to 1.0)
+    #     pygame.mixer.music.set_volume(self.music_volume)
+    #
+    #     # Play the music, -1 means the music will loop indefinitely
+    #     pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
         self.player_caught = False
@@ -103,10 +103,7 @@ class Area2RibDemonMazeScreen3(Screen):
 
 
 
-
-        self.stop_music()
-        if state.musicOn == True:
-            self.initialize_music()
+        #t
         super().start(state)
         state.npcs.clear()
         state.treasurechests.clear()
@@ -134,7 +131,7 @@ class Area2RibDemonMazeScreen3(Screen):
 
         state.demons = [
             #
-            # Demon10(16 * 85, 16 * 10)
+            Demon10(16 * 85, 16 * 10)
 
             # Demon3(16 * 20, 14 * 85),
             # Demon4(16 * 20, 14 * 10),
