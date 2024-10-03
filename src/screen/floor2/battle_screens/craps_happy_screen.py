@@ -1078,8 +1078,8 @@ class CrapsHappyScreen(BattleScreen):
         if self.lucky_seven_buff_counter == 0:
             state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
         elif self.lucky_seven_buff_counter > 0:
-            state.DISPLAY.blit(self.font.render(f"Double Dice: {self.lucky_seven_buff_counter} ", True, (255, 255, 255)), (37, 110))
-        state.DISPLAY.blit(self.font.render(f"Hero EXP:{state.player.exp} ", True, (255, 255, 255)), (37, 150))
+            state.DISPLAY.blit(self.font.render(f"Triple Dice: {self.lucky_seven_buff_counter} ", True, (255, 255, 255)), (37, 110))
+        # state.DISPLAY.blit(self.font.render(f"Hero EXP:{state.player.exp} ", True, (255, 255, 255)), (37, 150))
 
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
         # self.draw_enemy_info_box(state)

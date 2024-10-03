@@ -303,11 +303,11 @@ class BattleScreen:
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 70))
 
         if state.crapsBossScreen.lucky_seven_buff_counter > 0:
-            state.DISPLAY.blit(self.font.render(f"Double Dice {state.crapsBossScreen.lucky_seven_buff_counter}: ", True, (255, 255, 255)), (37, 110))
+            state.DISPLAY.blit(self.font.render(f"Triple Dice {state.crapsBossScreen.lucky_seven_buff_counter}: ", True, (255, 255, 255)), (37, 110))
         else:
             state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
 
-        state.DISPLAY.blit(self.font.render(f"Hero EXP:{state.player.exp} ", True, (255, 255, 255)), (37, 150))
+        # state.DISPLAY.blit(self.font.render(f"Hero EXP:{state.player.exp} ", True, (255, 255, 255)), (37, 150))
 
         state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 

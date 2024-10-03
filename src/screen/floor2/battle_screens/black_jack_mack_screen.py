@@ -1393,14 +1393,14 @@ class BlackJackMackScreen(Screen):
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
                                       (255, 255, 255)), (37, 70))
 
-        if self.reveal_hand == 0:
+        if self.reveal_hand == 11:
             state.DISPLAY.blit(self.font.render(f"Status: Normal", True,
                                           (255, 255, 255)), (37, 110))
-        elif self.reveal_hand > 0:
+        elif self.reveal_hand < 11:
             state.DISPLAY.blit(self.font.render(f"Reveal: {self.reveal_hand}", True,
                                                 (255, 255, 255)), (37, 110))
 
-        if self.reveal_hand < 11:
+        elif self.reveal_hand <= 11:
             state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
                                           (255, 255, 255)),
                          (37, 150))
@@ -1408,14 +1408,14 @@ class BlackJackMackScreen(Screen):
             state.DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)),
                          (37, 150))
 
-        # state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
-        #              (37, 30))
-        state.DISPLAY.blit(self.font.render(f"Exo {state.player.exp}", True, (255, 255, 255)),
-                           (37, 30))
+        state.DISPLAY.blit(self.font.render(f"Mack", True, (255, 255, 255)),
+                     (37, 30))
+        # state.DISPLAY.blit(self.font.render(f"Exp {state.player.exp}", True, (255, 255, 255)),
+        #                    (37, 30))
 
         self.main_bordered_box.draw(state)
         # state.DISPLAY.blit(character_image, (633, 15))
-        state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
+        state.DISPLAY.blit(self.font.render(f"Mack", True, (255, 255, 255)),
                      (625, 145))
 
         # self.face_down_card((0,0))
