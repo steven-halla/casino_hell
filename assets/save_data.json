@@ -1,13 +1,12 @@
 {
-    "level": 8,
+    "level": 12,
     "exp": 3007,
-    "stamina_points": 390,
-    "max_stamina_points": 390,
-    "focus_points": 210,
-    "max_focus_points": 210,
+    "stamina_points": 490,
+    "max_stamina_points": 490,
+    "focus_points": 260,
+    "max_focus_points": 260,
     "companions": [
-        "sir leopold",
-        "erika"
+        "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
@@ -19,9 +18,9 @@
         "DARLENES_CHICKEN_NUGGER_AMULET"
     ],
     "equipped_items": [
-        "DARLENES_CHICKEN_NUGGER_AMULET",
-        "Black Hat",
-        "HEALTHY_GLOVES"
+        "sir leopold's paw",
+        "opossum repellent",
+        "coin flip glasses"
     ],
     "npcitems": [
         "level 2 token",
@@ -35,10 +34,7 @@
     "magicinventory": [
         "reveal",
         "shield",
-        "shake",
-        "HEADS_FORCE",
-        "SLOTS_HACK",
-        "CRAPS_LUCKY_7"
+        "shake"
     ],
     "body": 2,
     "mind": 2,
@@ -46,29 +42,20 @@
     "perception": 3,
     "baseperception": 1,
     "luck": 2,
-    "money": 1900,
+    "money": 3355,
     "rabies": false,
     "immunity": true,
     "quest_items": [
         "contract",
-        "BBQ_SAUCE",
-        "SPIRIT_TWO_ALICE_QUEST",
-        "QUEST_1_COIN",
-        "QUEST_1_BADGE",
-        "Invitation",
-        "rib demon key",
-        "NUGGIE_SAUCE_1_FOUND",
-        "boss key",
-        "HIPPO_HOUR_GLASS",
-        "SLOTS_VEST_FOUND"
+        "Invitation"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 9,
+    "days": 10,
     "leveltwonpcstate": [
-
+        "CHICKEN_QUEST_START"
     ],
-    "slots_vest": true,
+    "slots_vest": false,
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": false,

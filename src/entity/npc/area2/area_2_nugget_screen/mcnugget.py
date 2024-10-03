@@ -29,7 +29,12 @@ class MCNugg(Npc):
 
             "level_6_quest": NpcTextBox(
                 [
-                    "MC Nugg: The rib demons have a special item, get it for me, either one is fine?",
+                    "MC Nugg: Yo What up nugg brothers",
+                    "Sir Leopold: Wow, his voice is so deep, and smooth.",
+                    "MC Nugg: Back in my Day I was known as the king of soul. Now I'm known as the king of nuggets. Want me to squeeze you out a 6 piece?",
+                    "Hero: No thanks on that. I'm here to gamble",
+                    "Mc Nugg: Well in that case you've come to the wrong place. But I'll tell you what Nugg brother",
+                    "If you can get the special rib demon item from the slots dealer I'll reward you with something special"
 
 
                 ],
@@ -37,45 +42,50 @@ class MCNugg(Npc):
             ),
             "quest_1_finish": NpcTextBox(
                 [
-                    "MC Nugg: very groovy hero here is your reward of perception glasses, very groove ",
-                    "Hero: Thank you for this friend. ",
-                    "You must have a shovel because you totally dig me"
+                    "MC Nugg: I knew you were a pure hearted soul nugg brother, have this reward from the king of nuggets ",
+                    "Hero: Thank you for the cool shades, what do they do?",
+                    "Mc Nugg: These glasses will raise your perception. You can use it to find the secret sauce that the demons hid",
+                    "Sir leopold: What is it with all the saucy business? Isn't there anyting of better value",
+                    "Mc Nugg: No little nugglet, down on this floor sauce is boss."
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_2_start": NpcTextBox(
                 [
-                    "MC Nugg: listen up nugg brother, with a perception of 2 you can find my super bbq sauce item, you can either level up or equip the item i gave you",
-                    "Hero: i'll check around "
+                    "MC Nugg: listen up nugg brother, equip those shades and go find that sauce for me.",
+                    "Hero: i'll check around ",
+                    "Mc Nugg: And don't forget, with a perception of 3 you can equip more items."
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_2_finish": NpcTextBox(
                 [
-                    "MC Nugg: Good on you here is your reward of 500 coins .",
+                    "MC Nugg: Good on you here is your reward of 500 coins, don't spend em all in 1 place.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_3_start": NpcTextBox(
                 [
-                    "MC Nugg: ok now its time for your final quest nugg brother, defeat the black jack dealer please",
+                    "MC Nugg: ok now its time for your final nugg Quest, defeat that black jack dealing fool for me.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "quest_3_finish": NpcTextBox(
                 [
-                    "MC Nugg: Good on you here is your reward for 3rd complete .",
+                    "MC Nugg: You were the first to defeat Mack, such a nuggulous feat deserves the best reward.",
+                    "I'll teach you this new spell, it's full of soul, you wont have to pay money for slots.",
+                    "Sir Leopold: It's just a coin on a string...",
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "final_message": NpcTextBox(
                 [
-                    "MC Nugg: final .",
+                    "MC Nugg: Are you sure I can't serve you some chicken nuggets, I can lay you a fresh batch.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

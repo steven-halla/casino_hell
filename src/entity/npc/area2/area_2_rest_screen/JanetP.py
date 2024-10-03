@@ -12,7 +12,7 @@ class JanetP(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Jarrol:Oh yeah I sure do love the Nachos Nom Nom Nom, the maggots are so fresh and juicy MMMmmm.",
+                    "Jarrol:April has the best corner on this floor...I'm going to get that Corner, I just have to continue being patient..",
 
                 ],
                 (50, 450, 50, 45), 30, 500

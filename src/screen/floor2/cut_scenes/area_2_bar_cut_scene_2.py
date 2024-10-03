@@ -117,6 +117,10 @@ class Area2BarCutScene2(Screen):
         state.restScreen.barscene1 = True
         state.restScreen.bar_keeper_talking = False
 
+        player_start_x = 16 * 130  # Desired X coordinate
+        player_start_y = 16 * 8  # Desired Y coordinate
+        state.player.setPosition(player_start_x, player_start_y)
+
         super().start(state)
 
         # self.timer_start = time.time()  # Initialize the timer at the start of the screen
@@ -126,10 +130,10 @@ class Area2BarCutScene2(Screen):
         # Check if a player instance already exists
         # times 16
 
-
         state.npcs = [
-            SirLeopoldTheHedgeHog(549, 323),
-            ErikaChickenGirl(690, 323)
+            SirLeopoldTheHedgeHog(16 * 125, 16 * 8),
+            ErikaChickenGirl(16 * 135, 16 * 8),
+            BarKeep(16 * 130, 16 * 4)
 
         ]
 
@@ -155,6 +159,8 @@ class Area2BarCutScene2(Screen):
 
                 state.controller.isTPressed = False
                 state.player.food = 0
+                state.player.canMove = True
+
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
 

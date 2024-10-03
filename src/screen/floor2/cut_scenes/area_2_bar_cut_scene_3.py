@@ -6,6 +6,7 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from cut_scene_manager.cut_scene_movement import CutSceneMovement
 from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
+from entity.npc.area2.area_2_rest_screen.alice import Alice
 from entity.npc.battle_screen.Guy import Guy
 
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
@@ -127,16 +128,19 @@ class Area2BarCutScene3(Screen):
         # Check if a player instance already exists
         # times 16
 
-
         state.npcs = [
-            SirLeopoldTheHedgeHog(549, 323),
-            ErikaChickenGirl(690, 323)
+            SirLeopoldTheHedgeHog(16 * 125, 16 * 8),
+            Alice(16 * 135, 16 * 8),
+            BarKeep(16 * 130, 16 * 4)
 
         ]
-
     def update(self, state: "GameState"):
 
         current_time = time.time()
+
+        player_start_x = 16 * 130  # Desired X coordinate
+        player_start_y = 16 * 8  # Desired Y coordinate
+        state.player.setPosition(player_start_x, player_start_y)
 
 
 
@@ -157,6 +161,8 @@ class Area2BarCutScene3(Screen):
 
                 state.controller.isTPressed = False
                 state.player.food = 0
+                state.player.canMove = True
+
 
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)

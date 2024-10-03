@@ -85,8 +85,8 @@ class Area2GamblingScreen(Screen):
 
         if state.area_2_gambling_area_to_rest_point == True:
             print("hdshfa;ljflksja;f")
-            player_start_x = 16 * 19  # Desired X coordinate
-            player_start_y = 16 * 22  # Desired Y coordinate
+            player_start_x = 16 * 37  # Desired X coordinate
+            player_start_y = 16 * 34  # Desired Y coordinate
             state.player.setPosition(player_start_x, player_start_y)
             state.area_2_gambling_area_to_rest_point = False
 

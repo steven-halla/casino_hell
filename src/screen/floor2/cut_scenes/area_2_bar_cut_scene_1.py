@@ -27,7 +27,7 @@ class Area2BarCutScene1(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
 
         move_player_down_flag = False
         self.npcs = [
@@ -113,8 +113,15 @@ class Area2BarCutScene1(Screen):
         self.state_duration = 1  # Duration for each state
 
     def start(self, state: "GameState"):
+        player_start_x = 16 * 130  # Desired X coordinate
+        player_start_y = 16 * 8  # Desired Y coordinate
+        state.player.setPosition(player_start_x, player_start_y)
+
+
         state.restScreen.barscene1 = True
         state.restScreen.bar_keeper_talking = False
+
+
 
         super().start(state)
 
@@ -127,8 +134,10 @@ class Area2BarCutScene1(Screen):
 
 
         state.npcs = [
-            SirLeopoldTheHedgeHog(549, 323),
-            ErikaChickenGirl(690, 323)
+            SirLeopoldTheHedgeHog(16 * 125, 16 * 8),
+            ErikaChickenGirl(16 * 135, 16 * 8),
+            BarKeep(16 * 130, 16 * 4)
+
 
         ]
 
@@ -151,6 +160,7 @@ class Area2BarCutScene1(Screen):
                 Treasure.add_quest_to_player(state.player, Treasure.RIB_DEMON_KEY)
 
                 state.controller.isTPressed = False
+                state.player.canMove = True
                 state.player.food = 0
 
                 state.currentScreen = state.area2RestScreen
