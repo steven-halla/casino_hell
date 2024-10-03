@@ -14,7 +14,7 @@ class Clara(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: Out of the 5 stats MIND is the most important stat ",
+                    "Claire: Out of the 5 stats MIND is the most important stat ",
                     "Not only do you gain bonus MP, but you also gain unique spells at each level",
                     "At higher levels your magic will also be empowered with higher success rates and your spells last longer ",
 
