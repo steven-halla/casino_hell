@@ -12,14 +12,14 @@ class JanetP(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "JanetP: If you want to build up exp try betting low. There are only 5 gamblers on this floor so keep this in mind.",
+                    "Jarrol:Oh yeah I sure do love the Nachos Nom Nom Nom, the maggots are so fresh and juicy MMMmmm.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "JanetP: Why do you have a chickden and a hedge hog following you? What are you a rancher?",
+                    "Jarrol: Why do you have a chickden and a hedge hog following you? What are you a rancher?",
 
 
                 ],
