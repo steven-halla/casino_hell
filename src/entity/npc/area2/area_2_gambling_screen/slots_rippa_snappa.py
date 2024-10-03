@@ -15,7 +15,7 @@ class SlotsRippaSnappa(Npc):
                 ["RibDemonJackRipper: Kee kee kee you want to play some slots?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Well you got all my coins I dont know what to say."],
+                ["Now I feel sad, I think I'll go down to the maze and get me some ribs."],
                 (50, 450, 700, 130), 36, 500),
 
 
@@ -31,9 +31,9 @@ class SlotsRippaSnappa(Npc):
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
 
-
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Reporter.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png"
+        ).convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -110,12 +110,7 @@ class SlotsRippaSnappa(Npc):
             state.player.canMove = True
 
     def draw(self, state):
-        # rect = (
-        #     self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        #     self.collision.width, self.collision.height)
-        # pygame.draw.rect(state.DISPLAY, self.color, rect)
-
-        sprite_rect = pygame.Rect(7, 6, 16.4, 24)
+        sprite_rect = pygame.Rect(5, 6, 21, 25)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
@@ -129,7 +124,6 @@ class SlotsRippaSnappa(Npc):
 
         # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-
         if self.state == "talking":
             current_message = (
                 self.black_jack_thomas_messages["defeated_message"]

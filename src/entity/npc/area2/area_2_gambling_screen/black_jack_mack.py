@@ -22,10 +22,10 @@ class BlackJackMack(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Mack: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
+                ["Mack: Are you sure you want to battle the king of Black Jack?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["How, impossible, nobody has every defeated my double draw technique."],
                 (50, 450, 700, 130), 36, 500),
 
 

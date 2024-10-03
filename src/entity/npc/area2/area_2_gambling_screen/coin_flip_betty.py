@@ -22,10 +22,10 @@ class CoinFlipBetty(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Betty: Whatever you heard about me isn't true I swear it.  Wanna battle?"],
+                ["Betty: I'm not that good at gambling so take it easy on me. Wanna battle?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["See I told you I'm not that good, I was being honest!"],
                 (50, 450, 700, 130), 36, 500),
 
             "rabies_message": NpcTextBox(

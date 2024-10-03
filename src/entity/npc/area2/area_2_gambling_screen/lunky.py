@@ -24,7 +24,7 @@ class Lunky(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Lunky: Certain dealers have magic points, if you leave thier game they get back thier MP",
+                    "Lunky: Certain dealers have magic points, if you leave their game they get back their MP",
 
 
                 ],

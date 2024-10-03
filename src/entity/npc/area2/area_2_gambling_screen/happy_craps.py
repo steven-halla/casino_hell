@@ -22,10 +22,10 @@ class CrapsHappy(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Happy Crappy: My name is Happy but everyone calls me Happy Crappy, wanna play some crappy craps?"],
+                ["Happy Crappy: My name is Happy but everyone calls me Happy Crappy, wanna play some  craps?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],
+                ["I guess now everyone is going to be calling me depressed crappy."],
                 (50, 450, 700, 130), 36, 500),
 
             "rabies_message": NpcTextBox(
