@@ -25,7 +25,7 @@ class Alex(Npc):
                 [
                     "Alex: I have  a simple quest for you: win 500 coins from the coin flip and oppossum in a can game in ONE SITTING",
                     "Hero: So no saving/resting of ANY sort in between?",
-                    "Alex: Thats right ,so no cheating on this task, go big or go home....I really want to go home...I dont remember what my children look like",
+                    "Alex: That's right ,so no cheating on this task, go big or go home....I really want to go home...I dont remember what my children look like",
 
                 ],
                 (50, 450, 50, 45), 30, 500

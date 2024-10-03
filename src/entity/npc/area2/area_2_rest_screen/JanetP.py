@@ -12,7 +12,8 @@ class JanetP(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Jarrol:April has the best corner on this floor...I'm going to get that Corner, I just have to continue being patient..",
+                    "Jarrol: April has the best corner on this floor...I'm going to get that Corner, I just have to continue being patient.",
+                    "The last demon that tried to force her out was bitten, I heard that if you get bit by a human you turn into one. No way I'm going to risk that.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

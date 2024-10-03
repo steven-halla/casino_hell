@@ -20,7 +20,7 @@ class Samantha(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Samantha: Coin flip dealers have to follow the rule of 5 for their phases ",
+                    "Samantha: Coin flip dealers have to follow the rules of their pre planned phases. ",
 
                 ],
                 (50, 450, 50, 45), 30, 500

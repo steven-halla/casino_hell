@@ -14,8 +14,8 @@ class Natasha(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: Out of the 5 stats BODY is the most important stat ",
-                    "As you gain levels your durability will increase in mulitple ways",
+                    "Natasha: Out of the 5 stats BODY is the most important stat. ",
+                    "As you gain levels your durability will increase in mulitple ways.",
                     "In addition you'll be able to eat more food per day, and eat better quality foods at the bar. ",
 
                 ],

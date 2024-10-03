@@ -16,9 +16,9 @@ class Natalie(Npc):
                     "Rolling a 7 has the highest probability of of 16.66%,so the house always has the edge on you. Seems unfair doesn't it?",
                     "If you roll a 6 or 8 that has the highest probablity of 13.89%, so bet high",
                     "If you roll a 5 or 9 then going a medium kind of bet is best with a 11.11% probability.",
-                    "A roll of 4 and 10 has a probablity of 8.33% so bet low",
-                    "A roll of 3 and 11 has a probablity of 5.56% so bet  low if you roll an 11",
-                    "A roll of 2 and 12 has a probablity of 2.78% ,though that wont matter much as you cant st that as point roll ",
+                    "A roll of 4 and 10 has a probablity of 8.33% so bet low.",
+                    "A roll of 3 and 11 has a probablity of 5.56% so bet  low if you roll an 11.",
+                    "A roll of 2 and 12 has a probablity of 2.78% ,though that wont matter much as you cant st that as point roll. ",
 
 
 

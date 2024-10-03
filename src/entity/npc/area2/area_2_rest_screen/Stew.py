@@ -14,8 +14,8 @@ class Stew(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Steww: Out of the 5 stats SPIRIT is the most important stat ",
-                    "Each floor has a quest locked behind having a high spirit stat",
+                    "Stew: Out of the 5 stats SPIRIT is the most important stat. ",
+                    "Each floor has a quest locked behind having a high spirit stat.",
                     "Having a high spirit also means being able to equip more companion items. ",
                     "At higher levels your companion items will be empowered to affect more games ",
 

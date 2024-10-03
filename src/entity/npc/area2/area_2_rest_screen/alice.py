@@ -16,8 +16,8 @@ class Alice(Npc):
         self.npc_messages = {
             "no_spirit_2": NpcTextBox(
                 [
-                    "Hero: Yo whats up",
-                    "Alice: A bit rude, you should learn to be more sauve, i'll give you a  quest later . You need a 2 spirit to chat with me."
+                    "Hero: Yo, whats up.",
+                    "Alice: A bit rude, you should learn to be more suave, I'll give you a  quest later. You need a 2 spirit to chat with me."
 
 
                 ],
@@ -44,7 +44,7 @@ class Alice(Npc):
             ),
             "quest_2_complete_after_message": NpcTextBox(
                 [
-                    "Alice: Thank you for completing my quest.",
+                    "Alice: Good luck on your quest hero. Don't let the others discourage you.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

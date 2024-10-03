@@ -14,9 +14,9 @@ class Paul(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Paul: Out of the 5 stats PERCEPTION is the most important stat ",
+                    "Paul: Out of the 5 stats PERCEPTION is the most important stat. ",
                     "Higher perception scores allow you to equip more items.",
-                    "HHaving a high perception will allow you to uncover more treasure chest ",
+                    "Having a high perception will allow you to uncover more treasure chest. ",
 
                 ],
                 (50, 450, 50, 45), 30, 500

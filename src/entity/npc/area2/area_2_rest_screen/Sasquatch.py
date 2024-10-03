@@ -13,15 +13,16 @@ class Sasquatch(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Sasquatch:I have to keep the dirt off the red floor, its the only way to keep the insanity away",
-                    "the random architecture is meant to make us go crazy, why else would they do it? ","WHY CANT ANYTHING BE UNIFORM HERE???"
+                    "Mary:I have to keep the dirt off the red floor, its the only way to keep the insanity away.",
+                    "The random architecture is meant to make us go crazy, why else would they do it? "
+                    ,"Ha ha ha ha he he why can't ha ha ha things be more uniform, why is it so random? Why does it have to be so damn random for?"
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Sasquatcht: I keep sweeping till my hands bleed, I'll never forget the evil deed that I did but, I didn't have a choice.  ",
+                    "Mary: I keep sweeping till my hands bleed, I'll never forget the evil deed that I did but, I didn't have a choice.  ",
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -101,7 +102,7 @@ class Sasquatch(Npc):
 
         sprite_rect = pygame.Rect(243, 5, 16, 28.3)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-        scaled_sprite = pygame.transform.scale(sprite, (46, 46))
+        scaled_sprite = pygame.transform.scale(sprite, (49, 48))
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))

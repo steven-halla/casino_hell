@@ -13,8 +13,8 @@ class NatNat(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "NatNat: The demons are nice enough to give us the clothes of people that lose all their money.",
-                    "I'll never part with my daughter's clothing, it's the only thing I have to remember her by. ",
+                    "Natasha: The demons are nice enough to give us the clothes of people that lose all their money.",
+                    "I'll never part with my daughter's clothing, it's the only thing I have to remember her by.",
                     "Now what was her name again, I can't seem to remember it...Did I really have a daughter?"
 
                 ],
@@ -22,7 +22,7 @@ class NatNat(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "NatNat: So many people come here with friends and family, I've seen so many torn apart by this place.",
+                    "Natasha: So many people come here with friends and family, I've seen so many torn apart by this place.",
 
 
                 ],
