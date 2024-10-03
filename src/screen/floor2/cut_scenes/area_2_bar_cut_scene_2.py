@@ -57,33 +57,16 @@ class Area2BarCutScene2(Screen):
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
-                    "Erika: I'll join your party now",
-                    # "Hero: Oh yeah? Can you tell me whats up",
-                    # "Sir Leopold: I hope this is worth the 2000 coins, hero had to work hard for every coin",
-                    # "Erika: Oh yes, this is very much worth it. I need you to go to the rib demon maze and get me their special treasure",
-                    # "Hero: Wel that sounds easy enough",
-                    # "SIr leopold: Yeah, a little too easy, what's the catch?",
-                    # "Erika: Catch....well the entire place is filled with a poison mist, I would go there myself,but my tiny wittle chicken lungs wouldn't be able to handle it?",
-                    # "Erika: I was need you to fetch the super secret rib demon ultimate rib sauce",
-                    # "Hero: Sounds like I'm risking my life for something thats not that important",
-                    # "Eria: Oh your not risking your life, but your soul will be bound to 'the wall' if you fail and they'll eat your ribs for all eternity if you perhish",
-                    # "Eria: It may  sound like your risking your immortal for something small, but it's really really important to get that recipe",
-                    # "Sir Leopold: Hero i don't think you should do it, sounds too dangerous",
-                    # "Hero: Oh come now have more faith in me, Im feeling lucky",
-                    # "ERika: oh very nice hero I knew it in my chicken nuggy heart you would help",
-                    # "ERika: I'lll give you some advice on how to complete your task",
-                    # "ERika:There are 3 floors to the maze, the first of which has blind and deaf demons, but they can detect changes in air density in a small radius",
-                    # "ERika: There are barrels you can climb inside of that will protect you",
-                    # "Erika: The second floor will have swithes that you'll need to press in a certain order",
-                    # "Sir Leopold:What order does he need to press them in?",
-                    # "Erika: Honestly I don't know, you'll have to guess....just be aware of the stalker demon, you can slow him down somehow",
-                    # "Erika: If you mess up the order you'll have to start over",
-                    # "Hero: How do you know all of this if you've never been there before?",
-                    # "Erika: How long do you think I've been here? Not like I dont have anything better to do than get info?",
-                    # "Erika: On the 3rd and final level there are 3 switches to press, do so and you'll disable the stalker demon?",
-                    # "Erika: Good luck Hero, and the other one will need to stay out, or he'll die",
-                    # "Sir leopold: My name is sir leopoold",
-                    "erika: I will also give you a new companion item.",
+                    "Erika: I'll join your party now. I knew you could do it, I think you need a special reward.",
+                    "You like chicken don't you? If you want you can put me in the oven and eat me, I don't mind. Just promise to be gentle and take your time enjoying me."
+                    "Hero: That sounds a little morbid, hard pass.",
+                    "Erika: Oh and here I was thinking you wanted to eat me, I'm hot, juicy, and very very tender. You're passing up a golden chance here.",
+                    "If you prefer I can lay you some golden hot fresh crispy chicky nuggets. I'm fresh you know, and so are my nuggets.",
+                    "Sir Leopold: Why are you talking like that for, it's weird even for me.",
+                    "Hero: You're free to join us still, but lets all agree to not eat each other.",
+                    "Erika: Oh you two are the worst, fine I'll still join you. I'll even give you this amulet."
+               
+                    "It's the best companion item you can have, with a spirit of 2 you can equip it.",
 
 
 
