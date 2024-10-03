@@ -90,7 +90,7 @@ class ShopNpcTextBox(Entity):
         item_x_offset: int = 50
         arrow_offset: int = -40
 
-        shop_title: str = "Welcome to the Shop!"
+        shop_title: str = "Must have 700 gold after purchase!"
         title_surface: pygame.Surface = state.FONT.render(shop_title, True, (255, 255, 255))
         state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))
 
@@ -104,6 +104,8 @@ class ShopNpcTextBox(Entity):
             state.DISPLAY.blit(item_surface, (box_x + item_x_offset, box_y + item_y_offset))
             state.DISPLAY.blit(price_surface, (box_x + item_x_offset + 300, box_y + item_y_offset))
             item_y_offset += 40
+
+
 
         # Now draw the smaller box overlapping the top-right corner of the main box
         bot_box_width: int = 175

@@ -1,8 +1,8 @@
 {
     "level": 4,
     "exp": 600,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
+    "stamina_points": 260,
+    "max_stamina_points": 260,
     "focus_points": 120,
     "max_focus_points": 120,
     "companions": [
@@ -11,7 +11,8 @@
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses"
+        "coin flip glasses",
+        "HEALTHY_GLOVES"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -28,25 +29,25 @@
         "shield",
         "shake"
     ],
-    "body": 1,
+    "body": 2,
     "mind": 1,
     "spirit": 1,
-    "perception": 3,
+    "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1500,
+    "money": 3966,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract",
-        "boss key"
+        "contract"
     ],
     "level3reward": false,
     "food": 1,
     "days": 1,
     "leveltwonpcstate": [
-        "COIN_SAVE_AREA_2",
-        "MC_NUGGET_QUEST_1_REWARD"
+        "STAT_POTION_AREA_2",
+        "HEALTHY_GLOVES",
+        "COIN_SAVE_AREA_2"
     ],
     "slots_vest": false,
     "cutscene1": true,

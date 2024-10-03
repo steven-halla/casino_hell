@@ -23,6 +23,7 @@ class Area2ShopKeeper(Npc):
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
+
         self.textbox = ShopNpcTextBox(
             [
              ""],
@@ -36,6 +37,7 @@ class Area2ShopKeeper(Npc):
         self.shop_items = ["COIN_SAVE_AREA_2", "Hippo Hour Glass", "HEALTHY_GLOVES", "STAT_POTION_AREA_2", "Boss Key"]
 
         self.shop_costs = ["200", "500", "1000", "1000", "1000"]
+        self.min_costs = ["900", "1200", "1700", "1700", "1000"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -43,6 +45,9 @@ class Area2ShopKeeper(Npc):
         self.selected_money_index = 0  # New attribute to track selected item index
         self.stat_point_increase = False
         self.stat_point_increase_index = 0
+        self.index_1_bought = False
+
+        self.in_shop = False
 
     def show_shop(self, state: "GameState"):
         # This method passes the shop items to the textbox
@@ -51,6 +56,10 @@ class Area2ShopKeeper(Npc):
 
 
     def update(self, state: "GameState"):
+
+
+
+
         stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         # print(self.stat_point_increase)
 
@@ -128,6 +137,7 @@ class Area2ShopKeeper(Npc):
             self.update_waiting(state)
             # state.player.canMove = True
         elif self.state == "talking":
+
             state.player.hide_player = True
 
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
@@ -152,11 +162,12 @@ class Area2ShopKeeper(Npc):
 
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500 and self.stat_point_increase == False:
                 self.input_time = pygame.time.get_ticks()
-                state.player.canMove = True
                 self.state = "waiting"
                 print("Leaving the shop...")
                 self.textbox.reset()
                 self.stat_point_increase = False
+                self.in_shop = False
+                state.player.canMove = True
 
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
@@ -177,9 +188,15 @@ class Area2ShopKeeper(Npc):
                         if state.player.enhanced_luck == True:
                             state.player.luck += 1
                         state.controller.isTPressed = False
-                    else:
-                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+
+                    elif state.player.money < 900 and self.selected_item_index == 0:
+                        state.controller.isTPressed = False
                         self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state and self.selected_item_index == 0:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
 
 
 
@@ -190,10 +207,14 @@ class Area2ShopKeeper(Npc):
                         Equipment.HIPPO_HOUR_GLASS.add_item_to_quest_state(state.player, Equipment.HIPPO_HOUR_GLASS)
                         state.player.money -= 500
                         print(state.player.quest_items)
-                        state.controller.isTPressed = False
 
-                    else:
-                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+
+                    elif state.player.money < 1200 and self.selected_item_index == 1:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items and self.selected_item_index == 1:
+                        state.controller.isTPressed = False
                         self.cant_buy_sound.play()  # Play the sound effect once
 
 
@@ -206,9 +227,17 @@ class Area2ShopKeeper(Npc):
                         Equipment.HEALTHY_GLOVES.add_equipment_to_player(state.player, Equipment.HEALTHY_GLOVES)
                         state.player.money -= 1000
                         state.controller.isTPressed = False
-                    else:
-                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+
+                    elif state.player.money < 1700 and self.selected_item_index == 2:
+                        state.controller.isTPressed = False
                         self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state and self.selected_item_index == 2:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+                    # else:
+                    #     print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                    #     self.cant_buy_sound.play()  # Play the sound effect once
 
 
                     if state.player.money > 1699 and self.selected_item_index == 3 and Equipment.STAT_POTION_AREA_2.value not in state.player.level_two_npc_state:
@@ -219,9 +248,17 @@ class Area2ShopKeeper(Npc):
                         state.player.money -= 1000
                         self.stat_point_increase = True
                         state.controller.isTPressed = False
-                    else:
-                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+
+                    elif state.player.money < 1700 and self.selected_item_index == 3:
+                        state.controller.isTPressed = False
                         self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif Equipment.STAT_POTION_AREA_2.value in state.player.level_two_npc_state and self.selected_item_index == 3:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+                    # else:
+                    #     print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                    #     self.cant_buy_sound.play()  # Play the sound effect once
 
 
 
@@ -232,9 +269,20 @@ class Area2ShopKeeper(Npc):
                         self.buy_sound.play()  # Play the sound effect once
                         state.controller.isTPressed = False
 
-                    else:
-                        print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                    elif state.player.money < 1000 and self.selected_item_index == 4:
+                        state.controller.isTPressed = False
                         self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif Equipment.BOSS_KEY.value in state.player.quest_items and self.selected_item_index == 4:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+
+                    elif self.selected_item_index == 4 and Events.ERIKA_IN_PARTY.value not in state.player.companions:
+                        state.controller.isTPressed = False
+                        self.cant_buy_sound.play()  # Play the sound effect once
+                    # else:
+                    #     print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
+                    #     self.cant_buy_sound.play()  # Play the sound effect once
 
 
 
@@ -295,26 +343,33 @@ class Area2ShopKeeper(Npc):
                 # the below is where kenny had it
                 self.textbox.reset()
 
-
-
     def update_talking(self, state: "GameState"):
         self.textbox.update(state)
         self.show_shop(state)
-        state.player.canMove = False
 
+        # If 'B' is pressed, exit the conversation and allow movement
+        if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+            self.input_time = pygame.time.get_ticks()
+            self.state = "waiting"  # Switch to 'waiting' state
+            state.player.canMove = True  # Explicitly set canMove to True when leaving conversation
+            self.textbox.reset()  # Reset the textbox
+            return
+
+        # If 'T' is pressed and the conversation is finished, exit and allow movement
         if state.controller.isTPressed and self.textbox.is_finished():
-            # Exiting the shop conversation
-            # self.state = "waiting"
-            self.state_start_time = pygame.time.get_ticks()
-            # Allow the player to move again (new)
-            # state.player.canMove = True  # Ensure this attribute exists in your Player class
-            # self.textbox.reset()
-        else:
-            # While in conversation, prevent the player from moving (new)
+            state.controller.isTPressed = False
+            self.state = "waiting"  # Switch to 'waiting' state
+            state.player.canMove = True  # Explicitly set canMove to True after finishing conversation
+            self.textbox.reset()
+            return
+
+        # During the conversation, prevent movement
+        if self.state == "talking":
             state.player.canMove = False
 
-        cost = int(self.shop_costs[self.selected_item_index])
-        # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
+        # If already in 'waiting' state, ensure player can move
+        if self.state == "waiting":
+            state.player.canMove = True
 
     def draw(self, state):
         sprite_rect = pygame.Rect(5, 6, 18, 25)
@@ -337,6 +392,65 @@ class Area2ShopKeeper(Npc):
         elif self.state == "talking":
             self.textbox.draw(state)
             if self.state == "talking":
+
+                if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value not in state.player.level_two_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"There is only 1 of these on this floor so use it wisely.", True,
+                                                        (255, 255, 255)), (70, 460))
+                    state.DISPLAY.blit(self.font.render(f"Saves your game.", True,
+                                                        (255, 255, 255)), (70, 510))
+                if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Save Coin is Sold out!", True,
+                                                        (255, 255, 255)), (70, 460))
+
+
+
+                if self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
+                    state.DISPLAY.blit(self.font.render(f"Increases chance of all swimmers winning ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+
+                    state.DISPLAY.blit(self.font.render(f" This will be always on once bought. ", True,
+                                                        (255, 255, 255)), (70, 510))
+
+                elif self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
+                    state.DISPLAY.blit(self.font.render(f"Hippo Hour Glass is sold out! ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+
+
+                if self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value not in state.player.level_two_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Increases stamina by a total of 30 points when equipped! ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+
+                    state.DISPLAY.blit(self.font.render(f"The earlier you buy this the better.", True,
+                                                        (255, 255, 255)), (70, 510))
+
+                elif self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Healthy gloves is sold out! ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+                if self.selected_item_index == 3 and Events.STAT_POTION_AREA_2.value not in state.player.level_two_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Adds a stat point of your choice (cannot go past 2). ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+                    state.DISPLAY.blit(self.font.render(f"There are only 4 stat points on this level plan carefully ", True,
+                                                        (255, 255, 255)), (70, 510))
+
+                elif self.selected_item_index == 3 and Events.STAT_POTION_AREA_2.value in state.player.level_two_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Stat Potion is sold out! ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+                if self.selected_item_index == 4 and Equipment.BOSS_KEY.value not in state.player.quest_items:
+                    state.DISPLAY.blit(self.font.render(f"The key to allow you to go to boss room. ", True,
+                                                        (255, 255, 255)), (70, 460))
+
+                    state.DISPLAY.blit(self.font.render(f"Once you enter boss room there is no turning back. ", True,
+                                                        (255, 255, 255)), (70, 510))
+
+                elif self.selected_item_index == 4 and Equipment.BOSS_KEY.value in state.player.quest_items:
+                    state.DISPLAY.blit(self.font.render(f"Boss Key is sold out! Good luck! ", True,
+                                                        (255, 255, 255)), (70, 460))
                 # Handle drawing the shop interaction text
 
                 if self.stat_point_increase == True:
