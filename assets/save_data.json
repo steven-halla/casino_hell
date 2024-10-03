@@ -1,10 +1,10 @@
 {
-    "level": 12,
-    "exp": 3007,
-    "stamina_points": 22,
-    "max_stamina_points": 490,
-    "focus_points": 260,
-    "max_focus_points": 260,
+    "level": 4,
+    "exp": 600,
+    "stamina_points": 240,
+    "max_stamina_points": 240,
+    "focus_points": 120,
+    "max_focus_points": 120,
     "companions": [
         "sir leopold"
     ],
@@ -28,25 +28,22 @@
         "shield",
         "shake"
     ],
-    "body": 2,
-    "mind": 2,
-    "spirit": 2,
-    "perception": 3,
+    "body": 1,
+    "mind": 1,
+    "spirit": 1,
+    "perception": 1,
     "baseperception": 1,
-    "luck": 2,
-    "money": 2955,
+    "luck": 1,
+    "money": 1500,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract",
-        "Invitation",
-        "rib demon key"
+        "contract"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 11,
+    "days": 1,
     "leveltwonpcstate": [
-        "CHICKEN_QUEST_START"
     ],
     "slots_vest": false,
     "cutscene1": true,
@@ -54,15 +51,15 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1110,
+    "coinflipbetteymoney": 333,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 1110,
+    "opossuminacancandymoney": 333,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1110,
+    "blackjackmackmoney": 333,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 1110,
-    "crapscrappymoney": 1110
+    "slotsrippasnappamoney": 1500,
+    "crapscrappymoney": 1500
 }

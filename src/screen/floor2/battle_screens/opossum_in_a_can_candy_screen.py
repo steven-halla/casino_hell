@@ -168,7 +168,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                 500  # Delay
             ),
             "player_debuff_magic_poison_message": TextBox(
-                ["Candy: Person of caution drowning in a swamp of putrid decay, purge yourself of purity and become one with the rot...poison of despair", ""],
+                ["Candy: Person of caution drowning in a swamp of putrid decay, purge yourself of purity and become one with the rot...poison of despair.", ""],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size
                 500  # Delay
@@ -810,6 +810,8 @@ class OpossumInACanCandyScreen(BattleScreen):
             self.battle_messages["player_debuff_magic_poison_message"].update(state)
             if self.battle_messages["player_debuff_magic_poison_message"].message_index == 1:
                 self.player_debuff_poison += 5
+                self.spell_sound.play()
+
                 self.magic_points -= 1
                 self.game_state = "menu_screen"
 

@@ -91,6 +91,8 @@ class BlackJackMackScreen(Screen):
 
 
 
+
+
         self.double_draw_casting = False
         self.player_debuff_double_draw = 0
         self.magic_points = 1
@@ -647,6 +649,7 @@ class BlackJackMackScreen(Screen):
                         enemy_magic_cast_modifier = self.magic_points * 20
 
                         if enemy_magic_cast + enemy_magic_cast_modifier >= 35:
+
                             print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
                             self.player_debuff_double_draw += 7
                             self.magic_points -= 1
@@ -706,6 +709,8 @@ class BlackJackMackScreen(Screen):
             self.magic_enemy_attack_double_draw_message_component.update(state)
             if self.magic_enemy_attack_double_draw_message_component.message_index == 1:
                 print("Hi there")
+                self.spell_sound.play()
+
                 self.game_state = "draw_phase"
 
 
