@@ -1,7 +1,7 @@
 import pygame
 import pytmx
 
-from constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK, BLACK
 from entity.demon.demon1 import Demon1
 from entity.demon.demon10 import Demon10
 from entity.demon.demon6 import Demon6
@@ -298,6 +298,8 @@ class Area2RibDemonMazeScreen3(Screen):
     def draw(self, state: "GameState"):
 
         state.DISPLAY.fill(BLUEBLACK)
+
+
         # state.DISPLAY.blit(state.FONT.render(
         #     f"player money: {state.player.money}",
         #     True, (255, 255, 255)), (333, 333))
@@ -380,6 +382,9 @@ class Area2RibDemonMazeScreen3(Screen):
 
         # Step 3: Blit the text on the display at (50, 50)
         state.DISPLAY.blit(stamina_text, (50, 50))
+
+        if state.player.stamina_points < 1:
+            state.DISPLAY.fill(BLACK)
 
         # Update the display
         pygame.display.update()

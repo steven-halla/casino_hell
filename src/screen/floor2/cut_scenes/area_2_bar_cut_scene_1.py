@@ -79,7 +79,8 @@ class Area2BarCutScene1(Screen):
                     "Hero: How do you know all of this if you've never been there before?",
                     "Erika: How long do you think I've been here? Not like I dont have anything better to do than get info?",
                     "On the 3rd and final level there are 3 switches to press, do so and you'll disable the stalker demon?",
-                    "Erika: Good luck Hero, and the other one will need to stay out, or he'll die",
+                    "Also: if you run out of stamina,it's GAME OVER, let me remind you of that, It would make me sad for a coupel of days if you perhished.",
+                    "Good luck Hero, and the other one will need to stay out, or he'll die",
                     "Sir leopold: My name is Sir Leopold",
                     "Erika: I already forgot your name...I'll call you hedgy....good luck hero! And before I forget here's the key",
 

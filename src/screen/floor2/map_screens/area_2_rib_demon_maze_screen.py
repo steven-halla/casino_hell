@@ -1,7 +1,7 @@
 import pygame
 import pytmx
 
-from constants import PLAYER_OFFSET, BLUEBLACK
+from constants import PLAYER_OFFSET, BLUEBLACK, BLACK
 from entity.demon.demon1 import Demon1
 from entity.demon.demon6 import Demon6
 from entity.demon.demon8 import Demon8
@@ -134,6 +134,9 @@ class Area2RibDemonMazeScreen(Screen):
         # ]
 
     def update(self, state: "GameState"):
+
+
+
         delta_time = self.clock.tick(60)  # 60 FPS cap
         state.player.canMove = True
 
@@ -350,6 +353,9 @@ class Area2RibDemonMazeScreen(Screen):
 
         # Step 3: Blit the text on the display at (50, 50)
         state.DISPLAY.blit(stamina_text, (50, 50))
+
+        if state.player.stamina_points < 1:
+            state.DISPLAY.fill(BLACK)
 
         # Update the display
         pygame.display.update()
