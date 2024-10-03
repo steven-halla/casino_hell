@@ -14,6 +14,8 @@ class Switch8(Npc):
         self.font = pygame.font.Font(None, 36)
         self.t_pressed = False
 
+        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound.set_volume(0.3)
         self.rect_height = 50
         self.rect_width = 25
         self.switch_color_off = (255, 0, 0)  # Red for off
@@ -39,6 +41,8 @@ class Switch8(Npc):
                 (pygame.time.get_ticks() - self.state_start_time) > 500 and not state.player.menu_paused:
 
             self.state_start_time = pygame.time.get_ticks()
+            self.buy_sound.play()  # Play the sound effect once
+
 
             # Activate the switch permanently
             self.switch_activated = True

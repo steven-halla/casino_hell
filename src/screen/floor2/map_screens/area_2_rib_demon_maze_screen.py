@@ -42,6 +42,11 @@ class Area2RibDemonMazeScreen(Screen):
         self.poison_counter = 0
         self.clock = pygame.time.Clock()  # Initialize the clock
         self.penalty_poison_counter = 5
+        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound.set_volume(0.3)
+
+        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound.set_volume(0.5)
 
 
         self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/rib_demon_maze.mp3"
@@ -150,7 +155,7 @@ class Area2RibDemonMazeScreen(Screen):
         # Check if a new 5-second interval has started
         if current_interval_count > self.last_interval_count:
             print("5 seconds have passed")
-            state.player.stamina_points -= 3
+            state.player.stamina_points -= 4
             self.last_interval_count = current_interval_count
 
 

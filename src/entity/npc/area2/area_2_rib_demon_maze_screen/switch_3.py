@@ -18,6 +18,11 @@ class Switch3(Npc):
         self.state = "waiting"
         self.font = pygame.font.Font(None, 36)
         self.t_pressed = False
+        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound.set_volume(0.3)
+
+        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound.set_volume(0.5)
 
         self.rect_height = 50
         self.rect_width = 25
@@ -50,8 +55,12 @@ class Switch3(Npc):
                     state.area2RibDemonMazeScreen2.switch_4 == False and \
                     state.area2RibDemonMazeScreen2.switch_5 == False:
                 self.switch_activated = True
+                self.buy_sound.play()  # Play the sound effect once
+
                 state.area2RibDemonMazeScreen2.switch_3 = True
             else:
+                self.cant_buy_sound.play()  # Play the sound effect once
+
                 self.switch_activated = False
                 state.area2RibDemonMazeScreen2.switch_1 = False
                 state.area2RibDemonMazeScreen2.switch_2 = False

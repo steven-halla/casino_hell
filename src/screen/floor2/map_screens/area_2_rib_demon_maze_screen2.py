@@ -52,6 +52,7 @@ class Area2RibDemonMazeScreen2(Screen):
         self.penalty_poison_counter = 5
 
 
+
         # self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
 
         # self.music_volume = 0.5  # Adjust as needed
@@ -223,7 +224,7 @@ class Area2RibDemonMazeScreen2(Screen):
         # Check if a new 5-second interval has started
         if current_interval_count > self.last_interval_count:
             # print("5 seconds have passed")
-            state.player.stamina_points -= 3
+            state.player.stamina_points -= 4
             self.last_interval_count = current_interval_count
 
 

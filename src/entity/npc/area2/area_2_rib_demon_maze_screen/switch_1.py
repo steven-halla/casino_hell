@@ -21,6 +21,12 @@ class Switch1(Npc):
 
         self.switch_activated = False  # Track if the switch is activated (permanently on)
 
+        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound.set_volume(0.3)
+
+        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound.set_volume(0.5)
+
     def update(self, state: "GameState"):
 
         if state.area2RibDemonMazeScreen2.switch_1 == False:
@@ -47,6 +53,9 @@ class Switch1(Npc):
                 state.area2RibDemonMazeScreen2.switch_4 == False and \
                 state.area2RibDemonMazeScreen2.switch_5 == False:
                     self.switch_activated = True
+                    self.buy_sound.play()  # Play the sound effect once
+
+
                     state.area2RibDemonMazeScreen2.switch_1 = True
             else:
                 self.switch_activated = False
