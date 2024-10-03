@@ -95,7 +95,7 @@ class Lunky(Npc):
 
     def draw(self, state):
         # Draw character sprite
-        sprite_rect = pygame.Rect(5, 6, 20, 29)
+        sprite_rect = pygame.Rect(5, 6, 19, 25)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)

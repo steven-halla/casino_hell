@@ -96,7 +96,7 @@ class April(Npc):
             state.player.canMove = True
     def draw(self, state):
 
-        sprite_rect = pygame.Rect(147, 6, 18.6, 24)
+        sprite_rect = pygame.Rect(5.5, 6, 18.6, 24)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)

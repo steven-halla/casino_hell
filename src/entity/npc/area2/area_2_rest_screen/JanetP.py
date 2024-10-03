@@ -44,7 +44,8 @@ class JanetP(Npc):
         #     "/Users/stevenhalla/code/casino_hell/assets/images/cindy_long_hair_sprites.png")
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/snes-anna-hmllllllll.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png"
+        ).convert_alpha()
 
         # Set the color key for transparency (replace (0, 255, 0) with the exact RGB value of your light green)
         self.character_sprite_image.set_colorkey((120,195,128))

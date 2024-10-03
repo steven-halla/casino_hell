@@ -39,7 +39,7 @@ class Area2BarKeep(Npc):
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Tool Shop Owner.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
         self.selected_money_index = 0  # New attribute to track selected item index
 
     def show_shop(self, state: "GameState"):
@@ -229,7 +229,7 @@ class Area2BarKeep(Npc):
         # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
 
     def draw(self, state):
-        sprite_rect = pygame.Rect(5, 6, 18, 25)
+        sprite_rect = pygame.Rect(5, 6, 23, 30)
 
         # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)

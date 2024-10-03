@@ -36,7 +36,7 @@ class Sasquatch(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
-        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Hawker and Peddler ALPHA.png").convert_alpha()
+        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
 
         self.isWorthy = False
 
@@ -99,9 +99,9 @@ class Sasquatch(Npc):
         # pygame.draw.rect(state.DISPLAY, self.color, rect)
 
 
-        sprite_rect = pygame.Rect(116, 144, 15, 23)
+        sprite_rect = pygame.Rect(243, 5, 16, 28.3)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+        scaled_sprite = pygame.transform.scale(sprite, (46, 46))
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))

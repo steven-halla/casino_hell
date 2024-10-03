@@ -41,10 +41,8 @@ class Jasper(Npc):
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
 
-
-
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
+            "/Users/stevenhalla/code/casino_hell/assets/images/snes-anna-hmllllllll.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":
@@ -99,7 +97,7 @@ class Jasper(Npc):
             state.player.canMove = True
 
     def draw(self, state):
-        sprite_rect = pygame.Rect(5, 6, 20, 25)
+        sprite_rect = pygame.Rect(212, 6, 18, 25)
         sprite = self.character_sprite_image.subsurface(sprite_rect)
         scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
         sprite_x = self.collision.x + state.camera.x - 20
