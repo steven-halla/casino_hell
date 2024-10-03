@@ -193,9 +193,8 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.music_volume = 0.5  # Adjust as needed
         pygame.mixer.music.stop()
 
-
-
-
+    def start(self, state: 'GameState') -> None:
+        self.initialize_music()
 
     def print_current_slots(self) -> None:
         visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]

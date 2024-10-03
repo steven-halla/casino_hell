@@ -256,7 +256,8 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.entry_cost = 250
         self.level_anchor = False
 
-
+    def start(self, state: 'GameState') -> None:
+        self.initialize_music()
 
     def reset(self):
         self.player_debuff_poison = 0

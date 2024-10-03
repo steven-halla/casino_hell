@@ -241,6 +241,9 @@ class CrapsHappyScreen(BattleScreen):
 
         # self.initialize_music()
 
+    def start(self, state: 'GameState') -> None:
+        self.initialize_music()
+
 
 
     def game_reset(self, state: "GameState"):

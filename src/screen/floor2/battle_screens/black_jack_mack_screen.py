@@ -307,6 +307,9 @@ class BlackJackMackScreen(Screen):
 
     pygame.init()
 
+    def start(self, state: 'GameState') -> None:
+        self.initialize_music()
+
 
 
     def draw_level_up(self, state: 'GameState') -> None:

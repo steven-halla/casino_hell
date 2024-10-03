@@ -271,6 +271,9 @@ class CoinFlipBettyScreen(BattleScreen):
         self.force_heads_costs = 30
 
         pygame.mixer.music.stop()
+
+    def start(self, state: 'GameState') -> None:
+        self.initialize_music()
     def stop_music(self):
         pygame.mixer.music.stop()
 
