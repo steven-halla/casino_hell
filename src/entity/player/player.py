@@ -6,6 +6,7 @@ import pygame
 from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, BLUEBLACK
 from entity.entity import Entity
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from game_constants.magic import Magic
 from game_constants.treasure import Treasure
 
@@ -1706,7 +1707,10 @@ class Player(Entity):
         descriptions = {
             "reveal": "Black Jack: Reveals score of enemy hand.",
             "shield": "Coin Flip: Guards against Bad calls.",
-            "shake": "Opossum in a can: Reveals 1 rabid opossum and 1 lucky star"
+            "shake": "Opossum in a can: Reveals 1 rabid opossum and 1 lucky star",
+            Magic.CRAPS_LUCKY_7.value :"Craps: Re roll your 2nd dice and take the best outcome.",
+            Magic.SLOTS_HACK.value: "Slots: Doesn't cost money to spin the reels",
+            Magic.HEADS_FORCE.value:"Coin Flip: Forces next flip to be Heads."
         }
 
         # Get the item name based on the current index
@@ -1734,8 +1738,18 @@ class Player(Entity):
     def show_quest_items_description(self, state):
         # Define descriptions for each item
         descriptions = {
-            "contract": "It's too bad you didnt' read it, not like anyone does",
-            "BBQ_SAUCE": "ITS THE BOSS OF SAUCE."
+            "contract": "Your Contract is Unique, you read some of it.",
+            "BBQ_SAUCE": "ITS THE BOSS OF SAUCE.",
+            Events.SPIRIT_TWO_ALICE_QUEST.value: "Quest for Alice. Go to the bar and order something",
+            Events.QUEST_1_COIN.value: "Get the Badge before you save.",
+            Events.QUEST_1_BADGE.value: "Get the Coin before you save.",
+            Treasure.INVITATION.value: "Quest for Erika. Go to the bar and order something.",
+            Treasure.RIB_DEMON_KEY.value: "Rib Room Key. Don't forget to save before entering rib maze.",
+            Treasure.BOSS_KEY.value: "Boss Room Key. Don't forget to save before entering boss room.",
+            Events.NUGGIE_SAUCE_1_FOUND.value :"2nd Quest for Erika. Go to the bar and order something",
+            Equipment.HIPPO_HOUR_GLASS.value : "Adds 5 seconds before hippo comes out to play",
+            Events.SLOTS_VEST_FOUND.value :"Slots: Rib attacks at 1/2 damage."
+
 
         }
 
@@ -1763,12 +1777,14 @@ class Player(Entity):
     def show_item_description(self, state):
         # Define descriptions for each item
         descriptions = {
-            "sir leopold's paw": "Sir Leopold can steal aces on initial draw.",
-            "opossum repellent": "Keeps those pesky opossums at bay, 1/2 bite damage.",
-            "coin flip glasses": "Get bonus money on wins + 10 per perception point.",
+            "sir leopold's paw": "Black Jack: Sir Leopold can steal aces on initial draw.",
+            "opossum repellent": "Opossum in a can:  1/2 bite damage.",
+            "coin flip glasses": "Coin Flip: Get bonus money on wins + 10 per perception point.",
             Equipment.SOCKS_OF_PERCEPTION.value: "Adds +1 to perception.",
             Equipment.HEALTHY_GLOVES.value: "Adds +30 to Stamina.",
             Treasure.COMPANION_ERIKA_AMULET.value: "Guards against 3s and unlucky rolls(failed power meter) on come out point.",
+            Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value: "Craps: Come out roll: 3s become an 8. 10% buff unlucky rolls. ",
+            Equipment.BLACK_JACK_HAT.value: "Black Jack: 25% chance to guard against busts. "
         }
 
         # Get the item name based on the current index

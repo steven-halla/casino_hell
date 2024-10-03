@@ -138,16 +138,12 @@ class Area2BarKeep(Npc):
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 self.state = "waiting"
-                print("Leaving the shop...")
-                self.textbox.reset()
                 state.controller.isBPressed = False
 
+                # Allow the player to move after leaving the shop
                 state.player.hide_player = False
                 state.player.canMove = True
-                print(state.player.canMove)
-
-
-
+                self.textbox.reset()
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
 
@@ -211,22 +207,21 @@ class Area2BarKeep(Npc):
         self.textbox.update(state)
         self.show_shop(state)
 
-
         if state.controller.isTPressed and self.textbox.is_finished():
-            # Exiting the shop conversation
-            # self.state = "waiting"
-            self.state_start_time = pygame.time.get_ticks()
+            # Exiting the shop conversation, reset to waiting state and allow movement
+            self.state = "waiting"
+            self.textbox.reset()  # Reset the textbox
+            return  # Ensure no further code is executed in this method
 
-
-            # Allow the player to move again (new)
-            # state.player.canMove = True  # Ensure this attribute exists in your Player class
-            # self.textbox.reset()
-        else:
-            # While in conversation, prevent the player from moving (new)
+            # During the conversation, prevent movement
+        if self.state == "talking":
             state.player.canMove = False
 
-        cost = int(self.shop_costs[self.selected_item_index])
-        # print(f"Currently selected item index: {self.selected_item_index}, Cost: {cost}")
+        # If already in 'waiting' state, ensure player can move
+        if self.state == "waiting":
+            state.player.canMove = True
+
+        # Prevent movement during conversation
 
     def draw(self, state):
         sprite_rect = pygame.Rect(5, 6, 23, 30)

@@ -27,8 +27,8 @@ class Alice(Npc):
                 [
                     "Alice: Back in my day I was the queen of black jack, if you can complete my quest i'll give you an item",
                     "Hero: Sure that sounds great lady, what do you want me to do?",
-                    "Alice: Defeat Rippa Snappa the rib demon , I want you to take every coin he has",
-                    "Hero: It'll be my pleasure. "
+                    "Alice: Meet me at the bar and order something so we can chat. All i want is to talk to someone who isn't already losing their mind.",
+                    "Hero: I'll see you soon. (I should go to the bar and order some food or drink).. "
 
 
                 ],

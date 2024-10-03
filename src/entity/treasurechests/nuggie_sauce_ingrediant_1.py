@@ -50,18 +50,21 @@ class NuggieSauceIngrediant1(TreasureChest):
                 print("Yo ho ho and a bottle of rum")
                 self.give_item(state)
 
+
     def update(self, state: "GameState"):
         if self.message_closed:
             self.remove = True  # Mark the chest for removal
             return  # Do nothing if the message has been closed
         if self.isOpened:
             self.current_message.update(state)
+            state.player.canMove = False
+
             if state.controller.isTPressed and self.current_message.message_at_end():
                 self.message_closed = True  # Set the flag to indicate the message is closed
-                # this needs to teleport player ot hungry starving hipppos game
                 state.currentScreen = state.hungryStarvingHippos2
                 state.hungryStarvingHippos2.start(state)
                 state.area2RibDemonMazeScreen3.maze_3 = False
+
 
         else:
             self.open_chest(state)

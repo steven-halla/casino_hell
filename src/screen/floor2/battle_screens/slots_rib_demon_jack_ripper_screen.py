@@ -109,7 +109,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
             ),
 
             "bet_message": TextBox(
-                ["Min Bet of 50, Max Bet of 150. Press UP button to add +50 to bet, Press DOWN button to decrease -50 from bet, Press B to go back to main menu."],
+                ["Min Bet of 50, Bet of 60 increases chances for super secret item!"],
                 (65, 460, 700, 130),
                 36,
                 500

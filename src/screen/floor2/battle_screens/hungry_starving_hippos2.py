@@ -57,7 +57,7 @@ class HungryStarvingHippos2(Screen):
                 500
             ),
             "hippo_message_2": TextBox(
-                ["I would like to remind everyone watching that hungry starving hipppos is sponsored by chicken nuggz. The only nuggz you need is chicken nuggz."],
+                ["I would like to remind everyone watching that hungry starving hipppos is sponsored by chicken nuggz.       The only nuggz you need is chicken nuggz."],
                 (65, 460, 700, 130),
                 36,
                 500

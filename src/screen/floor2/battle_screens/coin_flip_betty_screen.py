@@ -57,6 +57,7 @@ class CoinFlipBettyScreen(BattleScreen):
         self.bet = 50
         self.font = pygame.font.Font(None, 36)
         self.money = 1000
+        self.force_heads_cost = 30
 
 
 
@@ -86,6 +87,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
         # self.initialize_music()
         self.music_on = True
+        self.shield_cost = 30
 
 
         self.battle_messages = {
@@ -266,6 +268,7 @@ class CoinFlipBettyScreen(BattleScreen):
         self.magic_points = 1
         self.player_debuff_silence_counter = 0
         self.heads_focus = False
+        self.force_heads_costs = 30
 
         pygame.mixer.music.stop()
     def stop_music(self):
@@ -525,6 +528,7 @@ class CoinFlipBettyScreen(BattleScreen):
             self.battle_messages["spell_magic_lock_message"].update(state)
             if self.battle_messages["spell_magic_lock_message"].is_finished() and state.controller.isTPressed:
                 state.controller.isTPressed = False
+                self.spell_sound.play()
                 print("mew mew mew mew mew mew mwem---------------------")
                 self.game_state = "welcome_screen"
 
@@ -1273,20 +1277,21 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
                 if state.controller.isTPressed:
-                    if self.magicindex == 0 and state.player.focus_points > 0:
+                    if self.magicindex == 0 and state.player.focus_points > self.shield_cost:
 
 
                         self.spell_sound.play()  # Play the sound effect once
 
                         self.debuff_vanish = True
                         self.debuff_counter += 3
-                        state.player.focus_points -= 10
+                        state.player.focus_points -= self.shield_cost
                         state.controller.isTPressed = False  # Reset the button state
                         self.game_state = "welcome_screen"
 
-                    elif self.magicindex == 1 and state.player.focus_points > 50 and Magic.HEADS_FORCE.value in state.player.magicinventory:
+                    elif self.magicindex == 1 and state.player.focus_points > self.force_heads_costs and Magic.HEADS_FORCE.value in state.player.magicinventory:
                         self.weighted_coin = True
                         self.spell_sound.play()  # Play the sound effect once
+                        state.player.focus_points -= self.force_heads_cost
 
                         state.controller.isTPressed = False  # Reset the button state
                         print("mewlinglinglinglignlikng")

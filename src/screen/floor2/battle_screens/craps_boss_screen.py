@@ -644,9 +644,9 @@ class CrapsBossScreen(BattleScreen):
                             else:
                                 print("you guarded against a loss******************************************---------------------------------------------------------------")
 
-                                self.dice_roll_1 = 5
+                                self.dice_roll_1 = 3
                                 self.dice_roll_2 = 5
-                                self.come_out_roll_total = 10
+                                self.come_out_roll_total = 8
                                 self.game_state = "point_phase_screen"
 
                         elif self.come_out_roll_total == 12:
