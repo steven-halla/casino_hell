@@ -57,19 +57,19 @@ class HungryStarvingHippos(Screen):
                 500
             ),
             "hippo_message_2": TextBox(
-                ["I would like to remind everyone watching that hungry starving hipppos is sponsored by chicken nuggz. The only nuggz you need is chicken nuggz."],
+                ["I would like to remind everyone watching that hungry starving hipppos is sponsored by chicken nuggz. The    only nuggz you need is chicken nuggz."],
                 (65, 460, 700, 130),
                 36,
                 500
             ),
             "hippo_message_3": TextBox(
-                ["That one is going in the books for sure folks, the way he tosssed her in the air and swallowed her whole!"],
+                ["That one is going in the books for sure folks, the way he tossed her in the air and swallowed her whole was AMAZING!!! The crowd is going wild!!!"],
                 (65, 460, 700, 130),
                 36,
                 500
             ),
             "hippo_message_4": TextBox(
-                ["That human must be a pop star because they just exploded"],
+                ["That human must be a pop star because they just    exploded!"],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -391,6 +391,7 @@ class HungryStarvingHippos(Screen):
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
                 print("yupper")
+                state.player.canMove = True
                 self.end_screen()
 
         if self.game_state == "you_lose_screen":
@@ -401,6 +402,8 @@ class HungryStarvingHippos(Screen):
 
                 self.battle_messages["you_lose"].update(state)
                 state.area_2_gambling_area_to_rest_point = True
+                state.player.canMove = True
+
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
