@@ -1739,15 +1739,15 @@ class Player(Entity):
         # Define descriptions for each item
         descriptions = {
             "contract": "Your Contract is Unique, you read some of it.",
-            "BBQ_SAUCE": "ITS THE BOSS OF SAUCE.",
-            Events.SPIRIT_TWO_ALICE_QUEST.value: "Quest for Alice. Go to the bar and order something",
+            Treasure.BBQ_SAUCE.value: "It's the Boss of Sauce.",
+            Events.SPIRIT_TWO_ALICE_QUEST.value: "Quest for Alice. Go to the bar and order something.",
             Events.QUEST_1_COIN.value: "Get the Badge before you save.",
             Events.QUEST_1_BADGE.value: "Get the Coin before you save.",
             Treasure.INVITATION.value: "Quest for Erika. Go to the bar and order something.",
             Treasure.RIB_DEMON_KEY.value: "Rib Room Key. Don't forget to save before entering rib maze.",
             Treasure.BOSS_KEY.value: "Boss Room Key. Don't forget to save before entering boss room.",
-            Events.NUGGIE_SAUCE_1_FOUND.value :"2nd Quest for Erika. Go to the bar and order something",
-            Equipment.HIPPO_HOUR_GLASS.value : "Adds 5 seconds before hippo comes out to play",
+            Events.NUGGIE_SAUCE_1_FOUND.value :"2nd Quest for Erika. Go to the bar and order something.",
+            Equipment.HIPPO_HOUR_GLASS.value : "Adds 5 seconds before hippo comes out to play.",
             Events.SLOTS_VEST_FOUND.value :"Slots: Rib attacks at 1/2 damage."
 
 

@@ -17,14 +17,14 @@ class ErikaChickenForm(Npc):
             "welcome_message": NpcTextBox(
                 [
                     "Erika: You don't have to do this hero, fighting the boss...I'm worried for you, can't we just go up to the 3rd level like right now?.",
-                    "Sir Leopold: Why is she so nervous for? I didn't think it was possible to make a chicken sweat.",
-                    "Hero: I have my own reasons for wanting to battle the boss, and besides, I want to make a deal.",
-                    "Erika: Very well, don't say I didn't try and stop you. Close your eyes and I'll bring her out.",
-                    "Sir Leopold: Close our eyes? Why is that even needed for? Just bring them out already.",
-                    "Erika:Stop arguing and just close you're eyes you perverts. Ok good, good them closed.",
-                    "Remember no peeking.",
-                    "Give me another mintue... gotta get these tight clothes on.....annddddddddd there.",
-                    "Ok you can go ahead and look now.",
+                    # "Sir Leopold: Why is she so nervous for? I didn't think it was possible to make a chicken sweat.",
+                    # "Hero: I have my own reasons for wanting to battle the boss, and besides, I want to make a deal.",
+                    # "Erika: Very well, don't say I didn't try and stop you. Close your eyes and I'll bring her out.",
+                    # "Sir Leopold: Close our eyes? Why is that even needed for? Just bring them out already.",
+                    # "Erika:Stop arguing and just close your eyes you perverts. Ok good, keep them closed.",
+                    # "Remember no peeking or I'll peck you to death.",
+                    # "Give me another mintue... Brrrr its a litlte cold in here. Gotta get these tight clothes on.....annddddddddd there.",
+                    "Whew ok that is finally over, everything seems to be in order. Ok you can go ahead and look now you two.",
                     ""
                 ],
                 (50, 450, 50, 45), 30, 500

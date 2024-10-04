@@ -3,9 +3,9 @@
 from enum import Enum
 
 class Magic(Enum):
-    HEADS_FORCE = "HEADS FORCE"  # this is gained from alex quest
-    SLOTS_HACK = "SLOTS HACK"  # this is a level 2 tier reward from mc nugg
-    CRAPS_LUCKY_7 = "CRAPS LUCKY 7"    #  this is gained with mind 2
+    HEADS_FORCE = "Force"  # this is gained from alex quest
+    SLOTS_HACK = "HACK"  # this is a level 2 tier reward from mc nugg
+    CRAPS_LUCKY_7 = "Triple D"    #  this is gained with mind 2
     REVEAL = "reveal"
 
     @staticmethod

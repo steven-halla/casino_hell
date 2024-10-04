@@ -85,7 +85,7 @@ class MCNugg(Npc):
             ),
             "final_message": NpcTextBox(
                 [
-                    "MC Nugg: Are you sure I can't serve you some chicken nuggets, I can lay you a fresh batch.",
+                    "MC Nugg: Are you sure I can't serve you some chicken nuggets, I can lay you a fresh batch, extra greasy.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

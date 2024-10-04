@@ -59,7 +59,7 @@ class Area2BarCutScene3(Screen):
         self.cut_scene_1_messages = {
             "message_1": NpcTextBox(
                 [
-                    "Alice: It's nice to get to talk to someone new, I can see you too have a glint of hope in your eyes.",
+                    "Alice: It's nice to get to talk to someone new, I can see you two have a glint of hope in your eyes.",
                     "Sir Leopold: Hey I've been here for a while now and I still have that glint.",
                     "Hero: How long have you been here?",
                     "Sir Leopold: I lost count, it's been a while, counting your time here can drive you mad, it's better to not know.",

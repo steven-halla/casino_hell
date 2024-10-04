@@ -283,9 +283,9 @@ class BlackJackMackScreen(Screen):
 
         self.defeated_textbox = TextBox(
             [
-                "Guy:Looks like you defeated me.....back to eating chili for days and day and days....",
+                "Mack: I still got the last laugh in the end, Mc Nugg is a chicken because I took his last coins.",
 
-                "pro tip,for some reason the boss is scared of BUST, those demons sure do lick those chops when his cards get high",
+                "You must be something else to beat my double draw attack.I thought I was invincible.",
             ""],
             (50, 450, 50, 45), 30, 500)
 

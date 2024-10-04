@@ -67,6 +67,7 @@ class Area2BarCutScene2(Screen):
                     "Erika: Oh you two are the worst, fine I'll still join you. I'll even give you this amulet.",
                
                     "It's the best companion item you can have, with a spirit of 2 you can equip it.",
+                    "Most of the people should have new things to say, you may end up learning something new!"
 
 
 

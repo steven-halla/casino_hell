@@ -5,7 +5,7 @@ class Equipment(Enum):
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception
-    SOCKS_OF_PERCEPTION = "SOCKS OF PERCEPTION"  # complete level 3 mc nugg quest
+    SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
     BOSS_KEY = "boss key"
 

@@ -124,11 +124,11 @@ class CrapsBossScreen(BattleScreen):
                  "Hero: My hands...something is wrong, their cramping up something fierce. It hurts to move them, this is bad, real bad. How can I roll the dice like this?",
                  "Sir Leopold: She just cursed you, I knew there was something fowl about her,  What a dirty trick!",
                  "Erika: Ho ho ho, I tried telling you hero, too late to back out now, we had a deal and I'm going to collect!",
-                 "Hero: I always have a back up plan, it's time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
-                 "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.",
-                 "Hero: I was hoping to not have to use this so early, but I don't have much of a choice. I'll show you the power of my secret  technique.",
-                 "Sir Leopold: Hero, oh my god what are you... Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
-                                                                                                    " rotten human!", "I think.... I'm going to puke.",
+                 # "Hero: I always have a back up plan, it's time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
+                 # "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.",
+                 # "Hero: I was hoping to not have to use this so early, but I don't have much of a choice. I'll show you the power of my secret  technique.",
+                 # "Sir Leopold: Hero, oh my god what are you... Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
+                 #                                                                                    " rotten human!", "I think.... I'm going to puke.",
                  "Sir Leopold: Erika don't do it , if you barf then I'll brfffff...throw up too.",
                  "Sir Leopold: Hero...Your power meter is going to be faster, and the margin of error will be lower, stay focused and you can win this."
                  ,""],
@@ -393,6 +393,9 @@ class CrapsBossScreen(BattleScreen):
         pygame.mixer.music.play(-1)
 
     def update(self, state: "GameState") -> None:
+        if self.bet > self.money:
+            self.bet = self.money
+
         if state.musicOn == True:
             if self.music_on == True:
                 self.stop_music()
@@ -809,8 +812,10 @@ class CrapsBossScreen(BattleScreen):
                     self.dice_roll_2 = self.dice_roll_3
                     self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
 
-                    print("hey hey hey")
-                    print("Your dice rolls are:")
+                    print("Dice roll 2")
+                    print(original_dice)
+
+                    print("Your dice roll 3 are:")
                     print(self.dice_roll_3)
 
 
@@ -827,13 +832,8 @@ class CrapsBossScreen(BattleScreen):
 
 
                 if self.point_roll_total == 7:
-                    print("you rolled 7 line 625")
+                    print("you rolled 7 line 835")
                     self.game_state = "roll_seven_lose_screen"
-
-
-
-
-
 
 
                 elif self.point_roll_total == self.come_out_roll_total:
@@ -1043,7 +1043,30 @@ class CrapsBossScreen(BattleScreen):
 
     def draw(self, state: "GameState") -> None:
         state.DISPLAY.fill((0, 0, 51))
-        self.draw_hero_info_boxes(state)
+        black_box = pygame.Surface((200 - 10, 180 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 235))
+
+        black_box = pygame.Surface((200 - 10, 45 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface((200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 195))
+
+        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 250))
+        state.DISPLAY.blit(self.font.render(f"HP: {state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
+        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True, (255, 255, 255)), (37, 330))
+        if self.lock_down < 1:
+            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
+        elif self.lock_down > 0:
+            state.DISPLAY.blit(self.font.render(f"Locked Down:{self.lock_down}", True, (255, 0, 0)), (37, 205))
+
         self.draw_enemy_info_box(state)
 
 
@@ -1363,7 +1386,6 @@ class CrapsBossScreen(BattleScreen):
                 )
 
         elif self.game_state == "point_bet_screen":
-            print("drawing point bet")
 
             black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box

@@ -21,7 +21,8 @@ class Lurger(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Lurger: I dont want to know where they get the meat for the nachos, even I have to admit they do smell rather tasty. "
+                    "Lurger: I dont want to know where they get the meat for the nachos, even I have to admit they do smell rather tasty. ",
+                    "In Craps, if your point roll is a 6 or 8 bet to the max. Betting high/low when it most suits you is the only way to win."
 
                 ],
                 (50, 450, 50, 45), 30, 500
