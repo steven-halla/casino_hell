@@ -4,17 +4,17 @@ from enum import Enum
 class Equipment(Enum):
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
-    HIPPO_HOUR_GLASS = "HIPPO_HOUR_GLASS"  # level 3 perception
-    SOCKS_OF_PERCEPTION = "SOCKS_OF_PERCEPTION"  # complete level 3 mc nugg quest
+    HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception
+    SOCKS_OF_PERCEPTION = "SOCKS OF PERCEPTION"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
     BOSS_KEY = "boss key"
 
     COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
     RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
-    HEALTHY_GLOVES = "HEALTHY_GLOVES"   # can be bought in shop
+    HEALTHY_GLOVES = "HEALTHY GLOVES"   # can be bought in shop
     STAT_POTION_AREA_2 = "STAT_POTION_AREA_2" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
 
-    DARLENES_CHICKEN_NUGGER_AMULET = "DARLENES_CHICKEN_NUGGER_AMULET" # complete main quest chicken nugger sauce
+    DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
 
 
 

@@ -3,8 +3,8 @@ from enum import Enum
 class Events(Enum):
     ERIKA_IN_PARTY = "erika"
     CHICKEN_QUEST_START = "CHICKEN_QUEST_START"
-    QUEST_1_BADGE = "QUEST_1_BADGE" #coin flip 500 coins quest by alex
-    QUEST_1_COIN = "QUEST_1_COIN"  #opossum in a can 500 coins quest by alex
+    QUEST_1_BADGE = "Quest Badge" #coin flip 500 coins quest by alex
+    QUEST_1_COIN = "Quest Coin"  #opossum in a can 500 coins quest by alex
     QUEST_1_COMPLETE = "QUEST_1_COMPLETE"
 
     SLOTS_RIPPA_SNAPPA_DEFEATED = "SLOTS_RIPPA_SNAPPA_DEFEATED" # this unlocks quest by Alice
@@ -21,12 +21,12 @@ class Events(Enum):
     MC_NUGGET_QUEST_1_REWARD = "MC_NUGGET_QUEST_1_REWARD"
     MC_NUGGET_QUEST_2_REWARD = "MC_NUGGET_QUEST_2_REWARD"
     MC_NUGGET_QUEST_3_REWARD = "MC_NUGGET_QUEST_3_REWARD" # reward for beating black jack all coins
-    NUGGIE_SAUCE_1_FOUND = "NUGGIE_SAUCE_1_FOUND"
+    NUGGIE_SAUCE_1_FOUND = "Erika 2nd invite"
     NUGGIE_SAUCE_2_FOUND = "NUGGIE_SAUCE_2_FOUND"
     NUGGIE_SAUCE_3_FOUND = "NUGGIE_SAUCE_3_FOUND"
     SLOTS_VEST_FOUND = "SLOTS_VEST_FOUND"
     STAT_POTION_AREA_2 = "STAT_POTION_AREA_2"
-    SPIRIT_TWO_ALICE_QUEST = "SPIRIT_TWO_ALICE_QUEST"
+    SPIRIT_TWO_ALICE_QUEST = "Alice Invite"
     SPIRIT_TWO_ALICE_QUEST_FINISHED = "SPIRIT_TWO_ALICE_QUEST_FINISHED"
 
 
