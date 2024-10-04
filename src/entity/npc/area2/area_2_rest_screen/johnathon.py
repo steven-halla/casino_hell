@@ -28,8 +28,8 @@ class Johnathon(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Johnathon: I heard you beat the demon from level 1...you're not going to fight the demon boss on this level are you",
-                    "hero: Of course I am, I'm here to gamble and challange myself, that demon wont know what hit em",
+                    "Johnathon: I heard you beat the demon from level 1...you're not going to fight the demon boss on this level are you?",
+                    "hero: Of course I am, I'm here to gamble and challange myself, that demon wont know what hit em.",
                     "Erika: ...",
 
 

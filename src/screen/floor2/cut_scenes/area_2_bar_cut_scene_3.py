@@ -30,7 +30,7 @@ class Area2BarCutScene3(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
 
         move_player_down_flag = False
         self.npcs = [
@@ -60,13 +60,14 @@ class Area2BarCutScene3(Screen):
             "message_1": NpcTextBox(
                 [
                     "Alice: It's nice to get to talk to someone new, I can see you too have a glint of hope in your eyes.",
-                    "Sir Leopold: Hey I've been here for a while now and I still have that glint",
-                    "Hero: How long have you been here",
-                    "Sir Leopold: I lost count, it's been a while, counting your time here can drive you mad, it's better to not know",
+                    "Sir Leopold: Hey I've been here for a while now and I still have that glint.",
+                    "Hero: How long have you been here?",
+                    "Sir Leopold: I lost count, it's been a while, counting your time here can drive you mad, it's better to not know.",
                     "Alice: Some people here like to ask new comers what year it is. I dont' even remember what year it was when I came here.",
                     "Let me give you a piece of advice: Most of the people here are lost causes, keep your goal in mind and push forward.",
                     "Hero: I'm not here to help anyone, I'm just here to gamble.",
-                    "Sir Leopold: ..."
+                    "Sir Leopold: ...",
+                    "Alice: Thank you for the nice chat guys, here is my Black Jack hat, it should come in handy."
 
 
                 ],

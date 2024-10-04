@@ -23,9 +23,9 @@ class Alex(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Alex: I have  a simple quest for you: win 500 coins from the coin flip and oppossum in a can game in ONE SITTING",
+                    "Alex: I have  a simple quest for you: win 500 coins from the coin flip and oppossum in a can game in ONE SITTING.",
                     "Hero: So no saving/resting of ANY sort in between?",
-                    "Alex: That's right ,so no cheating on this task, go big or go home....I really want to go home...I dont remember what my children look like",
+                    "Alex: That's right ,so no cheating on this task, go big or go home....I really want to go home...I dont remember what my children look like.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -41,7 +41,7 @@ class Alex(Npc):
             ),
             "quest_1_complete_after_message": NpcTextBox(
                 [
-                    "Alex: I heard somewhere there is an opposum in a can spell. You should go find it.",
+                    "Alex: I heard somewhere there is an Slots spell. You should go find it.",
 
                 ],
                 (50, 450, 50, 45), 30, 500

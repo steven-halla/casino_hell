@@ -13,14 +13,14 @@ class Amber(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Amber:The food here is disgusting buts its better than the 1st floor, I heard floor 3 has sardines, fine wine, pizza, hamburgers,and ice cream.",
+                    "Tony:The food here is disgusting buts its better than the 1st floor, I heard floor 3 has sardines, fine wine, pizza, hamburgers,and ice cream.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Amber: I have faith you'll make it to the next floor, if you do please dont forget us.",
+                    "Tony: I have faith you'll make it to the next floor, if you do please dont forget us.",
 
 
                 ],

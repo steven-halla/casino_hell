@@ -59,7 +59,7 @@ class CrapsBossScreen(BattleScreen):
 
         self.battle_messages: dict[str, TextBox] = {
             "welcome_message": TextBox(
-                ["Erika: Try all you want Hero, your not leaving this place, you're going to stay here....FOREVER."],
+                ["Erika: Try all you want Hero, your not leaving this place, you're going to be my slave...FOREVER."],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -120,13 +120,17 @@ class CrapsBossScreen(BattleScreen):
             ),
 
             "hand_cramp_message": TextBox(
-                ["Erika: Potential hero of legend, strip yourself of all valor and tremble. Fall, falter, and succumb to internal failure...Hands of despair", "Hero: My hands...something is wrong, their cramping up bad. It hurts to move them, this is bad, real bad.",
+                ["Erika: Potential hero of legend, strip yourself of all valor and tremble. Fall, falter, and succumb to internal failure...Hands of despair",
+                 "Hero: My hands...something is wrong, their cramping up something fierce. It hurts to move them, this is bad, real bad. How can I roll the dice like this?",
                  "Sir Leopold: She just cursed you, I knew there was something fowl about her,  What a dirty trick!",
-                 "Hero:  She's not the only one that can use magic, time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
+                 "Erika: Ho ho ho, I tried telling you hero, too late to back out now, we had a deal and I'm going to collect!",
+                 "Hero: I always have a back up plan, it's time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
                  "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.",
-                 "Hero: I was hoping to not have to use this  so early, but I don't have much of a choice. I'll show you the power of my secret  technique",
-                 "Sir Leopold: Hero, oh my god what are you. Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
-                                                                                                    " rotten human", "...I think I'm going to puke.","Sir Leopold: Your power meter is going to be faster, and the margin of error will be lower, stay focused and you can win this."
+                 "Hero: I was hoping to not have to use this so early, but I don't have much of a choice. I'll show you the power of my secret  technique.",
+                 "Sir Leopold: Hero, oh my god what are you... Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
+                                                                                                    " rotten human!", "I think.... I'm going to puke.",
+                 "Sir Leopold: Erika don't do it , if you barf then I'll brfffff...throw up too.",
+                 "Sir Leopold: Hero...Your power meter is going to be faster, and the margin of error will be lower, stay focused and you can win this."
                  ,""],
                 (65, 460, 700, 130),
                 36,
@@ -162,7 +166,7 @@ class CrapsBossScreen(BattleScreen):
             ),
 
             "you_win": TextBox(
-                ["Rib Demon: well looks like I lost...", ""],
+                ["Erika: In a way I'm thankful that you won, I'll keep my end of the bargain, and thank you, for giving me hope.", ""],
                 (65, 460, 700, 130),
                 36,
                 500

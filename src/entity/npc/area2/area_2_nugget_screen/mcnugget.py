@@ -29,12 +29,12 @@ class MCNugg(Npc):
 
             "level_6_quest": NpcTextBox(
                 [
-                    "MC Nugg: Yo What up nugg brothers",
+                    "MC Nugg: Yo, What up, nugg brothers.",
                     "Sir Leopold: Wow, his voice is so deep, and smooth.",
                     "MC Nugg: Back in my Day I was known as the king of soul. Now I'm known as the king of nuggets. Want me to squeeze you out a 6 piece?",
-                    "Hero: No thanks on that. I'm here to gamble",
-                    "Mc Nugg: Well in that case you've come to the wrong place. But I'll tell you what Nugg brother",
-                    "If you can get the special rib demon item from the slots dealer I'll reward you with something special"
+                    "Hero: No thanks on that. I'm here to gamble.",
+                    "Mc Nugg: Well in that case you've come to the wrong place. But I'll tell you what Nugg brother.",
+                    "If you can get the special rib demon item from the slots dealer I'll reward you with something special."
 
 
                 ],
@@ -42,10 +42,10 @@ class MCNugg(Npc):
             ),
             "quest_1_finish": NpcTextBox(
                 [
-                    "MC Nugg: I knew you were a pure hearted soul nugg brother, have this reward from the king of nuggets ",
+                    "MC Nugg: I knew you were a pure hearted soul nugg brother, have this reward from the king of nuggets. ",
                     "Hero: Thank you for the cool shades, what do they do?",
-                    "Mc Nugg: These glasses will raise your perception. You can use it to find the secret sauce that the demons hid",
-                    "Sir leopold: What is it with all the saucy business? Isn't there anyting of better value",
+                    "Mc Nugg: These glasses will raise your perception. You can use it to find the secret sauce that the demons hid.",
+                    "Sir leopold: What is it with all the saucy business? Isn't there anyting of better value.",
                     "Mc Nugg: No little nugglet, down on this floor sauce is boss."
 
                 ],

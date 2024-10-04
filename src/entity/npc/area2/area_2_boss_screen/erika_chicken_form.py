@@ -16,9 +16,15 @@ class ErikaChickenForm(Npc):
         self.npc_messages = {
             "welcome_message": NpcTextBox(
                 [
-                    "Erika: You don't have to do this hero, fighting the boss I'm worried for you, can't we just go up to the 3rd level?.",
-                    "Remember no peeking you perverts",
-                    "Ok you can go ahead and look now",
+                    "Erika: You don't have to do this hero, fighting the boss...I'm worried for you, can't we just go up to the 3rd level like right now?.",
+                    "Sir Leopold: Why is she so nervous for? I didn't think it was possible to make a chicken sweat.",
+                    "Hero: I have my own reasons for wanting to battle the boss, and besides, I want to make a deal.",
+                    "Erika: Very well, don't say I didn't try and stop you. Close your eyes and I'll bring her out.",
+                    "Sir Leopold: Close our eyes? Why is that even needed for? Just bring them out already.",
+                    "Erika:Stop arguing and just close you're eyes you perverts. Ok good, good them closed.",
+                    "Remember no peeking.",
+                    "Give me another mintue... gotta get these tight clothes on.....annddddddddd there.",
+                    "Ok you can go ahead and look now.",
                     ""
                 ],
                 (50, 450, 50, 45), 30, 500
@@ -74,7 +80,7 @@ class ErikaChickenForm(Npc):
         )
         current_message.update(state)
 
-        if self.npc_messages["welcome_message"].message_index == 1:
+        if self.npc_messages["welcome_message"].message_index == 7:
             state.area2BossScreen.black_screen = True
 
         if self.npc_messages["welcome_message"].message_index == len(self.npc_messages["welcome_message"].messages) - 1:

@@ -28,7 +28,7 @@ class Area2BarCutScene2(Screen):
 
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
 
         move_player_down_flag = False
         self.npcs = [
@@ -58,13 +58,13 @@ class Area2BarCutScene2(Screen):
             "message_1": NpcTextBox(
                 [
                     "Erika: I'll join your party now. I knew you could do it, I think you need a special reward.",
-                    "You like chicken don't you? If you want you can put me in the oven and eat me, I don't mind. Just promise to be gentle and take your time enjoying me."
+                    "You like chicken don't you? If you want you can put me in the oven and eat me, I don't mind. Just promise to be gentle and take your time enjoying me.",
                     "Hero: That sounds a little morbid, hard pass.",
-                    "Erika: Oh and here I was thinking you wanted to eat me, I'm hot, juicy, and very very tender. You're passing up a golden chance here.",
-                    "If you prefer I can lay you some golden hot fresh crispy chicky nuggets. I'm fresh you know, and so are my nuggets.",
+                    "Erika: Oh and here I was thinking you wanted to eat me. I'm hot, juicy, and very very tender. You're passing up a golden chance here.",
+                    "If you prefer I can lay you some golden hot fresh crispy chicky nuggies. I'm fresh you know, and so are my nuggies.",
                     "Sir Leopold: Why are you talking like that for, it's weird even for me.",
                     "Hero: You're free to join us still, but lets all agree to not eat each other.",
-                    "Erika: Oh you two are the worst, fine I'll still join you. I'll even give you this amulet."
+                    "Erika: Oh you two are the worst, fine I'll still join you. I'll even give you this amulet.",
                
                     "It's the best companion item you can have, with a spirit of 2 you can equip it.",
 

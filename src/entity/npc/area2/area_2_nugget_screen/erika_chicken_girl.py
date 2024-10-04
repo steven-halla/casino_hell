@@ -16,10 +16,10 @@ class ErikaChickenGirl(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Erika: Hello Hero, would you like some animal parade chicken nuggies, I can lay you a fresh batch",
-                    "Hero: No thank you I think I'm good on that",
-                    "Erika: Sniff...well... You need 3000 COINS to start my quest. Please come back when you have the money"
-                    "Erika: Or if you get hungry for the best ever chicken nuggies."
+                    "Erika: Hello Hero, would you like some animal parade chicken nuggies, I can lay you a fresh batch.",
+                    "Hero: No thank you I think I'm good on that.",
+                    "Erika: Sniff...well... You need 3000 COINS to start my quest. Please come back when you have the money."
+                    "Or if you get hungry for the best ever chicken nuggies."
                 ],
                 (50, 450, 50, 45), 30, 500
             ),

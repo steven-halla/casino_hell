@@ -22,7 +22,29 @@ class ErikaBoss(Npc):
         self.selected_item_index = 0
         self.black_jack_thomas_messages = {
             "welcome_message": NpcTextBox(
-                ["Erika: I didnt' want to betray you, for what its worth, do we really have to battle?"],
+                ["Erika:Tadaaa are you surprised? Yeah I'm the boss....what kind of deal were you wanting to make hero? I already know what I want if you lose.",
+
+                "Hero: Well this was unexpected... I was going to ask to vacate all the rib demons but I have a new plan",
+                 "Sir Leopold: Awwwwww, see, I knew you had a good heart Hero.",
+
+                 "Erika: Oh you are so bold Hero I already know what you want, not that I blame you after seeing my real form.",
+                "Hero: No, not that. If I win, i want you to contiue traveling with us, and to never betray our party going forward.",
+                "Sir Leopold: Having a demon on our team would give us some advantages, good thinking hero!",
+                "Erika: You still dont' want to eat me, so disapointing. I wasn't expecting you to ask for that instead....Ok I agree to your terms, but if I win...",
+                "You have to be my slave, forever. I'm going to make you do so many horrible things for me ho ho ho, you'll become my playting.",
+                "Hero: I accept your terms, if thats all I'm ready to battle if you are.",
+                "Erika: Wait, thats it, do you have ANY idea of all the horrible things I'll do to you, it's not going to be fun.",
+                "I mean it'll be fun for me, but you'll be hating your new existance, you're going to be begging me for mercy, and I never ever grant mercy tee hee.",
+                "You can still change your mind, we can continue on like nothing ever happened, pretty please? With chicken nuggies on top?",
+                "Hero: Sorry Erika, if you're the boss then were fighting, it's as simple as that. No way you're escaping it.",
+
+                "Sir Leopold: Damn, maybe she's right hero? Maybe reconsider things? She's going to be stronger than the last floor boss and he was pretty tough.",
+                "Hero: None of that matters, she can ask to destroy my soul for all I care, not like she's going to win, this is a freeby as far as I'm concerned.",
+                "Erika: Freeby? You must really think that I'm going to take it easy on you, I have my demon pride 'hero'.",
+                "The time for talk is over... I tried to warn you hero, you dum dum stupid idiot head. You're going to regret fighting me, pathetic human scum!",
+
+
+                 ],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["That's the 100th time I've lost, I don't know why the demons keep giving me coins."],

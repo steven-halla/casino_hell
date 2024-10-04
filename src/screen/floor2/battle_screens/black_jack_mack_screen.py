@@ -1399,11 +1399,11 @@ class BlackJackMackScreen(Screen):
         elif self.reveal_hand < 11:
             state.DISPLAY.blit(self.font.render(f"Reveal: {self.reveal_hand}", True,
                                                 (255, 255, 255)), (37, 110))
-
-        elif self.reveal_hand <= 11:
             state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
-                                          (255, 255, 255)),
-                         (37, 150))
+                                                (255, 255, 255)),
+                               (37, 150))
+
+
         elif self.reveal_hand > 10:
             state.DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)),
                          (37, 150))

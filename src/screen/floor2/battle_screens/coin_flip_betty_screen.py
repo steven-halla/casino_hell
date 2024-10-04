@@ -186,9 +186,8 @@ class CoinFlipBettyScreen(BattleScreen):
                 500  # Delay
             ),
             "enemy_defeated_message": TextBox(
-                ["Hero: Got your last coin buddy, time for you to go to sleep buddy. ",
-                 "Fred: I had a dream last night this would happen",
-                 "Enemy: I'm the best coin flipper here they have to give me more coins.", ""
+                ["Betty: I tried the best that I could, I was no match for a gamble master such as yourself. ",
+                ""
 
                  ],
                 (45, 460, 700, 130),  # Position and size
@@ -854,7 +853,7 @@ class CoinFlipBettyScreen(BattleScreen):
         if self.game_state == "enemy_defeated_screen":
             state.player.canMove = True
 
-            if self.battle_messages["enemy_defeated_message"].message_index == 3:
+            if self.battle_messages["enemy_defeated_message"].message_index == 1:
                 print("your message index might be at 3")
                 self.enemy_defeated_counter = True
                 self.coinFlipTedDefeated = True

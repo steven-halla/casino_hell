@@ -12,7 +12,7 @@ class Lurger(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Lurger: I'm so sick of the smelll of BBQ sauce and chickens, nuggets, hay,and the grease. You can't escape the smell of the nugg Koop",
+                    "Lurger: I'm so sick of the smelll of BBQ sauce and chickens, nuggets, hay,and the grease. You can't escape the smell of the nugg Koop.",
                     "I would give my left leg for a small reprieve, if only for a minute.",
                     "Here is a tip: if you are winning a game try betting low so that you dont lose your lead if the enemy starts getting lucky.",
 

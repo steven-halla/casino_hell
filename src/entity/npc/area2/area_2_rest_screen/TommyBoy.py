@@ -13,7 +13,7 @@ class TommyBoy(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "TommyBoy:i've been here for so long that i've giving up hope of a hero coming to our rescue, I just can't seem to get enough money to leave this level. ",
+                    "TommyBoy:I've been here for so long that i've giving up hope of a hero coming to our rescue, I just can't seem to get enough money to leave this level. ",
                     "I just want to play poker, but the demons wont let us play it on this floor, they say  that it's a privilege not a right."
 
                 ],
@@ -21,7 +21,7 @@ class TommyBoy(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "TommyBoy: Sometimes the demons come here and dare us to do things for their amusement. One time I saw a guy drink a liter of rat juice. ",
+                    "TommyBoy: Sometimes the demons come here and    dare us to do things for their amusement. One time I saw a guy drink a liter of rat juice. ",
 
                 ],
                 (50, 450, 50, 45), 30, 500

@@ -96,7 +96,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 500
             ),
             "spin_message": TextBox(
-                ["Press the A key to start the spin and again to stop the spin."],
+                ["Press the A key to start the spin."],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -211,7 +211,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                 slot_mapping = {
                             range(1, 7): 0,  # lose a rib
                             range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                            range(15, 76): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                            range(15, 27): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
                             range(27, 42): 3,  # add 100 coins
                             range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
                             range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
@@ -219,6 +219,18 @@ class SlotsRippaSnappaScreen(BattleScreen):
                             range(76, 85): 7,  # lucky spin better % for jackpot
                             range(85, 95): 8,  # get special item or 50 coins
                             range(95, 101): 9,  # jackpot
+                }
+
+            elif self.lock_down > 0 and self.lucky_strike == 0:
+                print("elif self.lock_down > 0 and self.lucky_strike == 0:")
+                slot_mapping = {
+                    range(1, 19): 0,  # lose a rib
+                    range(19, 24): 1,  # lost 50 extra coins from your state.player.money
+                    range(24, 33): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
+                    range(33, 51): 3,  # add 100 coins
+                    range(51, 62): 4,  # gain 10 hp 10 mp 100 coins
+                    range(62, 101): 5,  # gain 20 hp 20 mp 125 coins
+
                 }
 
             elif self.lucky_strike == 0 and self.bet > 50:
@@ -238,17 +250,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
 
-            elif self.lock_down > 0 and self.lucky_strike == 0:
-                print("elif self.lock_down > 0 and self.lucky_strike == 0:")
-                slot_mapping = {
-                    range(1, 19): 0,  # lose a rib
-                    range(19, 24): 1,  # lost 50 extra coins from your state.player.money
-                    range(24, 33): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(33, 51): 3,  # add 100 coins
-                    range(51, 62): 4,  # gain 10 hp 10 mp 100 coins
-                    range(62, 101): 5,  # gain 20 hp 20 mp 125 coins
 
-                }
 
             elif self.lucky_strike > 0 and self.bet > 50:
                 print("elif self.lucky_strike > 0 and self.bet > 50:")

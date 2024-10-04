@@ -17,7 +17,7 @@ class Area2InnKeeper(Npc):
                 ["Inn Keeper Neddry: Wanna stay at our inn and save your game?! Dont' mind the bed bugs, roaches, and rats,  they're very friendly.", "200 gold stay"],
                 (50, 450, 700, 130), 36, 500),
             "low_money_message": NpcTextBox(
-                ["Inn Keeper Neddry: I can let you sleep here but no saving, sorry don't want to brick your game You need to hold 800 coins min to save. ."],
+                ["Inn Keeper Neddry: I can let you sleep here but no saving, sorry don't want to brick your game You need to hold 700 coins min to save. ."],
                 (50, 450, 700, 130), 36, 500),
             "rabies_message": NpcTextBox(
                 ["I'll allow you to save your game, BUT YOU CANNOT SLEEP HERE, sorry."],
@@ -144,7 +144,7 @@ class Area2InnKeeper(Npc):
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
 
-                if state.player.money > 799:
+                if state.player.money > 699:
                     state.save_game(state.player, state)  # Call the save_game function
 
             # Call the save_game function

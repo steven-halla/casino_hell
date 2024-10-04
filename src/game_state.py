@@ -93,7 +93,7 @@ class GameState:
         self.entryPoint = None
 
 
-        self.obstacle = Obstacle(444, 999)
+        self.obstacle = Obstacle(55555, 0)
         self.isRunning: bool = True
         self.isPaused: bool = False
         self.delta: float = 0.0

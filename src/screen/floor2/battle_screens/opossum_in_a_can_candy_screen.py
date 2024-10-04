@@ -86,7 +86,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                 500  # Delay
             ),
             "real_opossum_defeated_message": TextBox(
-                ["Stupid Doctor and her medicine, I hate her so much,  I want her to be a opossum soooooo badly ", "",
+                ["How could my sexy Opossums lose like that?", "",
     ],
                 (45, 460, 700, 130),  # Position and size
                 36,  # Font size

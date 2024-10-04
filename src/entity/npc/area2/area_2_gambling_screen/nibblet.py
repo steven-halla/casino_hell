@@ -16,9 +16,9 @@ class Nibblet(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Nibblet:You can gain a total of 4 stat points, so distribute them wisely.The quintuplets in the rest area can tell you all about stats.",
-                    "Hero: It'll be hard for me to choose which stat to neglect",
-                    "Nibblet: Also be aware you cant raise a state above 2 on this floor, outside of equipping items or eatting food at the bar.",
+                    "Nibblet:You can gain a total of 4 stat points, so distribute them with forward thinking.The quintuplets in the rest area can tell you all about stats.",
+                    "Hero: It'll be hard for me to choose which stat to neglect.",
+                    "Nibblet: Also be aware you cant raise a state above 2 on this floor, outside of equipping items or eating food at the bar.",
 
                 ],
                 (50, 450, 50, 45), 30, 500
