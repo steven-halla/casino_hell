@@ -750,7 +750,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             elif self.three_ones == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail,  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and lose 100 gold and gain 20 exp", ""
+                    f"You fail,  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you lose 100 gold and gain 20 exp", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -764,7 +764,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             elif self.three_twos == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Your locked in, your ribs are now tingling with fear,  and gain 25 exp ", ""
+                    f"You fail, spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Your locked in, your ribs are now tingling with fear,  and gain 25 exp ", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -820,7 +820,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
             elif self.three_fours == True:
                 self.battle_messages["results_message"].messages = [
-                    f"You feel invigorated {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain life and MP and some 150 money and 15 exp!", ""
+                    f"You win, spin of {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 150 money and 15 exp!", ""
                 ]
 
                 self.battle_messages["results_message"].update(state)
@@ -1086,7 +1086,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
                         if state.player.stamina_points > state.player.max_stamina_points:
                             state.player.stamina_points = state.player.max_stamina_points
                     if state.player.focus_points < state.player.max_focus_points:
-                        state.player.focus_points += 15
+                        state.player.focus_points += 30
                         if state.player.focus_points > state.player.max_focus_points:
                             state.player.focus_points = state.player.max_focus_points
 

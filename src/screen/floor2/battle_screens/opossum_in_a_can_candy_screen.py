@@ -360,7 +360,7 @@ class OpossumInACanCandyScreen(BattleScreen):
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False
             self.exp_gain = 15
-            state.player.exp += 20
+            state.player.exp += 35
 
             # if self.battle_messages["tally_message"].message_index == 1 and state.player.money < 1:
             #     print("No money ")
@@ -440,7 +440,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                     self.exp_gain = 1
 
                 if self.player_score < 1000 and self.player_score != 0:
-                    state.player.exp += 15
+                    state.player.exp += 25
                     self.exp_gain = 10
 
                 self.talley_checker = True

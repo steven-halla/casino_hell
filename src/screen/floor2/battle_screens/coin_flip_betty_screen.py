@@ -668,7 +668,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     state.player.money += self.bet + 20
                     self.quest_money += self.bet + 20
                     self.money -= self.bet + 20
-                    state.player.exp += 15
+                    state.player.exp += 20
                     self.exp_gain = 10
 
                     if self.money == -10:
@@ -702,7 +702,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
                     state.player.money += self.bet
-                    state.player.exp += 15
+                    state.player.exp += 20
                     self.exp_gain = 10
 
 
@@ -727,7 +727,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
                 if controller.isTPressed and self.debuff_vanish == False:
                     self.phase += 1
-                    state.player.exp += 15
+                    state.player.exp += 20
                     self.exp_gain = 15
 
 

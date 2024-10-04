@@ -1,10 +1,10 @@
 {
-    "level": 5,
-    "exp": 1006,
-    "stamina_points": 280,
-    "max_stamina_points": 280,
-    "focus_points": 150,
-    "max_focus_points": 150,
+    "level": 7,
+    "exp": 2689,
+    "stamina_points": 320,
+    "max_stamina_points": 320,
+    "focus_points": 190,
+    "max_focus_points": 190,
     "companions": [
         "sir leopold",
         "erika"
@@ -15,32 +15,37 @@
         "coin flip glasses",
         "SOCKS_OF_PERCEPTION",
         "DARLENES_CHICKEN_NUGGER_AMULET",
-        "Black Hat"
+        "Black Hat",
+        "HEALTHY_GLOVES"
     ],
     "equipped_items": [
-        "sir leopold's paw",
+        "DARLENES_CHICKEN_NUGGER_AMULET",
         "SOCKS_OF_PERCEPTION",
-        "coin flip glasses"
+        "Black Hat"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token",
         "level 4 token",
-        "level 5 token"
+        "level 5 token",
+        "level 6 token",
+        "level 7 token"
     ],
     "magicinventory": [
         "reveal",
         "shield",
         "shake",
-        "HEADS_FORCE"
+        "HEADS_FORCE",
+        "SLOTS_HACK",
+        "CRAPS_LUCKY_7"
     ],
     "body": 2,
-    "mind": 1,
+    "mind": 2,
     "spirit": 2,
     "perception": 2,
     "baseperception": 1,
-    "luck": 1,
-    "money": 880,
+    "luck": 2,
+    "money": 900,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -51,11 +56,12 @@
         "Invitation",
         "rib demon key",
         "NUGGIE_SAUCE_1_FOUND",
-        "SPIRIT_TWO_ALICE_QUEST"
+        "SPIRIT_TWO_ALICE_QUEST",
+        "boss key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 4,
+    "days": 10,
     "leveltwonpcstate": [
         "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
         "QUEST_1_COIN",
@@ -75,7 +81,15 @@
         "NUGGIE_SAUCE_1_FOUND",
         "STAT_POTION_AREA_2",
         "DARLENES_CHICKEN_NUGGER_AMULET",
-        "SPIRIT_TWO_ALICE_QUEST_FINISHED"
+        "SPIRIT_TWO_ALICE_QUEST_FINISHED",
+        "COIN_FLIP_BETTY_DEFEATED",
+        "COIN_SAVE_AREA_2",
+        "BLACK_JACK_BLACK_MACK_DEFEATED",
+        "MC_NUGGET_THIRD_QUEST_COMPLETE",
+        "HEALTHY_GLOVES",
+        "MC_NUGGET_QUEST_3_REWARD",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "CRAPS_HAPPY_DEFEATED"
     ],
     "slots_vest": false,
     "cutscene1": true,
@@ -83,15 +97,15 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 500,
+    "coinflipbetteymoney": 0,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
     "opossuminacancandymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1600,
+    "blackjackmackmoney": 0,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 920,
-    "crapscrappymoney": 1400
+    "slotsrippasnappamoney": 0,
+    "crapscrappymoney": 0
 }
