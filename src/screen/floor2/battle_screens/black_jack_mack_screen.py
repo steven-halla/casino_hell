@@ -38,7 +38,6 @@ class BlackJackMackScreen(Screen):
         self.magic_menu_index = 0
         self.ace_value = 1
         self.bust_protection = False
-        self.avatar_of_luck_card_redraw_counter = 3
         self.player_lock = False
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
@@ -65,7 +64,6 @@ class BlackJackMackScreen(Screen):
         self.magic_points = 1
         self.reveal_hand = 11
         self.magic_lock = False
-        self.avatar_of_luck = False
         self.redraw_lock = False
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
@@ -555,7 +553,6 @@ class BlackJackMackScreen(Screen):
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
             self.bust_protection = False
-            self.avatar_of_luck_card_redraw_counter = 3
             self.current_index = 0
             self.enemy_score = 0
             move_index_by_one = 1
@@ -855,22 +852,6 @@ class BlackJackMackScreen(Screen):
                     self.current_index += move_menu_index_by_one
                 self.current_index %= len(self.choices)
                 controller.isDownPressed = False
-
-            if self.current_index == 2 and state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
-                print("Redrawing your hand")
-                self.player_hand = self.deck.player_draw_hand(
-                    2)  # no need to call self.player_hand.clear() befoe this, as we are already overriding it here
-                print("Player hand is" + str(self.player_hand))
-                print("Enemy hand is" + str(self.enemy_hand))
-                print("player card list is " + str(self.player_hand))
-                print("enemy card list is " + str(self.enemy_hand))
-                self.player_score = self.deck.compute_hand_value(
-                    self.player_hand)
-                self.avatar_of_luck_card_redraw_counter -= 1
-
-                if self.avatar_of_luck_card_redraw_counter < 1:
-                    self.redraw_lock = True
-
                 self.game_state = "menu_screen"
                 state.controller.isTPressed = False
 
@@ -1367,16 +1348,6 @@ class BlackJackMackScreen(Screen):
                     self.font.render(f"D Draw", True, (255, 255, 255)),
                     (674, 310))
 
-            if self.avatar_of_luck == True and self.redraw_lock == False:
-                state.DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)),
-                                   (687, 360))
-
-            elif self.avatar_of_luck == False or self.redraw_lock == True:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                                   (674, 360))
-            else:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                                   (674, 360))
 
             if self.current_index == 0:
                 state.DISPLAY.blit(
@@ -1408,10 +1379,7 @@ class BlackJackMackScreen(Screen):
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 355))
 
-                if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
-                    pygame.display.update()
 
-                    self.game_state = "menu_screen"
 
 
 
