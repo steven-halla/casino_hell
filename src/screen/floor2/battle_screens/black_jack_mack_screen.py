@@ -95,6 +95,7 @@ class BlackJackMackScreen(Screen):
         self.magic_index = 1
         self.bet_index = 2
         self.quit_index = 3
+        self.draw_one_card = 1
 
 
 
@@ -691,7 +692,6 @@ class BlackJackMackScreen(Screen):
             lucky_strike_threshhold = 50
             initial_hand = 2
             sir_leopold_steal_threshhold = 40
-            draw_one_card = 1
 
 
             self.first_message_display = ""
@@ -726,7 +726,7 @@ class BlackJackMackScreen(Screen):
 
                     if adjusted_lucky_roll >= lucky_strike_threshhold:
                         self.lucky_strike.play()
-                        self.player_hand = self.deck.player_draw_hand(2)
+                        self.player_hand = self.deck.player_draw_hand(initial_hand)
                         self.player_score = self.deck.compute_hand_value(self.player_hand)
                         self.critical_hit = True
 
@@ -739,7 +739,7 @@ class BlackJackMackScreen(Screen):
                         if card in aces_to_remove:
                             self.enemy_hand.remove(card)
                             self.sir_leopold_ace_attack.play()
-                            self.enemy_hand += self.deck.enemy_draw_hand(draw_one_card)
+                            self.enemy_hand += self.deck.enemy_draw_hand(self.draw_one_card)
                             break
 
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
@@ -747,7 +747,6 @@ class BlackJackMackScreen(Screen):
             if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.black_jack_draw = True
                 self.thrid_message_display = "Its a draw"
-                print("Its a draw")
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.game_state = "results_screen"
@@ -758,81 +757,50 @@ class BlackJackMackScreen(Screen):
 
         elif self.game_state == "level_up_screen":
 
-
-            self.music_volume = 0  # Adjust as needed
+            self.music_volume = self.mute_music_sound
             pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
 
-
         elif self.game_state == "player_draw_one_card":
-            self.player_hand += self.deck.player_draw_hand(1)
+            player_bust = 21
+            ace_minimum_to_be_one = 10
+
+
+            self.player_hand += self.deck.player_draw_hand(self.draw_one_card)
             self.deck.compute_hand_value(self.player_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
 
-
-
-            if self.player_debuff_double_draw > 0:
-                self.player_hand += self.deck.player_draw_hand(1)
+            if self.player_debuff_double_draw > self.double_draw_duration_expired:
+                self.player_hand += self.deck.player_draw_hand(self.draw_one_card)
                 self.deck.compute_hand_value(self.player_hand)
                 self.player_score = self.deck.compute_hand_value(self.player_hand)
-                # if self.player_score > 21:
 
-
-            if self.player_score > 10:
-                print("hi greater than 10")
+            if self.player_score > ace_minimum_to_be_one:
                 self.deck.rank_values["Ace"] = 1
 
-            print("Player hand is now" + str(self.player_hand))
-            print("Player score is now" + str(self.player_score))
-            if self.player_score > 21:
-                print(self.player_hand)
-                print(self.player_hand[-1])
+            if self.player_score > player_bust:
                 if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
                     state.player.money -= self.bet
                     self.money += self.bet
-                    state.player.stamina_points -= 4
-                    print("Going to bust a giant busttttttttter")
-
+                    state.player.stamina_points -= self.stamina_drain_low
                     state.player.exp += self.low_exp_gain
-                    self.first_message_display = f"You lose -6 HP."
-                    self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
-
+                    self.first_message_display = f"You lose {self.stamina_drain_low} HP."
+                    self.second_message_display = f"You busted and went over 21! You gain {self.low_exp_gain} and lose {self.bet} "
 
                 elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
                     lucky_roll = random.randint(1,4)
-                    print("Lucky roll is: " + str(lucky_roll))
-                    if lucky_roll == 4:
-                        print("GUARIDAN POP MODE ACTIVATED")
-                        print("Player score is ------------------------------------------------: " + str(self.player_score))
-                        # self.player_score -= self.deck.compute_hand_value(self.player_hand[-1])
-                        print("Player score is----------------------------: " + str(self.player_score))
-
+                    lucky_roll_success = 4
+                    if lucky_roll == lucky_roll_success:
                         self.player_hand.pop()
                         self.player_score = self.deck.compute_hand_value(self.player_hand)
-
-                        print("Player score is---------------: " + str(self.player_score))
-
                         self.first_message_display = f"You almost went over 21."
-                        lucky_roll = 0
                     else:
-                        print("GUARIDAN POP MODE IS NOT ACTIVATED")
-
-
                         state.player.money -= self.bet
                         self.money += self.bet
-                        state.player.stamina_points -= 4
-                        print("sdlfj;sdjf----------------------------------------------------")
-
+                        state.player.stamina_points -= self.stamina_drain_low
                         state.player.exp += self.low_exp_gain
                         self.first_message_display = f"You lose -6 HP."
                         self.second_message_display = f"You busted and went over 21! You gain 10 exp and lose {self.bet} "
-
-                    # for card in range(self.player_hand):
-                    #     self.player_hand[-1]
-
-
-
-
 
             if self.bust_protection == True:
                 self.game_state = "results_screen"
@@ -840,29 +808,24 @@ class BlackJackMackScreen(Screen):
                 self.game_state = "menu_screen"
 
         elif self.game_state == "enemy_draw_one_card":
-            print("this is the start of enemy draw one card")
-            while self.enemy_score < 16:  # this is 15 in order to make game a little easier
+            dealer_stand = 16
+            dealer_bust = 21
+            while self.enemy_score < dealer_stand:
 
-                self.enemy_hand += self.deck.enemy_draw_hand(1)
+                self.enemy_hand += self.deck.enemy_draw_hand(self.draw_one_card)
                 self.deck.compute_hand_value(self.enemy_hand)
 
 
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print("enemy hand is now" + str(self.enemy_hand))
-                print("enemy score is now" + str(self.enemy_score))
                 self.game_state = "results_screen"
-
-                if self.enemy_score > 21:
-                    print("if the enemy is going to bust")
+                if self.enemy_score > dealer_bust:
                     state.player.money += self.bet
                     self.money -= self.bet
-                    print("enemy bust")
                     state.player.exp += self.low_exp_gain
                     self.second_message_display = "enemy bust player wins"
                     self.game_state = "results_screen"
 
-            if self.enemy_score > 14 and self.enemy_score < 22:
-                print("stay here")
+            if self.enemy_score >= dealer_stand and self.enemy_score <= dealer_bust:
                 self.game_state = "results_screen"
 
         elif self.game_state == "enemy_despair_draw_one_card":
