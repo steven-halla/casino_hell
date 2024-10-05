@@ -1,12 +1,7 @@
-import random  # Make sure to import the random module at the beginning of your script
-
+import random
 import pygame
-
 from constants import DISPLAY
-from entity.gui.screen.battle_screen import BattleScreen
-from entity.gui.textbox.npc_text_box import NpcTextBox
 from entity.gui.textbox.text_box import TextBox
-from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
@@ -14,31 +9,18 @@ from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
 
-
-
-
-
-
-# DO NOT ALLOW PLAYER TO LEAVE WHEN ENEMY USES ABILITY
-
 class BlackJackMackScreen(Screen):
     def __init__(self):
         Screen.__init__(self, " Black Jack Game")
-
         self.money = 800
         self.deck = Deck()
-
-
         self.last_t_press_time = 0  # Initialize the last T press time
         self.font = pygame.font.Font(None, 36)
         self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
         self.ace_up_sleeve_jack = False
         self.ace_up_sleeve_jack_cheat_mode = False
-
-
         self.black_jack_rumble_bill_defeated = False
         self.critical_hit = False
-
         self.first_message_display = ""
         self.second_message_display = ""
         self.third_message_display = ""
@@ -46,8 +28,6 @@ class BlackJackMackScreen(Screen):
         self.bet = 50
         self.player_score = 0
         self.enemy_score = 0
-        # self.player_cards_list = []
-        # self.enemy_cards_list = []
         self.player_hand = []
         self.enemy_hand = []
         self.choices = ["Ready", "Draw", "Redraw"]
@@ -59,72 +39,51 @@ class BlackJackMackScreen(Screen):
         self.ace_value = 1
         self.bust_protection = False
         self.avatar_of_luck_card_redraw_counter = 3
-
         self.player_lock = False
-
         self.player_black_jack_win = False
         self.enemy_black_jack_win = False
         self.black_jack_draw = False
         self.reveal_magic_cost = 30
-
+        self.mute_music_sound = 0
         self.current_speaker = ""
         self.npc_speaking = False
         self.hero_speaking = False
         self.music_loop = True
-
         self.despair = False
-
         self.music_file_level_up = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")  # Adjust the path as needed
-
         self.music_level_up_volume = 0.3  # Adjust as needed
-        # self.despair = True
-
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
         self.player_status = ""
         self.enemy_status = ""
         self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
-
         self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
-
-
-
-
-
         self.double_draw_casting = False
         self.player_debuff_double_draw = 0
         self.magic_points = 1
-
-
-
-
         self.reveal_hand = 11
         self.magic_lock = False
-        self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
         self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
-        # self.initialize_music()
         self.music_on = True
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.5)
-
-        # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
-        # incldue a double bet spell that is CHR based that player gets for free maybe4
-
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
-
         self.low_exp_gain = 7
         self.med_exp_gain = 14
         self.high_exp_gain = 21
 
-
+        self.stamina_drain_high = 8
+        self.stamina_drain_low = 4
+        self.reveal_not_active = 11
+        self.reveal_spell_duration_expired = 0
+        self.decrease_counter_by_one = 1
 
         self.messages = {
             "welcome_screen": ["Mack: Time to take out the trash.",
@@ -276,9 +235,6 @@ class BlackJackMackScreen(Screen):
         self.magic_enemy_attack_double_draw_message_component = TextBox(
             self.messages["magic_enemy_attack_double_draw"], (50, 450, 50, 45), 30, 500)
 
-
-
-        # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
         self.main_bordered_box = BorderedBox((25, 425, 745, 150))
 
         self.defeated_textbox = TextBox(
@@ -293,8 +249,6 @@ class BlackJackMackScreen(Screen):
         self.food_luck = False
         self.stat_point_allocated = False
         self.level_up_checker_sound = True
-
-
         self.level_up_stat_increase_index = 0  # Add this to track the selected stat
         self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         self.level_up_messages = TextBox(
@@ -311,8 +265,6 @@ class BlackJackMackScreen(Screen):
 
     def start(self, state: 'GameState') -> None:
         self.initialize_music()
-
-
 
     def draw_level_up(self, state: 'GameState') -> None:
         if state.player.stat_point_increase and self.game_state == "level_up_screen":
@@ -393,7 +345,7 @@ class BlackJackMackScreen(Screen):
         self.level_up_messages.draw(state)
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
-
+        stat_increase = 1
 
         if self.level_up_checker_sound == True:
             self.music_file_level_up.play()  # Play the sound effect once
@@ -433,14 +385,14 @@ class BlackJackMackScreen(Screen):
                 selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
 
                 if selected_stat == "Body" and state.controller.isTPressed and state.player.body < 2:
-                    state.player.body += 1
+                    state.player.body += stat_increase
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
                     state.player.max_stamina_points += state.player.level_2_body_stamina_increase
                     self.stat_point_allocated = True
                     self.level_up_checker_sound = True
 
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
-                    state.player.mind += 1
+                    state.player.mind += stat_increase
                     self.stat_point_allocated = True
                     self.level_up_checker_sound = True
 
@@ -448,27 +400,27 @@ class BlackJackMackScreen(Screen):
                     state.player.max_focus_points += state.player.level_2_mind_focus_increase
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
-                    state.player.spirit += 1
+                    state.player.spirit += stat_increase
                     self.stat_point_allocated = True
                     self.level_up_checker_sound = True
 
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
-                    state.player.perception += 1
+                    state.player.perception += stat_increase
                     self.stat_point_allocated = True
                     self.level_up_checker_sound = True
 
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
                         Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    state.player.perception += 1
+                    state.player.perception += stat_increase
                     self.level_up_checker_sound = True
 
                     self.stat_point_allocated = True
 
                     # state.player.base_perception += 1
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
-                    state.player.luck += 1
+                    state.player.luck += stat_increase
                     self.stat_point_allocated = True
                     self.level_up_checker_sound = True
 
@@ -476,7 +428,7 @@ class BlackJackMackScreen(Screen):
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
                         state.player.enhanced_luck == True:
-                    state.player.luck += 1
+                    state.player.luck += stat_increase
                     self.stat_point_allocated = True
                     self.level_up_checker_sound = True
 
@@ -487,7 +439,6 @@ class BlackJackMackScreen(Screen):
                     self.level_up_messages.reset()
                     self.stat_point_allocated = False
                     self.level_up_checker_sound = True
-
                     self.game_state = "welcome_screen"
 
     def stop_music(self):
@@ -507,26 +458,30 @@ class BlackJackMackScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def place_bet(self, state: "GameState"):
+        bet_increment = 50
+        bet_max = 100
+        bet_minimum = 50
+
         if state.controller.isUpPressed:
 
-            self.bet += 50
+            self.bet += bet_increment
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(100)
             state.controller.isUpPressed = False
 
         elif state.controller.isDownPressed:
-            self.bet -= 50
+            self.bet -= bet_increment
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(100)
             state.controller.isDownPressed = False
 
-        if self.bet < 50:
-            self.bet = 50
+        if self.bet < bet_minimum:
+            self.bet = bet_minimum
 
-        if self.bet > 100:
-            self.bet = 100
+        if self.bet > bet_max:
+            self.bet = bet_max
 
         if self.bet > self.money:
             self.bet = self.money
@@ -535,9 +490,12 @@ class BlackJackMackScreen(Screen):
             self.bet = state.player.money
 
     def update(self, state: "GameState"):
+        enemy_zero_money = 0
+
+
         if self.money < self.bet:
             self.bet = self.money
-        if self.money <= 0:
+        if self.money <= enemy_zero_money:
             Events.add_event_to_player(state.player, Events.BLACK_JACK_BLACK_MACK_DEFEATED)
             Events.add_event_to_player(state.player, Events.MC_NUGGET_THIRD_QUEST_COMPLETE)
 
@@ -548,7 +506,8 @@ class BlackJackMackScreen(Screen):
                 self.music_on = False
 
         state.player.canMove = False
-        if self.money < 10:
+
+        if self.money <= enemy_zero_money:
             self.black_jack_rumble_bill_defeated = True
             self.game_state = "defeated"
 
@@ -563,13 +522,16 @@ class BlackJackMackScreen(Screen):
 
 
         if self.game_state == "welcome_screen":
-            self.music_volume = 0.5  # Adjust as needed
+            music_volume_setting = 0.5
+            player_no_stamina = 0
+
+            self.music_volume = music_volume_setting  # Adjust as needed
             pygame.mixer.music.set_volume(self.music_volume)
 
             if state.player.leveling_up == True:
                 self.game_state = "level_up_screen"
 
-            if state.player.stamina_points < 1:
+            if state.player.stamina_points <= player_no_stamina:
                 print("time to leave")
 
 
@@ -659,15 +621,18 @@ class BlackJackMackScreen(Screen):
 
                     elif self.player_debuff_double_draw <= 0 and self.money < 700 and self.magic_points > 0:
                         enemy_magic_cast = random.randint(1, 100)
-                        print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
+                        spell_cast_multiplier = 20
+                        magic_cast_threshold = 70
+                        player_dubuff_double_draw_length = 7
+                        double_draw_cost = 1
 
-                        enemy_magic_cast_modifier = self.magic_points * 20
+                        enemy_magic_cast_modifier = self.magic_points * spell_cast_multiplier
 
-                        if enemy_magic_cast + enemy_magic_cast_modifier >= 70:
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= magic_cast_threshold:
                             print("436")
 
-                            self.player_debuff_double_draw += 7
-                            self.magic_points -= 1
+                            self.player_debuff_double_draw += player_dubuff_double_draw_length
+                            self.magic_points -= double_draw_cost
                             self.game_state = "double_draw_casting_phase"
 
                         else:
@@ -677,7 +642,9 @@ class BlackJackMackScreen(Screen):
                         self.game_state = "draw_phase"
                     controller.isTPressed = False
                 elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
-                    self.magic_screen_index = 0
+                    magic_menu_index = 0
+
+                    self.magic_screen_index = magic_menu_index
                     self.game_state = "magic_menu"
                     controller.isTPressed = False
                 elif self.welcome_screen_index == 2 and controller.isTPressed:
@@ -859,6 +826,8 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "level_up_screen":
+
+
             self.music_volume = 0  # Adjust as needed
             pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
@@ -1175,37 +1144,29 @@ class BlackJackMackScreen(Screen):
                 self.first_message_display = f"You gain 25 exp and 0 gold "
 
             if controller.isTPressed:
+                critical_multiplier = 2
 
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-                    if self.bet <= 50:
-                        state.player.exp += self.high_exp_gain
-                        self.first_message_display = f"Gain 20 exp and win {self.bet * 2} gold "
 
-                    else:
-                        self.first_message_display = f"Gain 40 exp and win {self.bet * 2} gold "
+                    self.first_message_display = f"Gain 40 exp and win {self.bet * critical_multiplier} gold "
 
-                        state.player.exp += self.high_exp_gain
+                    state.player.exp += self.high_exp_gain
 
                     self.second_message_display = "Player deals a CRITICAL HIT!!! "
-                    if self.bet * 2 < self.money:
-                        state.player.money += self.bet * 2
-                        self.money -= self.bet * 2
+                    if self.bet * critical_multiplier < self.money:
+                        state.player.money += self.bet * critical_multiplier
+                        self.money -= self.bet * critical_multiplier
                     else:
                         state.player.money += self.money
-                        self.money = 0
+                        self.money = enemy_zero_money
 
 
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-                    if self.bet <= 50:
-                        state.player.exp += self.low_exp_gain
-                        state.player.stamina_points -= 3
-                        self.first_message_display = f"You gain 10 exp, 0 gold, you lose 5 HP. "
 
-                    else:
-                        self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
+                    self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
 
-                        state.player.exp += self.med_exp_gain
-                        state.player.stamina_points -= 5
+                    state.player.exp += self.med_exp_gain
+                    state.player.stamina_points -= self.stamina_drain_low
 
                     self.second_message_display = "You tie player press T when ready"
 
@@ -1213,21 +1174,16 @@ class BlackJackMackScreen(Screen):
 
 
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                    if self.bet <= 49:
-                        state.player.exp += self.low_exp_gain
-                        state.player.stamina_points -= 15
-                        self.first_message_display = f"You gain 10 exp and lose {self.bet * 2} gold."
-                        self.thrid_message_display = f"You Lose 25 HP "
-                    else:
-                        state.player.exp += self.high_exp_gain
-                        state.player.stamina_points -= 20
-                        self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold."
-                        self.thrid_message_display = f"You Lose 25 HP "
+
+                    state.player.exp += self.high_exp_gain
+                    state.player.stamina_points -= self.stamina_drain_high
+                    self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold."
+                    self.thrid_message_display = f"You Lose 25 HP "
 
                     self.second_message_display = "Enemy deals a CRITICAL HIT!!! "
 
-                    state.player.money -= self.bet * 2
-                    self.money += self.bet * 2
+                    state.player.money -= self.bet * critical_multiplier
+                    self.money += self.bet * critical_multiplier
 
 
 
@@ -1235,25 +1191,15 @@ class BlackJackMackScreen(Screen):
 
 
                 elif self.player_score > self.enemy_score and self.player_score < 22:
-                    if self.bet <= 49:
-                        state.player.exp += self.low_exp_gain
-                        self.first_message_display = f"You gain 5 exp and {self.bet} gold "
-                    else:
-                        state.player.exp += self.med_exp_gain
-                        self.first_message_display = f"You gain 10 exp and {self.bet} gold "
+                    state.player.exp += self.med_exp_gain
+                    self.first_message_display = f"You gain 10 exp and {self.bet} gold "
                     self.second_message_display = "You win player press T when ready"
-
                     state.player.money += self.bet
                     self.money -= self.bet
 
-
-
-
                 elif self.player_score < self.enemy_score and self.enemy_score < 22:
-
-
                     state.player.exp += self.med_exp_gain
-                    state.player.stamina_points -= 8
+                    state.player.stamina_points -= self.stamina_drain_high
                     self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
 
                     self.second_message_display = "You lose player press T when ready"
@@ -1264,32 +1210,16 @@ class BlackJackMackScreen(Screen):
 
 
                 elif self.player_score == self.enemy_score:
-                    if self.bet <= 49:
-                        state.player.exp += 4
-                        state.player.stamina_points -= 2
-                        self.first_message_display = f"You gain 8 exp and 0 gold, and lose -2 HP "
-
-                    else:
-                        state.player.exp += self.med_exp_gain
-                        state.player.stamina_points -= 4
-                        self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
-
+                    state.player.exp += self.med_exp_gain
+                    state.player.stamina_points -= self.stamina_drain_low
+                    self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
                     self.second_message_display = "It's a draw nobody wins press T when Ready"
 
+                if self.reveal_hand < self.reveal_not_active:
+                    self.reveal_hand -= self.decrease_counter_by_one
 
-                if self.reveal_hand < 11:
-                    self.reveal_hand -= 1
-
-                if self.reveal_hand == 0:
-                    self.reveal_hand = 11
-                    self.magic_lock = False
-
-                if self.luck_of_jack < 7:
-                    self.luck_of_jack -= 1
-
-                if self.luck_of_jack == 0:
-                    self.luck_of_jack = 6
-                    self.avatar_of_luck = False
+                if self.reveal_hand == self.reveal_spell_duration_expired:
+                    self.reveal_hand = self.reveal_not_active
                     self.magic_lock = False
 
                 pygame.time.wait(300)
