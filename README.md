@@ -86,6 +86,7 @@ need to slow down dealing of cards for both player and AI
 put a limit of 5 cards for draw.
 sound effects for laying down cards
 Need to fix text boxes in my init method to be more uniform
+maybe show sir leopold on screen when he steals on ace or have him dart across screen 
 
 slots:
 sound effects while putting in coin, pulling lever,wheel spinning
@@ -108,6 +109,10 @@ need to do testing and create/improve methods for use cases:
 when message is at -1 index and finished nad player pushes T
 
 No more absoulte paths need to work around that
+
+Need to create bank
+Need to create room for Player to equip items after resting.
+
 
 
 

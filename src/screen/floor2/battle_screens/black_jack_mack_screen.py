@@ -1223,33 +1223,17 @@ class BlackJackMackScreen(Screen):
                     self.magic_lock = False
 
                 pygame.time.wait(300)
-                print("Hey there going to the welcome_screen")
-                if self.player_debuff_double_draw > 0:
-                    self.player_debuff_double_draw -= 1
-                    print("Player debuff turns left: " + str (self.player_debuff_double_draw))
+                if self.player_debuff_double_draw > self.reveal_spell_duration_expired:
+                    self.player_debuff_double_draw -= self.decrease_counter_by_one
 
-                    print("printing 976")
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
-    def hand_to_str(self, hand) -> str:
-        msg = ""
-        i = 0
-        for card in hand:
-            if i > 0:
-                msg += ", "
-            msg += card[0] + " " + card[1]
-            i += 1
-        return msg
+
 
     def draw(self, state: "GameState"):
-        # change to dealer image
-        # character_image = pygame.image.load("images/128by128.png")
-        # hero_image = pygame.image.load("images/hero.png")
-
         state.DISPLAY.fill((0, 0, 51))
-
-        black_box = pygame.Surface((200 - 10, 180 - 10))
+        black_box = pygame.Surface((190, 170))
         black_box.fill((0, 0, 0))
         border_width = 5
         white_border = pygame.Surface(
