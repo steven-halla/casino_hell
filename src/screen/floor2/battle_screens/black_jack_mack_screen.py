@@ -828,71 +828,32 @@ class BlackJackMackScreen(Screen):
             if self.enemy_score >= dealer_stand and self.enemy_score <= dealer_bust:
                 self.game_state = "results_screen"
 
-        elif self.game_state == "enemy_despair_draw_one_card":
-            print("enemy is in despair")
-            while self.enemy_score < 14:  # this is 15 in order to make game a little easier
-                print("this is our despair loop")
-
-                self.enemy_hand += self.deck.enemy_draw_hand(1)
-                self.deck.compute_hand_value(self.enemy_hand)
-                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print("enemy hand is now" + str(self.enemy_hand))
-                print("enemy score is now" + str(self.enemy_score))
-                self.game_state = "results_screen"
-
-                if self.enemy_score > 21:
-                    print("if the enemy is going to bust")
-                    state.player.money += self.bet
-                    self.money -= self.bet
-                    print("enemy bust")
-                    self.second_message_display = "enemy bust player wins"
-                    self.game_state = "results_screen"
-
-            if self.enemy_score > 14 and self.enemy_score < 22:
-                print("stay here")
-                self.game_state = "results_screen"
-
-
-
 
         elif self.game_state == "menu_screen":
-            # print("at the menu screen")
+            player_bust = 21
+            move_menu_index_by_one = 1
 
-            if self.player_score > 21:
+            if self.player_score >= player_bust:
                 self.message_display = "You bust and lose."
-                # state.player.money -= self.bet
-                # self.money += self.bet
                 self.game_state = "results_screen"
 
             if controller.isUpPressed:
-                print("Nurgle is here for you ")
                 self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
                 if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) - 1
+                    self.current_index = len(self.choices) - move_menu_index_by_one
                 else:
-                    self.current_index -= 1
+                    self.current_index -= move_menu_index_by_one
                 self.current_index %= len(self.choices)
                 print(self.choices[self.current_index])
                 controller.isUpPressed = False
 
             if controller.isDownPressed:
                 self.menu_movement_sound.play()  # Play the sound effect once
-
-                print("Nurgle is here for you ")
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
                 if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) + 1
+                    self.current_index = len(self.choices) + move_menu_index_by_one
                 else:
-                    self.current_index += 1
+                    self.current_index += move_menu_index_by_one
                 self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
                 controller.isDownPressed = False
 
             if self.current_index == 2 and state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
