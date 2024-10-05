@@ -48,3 +48,46 @@ class Screen:
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
         self.draw_tiles(state)
+
+    def draw_player_box(self, state: 'GameState') -> None:
+        state.DISPLAY.fill((BLUEBLACK))
+        black_box = pygame.Surface((190, 170))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 235))
+
+        black_box = pygame.Surface((200 - 10, 45 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 195))
+
+    def draw_enemy_box(self, state: 'GameState') -> None:
+        black_box = pygame.Surface((190, 100))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 20))
+
+        black_box = pygame.Surface((200 - 10, 130 - 10))
+        black_box.fill((0, 0, 0))
+        border_width = 5
+        white_border = pygame.Surface(
+            (200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+        state.DISPLAY.blit(white_border, (25, 60))
+
+
+
+

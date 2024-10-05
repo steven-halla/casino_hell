@@ -1,6 +1,6 @@
 import random
 import pygame
-from constants import DISPLAY
+from constants import DISPLAY, BLUEBLACK, RED, WHITE
 from entity.gui.textbox.text_box import TextBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
@@ -678,7 +678,6 @@ class BlackJackMackScreen(Screen):
                 controller.isTPressed = False
 
         elif self.game_state == "draw_phase":
-
             luck_muliplier = 5
             lucky_roll = random.randint(1, 100)
             adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
@@ -689,7 +688,6 @@ class BlackJackMackScreen(Screen):
             lucky_strike_threshhold = 50
             initial_hand = 2
             sir_leopold_steal_threshhold = 40
-
 
             self.first_message_display = ""
             self.second_message_display = ""
@@ -762,7 +760,6 @@ class BlackJackMackScreen(Screen):
             player_bust = 21
             ace_minimum_to_be_one = 10
 
-
             self.player_hand += self.deck.player_draw_hand(self.draw_one_card)
             self.deck.compute_hand_value(self.player_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
@@ -808,11 +805,8 @@ class BlackJackMackScreen(Screen):
             dealer_stand = 16
             dealer_bust = 21
             while self.enemy_score < dealer_stand:
-
                 self.enemy_hand += self.deck.enemy_draw_hand(self.draw_one_card)
                 self.deck.compute_hand_value(self.enemy_hand)
-
-
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
                 self.game_state = "results_screen"
                 if self.enemy_score > dealer_bust:
@@ -824,7 +818,6 @@ class BlackJackMackScreen(Screen):
 
             if self.enemy_score >= dealer_stand and self.enemy_score <= dealer_bust:
                 self.game_state = "results_screen"
-
 
         elif self.game_state == "menu_screen":
             player_bust = 21
@@ -855,129 +848,88 @@ class BlackJackMackScreen(Screen):
                 self.game_state = "menu_screen"
                 state.controller.isTPressed = False
 
-                # 534534543535353525532535353354
-
         elif self.game_state == "magic_menu":
+            move_magic_index_by_one = 1
+            reveal_spell_index = 0
+            set_reveal_duration = 10
+            magic_index_back_to_welcome_screen = 1
 
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
             if controller.isUpPressed:
                 self.menu_movement_sound.play()
                 if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
+                    self.magic_menu_index = len(self.magic_menu_selector) - move_magic_index_by_one
                 else:
-                    self.magic_menu_index -= 1
+                    self.magic_menu_index -= move_magic_index_by_one
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
                 self.menu_movement_sound.play()
                 if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
+                    self.magic_menu_index = len(self.magic_menu_selector) + move_magic_index_by_one
                 else:
-                    self.magic_menu_index += 1
+                    self.magic_menu_index += move_magic_index_by_one
                 self.magic_menu_index %= len(self.magic_menu_selector)
                 controller.isDownPressed = False
 
-            # we need to make this work right after a black jack
-            # set a counter to minus 1 this is the counter is above 0
-
-            if self.magic_menu_index == 0:
+            if self.magic_menu_index == reveal_spell_index:
                 self.reveal_magic_explain_component.update(state)
-
                 if controller.isTPressed:
-                    # channel3 = pygame.mixer.Channel(3)
-                    # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
-                    # channel3.play(sound3)
                     if state.player.focus_points >= self.reveal_magic_cost:
                         state.player.focus_points -= self.reveal_magic_cost
-                        self.spell_sound.play()  # Play the sound effect once
-
-                        self.reveal_hand = 10
+                        self.spell_sound.play()
+                        self.reveal_hand = set_reveal_duration
                         self.magic_lock = True
                         self.player_status = "Focus"
                         self.enemy_status = "Reveal"
-
-                        print("You cast reveal")
                         self.game_state = "welcome_screen"
                         self.isTPressed = False
 
-
-                    elif state.player.focus_points < 10:
+                    elif state.player.focus_points < self.reveal_magic_cost:
                         self.third_message_display = "Sorry but you dont have enough focus points to cast"
-                # elif self.luck_activated > 0:
-                #     self.third_message_display = "sorry but you can't stack magic spells"
 
-
-            ##########################have a message state reserved for buff states
-
-            ##### boss enemies will use magic under more strict conditions
-
-
-            elif self.magic_menu_index == 1:
+            elif self.magic_menu_index == magic_index_back_to_welcome_screen:
                 self.back_magic_explain_component.update(state)
-
                 if controller.isTPressed:
-                    self.magic_menu_index = 0
-                    print(str(controller.isTPressed))
+                    self.magic_menu_index = reveal_spell_index
                     controller.isTPressed = False
-                    print(str(controller.isTPressed))
                     self.game_state = "welcome_screen"
                     self.isTPressed = False
-                    print(str(controller.isTPressed))
-
-
-
-
 
         elif self.game_state == "results_screen":
-
+            black_jack_bet_multiplier = 2
+            bust_number = 22
             if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.second_message_display = "You win with a black jack press T when ready"
-                self.first_message_display = f"You gain 100 exp and {self.bet * 2} gold "
-
-
-
+                self.first_message_display = f"You gain 100 exp and {self.bet * black_jack_bet_multiplier} gold "
 
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.second_message_display = "It's a draw press T when ready"
                 self.first_message_display = f"You gain 25 exp and 0 gold "
 
-
-
-
-
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 self.second_message_display = "Enemy gets blackjack you lose "
                 self.first_message_display = f"You gain 30 exp and 0 gold "
 
-
-
-
-
-            elif self.player_score > self.enemy_score and self.player_score < 22:
+            elif self.player_score > self.enemy_score and self.player_score < bust_number:
                 self.second_message_display = "You win player press T when ready"
                 self.first_message_display = f"You gain 25 exp and {self.bet} gold "
 
-            elif self.player_score < self.enemy_score and self.enemy_score < 22:
+            elif self.player_score < self.enemy_score and self.enemy_score < bust_number:
                 self.second_message_display = "You lose player press T when ready"
                 self.first_message_display = f"You gain 5 experience and lose {self.bet} gold "
 
-
             elif self.player_score == self.enemy_score:
-
                 self.second_message_display = "It's a draw nobody wins press T when Ready"
                 self.first_message_display = f"You gain 25 exp and 0 gold "
 
             if controller.isTPressed:
                 critical_multiplier = 2
-
+                spell_timer = 300
                 if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-
-                    self.first_message_display = f"Gain 40 exp and win {self.bet * critical_multiplier} gold "
-
+                    self.first_message_display = f"Gain {self.high_exp_gain} and win {self.bet * critical_multiplier} gold "
                     state.player.exp += self.high_exp_gain
-
                     self.second_message_display = "Player deals a CRITICAL HIT!!! "
                     if self.bet * critical_multiplier < self.money:
                         state.player.money += self.bet * critical_multiplier
@@ -986,54 +938,35 @@ class BlackJackMackScreen(Screen):
                         state.player.money += self.money
                         self.money = enemy_zero_money
 
-
                 elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-
                     self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
-
                     state.player.exp += self.med_exp_gain
                     state.player.stamina_points -= self.stamina_drain_low
-
                     self.second_message_display = "You tie player press T when ready"
 
-
-
-
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-
                     state.player.exp += self.high_exp_gain
                     state.player.stamina_points -= self.stamina_drain_high
-                    self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold."
+                    self.first_message_display = f"You gain 15 exp and lose {self.bet * critical_multiplier } gold."
                     self.thrid_message_display = f"You Lose 25 HP "
-
                     self.second_message_display = "Enemy deals a CRITICAL HIT!!! "
-
                     state.player.money -= self.bet * critical_multiplier
                     self.money += self.bet * critical_multiplier
 
-
-
-
-
-
-                elif self.player_score > self.enemy_score and self.player_score < 22:
+                elif self.player_score > self.enemy_score and self.player_score < bust_number:
                     state.player.exp += self.med_exp_gain
                     self.first_message_display = f"You gain 10 exp and {self.bet} gold "
                     self.second_message_display = "You win player press T when ready"
                     state.player.money += self.bet
                     self.money -= self.bet
 
-                elif self.player_score < self.enemy_score and self.enemy_score < 22:
+                elif self.player_score < self.enemy_score and self.enemy_score < bust_number:
                     state.player.exp += self.med_exp_gain
                     state.player.stamina_points -= self.stamina_drain_high
                     self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
-
                     self.second_message_display = "You lose player press T when ready"
                     state.player.money -= self.bet
                     self.money += self.bet
-
-
-
 
                 elif self.player_score == self.enemy_score:
                     state.player.exp += self.med_exp_gain
@@ -1048,108 +981,79 @@ class BlackJackMackScreen(Screen):
                     self.reveal_hand = self.reveal_not_active
                     self.magic_lock = False
 
-                pygame.time.wait(300)
+                pygame.time.wait(spell_timer)
                 if self.player_debuff_double_draw > self.reveal_spell_duration_expired:
                     self.player_debuff_double_draw -= self.decrease_counter_by_one
 
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
-
-
     def draw(self, state: "GameState"):
-        state.DISPLAY.fill((0, 0, 51))
-        black_box = pygame.Surface((190, 170))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 235))
+        self.draw_player_box(state)
+        self.draw_enemy_box(state)
+        player_money_critical_low = 300
+        player_stamina_critical_low = 20
+        player_box_left_menu_x_position = 37
+        player_money_y_position = 250
+        player_stamina_y_position = 290
+        player_focus_y_position = 330
+        player_bet_y_position = 370
+        hero_name_y_position = 205
 
-        black_box = pygame.Surface((200 - 10, 45 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 195))
-
-
-        if state.player.money < 100:
-            text_color = (255, 0, 0)  # Red color
+        if state.player.money < player_money_critical_low:
+            text_color = RED
         else:
-            text_color = (255, 255, 255)  # White color
+            text_color = WHITE
 
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (player_box_left_menu_x_position, player_money_y_position))
 
-        # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
-        #                               (255, 255, 255)), (37, 250))
-        if state.player.stamina_points < 20:
-            text_color = (255, 0, 0)  # Red color
+        if state.player.stamina_points < player_stamina_critical_low:
+            text_color = RED
         else:
-            text_color = (255, 255, 255)  # White color
+            text_color = WHITE
 
         state.DISPLAY.blit(
             self.font.render(f"HP: {state.player.stamina_points}", True,
-                             text_color), (37, 290))
+                             text_color), (player_box_left_menu_x_position, player_stamina_y_position))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
-                                      (255, 255, 255)), (37, 330))
+                                      WHITE), (player_box_left_menu_x_position, player_focus_y_position))
         state.DISPLAY.blit(
-            self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
-            (37, 370))
+            self.font.render(f"Bet: {self.bet}", True, WHITE),
+            (player_box_left_menu_x_position, player_bet_y_position))
 
-        if self.player_debuff_double_draw == 0:
+        if self.player_debuff_double_draw == self.double_draw_duration_expired:
 
-            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
-                         (37, 205))
+            state.DISPLAY.blit(self.font.render(f"Hero", True, WHITE),
+                         (player_box_left_menu_x_position, hero_name_y_position))
 
-        elif self.player_debuff_double_draw > 0:
+        elif self.player_debuff_double_draw > self.double_draw_duration_expired:
             state.DISPLAY.blit(
-                self.font.render(f"D. Draw: {self.player_debuff_double_draw}", True, (255, 0, 0)),
-                (37, 205))
+                self.font.render(f"D. Draw: {self.player_debuff_double_draw}", True, RED),
+                (player_box_left_menu_x_position, hero_name_y_position))
 
-        black_box = pygame.Surface((200 - 10, 110 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 20))
 
-        black_box = pygame.Surface((200 - 10, 130 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 60))
 
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
-                                      (255, 255, 255)), (37, 70))
+                                      (255, 255, 255)), (player_box_left_menu_x_position, 70))
 
         if self.reveal_hand == 11:
             state.DISPLAY.blit(self.font.render(f"Status: Normal", True,
-                                          (255, 255, 255)), (37, 110))
+                                          (255, 255, 255)), (player_box_left_menu_x_position, 110))
         elif self.reveal_hand < 11:
             state.DISPLAY.blit(self.font.render(f"Reveal: {self.reveal_hand}", True,
-                                                (255, 255, 255)), (37, 110))
+                                                (255, 255, 255)), (player_box_left_menu_x_position, 110))
             state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
                                                 (255, 255, 255)),
-                               (37, 150))
+                               (player_box_left_menu_x_position, 150))
 
 
         elif self.reveal_hand > 10:
             state.DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)),
-                         (37, 150))
+                         (player_box_left_menu_x_position, 150))
 
         state.DISPLAY.blit(self.font.render(f"Mack", True, (255, 255, 255)),
-                     (37, 30))
+                     (player_box_left_menu_x_position, 30))
         # state.DISPLAY.blit(self.font.render(f"Exp {state.player.exp}", True, (255, 255, 255)),
         #                    (37, 30))
 
@@ -1372,16 +1276,10 @@ class BlackJackMackScreen(Screen):
                     self.game_state = "player_draw_one_card"
                     self.isTPressed = False
 
-
-
             elif self.current_index == 2:
                 state.DISPLAY.blit(
                     self.font.render(f"->", True, (255, 255, 255)),
                     (637, 355))
-
-
-
-
 
         elif self.game_state == "magic_menu":
             black_box = pygame.Surface((255, 215))
