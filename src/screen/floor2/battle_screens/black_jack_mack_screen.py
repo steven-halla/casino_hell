@@ -1,6 +1,6 @@
 import random
 import pygame
-from constants import DISPLAY, BLUEBLACK, RED, WHITE
+from constants import DISPLAY, BLUEBLACK, RED, WHITE, BLACK
 from entity.gui.textbox.text_box import TextBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
@@ -8,6 +8,7 @@ from game_constants.magic import Magic
 from screen.examples.screen import Screen
 from deck import Deck
 from entity.gui.textbox.bordered_box import BorderedBox
+
 
 class BlackJackMackScreen(Screen):
     def __init__(self):
@@ -34,7 +35,7 @@ class BlackJackMackScreen(Screen):
         self.current_index = 0
         self.welcome_screen_choices = ["Play", "Magic", "Bet", "Quit"]
         self.welcome_screen_index = 0
-        self.magic_menu_selector = ["Reveal",  "Back"]
+        self.magic_menu_selector = ["Reveal", "Back"]
         self.magic_menu_index = 0
         self.ace_value = 1
         self.bust_protection = False
@@ -95,8 +96,6 @@ class BlackJackMackScreen(Screen):
         self.quit_index = 3
         self.draw_one_card = 1
 
-
-
         self.messages = {
             "welcome_screen": ["Mack: Time to take out the trash.",
                                "You look pretty fresh to me. Time to grind you into hamburger boy.", "Presss T for commands"],
@@ -142,7 +141,7 @@ class BlackJackMackScreen(Screen):
                 "Hero: You don't have a lot of coins left. I'll bet you the rest that my next hand will be a black jack.",
                 "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?",
                 "",
-                ],
+            ],
             "enemy_bluffed_text": [
                 "Cheater Bob: Do you Realize the odds of that happening?",
                 " Why would you take such a bet for?",
@@ -182,11 +181,11 @@ class BlackJackMackScreen(Screen):
             ],
 
             "score_critical_hit_message": ["luck is on your side,  hand re shuffled.", ""
-                                  ],
-            "magic_enemy_attack_double_draw": ["Walking into a fog of confusion, forget and let your brain soak in the mist. Let your reality shift and increase times 2...double draw", ""
                                            ],
-            "level_up": [f"Grats you levels up. ", "", "", "", ""
+            "magic_enemy_attack_double_draw": ["Walking into a fog of confusion, forget and let your brain soak in the mist. Let your reality shift and increase times 2...double draw", ""
                                                ],
+            "level_up": [f"Grats you levels up. ", "", "", "", ""
+                         ],
 
         }
 
@@ -254,7 +253,7 @@ class BlackJackMackScreen(Screen):
                 "Mack: I still got the last laugh in the end, Mc Nugg is a chicken because I took his last coins.",
 
                 "You must be something else to beat my double draw attack.I thought I was invincible.",
-            ""],
+                ""],
             (50, 450, 50, 45), 30, 500)
 
         self.exp_gain = 0
@@ -499,7 +498,6 @@ class BlackJackMackScreen(Screen):
     def update(self, state: "GameState"):
         enemy_zero_money = 0
 
-
         if self.money < self.bet:
             self.bet = self.money
         if self.money <= enemy_zero_money:
@@ -526,8 +524,6 @@ class BlackJackMackScreen(Screen):
             print("enemy defeated")
             self.defeated_textbox.update(state)
 
-
-
         if self.game_state == "welcome_screen":
             music_volume_setting = 0.5
             player_no_stamina = 0
@@ -541,14 +537,12 @@ class BlackJackMackScreen(Screen):
             if state.player.stamina_points <= player_no_stamina:
                 print("time to leave")
 
-
             self.welcome_screen_text_box.update(state)
 
             self.npc_speaking = True
             self.hero_speaking = False
             self.critical_hit = False
             self.magic_enemy_attack_double_draw_message_component.reset()
-
 
             self.redraw_lock = False
             self.ace_up_sleeve_jack_cheat_mode = False
@@ -561,7 +555,6 @@ class BlackJackMackScreen(Screen):
             bet_increment = 50
             double_draw_low_chance_to_cast = 700
             double_draw_high_chance_to_cast = 300
-
 
             if self.welcome_screen_text_box.is_finished() and self.welcome_screen_text_box.current_message_finished():
                 self.npc_speaking = False
@@ -715,7 +708,6 @@ class BlackJackMackScreen(Screen):
             if self.enemy_score >= black_jack_score:
                 self.enemy_black_jack_win = True
 
-
             if state.player.luck > level_1_luck_score:
                 if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
 
@@ -782,7 +774,7 @@ class BlackJackMackScreen(Screen):
                     self.second_message_display = f"You busted and went over 21! You gain {self.low_exp_gain} and lose {self.bet} "
 
                 elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
-                    lucky_roll = random.randint(1,4)
+                    lucky_roll = random.randint(1, 4)
                     lucky_roll_success = 4
                     if lucky_roll == lucky_roll_success:
                         self.player_hand.pop()
@@ -947,7 +939,7 @@ class BlackJackMackScreen(Screen):
                 elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                     state.player.exp += self.high_exp_gain
                     state.player.stamina_points -= self.stamina_drain_high
-                    self.first_message_display = f"You gain 15 exp and lose {self.bet * critical_multiplier } gold."
+                    self.first_message_display = f"You gain 15 exp and lose {self.bet * critical_multiplier} gold."
                     self.thrid_message_display = f"You Lose 25 HP "
                     self.second_message_display = "Enemy deals a CRITICAL HIT!!! "
                     state.player.money -= self.bet * critical_multiplier
@@ -1001,6 +993,9 @@ class BlackJackMackScreen(Screen):
         hero_name_y_position = 205
         enemy_money_y_position = 70
         enemey_status_y_position = 110
+        y_position_spacing = 40
+        reveal_spell_score_y_position = 110
+        white_line_thickness = 2
 
         if state.player.money < player_money_critical_low:
             text_color = RED
@@ -1019,7 +1014,7 @@ class BlackJackMackScreen(Screen):
                              text_color), (player_box_left_menu_x_position, player_stamina_y_position))
 
         state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
-                                      WHITE), (player_box_left_menu_x_position, player_focus_y_position))
+                                            WHITE), (player_box_left_menu_x_position, player_focus_y_position))
         state.DISPLAY.blit(
             self.font.render(f"Bet: {self.bet}", True, WHITE),
             (player_box_left_menu_x_position, player_bet_y_position))
@@ -1027,7 +1022,7 @@ class BlackJackMackScreen(Screen):
         if self.player_debuff_double_draw == self.double_draw_duration_expired:
 
             state.DISPLAY.blit(self.font.render(f"Hero", True, WHITE),
-                         (player_box_left_menu_x_position, hero_name_y_position))
+                               (player_box_left_menu_x_position, hero_name_y_position))
 
         elif self.player_debuff_double_draw > self.double_draw_duration_expired:
             state.DISPLAY.blit(
@@ -1035,32 +1030,32 @@ class BlackJackMackScreen(Screen):
                 (player_box_left_menu_x_position, hero_name_y_position))
 
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
-                                      WHITE), (player_box_left_menu_x_position, enemy_money_y_position))
+                                            WHITE), (player_box_left_menu_x_position, enemy_money_y_position))
 
-        if self.reveal_hand == 11:
+        if self.reveal_hand == self.reveal_not_active:
             state.DISPLAY.blit(self.font.render(f"Normal", True,
-                                          WHITE), (player_box_left_menu_x_position, enemey_status_y_position))
-        elif self.reveal_hand < 11:
+                                                WHITE), (player_box_left_menu_x_position, enemey_status_y_position))
+
+        elif self.reveal_hand < self.reveal_not_active:
             state.DISPLAY.blit(self.font.render(f"Reveal: {self.reveal_hand}", True,
-                                                WHITE), (player_box_left_menu_x_position, 110))
+                                                WHITE), (player_box_left_menu_x_position, reveal_spell_score_y_position))
             state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
-                                                (255, 255, 255)),
+                                                WHITE),
                                (player_box_left_menu_x_position, 150))
 
-
-        elif self.reveal_hand > 10:
-            state.DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)),
-                         (player_box_left_menu_x_position, 150))
+        elif self.reveal_hand >= self.reveal_not_active:
+            state.DISPLAY.blit(self.font.render(f"Score:", True, WHITE),
+                               (player_box_left_menu_x_position, 150))
 
         state.DISPLAY.blit(self.font.render(f"Mack", True, (255, 255, 255)),
-                     (player_box_left_menu_x_position, 30))
+                           (player_box_left_menu_x_position, 30))
         # state.DISPLAY.blit(self.font.render(f"Exp {state.player.exp}", True, (255, 255, 255)),
         #                    (37, 30))
 
         self.main_bordered_box.draw(state)
         # state.DISPLAY.blit(character_image, (633, 15))
         state.DISPLAY.blit(self.font.render(f"Mack", True, (255, 255, 255)),
-                     (625, 145))
+                           (625, 145))
 
         # self.face_down_card((0,0))
 
@@ -1085,30 +1080,24 @@ class BlackJackMackScreen(Screen):
             start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
             start_y_right_box = 240  # Adjust vertical alignment
 
-            # Create the black box
             black_box = pygame.Surface((black_box_width, black_box_height))
-            black_box.fill((0, 0, 0))
+            black_box.fill(BLACK)
 
-            # Create a white border
             white_border = pygame.Surface(
-                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+                (black_box_width + white_line_thickness * border_width, black_box_height + white_line_thickness * border_width)
             )
             white_border.fill(WHITE)
             white_border.blit(black_box, (border_width, border_width))
 
-            # Determine the position of the white-bordered box
             black_box_x = start_x_right_box - border_width
             black_box_y = start_y_right_box - border_width
 
-            # Blit the white-bordered box onto the display
             state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-            # Draw the menu options
             for idx, choice in enumerate(self.welcome_screen_choices):
-                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
-                # Example render method ensuring all items are strings
+                y_position = start_y_right_box + idx * y_position_spacing
                 state.DISPLAY.blit(
-                    self.font.render(str(choice), True, (255, 255, 255)),
+                    self.font.render(str(choice), True, WHITE),
                     (start_x_right_box + 60, y_position + 15)
                 )
 
@@ -1117,10 +1106,9 @@ class BlackJackMackScreen(Screen):
             elif self.player_debuff_double_draw < 1:
                 self.welcome_screen_choices[3] = "Quit"
 
-
             if self.reveal_hand < 11 and self.reveal_hand > 0:
                 self.magic_lock = True
-                self.welcome_screen_choices[1] = "Locked"   # if I use a constant it shows it as the full name not the string part
+                self.welcome_screen_choices[1] = "Locked"  # if I use a constant it shows it as the full name not the string part
             else:
                 self.magic_lock = False
                 self.welcome_screen_choices[1] = "Magic"
@@ -1161,15 +1149,10 @@ class BlackJackMackScreen(Screen):
         elif self.game_state == "double_draw_casting_phase":
             self.magic_enemy_attack_double_draw_message_component.draw(state)
 
-
-
-
-
         elif self.game_state == "defeated":
             self.defeated_textbox.draw(state)
             if self.defeated_textbox.message_index == 2:
                 state.player.canMove = True
-
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
 
@@ -1178,21 +1161,19 @@ class BlackJackMackScreen(Screen):
             self.enemy_winning_money_text.draw(state)
             self.hero_losing_confused_money_text.draw(state)
 
-
         elif self.game_state == "enemy_is_desperate_state":
             self.enemy_losing_money_text.draw(state)
             self.hero_winning_money_text.draw(state)
             self.enemy_losing_confused_money_text.draw(state)
 
-
         elif self.game_state == "bet_phase":
             self.bet_screen_text.draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
-                                          (255, 255, 255)), (50, 530))
+                                                (255, 255, 255)), (50, 530))
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
-                         (260, 550))
+                               (260, 550))
             state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
-                         (257, 510))
+                               (257, 510))
 
 
         elif self.game_state == "menu_screen":
@@ -1200,7 +1181,6 @@ class BlackJackMackScreen(Screen):
             player_card_y = 195
             enemy_card_x = 235
             enemy_card_y = 15
-
 
             for i, card in enumerate(self.player_hand):
                 if i == 4:  # Adjust for the 5th card, moving to the second row
@@ -1246,7 +1226,6 @@ class BlackJackMackScreen(Screen):
                 state.DISPLAY.blit(
                     self.font.render(f"D Draw", True, (255, 255, 255)),
                     (674, 310))
-
 
             if self.current_index == 0:
                 state.DISPLAY.blit(
@@ -1303,7 +1282,6 @@ class BlackJackMackScreen(Screen):
 
             # Blit the white-bordered black box onto the display
             state.DISPLAY.blit(white_border, (position_x, position_y))
-
 
             # Use the provided position variables
             # Determine the position on the screen
@@ -1372,7 +1350,6 @@ class BlackJackMackScreen(Screen):
                         state.area2RestScreen.start(state)
                         state.player.stamina_points = 1
 
-
             if state.player.money < 1:
 
                 self.game_state = "game_over_no_money"
@@ -1408,14 +1385,14 @@ class BlackJackMackScreen(Screen):
 
             # state.DISPLAY.blit(character_image, (23, 245))
             state.DISPLAY.blit(self.font.render(f"{self.current_speaker}", True,
-                                          (255, 255, 255)), (155, 350))
+                                                (255, 255, 255)), (155, 350))
             # state.DISPLAY.blit(self.font.render(f"{self.first_message_display}", True, (255, 255, 255)), (45, 390))
 
             state.DISPLAY.blit(
                 self.font.render(f"{self.second_message_display}", True,
                                  (255, 255, 255)), (45, 450))
             state.DISPLAY.blit(self.font.render(f"{self.first_message_display}", True,
-                                          (255, 255, 255)), (45, 500))
+                                                (255, 255, 255)), (45, 500))
             # state.DISPLAY.blit(self.font.render(f"{self.third_message_display}", True, (255, 255, 255)), (45, 510))
 
             # state.DISPLAY.blit(self.font.render(f"Player bet:{self.bet}", True, (255, 255, 255)), (10, 155))
