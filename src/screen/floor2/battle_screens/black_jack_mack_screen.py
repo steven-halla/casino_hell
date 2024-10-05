@@ -999,6 +999,8 @@ class BlackJackMackScreen(Screen):
         player_focus_y_position = 330
         player_bet_y_position = 370
         hero_name_y_position = 205
+        enemy_money_y_position = 70
+        enemey_status_y_position = 110
 
         if state.player.money < player_money_critical_low:
             text_color = RED
@@ -1032,17 +1034,15 @@ class BlackJackMackScreen(Screen):
                 self.font.render(f"D. Draw: {self.player_debuff_double_draw}", True, RED),
                 (player_box_left_menu_x_position, hero_name_y_position))
 
-
-
         state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True,
-                                      (255, 255, 255)), (player_box_left_menu_x_position, 70))
+                                      WHITE), (player_box_left_menu_x_position, enemy_money_y_position))
 
         if self.reveal_hand == 11:
-            state.DISPLAY.blit(self.font.render(f"Status: Normal", True,
-                                          (255, 255, 255)), (player_box_left_menu_x_position, 110))
+            state.DISPLAY.blit(self.font.render(f"Normal", True,
+                                          WHITE), (player_box_left_menu_x_position, enemey_status_y_position))
         elif self.reveal_hand < 11:
             state.DISPLAY.blit(self.font.render(f"Reveal: {self.reveal_hand}", True,
-                                                (255, 255, 255)), (player_box_left_menu_x_position, 110))
+                                                WHITE), (player_box_left_menu_x_position, 110))
             state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
                                                 (255, 255, 255)),
                                (player_box_left_menu_x_position, 150))
@@ -1077,7 +1077,8 @@ class BlackJackMackScreen(Screen):
                 self.magic_points = 1
                 self.player_debuff_double_draw = 0
                 self.game_state = "game_over_no_stamina"
-            #
+
+            # will need to update this in future as all screens should have same welcome screen
             black_box_height = 221 - 50  # Adjust height
             black_box_width = 200 - 10  # Adjust width to match the left box
             border_width = 5
@@ -1092,7 +1093,7 @@ class BlackJackMackScreen(Screen):
             white_border = pygame.Surface(
                 (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
             )
-            white_border.fill((255, 255, 255))
+            white_border.fill(WHITE)
             white_border.blit(black_box, (border_width, border_width))
 
             # Determine the position of the white-bordered box
@@ -1186,12 +1187,6 @@ class BlackJackMackScreen(Screen):
 
         elif self.game_state == "bet_phase":
             self.bet_screen_text.draw(state)
-
-            # self.current_speaker = "cheater bob"
-
-            # state.DISPLAY.blit(character_image, (23, 245))
-            # state.DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
-
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
                                           (255, 255, 255)), (50, 530))
             state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
