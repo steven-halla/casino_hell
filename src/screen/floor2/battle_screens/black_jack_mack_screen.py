@@ -1009,6 +1009,10 @@ class BlackJackMackScreen(Screen):
         arrow_modifier_y_1_index = 50
         arrow_modifier_y_2_index = 92
         arrow_modifier_y_3_index = 132
+        up_arrow_x_coordinate = 257
+        up_arrow_y_coordinate = 510
+        down_arrow_x_coordinate = 260
+        down_arrow_y_coordinate = 550
 
         if state.player.money < player_money_critical_low:
             text_color = RED
@@ -1167,20 +1171,24 @@ class BlackJackMackScreen(Screen):
             self.enemy_losing_confused_money_text.draw(state)
 
         elif self.game_state == "bet_phase":
+            bet_label_x = 50
+            bet_label_y = 530
             self.bet_screen_text.draw(state)
             state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
-                                                WHITE), (50, 530))
+                                                WHITE), (bet_label_x, bet_label_y))
             state.DISPLAY.blit(self.font.render(f"v", True, WHITE),
-                               (260, 550))
+                               (down_arrow_x_coordinate, down_arrow_y_coordinate))
             state.DISPLAY.blit(self.font.render(f"^", True, WHITE),
-                               (257, 510))
+                               (up_arrow_x_coordinate, up_arrow_y_coordinate))
 
 
         elif self.game_state == "menu_screen":
+            print("Menuuuuuuuuuu")
             player_card_x = 235
             player_card_y = 195
             enemy_card_x = 235
             enemy_card_y = 15
+            move_player_card_x = 75
 
             for i, card in enumerate(self.player_hand):
                 if i == 4:  # Adjust for the 5th card, moving to the second row
@@ -1192,25 +1200,21 @@ class BlackJackMackScreen(Screen):
                     player_card_x = 300  # Start position for the second row
                 self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
 
-                player_card_x += 75
-
-                # pygame.display.update()
-
-            # pygame.display.update()
+                player_card_x += move_player_card_x
 
             for index, card in enumerate(self.enemy_hand):
                 if index == 0:
                     self.deck.draw_card_face_down((enemy_card_x, enemy_card_y), state.DISPLAY)
                 else:
                     self.deck.draw_card_face_up(card[1], card[0], (enemy_card_x, enemy_card_y), state.DISPLAY)
-                enemy_card_x += 75
+                enemy_card_x += move_player_card_x
 
             black_box = pygame.Surface((160 - 10, 180 - 10))
-            black_box.fill((0, 0, 0))
+            black_box.fill(BLACK)
             border_width = 5
             white_border = pygame.Surface(
                 (160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-            white_border.fill((255, 255, 255))
+            white_border.fill(WHITE)
             white_border.blit(black_box, (border_width, border_width))
             state.DISPLAY.blit(white_border, (620, 235))
 
@@ -1218,11 +1222,11 @@ class BlackJackMackScreen(Screen):
                 self.font.render(f"{self.choices[0]}", True, WHITE),
                 (674, 260))
 
-            if self.player_debuff_double_draw < 1:
+            if self.player_debuff_double_draw <= self.double_draw_duration_expired:
                 state.DISPLAY.blit(
                     self.font.render(f"{self.choices[1]}", True, WHITE),
                     (674, 310))
-            elif self.player_debuff_double_draw > 0:
+            elif self.player_debuff_double_draw > self.double_draw_duration_expired:
                 state.DISPLAY.blit(
                     self.font.render(f"D Draw", True, WHITE),
                     (674, 310))
@@ -1233,7 +1237,6 @@ class BlackJackMackScreen(Screen):
                     (637, 255))
                 if state.controller.isTPressed:
                     pygame.time.wait(300)
-
                     if self.despair == False:
                         self.game_state = "enemy_draw_one_card"
                     elif self.despair == True:
@@ -1327,6 +1330,7 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "game_over_no_stamina":
+            stamina_penalty = 100
             self.reveal_hand = 0
             self.bet = 50
             self.magic_points = 1
@@ -1337,8 +1341,8 @@ class BlackJackMackScreen(Screen):
             self.player_no_stamina.draw(state)
             if self.player_no_stamina.is_finished():
                 if state.controller.isTPressed:
-                    state.player.money -= 100
-                    if state.player.money < 1:
+                    state.player.money -= stamina_penalty
+                    if state.player.money <= player_money_at_0:
                         state.currentScreen = state.gameOverScreen
                         state.gameOverScreen.start(state)
                     else:
@@ -1350,13 +1354,10 @@ class BlackJackMackScreen(Screen):
                         state.area2RestScreen.start(state)
                         state.player.stamina_points = 1
 
-            if state.player.money < 1:
-
+            if state.player.money <= player_money_at_0:
                 self.game_state = "game_over_no_money"
-            elif state.player.stamina_points < 1:
+            elif state.player.stamina_points <= player_stamina_at_0:
                 self.game_state = "game_over_no_stamina"
-
-
 
         elif self.game_state == "results_screen":
             player_card_x = 235
