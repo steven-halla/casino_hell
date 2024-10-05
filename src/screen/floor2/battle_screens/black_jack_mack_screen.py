@@ -680,22 +680,31 @@ class BlackJackMackScreen(Screen):
                 controller.isTPressed = False
 
         elif self.game_state == "draw_phase":
-            # need to reformat have a reset function
+
+            luck_muliplier = 5
+            lucky_roll = random.randint(1, 100)
+            adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
+            black_jack_score = 21
+            level_1_luck_score = 0
+            player_bad_score_min_range = 12
+            player_bad_score_max_range = 17
+            lucky_strike_threshhold = 50
+            initial_hand = 2
+            sir_leopold_steal_threshhold = 40
+            draw_one_card = 1
+
+
             self.first_message_display = ""
             self.second_message_display = ""
             self.thrid_message_display = ""
             self.player_black_jack_win = False
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
-            self.player_hand = self.deck.player_draw_hand(2)
-            print("Player hand is" + str(self.player_hand))
+            self.player_hand = self.deck.player_draw_hand(initial_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
 
-            print("Player score is: " + str(self.player_score))
-
-            if self.player_score > 20:
+            if self.player_score >= black_jack_score:
                 self.player_black_jack_win = True
-
 
             aces_to_remove = [
                 ('Ace', 'Hearts', 11),
@@ -707,41 +716,30 @@ class BlackJackMackScreen(Screen):
                 ('Ace', 'Diamonds', 1),
                 ('Ace', 'Clubs', 1),
             ]
-            self.enemy_hand = self.deck.enemy_draw_hand(2)
-            print("Enemy hand is" + str(self.enemy_hand))
-            if self.enemy_score > 20:
+            self.enemy_hand = self.deck.enemy_draw_hand(initial_hand)
+            if self.enemy_score >= black_jack_score:
                 self.enemy_black_jack_win = True
 
 
+            if state.player.luck > level_1_luck_score:
+                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
 
-
-            if state.player.luck > 0:
-                # the below has a 15% chance per new hand to trigger
-                if self.player_score > 12 and self.player_score < 17:
-                    lucky_roll = random.randint(1, 100)  # Get a random number between 1 and 100
-                    adjusted_lucky_roll = lucky_roll + state.player.luck * 5
-                    if adjusted_lucky_roll >= 45:
-                        print("You got a critical hit: dslajfldsjfjsalfjlsjfl;sjfklsjaf;lksjaflksajf;lskajflsjf;saljf;lkasjfl;akjf;lksajfl;sajf;lkasjf;lsjf;lajsfl;")
-                        self.lucky_strike.play()  # Play the sound effect once
-
+                    if adjusted_lucky_roll >= lucky_strike_threshhold:
+                        self.lucky_strike.play()
                         self.player_hand = self.deck.player_draw_hand(2)
-                        print("New Player hand is" + str(self.player_hand))
                         self.player_score = self.deck.compute_hand_value(self.player_hand)
-                        print(" New Player score is: " + str(self.player_score))
                         self.critical_hit = True
 
             if "sir leopold's paw" in state.player.equipped_items:
-                roll = random.randint(1, 100)  # Get a random number between 1 and 100
-                if roll >= 40:  # Check if the roll is less than or equal to 30
+                roll = random.randint(1, 100)
+                if roll >= sir_leopold_steal_threshhold:
                     self.enemy_black_jack_win = False
 
                     for card in self.enemy_hand:
                         if card in aces_to_remove:
                             self.enemy_hand.remove(card)
-                            print(f"Hedgehog swiped an Ace! Removed card: {card}")
-                            print("Your roll is: " + str(roll))
-                            self.sir_leopold_ace_attack.play()  # Play the sound effect once
-                            self.enemy_hand += self.deck.enemy_draw_hand(1)
+                            self.sir_leopold_ace_attack.play()
+                            self.enemy_hand += self.deck.enemy_draw_hand(draw_one_card)
                             break
 
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
@@ -754,18 +752,9 @@ class BlackJackMackScreen(Screen):
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
-                # state.player.money -= self.bet
-                # state.player.money -= self.bet
-                # self.money += self.bet
-                # self.money += self.bet
-
                 self.game_state = "results_screen"
-
             else:
                 self.game_state = "menu_screen"
-
-
 
         elif self.game_state == "level_up_screen":
 
