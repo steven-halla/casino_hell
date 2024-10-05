@@ -16,7 +16,6 @@ class BlackJackMackScreen(Screen):
         self.deck = Deck()
         self.last_t_press_time = 0  # Initialize the last T press time
         self.font = pygame.font.Font(None, 36)
-        self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
         self.ace_up_sleeve_jack = False
         self.ace_up_sleeve_jack_cheat_mode = False
         self.black_jack_rumble_bill_defeated = False
@@ -26,6 +25,7 @@ class BlackJackMackScreen(Screen):
         self.third_message_display = ""
         self.game_state = "welcome_screen"
         self.bet = 50
+        self.bet_minimum = 50
         self.player_score = 0
         self.enemy_score = 0
         self.player_hand = []
@@ -78,12 +78,25 @@ class BlackJackMackScreen(Screen):
         self.low_exp_gain = 7
         self.med_exp_gain = 14
         self.high_exp_gain = 21
+        self.max_mp = 1
 
         self.stamina_drain_high = 8
-        self.stamina_drain_low = 4
+        self.stamina_drain_med = 5
+        self.stamina_drain_low = 3
         self.reveal_not_active = 11
         self.reveal_spell_duration_expired = 0
         self.decrease_counter_by_one = 1
+        self.double_draw_duration_expired = 0
+        self.mp_depleted = 0
+        self.double_draw_turns_inflicted = 7
+        self.double_draw_cost = 1
+        self.index_zero = 0
+        self.play_index = 0
+        self.magic_index = 1
+        self.bet_index = 2
+        self.quit_index = 3
+
+
 
         self.messages = {
             "welcome_screen": ["Mack: Time to take out the trash.",
@@ -445,36 +458,31 @@ class BlackJackMackScreen(Screen):
         pygame.mixer.music.stop()
 
     def initialize_music(self):
-
+        loop_music = -1
         pygame.mixer.init()
-
-        # Load the music file
         pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
         pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
+        pygame.mixer.music.play(loop_music)
 
     def place_bet(self, state: "GameState"):
         bet_increment = 50
         bet_max = 100
         bet_minimum = 50
+        one_hundred_milliseconds = 100
 
         if state.controller.isUpPressed:
 
             self.bet += bet_increment
             self.menu_movement_sound.play()  # Play the sound effect once
 
-            pygame.time.delay(100)
+            pygame.time.delay(one_hundred_milliseconds)
             state.controller.isUpPressed = False
 
         elif state.controller.isDownPressed:
             self.bet -= bet_increment
             self.menu_movement_sound.play()  # Play the sound effect once
 
-            pygame.time.delay(100)
+            pygame.time.delay(one_hundred_milliseconds)
             state.controller.isDownPressed = False
 
         if self.bet < bet_minimum:
@@ -549,123 +557,96 @@ class BlackJackMackScreen(Screen):
             self.avatar_of_luck_card_redraw_counter = 3
             self.current_index = 0
             self.enemy_score = 0
+            move_index_by_one = 1
 
-            # self.player_cards_list.clear()
-            # self.enemy_cards_list.clear()
-            # self.player_hand.clear() # todo shouldn't need to do because we override the self.player_hand/enemy_hand when we call: self.xyz_hand = self.deck.draw_hand()
-            # self.enemy_hand.clear()
+            loop_start = 0
+            bet_increment = 50
+            double_draw_low_chance_to_cast = 700
+            double_draw_high_chance_to_cast = 300
+
 
             if self.welcome_screen_text_box.is_finished() and self.welcome_screen_text_box.current_message_finished():
                 self.npc_speaking = False
                 self.hero_speaking = True
-                # self.welcome_screen_text_box_hero.update(state)
-
 
                 if controller.isUpPressed:
-                    print("Nurgle is here for you ")
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    # channel3 = pygame.mixer.Channel(3)
-                    # sound3 = pygame.mixer.Sound(
-                    #     "audio/Fotstep_Carpet_Right_3.mp3")
-                    # channel3.play(sound3)
+                    self.menu_movement_sound.play()
                     if not hasattr(self, "welcome_screen_index"):
                         self.welcome_screen_index = len(
-                            self.welcome_screen_choices) - 1
+                            self.welcome_screen_choices) - move_index_by_one
                     else:
-                        self.welcome_screen_index -= 1
+                        self.welcome_screen_index -= move_index_by_one
                     self.welcome_screen_index %= len(
                         self.welcome_screen_choices)
                     controller.isUpPressed = False
 
-
                 elif controller.isDownPressed:
-                    self.menu_movement_sound.play()  # Play the sound effect once
+                    self.menu_movement_sound.play()
 
-                    print("Nurgle is here for you ")
-
-                    # channel3 = pygame.mixer.Channel(3)
-                    # sound3 = pygame.mixer.Sound(
-                    #     "audio/Fotstep_Carpet_Right_3.mp3")
-                    # channel3.play(sound3)
                     if not hasattr(self, "welcome_screen_index"):
                         self.welcome_screen_index = len(
-                            self.welcome_screen_choices) + 1
+                            self.welcome_screen_choices) + move_index_by_one
                     else:
-                        self.welcome_screen_index += 1
+                        self.welcome_screen_index += move_index_by_one
                     self.welcome_screen_index %= len(
                         self.welcome_screen_choices)
                     controller.isDownPressed = False
 
-                if self.welcome_screen_index == 0 and controller.isTPressed:
+                if self.welcome_screen_index == self.play_index and controller.isTPressed:
                     controller.isTPressed = False
-                    for i in range(0, self.bet, 50):
-                        state.player.stamina_points -= 3
+                    for i in range(loop_start, self.bet, bet_increment):
+                        state.player.stamina_points -= self.stamina_drain_low
                     self.deck.shuffle()
 
-
-
-                    if self.player_debuff_double_draw <= 0 and self.money < 300 and self.magic_points > 0:
+                    if self.player_debuff_double_draw <= self.double_draw_duration_expired and self.money < double_draw_high_chance_to_cast and self.magic_points > self.mp_depleted:
                         enemy_magic_cast = random.randint(1, 100)
+                        magic_cast_multiplier = 20
+                        magic_cast_threshold = 35
 
-                        enemy_magic_cast_modifier = self.magic_points * 20
+                        enemy_magic_cast_modifier = self.magic_points * magic_cast_multiplier
 
-                        if enemy_magic_cast + enemy_magic_cast_modifier >= 35:
+                        if enemy_magic_cast + enemy_magic_cast_modifier >= magic_cast_threshold:
 
                             print("WURGLE ALERT WURGLE ALERT WURGLE ALERT")
-                            self.player_debuff_double_draw += 7
-                            self.magic_points -= 1
+                            self.player_debuff_double_draw += self.double_draw_turns_inflicted
+                            self.magic_points -= self.double_draw_cost
                             self.game_state = "double_draw_casting_phase"
                         else:
                             self.game_state = "draw_phase"
 
-                    elif self.player_debuff_double_draw <= 0 and self.money < 700 and self.magic_points > 0:
+                    elif self.player_debuff_double_draw <= self.double_draw_duration_expired and self.money < double_draw_low_chance_to_cast and self.magic_points > self.mp_depleted:
                         enemy_magic_cast = random.randint(1, 100)
                         spell_cast_multiplier = 20
                         magic_cast_threshold = 70
                         player_dubuff_double_draw_length = 7
                         double_draw_cost = 1
-
                         enemy_magic_cast_modifier = self.magic_points * spell_cast_multiplier
 
                         if enemy_magic_cast + enemy_magic_cast_modifier >= magic_cast_threshold:
-                            print("436")
-
                             self.player_debuff_double_draw += player_dubuff_double_draw_length
                             self.magic_points -= double_draw_cost
                             self.game_state = "double_draw_casting_phase"
-
                         else:
                             self.game_state = "draw_phase"
-
                     else:
                         self.game_state = "draw_phase"
                     controller.isTPressed = False
-                elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False:
-                    magic_menu_index = 0
-
+                elif self.welcome_screen_index == self.magic_index and controller.isTPressed and self.magic_lock == False:
+                    magic_menu_index = self.index_zero
                     self.magic_screen_index = magic_menu_index
                     self.game_state = "magic_menu"
                     controller.isTPressed = False
-                elif self.welcome_screen_index == 2 and controller.isTPressed:
+                elif self.welcome_screen_index == self.bet_index and controller.isTPressed:
                     self.game_state = "bet_phase"
-
                     controller.isTPressed = False
 
-                elif self.welcome_screen_index == 3 and controller.isTPressed and self.player_debuff_double_draw < 1:
+                elif self.welcome_screen_index == self.quit_index and controller.isTPressed and self.player_debuff_double_draw <= self.double_draw_duration_expired:
                     controller.isTPressed = False
-                    self.welcome_screen_index = 0
-                    self.reveal_hand = 0
+                    self.welcome_screen_index = self.play_index
+                    self.reveal_hand = self.reveal_spell_duration_expired
                     self.magic_lock = False
-                    self.bet = 50
-
-
-
-
-                    # self.player_status = "Normal"
-                    # self.enemy_status = "Normal"
-
-                    self.magic_points = 1
+                    self.bet = self.bet_minimum
+                    self.magic_points = self.max_mp
                     state.currentScreen = state.area2GamblingScreen
                     state.area2GamblingScreen.start(state)
 
@@ -673,15 +654,16 @@ class BlackJackMackScreen(Screen):
 
 
         elif self.game_state == "double_draw_casting_phase":
+            end_message = 1
             self.magic_enemy_attack_double_draw_message_component.update(state)
-            if self.magic_enemy_attack_double_draw_message_component.message_index == 1:
-                print("Hi there")
+            if self.magic_enemy_attack_double_draw_message_component.message_index == end_message:
                 self.spell_sound.play()
 
                 self.game_state = "draw_phase"
 
 
         elif self.game_state == "bet_phase":
+            spell_cast_timer = 300
             if self.money < self.bet:
                 self.bet = self.money
 
@@ -693,16 +675,7 @@ class BlackJackMackScreen(Screen):
             self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
-                if self.bet > 70:
-                    print("-3")
-                elif self.bet < 30:
-
-
-                    print("-1")
-                elif self.bet < 70 or self.bet > 20:
-                    print("-2")
-
-                pygame.time.wait(300)
+                pygame.time.wait(spell_cast_timer)
                 self.game_state = "welcome_screen"
                 controller.isTPressed = False
 
@@ -711,7 +684,6 @@ class BlackJackMackScreen(Screen):
             self.first_message_display = ""
             self.second_message_display = ""
             self.thrid_message_display = ""
-            self.black_jack_counter = 0
             self.player_black_jack_win = False
             self.enemy_black_jack_win = False
             self.black_jack_draw = False
@@ -772,31 +744,7 @@ class BlackJackMackScreen(Screen):
                             self.enemy_hand += self.deck.enemy_draw_hand(1)
                             break
 
-            print("Enemy hand is" + str(self.enemy_hand))
-
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-            print("enemy score is: " + str(self.enemy_score))
-
-
-
-            print(self.player_black_jack_win)
-
-            if self.black_ace == True:
-                if self.enemy_score < 7:
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    print("Enemy hand is" + str(self.enemy_hand))
-                    print("You get the sense the enemy is somewhat lucky")
-                    self.enemy_score = self.deck.compute_hand_value(
-                        self.enemy_hand)
-                    print("enemy score is: " + str(self.enemy_score))
-                    if self.black_jack_counter > 0:
-                        print("Enemy black jack win set to true")
-
-                        self.enemy_black_jack_win = True
-                    elif self.black_jack_counter == 0:
-                        self.enemy_black_jack_win = False
-
-                    print(self.player_black_jack_win)
 
             if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
                 self.black_jack_draw = True
@@ -804,12 +752,6 @@ class BlackJackMackScreen(Screen):
                 print("Its a draw")
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-
-                print("its time for you to have double winnings")
-                # state.player.money += self.bet
-                # state.player.money += self.bet
-                # self.money -= self.bet
-                # self.money -= self.bet
                 self.game_state = "results_screen"
             elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
                 print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
@@ -1026,12 +968,7 @@ class BlackJackMackScreen(Screen):
             self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
 
             if controller.isUpPressed:
-                print("Nurgle is here for you ")
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
+                self.menu_movement_sound.play()
                 if not hasattr(self, "magic_menu_index"):
                     self.magic_menu_index = len(self.magic_menu_selector) - 1
                 else:
@@ -1040,12 +977,7 @@ class BlackJackMackScreen(Screen):
                 controller.isUpPressed = False
 
             elif controller.isDownPressed:
-                print("Nurgle is here for you ")
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
+                self.menu_movement_sound.play()
                 if not hasattr(self, "magic_menu_index"):
                     self.magic_menu_index = len(self.magic_menu_selector) + 1
                 else:

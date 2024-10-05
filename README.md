@@ -113,6 +113,7 @@ No more absoulte paths need to work around that
 Need to create bank
 Need to create room for Player to equip items after resting.
 
+Need to re format battle and map screens to be more uniform
 
 
 
@@ -138,4 +139,4 @@ Need to create room for Player to equip items after resting.
 
 
 
---------------
+
