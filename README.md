@@ -115,6 +115,9 @@ Need to create room for Player to equip items after resting.
 
 Need to re format battle and map screens to be more uniform
 
+Improve input validation and error handling.
+I need to do validations for my code its a bit messy in that regard
+
 
 
 

@@ -1,53 +1,98 @@
 {
-    "level": 4,
-    "exp": 600,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "level": 8,
+    "exp": 2924,
+    "stamina_points": 390,
+    "max_stamina_points": 390,
+    "focus_points": 210,
+    "max_focus_points": 210,
     "companions": [
-        "sir leopold"
+        "sir leopold",
+        "erika"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses"
+        "coin flip glasses",
+        "HEALTHY GLOVES",
+        "Black Hat",
+        "SOCKS OF PERCEPTION",
+        "Cool Shades",
+        "Nuggie Amulet"
     ],
     "equipped_items": [
-        "sir leopold's paw",
-        "opossum repellent",
-        "coin flip glasses"
+        "Nuggie Amulet",
+        "HEALTHY GLOVES",
+        "SOCKS OF PERCEPTION"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token"
+        "level 4 token",
+        "level 5 token",
+        "level 6 token",
+        "level 7 token",
+        "level 8 token"
     ],
     "magicinventory": [
         "reveal",
         "shield",
-        "shake"
+        "shake",
+        "SLOTS HACK",
+        "Triple D",
+        "HEADS FORCE"
     ],
-    "body": 1,
-    "mind": 1,
-    "spirit": 1,
-    "perception": 1,
+    "body": 2,
+    "mind": 2,
+    "spirit": 2,
+    "perception": 2,
     "baseperception": 1,
-    "luck": 1,
-    "money": 1500,
+    "luck": 2,
+    "money": 1850,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "Quest Coin",
+        "Quest Badge",
+        "Alice Invite",
+        "BBQ SAUCE",
+        "Invitation",
+        "rib demon key",
+        "Erika 2nd invite",
+        "boss key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 1,
+    "days": 9,
     "leveltwonpcstate": [
-
-        "MC_NUGGET_FIRST_QUEST_COMPLETE"
-
-
+        "500 Gold",
+        "Quest Coin",
+        "Quest Badge",
+        "QUEST_1_COMPLETE",
+        "HEALTHY GLOVES",
+        "STAT_POTION_AREA_2",
+        "SPIRIT_TWO_ALICE_QUEST_FINISHED",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_1_REWARD",
+        "MC_NUGGET_BETA_QUEST_COMPLETE",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "BBQ SAUCE",
+        "MC_NUGGET_SECOND_QUEST_COMPLETE",
+        "NUGG_QUEST_TWO_MONEY",
+        "MC_NUGGET_QUEST_2_REWARD",
+        "focus boost",
+        "COIN_SAVE_AREA_2",
+        "BLACK_JACK_BLACK_MACK_DEFEATED",
+        "MC_NUGGET_THIRD_QUEST_COMPLETE",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_3_REWARD",
+        "CHICKEN_QUEST_START",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "Erika 2nd invite",
+        "Nuggie Amulet",
+        "CRAPS_HAPPY_DEFEATED",
+        "COIN_FLIP_BETTY_DEFEATED"
     ],
     "slots_vest": false,
     "cutscene1": true,
@@ -61,7 +106,7 @@
     "opossuminacancandymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 1500,
+    "blackjackmackmoney": 0,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
     "slotsrippasnappamoney": 0,

@@ -124,11 +124,11 @@ class CrapsBossScreen(BattleScreen):
                  "Hero: My hands...something is wrong, their cramping up something fierce. It hurts to move them, this is bad, real bad. How can I roll the dice like this?",
                  "Sir Leopold: She just cursed you, I knew there was something fowl about her,  What a dirty trick!",
                  "Erika: Ho ho ho, I tried telling you hero, too late to back out now, we had a deal and I'm going to collect!",
-                 # "Hero: I always have a back up plan, it's time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
-                 # "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.",
-                 # "Hero: I was hoping to not have to use this so early, but I don't have much of a choice. I'll show you the power of my secret  technique.",
-                 # "Sir Leopold: Hero, oh my god what are you... Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
-                 #                                                                                    " rotten human!", "I think.... I'm going to puke.",
+                 "Hero: I always have a back up plan, it's time to turn this around. I'm going to bankrupt you Erika.","And for what it's worth...your chicken nuggets suck!!!",
+                 "Erika:Pffft that's low, even for a human. It's no wonder so many of you end up here.",
+                 "Hero: I was hoping to not have to use this so early, but I don't have much of a choice. I'll show you the power of my secret  technique.",
+                 "Sir Leopold: Hero, oh my god what are you... Did he just....Did he just put those dice in his mouth!!!!","Erika: Oh my god that is so disgusting, do you any idea where those dice have been? You Dirty degenerate filthy"
+                                                                                                    " rotten human!", "I think.... I'm going to puke.",
                  "Sir Leopold: Erika don't do it , if you barf then I'll brfffff...throw up too.",
                  "Sir Leopold: Hero...Your power meter is going to be faster, and the margin of error will be lower, stay focused and you can win this."
                  ,""],

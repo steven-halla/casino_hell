@@ -649,9 +649,7 @@ class BlackJackMackScreen(Screen):
             self.magic_enemy_attack_double_draw_message_component.update(state)
             if self.magic_enemy_attack_double_draw_message_component.message_index == end_message:
                 self.spell_sound.play()
-
                 self.game_state = "draw_phase"
-
 
         elif self.game_state == "bet_phase":
             spell_cast_timer = 300
@@ -659,10 +657,8 @@ class BlackJackMackScreen(Screen):
                 self.bet = self.money
 
             self.bet_screen_text.update(state)
-
             self.npc_speaking = True
             self.hero_speaking = False
-
             self.third_message_display = " "
             self.place_bet(state)
             if controller.isTPressed:
