@@ -958,14 +958,6 @@ class CrapsHappyScreen(BattleScreen):
 
 
 
-
-
-
-
-
-
-
-
         elif self.game_state == "point_bet_screen":
             self.battle_messages["bet_message"].update(state)
 
