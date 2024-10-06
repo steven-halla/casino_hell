@@ -344,6 +344,33 @@ class GambleScreen:
         # Continue with other drawing logic, like drawing battle messages
         self.battle_messages["level_up"].draw(state)
 
+    def draw_menu_selection_box(self, state:"GameState"):
+
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        # Create the black box
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill((0, 0, 0))
+
+        # Create a white border
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill((255, 255, 255))
+        white_border.blit(black_box, (border_width, border_width))
+
+        # Determine the position of the white-bordered box
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        # Blit the white-bordered box onto the display
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
     def draw_enemy_info_box(self, state: "GameState") -> None:
         black_box = pygame.Surface((200 - 10, 110 - 10))
         black_box.fill((0, 0, 0))
@@ -353,8 +380,6 @@ class GambleScreen:
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 20))
 
-        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
-
         black_box = pygame.Surface((200 - 10, 130 - 10))
         black_box.fill((0, 0, 0))
         border_width = 5
@@ -363,40 +388,10 @@ class GambleScreen:
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (25, 60))
 
-        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 70))
 
-        if state.crapsBossScreen.lucky_seven_buff_counter > 0:
-            state.DISPLAY.blit(self.font.render(f"Triple Dice {state.crapsBossScreen.lucky_seven_buff_counter}: ", True, (255, 255, 255)), (37, 110))
-        else:
-            state.DISPLAY.blit(self.font.render(f"Status: ", True, (255, 255, 255)), (37, 110))
 
-        # state.DISPLAY.blit(self.font.render(f"Hero EXP:{state.player.exp} ", True, (255, 255, 255)), (37, 150))
 
-        state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
-    def draw_enemy_info_box_debuff(self, state: "GameState") -> None:
-        black_box = pygame.Surface((200 - 10, 110 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 20))
-
-        state.DISPLAY.blit(self.font.render("Enemy", True, (255, 255, 255)), (37, 33))
-
-        black_box = pygame.Surface((200 - 10, 130 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 60))
-
-        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, (255, 255, 255)), (37, 70))
-        state.DISPLAY.blit(self.font.render(f"Status: HACKED {state.slotsRippaSnappaScreen.slot_hack}", True, (255, 255, 255)), (37, 110))
-
-        state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)), (37, 370))
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
         black_box = pygame.Surface((200 - 10, 180 - 10))

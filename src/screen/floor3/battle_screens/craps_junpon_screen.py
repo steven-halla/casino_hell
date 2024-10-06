@@ -114,6 +114,9 @@ class CrapsJunponScreen(GambleScreen):
     def draw(self, state: 'GameState'):
         super().draw(state)
         self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
+        self.draw_bottom_black_box(state)
+        self.draw_menu_selection_box(state)
 
         pygame.display.flip()
 
