@@ -122,7 +122,7 @@ class Area2RestScreen(Screen):
             Johnathon(16 * 15, 16 * 15), # fin
             Natalie(16 * 25, 16 * 15), # fin
             Lurger(16 * 111, 16 * 66),
-            Sasquatch(16 * 65, 16 * 93),
+            Sasquatch(16 * 65, 16 * 88),
             Alex(16 * 94, 16 * 7),
             Jasper(16 * 55, 16 * 14), # fin
             TommyBoy(16 * 76, 16 * 45),  # fin

@@ -60,6 +60,7 @@ from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemon
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen2 import Area2RibDemonMazeScreen2
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen3 import Area2RibDemonMazeScreen3
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
+from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -166,9 +167,7 @@ class GameState:
 
 
 
-        # self.currentScreen = self.crapsBossScreen
-        # the below is the default of what i need
-        self.currentScreen = self.startLoadScreen
+
 
 
 
@@ -198,6 +197,24 @@ class GameState:
         self.area_2_rest_area_to_rib_demon_maze_point2 = False
         self.area_2_rest_area_to_rib_demon_maze_point3 = False
         self.area_2_rest_area_to_boss_point = False
+
+
+#-----------------area 3 is beloew-----------------------#
+        self.crapsJunponScreen = CrapsJunponScreen()
+
+
+
+
+
+
+
+
+        # self.currentScreen = self.crapsBossScreen
+        # the below is the default of what i need
+        # self.currentScreen = self.startLoadScreen
+
+        self.currentScreen = self.crapsJunponScreen
+
 
 
 

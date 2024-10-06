@@ -16,17 +16,17 @@ class Jasper(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Jasper: If you increase your perception outside of gambling, be sure to leave the area and come back, or the treasure chest wont reveal themselves.",
-                    "Hero: Why is that? That doens't make any sense?",
-                    "Jasper: The treasure chest  are shy, they dont like to show themselves coming out of hiding.",
+                    "Natsume: If you increase your perception outside of gambling, be sure to leave the area and come back, or the treasure chest wont reveal themselves.",
+                    "Hero: Why is that? That doesn't make any sense?",
+                    "Natsume: The treasure chest  are shy, they dont like to show themselves coming out of hiding.",
                     "Hero: Wait the treasure chest are alive??? ",
-                    "Jasper: Well yeah of course they are, why do you think they vanish after you open them? "
+                    "Natsume: Well yeah of course they are, why do you think they vanish after you open them? "
                 ],
                 (50, 450, 50, 45), 30, 500
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Jasper: I find the water to be relaxing and calming, it's the little things in life that are important.",
+                    "Natsume: I find the water to be relaxing and calming, it's the little things in life that are important.",
 
 
                 ],

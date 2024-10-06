@@ -119,6 +119,19 @@ Improve input validation and error handling.
 I need to do validations for my code its a bit messy in that regard
 
 
+Huanted house:
+have a room with multiple chest but it takes 3 seconds per chest, have a timer after opening chest
+this means the faster you clear area the more chest you can open before monster gets to you.
+
+The haunted house should have 3 floors
+upper floor
+main floor
+and the dreaded basement.
+start out with 30 or so NPCS
+and get less and less
+lets hve it to where you can help other NPCS or hinder
+
+
 
 
 
