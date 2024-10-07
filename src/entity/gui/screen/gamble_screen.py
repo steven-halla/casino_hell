@@ -335,9 +335,9 @@ class GambleScreen:
 
                 # Display the stats numbers only
                 for idx, stat_value in enumerate(current_stats):
-                    y_position = start_y_right_box + idx * 40  # Same vertical spacing as the level-up menu
+                    y_position = start_y_right_box + idx * 40
                     state.DISPLAY.blit(
-                        self.font.render(f"{stat_value}", True, (255, 255, 255)),
+                        self.font.render(f"{stat_value}", True, WHITE),
                         (stats_x_position, y_position + 15)
                     )
 

@@ -1,6 +1,7 @@
 import pygame
 import random
 
+from constants import WHITE, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from entity.gui.textbox.text_box import TextBox
@@ -37,6 +38,7 @@ class CrapsJunponScreen(GambleScreen):
         self.player_stamina_low_cost = 5
         self.magic_screen_menu_lucky_seven_index = 0
         self.magic_screen_menu_back_index = 1
+        self.lock_down_inactive = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -110,6 +112,81 @@ class CrapsJunponScreen(GambleScreen):
 
 
 
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        enemy_name_y_position = 33
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+
+        state.DISPLAY.blit(self.font.render("Junpon", True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"Money: {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        if self.lucky_seven_buff_counter == self.lucky_seven_buff_not_active:
+            state.DISPLAY.blit(self.font.render(f"Normal Status", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+        elif self.lucky_seven_buff_counter > self.lucky_seven_buff_not_active:
+            state.DISPLAY.blit(self.font.render(f"Triple Dice: {self.lucky_seven_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"Bet: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+
+
+        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"HP: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, 290))
+        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, 330))
+        if self.lock_down <= self.lock_down_inactive:
+            state.DISPLAY.blit(self.font.render(f"Hero", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
+        elif self.lock_down > self.lock_down_inactive:
+            state.DISPLAY.blit(self.font.render(f"Locked Down:{self.lock_down}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
+
+        black_box_width = 200 - 10  # Adjust width to match the left box
+
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+
+
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + 60, y_position + 15)
+            )
+
+        if Magic.CRAPS_LUCKY_7.value not in state.player.magicinventory:
+            self.magic_lock = True
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = "Locked"
+
+        elif Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = "Magic"
+
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = "Locked"
+
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = "Magic"
+
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + 12, start_y_right_box + 12)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + 12, start_y_right_box + 52)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + 12, start_y_right_box + 92)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + 12, start_y_right_box + 132)
+            )
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -117,6 +194,7 @@ class CrapsJunponScreen(GambleScreen):
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
         self.draw_menu_selection_box(state)
+        self.draw_box_info(state)
 
         pygame.display.flip()
 
