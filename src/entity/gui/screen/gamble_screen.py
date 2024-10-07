@@ -247,42 +247,42 @@ class GambleScreen:
                 start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
                 start_y_right_box = 200  # Adjust vertical alignment
 
-                # Create the black box
                 black_box = pygame.Surface((black_box_width, black_box_height))
                 black_box.fill(BLACK)
 
-                # Create a white border
+                white_thickness = 2
+
                 white_border = pygame.Surface(
-                    (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+                    (black_box_width + white_thickness * border_width, black_box_height + white_thickness * border_width)
                 )
                 white_border.fill(WHITE)
                 white_border.blit(black_box, (border_width, border_width))
 
-                # Determine the position of the white-bordered box
                 black_box_x = start_x_right_box - border_width
                 black_box_y = start_y_right_box - border_width
 
-                # Blit the white-bordered box onto the display
                 state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-                # Draw the menu options
+                x_offset = 60
+                y_offset = 15
+                stat_y_padding = 40
                 for idx, choice in enumerate(self.level_screen_stats):
-                    y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+                    y_position = start_y_right_box + idx * stat_y_padding  # Adjust spacing between choices
                     state.DISPLAY.blit(
-                        self.font.render(choice, True, (255, 255, 255)),
-                        (start_x_right_box + 60, y_position + 15)
+                        self.font.render(choice, True, WHITE),
+                        (start_x_right_box + x_offset, y_position + y_offset)
                     )
 
-                # Draw the selection arrow
-                arrow_y_positions = [12, 52, 92, 132, 172]  # Y positions for each arrow
+                arrow_x_offset = 12
+                arrow_y_positions = [12, 52, 92, 132, 172]
                 arrow_y = start_y_right_box + arrow_y_positions[self.level_up_stat_increase_index]
                 state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, arrow_y)
+                    self.font.render("->", True, WHITE),
+                    (start_x_right_box + arrow_x_offset, arrow_y)
                 )
 
-                # Draw the player's current stats (just the numbers) to the right of the menu (30 pixels to the right)
-                stats_x_position = start_x_right_box + black_box_width - 30
+                current_stat_x_offset = 30
+                stats_x_position = start_x_right_box + black_box_width - current_stat_x_offset
 
                 perception = state.player.perception
                 luck = state.player.luck
@@ -301,12 +301,15 @@ class GambleScreen:
                     luck  # Adjusted luck
                 ]
 
+                stat_spacing = 40
+                stat_y_offset = 15
+
                 # Display the stats numbers only
                 for idx, stat_value in enumerate(current_stats):
-                    y_position = start_y_right_box + idx * 40
+                    y_position = start_y_right_box + idx * stat_spacing
                     state.DISPLAY.blit(
                         self.font.render(f"{stat_value}", True, WHITE),
-                        (stats_x_position, y_position + 15)
+                        (stats_x_position, y_position + stat_y_offset)
                     )
 
         self.battle_messages[self.LEVEL_UP_MESSAGE].draw(state)
