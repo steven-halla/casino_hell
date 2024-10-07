@@ -352,7 +352,7 @@ class GambleScreen:
         horizontal_padding = 25
         vertical_position = 240
         box_initial_height = 221
-        border_padding = 2
+        white_border_top_left = 2
         box_initial_width = 200
 
         # Calculate the adjusted box dimensions
@@ -369,7 +369,7 @@ class GambleScreen:
 
         # Create a white border
         white_border = pygame.Surface(
-            (black_box_width + border_padding * border_width, black_box_height + border_padding * border_width)
+            (black_box_width + white_border_top_left * border_width, black_box_height + white_border_top_left * border_width)
         )
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
@@ -390,13 +390,13 @@ class GambleScreen:
         padding_x = 25
         padding_y_1 = 20
         padding_y_2 = 60
-        border_padding = 2
-
+        white_border_bottom_right = 2
+        white_border_top_left = 2
 
         # Draw first black box with border
         black_box = pygame.Surface((black_box_width, black_box_height_1))
         black_box.fill(BLACK)
-        white_border = pygame.Surface((black_box_width + border_padding * border_width, black_box_height_1 + border_padding * border_width))
+        white_border = pygame.Surface((black_box_width + white_border_bottom_right * border_width, black_box_height_1 + white_border_bottom_right * border_width))
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (padding_x, padding_y_1))
@@ -404,42 +404,64 @@ class GambleScreen:
         # Draw second black box with border
         black_box = pygame.Surface((black_box_width, black_box_height_2))
         black_box.fill(BLACK)
-        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height_2 + 2 * border_width))
+        white_border = pygame.Surface((black_box_width + white_border_top_left * border_width, black_box_height_2 + white_border_top_left * border_width))
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (padding_x, padding_y_2))
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
-        black_box = pygame.Surface((200 - 10, 180 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 235))
+        # Define local variables for dimensions and positions
+        box_width_offset = 10
+        box_height_offset_1 = 180 - box_width_offset
+        box_height_offset_2 = 45 - box_width_offset
+        border_thickness = 5
+        display_x_position_1 = 25
+        display_y_position_1 = 235
+        display_y_position_2 = 195
+        white_border_bottom_right = 2
+        white_border_top_left = 2
 
-        black_box = pygame.Surface((200 - 10, 45 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 195))
+        # Draw the first box
+        black_box = pygame.Surface((200 - box_width_offset, box_height_offset_1))
+        black_box.fill(BLACK)
+        white_border = pygame.Surface((200 - box_width_offset + white_border_top_left * border_thickness, box_height_offset_1 + white_border_top_left * border_thickness))
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_thickness, border_thickness))
+        state.DISPLAY.blit(white_border, (display_x_position_1, display_y_position_1))
+
+        # Draw the second box
+        black_box = pygame.Surface((200 - box_width_offset, box_height_offset_2))
+        black_box.fill(BLACK)
+        white_border = pygame.Surface((200 - box_width_offset + white_border_bottom_right * border_thickness, box_height_offset_2 + white_border_bottom_right * border_thickness))
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_thickness, border_thickness))
+        state.DISPLAY.blit(white_border, (display_x_position_1, display_y_position_2))
+
 
     def draw_bottom_black_box(self, state: "GameState") -> None:
+        # Define local variables for dimensions and positions
         black_box_height = 130
         black_box_width = 700
         border_width = 5
+        vertical_padding = 20
+        border_padding = 2
 
+        center_divisor = 2
+
+        # Create the black box
         black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill((0, 0, 0))
+        black_box.fill(BLACK)
 
-        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
+        # Create a white border
+        white_border = pygame.Surface((black_box_width + border_padding * border_width, black_box_height + border_padding * border_width))
+        white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
 
+        # Determine the position for the white-bordered box
         screen_width, screen_height = state.DISPLAY.get_size()
-        black_box_x = (screen_width - black_box_width) // 2 - border_width
-        black_box_y = screen_height - black_box_height - 20 - border_width
+        black_box_x = (screen_width - black_box_width) // center_divisor - border_width
+        black_box_y = screen_height - black_box_height - vertical_padding - border_width
 
+        # Blit the white-bordered box onto the display
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
