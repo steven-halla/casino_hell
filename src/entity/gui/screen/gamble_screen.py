@@ -43,6 +43,7 @@ class GambleScreen:
 
 
     WELCOME_SCREEN = "welcome_screen"
+    PLAY_SCREEN = "play_screen"
     MAGIC_MENU_SCREEN= "magic_menu_screen"
     BET_MENU_SCREEN = "bet_menu_screen"
     LEVEL_UP_SCREEN = "level_up_screen"
@@ -72,34 +73,44 @@ class GambleScreen:
         state.player.canMove = False
         pygame.display.set_caption(self.screenName)
 
-    def update(self, state: 'GameState') -> None:
-
+    def welcome_screen_logic(self, state: 'GameState') -> None:
         controller = state.controller
         controller.update()
+        if state.player.stamina_points <= self.player_stamina_depleted:
+            state.player.canMove = True
+            self.game_state = self.GAME_OVER_SCREEN
+
+        if state.player.money <= self.player_bankrupt:
+            self.game_state = self.GAME_OVER_SCREEN
+
+        if self.money <= self.enemy_bankrupt:
+            state.player.canMove = True
+            self.game_state = self.GAME_OVER_SCREEN
+
+        if state.player.leveling_up == True:
+            self.game_state = self.LEVEL_UP_SCREEN
+
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            # the % modulus  operator keeps our number in the index range
+            self.welcome_screen_index = (self.welcome_screen_index - self.move_index_by_1) % len(self.welcome_screen_choices)
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.welcome_screen_index = (self.welcome_screen_index + self.move_index_by_1) % len(self.welcome_screen_choices)
+
+
+
+
+
+    def update(self, state: 'GameState') -> None:
+
+        # controller = state.controller
+        # controller.update()
         if self.game_state == self.WELCOME_SCREEN:
-            if state.player.stamina_points <= self.player_stamina_depleted:
-                state.player.canMove = True
-                self.game_state = self.GAME_OVER_SCREEN
+            self.welcome_screen_logic(state)
 
-            if state.player.money <= self.player_bankrupt:
-                self.game_state = self.GAME_OVER_SCREEN
-
-            if self.money <= self.enemy_bankrupt:
-                state.player.canMove = True
-                self.game_state = self.GAME_OVER_SCREEN
-
-            if state.player.leveling_up == True:
-                self.game_state = self.LEVEL_UP_SCREEN
-
-            if controller.isUpPressed:
-                controller.isUpPressed = False
-                self.menu_movement_sound.play()
-                # the % modulus  operator keeps our number in the index range
-                self.welcome_screen_index = (self.welcome_screen_index - self.move_index_by_1) % len(self.welcome_screen_choices)
-            elif controller.isDownPressed:
-                controller.isDownPressed = False
-                self.menu_movement_sound.play()
-                self.welcome_screen_index = (self.welcome_screen_index + self.move_index_by_1) % len(self.welcome_screen_choices)
 
         # if state.musicOn == True:
         #     if self.mucic_on == True:

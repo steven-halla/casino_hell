@@ -109,10 +109,6 @@ class CrapsJunponScreen(GambleScreen):
                     # state.current_player = state.area3GamblingScreen
                     # state.area3GamblingScreen.start(state)
 
-
-
-
-
     def draw_box_info(self, state: 'GameState'):
         arrow_x_coordinate_padding = 12
         arrow_y_coordinate_padding_play = 12
