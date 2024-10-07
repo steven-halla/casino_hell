@@ -34,6 +34,10 @@ class GambleScreen:
         self.music_level_up_volume: float = 0.3  # Adjust as needed
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")
         self.menu_movement_sound.set_volume(0.2)
+        self.stat_modifier = 1
+        self.game_level_2_stat_max = 2
+        self.battle_message_level_up_last_index = 3
+
 
 
 
@@ -48,7 +52,6 @@ class GambleScreen:
     BET_MESSAGE = "bet_message"
     LEVEL_UP_MESSAGE = "level_up_message"
 
-
     MAGIC = "Magic"
     LOCKED = "Locked"
     MONEY_HEADER = "Money"
@@ -59,6 +62,11 @@ class GambleScreen:
     HERO_HEADER = "Hero"
     LOCKED_DOWN_HEADER = "Locked Down"
 
+    PLAYER_STAT_BODY = "Body"
+    PLAYER_STAT_MIND = "Mind"
+    PLAYER_STAT_SPIRIT = "Spirit"
+    PLAYER_STAT_PERCEPTION = "Perception"
+    PLAYER_STAT_LUCK = "Luck"
 
     def start(self, state: 'GameState') -> None:
         state.player.canMove = False
@@ -93,21 +101,15 @@ class GambleScreen:
                 self.menu_movement_sound.play()
                 self.welcome_screen_index = (self.welcome_screen_index + self.move_index_by_1) % len(self.welcome_screen_choices)
 
-
-
         # if state.musicOn == True:
         #     if self.mucic_on == True:
         #         self.stop_music()
         #         self.initalize_music()
         #         self.music_on = False
 
-
-
         if self.bet > self.money:
             print("Resetting Money")
             self.bet = self.money
-
-
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
 
@@ -122,16 +124,14 @@ class GambleScreen:
                 f"Max focus increased by {state.player.focus_increase_from_level} points!",
                 ""
             ]
-            self.battle_messages["level_up"].update(state)
+            self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
             if self.battle_messages[self.LEVEL_UP_MESSAGE].is_finished():
                 state.player.leveling_up = False
                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
                 self.game_state = self.WELCOME_SCREEN
                 self.level_up_checker_sound = True
 
-
         elif state.player.stat_point_increase == True:
-
 
             self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
@@ -139,20 +139,21 @@ class GambleScreen:
                 f"Max focus increased by {state.player.focus_increase_from_level} points!",
                 f"You gained a stat point, please allocate, stat points at this level max at 2."
             ]
+
             self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
 
-            if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == 3 and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished():
+            if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished():
                 if controller.isUpPressed:
-                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index - 1) % len(self.level_screen_stats)
+                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index - self.move_index_by_1) % len(self.level_screen_stats)
                     controller.isUpPressed = False
                 elif controller.isDownPressed:
-                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index + 1) % len(self.level_screen_stats)
+                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index + self.move_index_by_1) % len(self.level_screen_stats)
                     controller.isDownPressed = False
 
                 selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
 
-                if selected_stat == "Body" and state.controller.isTPressed and state.player.body < 2:
-                    state.player.body += 1
+                if selected_stat == self.PLAYER_STAT_BODY and state.controller.isTPressed and state.player.body <  self.game_level_2_stat_max:
+                    state.player.body += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
@@ -166,8 +167,8 @@ class GambleScreen:
                     self.game_state = self.WELCOME_SCREEN
 
 
-                elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
-                    state.player.mind += 1
+                elif selected_stat == self.PLAYER_STAT_MIND and state.controller.isTPressed and state.player.mind < self.game_level_2_stat_max:
+                    state.player.mind += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
@@ -176,11 +177,11 @@ class GambleScreen:
                     state.player.max_focus_points += state.player.level_2_mind_focus_increase
                     state.player.focus_points += state.player.level_2_mind_focus_increase
                     self.level_up_checker_sound = True
-                    self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
 
 
-                elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
-                    state.player.spirit += 1
+                elif selected_stat == self.PLAYER_STAT_SPIRIT and state.controller.isTPressed and state.player.spirit < self.game_level_2_stat_max:
+                    state.player.spirit += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
@@ -191,61 +192,55 @@ class GambleScreen:
                     self.game_state = self.WELCOME_SCREEN
 
 
-                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
-                    state.player.perception += 1
+                elif selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed and state.player.perception < self.game_level_2_stat_max:
+                    state.player.perception += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-
                     self.level_up_checker_sound = True
-
                     self.game_state = self.WELCOME_SCREEN
                     # state.player.base_perception += 1
 
 
-                elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
+                elif selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed and state.player.perception < 3 and \
                         Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    state.player.perception += 1
+                    state.player.perception += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-
                     self.level_up_checker_sound = True
-
                     self.game_state = self.WELCOME_SCREEN
 
-                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
-                    state.player.luck += 1
+                elif selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed and state.player.luck < self.game_level_2_stat_max:
+                    state.player.luck += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-
                     self.level_up_checker_sound = True
-
                     self.game_state = self.WELCOME_SCREEN
 
-                elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
+                elif selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed and state.player.luck < 3 and \
                         state.player.enhanced_luck == True:
-                    state.player.luck += 1
+                    state.player.luck += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-
                     self.level_up_checker_sound = True
-
                     self.game_state = self.WELCOME_SCREEN
-
 
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
 
     def draw_level_up(self, state: 'GameState') -> None:
+        do_not_show_ehanced_luck = 1
+        do_not_show_ehanced_perception = 1
+
         if state.player.stat_point_increase and self.game_state == "level_up_screen":
-            if self.battle_messages["level_up"].message_index == 3:
+            if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index:
                 black_box_height = 261 - 50  # Adjust height
                 black_box_width = 240 - 10  # Adjust width to match the left box
                 border_width = 5
@@ -254,13 +249,13 @@ class GambleScreen:
 
                 # Create the black box
                 black_box = pygame.Surface((black_box_width, black_box_height))
-                black_box.fill((0, 0, 0))
+                black_box.fill(BLACK)
 
                 # Create a white border
                 white_border = pygame.Surface(
                     (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
                 )
-                white_border.fill((255, 255, 255))
+                white_border.fill(WHITE)
                 white_border.blit(black_box, (border_width, border_width))
 
                 # Determine the position of the white-bordered box
@@ -289,19 +284,15 @@ class GambleScreen:
                 # Draw the player's current stats (just the numbers) to the right of the menu (30 pixels to the right)
                 stats_x_position = start_x_right_box + black_box_width - 30
 
-                # Calculate the actual stats, taking into account equipment and enhancements
                 perception = state.player.perception
                 luck = state.player.luck
 
-                # Handle enhanced luck (do not show +1 when displaying luck stat)
                 if state.player.enhanced_luck:
-                    luck -= 1  # Do not show the temporary +1 from enhanced luck
+                    luck -= do_not_show_ehanced_luck
 
-                # Handle perception enhancement (do not show +1 when "Socks of Perception" are equipped)
                 if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    perception -= 1  # Do not show the temporary +1 from the item
+                    perception -= do_not_show_ehanced_perception
 
-                # Display just the numbers next to the level-up screen
                 current_stats = [
                     state.player.body,
                     state.player.mind,
@@ -318,8 +309,7 @@ class GambleScreen:
                         (stats_x_position, y_position + 15)
                     )
 
-        # Continue with other drawing logic, like drawing battle messages
-        self.battle_messages["level_up"].draw(state)
+        self.battle_messages[self.LEVEL_UP_MESSAGE].draw(state)
 
     def draw_menu_selection_box(self, state: "GameState"):
         # Define local variables for dimensions and positions
@@ -332,34 +322,27 @@ class GambleScreen:
         white_border_top_left = 2
         box_initial_width = 200
 
-        # Calculate the adjusted box dimensions
         black_box_height = box_initial_height - box_height_offset
         black_box_width = box_initial_width - box_width_offset
 
-        # Determine the position of the right box
         start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
         start_y_right_box = vertical_position
 
-        # Create the black box
         black_box = pygame.Surface((black_box_width, black_box_height))
         black_box.fill(BLACK)
 
-        # Create a white border
         white_border = pygame.Surface(
             (black_box_width + white_border_top_left * border_width, black_box_height + white_border_top_left * border_width)
         )
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
 
-        # Determine the position of the white-bordered box
         black_box_x = start_x_right_box - border_width
         black_box_y = start_y_right_box - border_width
 
-        # Blit the white-bordered box onto the display
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
     def draw_enemy_info_box(self, state: "GameState") -> None:
-        # Define local variables for dimensions
         black_box_width = 190
         black_box_height_1 = 100
         black_box_height_2 = 120
@@ -370,7 +353,6 @@ class GambleScreen:
         white_border_bottom_right = 2
         white_border_top_left = 2
 
-        # Draw first black box with border
         black_box = pygame.Surface((black_box_width, black_box_height_1))
         black_box.fill(BLACK)
         white_border = pygame.Surface((black_box_width + white_border_bottom_right * border_width, black_box_height_1 + white_border_bottom_right * border_width))
@@ -378,7 +360,6 @@ class GambleScreen:
         white_border.blit(black_box, (border_width, border_width))
         state.DISPLAY.blit(white_border, (padding_x, padding_y_1))
 
-        # Draw second black box with border
         black_box = pygame.Surface((black_box_width, black_box_height_2))
         black_box.fill(BLACK)
         white_border = pygame.Surface((black_box_width + white_border_top_left * border_width, black_box_height_2 + white_border_top_left * border_width))
@@ -387,7 +368,6 @@ class GambleScreen:
         state.DISPLAY.blit(white_border, (padding_x, padding_y_2))
 
     def draw_hero_info_boxes(self, state: "GameState") -> None:
-        # Define local variables for dimensions and positions
         box_width_offset = 10
         box_height_offset_1 = 180 - box_width_offset
         box_height_offset_2 = 45 - box_width_offset
@@ -397,48 +377,40 @@ class GambleScreen:
         display_y_position_2 = 195
         white_border_bottom_right = 2
         white_border_top_left = 2
+        box_width = 200
 
-        # Draw the first box
-        black_box = pygame.Surface((200 - box_width_offset, box_height_offset_1))
+        black_box = pygame.Surface((box_width - box_width_offset, box_height_offset_1))
         black_box.fill(BLACK)
-        white_border = pygame.Surface((200 - box_width_offset + white_border_top_left * border_thickness, box_height_offset_1 + white_border_top_left * border_thickness))
+        white_border = pygame.Surface((box_width - box_width_offset + white_border_top_left * border_thickness, box_height_offset_1 + white_border_top_left * border_thickness))
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_thickness, border_thickness))
         state.DISPLAY.blit(white_border, (display_x_position_1, display_y_position_1))
 
-        # Draw the second box
-        black_box = pygame.Surface((200 - box_width_offset, box_height_offset_2))
+        black_box = pygame.Surface((box_width - box_width_offset, box_height_offset_2))
         black_box.fill(BLACK)
-        white_border = pygame.Surface((200 - box_width_offset + white_border_bottom_right * border_thickness, box_height_offset_2 + white_border_bottom_right * border_thickness))
+        white_border = pygame.Surface((box_width - box_width_offset + white_border_bottom_right * border_thickness, box_height_offset_2 + white_border_bottom_right * border_thickness))
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_thickness, border_thickness))
         state.DISPLAY.blit(white_border, (display_x_position_1, display_y_position_2))
 
 
     def draw_bottom_black_box(self, state: "GameState") -> None:
-        # Define local variables for dimensions and positions
         black_box_height = 130
         black_box_width = 700
         border_width = 5
         vertical_padding = 20
         border_padding = 2
-
         center_divisor = 2
-
-        # Create the black box
         black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill(BLACK)
 
-        # Create a white border
+        black_box.fill(BLACK)
         white_border = pygame.Surface((black_box_width + border_padding * border_width, black_box_height + border_padding * border_width))
         white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
 
-        # Determine the position for the white-bordered box
         screen_width, screen_height = state.DISPLAY.get_size()
         black_box_x = (screen_width - black_box_width) // center_divisor - border_width
         black_box_y = screen_height - black_box_height - vertical_padding - border_width
 
-        # Blit the white-bordered box onto the display
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
