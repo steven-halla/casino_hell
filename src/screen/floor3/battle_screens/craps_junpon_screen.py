@@ -66,7 +66,6 @@ class CrapsJunponScreen(GambleScreen):
         self.bet = self.bet_minimum
         state.player.canMove = True
 
-
     def update(self, state: 'GameState'):
         controller = state.controller
         controller.update()
@@ -105,7 +104,7 @@ class CrapsJunponScreen(GambleScreen):
                 elif self.welcome_screen_index == self.welcome_screen_bet_index:
                     self.game_state = self.BET_MENU_SCREEN
 
-                elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == 0:
+                elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
                     self.reset_craps_game(state)
                     # state.current_player = state.area3GamblingScreen
                     # state.area3GamblingScreen.start(state)
@@ -135,9 +134,9 @@ class CrapsJunponScreen(GambleScreen):
         spacing_between_choices = 40
         text_x_offset = 60
         text_y_offset = 15
-        black_box_width = 200 - box_width_offset  # Adjust width to match the left box
+        black_box_width = 200 - box_width_offset
         start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
-        start_y_right_box = vertical_position  # Adjust vertical alignment
+        start_y_right_box = vertical_position
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
@@ -148,11 +147,10 @@ class CrapsJunponScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"{self.TRIPLE_DICE}: {self.lucky_seven_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
-
-
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+
         if self.lock_down <= self.lock_down_inactive:
             state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
         elif self.lock_down > self.lock_down_inactive:
@@ -164,16 +162,15 @@ class CrapsJunponScreen(GambleScreen):
                 self.font.render(choice, True, WHITE),
                 (start_x_right_box + text_x_offset, y_position + text_y_offset)
             )
+
         if Magic.CRAPS_LUCKY_7.value not in state.player.magicinventory:
             self.magic_lock = True
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
-
         elif Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 
         if self.magic_lock == True:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
-
         elif self.magic_lock == False:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 

@@ -46,6 +46,9 @@ class GambleScreen:
 
     WELCOME_MESSAGE = "welcome_message"
     BET_MESSAGE = "bet_message"
+    LEVEL_UP_MESSAGE = "level_up_message"
+
+
     MAGIC = "Magic"
     LOCKED = "Locked"
     MONEY_HEADER = "Money"
@@ -88,7 +91,7 @@ class GambleScreen:
             elif controller.isDownPressed:
                 controller.isDownPressed = False
                 self.menu_movement_sound.play()
-                self.welcome_screen_index = (self.welcome_screen_index - self.move_index_by_1) % len(self.welcome_screen_choices)
+                self.welcome_screen_index = (self.welcome_screen_index + self.move_index_by_1) % len(self.welcome_screen_choices)
 
 
 
@@ -113,37 +116,32 @@ class GambleScreen:
             self.level_up_checker_sound = False
 
         if state.player.stat_point_increase == False:
-            self.battle_messages["level_up"].messages = [
+            self.battle_messages[self.LEVEL_UP_SCREEN].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
                 f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
                 f"Max focus increased by {state.player.focus_increase_from_level} points!",
                 ""
             ]
             self.battle_messages["level_up"].update(state)
-            if self.battle_messages["level_up"].is_finished():
+            if self.battle_messages[self.LEVEL_UP_MESSAGE].is_finished():
                 state.player.leveling_up = False
-                self.battle_messages["level_up"].reset()
-                if state.opossumInACanCandyScreen.level_anchor == True:
-                    self.game_state = "play_again_or_leave_screen"
-                    self.level_up_checker_sound = True
-
-                else:
-                    self.game_state = "welcome_screen"
-                    self.level_up_checker_sound = True
+                self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+                self.game_state = self.WELCOME_SCREEN
+                self.level_up_checker_sound = True
 
 
         elif state.player.stat_point_increase == True:
 
 
-            self.battle_messages["level_up"].messages = [
+            self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
                 f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
                 f"Max focus increased by {state.player.focus_increase_from_level} points!",
                 f"You gained a stat point, please allocate, stat points at this level max at 2."
             ]
-            self.battle_messages["level_up"].update(state)
+            self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
 
-            if self.battle_messages["level_up"].message_index == 3 and self.battle_messages["level_up"].current_message_finished():
+            if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == 3 and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished():
                 if controller.isUpPressed:
                     self.level_up_stat_increase_index = (self.level_up_stat_increase_index - 1) % len(self.level_screen_stats)
                     controller.isUpPressed = False
@@ -161,15 +159,11 @@ class GambleScreen:
 
                     state.player.max_stamina_points += state.player.level_2_body_stamina_increase
                     state.player.stamina_points += state.player.level_2_body_stamina_increase
-                    self.battle_messages["level_up"].reset()
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
+                    self.level_up_checker_sound = True
 
-                        self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
 
 
                 elif selected_stat == "Mind" and state.controller.isTPressed and state.player.mind < 2:
@@ -178,17 +172,11 @@ class GambleScreen:
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
-                    self.battle_messages["level_up"].reset()
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
                     state.player.max_focus_points += state.player.level_2_mind_focus_increase
                     state.player.focus_points += state.player.level_2_mind_focus_increase
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
-
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
-
-                        self.game_state = "welcome_screen"
+                    self.level_up_checker_sound = True
+                    self.game_state = "welcome_screen"
 
 
                 elif selected_stat == "Spirit" and state.controller.isTPressed and state.player.spirit < 2:
@@ -196,15 +184,11 @@ class GambleScreen:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
-                    self.battle_messages["level_up"].reset()
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
+                    self.level_up_checker_sound = True
 
-                        self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
 
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
@@ -212,15 +196,11 @@ class GambleScreen:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
-                    self.battle_messages["level_up"].reset()
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
+                    self.level_up_checker_sound = True
 
-                        self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
                     # state.player.base_perception += 1
 
 
@@ -230,30 +210,22 @@ class GambleScreen:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
-                    self.battle_messages["level_up"].reset()
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
+                    self.level_up_checker_sound = True
 
-                        self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
                     state.player.luck += 1
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
-                    self.battle_messages["level_up"].reset()
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
+                    self.level_up_checker_sound = True
 
-                        self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
                         state.player.enhanced_luck == True:
@@ -261,15 +233,11 @@ class GambleScreen:
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
-                    self.battle_messages["level_up"].reset()
-                    if state.opossumInACanCandyScreen.level_anchor == True:
-                        self.level_up_checker_sound = True
+                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
-                        self.game_state = "play_again_or_leave_screen"
-                    else:
-                        self.level_up_checker_sound = True
+                    self.level_up_checker_sound = True
 
-                        self.game_state = "welcome_screen"
+                    self.game_state = self.WELCOME_SCREEN
 
 
     def draw(self, state: 'GameState') -> None:
