@@ -46,6 +46,15 @@ class GambleScreen:
 
     WELCOME_MESSAGE = "welcome_message"
     BET_MESSAGE = "bet_message"
+    MAGIC = "Magic"
+    LOCKED = "Locked"
+    MONEY_HEADER = "Money"
+    STATUS_GREEN = "Normal Status"
+    BET_HEADER = "Bet"
+    HP_HEADER = "HP"
+    MP_HEADER = "MP"
+    HERO_HEADER = "Hero"
+    LOCKED_DOWN_HEADER = "Locked Down"
 
 
     def start(self, state: 'GameState') -> None:
