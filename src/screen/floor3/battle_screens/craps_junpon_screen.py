@@ -41,6 +41,9 @@ class CrapsJunponScreen(GambleScreen):
         self.magic_lock: bool = False
         self.lucky_seven_flag = False
         self.is_timer_active = True  # Timer is no longer active
+        self.blit_message_x = 65
+        self.blit_message_y = 460
+
 
 
         self.lucky_seven_buff_not_active = 0
@@ -78,15 +81,12 @@ class CrapsJunponScreen(GambleScreen):
                 "I'm here to lead the point"
             ]),
             self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE: MessageBox([
-                "You rolled a lucky 7 congrats"
+                "You rolled a lucky 7 congrats."
             ]),
-            self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE: MessageBox([
-                f"You rolled a bad roll"
-            ]),
-
-            # self.POINT_ROLL_ROLLING_DICE_MESSAGE: MessageBox([
-            #     f"ROLLING the dice"
+            # self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE: MessageBox([
+            #     f"You rolled a bad roll"
             # ]),
+
             self.POINT_ROLL_ROLLED_DICE_MESSAGE: MessageBox([
                 f"Whoa You rolled a place holder"
             ]),
@@ -208,12 +208,13 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
-            print("player wins point roll lucky ducky 7")
+            if controller.isTPressed:
+                controller.isTPressed = False
+                self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].update(state)
 
 
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
-            print("player lose come out screen")
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
 
 
@@ -240,11 +241,14 @@ class CrapsJunponScreen(GambleScreen):
                 self.dice_roll_2 = random.randint(1, 6)
                 print("Dice roll of 2 is: " + str(self.dice_roll_2))
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
-
-
                 # Reset the timer state after rolling
                 self.is_timer_active = False
                 print("Timer ended, dice rolled.")
+
+                if self.point_roll_total == self.come_out_roll_total:
+                    self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
+                elif self.point_roll_total == 7:
+                    self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
 
 
             elif self.point_roll_index == self.point_blow_index:
@@ -252,28 +256,36 @@ class CrapsJunponScreen(GambleScreen):
             elif self.point_roll_index == self.point_bet_index:
                 print("time to make a bet")
 
-            if controller.isUpPressed and self.is_timer_active == True:
+            if controller.isUpPressed and self.is_timer_active == False:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.point_roll_index = (self.point_roll_index - self.index_stepper) % len(self.point_roll_choices)
                 print(str(self.point_roll_index))
                 controller.isUpPressed = False
-            elif controller.isDownPressed and self.is_timer_active == True:
+            elif controller.isDownPressed and self.is_timer_active == False:
                 self.menu_movement_sound.play()  # Play the sound effect once
                 self.point_roll_index = (self.point_roll_index + self.index_stepper) % len(self.point_roll_choices)
                 controller.isDownPressed = False
-            # self.battle_messages[self.POINT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_WIN_POINT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
+            # Update the existing message in the battle_messages dictionary
+
+            # Then call the update method to reflect changes
             self.battle_messages[self.PLAYER_LOSE_POINT_ROLL_MESSAGE].update(state)
 
 
+        elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
+            if controller.isTPressed:
+                controller.isTPressed = False
+                self.game_state = self.WELCOME_SCREEN
 
-
-
+        elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
+            if controller.isTPressed:
+                controller.isTPressed = False
+                self.game_state = self.WELCOME_SCREEN
 
     def power_meter_screen_helper(self, state):
         controller = state.controller
@@ -517,22 +529,23 @@ class CrapsJunponScreen(GambleScreen):
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].draw(state)
 
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
-            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].draw(state)
+            self.battle_messages[self.PLAYER_LOSE_POINT_ROLL_MESSAGE].messages = f"You rolled a {self.come_out_roll_total}"
+
+            self.battle_messages[self.PLAYER_LOSE_POINT_ROLL_MESSAGE].draw(state)
 
 
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
-            message_x_pos = 65
-            message_y_pos = 460
+
             self.draw_menu_selection_box(state)
             self.draw_point_screen_box_info(state)
 
             # Check if 2 seconds have passed and a dice roll has been made
             if self.is_timer_active == False and self.dice_roll_1 > 0:
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
-                state.DISPLAY.blit(self.font.render(f"You need a {self.come_out_roll_total} and you rolled an: {self.point_roll_total} ", True, WHITE), (message_x_pos, message_y_pos))
+                state.DISPLAY.blit(self.font.render(f"You need a {self.come_out_roll_total} and you rolled an: {self.point_roll_total} ", True, WHITE), (self.blit_message_x, self.blit_message_y))
             else:
-                state.DISPLAY.blit(self.font.render(f"Rolling the dice ", True, WHITE), (message_x_pos, message_y_pos))
+                state.DISPLAY.blit(self.font.render(f"Rolling the dice ", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
 
 
@@ -542,6 +555,13 @@ class CrapsJunponScreen(GambleScreen):
 
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_POINT_ROLL_MESSAGE].draw(state)
+
+        elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
+            state.DISPLAY.blit(self.font.render(f"You WIN! Point: {self.point_roll_total} matching come out roll {self.come_out_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
+
+
+        elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
+            state.DISPLAY.blit(self.font.render(f"You LOSE! Point: {self.point_roll_total} matching come out roll {self.come_out_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         pygame.display.flip()
 
