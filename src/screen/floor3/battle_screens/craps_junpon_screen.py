@@ -4,7 +4,6 @@ import random
 from constants import WHITE, RED, GREEN
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
-from entity.gui.textbox.text_box import TextBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
@@ -24,12 +23,14 @@ class CrapsJunponScreen(GambleScreen):
         self.dice_roll_2: int = 0
         self.power_meter_index: int = 0
         self.point_roll_total: int = 0
-        self.point_roll_choices: list[str] = ["Play", "Bet"]
+        self.point_roll_choices: list[str] = ["Play", "Blow",  "Bet"]
         self.magic_screen_choices: list[str] = [Magic.CRAPS_LUCKY_7.value, "Back"]
         self.bet_screen_choices: list[str] = ["Back"]
-        self.welcome_screen_index: int = 0
         self.magic_screen_index: int = 0
         self.point_roll_index: int = 0
+        self.point_roll_dice_index: int = 0
+        self.point_shake_index: int = 1
+        self.point_bet_index: int = 2
         self.bet: int = 100
         self.bet_minimum: int = 100
         pygame.mixer.music.stop()
@@ -45,6 +46,7 @@ class CrapsJunponScreen(GambleScreen):
         self.lock_down_inactive = 0
         self.power_meter_speed = 2
         self.power_meter_goal = 80
+        self.index_stepper = 1
 
         self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
         self.failed_power_strike_sound_effect.set_volume(0.6)
@@ -181,6 +183,16 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
+            if controller.isUpPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+
+                self.point_roll_index = (self.point_roll_index - self.index_stepper) % len(self.point_roll_choices)
+                print(str(self.point_roll_index))
+                controller.isUpPressed = False
+            elif controller.isDownPressed:
+                self.menu_movement_sound.play()  # Play the sound effect once
+                self.point_roll_index = (self.point_roll_index + self.index_stepper) % len(self.point_roll_choices)
+                controller.isDownPressed = False
             self.battle_messages[self.POINT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
@@ -283,24 +295,7 @@ class CrapsJunponScreen(GambleScreen):
                 # state.current_player = state.area3GamblingScreen
                 # state.area3GamblingScreen.start(state)
 
-
-
-
-    def draw_box_info(self, state: 'GameState'):
-        arrow_x_coordinate_padding = 12
-        arrow_y_coordinate_padding_play = 12
-        arrow_y_coordinate_padding_magic = 52
-        arrow_y_coordinate_padding_bet = 92
-        arrow_y_coordinate_padding_quit = 132
-        player_enemy_box_info_x_position = 37
-        enemy_name_y_position = 33
-        enemy_money_y_position = 70
-        enemy_status_y_position = 110
-        bet_y_position = 370
-        player_money_y_position = 250
-        hero_name_y_position = 205
-        hero_stamina_y_position = 290
-        hero_focus_y_position = 330
+    def draw_point_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
         horizontal_padding = 25
         vertical_position = 240
@@ -310,24 +305,52 @@ class CrapsJunponScreen(GambleScreen):
         black_box_width = 200 - box_width_offset
         start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
         start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
 
-        state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+        for idx, choice in enumerate(self.point_roll_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
 
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
-        if self.lucky_seven_buff_counter == self.lucky_seven_buff_not_active:
-            state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
-        elif self.lucky_seven_buff_counter > self.lucky_seven_buff_not_active:
-            state.DISPLAY.blit(self.font.render(f"{self.TRIPLE_DICE}: {self.lucky_seven_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+        if self.point_roll_index == self.point_roll_dice_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
+            )
+        elif self.point_roll_index == self.point_shake_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
+            )
+        elif self.point_roll_index == self.point_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
+            )
 
-        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
 
-        if self.lock_down <= self.lock_down_inactive:
-            state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-        elif self.lock_down > self.lock_down_inactive:
-            state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
+
 
         for idx, choice in enumerate(self.welcome_screen_choices):
             y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
@@ -368,24 +391,54 @@ class CrapsJunponScreen(GambleScreen):
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
 
+    def draw_box_info(self, state: 'GameState'):
+
+        player_enemy_box_info_x_position = 37
+        enemy_name_y_position = 33
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+
+
+        state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        if self.lucky_seven_buff_counter == self.lucky_seven_buff_not_active:
+            state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+        elif self.lucky_seven_buff_counter > self.lucky_seven_buff_not_active:
+            state.DISPLAY.blit(self.font.render(f"{self.TRIPLE_DICE}: {self.lucky_seven_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+
+        if self.lock_down <= self.lock_down_inactive:
+            state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
+        elif self.lock_down > self.lock_down_inactive:
+            state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
+
+
+
     def draw(self, state: 'GameState'):
         super().draw(state)
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
-        self.draw_menu_selection_box(state)
         self.draw_box_info(state)
 
 
-
-
         if self.game_state == self.WELCOME_SCREEN:
+            self.draw_menu_selection_box(state)
+            self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
 
         elif self.game_state == self.POWER_METER_SCREEN:
-            print("power meter screen")
-
             self.create_meter(state, self.power_meter_index)
             self.battle_messages[self.POWER_METER_MESSAGE].draw(state)
 
@@ -394,19 +447,18 @@ class CrapsJunponScreen(GambleScreen):
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].draw(state)
 
-            print("come out win screen")
-            print("Come out roll is lucky 7 I hope: " + str(self.come_out_roll_total))
-
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].draw(state)
-
-            print("come out lose screen")
 
 
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
-            print("point roll screen")
+            self.draw_menu_selection_box(state)
+            self.draw_point_screen_box_info(state)
+
             self.battle_messages[self.POINT_ROLL_MESSAGE].draw(state)
+            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_WIN_POINT_ROLL_MESSAGE].draw(state)
@@ -420,6 +472,37 @@ class CrapsJunponScreen(GambleScreen):
 
 
 
+    def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
+
+        # Define the rectangles for each dice face
+        dice_faces = [
+            pygame.Rect(50, 0, 133, 200),  # Dice face 1=
+            pygame.Rect(210, 0, 133, 200),  # Dice face 2
+            pygame.Rect(370, 0, 133, 200),  # Dice face 3
+            pygame.Rect(545, 0, 133, 200),  # Dice face 4
+            pygame.Rect(710, 0, 133, 200),  # Dice face
+            pygame.Rect(880, 0, 133, 200)  # Dice face 6p
+        ]
+
+        # Get the rectangles for the rolled dice
+        dice_rect1 = dice_faces[dice_roll_1 - 1]
+        cropped_dice1 = self.sprite_sheet.subsurface(dice_rect1)  # Crop the first dice image
+
+        dice_rect2 = dice_faces[dice_roll_2 - 1]
+        cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
+
+
+
+
+        # Blit the cropped dice images onto the display with a 30-pixel gap
+        state.DISPLAY.blit(cropped_dice1, (300, 0))  # Adjusted y-coordinate for the first dice
+        state.DISPLAY.blit(cropped_dice2, (420, 0))  # Placed the second dice 150 pixels to the right
+
+
+    # Usage:
+    # Call this method within your update method or any other place in your code where you need to show the dice roll result
+    # Example:
+    # self.display_dice(state, self.dice_roll_1)
 
 
 

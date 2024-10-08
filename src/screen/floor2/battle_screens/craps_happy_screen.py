@@ -1442,6 +1442,7 @@ class CrapsHappyScreen(BattleScreen):
                 self.battle_messages["game_over_no_stamina_message"].draw(state)
             if self.dice_roll_1 > 0:  # Check if a dice roll has been made
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+
             self.battle_messages["point_phase_message"].draw(state)
 
             black_box_height = 221 - 50  # Adjust height
