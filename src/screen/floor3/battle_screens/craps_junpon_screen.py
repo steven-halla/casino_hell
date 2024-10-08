@@ -30,6 +30,8 @@ class CrapsJunponScreen(GambleScreen):
         self.magic_screen_index: int = 0
         self.point_roll_index: int = 0
         self.point_roll_dice_index: int = 0
+        self.roll_dice = True  # Track if dice sound should be played
+
         self.point_blow_index: int = 1
         self.point_bet_index: int = 2
         self.bet: int = 100
@@ -50,6 +52,8 @@ class CrapsJunponScreen(GambleScreen):
         self.power_meter_speed = 2
         self.power_meter_goal = 80
         self.index_stepper = 1
+        self.dice_roll = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/dice_rolling.wav")  # Adjust the path as needed
+        self.dice_roll.set_volume(0.6)
 
         self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
         self.failed_power_strike_sound_effect.set_volume(0.6)
@@ -79,7 +83,16 @@ class CrapsJunponScreen(GambleScreen):
             self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE: MessageBox([
                 f"You rolled a bad roll"
             ]),
+
+            # self.POINT_ROLL_ROLLING_DICE_MESSAGE: MessageBox([
+            #     f"ROLLING the dice"
+            # ]),
+            self.POINT_ROLL_ROLLED_DICE_MESSAGE: MessageBox([
+                f"Whoa You rolled a place holder"
+            ]),
+
         }
+
     POWER_METER_MESSAGE = "power_meter_message"
     MAGIC_MENU_TRIPLE_DICE_DESCRIPTION = "magic_menu_triple_dice_description"
     POINT_ROLL_MESSAGE = "point_roll_message"
@@ -87,6 +100,8 @@ class CrapsJunponScreen(GambleScreen):
     PLAYER_LOSE_COME_OUT_ROLL_MESSAGE = "player_lose_come_out_roll_message"
     PLAYER_WIN_POINT_ROLL_MESSAGE = "player_win_point_roll_message"
     PLAYER_LOSE_POINT_ROLL_MESSAGE = "player_lose_point_roll_message"
+    # POINT_ROLL_ROLLING_DICE_MESSAGE = "point_roll_roll_rolling_dice_message"
+    POINT_ROLL_ROLLED_DICE_MESSAGE = "point_roll_roll_rolled_dice_message"
 
     TRIPLE_DICE = "Triple Dice"
     # enemy spell maximize bet, this is active during come out roll
@@ -147,10 +162,17 @@ class CrapsJunponScreen(GambleScreen):
     def rolling_dice_timer(self) -> bool:
         """Returns True if 2 seconds have passed since start_time, otherwise False."""
         current_time = pygame.time.get_ticks()
+        if current_time - self.start_time >= 1000 and self.roll_dice == True:
+            self.dice_roll.play()
+            self.roll_dice = False
+
         if current_time - self.start_time >= 2000:
             self.is_timer_active = False  # Timer is no longer active after 2 seconds
+            self.roll_dice = True
             return True  # 2 seconds have passed
         return False  # Timer is still running
+
+
 
 
 
@@ -206,19 +228,24 @@ class CrapsJunponScreen(GambleScreen):
                     print("Starting the timer...")
                     self.start_time = pygame.time.get_ticks()  # Set start time
                     self.is_timer_active = True  # Activate the timer (so the button can't be pressed again immediately)
+                    # self.battle_messages[self.POINT_ROLL_ROLLING_DICE_MESSAGE].update(state)
 
             # Call the method to check if 2 seconds have passed
             if self.is_timer_active and self.rolling_dice_timer():
+
                 # After 2 seconds, roll the dice
+
                 self.dice_roll_1 = random.randint(1, 6)
                 print("Dice roll of 1 is: " + str(self.dice_roll_1))
                 self.dice_roll_2 = random.randint(1, 6)
                 print("Dice roll of 2 is: " + str(self.dice_roll_2))
-                self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+                self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+
 
                 # Reset the timer state after rolling
                 self.is_timer_active = False
                 print("Timer ended, dice rolled.")
+
 
             elif self.point_roll_index == self.point_blow_index:
                 print("blowing on the dice for good luck")
@@ -235,7 +262,7 @@ class CrapsJunponScreen(GambleScreen):
                 self.menu_movement_sound.play()  # Play the sound effect once
                 self.point_roll_index = (self.point_roll_index + self.index_stepper) % len(self.point_roll_choices)
                 controller.isDownPressed = False
-            self.battle_messages[self.POINT_ROLL_MESSAGE].update(state)
+            # self.battle_messages[self.POINT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_WIN_POINT_ROLL_MESSAGE].update(state)
@@ -495,12 +522,20 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
+            message_x_pos = 65
+            message_y_pos = 460
             self.draw_menu_selection_box(state)
             self.draw_point_screen_box_info(state)
 
-            self.battle_messages[self.POINT_ROLL_MESSAGE].draw(state)
-            if self.dice_roll_1 > 0:  # Check if a dice roll has been made
+            # Check if 2 seconds have passed and a dice roll has been made
+            if self.is_timer_active == False and self.dice_roll_1 > 0:
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+                state.DISPLAY.blit(self.font.render(f"You need a {self.come_out_roll_total} and you rolled an: {self.point_roll_total} ", True, WHITE), (message_x_pos, message_y_pos))
+            else:
+                state.DISPLAY.blit(self.font.render(f"Rolling the dice ", True, WHITE), (message_x_pos, message_y_pos))
+
+
+
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_WIN_POINT_ROLL_MESSAGE].draw(state)
