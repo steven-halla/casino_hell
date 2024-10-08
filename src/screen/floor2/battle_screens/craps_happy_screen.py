@@ -567,6 +567,7 @@ class CrapsHappyScreen(BattleScreen):
                 if self.power_meter_index >= 80:
                     self.successful_power_strike_sound_effect.play()  # Play the sound effect once
 
+
                     self.lucky_seven = True
 
                 elif self.power_meter_index < 80:

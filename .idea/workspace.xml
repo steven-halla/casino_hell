@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="slots now has sound and music">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="created welcome_Screen logic in gamble screen that is used in all screens">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/gui/screen/battle_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/gui/screen/battle_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/slots_rib_demon_jack_ripper_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/slots_rib_demon_jack_ripper_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/craps_junpon_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/craps_junpon_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,44 +54,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.$AffectedModuleNames$.executor&quot;: &quot;Run&quot;,
-    &quot;Python.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
-    &quot;Python.cindy_long_hair.executor&quot;: &quot;Run&quot;,
-    &quot;Python.constants.executor&quot;: &quot;Run&quot;,
-    &quot;Python.craps_happy_screen.executor&quot;: &quot;Debug&quot;,
-    &quot;Python.fff.executor&quot;: &quot;Run&quot;,
-    &quot;Python.game.executor&quot;: &quot;Run&quot;,
-    &quot;Python.game_state.executor&quot;: &quot;Run&quot;,
-    &quot;Python.hangry_angry_starving_hippos_test.executor&quot;: &quot;Run&quot;,
-    &quot;Python.hungry_starving_hippos.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python.nukeem.executor&quot;: &quot;Run&quot;,
-    &quot;Python.opposuminacan.executor&quot;: &quot;Run&quot;,
-    &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/code/casino_hell/assets/music&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor": "Run",
+    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor": "Run",
+    "Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor": "Run",
+    "Python.$AffectedModuleNames$.executor": "Run",
+    "Python.Unnamed.executor": "Run",
+    "Python.blackjack.executor": "Run",
+    "Python.cindy_long_hair.executor": "Run",
+    "Python.constants.executor": "Run",
+    "Python.craps_happy_screen.executor": "Debug",
+    "Python.fff.executor": "Run",
+    "Python.game.executor": "Run",
+    "Python.game_state.executor": "Run",
+    "Python.hangry_angry_starving_hippos_test.executor": "Run",
+    "Python.hungry_starving_hippos.executor": "Run",
+    "Python.main (1).executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main.py.executor": "Run",
+    "Python.nukeem.executor": "Run",
+    "Python.opposuminacan.executor": "Run",
+    "Python.playground.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/Users/stevenhalla/code/casino_hell/assets/music",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "Errors",
+    "ts.external.directory.path": "/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets/music" />
@@ -103,11 +101,11 @@
       <recent name="$PROJECT_DIR$/src/entity/demon" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/images" />
       <recent name="$PROJECT_DIR$/assets/music" />
       <recent name="$PROJECT_DIR$/src/entity/npc/area2/area_2_nugget_screen" />
       <recent name="$PROJECT_DIR$/src/entity/npc/area2/area_2_gambling_screen" />
       <recent name="$PROJECT_DIR$/src/game_constants" />
-      <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
@@ -371,6 +369,8 @@
       <workItem from="1727810304633" duration="1280000" />
       <workItem from="1727816368960" duration="334000" />
       <workItem from="1727816705596" duration="329000" />
+      <workItem from="1727817037013" duration="123092000" />
+      <workItem from="1728405141498" duration="3651000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -715,7 +715,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1020" />
+    <option name="localTasksCounter" value="1078" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -744,32 +744,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added boss key, making balance changes to boss such as money, new messages," />
-    <MESSAGE value="updated to now use self.player money as bosses are handled diff" />
-    <MESSAGE value="balance changes to game, over all boss feels like its good to go" />
-    <MESSAGE value="fixed movement bug" />
-    <MESSAGE value="improving rest area map" />
-    <MESSAGE value="more npcs added" />
-    <MESSAGE value="redid gambling area" />
-    <MESSAGE value="all areas redid with new maps in mind" />
-    <MESSAGE value="all doors are now placed" />
-    <MESSAGE value="fixing NPCS so they are more uniform" />
-    <MESSAGE value="fixing npcs sothey are more uniform" />
-    <MESSAGE value="all NPCS fixed" />
-    <MESSAGE value="took out two npcs and moved one to a better location" />
-    <MESSAGE value="created print statement for FPS game is a little on slow side at 55 FPS, its the maps that are doing it" />
-    <MESSAGE value="updated NPC dialog" />
-    <MESSAGE value="updated boss dialog, perfect run of game about to put sound back in" />
-    <MESSAGE value="adding sounds and music to all screens" />
-    <MESSAGE value="boss screen fully updated" />
-    <MESSAGE value="boss screen has all sounds and music in place, area 2 gambling area has different music" />
-    <MESSAGE value="black jack has all sounds" />
-    <MESSAGE value="fixing music and sound effects for coin flip" />
-    <MESSAGE value="fixing music and sound effects for craps" />
-    <MESSAGE value="craps has now sound effects and music" />
-    <MESSAGE value="oppsum in a can fixed" />
-    <MESSAGE value="slots now has sound and music" />
-    <option name="LAST_COMMIT_MESSAGE" value="slots now has sound and music" />
+    <MESSAGE value="took out exp meters for battle screens" />
+    <MESSAGE value="lots of updates, mostly text and minor bug fixes" />
+    <MESSAGE value="small player buffs" />
+    <MESSAGE value="updated names" />
+    <MESSAGE value="updated cut scenes , game fully tested and ready to be play tested by others" />
+    <MESSAGE value="reformating black jack with best code practices" />
+    <MESSAGE value="small balance change, deleting extra lines, getting rid of all magic numbers" />
+    <MESSAGE value="making chnces for clener code" />
+    <MESSAGE value="reformating black jack" />
+    <MESSAGE value="took out old spell code for avatar of luck" />
+    <MESSAGE value="updating draw method to make it cleaner, gettnig rid of excess code, magic numbers, stripping out graphcics to be handled in screen class" />
+    <MESSAGE value="stripping out more magic numbers" />
+    <MESSAGE value="updating draw method for cleaner code" />
+    <MESSAGE value="most magic numbers are now goine" />
+    <MESSAGE value="text fixes" />
+    <MESSAGE value="creting level 3 craps screen, new parent class for gamble screens, new text box parent class" />
+    <MESSAGE value="working on draw method for new craps screen" />
+    <MESSAGE value="boxes created for draw method" />
+    <MESSAGE value="getting rid of magic numbers" />
+    <MESSAGE value="creating info in boxes" />
+    <MESSAGE value="info now created" />
+    <MESSAGE value="getting rid of strings in gamble screen class" />
+    <MESSAGE value="getting rid of magic numbers and magic strings" />
+    <MESSAGE value="gamble screen fully reformated" />
+    <MESSAGE value="created welcome_Screen logic in gamble screen that is used in all screens" />
+    <option name="LAST_COMMIT_MESSAGE" value="created welcome_Screen logic in gamble screen that is used in all screens" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -791,13 +791,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/screen/floor2/map_screens/area_2_rib_demon_maze_screen2.py</url>
-          <line>306</line>
+          <line>307</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/entity/gui/screen/battle_screen.py</url>
-          <line>134</line>
+          <line>160</line>
           <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/entity/npc/area2/area_2_rest_screen/Sasquatch.py</url>
+          <line>35</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -810,8 +815,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/casino_hell$nukeem.coverage" NAME="nukeem Coverage Results" MODIFIED="1728164707576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/_old" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1727817003646" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1728419771488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -5,6 +5,7 @@ from constants import WHITE, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from entity.gui.textbox.text_box import TextBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
@@ -34,12 +35,22 @@ class CrapsJunponScreen(GambleScreen):
         pygame.mixer.music.stop()
         self.lucky_seven_buff_counter: int = 0
         self.magic_lock: bool = False
+        self.lucky_seven_flag = False
+
         self.lucky_seven_buff_not_active = 0
         self.junpon_bankrupt = 0
         self.player_stamina_low_cost = 5
         self.magic_screen_menu_lucky_seven_index = 0
         self.magic_screen_menu_back_index = 1
         self.lock_down_inactive = 0
+        self.power_meter_speed = 2
+        self.power_meter_goal = 80
+
+        self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect.set_volume(0.6)
+
+        self.successful_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect.set_volume(0.6)
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -51,10 +62,26 @@ class CrapsJunponScreen(GambleScreen):
             self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION: MessageBox([
                 "description for magic meter"
             ]),
+            self.POWER_METER_MESSAGE: MessageBox([
+                "PRESS P at the correct time"
+            ]),
+            self.POINT_ROLL_MESSAGE: MessageBox([
+                "I'm here to lead the point"
+            ]),
         }
-    POWER_METER_SCREEN = "power_meter_screen"
+    POWER_METER_MESSAGE = "power_meter_message"
     MAGIC_MENU_TRIPLE_DICE_DESCRIPTION = "magic_menu_triple_dice_description"
+    POINT_ROLL_MESSAGE = "point_roll_message"
+
+
     TRIPLE_DICE = "Triple Dice"
+    # enemy spell maximize bet, this is active during come out roll
+
+    PLAYER_WIN_COME_OUT_SCREEN = "player_win_come_out_screen"
+    PLAYER_LOSE_COME_OUT_SCREEN = "player_lose_come_out_screen"
+    POWER_METER_SCREEN = "power_meter_screen"
+    POINT_ROLL_SCREEN = "point_roll_screen"
+
 
     def start(self, state: 'GameState'):
         pass
@@ -64,7 +91,34 @@ class CrapsJunponScreen(GambleScreen):
         self.lucky_seven_buff_counter = self.lucky_seven_buff_not_active
         self.magic_lock = False
         self.bet = self.bet_minimum
+        self.lucky_seven = False
         state.player.canMove = True
+        self.dice_roll_1 = 0
+        self.dice_roll_2 = 0
+        self.dice_roll_3 = 0
+
+    def create_meter(self, state: "GameState", power: int) -> None:
+        meter_width = 300  # Three times wider
+        meter_height = 30
+        max_power = 100
+
+        # Calculate the width of the filled portion of the meter
+        filled_width = int((power / max_power) * meter_width)
+
+        # Draw the background of the meter (empty portion)
+        meter_bg_rect = pygame.Rect(250, 50, meter_width, meter_height)  # Position: (250, 50)
+        pygame.draw.rect(state.DISPLAY, (255, 0, 0), meter_bg_rect)  # Red background
+
+        # Draw the filled portion of the meter
+        meter_fill_rect = pygame.Rect(250, 50, filled_width, meter_height)  # Position: (250, 50)
+        pygame.draw.rect(state.DISPLAY, (0, 255, 0), meter_fill_rect)  # Green filled portion
+
+        # Draw the border of the meter
+        pygame.draw.rect(state.DISPLAY, (255, 255, 255), meter_bg_rect, 2)  # White border
+
+        goal_position = int((self.power_meter_goal / max_power) * meter_width) + 250  # Adjust position to start from 250
+        pygame.draw.line(state.DISPLAY, (255, 255, 255), (goal_position, 50), (goal_position, 80), 5)  # Thick white line
+
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -88,26 +142,114 @@ class CrapsJunponScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.battle_messages[self.WELCOME_MESSAGE].update(state)
-            if state.controller.isTPressed:
-                state.controller.isTPressed = False
-                if self.welcome_screen_index == self.welcome_screen_play_index:
-                    self.game_state = self.POWER_METER_SCREEN
-                    state.player.stamina_points -= self.player_stamina_low_cost
+            self.welcome_screen_helper(state)
 
-                elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False \
-                        and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
-                    self.magic_screen_index = self.magic_screen_menu_lucky_seven_index
-                    self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
-                    self.game_state = self.MAGIC_MENU_SCREEN
 
-                elif self.welcome_screen_index == self.welcome_screen_bet_index:
-                    self.game_state = self.BET_MENU_SCREEN
+        elif self.game_state == self.POWER_METER_SCREEN:
+            self.battle_messages[self.POWER_METER_MESSAGE].update(state)
 
-                elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
-                    self.reset_craps_game(state)
-                    # state.current_player = state.area3GamblingScreen
-                    # state.area3GamblingScreen.start(state)
+            erika_nugget_amulet_protection = 4
+            power_meter_max = 100
+            power_meter_min = 0
+            power_meter_success = 80
+            player_lucky_7_come_out_roll_reward = 7
+
+            self.power_meter_index += self.power_meter_speed
+            if self.power_meter_index >= power_meter_max:
+                self.power_meter_index = power_meter_min
+
+            if controller.isPPressed:
+                self.power_meter_speed = power_meter_min
+                self.power_meter_index = self.power_meter_index
+                controller.isPPressed = False
+                if self.power_meter_index >= power_meter_success:
+                    self.successful_power_strike_sound_effect.play()
+                    self.lucky_seven = True
+                elif self.power_meter_index < power_meter_success:
+                    self.failed_power_strike_sound_effect.play()
+                if self.lucky_seven == True:
+                    lucky_player_bonus = state.player.luck
+                    luck_roll_success = 85
+                    luck_multiplier = 2
+                    lucky_7_roll = random.randint(1, 100) + (lucky_player_bonus * luck_multiplier)
+                    print("Lucky roll 7 is: " + str(lucky_7_roll))
+                    if lucky_7_roll >= luck_roll_success:
+                        print("Lucky Roll of 7")
+                        self.dice_roll_1 = 1
+                        self.dice_roll_2 = 6
+                        self.come_out_roll_total = player_lucky_7_come_out_roll_reward
+                        self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
+                    elif lucky_7_roll < luck_roll_success:
+                        self.dice_roll_1 = random.randint(1, 6)
+                        print("Dice roll of 1 is: " + str(self.dice_roll_1))
+                        self.dice_roll_2 = random.randint(1, 6)
+                        print("Dice roll of 2 is: " + str(self.dice_roll_2))
+                        self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+                        print("come out roll is : " + str(self.come_out_roll_total))
+                        if self.come_out_roll_total == 2:
+                            self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
+                        elif self.come_out_roll_total == 3:
+                            if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.equipped_items:
+                                self.game_state =  self.PLAYER_LOSE_COME_OUT_SCREEN
+                            else:
+                                self.successful_power_strike_sound_effect.play()
+                                self.dice_roll_1 = erika_nugget_amulet_protection
+                                self.dice_roll_2 = erika_nugget_amulet_protection
+                                self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+                                self.game_state = "point_phase_screen"
+                        elif self.come_out_roll_total == 12:
+                            self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
+                        elif self.come_out_roll_total == 7:
+                            self.unlucky_seven_flag = True
+                            self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
+                        else:
+                            print("come out roll is : " + str(self.come_out_roll_total))
+                            self.game_state = self.POINT_ROLL_SCREEN
+
+        elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
+            print("player wins point roll lucky ducky 7")
+
+        elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
+            print("player lose come out screen")
+
+        elif self.game_state == self.POINT_ROLL_SCREEN:
+            self.battle_messages[self.POINT_ROLL_MESSAGE].update(state)
+
+
+
+
+
+
+
+
+
+
+    def welcome_screen_helper(self, state: "GameState") -> None:
+        controller = state.controller
+        controller.update()
+        self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        if state.controller.isTPressed:
+            state.controller.isTPressed = False
+            if self.welcome_screen_index == self.welcome_screen_play_index:
+                self.game_state = self.POWER_METER_SCREEN
+                state.player.stamina_points -= self.player_stamina_low_cost
+
+            elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False \
+                    and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
+                self.magic_screen_index = self.magic_screen_menu_lucky_seven_index
+                self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
+                self.game_state = self.MAGIC_MENU_SCREEN
+
+            elif self.welcome_screen_index == self.welcome_screen_bet_index:
+                self.game_state = self.BET_MENU_SCREEN
+
+            elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
+                self.reset_craps_game(state)
+                # state.current_player = state.area3GamblingScreen
+                # state.area3GamblingScreen.start(state)
+
+
+
 
     def draw_box_info(self, state: 'GameState'):
         arrow_x_coordinate_padding = 12
@@ -198,6 +340,34 @@ class CrapsJunponScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_menu_selection_box(state)
         self.draw_box_info(state)
+
+
+
+
+        if self.game_state == self.WELCOME_SCREEN:
+            print("welcome screen")
+
+        elif self.game_state == self.POWER_METER_SCREEN:
+            print("power meter screen")
+
+            self.create_meter(state, self.power_meter_index)
+            self.battle_messages[self.POWER_METER_MESSAGE].draw(state)
+
+
+
+        elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
+            print("come out win screen")
+            print("Come out roll is lucky 7 I hope: " + str(self.come_out_roll_total))
+
+        elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
+            print("come out lose screen")
+
+
+
+        elif self.game_state == self.POINT_ROLL_SCREEN:
+            print("point roll screen")
+            self.battle_messages[self.POINT_ROLL_MESSAGE].draw(state)
+
 
         pygame.display.flip()
 
