@@ -17,6 +17,7 @@ class CrapsJunponScreen(GambleScreen):
         self.sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
         self.come_out_roll_total: int = 0
         self.dealer_name = "Junpon"
+        self.start_time = 0
 
         self.dice_roll_1: int = 0
         self.dice_roll_2: int = 0
@@ -29,7 +30,7 @@ class CrapsJunponScreen(GambleScreen):
         self.magic_screen_index: int = 0
         self.point_roll_index: int = 0
         self.point_roll_dice_index: int = 0
-        self.point_shake_index: int = 1
+        self.point_blow_index: int = 1
         self.point_bet_index: int = 2
         self.bet: int = 100
         self.bet_minimum: int = 100
@@ -37,6 +38,8 @@ class CrapsJunponScreen(GambleScreen):
         self.lucky_seven_buff_counter: int = 0
         self.magic_lock: bool = False
         self.lucky_seven_flag = False
+        self.is_timer_active = True  # Timer is no longer active
+
 
         self.lucky_seven_buff_not_active = 0
         self.junpon_bankrupt = 0
@@ -141,6 +144,16 @@ class CrapsJunponScreen(GambleScreen):
 
         pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end), line_thickness)
 
+    def rolling_dice_timer(self) -> bool:
+        """Returns True if 2 seconds have passed since start_time, otherwise False."""
+        current_time = pygame.time.get_ticks()
+        if current_time - self.start_time >= 2000:
+            self.is_timer_active = False  # Timer is no longer active after 2 seconds
+            return True  # 2 seconds have passed
+        return False  # Timer is still running
+
+
+
     def update(self, state: 'GameState'):
         controller = state.controller
         controller.update()
@@ -183,13 +196,42 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
-            if controller.isUpPressed:
+            print("what is is timer active state:" + str(self.is_timer_active))
+
+            if controller.isTPressed and not self.is_timer_active:
+                controller.isTPressed = False
+
+                if self.point_roll_index == self.point_roll_dice_index:
+                    # Set the start time once when the button is pressed
+                    print("Starting the timer...")
+                    self.start_time = pygame.time.get_ticks()  # Set start time
+                    self.is_timer_active = True  # Activate the timer (so the button can't be pressed again immediately)
+
+            # Call the method to check if 2 seconds have passed
+            if self.is_timer_active and self.rolling_dice_timer():
+                # After 2 seconds, roll the dice
+                self.dice_roll_1 = random.randint(1, 6)
+                print("Dice roll of 1 is: " + str(self.dice_roll_1))
+                self.dice_roll_2 = random.randint(1, 6)
+                print("Dice roll of 2 is: " + str(self.dice_roll_2))
+                self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+
+                # Reset the timer state after rolling
+                self.is_timer_active = False
+                print("Timer ended, dice rolled.")
+
+            elif self.point_roll_index == self.point_blow_index:
+                print("blowing on the dice for good luck")
+            elif self.point_roll_index == self.point_bet_index:
+                print("time to make a bet")
+
+            if controller.isUpPressed and self.is_timer_active == True:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.point_roll_index = (self.point_roll_index - self.index_stepper) % len(self.point_roll_choices)
                 print(str(self.point_roll_index))
                 controller.isUpPressed = False
-            elif controller.isDownPressed:
+            elif controller.isDownPressed and self.is_timer_active == True:
                 self.menu_movement_sound.play()  # Play the sound effect once
                 self.point_roll_index = (self.point_roll_index + self.index_stepper) % len(self.point_roll_choices)
                 controller.isDownPressed = False
@@ -323,7 +365,7 @@ class CrapsJunponScreen(GambleScreen):
                 self.font.render("->", True, WHITE),
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
             )
-        elif self.point_roll_index == self.point_shake_index:
+        elif self.point_roll_index == self.point_blow_index:
             state.DISPLAY.blit(
                 self.font.render("->", True, WHITE),
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
