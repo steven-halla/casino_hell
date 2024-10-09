@@ -143,34 +143,36 @@ class CrapsJunponScreen(GambleScreen):
         controller.update()
         # print("YOur point roll is : " + str(self.point_roll_total))
         if controller.isTPressed and not self.is_timer_active:
-            print("DID YOU PRESS THE TEA KEY???")
-            controller.isTPressed = False
+            print("T key pressed, starting the timer.")
+            self.start_time = pygame.time.get_ticks()  # Set start time
+            print(f"Start time set to: {self.start_time}")
+            self.is_timer_active = True
+            print(f"Timer activated, is_timer_active set to {self.is_timer_active}")
 
-            if self.point_roll_index == self.point_roll_dice_index:
-                self.start_time = pygame.time.get_ticks()
-                self.is_timer_active = True
-                print("Did we make it?")
-                print(self.is_timer_active)
-                if self.is_timer_active and self.rolling_dice_timer():
-                    print("What about here?")
-                    # After 2 seconds, roll the dice
-                    self.dice_roll_1 = random.randint(1, 6)
-                    print("Dice roll of 1 is: " + str(self.dice_roll_1))
-                    self.dice_roll_2 = random.randint(1, 6)
-                    print("Dice roll of 2 is: " + str(self.dice_roll_2))
-                    self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
-                    self.is_timer_active = False
-                    print("Timer ended, dice rolled.")
+            # Only run the timer logic if the timer is active
+        if self.is_timer_active:
+            print("Checking rolling_dice_timer...")
+            if self.rolling_dice_timer():
+                print("Timer finished, rolling the dice!")
+                self.dice_roll_1 = random.randint(1, 6)
+                print(f"Dice roll of 1: {self.dice_roll_1}")
+                self.dice_roll_2 = random.randint(1, 6)
+                print(f"Dice roll of 2: {self.dice_roll_2}")
+                self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                self.is_timer_active = False  # Reset after rolling dice
+                self.start_time = 0  # Reset start_time
 
-                    # Check for a roll of 7 first, which is a losing condition
-                    if self.point_roll_total == 7:
-                        print("The point roll is 7, you better see this")
-                        self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
-                        return  # Exit here to ensure no further checks occur
 
-                    elif self.point_roll_total == self.come_out_roll_total:
-                        self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
-                        return  # Exit here to ensure no further checks occur
+
+                # Check for a roll of 7 first, which is a losing condition
+                if self.point_roll_total == 7:
+                    print("The point roll is 7, you better see this")
+                    self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
+                    return  # Exit here to ensure no further checks occur
+
+                elif self.point_roll_total == self.come_out_roll_total:
+                    self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
+                    return  # Exit here to ensure no further checks occur
 
 
                 elif self.point_roll_index == self.point_blow_index:
@@ -790,8 +792,33 @@ class CrapsJunponScreen(GambleScreen):
     #         self.roll_dice = True
     #         return True  # 2 seconds have passed
     #     return False  # Timer is still running
+    def rolling_dice_timer(self) -> bool:
+        print("Entered rolling_dice_timer method")
 
+        # Get the current time
+        current_time = pygame.time.get_ticks()
+        print(f"Current time: {current_time}, Start time: {self.start_time}")
 
+        # Check if 1000 ms (1 second) has passed and play dice roll sound if needed
+        if current_time - self.start_time >= 1000 and self.roll_dice == True:
+            print(f"1000 ms passed, playing dice roll sound. roll_dice = {self.roll_dice}")
+            self.dice_roll.play()
+            self.roll_dice = False
+            print("Dice roll sound played, roll_dice set to False")
+
+        # Check if 2000 ms (2 seconds) has passed
+        if current_time - self.start_time >= 2000:
+            print(f"2000 ms passed. Completing timer.")
+            self.is_timer_active = False  # Timer is no longer active after 2 seconds
+            self.roll_dice = True  # Reset roll_dice for the next round
+            print(f"is_timer_active set to {self.is_timer_active}, roll_dice reset to True")
+            return True  # Return True to signal that the 2 seconds have passed
+
+        # Timer still running, print remaining time
+        remaining_time = 2000 - (current_time - self.start_time)
+        print(f"Timer still running. Remaining time: {remaining_time} ms")
+
+        return False  # Timer is still running
 
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
 
