@@ -39,7 +39,7 @@ class Player(Entity):
         self.equipped_items = []
 
         self.npc_items = []
-        self.magicinventory = ["shield",  "shake" ]
+        self.magicinventory = ["shield",  "shake", "Triple D" ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False

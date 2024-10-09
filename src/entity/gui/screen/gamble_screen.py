@@ -50,7 +50,6 @@ class GambleScreen:
     GAME_OVER_SCREEN = "game_over_screen"
 
     WELCOME_MESSAGE = "welcome_message"
-    BET_MESSAGE = "bet_message"
     LEVEL_UP_MESSAGE = "level_up_message"
 
     MAGIC = "Magic"
