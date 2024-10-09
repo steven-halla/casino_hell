@@ -45,7 +45,6 @@ class GambleScreen:
     WELCOME_SCREEN = "welcome_screen"
     PLAY_SCREEN = "play_screen"
     MAGIC_MENU_SCREEN= "magic_menu_screen"
-    BET_MENU_SCREEN = "bet_menu_screen"
     LEVEL_UP_SCREEN = "level_up_screen"
     GAME_OVER_SCREEN = "game_over_screen"
 

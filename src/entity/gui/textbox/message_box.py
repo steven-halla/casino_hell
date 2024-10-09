@@ -60,4 +60,11 @@ class MessageBox(Entity):
         """Checks if the current message is displaying its last letter."""
         return self.characters_to_display == len(self.messages[self.message_index])
 
+    def update_message(self, new_message: str):
+        """Update the message and reset the display settings."""
+        self.messages = [new_message]  # Replace the current message list with the new message
+        self.message_index = 0  # Reset message index to the first message
+        self.characters_to_display = 0  # Start displaying the message from the first character
+        self.time = pygame.time.get_ticks()
+
 
