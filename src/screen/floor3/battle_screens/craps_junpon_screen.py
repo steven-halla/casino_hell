@@ -399,9 +399,13 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
+            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].draw(state)
 
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
+            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].draw(state)
 
 
@@ -425,11 +429,14 @@ class CrapsJunponScreen(GambleScreen):
             self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].draw(state)
 
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
+            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
 
             # print("WE better not fucking be here")
             state.DISPLAY.blit(self.font.render(f"You WIN! Point: {self.point_roll_total} matching come out roll {self.come_out_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
+            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+
             state.DISPLAY.blit(self.font.render(f"You LOSE! You rolled a: {self.point_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         elif self.game_state == self.GAME_OVER_SCREEN:
