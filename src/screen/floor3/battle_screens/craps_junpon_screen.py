@@ -45,6 +45,7 @@ class CrapsJunponScreen(GambleScreen):
         self.set_variable_to_zero = 0
         self.lucky_seven_buff_not_active = 0
         self.junpon_bankrupt = 0
+        self.player_stamina_high_cost = 10
         self.player_stamina_med_cost = 5
         self.player_stamina_low_cost = 2
         self.magic_screen_menu_lucky_seven_index = 0
@@ -53,8 +54,13 @@ class CrapsJunponScreen(GambleScreen):
         self.power_meter_speed = 2
         self.power_meter_goal = 80
         self.index_stepper = 1
+        self.blow_counter = 0
+        self.blow_meter = 0
+        self.blow_turn = 0
+        self.last_blow_decrement_time = pygame.time.get_ticks()  # Initialize to current game time
 
 
+        self.blow_roll = False
 
         self.dice_roll = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/dice_rolling.wav")  # Adjust the path as needed
         self.dice_roll.set_volume(0.6)
@@ -87,19 +93,18 @@ class CrapsJunponScreen(GambleScreen):
             self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE: MessageBox([
                 "You rolled a lucky 7 congrats."
             ]),
-
             self.PLAYER_LOSE_POINT_ROLL_MESSAGE: MessageBox([
-                "mmmm rolled a bad roll"  # Placeholder text or initial message
+                "mmmm rolled a bad roll"
             ]),
-
             self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE: MessageBox([
-                "You rolled a bad roll"  # Placeholder text or initial message
+                "You rolled a bad roll"
             ]),
-
             self.POINT_ROLL_ROLLED_DICE_MESSAGE: MessageBox([
                 f"Whoa You rolled a place holder"
             ]),
-
+            self.BLOW_POINT_ROLL_MESSAGE: MessageBox([
+                f"Hold A key and rock d pad"
+            ]),
         }
 
     POWER_METER_MESSAGE = "power_meter_message"
@@ -112,6 +117,7 @@ class CrapsJunponScreen(GambleScreen):
     PLAYER_LOSE_POINT_ROLL_MESSAGE = "player_lose_point_roll_message"
     # POINT_ROLL_ROLLING_DICE_MESSAGE = "point_roll_roll_rolling_dice_message"
     POINT_ROLL_ROLLED_DICE_MESSAGE = "point_roll_roll_rolled_dice_message"
+    BLOW_POINT_ROLL_MESSAGE = "blow_point_roll_message"
     BET_MESSAGE = "bet_message"
 
 
@@ -126,11 +132,11 @@ class CrapsJunponScreen(GambleScreen):
     POINT_ROLL_SCREEN = "point_roll_screen"
     PLAYER_WIN_POINT_ROLL_SCREEN = "player_win_point_roll_screen"
     PLAYER_LOSE_POINT_ROLL_SCREEN = "player_lose_point_roll_screen"
+    BLOW_POINT_ROLL_SCREEN = "blow_point_roll_screen"
 
 
     def start(self, state: 'GameState'):
         pass
-
     def round_reset(self):
         self.bet = 75
         if self.lucky_seven_buff_counter >= self.lucky_seven_buff_not_active:
@@ -146,6 +152,9 @@ class CrapsJunponScreen(GambleScreen):
         self.power_meter_index = self.set_variable_to_zero
         self.power_meter_speed = 2
         self.lucky_seven = True
+        self.blow_counter = 0
+        self.blow_meter = 0
+        self.blow_counter = 0
 
     def reset_craps_game(self, state: 'GameState'):
         # need to reset value of enemy spell to 0
@@ -161,6 +170,10 @@ class CrapsJunponScreen(GambleScreen):
         self.dice_roll_2 = self.set_variable_to_zero
         self.dice_roll_3 = self.set_variable_to_zero
         self.power_meter_index = self.set_variable_to_zero
+        self.blow_counter = 0
+        self.blow_meter = 0
+        self.blow_turn = 0
+
 
     def update(self, state: 'GameState'):
         # print(self.game_state)
@@ -232,12 +245,44 @@ class CrapsJunponScreen(GambleScreen):
 
             self.point_screen_helper(state)
 
+        elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+
+            self.handle_dice_rolling_simulation(controller)
+
+            if not hasattr(self, 'blow_timer_start'):
+                self.blow_timer_start = pygame.time.get_ticks()  # Initialize timer
+
+            # Check if 7 seconds have passed
+            time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000  # Convert to seconds
+            if time_elapsed >= 7:
+                self.dice_roll_1 = 3
+                self.dice_roll_2 = 4
+                self.point_roll_total = 7
+                self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
+
+
+                self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
+
+
+            if self.blow_counter >= 21:
+                self.blow_counter = 21
+
+            if state.controller.isTPressed == False and self.blow_counter >= 20:
+                self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
+
+                self.point_roll_total = self.come_out_roll_total
+                self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
+
+            self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
+            print(f"Time elapsed: {time_elapsed} seconds")
+
+
+
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
 
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.round_reset()
-
                 self.game_state = self.WELCOME_SCREEN
 
 
@@ -265,6 +310,42 @@ class CrapsJunponScreen(GambleScreen):
                     self.reset_craps_game(state)
                     state.currentScreen = state.area2RestScreen
                     state.area2RestScreen.start(state)
+
+    def handle_dice_rolling_simulation(self, controller):
+
+        # When T is pressed and held
+        if controller.isTPressed:
+            # If left is pressed and right hasn't been pressed yet
+            if controller.isLeftPressed and not self.is_left_pressed:
+                self.is_left_pressed = True
+                self.left_press_time = pygame.time.get_ticks()
+                controller.isLeftPressed = False  # Reset left press
+
+            # If right is pressed within 0.5 seconds after left
+            elif controller.isRightPressed and self.is_left_pressed:
+                time_since_left = (pygame.time.get_ticks() - self.left_press_time) / 1000  # convert to seconds
+
+                if time_since_left <= 0.5:
+                    print("1")  # Success, player rolled the dice
+                    self.is_left_pressed = False  # Reset for next input
+                    controller.isRightPressed = False  # Reset right press
+                    self.blow_counter += 1
+                    print(self.blow_counter)
+                else:
+                    # Time exceeded 0.5 seconds, reset
+                    self.is_left_pressed = False
+
+        # If T is released or time exceeded without right press, reset
+        if not controller.isTPressed:
+            self.is_left_pressed = False
+
+        # Handle blow_counter decrement every 2 seconds
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_blow_decrement_time >= 2000:  # 2000 ms = 2 seconds
+            if self.blow_counter > 0:
+                self.blow_counter -= 1
+                print(f"Blow counter decreased: {self.blow_counter}")
+            self.last_blow_decrement_time = current_time  # Reset the decrement timer
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -318,19 +399,18 @@ class CrapsJunponScreen(GambleScreen):
                 state.DISPLAY.blit(self.font.render(f"Rolling the dice ", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
 
+        elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+            self.create_blow_meter(state, self.blow_counter)
+
+            self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].draw(state)
+
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
 
             # print("WE better not fucking be here")
             state.DISPLAY.blit(self.font.render(f"You WIN! Point: {self.point_roll_total} matching come out roll {self.come_out_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
-
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-
             state.DISPLAY.blit(self.font.render(f"You LOSE! You rolled a: {self.point_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
-
-
-
-
 
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
@@ -500,16 +580,15 @@ class CrapsJunponScreen(GambleScreen):
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
 
                 elif unlucky_two_roll < 60:
-                    self.dice_roll_1 = 1
-                    self.dice_roll_2 = 6
+                    self.dice_roll_1 = random.randint(1, 6)
+                    self.dice_roll_2 = random.randint(1, 6)
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
-                    print("Your come out roll isssss:" + str(self.come_out_roll_total))
 
                     if self.come_out_roll_total == 2 or self.come_out_roll_total == 12:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
+                        return
 
                     elif self.come_out_roll_total == 7:
-                        print("are e here?")
                         self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                         return
 
@@ -519,13 +598,12 @@ class CrapsJunponScreen(GambleScreen):
                         self.dice_roll_2 = 4
                         self.come_out_roll_total = 8
                         self.game_state = self.POINT_ROLL_SCREEN
+                        return
                     elif Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.equipped_items and self.come_out_roll_total == 3:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
-
-
+                        return
                     else:
                         self.game_state = self.POINT_ROLL_SCREEN
-
 
             if self.lucky_seven == True:
                 lucky_player_bonus = state.player.luck
@@ -604,10 +682,18 @@ class CrapsJunponScreen(GambleScreen):
 
         for idx, choice in enumerate(self.point_roll_choices):
             y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
-            state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
-                (start_x_right_box + text_x_offset, y_position + text_y_offset)
-            )
+
+            if idx == 1 and self.blow_turn >= 5 and Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
+                # Render the choice at index 1 in green if the condition is met
+                text_surface = self.font.render(choice, True, (0, 255, 0))  # Green color for index 1
+            else:
+                # Render other choices in white
+                text_surface = self.font.render(choice, True, WHITE)
+
+            state.DISPLAY.blit(text_surface, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+
+        if Equipment.CRAPS_WRIST_WATCH.value not in state.player.equipped_items:
+            self.point_roll_choices[1] = "Locked"
 
         if self.point_roll_index == self.point_roll_dice_index:
             state.DISPLAY.blit(
@@ -807,6 +893,11 @@ class CrapsJunponScreen(GambleScreen):
         if controller.isTPressed and not self.is_timer_active and self.point_roll_index == 0:
             self.start_time = pygame.time.get_ticks()  # Set start time
             self.is_timer_active = True
+            self.blow_turn += 1
+
+        elif controller.isTPressed and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 5:
+            state.player.stamina_points -= self.player_stamina_high_cost
+            self.game_state = self.BLOW_POINT_ROLL_SCREEN
 
         elif controller.isTPressed and not self.is_timer_active and self.point_roll_index == 2:
             self.game_state = self.BET_SCREEN
@@ -854,16 +945,35 @@ class CrapsJunponScreen(GambleScreen):
                 else:
                     print(f"Neither win nor lose condition met, you rolled {self.point_roll_total}.")
 
+    def create_blow_meter(self, state: "GameState", blow_counter: int) -> None:
+        meter_width = 300  # Total width of the meter
+        meter_height = 30
+        max_blow_counter = 20  # 100% equals 20 points (5% per point, so 20 points total for full meter)
+        white_border_width = 2
+        meter_x_position = 250
+        meter_y_position = 50
+        line_y_start = 50
+        line_y_end = 80
+        line_thickness = 5
 
+        # Calculate the percentage fill based on the blow counter
+        # Each point in blow_counter equals 5% of the total meter width
+        filled_width = int((blow_counter / max_blow_counter) * meter_width)
 
+        # Draw the background of the meter (empty portion)
+        meter_bg_rect = pygame.Rect(meter_x_position, meter_y_position, meter_width, meter_height)  # Position: (250, 50)
+        pygame.draw.rect(state.DISPLAY, RED, meter_bg_rect)  # Red background
 
+        # Draw the filled portion of the meter (based on blow_counter)
+        meter_fill_rect = pygame.Rect(meter_x_position, meter_y_position, filled_width, meter_height)
+        pygame.draw.rect(state.DISPLAY, GREEN, meter_fill_rect)  # Green filled portion
 
+        # Draw the border of the meter
+        pygame.draw.rect(state.DISPLAY, WHITE, meter_bg_rect, white_border_width)  # White border
 
-
-
-
-
-
+        # Optional: You can draw a goal line if you need a target (this is from your original code)
+        goal_position = int((self.power_meter_goal / max_blow_counter) * meter_width) + meter_x_position
+        pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end), line_thickness)
 
 #Charge: hold A button and rock d pad left and right
 # Release right after last d pad button press

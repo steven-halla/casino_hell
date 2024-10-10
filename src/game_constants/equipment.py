@@ -16,7 +16,7 @@ class Equipment(Enum):
 
     DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
 
-
+    CRAPS_WRIST_WATCH = "craps wrist watch"
 
     @staticmethod
     def add_equipment_to_player(player, equipment):
