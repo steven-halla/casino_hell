@@ -60,7 +60,13 @@ class CrapsJunponScreen(GambleScreen):
         self.last_blow_decrement_time = pygame.time.get_ticks()  # Initialize to current game time
 
 
-        self.blow_roll = False
+        self.blow_sound_checker = True
+        self.play_tune = False
+
+
+        self.blow_meter_ready = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/blowready.wav")  # Adjust the path as needed
+        self.blow_meter_ready.set_volume(0.6)
+
 
         self.dice_roll = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/dice_rolling.wav")  # Adjust the path as needed
         self.dice_roll.set_volume(0.6)
@@ -154,7 +160,9 @@ class CrapsJunponScreen(GambleScreen):
         self.lucky_seven = True
         self.blow_counter = 0
         self.blow_meter = 0
-        self.blow_counter = 0
+        self.blow_turn = 0
+
+        self.blow_sound_checker = True
 
     def reset_craps_game(self, state: 'GameState'):
         # need to reset value of enemy spell to 0
@@ -173,6 +181,8 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_counter = 0
         self.blow_meter = 0
         self.blow_turn = 0
+        self.blow_sound_checker = True
+
 
 
     def update(self, state: 'GameState'):
@@ -242,10 +252,14 @@ class CrapsJunponScreen(GambleScreen):
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
-
+            if self.blow_turn == 5 and self.blow_sound_checker == True:
+                self.blow_sound_checker = False
+                self.blow_meter_ready.play()
             self.point_screen_helper(state)
 
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+
+
 
             self.handle_dice_rolling_simulation(controller)
 
@@ -687,7 +701,7 @@ class CrapsJunponScreen(GambleScreen):
                 # Render the choice at index 1 in green if the condition is met
                 text_surface = self.font.render(choice, True, (0, 255, 0))  # Green color for index 1
             else:
-                # Render other choices in white
+                # Render other choices or reset index 1 to white when blow_turn is below 5
                 text_surface = self.font.render(choice, True, WHITE)
 
             state.DISPLAY.blit(text_surface, (start_x_right_box + text_x_offset, y_position + text_y_offset))
