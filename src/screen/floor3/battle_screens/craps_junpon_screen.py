@@ -326,41 +326,6 @@ class CrapsJunponScreen(GambleScreen):
                     state.currentScreen = state.area2RestScreen
                     state.area2RestScreen.start(state)
 
-    def handle_dice_rolling_simulation(self, controller):
-
-        # When T is pressed and held
-        if controller.isTPressed:
-            # If left is pressed and right hasn't been pressed yet
-            if controller.isLeftPressed and not self.is_left_pressed:
-                self.is_left_pressed = True
-                self.left_press_time = pygame.time.get_ticks()
-                controller.isLeftPressed = False  # Reset left press
-
-            # If right is pressed within 0.5 seconds after left
-            elif controller.isRightPressed and self.is_left_pressed:
-                time_since_left = (pygame.time.get_ticks() - self.left_press_time) / 1000  # convert to seconds
-
-                if time_since_left <= 0.5:
-                    print("1")  # Success, player rolled the dice
-                    self.is_left_pressed = False  # Reset for next input
-                    controller.isRightPressed = False  # Reset right press
-                    self.blow_counter += 1
-                    print(self.blow_counter)
-                else:
-                    # Time exceeded 0.5 seconds, reset
-                    self.is_left_pressed = False
-
-        # If T is released or time exceeded without right press, reset
-        if not controller.isTPressed:
-            self.is_left_pressed = False
-
-        # Handle blow_counter decrement every 2 seconds
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_blow_decrement_time >= 2000:  # 2000 ms = 2 seconds
-            if self.blow_counter > 0:
-                self.blow_counter -= 1
-                print(f"Blow counter decreased: {self.blow_counter}")
-            self.last_blow_decrement_time = current_time  # Reset the decrement timer
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -442,6 +407,42 @@ class CrapsJunponScreen(GambleScreen):
             elif state.player.stamina <= no_stamina_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
         pygame.display.flip()
+
+    def handle_dice_rolling_simulation(self, controller):
+
+        # When T is pressed and held
+        if controller.isTPressed:
+            # If left is pressed and right hasn't been pressed yet
+            if controller.isLeftPressed and not self.is_left_pressed:
+                self.is_left_pressed = True
+                self.left_press_time = pygame.time.get_ticks()
+                controller.isLeftPressed = False  # Reset left press
+
+            # If right is pressed within 0.5 seconds after left
+            elif controller.isRightPressed and self.is_left_pressed:
+                time_since_left = (pygame.time.get_ticks() - self.left_press_time) / 1000  # convert to seconds
+
+                if time_since_left <= 0.5:
+                    print("1")  # Success, player rolled the dice
+                    self.is_left_pressed = False  # Reset for next input
+                    controller.isRightPressed = False  # Reset right press
+                    self.blow_counter += 1
+                    print(self.blow_counter)
+                else:
+                    # Time exceeded 0.5 seconds, reset
+                    self.is_left_pressed = False
+
+        # If T is released or time exceeded without right press, reset
+        if not controller.isTPressed:
+            self.is_left_pressed = False
+
+        # Handle blow_counter decrement every 2 seconds
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_blow_decrement_time >= 2000:  # 2000 ms = 2 seconds
+            if self.blow_counter > 0:
+                self.blow_counter -= 1
+                print(f"Blow counter decreased: {self.blow_counter}")
+            self.last_blow_decrement_time = current_time  # Reset the decrement timer
 
     def draw_magic_menu_selection_box(self, state):
         choice_spacing = 40
@@ -970,26 +971,18 @@ class CrapsJunponScreen(GambleScreen):
                 if self.lucky_seven_buff_counter > 0 and self.point_roll_total != self.come_out_roll_total and self.point_roll_total != 7:
                     self.dice_roll_3 = random.randint(1, 6)
                     original_dice = self.dice_roll_2
-
                     self.dice_roll_2 = self.dice_roll_3
                     self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                    if self.point_roll_total == 7:
+                        self.dice_roll_2 = original_dice
+                        self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
 
-                    print("dice roll of 2 is:")
-                    print(original_dice)
-                    print("Your dice rolls are 3rd dice")
-                    print(self.dice_roll_3)
-
-                # First check the lose condition
                 if self.point_roll_total == 7:
                     self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
                     return
-
-                # Then check the win condition
                 elif self.point_roll_total == self.come_out_roll_total:
                     self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
                     return
-
-                # If neither win nor lose, do nothing special (or other logic)
                 else:
                     print(f"Neither win nor lose condition met, you rolled {self.point_roll_total}.")
 
@@ -1003,23 +996,12 @@ class CrapsJunponScreen(GambleScreen):
         line_y_start = 50
         line_y_end = 80
         line_thickness = 5
-
-        # Calculate the percentage fill based on the blow counter
-        # Each point in blow_counter equals 5% of the total meter width
         filled_width = int((blow_counter / max_blow_counter) * meter_width)
-
-        # Draw the background of the meter (empty portion)
         meter_bg_rect = pygame.Rect(meter_x_position, meter_y_position, meter_width, meter_height)  # Position: (250, 50)
         pygame.draw.rect(state.DISPLAY, RED, meter_bg_rect)  # Red background
-
-        # Draw the filled portion of the meter (based on blow_counter)
         meter_fill_rect = pygame.Rect(meter_x_position, meter_y_position, filled_width, meter_height)
         pygame.draw.rect(state.DISPLAY, GREEN, meter_fill_rect)  # Green filled portion
-
-        # Draw the border of the meter
         pygame.draw.rect(state.DISPLAY, WHITE, meter_bg_rect, white_border_width)  # White border
-
-        # Optional: You can draw a goal line if you need a target (this is from your original code)
         goal_position = int((self.power_meter_goal / max_blow_counter) * meter_width) + meter_x_position
         pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end), line_thickness)
 

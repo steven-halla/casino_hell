@@ -34,9 +34,9 @@ class Player(Entity):
         self.max_stamina_points = 160 + self.stamina_increase
         self.focus_points = 55
         self.max_focus_points = 10
-        self.items = ["sir leopold's paw"]
+        self.items = []
 
-        self.equipped_items = ["craps wrist watch"]
+        self.equipped_items = []
 
         self.npc_items = []
         self.magicinventory = ["shield",  "shake", "Triple D" ]
