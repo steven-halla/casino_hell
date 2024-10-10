@@ -60,6 +60,7 @@ from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemon
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen2 import Area2RibDemonMazeScreen2
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen3 import Area2RibDemonMazeScreen3
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
+from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlbertScreen
 from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
@@ -201,6 +202,8 @@ class GameState:
 
 #-----------------area 3 is beloew-----------------------#
         self.crapsJunponScreen = CrapsJunponScreen()
+        self.blackJackAlbertScreen = BlackJackAlbertScreen()
+
 
 
 
@@ -213,7 +216,7 @@ class GameState:
         # the below is the default of what i need
         # self.currentScreen = self.startLoadScreen
 
-        self.currentScreen = self.crapsJunponScreen
+        self.currentScreen = self.blackJackAlbertScreen
 
 
 
