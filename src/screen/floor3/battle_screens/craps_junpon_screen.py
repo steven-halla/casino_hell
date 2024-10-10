@@ -163,7 +163,6 @@ class CrapsJunponScreen(GambleScreen):
         self.power_meter_index = self.set_variable_to_zero
 
     def update(self, state: 'GameState'):
-        print(self.game_state)
         # print(self.game_state)
         controller = state.controller
         controller.update()
@@ -211,6 +210,8 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
+            print("are we in the come out screen?")
+            print(self.game_state)
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.round_reset()
@@ -232,7 +233,6 @@ class CrapsJunponScreen(GambleScreen):
             self.point_screen_helper(state)
 
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-            print("update method player lose point roll")
 
             if controller.isTPressed:
                 controller.isTPressed = False
@@ -319,14 +319,12 @@ class CrapsJunponScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
-            print("draw method player win point roll")
 
             # print("WE better not fucking be here")
             state.DISPLAY.blit(self.font.render(f"You WIN! Point: {self.point_roll_total} matching come out roll {self.come_out_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
 
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-            print("draw method player lose point roll")
 
             state.DISPLAY.blit(self.font.render(f"You LOSE! You rolled a: {self.point_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
@@ -490,7 +488,6 @@ class CrapsJunponScreen(GambleScreen):
 
             if self.lucky_seven == False:
                 unlucky_two_roll = random.randint(1, 100)
-                print("unlucky two roll is: " + str(unlucky_two_roll))
                 if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items:
                     unlucky_two_roll -= 10
 
@@ -503,16 +500,18 @@ class CrapsJunponScreen(GambleScreen):
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
 
                 elif unlucky_two_roll < 60:
-                    self.dice_roll_1 = random.randint(1, 6)
-                    self.dice_roll_2 = random.randint(1, 6)
-                    print("line 568")
+                    self.dice_roll_1 = 1
+                    self.dice_roll_2 = 6
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+                    print("Your come out roll isssss:" + str(self.come_out_roll_total))
 
                     if self.come_out_roll_total == 2 or self.come_out_roll_total == 12:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
 
                     elif self.come_out_roll_total == 7:
+                        print("are e here?")
                         self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
+                        return
 
 
                     if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items and self.come_out_roll_total == 3:
@@ -534,18 +533,14 @@ class CrapsJunponScreen(GambleScreen):
                 luck_multiplier = 2
                 lucky_7_roll = random.randint(1, 100) + (lucky_player_bonus * luck_multiplier)
                 if lucky_7_roll >= luck_roll_success:
-                    print("Lucky Roll of 7")
                     self.dice_roll_1 = 1
                     self.dice_roll_2 = 6
                     self.come_out_roll_total = player_lucky_7_come_out_roll_reward
                     self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                 elif lucky_7_roll < luck_roll_success:
                     self.dice_roll_1 = random.randint(1, 6)
-                    print("Dice roll of 1 is: " + str(self.dice_roll_1))
                     self.dice_roll_2 = random.randint(1, 6)
-                    print("Dice roll of 2 is: " + str(self.dice_roll_2))
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
-                    print("come out roll is : " + str(self.come_out_roll_total))
                     if self.come_out_roll_total == 2:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
                     elif self.come_out_roll_total == 3:
@@ -556,7 +551,7 @@ class CrapsJunponScreen(GambleScreen):
                             self.dice_roll_1 = erika_nugget_amulet_protection
                             self.dice_roll_2 = erika_nugget_amulet_protection
                             self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
-                            self.game_state = "point_phase_screen"
+                            self.game_state = self.POINT_ROLL_SCREEN
                     elif self.come_out_roll_total == 12:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
                     elif self.come_out_roll_total == 7:
@@ -819,6 +814,9 @@ class CrapsJunponScreen(GambleScreen):
         # Only run the timer logic if the timer is active
         if self.is_timer_active:
             if self.rolling_dice_timer():
+                state.player.stamina_points -= self.player_stamina_low_cost
+
+
                 self.dice_roll_1 = random.randint(1, 6)
                 self.dice_roll_2 = random.randint(1, 6)
 
@@ -830,28 +828,33 @@ class CrapsJunponScreen(GambleScreen):
                 self.is_timer_active = False
                 self.start_time = 0
 
+                if self.lucky_seven_buff_counter > 0 and self.point_roll_total != self.come_out_roll_total and self.point_roll_total != 7:
+                    self.dice_roll_3 = random.randint(1, 6)
+                    original_dice = self.dice_roll_2
+
+                    self.dice_roll_2 = self.dice_roll_3
+                    self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+
+                    print("dice roll of 2 is:")
+                    print(original_dice)
+                    print("Your dice rolls are 3rd dice")
+                    print(self.dice_roll_3)
+
                 # First check the lose condition
                 if self.point_roll_total == 7:
-                    print(f"You rolled a 7, moving to the lose state.")
                     self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
-                    print(self.game_state)
                     return
 
                 # Then check the win condition
                 elif self.point_roll_total == self.come_out_roll_total:
-                    print(f"You rolled the come-out roll of {self.come_out_roll_total}, you win!")
                     self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
-                    print(self.game_state)
                     return
 
                 # If neither win nor lose, do nothing special (or other logic)
                 else:
                     print(f"Neither win nor lose condition met, you rolled {self.point_roll_total}.")
 
-                if self.point_roll_index == self.point_blow_index:
-                    print("blowing on the dice for good luck")
-                elif self.point_roll_index == self.point_bet_index:
-                    print("time to make a bet")
+
 
 
 

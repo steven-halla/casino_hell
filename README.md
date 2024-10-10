@@ -131,6 +131,9 @@ start out with 30 or so NPCS
 and get less and less
 lets hve it to where you can help other NPCS or hinder
 
+NEW SPELL: FORCE DRAW
+IF ENEMY HAS A SCORE OF 11 OR LOWER YOU CAN FORCE THEM TO DRAW
+1 CARD.
 
 
 
