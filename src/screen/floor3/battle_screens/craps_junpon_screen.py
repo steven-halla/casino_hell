@@ -238,6 +238,8 @@ class CrapsJunponScreen(GambleScreen):
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.round_reset()
+                state.player.money += self.bet
+                self.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].update(state)
 
@@ -248,6 +250,8 @@ class CrapsJunponScreen(GambleScreen):
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.round_reset()
+                state.player.money -= self.bet
+                self.money += self.bet
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
 
@@ -258,8 +262,7 @@ class CrapsJunponScreen(GambleScreen):
             self.point_screen_helper(state)
 
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
-
-
+            self.bet = self.bet_minimum
 
             self.handle_dice_rolling_simulation(controller)
 
@@ -297,6 +300,8 @@ class CrapsJunponScreen(GambleScreen):
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.round_reset()
+                self.money += self.bet
+                state.player.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
 
 
@@ -307,7 +312,8 @@ class CrapsJunponScreen(GambleScreen):
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.round_reset()
-
+                self.money -= self.bet
+                state.player.money += self.bet
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.GAME_OVER_SCREEN:
