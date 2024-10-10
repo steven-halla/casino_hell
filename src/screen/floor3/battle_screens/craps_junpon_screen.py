@@ -13,9 +13,9 @@ class CrapsJunponScreen(GambleScreen):
         self.game_state: str = self.WELCOME_SCREEN
         self.sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
         self.come_out_roll_total: int = 0
-        self.dealer_name = "Junpon"
-        self.start_time = 0
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.dealer_name: str = "Junpon"
+        self.start_time: int = 0
+        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.dice_roll_1: int = 0
         self.dice_roll_2: int = 0
@@ -26,55 +26,53 @@ class CrapsJunponScreen(GambleScreen):
         self.magic_screen_choices: list[str] = [Magic.CRAPS_LUCKY_7.value, "Back"]
         self.bet_screen_choices: list[str] = ["Back"]
         self.magic_screen_index: int = 0
+        self.triple_dice_index: int = 0
+        self.back_index: int = 1
         self.point_roll_index: int = 0
         self.point_roll_dice_index: int = 0
-        self.roll_dice = True  # Track if dice sound should be played
+        self.roll_dice: bool = True  # Track if dice sound should be played
         self.point_blow_index: int = 1
         self.point_bet_index: int = 2
         self.bet: int = 75
         self.bet_minimum: int = 75
         pygame.mixer.music.stop()
         self.lucky_seven_buff_counter: int = 0
+        self.triple_dice_counter_start_set = 10
         self.magic_lock: bool = False
-        self.lucky_seven_flag = False
-        self.is_timer_active = False  # Timer is no longer active
-        self.blit_message_x = 65
-        self.blit_message_y = 460
-        self.lucky_seven = False
-        self.triple_dice_cast_cost = 50
-        self.set_variable_to_zero = 0
-        self.lucky_seven_buff_not_active = 0
-        self.junpon_bankrupt = 0
-        self.player_stamina_high_cost = 10
-        self.player_stamina_med_cost = 5
-        self.player_stamina_low_cost = 2
-        self.magic_screen_menu_lucky_seven_index = 0
-        self.magic_screen_menu_back_index = 1
-        self.lock_down_inactive = 0
-        self.power_meter_speed = 2
-        self.power_meter_goal = 80
-        self.index_stepper = 1
-        self.blow_counter = 0
-        self.blow_meter = 0
-        self.blow_turn = 0
+        self.lucky_seven_flag: bool = False
+        self.is_timer_active: bool = False  # Timer is no longer active
+        self.blit_message_x: int = 65
+        self.blit_message_y:int = 460
+        self.lucky_seven: bool = False
+        self.triple_dice_cast_cost: int = 50
+        self.set_variable_to_zero: int = 0
+        self.lucky_seven_buff_not_active: int = 0
+        self.junpon_bankrupt: int = 0
+        self.player_stamina_high_cost: int = 10
+        self.player_stamina_med_cost: int = 5
+        self.player_stamina_low_cost: int = 2
+        self.magic_screen_menu_lucky_seven_index: int = 0
+        self.magic_screen_menu_back_index: int = 1
+        self.lock_down_inactive: int = 0
+        self.power_meter_speed: int = 2
+        self.reset_power_meter_to_base: int = 2
+        self.power_meter_goal: int = 80
+        self.index_stepper: int = 1
+        self.counter_stepper: int = 1
+        self.blow_counter: int = 0
+        self.blow_meter: int = 0
+        self.blow_turn: int = 0
         self.last_blow_decrement_time = pygame.time.get_ticks()  # Initialize to current game time
-
-
-        self.blow_sound_checker = True
-        self.play_tune = False
-
-
-        self.blow_meter_ready = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/blowready.wav")  # Adjust the path as needed
+        self.blow_sound_checker: bool = True
+        self.play_tune: bool = False
+        self.blow_meter_ready:pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/blowready.wav")  # Adjust the path as needed
         self.blow_meter_ready.set_volume(0.6)
-
-
-        self.dice_roll = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/dice_rolling.wav")  # Adjust the path as needed
+        self.dice_roll: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/dice_rolling.wav")  # Adjust the path as needed
         self.dice_roll.set_volume(0.6)
-
-        self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
         self.failed_power_strike_sound_effect.set_volume(0.6)
 
-        self.successful_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
         self.successful_power_strike_sound_effect.set_volume(0.6)
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -113,41 +111,35 @@ class CrapsJunponScreen(GambleScreen):
             ]),
         }
 
-    POWER_METER_MESSAGE = "power_meter_message"
-    MAGIC_MENU_TRIPLE_DICE_DESCRIPTION = "magic_menu_triple_dice_description"
-    MAGIC_MENU_BACK_DESCRIPTION = "magic_menu_back_description"
-    POINT_ROLL_MESSAGE = "point_roll_message"
-    PLAYER_WIN_COME_OUT_ROLL_MESSAGE = "player_win_come_out_roll_message"
-    PLAYER_LOSE_COME_OUT_ROLL_MESSAGE = "player_lose_come_out_roll_message"
-    PLAYER_WIN_POINT_ROLL_MESSAGE = "player_win_point_roll_message"
-    PLAYER_LOSE_POINT_ROLL_MESSAGE = "player_lose_point_roll_message"
-    # POINT_ROLL_ROLLING_DICE_MESSAGE = "point_roll_roll_rolling_dice_message"
-    POINT_ROLL_ROLLED_DICE_MESSAGE = "point_roll_roll_rolled_dice_message"
-    BLOW_POINT_ROLL_MESSAGE = "blow_point_roll_message"
-    BET_MESSAGE = "bet_message"
-
-
-    TRIPLE_DICE = "Triple Dice"
-    # enemy spell maximize bet, this is active during come out roll
-
-    PLAYER_WIN_COME_OUT_SCREEN = "player_win_come_out_screen"
-    PLAYER_LOSE_COME_OUT_SCREEN = "player_lose_come_out_screen"
-    BET_SCREEN = "Bet Screen"
-    MAGIC_SCREEN = "Magic Screen"
-    POWER_METER_SCREEN = "power_meter_screen"
-    POINT_ROLL_SCREEN = "point_roll_screen"
-    PLAYER_WIN_POINT_ROLL_SCREEN = "player_win_point_roll_screen"
-    PLAYER_LOSE_POINT_ROLL_SCREEN = "player_lose_point_roll_screen"
-    BLOW_POINT_ROLL_SCREEN = "blow_point_roll_screen"
-
+    POWER_METER_MESSAGE: str = "power_meter_message"
+    MAGIC_MENU_TRIPLE_DICE_DESCRIPTION: str = "magic_menu_triple_dice_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    POINT_ROLL_MESSAGE: str = "point_roll_message"
+    PLAYER_WIN_COME_OUT_ROLL_MESSAGE: str = "player_win_come_out_roll_message"
+    PLAYER_LOSE_COME_OUT_ROLL_MESSAGE: str = "player_lose_come_out_roll_message"
+    PLAYER_WIN_POINT_ROLL_MESSAGE: str = "player_win_point_roll_message"
+    PLAYER_LOSE_POINT_ROLL_MESSAGE: str = "player_lose_point_roll_message"
+    POINT_ROLL_ROLLED_DICE_MESSAGE: str = "point_roll_roll_rolled_dice_message"
+    BLOW_POINT_ROLL_MESSAGE: str = "blow_point_roll_message"
+    BET_MESSAGE: str = "bet_message"
+    TRIPLE_DICE: str = "Triple Dice"
+    PLAYER_WIN_COME_OUT_SCREEN: str = "player_win_come_out_screen"
+    PLAYER_LOSE_COME_OUT_SCREEN: str = "player_lose_come_out_screen"
+    BET_SCREEN: str = "Bet Screen"
+    MAGIC_SCREEN: str = "Magic Screen"
+    POWER_METER_SCREEN: str = "power_meter_screen"
+    POINT_ROLL_SCREEN: str = "point_roll_screen"
+    PLAYER_WIN_POINT_ROLL_SCREEN: str = "player_win_point_roll_screen"
+    PLAYER_LOSE_POINT_ROLL_SCREEN: str = "player_lose_point_roll_screen"
+    BLOW_POINT_ROLL_SCREEN: str = "blow_point_roll_screen"
 
     def start(self, state: 'GameState'):
         pass
     def round_reset(self):
-        self.bet = 75
+        self.bet = self.bet_minimum
         if self.lucky_seven_buff_counter >= self.lucky_seven_buff_not_active:
-            self.lucky_seven_buff_counter -= 1
-            if self.lucky_seven_buff_counter == 0:
+            self.lucky_seven_buff_counter -=  self.counter_stepper
+            if self.lucky_seven_buff_counter == self.lucky_seven_buff_not_active:
                 self.magic_lock = False
             # put a check here if enemy_spell == 0 set magic lock to False
         self.point_roll_total = self.set_variable_to_zero
@@ -156,11 +148,11 @@ class CrapsJunponScreen(GambleScreen):
         self.dice_roll_2 = self.set_variable_to_zero
         self.dice_roll_3 = self.set_variable_to_zero
         self.power_meter_index = self.set_variable_to_zero
-        self.power_meter_speed = 2
+        self.power_meter_speed = self.reset_power_meter_to_base
         self.lucky_seven = True
-        self.blow_counter = 0
-        self.blow_meter = 0
-        self.blow_turn = 0
+        self.blow_counter = self.set_variable_to_zero
+        self.blow_meter = self.set_variable_to_zero
+        self.blow_turn = self.set_variable_to_zero
 
         self.blow_sound_checker = True
 
@@ -178,9 +170,9 @@ class CrapsJunponScreen(GambleScreen):
         self.dice_roll_2 = self.set_variable_to_zero
         self.dice_roll_3 = self.set_variable_to_zero
         self.power_meter_index = self.set_variable_to_zero
-        self.blow_counter = 0
-        self.blow_meter = 0
-        self.blow_turn = 0
+        self.blow_counter = self.set_variable_to_zero
+        self.blow_meter = self.set_variable_to_zero
+        self.blow_turn = self.set_variable_to_zero
         self.blow_sound_checker = True
 
 
@@ -262,7 +254,10 @@ class CrapsJunponScreen(GambleScreen):
             self.point_screen_helper(state)
 
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+            meter_finished = 7
             self.bet = self.bet_minimum
+            blow_counter_max = 21
+            blow_counter_min_needed = 20
 
             self.handle_dice_rolling_simulation(controller)
 
@@ -271,7 +266,7 @@ class CrapsJunponScreen(GambleScreen):
 
             # Check if 7 seconds have passed
             time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000  # Convert to seconds
-            if time_elapsed >= 7:
+            if time_elapsed >= meter_finished:
                 self.dice_roll_1 = 3
                 self.dice_roll_2 = 4
                 self.point_roll_total = 7
@@ -281,10 +276,10 @@ class CrapsJunponScreen(GambleScreen):
                 self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
 
 
-            if self.blow_counter >= 21:
-                self.blow_counter = 21
+            if self.blow_counter >= blow_counter_max:
+                self.blow_counter = blow_counter_max
 
-            if state.controller.isTPressed == False and self.blow_counter >= 20:
+            if state.controller.isTPressed == False and self.blow_counter >= blow_counter_min_needed:
                 self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
 
                 self.point_roll_total = self.come_out_roll_total
@@ -449,6 +444,12 @@ class CrapsJunponScreen(GambleScreen):
         pygame.display.flip()
 
     def draw_magic_menu_selection_box(self, state):
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
         black_box_height = 221 - 50  # Adjust height
         black_box_width = 200 - 10  # Adjust width to match the left box
         border_width = 5
@@ -474,22 +475,27 @@ class CrapsJunponScreen(GambleScreen):
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
         # Draw the menu options
+        # Define local variables for spacing and coordinates
+
+
+        # Iterate over magic screen choices and display them
         for idx, choice in enumerate(self.magic_screen_choices):
-            y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
             state.DISPLAY.blit(
-                self.font.render(choice, True, (255, 255, 255)),
-                (start_x_right_box + 60, y_position + 15)
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
             )
 
-        if self.magic_screen_index == 0:
+        # Display the arrow for the selected option
+        if self.magic_screen_index == self.triple_dice_index:
             state.DISPLAY.blit(
-                self.font.render("->", True, (255, 255, 255)),
-                (start_x_right_box + 12, start_y_right_box + 12)
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset_triple_dice)  # Use the arrow offsets
             )
-        elif self.magic_screen_index == 1:
+        elif self.magic_screen_index == self.back_index:
             state.DISPLAY.blit(
-                self.font.render("->", True, (255, 255, 255)),
-                (start_x_right_box + 12, start_y_right_box + 52)
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset_back)  # Use the arrow offsets
             )
 
     def magic_menu_helper(self, state):
@@ -500,43 +506,49 @@ class CrapsJunponScreen(GambleScreen):
             controller.isUpPressed = False
 
             self.menu_movement_sound.play()
-            self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_screen_choices)
         elif controller.isDownPressed:
             controller.isDownPressed = False
             self.menu_movement_sound.play()
-            self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_screen_choices)
 
         if controller.isTPressed:
             controller.isTPressed = False
-            if self.magic_screen_index == 0 and state.player.focus_points >= self.triple_dice_cast_cost:
-                self.lucky_seven_buff_counter = 10
+            if self.magic_screen_index == self.triple_dice_index and state.player.focus_points >= self.triple_dice_cast_cost:
+                self.lucky_seven_buff_counter = self.triple_dice_counter_start_set
                 self.spell_sound.play()  # Play the sound effect once
                 state.player.focus_points -= self.triple_dice_cast_cost
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
 
     def bet_screen_helper(self, state):
+
+        come_out_point_roll_bet_min = 25
+        come_out_roll_bet_max = 75
+        point_roll_bet_max = 200
+
         controller = state.controller
         player_at_come_out_roll_phase = 0
         player_at_point_phase = 0
+        is_player_in_come_out_roll = 0
 
         if self.come_out_roll_total == player_at_come_out_roll_phase:
 
             if controller.isUpPressed:
                 controller.isUpPressed = False
                 self.menu_movement_sound.play()  # Play the sound effect once
-                self.bet += 25
+                self.bet += come_out_point_roll_bet_min
 
-                if self.point_roll_total == 0:
-                    if self.bet >= 75:
-                        self.bet = 75
+                if self.point_roll_total == is_player_in_come_out_roll:
+                    if self.bet >= come_out_roll_bet_max:
+                        self.bet = come_out_roll_bet_max
             if controller.isDownPressed:
                 controller.isDownPressed = False
-                self.bet -= 25
+                self.bet -= come_out_point_roll_bet_min
 
                 self.menu_movement_sound.play()  # Play the sound effect once
-                if self.bet <= 25:
-                    self.bet = 25
+                if self.bet <= come_out_point_roll_bet_min:
+                    self.bet = come_out_point_roll_bet_min
 
             if controller.isBPressed:
                 controller.isBPressed = False
@@ -547,18 +559,18 @@ class CrapsJunponScreen(GambleScreen):
             if controller.isUpPressed:
                 controller.isUpPressed = False
                 self.menu_movement_sound.play()  # Play the sound effect once
-                self.bet += 25
+                self.bet += come_out_point_roll_bet_min
 
-                if self.point_roll_total == 0:
-                    if self.bet >= 200:
-                        self.bet = 200
+                if self.point_roll_total == player_at_point_phase:
+                    if self.bet >= point_roll_bet_max:
+                        self.bet = point_roll_bet_max
             if controller.isDownPressed:
                 controller.isDownPressed = False
-                self.bet -= 25
+                self.bet -= come_out_point_roll_bet_min
 
                 self.menu_movement_sound.play()  # Play the sound effect once
-                if self.bet <= 25:
-                    self.bet = 25
+                if self.bet <= come_out_point_roll_bet_min:
+                    self.bet = come_out_point_roll_bet_min
 
             if controller.isBPressed:
                 controller.isBPressed = False
@@ -569,6 +581,8 @@ class CrapsJunponScreen(GambleScreen):
     def power_meter_screen_helper(self, state):
         controller = state.controller
         controller.update()
+        nugget_amulet_buff = 10
+        you_lose_unlucky_roll = 60
 
         self.battle_messages[self.POWER_METER_MESSAGE].update(state)
 
@@ -596,9 +610,9 @@ class CrapsJunponScreen(GambleScreen):
             if self.lucky_seven == False:
                 unlucky_two_roll = random.randint(1, 100)
                 if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items:
-                    unlucky_two_roll -= 10
+                    unlucky_two_roll -= nugget_amulet_buff
 
-                if unlucky_two_roll >= 60:
+                if unlucky_two_roll >= you_lose_unlucky_roll:
                     self.dice_roll_1 = 1
                     self.dice_roll_2 = 1
                     self.come_out_roll_total = 2
@@ -606,7 +620,7 @@ class CrapsJunponScreen(GambleScreen):
                     print("line 562")
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
 
-                elif unlucky_two_roll < 60:
+                elif unlucky_two_roll < you_lose_unlucky_roll:
                     self.dice_roll_1 = random.randint(1, 6)
                     self.dice_roll_2 = random.randint(1, 6)
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
@@ -621,9 +635,10 @@ class CrapsJunponScreen(GambleScreen):
 
 
                     if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items and self.come_out_roll_total == 3:
-                        self.dice_roll_1 = 4
-                        self.dice_roll_2 = 4
-                        self.come_out_roll_total = 8
+                        player_advantage = 4
+                        self.dice_roll_1 = player_advantage
+                        self.dice_roll_2 = player_advantage
+                        self.come_out_roll_total = player_advantage + player_advantage
                         self.game_state = self.POINT_ROLL_SCREEN
                         return
                     elif Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.equipped_items and self.come_out_roll_total == 3:
@@ -706,11 +721,12 @@ class CrapsJunponScreen(GambleScreen):
         arrow_y_coordinate_padding_magic = 52
         arrow_y_coordinate_padding_bet = 92
         arrow_y_coordinate_padding_quit = 132
+        blow_ability_active = 5
 
         for idx, choice in enumerate(self.point_roll_choices):
             y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
 
-            if idx == 1 and self.blow_turn >= 5 and Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
+            if idx == 1 and self.blow_turn >= blow_ability_active and Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
                 # Render the choice at index 1 in green if the condition is met
                 text_surface = self.font.render(choice, True, (0, 255, 0))  # Green color for index 1
             else:
@@ -878,7 +894,9 @@ class CrapsJunponScreen(GambleScreen):
         return False  # Timer is still running
 
     def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
-
+        dice_x_start_position = 300
+        dice_y_position = 0
+        dice_x_gap = 120  # Gap between the two dice
         # Define the rectangles for each dice face
         dice_faces = [
             pygame.Rect(50, 0, 133, 200),  # Dice face 1=
@@ -896,9 +914,12 @@ class CrapsJunponScreen(GambleScreen):
         dice_rect2 = dice_faces[dice_roll_2 - 1]
         cropped_dice2 = self.sprite_sheet.subsurface(dice_rect2)  # Crop the second dice image
 
-        # Blit the cropped dice images onto the display with a 30-pixel gap
-        state.DISPLAY.blit(cropped_dice1, (300, 0))  # Adjusted y-coordinate for the first dice
-        state.DISPLAY.blit(cropped_dice2, (420, 0))  # Placed the second dice 150 pixels to the right
+        # Define local variables for dice positioning
+
+
+        # Blit the cropped dice images onto the display using the defined variables
+        state.DISPLAY.blit(cropped_dice1, (dice_x_start_position, dice_y_position))  # First dice position
+        state.DISPLAY.blit(cropped_dice2, (dice_x_start_position + dice_x_gap, dice_y_position))  # Second dice with gap
 
     def point_screen_helper(self, state):
 
@@ -1002,9 +1023,3 @@ class CrapsJunponScreen(GambleScreen):
         goal_position = int((self.power_meter_goal / max_blow_counter) * meter_width) + meter_x_position
         pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end), line_thickness)
 
-#Charge: hold A button and rock d pad left and right
-# Release right after last d pad button press
-# this is for point roll
-# the longer you wait the more of a bonus you get
-# this is to get rid of times that you can roll 12 rolls
-# this move requires stamina to use
