@@ -133,7 +133,7 @@ class CrapsJunponScreen(GambleScreen):
     BLOW_POINT_ROLL_SCREEN: str = "blow_point_roll_screen"
 
     def start(self, state: 'GameState'):
-        self.game_state = self.BLOW_POINT_ROLL_SCREEN
+        pass
     def round_reset(self):
         self.bet = self.bet_minimum
         if self.lucky_seven_buff_counter >= self.lucky_seven_buff_not_active:

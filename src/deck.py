@@ -121,35 +121,6 @@ class Deck:
         print("draw card: " + str(card))
         return card
 
-    # #maybe make two functions, a player draw_card and enemy draw_card
-    # def player_draw_card(self):
-    #     # pygame.display.update()
-    #
-    #     card = self.cards.pop()
-    #     player_cards_list.append((card[1], card[0]))
-    #     # print("hidey hoe")
-    #     # print(player_cards_list)
-    #
-    #     # self.show_card(card[1], card[0], (self.card_width, self.card_height))
-    #     # pygame.time.delay(500)
-    #
-    #
-    #     return card
-    #
-    # def enemy_draw_card(self):
-    #     # pygame.display.update()
-    #
-    #     card = self.cards.pop()
-    #     enemy_cards_list.append((card[1], card[0]))
-    #     # print("hidey hoe")
-    #     # print(self.enemy_cards_list)
-    #
-    #     # self.show_card(card[1], card[0], (self.card_width, self.card_height))
-    #     # pygame.time.delay(500)
-    #
-    #
-    #     return card
-
     def shuffle(self):
 
         self.cards.clear()

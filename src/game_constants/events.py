@@ -31,6 +31,7 @@ class Events(Enum):
 
     # below is for level 3
     CRAPS_JUNPON_DEFEATED = "junpon defeated"
+    BLACK_JACK_ALBERT_DEFEATED = "black jack albert defeated"
 
 
     @staticmethod
