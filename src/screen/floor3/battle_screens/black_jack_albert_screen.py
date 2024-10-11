@@ -147,6 +147,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.enemy_card_x_positions = [initial_x_position + i * move_card_x for i in range(len(self.enemy_hand))]
 
         # Deal player cards one at a time
+        # Deal player cards one at a time
         all_player_cards_dealt = True
         for i, card in enumerate(self.player_hand):
             if self.player_card_y_positions[i] < player_target_y_position:
@@ -154,9 +155,15 @@ class BlackJackAlbertScreen(GambleScreen):
                 if self.player_card_y_positions[i] > player_target_y_position:
                     self.player_card_y_positions[i] = player_target_y_position
 
+                # Flip the second player's card at flip_y_position
+                if i == 1 and self.player_card_y_positions[i] >= flip_y_position:
+                    # Draw the player's second card face up once it reaches flip position
+                    self.deck.draw_card_face_up(card[1], card[0],
+                                                (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+                else:
+                    # Draw player card face down while moving (for all other cards or until it reaches target)
+                    self.deck.draw_card_face_down((self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
-                # Draw player card face down while moving
-                self.deck.draw_card_face_down((self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
                 all_player_cards_dealt = False  # Still dealing player cards
                 return  # Ensure we deal one card at a time
 
