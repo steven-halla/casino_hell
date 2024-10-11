@@ -124,6 +124,8 @@ class BlackJackAlbertScreen(GambleScreen):
             print(self.player_hand)
 
     def draw_draw_card_screen(self, state: 'GameState'):
+        card_one = 0
+        card_two = 1
         initial_x_position = 250
         initial_y_position = 1
         player_target_y_position = 300
@@ -133,7 +135,7 @@ class BlackJackAlbertScreen(GambleScreen):
         flip_y_position = 145  # Define the y-position where the card will flip
 
         # Ensure that both player_hand and enemy_hand are not empty
-        if len(self.player_hand) == 0 or len(self.enemy_hand) == 0:
+        if len(self.player_hand) == card_one or len(self.enemy_hand) == card_one:
             print("Error: player_hand or enemy_hand is empty.")
             return  # Exit if either hand is empty to prevent further errors
 
@@ -168,7 +170,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 return  # Ensure we deal one card at a time
 
             # Draw player card face up once it reaches target position
-            self.deck.draw_card_face_up(card[1], card[0], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+            self.deck.draw_card_face_up(card[card_two], card[card_one], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
         # If all player cards are dealt, start dealing enemy cards
         # If all player cards are dealt, start dealing enemy cards one at a time
@@ -184,15 +186,15 @@ class BlackJackAlbertScreen(GambleScreen):
                     return  # Ensure we deal one card at a time
 
                 # Always draw the first enemy card (index 0) face down, even at the target position
-                if i == 0:
+                if i == card_one:
                     self.deck.draw_card_face_down((self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
                 else:
                     # Draw the remaining enemy cards face up once they reach the target position
-                    self.deck.draw_card_face_up(card[1], card[0], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
+                    self.deck.draw_card_face_up(card[card_two], card[card_one], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
 
         # Redraw all player cards that have been dealt and are at their final positions
         for i, card in enumerate(self.player_hand):
-            self.deck.draw_card_face_up(card[1], card[0], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+            self.deck.draw_card_face_up(card[card_two], card[card_one], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
         # Redraw all enemy cards that have been dealt and are at their final positions
         # Redraw all enemy cards that have been dealt and are at their final positions
@@ -202,7 +204,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 self.deck.draw_card_face_down((self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
             else:
                 # Draw all remaining enemy cards face up
-                self.deck.draw_card_face_up(card[1], card[0], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
+                self.deck.draw_card_face_up(card[card_two], card[card_one], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
