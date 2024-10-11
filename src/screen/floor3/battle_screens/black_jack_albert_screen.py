@@ -121,38 +121,38 @@ class BlackJackAlbertScreen(GambleScreen):
             print(self.player_hand)
 
     def draw_draw_card_screen_logic(self, state: 'GameState'):
-        player_card_x = 250
+        initial_x_position = 250
         initial_y_position = 1
         target_y_position = 300
-        move_player_card_x = 75
+        move_player_card_x = 95
         card_speed = 5  # Adjust this for speed of movement
 
         # Ensure that the y positions list matches the length of player_hand
         if not hasattr(self, 'card_y_positions') or len(self.card_y_positions) != len(self.player_hand):
             self.card_y_positions = [initial_y_position] * len(self.player_hand)
 
-        # Iterate over each card in player's hand
-        for i, card in enumerate(self.player_hand):
-            # Adjust y-position for the 5th card to move it to the second row
-            if i == 4:  # Adjust for the 5th card, moving to the second row
-                player_card_x = 235  # Start position for the second row
-                target_y_position = 305
-            elif i > 4:
-                # For the 6th card and beyond
-                player_card_x = 300
-                target_y_position = 305
+        # Ensure that the x positions list matches the length of player_hand
+        if not hasattr(self, 'card_x_positions') or len(self.card_x_positions) != len(self.player_hand):
+            self.card_x_positions = [initial_x_position + i * move_player_card_x for i in range(len(self.player_hand))]
 
-            # Update the position gradually until the card reaches the target position
+        # Update the position of the next card to be moved
+        for i, card in enumerate(self.player_hand):
             if self.card_y_positions[i] < target_y_position:
+                # Move this card downwards
                 self.card_y_positions[i] += card_speed
                 if self.card_y_positions[i] > target_y_position:
                     self.card_y_positions[i] = target_y_position  # Clamp to target
 
-            # Draw the card at the current position
-            self.deck.draw_card_face_up(card[1], card[0], (player_card_x, self.card_y_positions[i]), DISPLAY)
+                # Draw the moving card at its current position
+                self.deck.draw_card_face_up(card[1], card[0], (self.card_x_positions[i], self.card_y_positions[i]), DISPLAY)
 
-            # Move to the next card's x position for the next iteration
-            player_card_x += move_player_card_x
+                # Only move one card at a time
+                break
+
+        # Draw all cards that have already reached their target positions
+        for j, card in enumerate(self.player_hand):
+            if self.card_y_positions[j] >= target_y_position:
+                self.deck.draw_card_face_up(card[1], card[0], (self.card_x_positions[j], self.card_y_positions[j]), DISPLAY)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
