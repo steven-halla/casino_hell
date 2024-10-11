@@ -129,7 +129,7 @@ class BlackJackAlbertScreen(GambleScreen):
         player_target_y_position = 300
         enemy_target_y_position = 50
         move_card_x = 75
-        card_speed = 4  # Adjust this for speed of movement
+        card_speed = 3  # Adjust this for speed of movement
         flip_y_position = 90  # Define the y-position where the card will flip
 
         # Ensure that both player_hand and enemy_hand are not empty
@@ -146,53 +146,44 @@ class BlackJackAlbertScreen(GambleScreen):
             self.enemy_card_y_positions = [initial_y_position] * len(self.enemy_hand)
             self.enemy_card_x_positions = [initial_x_position + i * move_card_x for i in range(len(self.enemy_hand))]
 
-        # Flag to control which set of cards (player or enemy) is being dealt
-        if not hasattr(self, 'dealing_player_cards'):
-            self.dealing_player_cards = True  # Start by dealing player cards first
-        if not hasattr(self, 'dealt_cards_count'):
-            self.dealt_cards_count = 0  # Track how many cards have been dealt so far
-
-        # Move and draw player cards first, one card at a time
-        all_player_cards_finished = True
+        # Deal player cards one at a time
+        all_player_cards_dealt = True
         for i, card in enumerate(self.player_hand):
             if self.player_card_y_positions[i] < player_target_y_position:
-                all_player_cards_finished = False  # Not all player cards are finished moving
                 self.player_card_y_positions[i] += card_speed
                 if self.player_card_y_positions[i] > player_target_y_position:
                     self.player_card_y_positions[i] = player_target_y_position
 
-            if i == 0 or (i == 1 and self.player_card_y_positions[1] < flip_y_position):
-                self.deck.draw_card_face_down((self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
-            else:
-                self.deck.draw_card_face_up(card[1], card[0], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
-        # Only start drawing enemy cards once all player cards are done
-        if all_player_cards_finished:
+                # Draw player card face down while moving
+                self.deck.draw_card_face_down((self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+                all_player_cards_dealt = False  # Still dealing player cards
+                return  # Ensure we deal one card at a time
+
+            # Draw player card face up once it reaches target position
+            self.deck.draw_card_face_up(card[1], card[0], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+
+        # If all player cards are dealt, start dealing enemy cards
+        if all_player_cards_dealt:
             for i, card in enumerate(self.enemy_hand):
                 if self.enemy_card_y_positions[i] < enemy_target_y_position:
                     self.enemy_card_y_positions[i] += card_speed
                     if self.enemy_card_y_positions[i] > enemy_target_y_position:
                         self.enemy_card_y_positions[i] = enemy_target_y_position
+                    # Draw enemy card face down while moving
+                    self.deck.draw_card_face_down((self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
+                    return  # Ensure we deal one card at a time
 
-                if i == 0:
-                    # Draw the first enemy card face down until it reaches the target
-                    self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
-                elif i == 1:
-                    # Always flip the second enemy card face up once it reaches or passes the flip_y_position
-                    self.deck.draw_card_face_up(self.enemy_hand[1][1], self.enemy_hand[1][0], (self.enemy_card_x_positions[1], self.enemy_card_y_positions[1]), DISPLAY)
-
-                # Ensure that all other cards that have reached their positions are drawn again
-                for j in range(2, len(self.enemy_hand)):
-                    self.deck.draw_card_face_up(self.enemy_hand[j][1], self.enemy_hand[j][0], (self.enemy_card_x_positions[j], self.enemy_card_y_positions[j]), DISPLAY)
-
-        # Redraw all cards that have already reached their positions to ensure they don't vanish
-        for i, card in enumerate(self.player_hand):
-            if self.player_card_y_positions[i] == player_target_y_position:
-                self.deck.draw_card_face_up(card[1], card[0], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
-
-        for i, card in enumerate(self.enemy_hand):
-            if self.enemy_card_y_positions[i] == enemy_target_y_position:
+                # Draw enemy card face up once it reaches target position
                 self.deck.draw_card_face_up(card[1], card[0], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
+
+        # Redraw all player cards that have been dealt and are at their final positions
+        for i, card in enumerate(self.player_hand):
+            self.deck.draw_card_face_up(card[1], card[0], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+
+        # Redraw all enemy cards that have been dealt and are at their final positions
+        for i, card in enumerate(self.enemy_hand):
+            self.deck.draw_card_face_up(card[1], card[0], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
