@@ -11,6 +11,8 @@ from game_constants.magic import Magic
 class BlackJackAlbertScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
+        self.enemy_card_y_positions = []
+        self.player_card_y_positions = []
         self.game_state: str = self.WELCOME_SCREEN
         self.deck: Deck() = Deck()
         self.player_hand = []
