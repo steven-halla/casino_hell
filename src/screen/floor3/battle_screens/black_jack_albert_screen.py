@@ -1,6 +1,6 @@
 import pygame
 
-from constants import WHITE, RED
+from constants import WHITE, RED, DISPLAY
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
@@ -12,6 +12,10 @@ class BlackJackAlbertScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
+        self.deck: Deck() = Deck()
+        self.player_hand = []
+        self.enemy_hand = []
+
         self.bet: int = 100
         self.money: int = 1000
         self.albert_bankrupt: int = 0
@@ -21,7 +25,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.magic_lock: bool = False
         self.dealer_name = "albert"
         self.lock_down_inactive: int = 0
-
+        self.initial_hand = 2
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -52,7 +56,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
     def start(self, state: 'GameState'):
-        pass
+        self.deck.shuffle()
 
     def round_reset(self):
         pass
@@ -84,6 +88,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
 
 
@@ -100,13 +105,54 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.draw_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
 
 
 
         pygame.display.flip()
 
+    def update_draw_card_screen_logic(self, state: 'GameState'):
+        # Only draw cards if the hands are empty
+        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+            self.enemy_hand = self.deck.enemy_draw_hand(2)
+            self.player_hand = self.deck.player_draw_hand(2)
+            print(self.enemy_hand)
+            print(self.player_hand)
 
+    def draw_draw_card_screen_logic(self, state: 'GameState'):
+        player_card_x = 250
+        initial_y_position = 1
+        target_y_position = 300
+        move_player_card_x = 75
+        card_speed = 5  # Adjust this for speed of movement
+
+        # Ensure that the y positions list matches the length of player_hand
+        if not hasattr(self, 'card_y_positions') or len(self.card_y_positions) != len(self.player_hand):
+            self.card_y_positions = [initial_y_position] * len(self.player_hand)
+
+        # Iterate over each card in player's hand
+        for i, card in enumerate(self.player_hand):
+            # Adjust y-position for the 5th card to move it to the second row
+            if i == 4:  # Adjust for the 5th card, moving to the second row
+                player_card_x = 235  # Start position for the second row
+                target_y_position = 305
+            elif i > 4:
+                # For the 6th card and beyond
+                player_card_x = 300
+                target_y_position = 305
+
+            # Update the position gradually until the card reaches the target position
+            if self.card_y_positions[i] < target_y_position:
+                self.card_y_positions[i] += card_speed
+                if self.card_y_positions[i] > target_y_position:
+                    self.card_y_positions[i] = target_y_position  # Clamp to target
+
+            # Draw the card at the current position
+            self.deck.draw_card_face_up(card[1], card[0], (player_card_x, self.card_y_positions[i]), DISPLAY)
+
+            # Move to the next card's x position for the next iteration
+            player_card_x += move_player_card_x
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
