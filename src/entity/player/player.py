@@ -36,7 +36,7 @@ class Player(Entity):
         self.max_focus_points = 10
         self.items = ["sir leopold's paw"]
 
-        self.equipped_items = ["craps wrist watch"]
+        self.equipped_items = ["sir leopold amulet"]
 
         self.npc_items = []
         self.magicinventory = ["shield",  "shake", "Triple D" ]

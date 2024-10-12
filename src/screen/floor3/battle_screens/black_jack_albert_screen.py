@@ -4,6 +4,7 @@ from constants import WHITE, RED, DISPLAY
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
@@ -17,6 +18,8 @@ class BlackJackAlbertScreen(GambleScreen):
         self.deck: Deck() = Deck()
         self.player_hand = []
         self.enemy_hand = []
+        self.ace_detected_time = None
+        self.ace_effect_triggered = False
 
         self.bet: int = 100
         self.money: int = 1000
@@ -60,6 +63,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
     def start(self, state: 'GameState'):
         self.deck.shuffle()
+        # passtt
 
     def round_reset(self):
         pass
@@ -122,8 +126,8 @@ class BlackJackAlbertScreen(GambleScreen):
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             self.player_hand = self.deck.player_draw_hand(2)
-            print(self.enemy_hand)
-            print(self.player_hand)
+            # print("ENEMY HAND" + str(self.enemy_hand[1]))
+            # print("PLAYER HAND" + str(self.player_hand[1]))
 
     def draw_draw_card_screen(self, state: 'GameState'):
         card_one = 0
@@ -207,6 +211,35 @@ class BlackJackAlbertScreen(GambleScreen):
             else:
                 # Draw all remaining enemy cards face up
                 self.deck.draw_card_face_up(card[card_two], card[card_one], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
+        # Global variables to manage Ace detection
+
+
+        # In your main game logic method:
+        if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items:
+            if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace" and not self.ace_effect_triggered:
+                # Set the detected time if this is the first detection
+                if self.ace_detected_time is None:
+                    self.ace_detected_time = pygame.time.get_ticks()  # Store the time when Ace is detected
+                    print("Timer started: Ace detected")
+
+            # If the timer is running, check if 2 seconds have passed
+            if self.ace_detected_time is not None:
+                current_time = pygame.time.get_ticks()
+                elapsed_time = current_time - self.ace_detected_time
+                print(f"Elapsed time: {elapsed_time} ms")
+
+                if elapsed_time >= 1500:  # 2000 ms = 2 seconds
+                    print("Ace time")
+                    # Remove the Ace card
+                    self.enemy_hand.pop(1)
+                    # Draw a new card and add it to the enemy's hand
+                    new_card = self.deck.enemy_draw_hand(1)[0]
+                    self.enemy_hand.insert(1, new_card)
+
+                    # Reset the timer and trigger flag
+                    self.ace_effect_triggered = True
+                    self.ace_detected_time = None
+                    print("Ace replaced and timer reset")
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
