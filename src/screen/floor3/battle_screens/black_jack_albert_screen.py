@@ -1,5 +1,5 @@
 import pygame
-
+import random
 from constants import WHITE, RED, DISPLAY
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
@@ -18,9 +18,12 @@ class BlackJackAlbertScreen(GambleScreen):
         self.deck: Deck() = Deck()
         self.player_hand = []
         self.enemy_hand = []
+        self.player_score = 0
+        self.enemy_score = 0
         self.ace_detected_time = None
         self.ace_effect_triggered = False
-
+        self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
+        self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
         self.money: int = 1000
         self.albert_bankrupt: int = 0
@@ -122,14 +125,48 @@ class BlackJackAlbertScreen(GambleScreen):
         pygame.display.flip()
 
     def update_draw_card_screen_logic(self, state: 'GameState'):
+        luck_muliplier = 5
+        lucky_roll = random.randint(1, 100)
+        player_bad_score_min_range = 12
+        player_bad_score_max_range = 17
+        level_1_luck_score = 0
+        lucky_strike_threshhold = 75
+        initial_hand = 2
+        adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
         # Only draw cards if the hands are empty
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.enemy_hand = self.deck.enemy_draw_hand(2)
+            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+
+
             self.player_hand = self.deck.player_draw_hand(2)
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+            print("player hand  before effect  : " + str(self.player_hand))
+            print("enemy hand is : " + str(self.enemy_hand))
+            print(adjusted_lucky_roll)
+            # print(self.player_score)
+            # print(self.enemy_score)
+
+            if state.player.luck > level_1_luck_score:
+                # print(adjusted_lucky_roll)
+                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+
+                    if adjusted_lucky_roll >= lucky_strike_threshhold:
+                        # print(adjusted_lucky_roll)
+                        self.lucky_strike.play()
+                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                            self.player_hand = self.deck.player_draw_hand(initial_hand)
+                            self.player_score = self.deck.compute_hand_value(self.player_hand)
+                            self.critical_hit = True
+                            print("player hand after affect : " + str(self.player_hand))
+
             # print("ENEMY HAND" + str(self.enemy_hand[1]))
             # print("PLAYER HAND" + str(self.player_hand[1]))
 
     def draw_draw_card_screen(self, state: 'GameState'):
+
+
         card_one = 0
         card_two = 1
         initial_x_position = 250
@@ -240,6 +277,10 @@ class BlackJackAlbertScreen(GambleScreen):
                     self.ace_effect_triggered = True
                     self.ace_detected_time = None
                     print("Ace replaced and timer reset")
+
+
+
+
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10

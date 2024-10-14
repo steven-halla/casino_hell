@@ -118,7 +118,7 @@ class Deck:
 
     def get_next_card(self):
         card = self.cards.pop()
-        print("draw card: " + str(card))
+        # print("draw card: " + str(card))
         return card
 
     def shuffle(self):
@@ -132,6 +132,7 @@ class Deck:
         return self.cards
 
     def player_draw_hand(self, num_cards):
+
         hand = []
         for i in range(num_cards):
             hand.append(self.get_next_card())
