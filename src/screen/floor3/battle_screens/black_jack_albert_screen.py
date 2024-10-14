@@ -34,6 +34,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.dealer_name = "albert"
         self.lock_down_inactive: int = 0
         self.initial_hand = 2
+        self.hedge_hog_time = False
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -51,14 +52,34 @@ class BlackJackAlbertScreen(GambleScreen):
             self.DRAW_CARD_MESSAGE: MessageBox([
                 "drawing your cards now"
             ]),
+            self.PLAYER_BLACK_JACK_MESSAGE: MessageBox([
+                "You got a black jack you win"
+            ]),
+            self.ENEMY_BLACK_JACK_MESSAGE: MessageBox([
+                "Enemy got a black jack you lose"
+            ]),
+            self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: MessageBox([
+                "BOth of you got 21 its a draw"
+            ]),
+            self.PLAYER_ACTION_MESSAGE: MessageBox([
+                "Time for action"
+            ]),
         }
 
+    PLAYER_ACTION_MESSAGE: str = "player_action_message"
+    PLAYER_ACTION_SCREEN: str = "player_action_screen"
+    PLAYER_BLACK_JACK_MESSAGE: str = "player_black_jack_message"
+    ENEMY_BLACK_JACK_MESSAGE: str = "enemy_black_jack_message"
+    PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: str = "player_enemy_draw_jack_message"
+    PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
+    ENEMY_BLACK_JACK_SCREEN: str = "enemy_black_jack_screen"
     DRAW_CARD_MESSAGE: str = "draw card message"
     MAGIC_MENU_REVEAL_DESCRIPTION: str = "magic_menu_reveal_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     BET_MESSAGE: str = "bet_message"
     Reveal: str = "reveal"
     DRAW_CARD_SCREEN: str = "draw card screen"
+    PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN = "player_enemy_draw_jack_screen "
 
 
     #demon: why do you guys always draw 1 card per player per round why not just give players thier carss , its faster that way
@@ -100,6 +121,17 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
+        elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
+
+        elif self.game_state == self.PLAYER_ACTION_SCREEN:
+            self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
+
+
 
 
     def draw(self, state: 'GameState'):
@@ -116,13 +148,95 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.draw_draw_card_screen(state)
-            # self.draw_draw_card_screen_enemy(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+                initial_x_position=250,  # Starting X position
+                player_target_y_position=300,  # Player's Y position
+                enemy_target_y_position=50,  # Enemy's Y position
+                move_card_x=75,  # Horizontal gap between cards
+                flip_y_position=145,  # Y position where cards flip
+                deck=self.deck,  # Deck object to draw cards
+                display=state.DISPLAY  # This is your correct display reference
+            )
+
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].draw(state)
+
+        elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+                initial_x_position=250,  # Starting X position
+                player_target_y_position=300,  # Player's Y position
+                enemy_target_y_position=50,  # Enemy's Y position
+                move_card_x=75,  # Horizontal gap between cards
+                flip_y_position=145,  # Y position where cards flip
+                deck=self.deck,  # Deck object to draw cards
+                display=state.DISPLAY  # This is your correct display reference
+            )
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].draw(state)
+
+
+        elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+                initial_x_position=250,  # Starting X position
+                player_target_y_position=300,  # Player's Y position
+                enemy_target_y_position=50,  # Enemy's Y position
+                move_card_x=75,  # Horizontal gap between cards
+                flip_y_position=145,  # Y position where cards flip
+                deck=self.deck,  # Deck object to draw cards
+                display=state.DISPLAY  # This is your correct display reference
+            )
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].draw(state)
+
+
+        elif self.game_state == self.PLAYER_ACTION_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+                initial_x_position=250,  # Starting X position
+                player_target_y_position=300,  # Player's Y position
+                enemy_target_y_position=50,  # Enemy's Y position
+                move_card_x=75,  # Horizontal gap between cards
+                flip_y_position=145,  # Y position where cards flip
+                deck=self.deck,  # Deck object to draw cards
+                display=state.DISPLAY  # This is your correct display reference
+            )
+            self.battle_messages[self.PLAYER_ACTION_MESSAGE].draw(state)
 
 
 
 
         pygame.display.flip()
+
+    def draw_hands(self, player_hand: list, enemy_hand: list,
+                   initial_x_position: int, player_target_y_position: int,
+                   enemy_target_y_position: int, move_card_x: int, flip_y_position: int, deck, display):
+        """Draws both player and enemy hands on the screen using state.DISPLAY."""
+
+        # Draw player's hand
+        for i, card in enumerate(player_hand):
+            player_x_position = initial_x_position + i * move_card_x
+            player_y_position = player_target_y_position
+
+            if i == 1 and player_y_position >= flip_y_position:
+                deck.draw_card_face_up(card[1], card[0], (player_x_position, player_y_position), display)
+            else:
+                deck.draw_card_face_up(card[1], card[0], (player_x_position, player_y_position), display)
+
+        # Draw enemy's hand
+        for i, card in enumerate(enemy_hand):
+            enemy_x_position = initial_x_position + i * move_card_x
+            enemy_y_position = enemy_target_y_position
+
+            if i == 0:
+                deck.draw_card_face_down((enemy_x_position, enemy_y_position), display)
+            else:
+                deck.draw_card_face_up(card[1], card[0], (enemy_x_position, enemy_y_position), display)
 
     def update_draw_card_screen_logic(self, state: 'GameState'):
         luck_muliplier = 5
@@ -135,34 +249,40 @@ class BlackJackAlbertScreen(GambleScreen):
         adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
         # Only draw cards if the hands are empty
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+
+            self.player_hand = self.deck.player_draw_hand(2)
             self.enemy_hand = self.deck.enemy_draw_hand(2)
+
+
+            # Compute enemy hand value
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
 
 
-            self.player_hand = self.deck.player_draw_hand(2)
+
+            # self.player_hand = self.deck.player_draw_hand(2)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
 
             print("player hand  before effect  : " + str(self.player_hand))
+            print("player sc0ret  : " + str(self.player_score))
             print("enemy hand is : " + str(self.enemy_hand))
-            print(adjusted_lucky_roll)
-            # print(self.player_score)
-            # print(self.enemy_score)
+            print("enemy sc0ret  : " + str(self.enemy_score))
+
 
             if state.player.luck > level_1_luck_score:
-                # print(adjusted_lucky_roll)
                 if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
 
                     if adjusted_lucky_roll >= lucky_strike_threshhold:
                         # print(adjusted_lucky_roll)
                         self.lucky_strike.play()
                         while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                            # this could, at a low % chance, empty out the deck and crash. maybe have 3 re rolls max
                             self.player_hand = self.deck.player_draw_hand(initial_hand)
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.critical_hit = True
                             print("player hand after affect : " + str(self.player_hand))
 
-            # print("ENEMY HAND" + str(self.enemy_hand[1]))
-            # print("PLAYER HAND" + str(self.player_hand[1]))
+
+
 
     def draw_draw_card_screen(self, state: 'GameState'):
 
@@ -252,35 +372,60 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
         # In your main game logic method:
+        # Ace detection logic
         if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items:
             if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace" and not self.ace_effect_triggered:
-                # Set the detected time if this is the first detection
                 if self.ace_detected_time is None:
                     self.ace_detected_time = pygame.time.get_ticks()  # Store the time when Ace is detected
                     print("Timer started: Ace detected")
 
-            # If the timer is running, check if 2 seconds have passed
             if self.ace_detected_time is not None:
                 current_time = pygame.time.get_ticks()
                 elapsed_time = current_time - self.ace_detected_time
                 print(f"Elapsed time: {elapsed_time} ms")
 
-                if elapsed_time >= 1500:  # 2000 ms = 2 seconds
+                # Handle the Ace effect once the timer has elapsed
+                if elapsed_time >= 1200:  # 1200 ms = 1.2 seconds
                     print("Ace time")
-                    # Remove the Ace card
                     self.enemy_hand.pop(1)
-                    # Draw a new card and add it to the enemy's hand
                     new_card = self.deck.enemy_draw_hand(1)[0]
                     self.enemy_hand.insert(1, new_card)
+                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
 
-                    # Reset the timer and trigger flag
+                    # Reset the timer and flag
                     self.ace_effect_triggered = True
                     self.ace_detected_time = None
                     print("Ace replaced and timer reset")
+                else:
+                    # Return early to stop further execution if the timer hasn't expired yet
+                    return
 
+        print(self.player_score)
 
+        # Additional game state logic
+        if self.player_score == 21 and self.enemy_score == 21:
+            print("I hope we maek it here")
+            self.game_state = self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN
+            return
 
+        self.hedge_hog_time = True  # Temporarily force it to True
 
+        if self.player_score == 21 and self.hedge_hog_time:
+            print("Triggering Hedge Hog Time")
+
+            self.game_state = self.PLAYER_BLACK_JACK_SCREEN
+            return
+
+        if self.enemy_score == 21 and self.hedge_hog_time:
+            print("Triggering Hedge Hog Time")
+
+            self.game_state = self.ENEMY_BLACK_JACK_SCREEN
+            return
+
+        else:
+            self.game_state = self.PLAYER_ACTION_SCREEN
+
+    # If all conditions are checked and processed, then proceed with your print or further logic
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10

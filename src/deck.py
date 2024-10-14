@@ -154,3 +154,30 @@ class Deck:
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit]) for
                       suit in self.suits
                       for rank in self.ranks]
+
+    def insert_cards_manually(self, cards_to_insert: List[Tuple[str, str, int]]) -> List[Tuple[str, str, int]]:
+        """Inserts a list of cards (rank, suit, value) into the deck, reshuffles, and returns the inserted cards."""
+        inserted_cards = []
+        for card in cards_to_insert:
+            rank, suit, value = card
+            if rank in self.rank_strings and suit in self.suit_strings:
+                self.cards.append((self.rank_strings[rank], self.suit_strings[suit], value))
+                inserted_cards.append((self.rank_strings[rank], self.suit_strings[suit], value))
+                print(f"Added {rank} of {suit} with value {value} to the deck.")
+            else:
+                print(f"Invalid card: {rank} of {suit}. Skipping...")
+
+        # Reshuffle the deck
+        random.shuffle(self.cards)
+
+        # Return the inserted cards for use in the hand
+        return inserted_cards
+
+        #the below is how to make the fun call with the insert cards mannually method
+        # cards_to_insert = [("Ace", "Spades", 11), ("King", "Hearts", 10)]
+        #         cards_to_insert2 = [("Ace", "Diamonds", 11), ("King", "Spades", 10)]
+        #         self.enemy_hand = self.deck.insert_cards_manually(cards_to_insert)
+        #         self.player_hand = self.deck.insert_cards_manually(cards_to_insert2)
+        #         self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+        #         # self.player_hand = self.deck.player_draw_hand(2)
+        #         self.player_score = self.deck.compute_hand_value(self.player_hand)
