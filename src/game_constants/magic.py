@@ -7,7 +7,7 @@ class Magic(Enum):
     SLOTS_HACK = "HACK"  # this is a level 2 tier reward from mc nugg
     CRAPS_LUCKY_7 = "Triple D"    #  this is gained with mind 2
     REVEAL = "reveal"
-    BLACK_JACK_REDRAW = "Redraw"
+    BLACK_JACK_REDRAW = "redraw"
 
     @staticmethod
     def add_magic_to_player(player, magic):

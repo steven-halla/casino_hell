@@ -100,12 +100,14 @@ class BlackJackAlbertScreen(GambleScreen):
     MAGIC_MENU_REVEAL_DESCRIPTION: str = "magic_menu_reveal_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     BET_MESSAGE: str = "bet_message"
-    Reveal: str = "reveal"
+    REVEAL: str = "reveal"
+    REDRAW: str = "redraw"
+
     DRAW_CARD_SCREEN: str = "draw card screen"
     PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN: str = "player_enemy_draw_jack_screen "
     PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
     ENEMY_BLACK_JACK_SCREEN: str = "enemy_black_jack_screen"
-
+    BACK = "back"
 
     #demon: why do you guys always draw 1 card per player per round why not just give players thier carss , its faster that way
     # you silly humans make no logical sense
@@ -252,7 +254,6 @@ class BlackJackAlbertScreen(GambleScreen):
     def update_magic_menu(self, state: "GameState", controller):
         controller = state.controller
 
-
         if controller.isUpPressed:
             controller.isUpPressed = False
             self.menu_movement_sound.play()
@@ -264,20 +265,27 @@ class BlackJackAlbertScreen(GambleScreen):
 
         if controller.isTPressed:
             controller.isTPressed = False
-            if self.magic_menu_index == self.magic_menu_reveal_index and state.player.focus_points >= self.reveal_cast_cost:
-                self.reveal_buff_counter = self.reveal_start_counter
-                self.spell_sound.play()  # Play the sound effect once
-                state.player.focus_points -= self.reveal_cast_cost
-                self.magic_lock = True
-                self.game_state = self.WELCOME_SCREEN
-            elif self.magic_menu_index == self.redraw_magic_menu_index and state.player.focus_points >= self.redraw_cast_cost:
-                self.redraw_debuff_counter = self.redraw_start_counter
-                self.spell_sound.play()  # Play the sound effect once
-                state.player.focus_points -= self.redraw_cast_cost
-                self.magic_lock = True
-                print(self.magic_lock)
-                self.game_state = self.WELCOME_SCREEN
-            elif self.magic_menu_index == self.back_magic_menu_index:
+
+            # Handle "Redraw" if it's available and selected
+            if Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices and self.magic_menu_index == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value):
+                if state.player.focus_points >= self.redraw_cast_cost:
+                    self.redraw_debuff_counter = self.redraw_start_counter
+                    self.spell_sound.play()  # Play the sound effect once
+                    state.player.focus_points -= self.redraw_cast_cost
+                    self.magic_lock = True
+                    self.game_state = self.WELCOME_SCREEN
+
+            # Handle "Reveal" if selected
+            elif Magic.REVEAL.value in self.magic_screen_choices and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value):
+                if state.player.focus_points >= self.reveal_cast_cost:
+                    self.reveal_buff_counter = self.reveal_start_counter
+                    self.spell_sound.play()  # Play the sound effect for Reveal
+                    state.player.focus_points -= self.reveal_cast_cost
+                    self.magic_lock = True
+                    self.game_state = self.WELCOME_SCREEN
+
+            # Always handle "Back" properly
+            elif self.magic_screen_choices[self.magic_menu_index] == "back":
                 self.game_state = self.WELCOME_SCREEN
 
     def draw_magic_menu_selection_box(self, state):
@@ -307,9 +315,9 @@ class BlackJackAlbertScreen(GambleScreen):
         # Blit the border with the black box inside
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        # Conditionally insert "Redraw" into position 1 if available in player's magic inventory
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and "Redraw" not in self.magic_screen_choices:
-            self.magic_screen_choices.insert(1, "Redraw")
+        # Conditionally insert Magic.BLACK_JACK_REDRAW.value into position 1 if available in player's magic inventory
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
+            self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
 
         # Render the choices and handle the arrow dynamically
         for idx, choice in enumerate(self.magic_screen_choices):
@@ -318,10 +326,6 @@ class BlackJackAlbertScreen(GambleScreen):
                 self.font.render(choice, True, WHITE),
                 (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
             )
-
-
-
-
 
         # Draw the arrow dynamically based on the selected index
         arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
@@ -672,15 +676,19 @@ class BlackJackAlbertScreen(GambleScreen):
         hero_name_y_position = 205
         hero_stamina_y_position = 290
         hero_focus_y_position = 330
+        print(self.redraw_debuff_counter)
+        print(self.redraw_end_counter)
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
-        if self.reveal_buff_counter == self.reveal_end_not_active:
+        if self.reveal_buff_counter == self.reveal_end_not_active and self.redraw_debuff_counter == self.reveal_end_counter:
             state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
         elif self.reveal_buff_counter > self.reveal_end_not_active:
-            state.DISPLAY.blit(self.font.render(f"{self.Reveal}: {self.reveal_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
-
+            state.DISPLAY.blit(self.font.render(f"{self.REVEAL}: {self.reveal_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+        elif self.redraw_debuff_counter > self.redraw_end_counter:
+            print("yess")
+            state.DISPLAY.blit(self.font.render(f"{self.REDRAW}: {self.redraw_debuff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
