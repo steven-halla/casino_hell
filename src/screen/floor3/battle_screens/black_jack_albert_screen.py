@@ -68,7 +68,10 @@ class BlackJackAlbertScreen(GambleScreen):
                 "Max bet of 75 during Come out Roll. Point Roll Max is 200"
             ]),
             self.MAGIC_MENU_REVEAL_DESCRIPTION: MessageBox([
-                "Reveals enemy score."
+                "You can feel the print of the face down card."
+            ]),
+            self.MAGIC_MENU_REDRAW_DESCRIPTION: MessageBox([
+                "Asks the enemy very nicely to redraw their face up card."
             ]),
             self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
                 "go back to previous menu"
@@ -99,6 +102,7 @@ class BlackJackAlbertScreen(GambleScreen):
     DRAW_CARD_MESSAGE: str = "draw card message"
     MAGIC_MENU_REVEAL_DESCRIPTION: str = "magic_menu_reveal_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    MAGIC_MENU_REDRAW_DESCRIPTION: str = "magic_menu_redraw_description"
     BET_MESSAGE: str = "bet_message"
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
@@ -149,6 +153,18 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state, controller)
+            if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+                if self.magic_menu_index == 0:
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+                elif self.magic_menu_index == 1:
+                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
+                elif self.magic_menu_index == 2:
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+            elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+                if self.magic_menu_index == 0:
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+                elif self.magic_menu_index == 1:
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
@@ -179,6 +195,24 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
+            if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+                if self.magic_menu_index == 0:
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+                elif self.magic_menu_index == 1:
+                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+                elif self.magic_menu_index == 2:
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+            elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+                if self.magic_menu_index == 0:
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+                elif self.magic_menu_index == 1:
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+
+
+
+
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.draw_draw_card_screen(state)
@@ -608,8 +642,6 @@ class BlackJackAlbertScreen(GambleScreen):
         else:
             self.game_state = self.PLAYER_ACTION_SCREEN
 
-    # If all conditions are checked and processed, then proceed with your print or further logic
-
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
         horizontal_padding = 25
@@ -665,7 +697,6 @@ class BlackJackAlbertScreen(GambleScreen):
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
 
-
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
         player_enemy_box_info_x_position_score = 28
@@ -703,8 +734,6 @@ class BlackJackAlbertScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
         elif self.lock_down > self.lock_down_inactive:
             state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
-
-
 
     def welcome_screen_update_logic(self, state: 'GameState', controller):
         if controller.isTPressed:
