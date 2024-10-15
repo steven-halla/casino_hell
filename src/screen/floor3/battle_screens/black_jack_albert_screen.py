@@ -1,6 +1,6 @@
 import pygame
 import random
-from constants import WHITE, RED, DISPLAY
+from constants import WHITE, RED, DISPLAY, BLACK
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
@@ -39,7 +39,25 @@ class BlackJackAlbertScreen(GambleScreen):
         self.player_action_phase_play_index = 0
         self.player_action_phase_draw_index = 1
         self.player_action_phase_force_redraw_index = 2
+        self.redraw_counter = True
         self.player_action_phase_choices: list[str] = ["Play", "Draw"]
+        self.magic_screen_choices: list[str] = [Magic.REVEAL.value, "back"]
+        self.redraw_debuff_counter: int = 0
+        self.redraw_end_counter: int = 0
+        self.redraw_start_counter: int = 10
+        self.reveal_debuff_counter: int = 0
+        self.reveal_end_counter: int = 0
+        self.reveal_start_counter: int = 10
+        self.magic_menu_index = 0
+        self.magic_menu_reveal_index = 0
+        self.redraw_magic_menu_index = 1
+        self.back_magic_menu_index = 2
+        self.index_stepper: int = 1
+        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+        self.reveal_cast_cost = 50
+        self.redraw_cast_cost = 30
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -111,10 +129,12 @@ class BlackJackAlbertScreen(GambleScreen):
             Events.add_event_to_player(state.player, Events.BLACK_JACK_ALBERT_DEFEATED)
 
         try:
-            if self.reveal_buff_counter > self.reveal_end_not_active:
+            if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
                 self.magic_lock = True
-            elif self.reveal_buff_counter == self.reveal_end_not_active:
+
+            elif self.reveal_buff_counter == self.reveal_end_not_active or self.redraw_debuff_counter == self.redraw_end_counter:
                 self.magic_lock = False
+
         except AttributeError:
             print("AttributeError: lucky_seven_buff_counter does not exist")
             self.magic_lock = False
@@ -125,6 +145,8 @@ class BlackJackAlbertScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.update_magic_menu(state, controller)
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
@@ -134,7 +156,6 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
-
         elif self.game_state == self.PLAYER_ACTION_SCREEN:
             self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
@@ -154,6 +175,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box(state)
+
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.draw_draw_card_screen(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
@@ -225,6 +249,87 @@ class BlackJackAlbertScreen(GambleScreen):
 
         pygame.display.flip()
 
+    def update_magic_menu(self, state: "GameState", controller):
+        controller = state.controller
+
+
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.magic_menu_index = (self.magic_menu_index - self.index_stepper) % len(self.magic_screen_choices)
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.magic_menu_index = (self.magic_menu_index + self.index_stepper) % len(self.magic_screen_choices)
+
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.magic_menu_index == self.magic_menu_reveal_index and state.player.focus_points >= self.reveal_cast_cost:
+                self.reveal_buff_counter = self.reveal_start_counter
+                self.spell_sound.play()  # Play the sound effect once
+                state.player.focus_points -= self.reveal_cast_cost
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_index == self.redraw_magic_menu_index and state.player.focus_points >= self.redraw_cast_cost:
+                self.redraw_debuff_counter = self.redraw_start_counter
+                self.spell_sound.play()  # Play the sound effect once
+                state.player.focus_points -= self.redraw_cast_cost
+                self.magic_lock = True
+                print(self.magic_lock)
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_index == self.back_magic_menu_index:
+                self.game_state = self.WELCOME_SCREEN
+
+    def draw_magic_menu_selection_box(self, state):
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        # Create the black box and white border
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        # Blit the border with the black box inside
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        # Conditionally insert "Redraw" into position 1 if available in player's magic inventory
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and "Redraw" not in self.magic_screen_choices:
+            self.magic_screen_choices.insert(1, "Redraw")
+
+        # Render the choices and handle the arrow dynamically
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+
+
+
+
+        # Draw the arrow dynamically based on the selected index
+        arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_coordinate + text_y_offset)  # Align arrow with the text
+        )
+
     def draw_player_action_right_menu(self, state: 'GameState'):
         box_width_offset = 10
         horizontal_padding = 25
@@ -236,30 +341,34 @@ class BlackJackAlbertScreen(GambleScreen):
         start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
         start_y_right_box = vertical_position
         arrow_x_coordinate_padding = 12
+        arrow_center = 10
 
         # Ensure "Redraw" is added before rendering if it's available
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and "Redraw" not in self.player_action_phase_choices:
-            self.player_action_phase_choices.insert(2, "Redraw")
+        if self.redraw_debuff_counter > self.redraw_end_counter and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices:
+            self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
 
         # Loop through the choices and render each one
         for idx, choice in enumerate(self.player_action_phase_choices):
             y_position = start_y_right_box + idx * spacing_between_choices
-            state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
-                (start_x_right_box + text_x_offset, y_position + text_y_offset)
-            )
+
+            # Check if the current choice is "Redraw" and if redraw_counter is False
+            if choice == Magic.BLACK_JACK_REDRAW.value and self.redraw_counter == False:
+                rendered_choice = self.font.render(choice, True, RED)
+            else:
+                rendered_choice = self.font.render(choice, True, WHITE)
+
+            # Blit the rendered text
+            state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
 
         # Draw the arrow based on the current index
-        arrow_y_coordinate = start_y_right_box + self.player_action_phase_index * spacing_between_choices
+        arrow_y_coordinate = arrow_center + start_y_right_box + self.player_action_phase_index * spacing_between_choices
         state.DISPLAY.blit(
             self.font.render("->", True, WHITE),
             (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
         )
 
+
     def update_player_action_logic(self, state: "GameState", controller):
-        # Ensure "Redraw" is added before updating index logic
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and "Redraw" not in self.player_action_phase_choices:
-            self.player_action_phase_choices.insert(2, "Redraw")
 
         if controller.isUpPressed:
             controller.isUpPressed = False
@@ -272,6 +381,17 @@ class BlackJackAlbertScreen(GambleScreen):
             self.player_action_phase_index = (self.player_action_phase_index + self.move_index_by_1) % len(self.player_action_phase_choices)
             print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
 
+        elif state.controller.isTPressed:
+            state.controller.isTPressed = False
+            if self.player_action_phase_index == self.player_action_phase_play_index:
+                pass
+            if self.player_action_phase_index == self.player_action_phase_draw_index:
+                pass
+            if self.player_action_phase_index == self.player_action_phase_force_redraw_index and self.redraw_counter == True:
+                self.enemy_hand.pop(1)
+                new_card = self.deck.enemy_draw_hand(1)[0]  # Draw one card
+                self.enemy_hand.insert(1, new_card)
+                self.redraw_counter = False
     def draw_hands(self, player_hand: list, enemy_hand: list,
                    initial_x_position: int, player_target_y_position: int,
                    enemy_target_y_position: int, move_card_x: int, flip_y_position: int, deck, display):
@@ -578,16 +698,14 @@ class BlackJackAlbertScreen(GambleScreen):
             controller.isTPressed = False
             if self.welcome_screen_index  == self.welcome_screen_play_index:
                 self.game_state = self.DRAW_CARD_SCREEN
-            elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
-
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
                 print("code will go here later")
 
-        if controller.isUpPressed:
-            controller.isUpPressed = False
+
 
 
 
