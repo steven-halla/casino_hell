@@ -155,16 +155,32 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_magic_menu(state, controller)
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
                 if self.magic_menu_index == 0:
+
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+
                 elif self.magic_menu_index == 1:
                     self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
                 elif self.magic_menu_index == 2:
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+
+
+
             elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
                 if self.magic_menu_index == 0:
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+
                 elif self.magic_menu_index == 1:
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+
+
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
