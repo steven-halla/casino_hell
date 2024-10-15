@@ -12,17 +12,17 @@ from game_constants.magic import Magic
 class BlackJackAlbertScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
-        self.enemy_card_y_positions = []
-        self.player_card_y_positions = []
+        self.enemy_card_y_positions: list[int] = []
+        self.player_card_y_positions: list[int] = []
         self.game_state: str = self.WELCOME_SCREEN
         self.deck: Deck() = Deck()
-        self.player_hand = []
-        self.enemy_hand = []
-        self.player_score = 0
-        self.enemy_score = 0
+        self.player_hand: list[str] = []
+        self.enemy_hand: list[str] = []
+        self.player_score: int = 0
+        self.enemy_score: int = 0
         self.ace_detected_time = None
         self.ace_effect_triggered = False
-        self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
+        self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
         self.money: int = 1000
@@ -31,10 +31,16 @@ class BlackJackAlbertScreen(GambleScreen):
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
         self.magic_lock: bool = False
-        self.dealer_name = "albert"
+        self.dealer_name: str = "albert"
         self.lock_down_inactive: int = 0
-        self.initial_hand = 2
-        self.hedge_hog_time = False
+        self.initial_hand: int = 2
+        self.hedge_hog_time: bool = False
+        self.player_action_phase_index = 0
+        self.player_action_phase_play_index = 0
+        self.player_action_phase_draw_index = 1
+        self.player_action_phase_force_redraw_index = 2
+        self.player_action_phase_choices: list[str] = ["Play", "Draw"]
+
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -71,15 +77,16 @@ class BlackJackAlbertScreen(GambleScreen):
     PLAYER_BLACK_JACK_MESSAGE: str = "player_black_jack_message"
     ENEMY_BLACK_JACK_MESSAGE: str = "enemy_black_jack_message"
     PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: str = "player_enemy_draw_jack_message"
-    PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
-    ENEMY_BLACK_JACK_SCREEN: str = "enemy_black_jack_screen"
+
     DRAW_CARD_MESSAGE: str = "draw card message"
     MAGIC_MENU_REVEAL_DESCRIPTION: str = "magic_menu_reveal_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     BET_MESSAGE: str = "bet_message"
     Reveal: str = "reveal"
     DRAW_CARD_SCREEN: str = "draw card screen"
-    PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN = "player_enemy_draw_jack_screen "
+    PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN: str = "player_enemy_draw_jack_screen "
+    PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
+    ENEMY_BLACK_JACK_SCREEN: str = "enemy_black_jack_screen"
 
 
     #demon: why do you guys always draw 1 card per player per round why not just give players thier carss , its faster that way
@@ -129,6 +136,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_ACTION_SCREEN:
+            self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
 
 
@@ -206,12 +214,63 @@ class BlackJackAlbertScreen(GambleScreen):
                 deck=self.deck,  # Deck object to draw cards
                 display=state.DISPLAY  # This is your correct display reference
             )
+            self.draw_menu_selection_box(state)
+            self.draw_player_action_right_menu(state)
+
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].draw(state)
 
 
 
 
+
         pygame.display.flip()
+
+    def draw_player_action_right_menu(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+
+        # Ensure "Redraw" is added before rendering if it's available
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and "Redraw" not in self.player_action_phase_choices:
+            self.player_action_phase_choices.insert(2, "Redraw")
+
+        # Loop through the choices and render each one
+        for idx, choice in enumerate(self.player_action_phase_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        # Draw the arrow based on the current index
+        arrow_y_coordinate = start_y_right_box + self.player_action_phase_index * spacing_between_choices
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
+        )
+
+    def update_player_action_logic(self, state: "GameState", controller):
+        # Ensure "Redraw" is added before updating index logic
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and "Redraw" not in self.player_action_phase_choices:
+            self.player_action_phase_choices.insert(2, "Redraw")
+
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.player_action_phase_index = (self.player_action_phase_index - self.move_index_by_1) % len(self.player_action_phase_choices)
+            print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.player_action_phase_index = (self.player_action_phase_index + self.move_index_by_1) % len(self.player_action_phase_choices)
+            print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
 
     def draw_hands(self, player_hand: list, enemy_hand: list,
                    initial_x_position: int, player_target_y_position: int,
