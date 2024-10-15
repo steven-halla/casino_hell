@@ -668,6 +668,8 @@ class BlackJackAlbertScreen(GambleScreen):
 
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
         enemy_name_y_position = 33
         enemy_money_y_position = 70
         enemy_status_y_position = 110
@@ -676,6 +678,7 @@ class BlackJackAlbertScreen(GambleScreen):
         hero_name_y_position = 205
         hero_stamina_y_position = 290
         hero_focus_y_position = 330
+        score_header = "Score"
         print(self.redraw_debuff_counter)
         print(self.redraw_end_counter)
 
@@ -686,6 +689,8 @@ class BlackJackAlbertScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
         elif self.reveal_buff_counter > self.reveal_end_not_active:
             state.DISPLAY.blit(self.font.render(f"{self.REVEAL}: {self.reveal_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+            state.DISPLAY.blit(self.font.render(f" {score_header}: {self.enemy_score} ", True, WHITE), (player_enemy_box_info_x_position_score, score_y_position))
+
         elif self.redraw_debuff_counter > self.redraw_end_counter:
             print("yess")
             state.DISPLAY.blit(self.font.render(f"{self.REDRAW}: {self.redraw_debuff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
