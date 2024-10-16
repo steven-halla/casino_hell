@@ -554,6 +554,7 @@ class BlackJackAlbertScreen(GambleScreen):
         # Create a loop to animate the movement from top to bottom
         while initial_y_position < target_y_position:
             # Clear the screen or redraw the background as needed here
+            self.draw(state)  # Re-draw the entire screen (including other cards)
 
             # Move the card down gradually
             initial_y_position += card_speed
