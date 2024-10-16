@@ -155,11 +155,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_magic_menu(state, controller)
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
                 if self.magic_menu_index == 0:
-
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
                     self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-
                 elif self.magic_menu_index == 1:
                     self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
@@ -168,14 +166,10 @@ class BlackJackAlbertScreen(GambleScreen):
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
                     self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
-
-
-
             elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
                 if self.magic_menu_index == 0:
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-
                 elif self.magic_menu_index == 1:
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
@@ -396,6 +390,8 @@ class BlackJackAlbertScreen(GambleScreen):
         start_y_right_box = vertical_position
         arrow_x_coordinate_padding = 12
         arrow_center = 10
+        player_hand_max = 4
+        draw_option = 1
 
         # Ensure "Redraw" is added before rendering if it's available
         if self.redraw_debuff_counter > self.redraw_end_counter and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices:
@@ -411,8 +407,15 @@ class BlackJackAlbertScreen(GambleScreen):
             else:
                 rendered_choice = self.font.render(choice, True, WHITE)
 
+            if choice == self.player_action_phase_choices[draw_option] and len(self.player_hand) == player_hand_max:
+                rendered_draw = self.font.render(choice, True, RED)
+            else:
+                rendered_draw = self.font.render(choice, True, WHITE)
+
+
             # Blit the rendered text
             state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+            state.DISPLAY.blit(rendered_draw, (start_x_right_box + text_x_offset, y_position + text_y_offset))
 
         # Draw the arrow based on the current index
         arrow_y_coordinate = arrow_center + start_y_right_box + self.player_action_phase_index * spacing_between_choices
@@ -423,6 +426,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
     def update_player_action_logic(self, state: "GameState", controller):
+        card_max = 3
 
         if controller.isUpPressed:
             controller.isUpPressed = False
@@ -439,13 +443,23 @@ class BlackJackAlbertScreen(GambleScreen):
             state.controller.isTPressed = False
             if self.player_action_phase_index == self.player_action_phase_play_index:
                 pass
-            if self.player_action_phase_index == self.player_action_phase_draw_index:
-                pass
+            if self.player_action_phase_index == self.player_action_phase_draw_index and len(self.player_hand) <= card_max:
+                self.player_hand += self.deck.player_draw_hand(1)
+                self.deck.compute_hand_value(self.player_hand)
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
+                print(self.player_hand)
+
             if self.player_action_phase_index == self.player_action_phase_force_redraw_index and self.redraw_counter == True:
+                # Remove the existing card at index 1
                 self.enemy_hand.pop(1)
-                new_card = self.deck.enemy_draw_hand(1)[0]  # Draw one card
+
+                # Draw one card and insert it at index 1
+                new_card = self.deck.enemy_draw_hand(1)[0]
                 self.enemy_hand.insert(1, new_card)
+
+                # Mark the redraw as used
                 self.redraw_counter = False
+
     def draw_hands(self, player_hand: list, enemy_hand: list,
                    initial_x_position: int, player_target_y_position: int,
                    enemy_target_y_position: int, move_card_x: int, flip_y_position: int, deck, display):
@@ -633,24 +647,20 @@ class BlackJackAlbertScreen(GambleScreen):
                     # Return early to stop further execution if the timer hasn't expired yet
                     return
 
-        print(self.player_score)
 
         # Additional game state logic
         if self.player_score == 21 and self.enemy_score == 21:
-            print("I hope we maek it here")
             self.game_state = self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN
             return
 
         self.hedge_hog_time = True  # Temporarily force it to True
 
         if self.player_score == 21 and self.hedge_hog_time:
-            print("Triggering Hedge Hog Time")
 
             self.game_state = self.PLAYER_BLACK_JACK_SCREEN
             return
 
         if self.enemy_score == 21 and self.hedge_hog_time:
-            print("Triggering Hedge Hog Time")
 
             self.game_state = self.ENEMY_BLACK_JACK_SCREEN
             return
@@ -726,8 +736,7 @@ class BlackJackAlbertScreen(GambleScreen):
         hero_stamina_y_position = 290
         hero_focus_y_position = 330
         score_header = "Score"
-        print(self.redraw_debuff_counter)
-        print(self.redraw_end_counter)
+
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
@@ -739,7 +748,6 @@ class BlackJackAlbertScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f" {score_header}: {self.enemy_score} ", True, WHITE), (player_enemy_box_info_x_position_score, score_y_position))
 
         elif self.redraw_debuff_counter > self.redraw_end_counter:
-            print("yess")
             state.DISPLAY.blit(self.font.render(f"{self.REDRAW}: {self.redraw_debuff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
