@@ -309,8 +309,8 @@ class CrapsJunponScreen(GambleScreen):
                 if controller.isTPressed:
                     controller.isTPressed = False
                     self.reset_craps_game(state)
-                    state.currentScreen = state.area2RestScreen
-                    state.area2RestScreen.start(state)
+                    # state.currentScreen = state.area3RestScreen
+                    # state.area3RestScreen.start(state)
 
     def draw(self, state: 'GameState'):
         super().draw(state)

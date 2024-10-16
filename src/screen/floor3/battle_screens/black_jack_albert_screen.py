@@ -40,7 +40,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.player_action_phase_draw_index = 1
         self.player_action_phase_force_redraw_index = 2
         self.redraw_counter = True
-        self.player_action_phase_choices: list[str] = ["Play", "Draw"]
+        self.player_action_phase_choices: list[str] = ["Stand", "Draw"]
         self.magic_screen_choices: list[str] = [Magic.REVEAL.value, "back"]
         self.redraw_debuff_counter: int = 0
         self.redraw_end_counter: int = 0
@@ -91,27 +91,42 @@ class BlackJackAlbertScreen(GambleScreen):
             self.PLAYER_ACTION_MESSAGE: MessageBox([
                 "Time for action"
             ]),
+            self.PLAYER_WIN_ACTION_MESSAGE: MessageBox([
+                "you win"
+            ]),
+            self.ENEMY_WIN_ACTION_MESSAGE: MessageBox([
+                "you lose"
+            ]),
+            self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE: MessageBox([
+                "you draw"
+            ]),
         }
 
     PLAYER_ACTION_MESSAGE: str = "player_action_message"
-    PLAYER_ACTION_SCREEN: str = "player_action_screen"
     PLAYER_BLACK_JACK_MESSAGE: str = "player_black_jack_message"
     ENEMY_BLACK_JACK_MESSAGE: str = "enemy_black_jack_message"
     PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: str = "player_enemy_draw_jack_message"
-
     DRAW_CARD_MESSAGE: str = "draw card message"
     MAGIC_MENU_REVEAL_DESCRIPTION: str = "magic_menu_reveal_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     MAGIC_MENU_REDRAW_DESCRIPTION: str = "magic_menu_redraw_description"
     BET_MESSAGE: str = "bet_message"
+    PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
+    ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
+    PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
+    BACK = "back"
 
+    PLAYER_ACTION_SCREEN: str = "player_action_screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
     PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN: str = "player_enemy_draw_jack_screen "
     PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
     ENEMY_BLACK_JACK_SCREEN: str = "enemy_black_jack_screen"
-    BACK = "back"
+    PLAYER_WIN_ACTION_SCREEN: str = "player_win_action_phase"
+    ENEMY_WIN_ACTION_SCREEN: str = "enemy_win_action_phase"
+    PLAYER_ENEMY_DRAW_ACTION_SCREEN: str = "player_enemy_draw_action_phase"
 
     #demon: why do you guys always draw 1 card per player per round why not just give players thier carss , its faster that way
     # you silly humans make no logical sense
@@ -187,6 +202,14 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.game_state == self.PLAYER_ACTION_SCREEN:
             self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
+
+
 
 
 
@@ -246,13 +269,6 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
-                initial_x_position=250,  # Starting X position
-                player_target_y_position=300,  # Player's Y position
-                enemy_target_y_position=50,  # Enemy's Y position
-                move_card_x=75,  # Horizontal gap between cards
-                flip_y_position=145,  # Y position where cards flip
-                deck=self.deck,  # Deck object to draw cards
-                display=state.DISPLAY  # This is your correct display reference
             )
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].draw(state)
 
@@ -260,14 +276,7 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.draw_hands(
                 player_hand=self.player_hand,  # Player's hand
-                enemy_hand=self.enemy_hand,  # Enemy's hand
-                initial_x_position=250,  # Starting X position
-                player_target_y_position=300,  # Player's Y position
-                enemy_target_y_position=50,  # Enemy's Y position
-                move_card_x=75,  # Horizontal gap between cards
-                flip_y_position=145,  # Y position where cards flip
-                deck=self.deck,  # Deck object to draw cards
-                display=state.DISPLAY  # This is your correct display reference
+                enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].draw(state)
 
@@ -276,22 +285,30 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
-                initial_x_position=250,  # Starting X position
-                player_target_y_position=300,  # Player's Y position
-                enemy_target_y_position=50,  # Enemy's Y position
-                move_card_x=75,  # Horizontal gap between cards
-                flip_y_position=145,  # Y position where cards flip
-                deck=self.deck,  # Deck object to draw cards
-                display=state.DISPLAY  # This is your correct display reference
             )
             self.draw_menu_selection_box(state)
             self.draw_player_action_right_menu(state)
 
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].draw(state)
 
-
-
-
+        elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+            )
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].draw(state)
+        elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+            )
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,  # Player's hand
+                enemy_hand=self.enemy_hand,  # Enemy's hand
+            )
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
 
         pygame.display.flip()
 
@@ -460,10 +477,17 @@ class BlackJackAlbertScreen(GambleScreen):
                 # Mark the redraw as used
                 self.redraw_counter = False
 
-    def draw_hands(self, player_hand: list, enemy_hand: list,
-                   initial_x_position: int, player_target_y_position: int,
-                   enemy_target_y_position: int, move_card_x: int, flip_y_position: int, deck, display):
+    def draw_hands(self, player_hand: list, enemy_hand: list):
         """Draws both player and enemy hands on the screen using state.DISPLAY."""
+
+        # Define your constant values here once
+        initial_x_position = 250  # Starting X position
+        player_target_y_position = 300  # Player's Y position
+        enemy_target_y_position = 50  # Enemy's Y position
+        move_card_x = 75  # Horizontal gap between cards
+        flip_y_position = 145  # Y position where cards flip
+        deck = self.deck
+        display = DISPLAY  # Assuming DISPLAY is part of the global constants
 
         # Draw player's hand
         for i, card in enumerate(player_hand):
