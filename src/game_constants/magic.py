@@ -8,6 +8,7 @@ class Magic(Enum):
     CRAPS_LUCKY_7 = "Triple D"    #  this is gained with mind 2
     REVEAL = "reveal"
     BLACK_JACK_REDRAW = "redraw"
+    CARD_MORPH = "card morph" # this changes the value of a card, like all kings are now 2's
 
     @staticmethod
     def add_magic_to_player(player, magic):

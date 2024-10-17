@@ -9,7 +9,7 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 
 
-# NEED TO REVEAL CARD DURING BLACK JACK OR WHEN ROUND IS OVER SHOW FACE DOWN CARDS
+#
 
 
 class BlackJackAlbertScreen(GambleScreen):
@@ -71,8 +71,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.WELCOME_MESSAGE: MessageBox([
                 "This is the welcome screen"
             ]),
+
             self.BET_MESSAGE: MessageBox([
-                "Max bet of 75 during Come out Roll. Point Roll Max is 200"
+                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet."
             ]),
             self.MAGIC_MENU_REVEAL_DESCRIPTION: MessageBox([
                 "You can feel the print of the face down card."
@@ -156,7 +157,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
 
-    def reset_black_jack_game(self,state: 'GameState'):
+    def reset_black_jack_game(self):
         self.deck.shuffle()
         self.player_hand.clear()
         self.enemy_hand.clear()
@@ -192,6 +193,11 @@ class BlackJackAlbertScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
+        elif self.game_state == self.BET_SCREEN:
+            self.bet_screen_helper(controller)
+            self.battle_messages[self.BET_MESSAGE].update(state)
+
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state, controller)
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
@@ -222,16 +228,21 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
             if state.contorller.isTPressed:
                 state.controller.isTPressed = False
+                self.round_reset()
                 state.player.exp += self.low_exp
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
             # First, initialize the message box and store it in the attribute
-            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} money and gain {self.med_exp} experience points!"]
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} "
+                                                                             f"money and gain {self.med_exp} experience points!"]
 
             # Now, update the message as needed
             if state.controller.isTPressed:
+
                 state.controller.isTPressed = False
+                self.round_reset()
+
                 state.player.exp += self.med_exp
                 state.player.money += self.bet * self.critical_multiplier
                 self.money -= self.bet * self.critical_multiplier
@@ -244,6 +255,8 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
             if state.contorller.isTPressed:
                 state.controller.isTPressed = False
+                self.round_reset()
+
                 state.player.money -= self.bet * self.critical_multiplier
                 self.money += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
@@ -253,22 +266,36 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
-            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp} experience points!"]
 
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp}  experience points!"]
             self.update_player_phase_win(state, controller)
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
-            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].messages = [f"You LOSE! You LOSE {self.bet} money and gain {self.low_exp} experience points!"]
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].messages = [f"You LOSE! You LOSE {self.bet} money and gain {self.low_exp}  experience points!"]
             self.update_player_phase_lose(state, controller)
             self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
             self.update_player_phase_draw(state, controller)
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+            if state.player.money <= no_money_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+            elif state.player.stamina <= no_stamina_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    self.reset_black_jack_game()
+                    # state.currentScreen = state.area3RestScreen
+                    # state.area3RestScreen.start(state)
+
 
 
     def draw(self, state: 'GameState'):
         super().draw(state)
-
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
@@ -278,6 +305,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+        elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].draw(state)
+
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
@@ -298,7 +328,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_draw_card_screen(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
-            self.draw_hands(
+            self.reveal_draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
             )
@@ -306,7 +336,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].draw(state)
 
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
-            self.draw_hands(
+            self.reveal_draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
             )
@@ -314,7 +344,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
-            self.draw_hands(
+            self.reveal_draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,
             )
@@ -332,28 +362,60 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].draw(state)
 
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
-            self.draw_hands(
+            self.reveal_draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
             )
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
-            self.draw_hands(
+            self.reveal_draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
             )
             self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
-            self.draw_hands(
+            self.reveal_draw_hands(
                 player_hand=self.player_hand,  # Player's hand
                 enemy_hand=self.enemy_hand,  # Enemy's hand
             )
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
 
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            self.blit_message_x: int = 65
+            self.blit_message_y: int = 460
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+            if state.player.money <= no_money_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            elif state.player.stamina <= no_stamina_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
         pygame.display.flip()
+
+    def bet_screen_helper(self, controller):
+        min_bet = 50
+        max_bet = 200
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += min_bet
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= min_bet
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+
+
     def update_player_phase_win(self, state, controller) -> None:
         if controller.isTPressed:
+
             controller.isTPressed = False
+            self.round_reset()
+
             state.player.money += self.bet
             self.money -= self.bet
             state.player.exp += self.low_exp
@@ -362,6 +424,8 @@ class BlackJackAlbertScreen(GambleScreen):
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.isTPressed:
             controller.isTPressed = False
+            self.round_reset()
+
             state.player.money -= self.bet
             self.money += self.bet
             state.player.exp += self.low_exp
@@ -370,6 +434,8 @@ class BlackJackAlbertScreen(GambleScreen):
     def update_player_phase_draw(self,state,  controller) -> None:
         if controller.isTPressed:
             controller.isTPressed = False
+            self.round_reset()
+
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
@@ -388,8 +454,6 @@ class BlackJackAlbertScreen(GambleScreen):
 
         if controller.isTPressed:
             controller.isTPressed = False
-
-            # Handle "Redraw" if it's available and selected
             if Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices and self.magic_menu_index == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value):
                 if state.player.focus_points >= self.redraw_cast_cost:
                     self.redraw_debuff_counter = self.redraw_start_counter
@@ -398,7 +462,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     self.magic_lock = True
                     self.game_state = self.WELCOME_SCREEN
 
-            # Handle "Reveal" if selected
             elif Magic.REVEAL.value in self.magic_screen_choices and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value):
                 if state.player.focus_points >= self.reveal_cast_cost:
                     self.reveal_buff_counter = self.reveal_start_counter
@@ -407,7 +470,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     self.magic_lock = True
                     self.game_state = self.WELCOME_SCREEN
 
-            # Always handle "Back" properly
             elif self.magic_screen_choices[self.magic_menu_index] == "back":
                 self.game_state = self.WELCOME_SCREEN
 
@@ -658,6 +720,26 @@ class BlackJackAlbertScreen(GambleScreen):
         # Recalculate the enemy's hand value after adding the card
         self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
 
+    def reveal_draw_hands(self, player_hand: list, enemy_hand: list):
+        initial_x_position = 250  # Starting X position
+        player_target_y_position = 300  # Player's Y position
+        enemy_target_y_position = 50  # Enemy's Y position
+        move_card_x = 75  # Horizontal gap between cards
+        deck = self.deck
+        display = DISPLAY
+
+        # Draw player's hand (all face up)
+        for i, card in enumerate(player_hand):
+            player_x_position = initial_x_position + i * move_card_x
+            player_y_position = player_target_y_position
+            deck.draw_card_face_up(card[1], card[0], (player_x_position, player_y_position), display)
+
+        # Draw enemy's hand (all face up)
+        for i, card in enumerate(enemy_hand):
+            enemy_x_position = initial_x_position + i * move_card_x
+            enemy_y_position = enemy_target_y_position
+            deck.draw_card_face_up(card[1], card[0], (enemy_x_position, enemy_y_position), display)
+
     def draw_hands(self, player_hand: list, enemy_hand: list):
         initial_x_position = 250  # Starting X position
         player_target_y_position = 300  # Player's Y position
@@ -697,10 +779,11 @@ class BlackJackAlbertScreen(GambleScreen):
         adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
         # Only draw cards if the hands are empty
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
-            cards_to_insert2 = [("Ace", "Diamonds", 11), ("King", "Spades", 10)]
-            self.player_hand = self.deck.insert_cards_manually(cards_to_insert2)
+            # this will add specific cards keep this in for future use
+            # cards_to_insert2 = [("Ace", "Diamonds", 11), ("King", "Spades", 10)]
+            # self.player_hand = self.deck.insert_cards_manually(cards_to_insert2)
 
-            # self.player_hand = self.deck.player_draw_hand(2)
+            self.player_hand = self.deck.player_draw_hand(2)
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
@@ -929,6 +1012,15 @@ class BlackJackAlbertScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
 
     def welcome_screen_update_logic(self, state: 'GameState', controller):
+        if state.player.money <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+        elif state.player.stamina_points <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+        elif self.money <= 0:
+            print("enemy defeated")
+
         if controller.isTPressed:
             controller.isTPressed = False
             if self.welcome_screen_index  == self.welcome_screen_play_index:
@@ -938,7 +1030,7 @@ class BlackJackAlbertScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
-                print("code will go here later")
+                self.reset_black_jack_game()
 
 
 

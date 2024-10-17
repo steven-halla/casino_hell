@@ -122,6 +122,7 @@ class CrapsJunponScreen(GambleScreen):
     BLOW_POINT_ROLL_MESSAGE: str = "blow_point_roll_message"
     BET_MESSAGE: str = "bet_message"
     TRIPLE_DICE: str = "Triple Dice"
+
     PLAYER_WIN_COME_OUT_SCREEN: str = "player_win_come_out_screen"
     PLAYER_LOSE_COME_OUT_SCREEN: str = "player_lose_come_out_screen"
     BET_SCREEN: str = "Bet Screen"
