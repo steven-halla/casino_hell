@@ -64,6 +64,9 @@ class BlackJackAlbertScreen(GambleScreen):
         self.med_exp = 20
         self.high_exp = 30
         self.critical_multiplier = 2
+        self.low_stamina_drain = 10
+        self.med_stamina_drain = 20
+        self.high_stamina_drain = 30
 
 
 
@@ -156,8 +159,17 @@ class BlackJackAlbertScreen(GambleScreen):
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
+        self.player_card_y_positions = []
+        self.enemy_card_y_positions = []
+        self.player_card_x_positions = []
+        self.enemy_card_x_positions = []
 
     def reset_black_jack_game(self):
+        self.player_card_y_positions = []
+        self.enemy_card_y_positions = []
+        self.player_card_x_positions = []
+        self.enemy_card_x_positions = []
+
         self.deck.shuffle()
         self.player_hand.clear()
         self.enemy_hand.clear()
@@ -267,7 +279,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
 
-            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp}  experience points!"]
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp}   experience points!"]
             self.update_player_phase_win(state, controller)
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
@@ -576,6 +588,7 @@ class BlackJackAlbertScreen(GambleScreen):
         elif state.controller.isTPressed:
             state.controller.isTPressed = False
             if self.player_action_phase_index == self.player_action_phase_play_index:
+                state.player.stamina_points -= self.low_stamina_drain
 
 
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
@@ -625,10 +638,7 @@ class BlackJackAlbertScreen(GambleScreen):
                             print(self.player_hand)
                             print(self.player_score)
                         else:
-                            state.player.money -= self.bet
-                            self.money += self.bet
-                            # state.player.stamina_points -= self.stamina_drain_low
-                            # state.player.exp += self.low_exp_gain
+                           self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
 
             if self.player_action_phase_index == self.player_action_phase_force_redraw_index and self.redraw_counter == True:
