@@ -3,6 +3,7 @@ from enum import Enum
 
 class Equipment(Enum):
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
+    REFRESH = "refresh" # black jacks gain +20 stamina
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception
     SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest

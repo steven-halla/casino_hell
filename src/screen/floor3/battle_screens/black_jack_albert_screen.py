@@ -60,6 +60,10 @@ class BlackJackAlbertScreen(GambleScreen):
         self.spell_sound.set_volume(0.3)
         self.reveal_cast_cost = 50
         self.redraw_cast_cost = 30
+        self.low_exp = 10
+        self.med_exp = 20
+        self.high_exp = 30
+        self.critical_multiplier = 2
 
 
 
@@ -89,7 +93,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 "Enemy got a black jack you lose"
             ]),
             self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: MessageBox([
-                "BOth of you got 21 its a draw"
+                f"It's a DRAW! You win 0 gold and win {self.low_exp} experience points"
             ]),
             self.PLAYER_ACTION_MESSAGE: MessageBox([
                 "Time for action"
@@ -101,7 +105,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 "you lose"
             ]),
             self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE: MessageBox([
-                "you draw"
+                f"It's a DRAW! You win 0 gold and win {self.low_exp} experience points"
             ]),
         }
 
@@ -139,10 +143,28 @@ class BlackJackAlbertScreen(GambleScreen):
         # passtt
 
     def round_reset(self):
-        pass
+        self.deck.shuffle()
+        self.player_hand.clear()
+        self.enemy_hand.clear()
+        if self.reveal_buff_counter > 0:
+            self.reveal_buff_counter -= 1
+        if self.redraw_debuff_counter > 0:
+            self.redraw_debuff_counter -= 1
+        if self.reveal_buff_counter == 0 and self.redraw_debuff_counter == 0:
+            self.magic_lock = False
+        self.ace_effect_triggered = False
+        self.hedge_hog_time: bool = False
+        self.redraw_counter = True
 
     def reset_black_jack_game(self,state: 'GameState'):
-        pass
+        self.deck.shuffle()
+        self.player_hand.clear()
+        self.enemy_hand.clear()
+        self.reveal_buff_counter = 0
+        self.redraw_debuff_counter = 0
+        self.ace_effect_triggered = False
+        self.hedge_hog_time: bool = False
+        self.redraw_counter = True
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -198,22 +220,49 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
+            if state.contorller.isTPressed:
+                state.controller.isTPressed = False
+                state.player.exp += self.low_exp
+                self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
+            # First, initialize the message box and store it in the attribute
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} money and gain {self.med_exp} experience points!"]
+
+            # Now, update the message as needed
+            if state.controller.isTPressed:
+                state.controller.isTPressed = False
+                state.player.exp += self.med_exp
+                state.player.money += self.bet * self.critical_multiplier
+                self.money -= self.bet * self.critical_multiplier
+                self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
+
+         
+
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
+            if state.contorller.isTPressed:
+                state.controller.isTPressed = False
+                state.player.money -= self.bet * self.critical_multiplier
+                self.money += self.bet * self.critical_multiplier
+                state.player.exp += self.high_exp
+                self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ACTION_SCREEN:
             self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
-            self.update_player_phase_win(controller)
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp} experience points!"]
+
+            self.update_player_phase_win(state, controller)
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
-            self.update_player_phase_lose(controller)
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].messages = [f"You LOSE! You LOSE {self.bet} money and gain {self.low_exp} experience points!"]
+            self.update_player_phase_lose(state, controller)
             self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
-            self.update_player_phase_draw(controller)
+            self.update_player_phase_draw(state, controller)
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
 
 
@@ -302,19 +351,26 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
 
         pygame.display.flip()
-    def update_player_phase_win(self, controller) -> None:
+    def update_player_phase_win(self, state, controller) -> None:
         if controller.isTPressed:
             controller.isTPressed = False
+            state.player.money += self.bet
+            self.money -= self.bet
+            state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
-    def update_player_phase_lose(self, controller) -> None:
+    def update_player_phase_lose(self, state, controller) -> None:
         if controller.isTPressed:
             controller.isTPressed = False
+            state.player.money -= self.bet
+            self.money += self.bet
+            state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
-    def update_player_phase_draw(self, controller) -> None:
+    def update_player_phase_draw(self,state,  controller) -> None:
         if controller.isTPressed:
             controller.isTPressed = False
+            state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -483,10 +539,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     print("483")
                     self.game_state = self.PLAYER_WIN_ACTION_SCREEN
 
-
-
-
-
             if self.player_action_phase_index == self.player_action_phase_draw_index and len(self.player_hand) <= card_max:
                 # self.player_hand += self.deck.player_draw_hand(1)
                 # self.deck.compute_hand_value(self.player_hand)
@@ -495,22 +547,26 @@ class BlackJackAlbertScreen(GambleScreen):
 
                 print(self.player_hand)
 
+                if self.player_score > max_before_bust:
 
-                if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
-                    if self.player_score > max_before_bust:
-                        self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+                    if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
+                        if self.player_score > max_before_bust:
+                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
-                elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
-                    lucky_roll = random.randint(1, 1)
-                    lucky_roll_success = 1
-                    if lucky_roll == lucky_roll_success:
-                        self.player_hand.pop()
-                        self.player_score = self.deck.compute_hand_value(self.player_hand)
-                    else:
-                        state.player.money -= self.bet
-                        self.money += self.bet
-                        # state.player.stamina_points -= self.stamina_drain_low
-                        # state.player.exp += self.low_exp_gain
+                    elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
+                        lucky_roll = random.randint(1, 4)
+                        lucky_roll_success = 4
+                        if lucky_roll == lucky_roll_success:
+                            self.player_hand.pop()
+                            self.player_score = self.deck.compute_hand_value(self.player_hand)
+                            self.lucky_strike.play()
+                            print(self.player_hand)
+                            print(self.player_score)
+                        else:
+                            state.player.money -= self.bet
+                            self.money += self.bet
+                            # state.player.stamina_points -= self.stamina_drain_low
+                            # state.player.exp += self.low_exp_gain
 
 
             if self.player_action_phase_index == self.player_action_phase_force_redraw_index and self.redraw_counter == True:
@@ -641,8 +697,10 @@ class BlackJackAlbertScreen(GambleScreen):
         adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
         # Only draw cards if the hands are empty
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+            cards_to_insert2 = [("Ace", "Diamonds", 11), ("King", "Spades", 10)]
+            self.player_hand = self.deck.insert_cards_manually(cards_to_insert2)
 
-            self.player_hand = self.deck.player_draw_hand(2)
+            # self.player_hand = self.deck.player_draw_hand(2)
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
