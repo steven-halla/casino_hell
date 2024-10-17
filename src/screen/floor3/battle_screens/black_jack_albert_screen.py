@@ -9,6 +9,9 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 
 
+# NEED TO REVEAL CARD DURING BLACK JACK OR WHEN ROUND IS OVER SHOW FACE DOWN CARDS
+
+
 class BlackJackAlbertScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
@@ -71,7 +74,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 "You can feel the print of the face down card."
             ]),
             self.MAGIC_MENU_REDRAW_DESCRIPTION: MessageBox([
-                "Asks the enemy very nicely to redraw their face up card."
+                "Sir Leopold replaces face up card with a new card, once per turn.."
             ]),
             self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
                 "go back to previous menu"
@@ -299,39 +302,6 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
 
         pygame.display.flip()
-
-    def animate_face_down_card(self, state, card_index):
-        # Set the initial position of the card off the screen (above the screen)
-        initial_y_position = 0  # Starting Y position off-screen (above the screen)
-        target_y_position = 50  # Target Y position for the enemy's hand
-        x_position = 250 + card_index * 75  # X position based on the card's index in the hand
-        card_speed = 5  # Adjust the speed of animation
-
-        # Create a loop to animate the movement from top to bottom
-        while initial_y_position < target_y_position:
-            # Redraw the entire screen (including other cards) before each new frame of animation
-            self.draw(state)
-
-            # Move the card down gradually
-            initial_y_position += card_speed
-
-            # Ensure it doesn't move past the target
-            if initial_y_position > target_y_position:
-                initial_y_position = target_y_position
-
-            # Draw the face down card while it is moving
-            self.deck.draw_card_face_down((x_position, initial_y_position), state.DISPLAY)
-
-            # Update the display to show the animation frame
-            pygame.display.flip()
-
-            # Add a short delay to make the animation visible
-            pygame.time.delay(30)
-
-        # Draw the card face down at the final position after exiting the loop
-        self.deck.draw_card_face_down((x_position, target_y_position), state.DISPLAY)
-        pygame.display.flip()
-
     def update_player_phase_win(self, controller) -> None:
         if controller.isTPressed:
             controller.isTPressed = False
@@ -395,8 +365,6 @@ class BlackJackAlbertScreen(GambleScreen):
         border_width = 5
         start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
         start_y_right_box = 240  # Adjust vertical alignment
-
-        # Create the black box and white border
         black_box = pygame.Surface((black_box_width, black_box_height))
         black_box.fill(BLACK)
 
@@ -412,11 +380,9 @@ class BlackJackAlbertScreen(GambleScreen):
         # Blit the border with the black box inside
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        # Conditionally insert Magic.BLACK_JACK_REDRAW.value into position 1 if available in player's magic inventory
         if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
             self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
 
-        # Render the choices and handle the arrow dynamically
         for idx, choice in enumerate(self.magic_screen_choices):
             y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
             state.DISPLAY.blit(
@@ -424,7 +390,6 @@ class BlackJackAlbertScreen(GambleScreen):
                 (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
             )
 
-        # Draw the arrow dynamically based on the selected index
         arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
         state.DISPLAY.blit(
             self.font.render("->", True, WHITE),
@@ -446,15 +411,12 @@ class BlackJackAlbertScreen(GambleScreen):
         player_hand_max = 4
         draw_option = 1
 
-        # Ensure "Redraw" is added before rendering if it's available
         if self.redraw_debuff_counter > self.redraw_end_counter and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices:
             self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
 
-        # Loop through the choices and render each one
         for idx, choice in enumerate(self.player_action_phase_choices):
             y_position = start_y_right_box + idx * spacing_between_choices
 
-            # Check if the current choice is "Redraw" and if redraw_counter is False
             if choice == Magic.BLACK_JACK_REDRAW.value and self.redraw_counter == False:
                 rendered_choice = self.font.render(choice, True, RED)
             else:
@@ -465,20 +427,18 @@ class BlackJackAlbertScreen(GambleScreen):
             else:
                 rendered_draw = self.font.render(choice, True, WHITE)
 
-
-            # Blit the rendered text
             state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
             state.DISPLAY.blit(rendered_draw, (start_x_right_box + text_x_offset, y_position + text_y_offset))
 
-        # Draw the arrow based on the current index
         arrow_y_coordinate = arrow_center + start_y_right_box + self.player_action_phase_index * spacing_between_choices
         state.DISPLAY.blit(
             self.font.render("->", True, WHITE),
             (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
         )
 
-
     def update_player_action_logic(self, state: "GameState", controller):
+        # print(self.player_score)
+        # print(self.enemy_score)
         card_max = 3
         max_before_bust = 21
 
@@ -501,38 +461,57 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
-                    if self.player_score == self.enemy_score:
-                        self.game_state = self.PLAYER_ENEMY_DRAW_ACTION_SCREEN
+                    if self.enemy_score < self.player_score:
+                        self.animate_face_down_card(state, len(self.enemy_hand))
+                    else:
+                        break
 
-                    self.animate_face_down_card(state, len(self.enemy_hand))
+                if self.player_score == self.enemy_score:
+                    print("470")
+                    self.game_state = self.PLAYER_ENEMY_DRAW_ACTION_SCREEN
 
-                    # new_card = self.deck.enemy_draw_hand(1)[0]  # Get the single card drawn
-                    #
-                    # # Start animating the drawn card BEFORE adding to the enemy hand
-                    # self.animate_enemy_card(new_card, state, len(self.enemy_hand))  # Pass the card and its position index
-                    # self.enemy_hand.append(new_card)  # After animation, add the card to the hand
-                    #
-                    # # After animation completes, add the card to the enemy's hand
-                    #
-                    # # Recalculate the enemy's hand value after adding the card
-                    # self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                elif self.enemy_score > max_before_bust:
+                    print("474")
+                    self.game_state = self.PLAYER_WIN_ACTION_SCREEN
 
+                elif self.enemy_score > self.player_score:
+                    print("478")
 
+                    self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
-
-
+                elif self.enemy_score < self.player_score:
+                    print("483")
+                    self.game_state = self.PLAYER_WIN_ACTION_SCREEN
 
 
 
 
 
             if self.player_action_phase_index == self.player_action_phase_draw_index and len(self.player_hand) <= card_max:
-                self.player_hand += self.deck.player_draw_hand(1)
-                self.deck.compute_hand_value(self.player_hand)
-                self.player_score = self.deck.compute_hand_value(self.player_hand)
+                # self.player_hand += self.deck.player_draw_hand(1)
+                # self.deck.compute_hand_value(self.player_hand)
+                # self.player_score = self.deck.compute_hand_value(self.player_hand)
+                self.animate_face_down_card_player(state, len(self.player_hand))
+
                 print(self.player_hand)
-                if self.player_score > max_before_bust:
-                    self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+
+
+                if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
+                    if self.player_score > max_before_bust:
+                        self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+
+                elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
+                    lucky_roll = random.randint(1, 1)
+                    lucky_roll_success = 1
+                    if lucky_roll == lucky_roll_success:
+                        self.player_hand.pop()
+                        self.player_score = self.deck.compute_hand_value(self.player_hand)
+                    else:
+                        state.player.money -= self.bet
+                        self.money += self.bet
+                        # state.player.stamina_points -= self.stamina_drain_low
+                        # state.player.exp += self.low_exp_gain
+
 
             if self.player_action_phase_index == self.player_action_phase_force_redraw_index and self.redraw_counter == True:
                 self.enemy_hand.pop(1)
@@ -540,12 +519,53 @@ class BlackJackAlbertScreen(GambleScreen):
                 self.enemy_hand.insert(1, new_card)
                 self.redraw_counter = False
 
+    def animate_face_down_card_player(self, state, card_index):
+        # Set the initial position of the card off the screen (above the screen)
+        initial_y_position = 0  # Starting Y position off-screen (above the screen)
+        target_y_position = 300  # Target Y position for the enemy's hand
+        x_position = 250 + card_index * 75  # X position based on the card's index in the hand
+        card_speed = 5  # Adjust the speed of animation
+
+        # Create a loop to animate the movement from top to bottom
+        while initial_y_position < target_y_position:
+            # Redraw the entire screen (including other cards) before each new frame of animation
+            self.draw(state)
+
+            # Move the card down gradually
+            initial_y_position += card_speed
+
+            # Ensure it doesn't move past the target
+            if initial_y_position >= target_y_position:
+                initial_y_position = target_y_position
+                break  # Exit the loop when the card reaches its target
+
+            # Draw the face down card while it is moving
+            self.deck.draw_card_face_down((x_position, initial_y_position), state.DISPLAY)
+
+            # Update the display to show the animation frame
+            pygame.display.flip()
+
+            # Add a short delay to make the animation visible
+            pygame.time.delay(30)
+
+        # After the animation is complete, draw the card face-up and add it to the hand
+        new_card = self.deck.player_draw_hand(1)[0]  # Get the single card drawn
+
+        # Now that the animation is complete, draw the card face-up
+        self.deck.draw_card_face_up(new_card[1], new_card[0], (x_position, target_y_position), state.DISPLAY)
+
+        # Add the card to the enemy's hand after the animation
+        self.player_hand.append(new_card)
+
+        # Recalculate the enemy's hand value after adding the card
+        self.player_score = self.deck.compute_hand_value(self.player_hand)
+
     def animate_face_down_card(self, state, card_index):
         # Set the initial position of the card off the screen (above the screen)
         initial_y_position = 0  # Starting Y position off-screen (above the screen)
         target_y_position = 50  # Target Y position for the enemy's hand
         x_position = 250 + card_index * 75  # X position based on the card's index in the hand
-        card_speed = 5  # Adjust the speed of animation
+        card_speed = 3  # Adjust the speed of animation
 
         # Create a loop to animate the movement from top to bottom
         while initial_y_position < target_y_position:
@@ -640,7 +660,6 @@ class BlackJackAlbertScreen(GambleScreen):
 
     def draw_draw_card_screen(self, state: 'GameState'):
 
-
         card_one = 0
         card_two = 1
         initial_x_position = 250
@@ -665,8 +684,6 @@ class BlackJackAlbertScreen(GambleScreen):
             self.enemy_card_y_positions = [initial_y_position] * len(self.enemy_hand)
             self.enemy_card_x_positions = [initial_x_position + i * move_card_x for i in range(len(self.enemy_hand))]
 
-        # Deal player cards one at a time
-        # Deal player cards one at a time
         all_player_cards_dealt = True
         for i, card in enumerate(self.player_hand):
             if self.player_card_y_positions[i] < player_target_y_position:
@@ -674,13 +691,10 @@ class BlackJackAlbertScreen(GambleScreen):
                 if self.player_card_y_positions[i] > player_target_y_position:
                     self.player_card_y_positions[i] = player_target_y_position
 
-                # Flip the second player's card at flip_y_position
                 if i == 1 and self.player_card_y_positions[i] >= flip_y_position:
-                    # Draw the player's second card face up once it reaches flip position
                     self.deck.draw_card_face_up(card[1], card[0],
                                                 (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
                 else:
-                    # Draw player card face down while moving (for all other cards or until it reaches target)
                     self.deck.draw_card_face_down((self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
                 all_player_cards_dealt = False  # Still dealing player cards
@@ -689,8 +703,6 @@ class BlackJackAlbertScreen(GambleScreen):
             # Draw player card face up once it reaches target position
             self.deck.draw_card_face_up(card[card_two], card[card_one], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
-        # If all player cards are dealt, start dealing enemy cards
-        # If all player cards are dealt, start dealing enemy cards one at a time
         if all_player_cards_dealt:
             for i, card in enumerate(self.enemy_hand):
                 if self.enemy_card_y_positions[i] < enemy_target_y_position:
@@ -713,20 +725,12 @@ class BlackJackAlbertScreen(GambleScreen):
         for i, card in enumerate(self.player_hand):
             self.deck.draw_card_face_up(card[card_two], card[card_one], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
 
-        # Redraw all enemy cards that have been dealt and are at their final positions
-        # Redraw all enemy cards that have been dealt and are at their final positions
         for i, card in enumerate(self.enemy_hand):
             if i == 0:
-                # Always draw the first enemy card face down
                 self.deck.draw_card_face_down((self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
             else:
-                # Draw all remaining enemy cards face up
                 self.deck.draw_card_face_up(card[card_two], card[card_one], (self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
-        # Global variables to manage Ace detection
 
-
-        # In your main game logic method:
-        # Ace detection logic
         if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items:
             if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace" and not self.ace_effect_triggered:
                 if self.ace_detected_time is None:
