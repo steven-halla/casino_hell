@@ -22,67 +22,24 @@ class CoinFlipDexterScreen(GambleScreen):
         # Fixed position to draw the coin on the screen
         coin_image_position = (122, 100)  # The position on the screen where the coin will always be shown
 
-        # Parameters for the subsurface
-        initial_x_position = 70  # Starting x-coordinate of the first coin in the sprite sheet
-        initial_x_position = 230  # Starting x-coordinate of the second coin in the sprite sheet
-
-        initial_x_position = 380  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 520  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 670  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 815  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 960  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 1110  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 1250  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 1400  # Starting x-coordinate of the third coin in the sprite sheet
-        initial_x_position = 1550  # Starting x-coordinate of the third coin in the sprite sheet
-
+        # List of predefined x-positions for each coin in the sprite sheet
+        x_positions = [85, 235, 380, 525, 670, 815, 960, 1108, 1250, 1394]
         y_position = 110  # Fixed y-coordinate for all coins in the sprite sheet
         width, height = 170, 190  # Size of each coin in the sprite sheet
 
-        # Define the rectangle for the third coin in the sprite sheet
-        subsurface_rect = pygame.Rect(initial_x_position, y_position, width, height)
+        # Determine which coin to display based on time
+        time_interval = 1000  # Time interval in milliseconds (1 second)
+        current_time = pygame.time.get_ticks()
+        current_coin_index = (current_time // time_interval) % len(x_positions)
+
+        # Define the rectangle for the current coin in the sprite sheet
+        subsurface_rect = pygame.Rect(x_positions[current_coin_index], y_position, width, height)
 
         # Get the subsurface from the sprite sheet
         sprite = self.sprite_sheet.subsurface(subsurface_rect)
 
-        # Blit (draw) the subsurface (the third coin) onto the display surface at a fixed position
+        # Blit (draw) the subsurface (the selected coin) onto the display surface at a fixed position
         state.DISPLAY.blit(sprite, coin_image_position)
-
-    # def draw_coin_image(self, state: 'GameState'):
-    #     # Fixed position to draw the coin on the screen
-    #     coin_image_position = (122, 100)  # The position on the screen where the coin will always be shown
-    #
-    #     # Parameters for the subsurface
-    #     initial_x_position = 230  # Starting x-coordinate of the second coin in the sprite sheet
-    #     y_position = 110  # Fixed y-coordinate for all coins in the sprite sheet
-    #     width, height = 170, 190  # Size of each coin in the sprite sheet
-    #
-    #     # Define the rectangle for the second coin in the sprite sheet
-    #     subsurface_rect = pygame.Rect(initial_x_position, y_position, width, height)
-    #
-    #     # Get the subsurface from the sprite sheet
-    #     sprite = self.sprite_sheet.subsurface(subsurface_rect)
-    #
-    #     # Blit (draw) the subsurface (the second coin) onto the display surface at a fixed position
-    #     state.DISPLAY.blit(sprite, coin_image_position)
-
-    # def draw_coin_image(self, state: 'GameState'):
-    #     # Fixed position to draw the coin on the screen
-    #     coin_image_position = (122, 100)  # The position on the screen where the coin will always be shown
-    #
-    #     # Parameters for the subsurface
-    #     initial_x_position = 70  # Starting x-coordinate of the first coin in the sprite sheet
-    #     y_position = 110  # Fixed y-coordinate for all coins in the sprite sheet
-    #     width, height = 170, 190  # Size of each coin in the sprite sheet
-    #
-    #     # Define the rectangle for the first coin in the sprite sheet
-    #     subsurface_rect = pygame.Rect(initial_x_position, y_position, width, height)
-    #
-    #     # Get the subsurface from the sprite sheet
-    #     sprite = self.sprite_sheet.subsurface(subsurface_rect)
-    #
-    #     # Blit (draw) the subsurface (the first coin) onto the display surface at a fixed position
-    #     state.DISPLAY.blit(sprite, coin_image_position)
 
 
 
