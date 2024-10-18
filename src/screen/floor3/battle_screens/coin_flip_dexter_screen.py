@@ -39,7 +39,12 @@ class CoinFlipDexterScreen(GambleScreen):
         self.dexter_bankrupt: int = 0
         self.magic_lock = False
         self.low_stamina_drain: int = 10
+        self.index_stepper: int = 1
         self.magic_screen_index: int = 0
+        self.shield_cost: int = 30
+        self.shield_debuff = 0
+        self.heads_force_cost = 50
+        self.heads_force_active = False
 
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
     BACK: str = "Back"
@@ -51,15 +56,20 @@ class CoinFlipDexterScreen(GambleScreen):
         self.weighted_coin = False
         self.balance_modifier: int = 0
         self.welcome_screen_index = 0
+        self.shield_debuff = 0
+        self.heads_force_active = False
 
 
     def reset_round(self):
         self.weighted_coin = False
+        self.heads_force_active = False
         self.phase += 1
         if self.phase == 6:
             self.phase = 1
         if self.phase == 1:
             self.balance_modifier = 0
+        if self.shield_debuff > 0:
+            self.shield_debuff -= 1
 
 
 
@@ -77,7 +87,7 @@ class CoinFlipDexterScreen(GambleScreen):
             self.update_welcome_screen_logic(controller, state)
 
         if self.game_state == self.MAGIC_MENU_SCREEN:
-            pass
+            self.update_magic_menu_selection_box(controller, state)
 
 
     def draw(self, state: 'GameState'):
@@ -98,6 +108,38 @@ class CoinFlipDexterScreen(GambleScreen):
         # self.draw_coin_image(state)
 
         pygame.display.flip()
+
+    def update_magic_menu_selection_box(self, controller, state):
+
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
+            print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
+            print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value and state.player.focus_points >= self.shield_cost:
+                state.player.focus_points -= self.shield_cost
+                self.shield_debuff = 3
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value and state.player.focus_points >= self.heads_force_cost:
+                state.player.focus_points -= self.heads_force_cost
+                self.heads_force_active = True
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN
+
+
 
     def draw_magic_menu_selection_box(self, state):
         choice_spacing = 40
@@ -147,7 +189,7 @@ class CoinFlipDexterScreen(GambleScreen):
             if self.welcome_screen_index == self.flip_coin_index:
                 state.player.stamina -= self.low_stamina_drain
                 self.game_state = self.COIN_FLIP_SCREEN
-            elif self.welcome_screen_index == self.magic_index:
+            elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.bet_index:
                 self.game_state = self.BET_SCREEN
