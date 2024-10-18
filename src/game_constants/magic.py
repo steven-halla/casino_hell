@@ -4,11 +4,13 @@ from enum import Enum
 
 class Magic(Enum):
     HEADS_FORCE = "Force"  # this is gained from alex quest
+    SHIELD = "Shield"
     SLOTS_HACK = "HACK"  # this is a level 2 tier reward from mc nugg
     CRAPS_LUCKY_7 = "Triple D"    #  this is gained with mind 2
     REVEAL = "reveal"
     BLACK_JACK_REDRAW = "redraw"
     CARD_MORPH = "card morph" # this changes the value of a card, like all kings are now 2's
+
 
     @staticmethod
     def add_magic_to_player(player, magic):
