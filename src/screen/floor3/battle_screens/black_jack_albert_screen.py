@@ -38,10 +38,10 @@ class BlackJackAlbertScreen(GambleScreen):
         self.lock_down_inactive: int = 0
         self.initial_hand: int = 2
         self.hedge_hog_time: bool = False
-        self.player_action_phase_index = 0
-        self.player_action_phase_play_index = 0
-        self.player_action_phase_draw_index = 1
-        self.player_action_phase_force_redraw_index = 2
+        self.player_action_phase_index: int = 0
+        self.player_action_phase_play_index: int = 0
+        self.player_action_phase_draw_index: int = 1
+        self.player_action_phase_force_redraw_index: int = 2
         self.redraw_counter = True
         self.player_action_phase_choices: list[str] = ["Stand", "Draw"]
         self.magic_screen_choices: list[str] = [Magic.REVEAL.value, "back"]
@@ -51,22 +51,22 @@ class BlackJackAlbertScreen(GambleScreen):
         self.reveal_debuff_counter: int = 0
         self.reveal_end_counter: int = 0
         self.reveal_start_counter: int = 10
-        self.magic_menu_index = 0
-        self.magic_menu_reveal_index = 0
-        self.redraw_magic_menu_index = 1
-        self.back_magic_menu_index = 2
+        self.magic_menu_index:int = 0
+        self.magic_menu_reveal_index:int = 0
+        self.redraw_magic_menu_index:int = 1
+        self.back_magic_menu_index:int = 2
         self.index_stepper: int = 1
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.reveal_cast_cost = 50
-        self.redraw_cast_cost = 30
-        self.low_exp = 10
-        self.med_exp = 20
-        self.high_exp = 30
-        self.critical_multiplier = 2
-        self.low_stamina_drain = 10
-        self.med_stamina_drain = 20
-        self.high_stamina_drain = 30
+        self.reveal_cast_cost:int = 50
+        self.redraw_cast_cost:int = 30
+        self.low_exp: int= 10
+        self.med_exp: int = 20
+        self.high_exp: int = 30
+        self.critical_multiplier: int = 2
+        self.low_stamina_drain: int = 10
+        self.med_stamina_drain: int = 20
+        self.high_stamina_drain: int = 30
 
 
 

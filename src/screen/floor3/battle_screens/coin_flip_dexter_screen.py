@@ -1,14 +1,70 @@
+import random
+
 import pygame
 
 from entity.gui.screen.gamble_screen import GambleScreen
+from game_constants.coin_flip_constants import CoinFlipConstants
 
 
 class CoinFlipDexterScreen(GambleScreen):
+    # I believe in the yin yang of coin flip, balance is needed in all things
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
-        self.bet = 100
+        self.bet:int = 100
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
-        self.game_state = self.WELCOME_SCREEN
+        self.game_state: str = self.WELCOME_SCREEN
+        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
+        self.heads_or_tails_Menu: list[str] = ["Heads", "Tails", "Back"]
+        self.magic_menu_selector: list[str] = ["Back"]
+        self.welcome_screen_index: int = 0
+        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+        self.phase = 1
+
+        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+        self.weighted_coin: bool = False  # this is our magic spell heads force
+        self.balance_modifier: int = 0
+        self.player_choice = CoinFlipConstants.HEADS.value
+        self.coin_landed = CoinFlipConstants.HEADS.value
+
+
+    def reset_coin_flip_game(self):
+        self.phase = 1
+        self.weighted_coin = False
+        self.balance_modifier: int = 0
+
+        self.welcome_screen_index = 0
+
+
+    def reset_round(self):
+        self.weighted_coin = False
+        self.phase += 1
+        if self.phase == 6:
+            self.phase = 1
+        if self.phase == 1:
+            self.balance_modifier = 0
+
+
+    def flip_coin(self):
+        if self.weighted_coin == True:
+            self.balance_modifier += 15
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        coin_fate = random.randint(1, 100) + self.balance_modifier
+        if coin_fate >= 51:
+            self.balance_modifier += 15
+            if self.balance_modifier >= 85:
+                self.balance_modifier -= 125
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        elif coin_fate <= 50:
+            self.balance_modifier -= 15
+            if self.balance_modifier <= 15:
+                self.balance_modifier += 125
+            self.coin_landed = CoinFlipConstants.TAILS.value
+
+    def update(self, state):
+        super().update(state)
+        pass
 
     def draw(self, state: 'GameState'):
         super().draw(state)
