@@ -42,6 +42,7 @@ python src/main.py
 
 - Tiled Map Editor
 - Pygame
+- Gimp
 
 
 Games:

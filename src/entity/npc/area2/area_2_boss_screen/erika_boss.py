@@ -27,7 +27,7 @@ class ErikaBoss(Npc):
                 "Hero: Well this was unexpected... I was going to ask to vacate all the rib demons but I have a new plan.",
                  "Sir Leopold: Awwwwww, see, I knew you had a good heart.",
 
-                 "Erika: Oh you are so bold Hero. Very easy to tell what you're thinking, not that I blame you after seeing my real form.",
+                "Erika: Oh you are so bold Hero. Very easy to tell what you're thinking, not that I blame you after seeing my real form.",
                 "Hero: No, not that. If I win, i want you to contiue traveling with us, and to never betray our party going forward.",
                 "Sir Leopold: Having a demon on our team would give us some advantages, good thinking!",
                 "Erika: You still dont' want to eat me, so disapointing. I wasn't expecting you to ask for that...Ok I agree to your terms, but if I win...",
@@ -38,7 +38,7 @@ class ErikaBoss(Npc):
                 "You can still change your mind, we can continue on like nothing ever happened, pretty please? With chicken nuggies on top?",
                 "Hero: Sorry Erika, if you're the boss then were fighting, it's as simple as that. No way you're escaping it.",
                 "Sir Leopold: Damn, maybe she's right? Maybe reconsider things? She's going to be stronger than the last floor boss and he was pretty tough.",
-                "Hero: None of that matters, she can ask to destroy my soul for all I care, not like she's going to win, this is a freeby as far as I'm concerned.",
+                "Hero: None of that matters, it's irrelevant, not like she's going to win, this is a freeby as far as I'm concerned.",
                 "Erika: Freeby? You must really think that I'm going to take it easy on you, I have my demon pride 'hero'.",
                 "The time for talk is over... I tried to warn you hero, you dum dum stupid idiot head. You're going to regret fighting me, pathetic human scum!",
 
