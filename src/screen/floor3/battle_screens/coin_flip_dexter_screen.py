@@ -19,7 +19,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
         self.game_state: str = self.WELCOME_SCREEN
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-        self.heads_or_tails_Menu: list[str] = ["Heads", "Tails", "Back"]
+        self.heads_or_tails_menu: list[str] = ["Heads", "Tails", "Back"]
         self.magic_menu_selector: list[str] = []
         self.welcome_screen_index: int = 0
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
@@ -29,6 +29,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.magic_index: int = 1
         self.bet_index: int = 2
         self.quit_index: int = 3
+        self.headstailsindex: int = 0
         self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
         self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
 
@@ -53,6 +54,7 @@ class CoinFlipDexterScreen(GambleScreen):
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
     BACK: str = "Back"
     RESULTS_SCREEN: str = "results_screen"
+    CHOOSE_SIDE_SCREEN: str = "choose_side_screen"
 
 
     def reset_coin_flip_game(self):
@@ -101,12 +103,17 @@ class CoinFlipDexterScreen(GambleScreen):
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
+        elif self.game_state == self.CHOOSE_SIDE_SCREEN:
+            self.update_choose_side_logic(controller, state)
+
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.result_anchor = True
-
             if self.coin_bottom == True:
                 self.game_state = self.RESULTS_SCREEN
         elif self.game_state == self.RESULTS_SCREEN:
+            if controller.isTPressed:
+                controller.isTPressed = False
+                self.game_state = self.WELCOME_SCREEN
             if self.result_anchor == True:
                 self.update_flip_coin()
 
@@ -120,6 +127,8 @@ class CoinFlipDexterScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
+        elif self.game_state == self.CHOOSE_SIDE_SCREEN:
+            self.draw_choose_side_logic(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
@@ -131,10 +140,70 @@ class CoinFlipDexterScreen(GambleScreen):
             self.draw_results_screen_logic(state)
 
 
-        # the below belongs in coin flip
-        # self.draw_coin_image(state)
-
         pygame.display.flip()
+
+    def update_choose_side_logic(self, controller, state):
+        if controller.isUpPressed:
+            print(self.headstailsindex)
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.headstailsindex = (self.headstailsindex - self.index_stepper) % len(self.heads_or_tails_menu)
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.headstailsindex = (self.headstailsindex + self.index_stepper) % len(self.heads_or_tails_menu)
+
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.headstailsindex == 0:
+                self.player_choice = CoinFlipConstants.HEADS.value
+            elif self.headstailsindex == 1:
+                self.player_choice = CoinFlipConstants.TAILS.value
+            elif self.headstailsindex == 2:
+                self.headstailsindex = 0
+                self.game_state = self.WELCOME_SCREEN
+
+
+    def draw_choose_side_logic(self, state):
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.heads_or_tails_menu):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.headstailsindex * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
 
     def draw_results_screen_logic(self, state):
         image_to_display = (
@@ -226,7 +295,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
             if self.welcome_screen_index == self.flip_coin_index:
                 state.player.stamina_points -= self.low_stamina_drain
-                self.game_state = self.COIN_FLIP_SCREEN
+                self.game_state = self.CHOOSE_SIDE_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.bet_index:
@@ -352,6 +421,8 @@ class CoinFlipDexterScreen(GambleScreen):
             if self.balance_modifier <= 15:
                 self.balance_modifier += 125
             self.coin_landed = CoinFlipConstants.TAILS.value
+
+
 
         self.result_anchor = False
         return
