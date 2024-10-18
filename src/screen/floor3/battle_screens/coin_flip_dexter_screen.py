@@ -28,7 +28,7 @@ class CoinFlipDexterScreen(GambleScreen):
         width, height = 170, 190  # Size of each coin in the sprite sheet
 
         # Determine which coin to display based on time
-        time_interval = 1000  # Time interval in milliseconds (1 second)
+        time_interval = 50  # Time interval in milliseconds (1 second)
         current_time = pygame.time.get_ticks()
         current_coin_index = (current_time // time_interval) % len(x_positions)
 
