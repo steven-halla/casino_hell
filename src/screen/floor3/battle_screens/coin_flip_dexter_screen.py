@@ -14,6 +14,7 @@ class CoinFlipDexterScreen(GambleScreen):
     # I believe in the yin yang of coin flip, balance is needed in all things
     # our money is not in balance let me correct that:
     # Greediest of all the pigs of filth, share your horde with the poor and down trodden of the world...money balancer
+    # money balancer effects: Draw player loses self.bet, win player wins self.bet // 1/2 loss player loses self.bet * 2
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100
@@ -95,7 +96,6 @@ class CoinFlipDexterScreen(GambleScreen):
             self.PLAYER_DRAW_MESSAGE: MessageBox([
                 f"It's a DRAW! You win 0 gold and win {self.exp_gain_low} experience points"
             ]),
-
         }
 
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
