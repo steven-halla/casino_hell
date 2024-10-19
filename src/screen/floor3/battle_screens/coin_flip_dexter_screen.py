@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from constants import WHITE, BLACK
+from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.events import Events
@@ -16,6 +16,7 @@ class CoinFlipDexterScreen(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100
+        self.dealer_name: str = "Dexter"
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
@@ -30,6 +31,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.flip_coin_index: int = 0
         self.magic_index: int = 1
         self.bet_index: int = 2
+        self.shield_debuff_inactive = 0
         self.quit_index: int = 3
         self.headstailsindex: int = 0
         self.image_to_display = ""
@@ -40,7 +42,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.menu_movement_sound.set_volume(0.2)
         self.weighted_coin: bool = False  # this is our magic spell heads force
         self.balance_modifier: int = 0
-        self.player_choice = CoinFlipConstants.HEADS.value
+        self.player_choice = ""
         self.coin_landed = CoinFlipConstants.HEADS.value
         self.dexter_bankrupt: int = 0
         self.magic_lock = False
@@ -72,7 +74,11 @@ class CoinFlipDexterScreen(GambleScreen):
         self.heads_force_active = False
         self.coin_bottom = False
         self.result_anchor = False
+        self.weighted_coin = False
+
         self.image_to_display = ""
+        self.player_choice = ""
+
 
         self.weighted_coin = False
 
@@ -82,6 +88,8 @@ class CoinFlipDexterScreen(GambleScreen):
         self.coin_bottom = False
         self.result_anchor = False
         self.image_to_display = ""
+        self.player_choice = ""
+
 
         self.phase += 1
         if self.phase == 6:
@@ -92,7 +100,6 @@ class CoinFlipDexterScreen(GambleScreen):
             self.shield_debuff -= 1
 
     def update(self, state):
-        print(self.game_state)
         super().update(state)
         controller = state.controller
         controller.update()
@@ -119,7 +126,6 @@ class CoinFlipDexterScreen(GambleScreen):
                 self.update_flip_coin(controller)
             if controller.isTPressed:
                 controller.isTPressed = False
-                print("Yes")
                 if self.coin_landed == self.player_choice:
                     self.game_state = self.PLAYER_WIN_SCREEN
                 elif self.coin_landed != self.player_choice:
@@ -166,6 +172,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
@@ -426,12 +433,9 @@ class CoinFlipDexterScreen(GambleScreen):
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
 
-
-
     def draw_flip_coin(self, state: 'GameState'):
-
         # Fixed position to draw the coin on the screen
-        initial_coin_image_position = (300, -80)  # Starting position on the screen for the coin
+        initial_coin_image_position = (300, 400)  # Starting position on the screen for the coin
 
         # List of predefined x-positions for each coin in the sprite sheet
         x_positions = [85, 235, 380, 525, 670, 815, 960, 1108, 1250, 1394]
@@ -440,7 +444,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
         # Parameters for the animation
         time_interval = 50  # Time interval in milliseconds for changing images
-        fall_speed = 3 # Fall speed in pixels per time interval
+        fall_speed = 3  # Fall speed in pixels per time interval
 
         # Determine which coin to display based on time
         current_time = pygame.time.get_ticks()
@@ -452,9 +456,12 @@ class CoinFlipDexterScreen(GambleScreen):
         # Get the subsurface from the sprite sheet
         sprite = self.sprite_sheet.subsurface(subsurface_rect)
 
-        # Calculate the y position as the coin falls
-        fall_distance = min(fall_speed * (current_time // time_interval), 300)  # Fall up to a maximum of 100 pixels
-        coin_image_position = (initial_coin_image_position[0], initial_coin_image_position[1] + fall_distance)
+        # Calculate the y position as the coin falls (decreasing the y value)
+        fall_distance = min(fall_speed * (current_time // time_interval), 300)  # Fall up to a maximum of 300 pixels
+        coin_image_position = (initial_coin_image_position[0], initial_coin_image_position[1] - fall_distance)
+
+        # Blit (draw) the subsurface (the selected coin) onto the display surface at the calculated position
+        state.DISPLAY.blit(sprite, coin_image_position)
 
         if fall_distance >= 300:
             print("Coin has reached the bottom of its fall")
@@ -504,6 +511,42 @@ class CoinFlipDexterScreen(GambleScreen):
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
+        enemy_name_y_position = 33
+        phase_y_position = 108
+        choice_y_position = 148
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+        score_header = "Score"
+
+
+        state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f" Phase: {self.phase}", True, WHITE), (player_enemy_box_info_x_position - 7, phase_y_position))
+        state.DISPLAY.blit(self.font.render(f" Choice: {self.player_choice}", True, WHITE), (player_enemy_box_info_x_position - 7, choice_y_position))
+
+
+        if self.shield_debuff == self.shield_debuff_inactive and self.heads_force_active == True:
+            state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
+
+
+
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
 
 
 
