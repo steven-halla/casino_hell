@@ -17,6 +17,9 @@ class CoinFlipDexterScreen(GambleScreen):
         super().__init__(screenName)
         self.bet:int = 100
         self.dealer_name: str = "Dexter"
+        self.initial_coin_image_position = (300, 250)  # Initial position for the coin
+        self.timer_start = None
+        self.coin_bottom = False
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
@@ -57,6 +60,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.exp_gain_high = 25
         self.exp_gain_low = 10
         self.result_anchor = False
+        self.timer_start = None  # Initialize the timer variable
 
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
     BACK: str = "Back"
@@ -74,10 +78,14 @@ class CoinFlipDexterScreen(GambleScreen):
         self.heads_force_active = False
         self.coin_bottom = False
         self.result_anchor = False
+        self.timer_start = None  # Initialize the timer variable
+
         self.weighted_coin = False
 
         self.image_to_display = ""
         self.player_choice = ""
+        # self.coin_image_position = (300, 400)  # Reset to the initial value at the start of the round
+
 
 
         self.weighted_coin = False
@@ -85,11 +93,13 @@ class CoinFlipDexterScreen(GambleScreen):
     def reset_round(self):
         self.weighted_coin = False
         self.heads_force_active = False
+        # self.coin_image_position = (300, 400)  # Reset to the initial value at the start of the round
+
         self.coin_bottom = False
         self.result_anchor = False
         self.image_to_display = ""
         self.player_choice = ""
-
+        self.timer_start = None  # Initialize the timer variable
 
         self.phase += 1
         if self.phase == 6:
@@ -109,6 +119,9 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
         if self.game_state == self.WELCOME_SCREEN:
+            self.coin_bottom = False
+            # self.initial_coin_image_position = (300, 400)  # Starting position on the screen for the coin
+
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.BET_SCREEN:
             self.bet_screen_helper(controller)
@@ -167,7 +180,6 @@ class CoinFlipDexterScreen(GambleScreen):
                     # state.area3RestScreen.start(state)
 
     def draw(self, state: 'GameState'):
-        print(self.game_state)
         super().draw(state)
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
@@ -434,9 +446,6 @@ class CoinFlipDexterScreen(GambleScreen):
             )
 
     def draw_flip_coin(self, state: 'GameState'):
-        # Fixed position to draw the coin on the screen
-        initial_coin_image_position = (300, 400)  # Starting position on the screen for the coin
-
         # List of predefined x-positions for each coin in the sprite sheet
         x_positions = [85, 235, 380, 525, 670, 815, 960, 1108, 1250, 1394]
         y_position = 110  # Fixed y-coordinate for all coins in the sprite sheet
@@ -444,11 +453,18 @@ class CoinFlipDexterScreen(GambleScreen):
 
         # Parameters for the animation
         time_interval = 50  # Time interval in milliseconds for changing images
-        fall_speed = 3  # Fall speed in pixels per time interval
+        fall_speed = 4.5  # Fall speed in pixels per time interval
+        max_height = 250  # Maximum height the coin goes up (in pixels)
+        drop_height = 175  # Maximum height the coin falls down (in pixels)
+
+        # Start timer if not started
+        if self.timer_start is None:
+            self.timer_start = pygame.time.get_ticks()
 
         # Determine which coin to display based on time
         current_time = pygame.time.get_ticks()
-        current_coin_index = (current_time // time_interval) % len(x_positions)
+        elapsed_time = current_time - self.timer_start
+        current_coin_index = (elapsed_time // time_interval) % len(x_positions)
 
         # Define the rectangle for the current coin in the sprite sheet
         subsurface_rect = pygame.Rect(x_positions[current_coin_index], y_position, width, height)
@@ -456,19 +472,38 @@ class CoinFlipDexterScreen(GambleScreen):
         # Get the subsurface from the sprite sheet
         sprite = self.sprite_sheet.subsurface(subsurface_rect)
 
-        # Calculate the y position as the coin falls (decreasing the y value)
-        fall_distance = min(fall_speed * (current_time // time_interval), 300)  # Fall up to a maximum of 300 pixels
-        coin_image_position = (initial_coin_image_position[0], initial_coin_image_position[1] - fall_distance)
+        # Calculate the y position as the coin falls (first upwards, then downwards)
+        cycle_time = (2 * max_height // fall_speed) + (2 * drop_height // fall_speed)
+        cycle_position = (elapsed_time // time_interval) % cycle_time
 
-        # Blit (draw) the subsurface (the selected coin) onto the display surface at the calculated position
-        state.DISPLAY.blit(sprite, coin_image_position)
+        if cycle_position < (max_height // fall_speed):
+            # Moving upwards (decreasing y value)
+            fall_distance = fall_speed * cycle_position
+            coin_image_position = (self.initial_coin_image_position[0], self.initial_coin_image_position[1] - fall_distance)
+            print(f"Moving up - Fall distance: {fall_distance}, Coin Y position: {coin_image_position[1]}")
 
-        if fall_distance >= 300:
-            print("Coin has reached the bottom of its fall")
+        elif cycle_position < (max_height // fall_speed) + (drop_height // fall_speed):
+            # Moving downwards (increasing y value)
+            fall_distance = fall_speed * (cycle_position - (max_height // fall_speed))
+            coin_image_position = (self.initial_coin_image_position[0], self.initial_coin_image_position[1] - max_height + fall_distance)
+            print(f"Moving down - Fall distance: {fall_distance}, Coin Y position: {coin_image_position[1]}")
+
+        else:
+            # Reaching the bottom and stopping
+            fall_distance = fall_speed * (cycle_position - (max_height // fall_speed) - (drop_height // fall_speed))
+            coin_image_position = (self.initial_coin_image_position[0], self.initial_coin_image_position[1] - max_height + drop_height - fall_distance)
+            print(f"Reaching bottom - Fall distance: {fall_distance}, Coin Y position: {coin_image_position[1]}")
+
+        # If the animation has reached the end of the cycle, reset for the next iteration
+        if elapsed_time >= 4000:  # Check if 4 seconds have passed
+            print("4 seconds have passed")
+            # Reset for next iteration
+            self.timer_start = None
             self.coin_bottom = True
+            self.initial_coin_image_position = (300, 250)  # Reset initial position
+            print("THIS IS THE END OF THE iteration, resetting initial positio jdfj;asldjfldsaj;lfjds;ajf;dsjafdsljfl;asdjfjsdakfdsfs;ajfl;sjf;ljsad;fldan")
 
-
-        # Blit (draw) the subsurface (the selected coin) onto the display surface at a calculated position
+        # Blit (draw) the subsurface (the selected coin) onto the display surface
         state.DISPLAY.blit(sprite, coin_image_position)
 
     def update_flip_coin(self, controller):
