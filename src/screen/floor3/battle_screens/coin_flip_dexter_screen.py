@@ -11,7 +11,6 @@ from game_constants.magic import Magic
 
 
 class CoinFlipDexterScreen(GambleScreen):
-    # I believe in the yin yang of coin flip, balance is needed in all things
     # our money is not in balance let me correct that:
     # Greediest of all the pigs of filth, share your horde with the poor and down trodden of the world...money balancer
     # money balancer effects: Draw player loses self.bet, win player wins self.bet // 1/2 loss player loses self.bet * 2
@@ -677,18 +676,9 @@ class CoinFlipDexterScreen(GambleScreen):
         elif self.shield_debuff > self.shield_debuff_inactive:
             state.DISPLAY.blit(self.font.render(f"Shield: {self.shield_debuff}", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position))
 
-
-
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
         state.DISPLAY.blit(self.font.render(f" Phase: {self.phase}", True, WHITE), (player_enemy_box_info_x_position - 7, phase_y_position))
         state.DISPLAY.blit(self.font.render(f" Choice: {self.player_choice}", True, WHITE), (player_enemy_box_info_x_position - 7, choice_y_position))
-
-
-        # if self.shield_debuff == self.shield_debuff_inactive and self.heads_force_active == True:
-        #     state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
-
-
-
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
