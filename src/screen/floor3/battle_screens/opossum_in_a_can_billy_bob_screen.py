@@ -1,8 +1,10 @@
 import pygame
 
-from constants import WHITE
+from constants import WHITE, BLACK
 from entity.gui.screen.gamble_screen import GambleScreen
 from game_constants.magic import Magic
+
+# opssoum shuffle - reshuffles the cans
 
 
 class OpossumInACanBillyBobScreen(GambleScreen):
@@ -19,15 +21,19 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.pick_index:int = 0
         self.magic_index:int = 1
         self.quit_index:int = 2
+        self.pick_screen_index = 0
+        self.tally_index = 1
+        self.pick_tally_screen_index = 0
         self.magic_lock:bool = False
         self.welcome_screen_choices: list[str] = ["Play", "Magic",  "Quit"]
+        self.pick_screen_choices: list[str] = ["Pick", "Tally"]
         self.magic_menu_selector: list[str] = []
+        self.index_stepper = 1
 
 
-
-
-
-    PICK_SCREEN = "pick_screen"
+    PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
+    PICK_SCREEN:str = "pick_screen"
+    TALLY_SCREEN:str = "tally_screen"
 
     BACK: str = "Back"
 
@@ -49,6 +55,11 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller, state)
             # self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
+            self.update_pick_tally_menu_screen_logic(controller)
+
+            # self.battle_messages[self.PICK_MESSAGE].update(state)
+
 
     def draw(self, state):
         super().draw(state)
@@ -63,14 +74,81 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
             # self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
+        elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
+            self.draw_pick_tally_menu_logic(state)
+            # self.battle_messages[self.PICK_MESSAGE].draw(state)
+
         pygame.display.flip()
+
+    def draw_pick_tally_menu_logic(self, state):
+        # self.battle_messages[self.CHOOSE_SIDE_MESSAGE].draw(state)
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.pick_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.pick_tally_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def update_pick_tally_menu_screen_logic(self, controller):
+        if controller.isTPressed:
+            controller.isTPressed = False
+
+            if self.pick_screen_index == self.pick_index:
+                self.game_state = self.PICK_SCREEN
+            elif self.pick_screen_index == self.tally_index:
+                self.game_state = self.TALLY_SCREEN
+
+
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.pick_tally_screen_index = (self.pick_tally_screen_index - self.index_stepper) % len(self.pick_screen_choices)
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.pick_tally_screen_index = (self.pick_tally_screen_index + self.index_stepper) % len(self.pick_screen_choices)
+
 
     def update_welcome_screen_logic(self, controller, state):
         if controller.isTPressed:
             controller.isTPressed = False
 
             if self.welcome_screen_index == self.pick_index:
-                self.game_state = self.PICK_SCREEN
+                self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.quit_index:
