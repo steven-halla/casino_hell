@@ -4,6 +4,7 @@ import pygame
 
 from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
 from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.events import Events
 from game_constants.magic import Magic
@@ -62,6 +63,38 @@ class CoinFlipDexterScreen(GambleScreen):
         self.result_anchor = False
         self.timer_start = None  # Initialize the timer variable
 
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "I follow the path of Yin and Yang. Balance is the only true way to play coin flip."
+            ]),
+
+            self.BET_MESSAGE: MessageBox([
+                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to go back."
+            ]),
+            self.MAGIC_MENU_SHIELD_DESCRIPTION: MessageBox([
+                "The animals of hell are on your side. Defends against bad flips."
+            ]),
+            self.MAGIC_MENU_FORCE_DESCRIPTION: MessageBox([
+                "Using physics you can get the coin to land on heads every time."
+            ]),
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
+            self.COIN_FLIP_MESSAGE: MessageBox([
+                "drawing your cards now"
+            ]),
+            self.PLAYER_WIN_MESSAGE: MessageBox([
+                "You got a black jack you win"
+            ]),
+            self.PLAYER_LOSE_MESSAGE: MessageBox([
+                "Enemy got a black jack you lose"
+            ]),
+            self.PLAYER_DRAW_MESSAGE: MessageBox([
+                f"It's a DRAW! You win 0 gold and win {self.exp_gain_low} experience points"
+            ]),
+
+        }
+
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
     BACK: str = "Back"
     RESULTS_SCREEN: str = "results_screen"
@@ -70,7 +103,22 @@ class CoinFlipDexterScreen(GambleScreen):
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
 
+
+    PLAYER_WIN_MESSAGE: str = "player_win_message"
+    PLAYER_LOSE_MESSAGE: str = "player_lose_message"
+    PLAYER_DRAW_MESSAGE: str = "player_draw_message"
+    COIN_FLIP_MESSAGE: str = "coin_flip_message"
+    MAGIC_MENU_FORCE_DESCRIPTION: str = "magic_menu_force_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    MAGIC_MENU_SHIELD_DESCRIPTION: str = "magic_menu_shield_description"
+    BET_MESSAGE: str = "bet_message"
+    PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
+    ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
+    PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+
     def reset_coin_flip_game(self):
+        self.battle_messages[self.WELCOME_MESSAGE].reset()
+
         self.phase = 1
         self.balance_modifier: int = 0
         self.welcome_screen_index = 0
@@ -91,6 +139,8 @@ class CoinFlipDexterScreen(GambleScreen):
         self.weighted_coin = False
 
     def reset_round(self):
+        self.battle_messages[self.WELCOME_MESSAGE].reset()
+
         self.weighted_coin = False
         self.heads_force_active = False
         # self.coin_image_position = (300, 400)  # Reset to the initial value at the start of the round
@@ -119,14 +169,14 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.coin_bottom = False
-            # self.initial_coin_image_position = (300, 400)  # Starting position on the screen for the coin
-
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+            self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].update(state)
             self.bet_screen_helper(controller)
-
         elif self.game_state == self.MAGIC_MENU_SCREEN:
+
             self.update_magic_menu_selection_box(controller, state)
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
             self.update_choose_side_logic(controller, state)
@@ -148,18 +198,23 @@ class CoinFlipDexterScreen(GambleScreen):
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             if controller.isTPressed:
                 controller.isTPressed = False
+                self.reset_round()
+
                 state.player.exp += self.exp_gain_high
                 state.player.money += self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             if controller.isTPressed:
                 controller.isTPressed = False
+                self.reset_round()
                 state.player.exp += self.exp_gain_low
                 state.player.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
             if controller.isTPressed:
                 controller.isTPressed = False
+                self.reset_round()
+
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.GAME_OVER_SCREEN:
@@ -187,10 +242,13 @@ class CoinFlipDexterScreen(GambleScreen):
         self.draw_box_info(state)
 
         if self.game_state == self.WELCOME_SCREEN:
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.battle_messages[self.BET_MESSAGE].draw(state)
+
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
             self.draw_choose_side_logic(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -295,6 +353,21 @@ class CoinFlipDexterScreen(GambleScreen):
         state.DISPLAY.blit(self.image_to_display, image_rect)
 
     def update_magic_menu_selection_box(self, controller, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+            self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+            self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
 
         if controller.isUpPressed:
             controller.isUpPressed = False
@@ -327,6 +400,20 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
     def draw_magic_menu_selection_box(self, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+            self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
+
+
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+            self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
+
+
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+
+
         choice_spacing = 40
         text_x_offset = 60
         text_y_offset = 15
@@ -530,6 +617,9 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
     def bet_screen_helper(self, controller):
+        if controller.isBPressed:
+            controller.isBPressed = False
+            self.game_state = self.WELCOME_SCREEN
         min_bet = 50
         max_bet = 200
         if controller.isUpPressed:
