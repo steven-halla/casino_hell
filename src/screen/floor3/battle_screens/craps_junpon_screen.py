@@ -309,6 +309,8 @@ class CrapsJunponScreen(GambleScreen):
             elif state.player.stamina <= no_stamina_game_over:
                 if controller.isTPressed:
                     controller.isTPressed = False
+                    state.player.money -= 100
+
                     self.reset_craps_game(state)
                     # state.currentScreen = state.area3RestScreen
                     # state.area3RestScreen.start(state)

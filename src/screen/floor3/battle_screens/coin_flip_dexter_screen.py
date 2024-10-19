@@ -16,6 +16,8 @@ class CoinFlipDexterScreen(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100
+        self.blit_message_x: int = 65
+        self.blit_message_y: int = 460
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
         self.game_state: str = self.WELCOME_SCREEN
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
@@ -49,13 +51,17 @@ class CoinFlipDexterScreen(GambleScreen):
         self.heads_force_cost = 50
         self.heads_force_active = False
         self.coin_bottom = False
+        self.exp_gain_high = 25
+        self.exp_gain_low = 10
         self.result_anchor = False
 
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
     BACK: str = "Back"
     RESULTS_SCREEN: str = "results_screen"
     CHOOSE_SIDE_SCREEN: str = "choose_side_screen"
-
+    PLAYER_WIN_SCREEN: str = "player_win_screen"
+    PLAYER_LOSE_SCREEN: str = "player_lose_screen"
+    PLAYER_DRAW_SCREEN: str = "player_draw_screen"
 
     def reset_coin_flip_game(self):
         self.phase = 1
@@ -65,19 +71,13 @@ class CoinFlipDexterScreen(GambleScreen):
         self.heads_force_active = False
         self.coin_bottom = False
         self.result_anchor = False
-
         self.weighted_coin = False
-
-
-
 
     def reset_round(self):
         self.weighted_coin = False
         self.heads_force_active = False
         self.coin_bottom = False
         self.result_anchor = False
-
-
         self.phase += 1
         if self.phase == 6:
             self.phase = 1
@@ -85,9 +85,6 @@ class CoinFlipDexterScreen(GambleScreen):
             self.balance_modifier = 0
         if self.shield_debuff > 0:
             self.shield_debuff -= 1
-
-
-
 
     def update(self, state):
         super().update(state)
@@ -100,23 +97,53 @@ class CoinFlipDexterScreen(GambleScreen):
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller, state)
+        elif self.game_state == self.BET_SCREEN:
+            self.bet_screen_helper(controller)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
             self.update_choose_side_logic(controller, state)
-
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.result_anchor = True
             if self.coin_bottom == True:
                 self.game_state = self.RESULTS_SCREEN
         elif self.game_state == self.RESULTS_SCREEN:
+            if self.result_anchor == True:
+                self.update_flip_coin()
+        elif self.game_state == self.PLAYER_WIN_SCREEN:
+            if controller.isTPressed:
+                controller.isTPressed = False
+                state.player.exp += self.exp_gain_high
+                state.player.money += self.bet
+                self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            if controller.isTPressed:
+                controller.isTPressed = False
+                state.player.exp += self.exp_gain_low
+                state.player.money -= self.bet
+                self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.PLAYER_DRAW_SCREEN:
             if controller.isTPressed:
                 controller.isTPressed = False
                 self.game_state = self.WELCOME_SCREEN
-            if self.result_anchor == True:
-                self.update_flip_coin()
 
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+
+            if state.player.money <= no_money_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+            elif state.player.stamina <= no_stamina_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    self.reset_coin_flip_game()
+                    state.player.money -= 100
+                    # state.currentScreen = state.area3RestScreen
+                    # state.area3RestScreen.start(state)
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -127,20 +154,32 @@ class CoinFlipDexterScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
+        elif self.game_state == self.BET_SCREEN:
+            pass
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
             self.draw_choose_side_logic(state)
-
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
-
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.draw_flip_coin(state)
-
         elif self.game_state == self.RESULTS_SCREEN:
             self.draw_results_screen_logic(state)
-
+        elif self.game_state == self.PLAYER_WIN_SCREEN:
+            pass
+        elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            pass
+        elif self.game_state == self.PLAYER_DRAW_SCREEN:
+            pass
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+            if state.player.money <= no_money_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            elif state.player.stamina <= no_stamina_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         pygame.display.flip()
+
 
     def update_choose_side_logic(self, controller, state):
         if controller.isUpPressed:
@@ -157,12 +196,14 @@ class CoinFlipDexterScreen(GambleScreen):
             controller.isTPressed = False
             if self.headstailsindex == 0:
                 self.player_choice = CoinFlipConstants.HEADS.value
+                self.game_state = self.COIN_FLIP_SCREEN
             elif self.headstailsindex == 1:
                 self.player_choice = CoinFlipConstants.TAILS.value
+                self.game_state = self.COIN_FLIP_SCREEN
+
             elif self.headstailsindex == 2:
                 self.headstailsindex = 0
                 self.game_state = self.WELCOME_SCREEN
-
 
     def draw_choose_side_logic(self, state):
         choice_spacing = 40
@@ -425,7 +466,31 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
         self.result_anchor = False
+        if self.coin_landed == self.player_choice:
+            self.game_state = self.PLAYER_WIN_SCREEN
+        elif self.coin_landed != self.player_choice:
+            self.game_state = self.PLAYER_LOSE_SCREEN
+        elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+            self.game_state = self.PLAYER_DRAW_SCREEN
         return
+
+    def bet_screen_helper(self, controller):
+        min_bet = 50
+        max_bet = 200
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += min_bet
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= min_bet
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
 
 
 

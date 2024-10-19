@@ -295,11 +295,14 @@ class BlackJackAlbertScreen(GambleScreen):
             if state.player.money <= no_money_game_over:
                 if controller.isTPressed:
                     controller.isTPressed = False
+
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
             elif state.player.stamina <= no_stamina_game_over:
                 if controller.isTPressed:
                     controller.isTPressed = False
+                    state.player.money -= 100
+
                     self.reset_black_jack_game()
                     # state.currentScreen = state.area3RestScreen
                     # state.area3RestScreen.start(state)
