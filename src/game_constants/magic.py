@@ -10,6 +10,7 @@ class Magic(Enum):
     REVEAL = "reveal"
     BLACK_JACK_REDRAW = "redraw"
     CARD_MORPH = "card morph" # this changes the value of a card, like all kings are now 2's
+    SHAKE = "shake"
 
 
     @staticmethod

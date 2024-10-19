@@ -249,8 +249,6 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
-        self.food_luck = False
-
         self.player_debuff_poison = 0
         self.exp_gain = 15
         self.entry_cost = 250

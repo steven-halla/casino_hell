@@ -119,6 +119,9 @@ class CoinFlipDexterScreen(GambleScreen):
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
 
+    def start(self, state: 'GameState'):
+        pass
+
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
