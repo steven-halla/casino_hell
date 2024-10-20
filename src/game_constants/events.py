@@ -33,6 +33,7 @@ class Events(Enum):
     CRAPS_JUNPON_DEFEATED = "junpon defeated"
     BLACK_JACK_ALBERT_DEFEATED = "black jack albert defeated"
     COIN_FLIP_DEXTER_DEFEATED = "coin flip dexter defeated"
+    OPOSSUM_IN_A_CAN_BILLY_BOB_DEFEATED = "opossum in a can billy bob defeated"
 
 
     @staticmethod

@@ -284,10 +284,6 @@ class OpossumInACanCandyScreen(BattleScreen):
     def initializeGarbageCans(self, state):
         self.trash_can_pick = ""
         self.result = ""
-
-
-
-
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
         lucky_draw = random.randint(0, 100)
         print("your lucky draw is: " + str(lucky_draw))
@@ -619,7 +615,7 @@ class OpossumInACanCandyScreen(BattleScreen):
                     # print(self.game_state)
 
                     # Call the function to reveal the selected box content
-                    state.controller.isPressed = False
+                    state.controller.isTPressed = False
 
                     self.reveal_selected_box_content(state)
 

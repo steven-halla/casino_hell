@@ -132,9 +132,49 @@ start out with 30 or so NPCS
 and get less and less
 lets hve it to where you can help other NPCS or hinder
 
-NEW SPELL: FORCE DRAW
-IF ENEMY HAS A SCORE OF 11 OR LOWER YOU CAN FORCE THEM TO DRAW
-1 CARD.
+3rd floor:
+magic spells
+redraw: black jack force enemy to redraw face up card
+
+
+equipment:
+craps blow- this opens the blow commnad
+mind hat - + 30 mp
+body belt: adds + 1 to body
+opossum guilty shoes- if score is above 800 and you lose , retain 200 points
+slots 999- gain an extra 25 HP 25 MP and 100 gold on jack pot
+hippo ticket - win extra coins the more people survive that you pick - global
+loaded dice - adds + 1 to all dice results for dice fighter, not sure on this one more of  a place holder
+triples - instant win
+doubles - re roll 1 dice
+
+battle dice:
+both players roll 3d6, highest value goes first, if tie re roll
+both players roll 3d6, if two dice say 2 twos, re roll 3rd dice
+other player can break this by getting doules of a higher value. 
+if you get a higher double roll, you break the opponent roll and they ahve ot roll 3d6 
+first to match 3 numbers wins
+each time abreak happens, the breaker has the chance to increase the pot, and other player can settle or go in.
+in order to win, you need tripples of same value or higher than opponet. 
+
+`
+
+
+priest: removes curses for a feee
+new idea for stat boosters: curse the item cannot be removed,not only do you have to go and rest, but also have to
+pay a fee for curse removal
+should set max to 4, as in if you have 4 perception the item wont do you any good. 5 is special. 
+player room - this is  where player goes after staying at inn
+all items not equipped after rest go in treasure chest
+controller support
+maybe allow 1 extra item slot for player for having high spirit?
+
+dice fighter- 3 v 3 match
+warrior: 10 hp  3 DD 0 spell cards 2 def dice
+priest:  12 HP  2 DD 2 spell cards 3 def dice
+wizard:  8 HP   1 DD 4 spell cards 1 def dice
+roll to see which hero you target
+dice fighter you cannot quit this match its all or nothing
 
 
 

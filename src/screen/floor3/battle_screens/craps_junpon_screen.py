@@ -7,6 +7,8 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
+# an eleven is a win condition for come out roll
+
 class CrapsJunponScreen(GambleScreen):
     def __init__(self, screenName: str = "Craps") -> None:
         super().__init__(screenName)

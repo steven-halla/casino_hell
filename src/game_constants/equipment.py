@@ -9,6 +9,8 @@ class Equipment(Enum):
     SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
     BOSS_KEY = "boss key"
+    OPOSSUM_REPELLENT = "opossum repellent"
+
 
 
     COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
@@ -19,7 +21,7 @@ class Equipment(Enum):
     SIR_LEOPOLD_AMULET = "sir leopold amulet"
     DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
 
-    CRAPS_WRIST_WATCH = "craps wrist watch"
+    CRAPS_WRIST_WATCH = "craps wrist watch" # blow command
 
     @staticmethod
     def add_equipment_to_player(player, equipment):

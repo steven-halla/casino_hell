@@ -5,33 +5,37 @@ import pygame
 
 from constants import WHITE, BLACK
 from entity.gui.screen.gamble_screen import GambleScreen
+from game_constants.equipment import Equipment
+from game_constants.events import Events
 from game_constants.magic import Magic
 
 # opssoum shuffle - reshuffles the cans
+# opossum guilty shoes- if score is above 750 and you lose , retain 200 points
 
 
 class OpossumInACanBillyBobScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
         self.bet: int = 100
+        self.billy_bob_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
-        self.stamina_drain:int = 50
-        self.stamina_drain_repellant:int = 25
-        self.pick_index:int = 0
-        self.magic_index:int = 1
-        self.quit_index:int = 2
-        self.pick_screen_index = 0
-        self.tally_index = 1
-        self.debuff_keen_perception:bool = False
+        self.stamina_drain: int = 50
+        self.stamina_drain_repellant: int = 25
+        self.pick_index: int = 0
+        self.magic_index: int = 1
+        self.quit_index: int = 2
+        self.pick_screen_index: int = 0
+        self.tally_index:int = 1
+        self.debuff_keen_perception: bool = False
+        self.player_score: int = 0
+        self.pick_tally_screen_index: int = 0
+        self.current_box_index: int = 0  # Index of the currently green box
 
-        self.pick_tally_screen_index:int = 0
-        self.current_box_index:int = 0  # Index of the currently green box
-
-        self.magic_lock:bool = False
+        self.magic_lock: bool = False
         self.welcome_screen_choices: list[str] = ["Play", "Magic",  "Quit"]
         self.pick_screen_choices: list[str] = ["Pick", "Tally"]
         self.magic_menu_selector: list[str] = []
@@ -50,24 +54,24 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                                                   "X3_star", "win",
 
                                                   ]
-        self.result:str = ""
+        self.result: str = ""
 
-        self.can1:str = ""
-        self.can2:str = ""
-        self.can3:str = ""
-        self.can4:str = ""
-        self.can5:str = ""
-        self.can6:str = ""
-        self.can7:str = ""
-        self.can8:str = ""
-        self.shake:bool = False
-
-
+        self.can1: str = ""
+        self.can2: str = ""
+        self.can3: str = ""
+        self.can4: str = ""
+        self.can5: str = ""
+        self.can6: str = ""
+        self.can7: str = ""
+        self.can8: str = ""
+        self.shake: bool = False
 
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
     PICK_SCREEN:str = "pick_screen"
     TALLY_SCREEN:str = "tally_screen"
+    PLAYER_LOSE_SCREEN:str = "player_lose_screen"
+    PLAYER_WIN_SCREEN:str = "player_win_screen"
 
     BACK: str = "Back"
 
@@ -116,6 +120,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
 
     def update(self, state):
+        if self.money <= self.billy_bob_bankrupt:
+            Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_BILLY_BOB_DEFEATED)
         super().update(state)
         controller = state.controller
         controller.update()
@@ -132,6 +138,13 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.update_pick_screen(controller, state)
 
         elif self.game_state == self.TALLY_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            pass
+        elif self.game_state == self.PLAYER_WIN_SCREEN:
+            pass
+        elif self.game_state == self.GAME_OVER_SCREEN:
             pass
 
 
@@ -158,6 +171,13 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.draw_pick_screen(state)
         elif self.game_state == self.TALLY_SCREEN:
             self.draw_pick_screen(state)
+
+        elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            pass
+        elif self.game_state == self.PLAYER_WIN_SCREEN:
+            pass
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            pass
 
         pygame.display.flip()
 
@@ -193,6 +213,61 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.menu_movement_sound.play()  # Play the sound effect once for the valid move
             print(f"Current green box index: {self.current_box_index}, Content: {current_can_content}")
             state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
+
+            # Check for 'T' key press
+        if state.controller.isTPressed:
+            # print(self.game_state)
+
+            # Call the function to reveal the selected box content
+            state.controller.isTPressed = False
+
+            self.reveal_selected_box_content(state)
+
+    def reveal_selected_box_content(self, state):
+        selected_can_attribute = f'can{self.current_box_index + 1}'
+        selected_box_content = getattr(self, selected_can_attribute)
+        # print(f"Selected box content: {selected_box_content}")
+
+        if selected_box_content == "win":
+            self.trash_can_pick = "win"
+            self.player_score += 60
+            self.result = "+60"
+
+        if selected_box_content == "big win":
+            self.trash_can_pick = "win"
+            self.player_score += 120
+            self.result = "+120"
+
+        if selected_box_content == "X3_star":
+            self.trash_can_pick = "X3_star"
+            self.result = "X3"
+
+            self.player_score *= 3
+
+        if selected_box_content == "lucky_star":
+            self.trash_can_pick = "lucky_star"
+            self.player_score += 250
+            self.result = "+250"
+
+        if selected_box_content == "lose":
+            self.result = "lose"
+
+            self.trash_can_pick = "lose"
+            self.debuff_keen_perception = False
+            self.exp_gain = 15
+            state.player.exp += 35
+
+            self.player_score = 0
+            if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
+                state.player.stamina_points -= self.stamina_drain_repellant
+            elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
+                state.player.stamina_points -= self.stamina_drain
+
+            self.opossum_round_reset(state)
+            self.game_state = self.PLAYER_LOSE_SCREEN
+
+        # Remove the item from the can (set it to an empty string)
+        setattr(self, selected_can_attribute, "")
 
     def draw_pick_screen(self, state):
         current_time = pygame.time.get_ticks()
