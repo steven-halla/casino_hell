@@ -1,3 +1,6 @@
+import random
+from typing import List
+
 import pygame
 
 from constants import WHITE, BLACK
@@ -23,12 +26,43 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.quit_index:int = 2
         self.pick_screen_index = 0
         self.tally_index = 1
-        self.pick_tally_screen_index = 0
+        self.debuff_keen_perception:bool = False
+
+        self.pick_tally_screen_index:int = 0
+        self.current_box_index:int = 0  # Index of the currently green box
+
         self.magic_lock:bool = False
         self.welcome_screen_choices: list[str] = ["Play", "Magic",  "Quit"]
         self.pick_screen_choices: list[str] = ["Pick", "Tally"]
         self.magic_menu_selector: list[str] = []
         self.index_stepper = 1
+        self.trash_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.hand_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
+        self.winner_or_looser: List[str] = ["win", "win",
+                                            "big win", "big win", "lose",
+                                            "lucky_star",
+                                            "X3_star", "lose",
+
+                                            ]
+        self.winner_or_looser_lucky: List[str] = ["win", "win",
+                                                  "big win", "big win", "win",
+                                                  "lucky_star",
+                                                  "X3_star", "win",
+
+                                                  ]
+        self.result:str = ""
+
+        self.can1:str = ""
+        self.can2:str = ""
+        self.can3:str = ""
+        self.can4:str = ""
+        self.can5:str = ""
+        self.can6:str = ""
+        self.can7:str = ""
+        self.can8:str = ""
+        self.shake:bool = False
+
+
 
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
@@ -38,13 +72,48 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     BACK: str = "Back"
 
 
-    def start(self, state: 'GameState'):
-        pass
+    def initializeGarbageCans(self, state):
+        self.trash_can_pick = ""
+        self.result = ""
+        shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
+        lucky_draw = random.randint(0, 100)
+        print("your lucky draw is: " + str(lucky_draw))
 
-    def opossum_game_reset(self):
-        pass
-    def opossum_round_reset(self):
-        pass
+        for luck in range(state.player.luck):
+            lucky_draw += 4
+        print("your lucky draw is: " + str(lucky_draw))
+        if lucky_draw > 90:
+            shuffled_items = random.sample(self.winner_or_looser_lucky, len(self.winner_or_looser_lucky))
+
+        self.can1 = shuffled_items[0]
+
+        self.can2 = shuffled_items[1]
+
+        self.can3 = shuffled_items[2]
+
+        self.can4 = shuffled_items[3]
+
+        self.can5 = shuffled_items[4]
+
+        self.can6 = shuffled_items[5]
+
+        self.can7 = shuffled_items[6]
+
+        self.can8 = shuffled_items[7]
+
+
+    def start(self, state: 'GameState'):
+        self.initializeGarbageCans(state)
+
+    def opossum_game_reset(self, state):
+        self.shake = False
+        self.initializeGarbageCans(state)
+
+
+    def opossum_round_reset(self, state):
+        self.shake = False
+        self.initializeGarbageCans(state)
+
 
     def update(self, state):
         super().update(state)
@@ -59,6 +128,11 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.update_pick_tally_menu_screen_logic(controller)
 
             # self.battle_messages[self.PICK_MESSAGE].update(state)
+        elif self.game_state == self.PICK_SCREEN:
+            self.update_pick_screen(controller, state)
+
+        elif self.game_state == self.TALLY_SCREEN:
+            pass
 
 
     def draw(self, state):
@@ -66,6 +140,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+
+
 
         if self.game_state == self.WELCOME_SCREEN:
 
@@ -78,7 +154,110 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.draw_pick_tally_menu_logic(state)
             # self.battle_messages[self.PICK_MESSAGE].draw(state)
 
+        elif self.game_state == self.PICK_SCREEN:
+            self.draw_pick_screen(state)
+        elif self.game_state == self.TALLY_SCREEN:
+            self.draw_pick_screen(state)
+
         pygame.display.flip()
+
+    def update_pick_screen(self, controller, state):
+        time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
+        time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
+        key_press_threshold = 80  # Example threshold, adjust as needed
+
+        if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+            # Initially move to the next box
+            self.current_box_index = (self.current_box_index + 1) % 8
+            current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+
+            # Continue moving right if the can is empty
+            while current_can_content == "":
+                self.current_box_index = (self.current_box_index + 1) % 8
+                current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+
+            self.menu_movement_sound.play()  # Play the sound effect once for the valid move
+            print(f"Current green box index: {self.current_box_index}, Content: {current_can_content}")
+            state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+
+        elif state.controller.isLeftPressed and time_since_left_pressed >= key_press_threshold:
+            # Initially move to the previous box
+            self.current_box_index = (self.current_box_index - 1 + 8) % 8  # Adding 8 before modulo for negative index handling
+            current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+
+            # Continue moving left if the can is empty
+            while current_can_content == "":
+                self.current_box_index = (self.current_box_index - 1 + 8) % 8  # Ensure the index wraps correctly
+                current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+
+            self.menu_movement_sound.play()  # Play the sound effect once for the valid move
+            print(f"Current green box index: {self.current_box_index}, Content: {current_can_content}")
+            state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
+
+    def draw_pick_screen(self, state):
+        current_time = pygame.time.get_ticks()
+
+        shake_duration = 1000  # 1 second in milliseconds
+        shake_interval = 3000  # 3 seconds in milliseconds
+
+        sprite_rect = pygame.Rect(1, 255, 133.5, 211)
+        sprite = self.trash_sprite_image.subsurface(sprite_rect)
+        # hand_sprite = self.hand_sprite_image.subsurface(sprite_rect)
+        scaled_sprite = pygame.transform.scale(sprite, (156, 156))
+
+        box_size = 64
+        margin = 50
+
+        # Initialize flags to track if a "lose" can and "X3_star" can have already been shaken
+        shaken_lose = False
+        shaken_x3_star = False
+
+        # Calculate positions for the trash cans
+        positions = []
+        for row in range(2):
+            for col in range(4):
+                x = col * (box_size + margin) + margin + 190
+                y = row * (box_size + margin) + margin + 50
+                positions.append((x, y))
+
+                # Determine the content of the current trash can
+                current_can_content = getattr(self, f'can{len(positions)}')
+
+                # Apply the shaking effect if debuff is active
+                if self.debuff_keen_perception == True:
+                    shake_effect = (0, 0)  # Default to no shake
+
+                    # Check and apply shake for "lose" cans
+                    if current_can_content == 'lose' and not shaken_lose:
+                        shaken_lose = True
+                        time_since_last_shake = current_time % shake_interval
+                        if time_since_last_shake < shake_duration:
+                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
+
+                    # Check and apply shake for "X3_star" cans
+                    elif current_can_content == 'X3_star' and not shaken_x3_star:
+                        shaken_x3_star = True
+                        time_since_last_shake = current_time % shake_interval
+                        if time_since_last_shake < shake_duration:
+                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
+
+                    # Apply the shake effect to the position
+                    x += shake_effect[0]
+                    y += shake_effect[1]
+
+                # Draw the scaled_sprite (trash can) at each position with potential shake effect
+                if current_can_content:
+                    state.DISPLAY.blit(scaled_sprite, (x, y))
+        # hand sprite code
+        hand_sprite_rect = pygame.Rect(1, 1, 58.5, 58)  # Update these values as needed
+        hand_sprite = self.hand_sprite_image.subsurface(hand_sprite_rect)
+        scaled_hand_sprite = pygame.transform.scale(hand_sprite, (33, 33))
+
+        if 0 <= self.current_box_index < len(positions):
+            hand_x, hand_y = positions[self.current_box_index]
+            hand_y += 82  # 10 pixels below the top-left of the selected trash can
+            hand_x += 54  # 10 pixels below the top-left of the selected trash can
+            state.DISPLAY.blit(scaled_hand_sprite, (hand_x, hand_y))
 
     def draw_pick_tally_menu_logic(self, state):
         # self.battle_messages[self.CHOOSE_SIDE_MESSAGE].draw(state)
