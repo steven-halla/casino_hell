@@ -126,6 +126,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
     def opossum_game_reset(self, state):
         self.shake = False
+        self.magic_lock = False
         self.initializeGarbageCans(state)
         self.player_score = 0
         # Reset all win-related positions to None
@@ -142,6 +143,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
     def opossum_round_reset(self, state):
         self.shake = False
+        if self.shake == False:
+            self.magic_lock = False
         self.initializeGarbageCans(state)
         self.player_score = 0
         # Reset all win-related positions to None
