@@ -3,7 +3,7 @@ from typing import List
 
 import pygame
 
-from constants import WHITE, BLACK
+from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from game_constants.equipment import Equipment
 from game_constants.events import Events
@@ -17,6 +17,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
         self.bet: int = 100
+        self.dealer_name = "Billy Bob"
         self.billy_bob_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
         self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
@@ -28,6 +29,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.pick_index: int = 0
         self.magic_index: int = 1
         self.quit_index: int = 2
+        self.blit_message_x: int = 65
+        self.blit_message_y: int = 460
         self.pick_screen_index: int = 0
         self.tally_index:int = 1
         self.debuff_keen_perception: bool = False
@@ -196,7 +199,21 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.opossum_round_reset(state)
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
-            pass
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+
+            if state.player.money <= no_money_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+            elif state.player.stamina <= no_stamina_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    self.opossum_round_reset(state)
+                    state.player.money -= 100
+                    # state.currentScreen = state.area3RestScreen
+                    # state.area3RestScreen.start(state)
 
 
     def draw(self, state):
@@ -204,6 +221,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
         self.draw_opossum_sprite_image(state)
         self.draw_win_message(state)
         self.draw_big_win_message(state)
@@ -232,13 +250,17 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         elif self.game_state == self.PICK_SCREEN:
             self.draw_pick_screen(state)
 
-
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             pass
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             pass
         elif self.game_state == self.GAME_OVER_SCREEN:
-            pass
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+            if state.player.money <= no_money_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            elif state.player.stamina <= no_stamina_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         pygame.display.flip()
 
@@ -628,7 +650,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             if self.pick_screen_index == self.pick_index:
                 self.game_state = self.PICK_SCREEN
             elif self.pick_screen_index == self.tally_index:
-                self.game_state = self.TALLY_SCREEN
+                self.game_state = self.PLAYER_WIN_SCREEN
 
 
         if controller.isUpPressed:
@@ -708,6 +730,39 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.font.render("->", True, WHITE),
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
+        enemy_name_y_position = 33
+        phase_y_position = 108
+        choice_y_position = 148
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+        score_header = "Score"
+
+        if self.debuff_keen_perception == True:
+            state.DISPLAY.blit(self.font.render(f"Shake: 1", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position))
+        elif self.debuff_keen_perception == False:
+            state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f" Score: {self.player_score}", True, WHITE), (player_enemy_box_info_x_position - 7, choice_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
+
+
 
 
 
