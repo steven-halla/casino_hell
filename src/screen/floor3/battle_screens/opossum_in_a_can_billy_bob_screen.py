@@ -41,6 +41,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.magic_menu_selector: list[str] = []
         self.index_stepper = 1
         self.trash_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.opossum_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/opossum_redone2.png")
         self.hand_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
         self.winner_or_looser: List[str] = ["win", "win",
                                             "big win", "big win", "lose",
@@ -153,6 +154,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_opossum_sprite_image(state)
 
 
 
@@ -269,8 +271,22 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         # Remove the item from the can (set it to an empty string)
         setattr(self, selected_can_attribute, "")
 
+    def draw_opossum_sprite_image(self, state):
+        x = 200
+        y = 200
+        # Create a rect for the sprite with the specified coordinates and dimensions
+        sprite_rect = pygame.Rect(1, 145, 48, 44)
+
+        # Get the subsurface of the opossum sprite using the rect
+        opossum_sprite = self.opossum_sprite_image.subsurface(sprite_rect)
+
+        # Scale the sprite to the new dimensions (156x156)
+        scaled_opossum_sprite = pygame.transform.scale(opossum_sprite, (99, 99))
+        state.DISPLAY.blit(scaled_opossum_sprite, (x, y))
+
     def draw_pick_screen(self, state):
         current_time = pygame.time.get_ticks()
+
 
         shake_duration = 1000  # 1 second in milliseconds
         shake_interval = 3000  # 3 seconds in milliseconds
