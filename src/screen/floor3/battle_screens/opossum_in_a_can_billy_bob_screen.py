@@ -69,10 +69,19 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.can8: str = ""
         self.shake: bool = False
 
+        self.win_x, self.win_y = None, None
+        self.big_win_x, self.big_win_y = None, None
+        self.triple_x, self.triple_y = None, None
+        self.lucky_star_x, self.lucky_star_y = None, None
+        self.super_win_x, self.super_win_y = None, None
+        self.high_win_x, self.high_win_y = None, None
+        self.med_win_x, self.med_win_y = None, None
+        self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
     PICK_SCREEN:str = "pick_screen"
-    TALLY_SCREEN:str = "tally_screen"
+    # TALLY_SCREEN:str = "tally_screen"
     PLAYER_LOSE_SCREEN:str = "player_lose_screen"
     PLAYER_WIN_SCREEN:str = "player_win_screen"
 
@@ -115,12 +124,33 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     def opossum_game_reset(self, state):
         self.shake = False
         self.initializeGarbageCans(state)
+        self.player_score = 0
+        # Reset all win-related positions to None
+        # Reset all win-related positions to None
+        self.win_x, self.win_y = None, None
 
+        self.big_win_x, self.big_win_y = None, None
+        self.triple_x, self.triple_y = None, None
+        self.lucky_star_x, self.lucky_star_y = None, None
+        self.super_win_x, self.super_win_y = None, None
+        self.high_win_x, self.high_win_y = None, None
+        self.med_win_x, self.med_win_y = None, None
+        self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
 
     def opossum_round_reset(self, state):
         self.shake = False
         self.initializeGarbageCans(state)
-
+        self.player_score = 0
+        # Reset all win-related positions to None
+        # Reset all win-related positions to None
+        self.win_x, self.win_y = None, None
+        self.big_win_x, self.big_win_y = None, None
+        self.triple_x, self.triple_y = None, None
+        self.lucky_star_x, self.lucky_star_y = None, None
+        self.super_win_x, self.super_win_y = None, None
+        self.high_win_x, self.high_win_y = None, None
+        self.med_win_x, self.med_win_y = None, None
+        self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
 
     def update(self, state):
         if self.money <= self.billy_bob_bankrupt:
@@ -140,13 +170,22 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         elif self.game_state == self.PICK_SCREEN:
             self.update_pick_screen(controller, state)
 
-        elif self.game_state == self.TALLY_SCREEN:
-            pass
-
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
-            pass
+            if controller.isTPressed:
+                controller.isTPressed = False
+                if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
+                    state.player.stamina_points -= self.stamina_drain_repellant
+                elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
+                    state.player.stamina_points -= self.stamina_drain
+                self.opossum_round_reset(state)
+                self.game_state = self.WELCOME_SCREEN
+
         elif self.game_state == self.PLAYER_WIN_SCREEN:
-            pass
+            if controller.isTPressed:
+                controller.isTPressed = False
+                state.player.money += self.player_score
+                self.opossum_round_reset(state)
+                self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
             pass
 
@@ -180,8 +219,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
         elif self.game_state == self.PICK_SCREEN:
             self.draw_pick_screen(state)
-        elif self.game_state == self.TALLY_SCREEN:
-            self.draw_pick_screen(state)
+
 
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             pass
@@ -298,11 +336,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.player_score = 0
 
             self.trash_can_x, self.trash_can_y = self.positions[self.current_box_index]
+            self.game_state = self.PLAYER_LOSE_SCREEN
+            print(self.game_state)
 
-            if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
-                state.player.stamina_points -= self.stamina_drain_repellant
-            elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
-                state.player.stamina_points -= self.stamina_drain
 
             # self.opossum_round_reset(state)
             # self.game_state = self.PLAYER_LOSE_SCREEN
@@ -310,63 +346,54 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         # Remove the item from the can (set it to an empty string)
         setattr(self, selected_can_attribute, "")
 
-    def draw_lucky_star_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'lucky_star_x') and hasattr(self, 'lucky_star_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
-            lucky_star_message = font.render("+250", True, WHITE)
-            state.DISPLAY.blit(lucky_star_message, (self.lucky_star_x + 33, self.lucky_star_y + 28))  # Blit at the trash can's position
-
     def draw_triple_win_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'triple_x') and hasattr(self, 'triple_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
+        if self.triple_x is not None and self.triple_y is not None:
+            font = pygame.font.Font(None, 50)
             triple_win_message = font.render("*3", True, WHITE)
-            state.DISPLAY.blit(triple_win_message, (self.triple_x + 59, self.triple_y + 28))  # Blit at the trash can's position
+            state.DISPLAY.blit(triple_win_message, (self.triple_x + 59, self.triple_y + 28))
 
     def draw_super_win_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'super_win_x') and hasattr(self, 'super_win_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
+        if self.super_win_x is not None and self.super_win_y is not None:
+            font = pygame.font.Font(None, 50)
             super_win_message = font.render("+100", True, WHITE)
-            state.DISPLAY.blit(super_win_message, (self.super_win_x + 33, self.super_win_y + 28))  # Blit at the trash can's position
+            state.DISPLAY.blit(super_win_message, (self.super_win_x + 33, self.super_win_y + 28))
 
     def draw_high_win_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'high_win_x') and hasattr(self, 'high_win_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
+        if self.high_win_x is not None and self.high_win_y is not None:
+            font = pygame.font.Font(None, 50)
             high_win_message = font.render("+80", True, WHITE)
-            state.DISPLAY.blit(high_win_message, (self.high_win_x + 43, self.high_win_y + 28))  # Blit at the trash can's position
+            state.DISPLAY.blit(high_win_message, (self.high_win_x + 43, self.high_win_y + 28))
 
     def draw_med_win_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'med_win_x') and hasattr(self, 'med_win_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
+        if self.med_win_x is not None and self.med_win_y is not None:
+            font = pygame.font.Font(None, 50)
             med_win_message = font.render("+70", True, WHITE)
-            state.DISPLAY.blit(med_win_message, (self.med_win_x + 43, self.med_win_y + 28))  # Blit at the trash can's position
+            state.DISPLAY.blit(med_win_message, (self.med_win_x + 43, self.med_win_y + 28))
 
     def draw_big_win_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'big_win_x') and hasattr(self, 'big_win_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
+        if self.big_win_x is not None and self.big_win_y is not None:
+            font = pygame.font.Font(None, 50)
             big_win_message = font.render("+120", True, WHITE)
-            state.DISPLAY.blit(big_win_message, (self.big_win_x + 33, self.big_win_y + 28))  # Blit at the trash can's position
+            state.DISPLAY.blit(big_win_message, (self.big_win_x + 33, self.big_win_y + 28))
 
     def draw_win_message(self, state):
-        # Blit the "WIN" message at the trash can's x/y position if "win" was selected
-        if hasattr(self, 'win_x') and hasattr(self, 'win_y'):
-            font = pygame.font.Font(None, 50)  # Adjust font size as needed
+        if self.win_x is not None and self.win_y is not None:
+            font = pygame.font.Font(None, 50)
             win_message = font.render("+60", True, WHITE)
-            state.DISPLAY.blit(win_message, (self.win_x + 44, self.win_y + 28))  # Blit at the trash can's position
+            state.DISPLAY.blit(win_message, (self.win_x + 44, self.win_y + 28))
+
+    def draw_lucky_star_message(self, state):
+        if self.lucky_star_x is not None and self.lucky_star_y is not None:
+            font = pygame.font.Font(None, 50)
+            lucky_star_message = font.render("+250", True, WHITE)
+            state.DISPLAY.blit(lucky_star_message, (self.lucky_star_x + 33, self.lucky_star_y + 28))
+
 
     def draw_opossum_sprite_image(self, state):
-        # Use the trash_can_x and trash_can_y set in reveal_selected_box_content
-        if self.result == "lose":
-            sprite_rect = pygame.Rect(1, 145, 48, 44)  # Rect for opossum sprite
+        if self.result == "lose" and hasattr(self, 'trash_can_x') and hasattr(self, 'trash_can_y'):
+            sprite_rect = pygame.Rect(1, 145, 48, 44)
             opossum_sprite = self.opossum_sprite_image.subsurface(sprite_rect)
             scaled_opossum_sprite = pygame.transform.scale(opossum_sprite, (99, 99))
-
-            # Draw the opossum sprite at the position of the trash can where the player lost
             state.DISPLAY.blit(scaled_opossum_sprite, (self.trash_can_x + 30, self.trash_can_y - 30))
 
     def draw_pick_screen(self, state):
