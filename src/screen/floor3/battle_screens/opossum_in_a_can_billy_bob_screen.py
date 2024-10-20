@@ -34,11 +34,14 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.player_score: int = 0
         self.pick_tally_screen_index: int = 0
         self.current_box_index: int = 0  # Index of the currently green box
+        self.magic_screen_index: int = 0
+        self.magic_menu_selector: list[str] = []
+        self.shake_cost = 10
+
 
         self.magic_lock: bool = False
         self.welcome_screen_choices: list[str] = ["Play", "Magic",  "Quit"]
         self.pick_screen_choices: list[str] = ["Pick", "Tally"]
-        self.magic_menu_selector: list[str] = []
         self.index_stepper = 1
         self.positions = []  # Initialize positions list to store trash can positions
 
@@ -163,6 +166,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller, state)
             # self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        if self.game_state == self.MAGIC_MENU_SCREEN:
+            self.update_magic_menu_selection_box(controller, state)
+
         elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
             self.update_pick_tally_menu_screen_logic(controller)
 
@@ -213,6 +219,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
             # self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box(state)
+
         elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
             self.draw_pick_tally_menu_logic(state)
             # self.battle_messages[self.PICK_MESSAGE].draw(state)
@@ -229,6 +238,101 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             pass
 
         pygame.display.flip()
+
+    def draw_magic_menu_selection_box(self, state):
+        # if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+        #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
+        #
+        #
+        # elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+        #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
+        #
+        #
+        # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+        #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_menu_selector):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def update_magic_menu_selection_box(self, controller, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value:
+            pass
+            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
+            #
+            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            pass
+            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].update(state)
+            #
+            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+        #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+        #
+        #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+        #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
+            print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
+            print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value and state.player.focus_points >= self.shake_cost:
+                state.player.focus_points -= self.shake_cost
+                self.debuff_keen_perception = True
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN
 
     def update_pick_screen(self, controller, state):
         time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
@@ -575,7 +679,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 
         if Magic.SHAKE.value in state.player.magicinventory and Magic.SHAKE.value not in self.magic_menu_selector:
-            self.magic_menu_selector.append(Magic.SHIELD.value)
+            self.magic_menu_selector.append(Magic.SHAKE.value)
 
         if self.BACK not in self.magic_menu_selector:
             self.magic_menu_selector.append(self.BACK)
