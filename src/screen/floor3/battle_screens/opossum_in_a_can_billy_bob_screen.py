@@ -47,7 +47,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             ]),
 
             self.PICK_TALLY_MENU_MESSAGE: MessageBox([
-                "Pick to go to trash can selection, tally to end round and turn in points."
+                "Pick to go to trash can selection, tally to end round and turn in points.Score must be higher than 0 to tally."
             ]),
 
 
@@ -113,6 +113,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.high_win_x, self.high_win_y = None, None
         self.med_win_x, self.med_win_y = None, None
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+        self.exp_gain_high = 25
+        self.exp_gain_low = 10
+        self.exp_gain_medium = 20
 
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
@@ -227,18 +230,35 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
+                self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The repellant scares him off before too much damage is taking. You take 25 damage, and gain {self.exp_gain_high}:   experience points and 0 money."]
+            elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
+                self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The hungry opossum deals 50 damage, you gain {self.exp_gain_high}:   experience points and 0 money."]
+            self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
+
             if controller.isTPressed:
                 controller.isTPressed = False
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
+                state.player.exp += self.exp_gain_high
                 self.opossum_round_reset(state)
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
-            print("you are here")
+            if self.player_score < 750:
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gai {self.player_score}: money and gain {self.exp_gain_low}:   experience points!"]
+            elif self.player_score > 750:
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gai {self.player_score}: money and gain {self.exp_gain_medium}:   experience points!"]
+
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
             if controller.isTPressed:
+                if self.player_score < 750:
+                    state.player.exp += self.exp_gain_low
+                elif self.player_score > 750:
+                    state.player.exp += self.exp_gain_medium
+
                 controller.isTPressed = False
                 state.player.money += self.player_score
                 self.opossum_round_reset(state)
@@ -300,9 +320,11 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.draw_pick_screen(state)
 
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
-            pass
+            self.battle_messages[self.PLAYER_LOSE_MESSAGE].draw(state)
+
         elif self.game_state == self.PLAYER_WIN_SCREEN:
-            pass
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
+
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
@@ -702,10 +724,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
             if self.pick_tally_screen_index == self.pick_index:
                 self.game_state = self.PICK_SCREEN
-            elif self.pick_tally_screen_index == self.tally_index:
+            elif self.pick_tally_screen_index == self.tally_index and self.player_score > 0:
                 self.game_state = self.PLAYER_WIN_SCREEN
-
-
 
         if controller.isUpPressed:
             controller.isUpPressed = False
@@ -720,7 +740,6 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     def update_welcome_screen_logic(self, controller, state):
         if controller.isTPressed:
             controller.isTPressed = False
-
             if self.welcome_screen_index == self.pick_index:
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
