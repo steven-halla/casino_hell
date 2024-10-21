@@ -39,7 +39,7 @@ class Player(Entity):
         self.equipped_items = ["sir leopold amulet", "Black Hat"]
 
         self.npc_items = []
-        self.magicinventory = ["Shield", "Force", "shake", "redraw","reveal" ]
+        self.magicinventory = ["Shield", "Force", "shake", "redraw","reveal", "HACK" ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
