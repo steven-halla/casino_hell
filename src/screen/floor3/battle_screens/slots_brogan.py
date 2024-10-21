@@ -44,6 +44,15 @@ class SlotsBrogan(GambleScreen):
         super().draw(state)
 
         # Set the coordinates for the sprite
+
+        self.draw_slot_images(state)
+
+
+        pygame.display.flip()
+
+        # It's usually better to call pygame.display.flip() once after all draw methods
+
+    def draw_slot_images(self, state):
         sprite_data = {
             "bomb": ((10, 20), (450, 100, 50, 52)),
             "lucky_seven": ((100, 20), (300, 30, 60, 60)),
@@ -62,12 +71,6 @@ class SlotsBrogan(GambleScreen):
             sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(*sprite_rect))
             state.DISPLAY.blit(sprite, blit_coords)
 
-
-
-
-        pygame.display.flip()
-
-        # It's usually better to call pygame.display.flip() once after all draw methods
 
 
 
