@@ -36,6 +36,7 @@ class SlotsRippaSnappaScreen(BattleScreen):
 
 
 
+
         self.no_matches = True
 
         self.resolve_penalty = False

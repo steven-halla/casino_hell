@@ -1,3 +1,5 @@
+from typing import Dict, Tuple, List
+
 import pygame
 
 from constants import WHITE, BLACK
@@ -36,6 +38,28 @@ class SlotsBrogan(GambleScreen):
         self.player_stamina_high_cost: int = 10  # useing higher bet option
         self.lock_down_inactive: int = 0
         self.index_stepper = 1
+
+        self.slot_images: List[pygame.Surface] = [
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),  # Bomb
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 60)),  # Lucky Seven
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52)),  # Dice
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 30, 75, 52)),  # Coin
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 170, 75, 52)),  # Diamond
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(15, 275, 80, 52)),  # Crown
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 275, 75, 58)),  # Chest
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 210, 75, 58)),  # Cherry
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 210, 50, 58)),  # Dice 6
+            self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 58)),  # Spin
+        ]
+
+        # Initialize your slot positions and values
+        self.slot_positions1: List[int] = [-50, 0, 50]
+        self.slot_positions2: List[int] = [-50, 0, 50]
+        self.slot_positions3: List[int] = [-50, 0, 50]
+        self.slot1: List[int] = [0, 0, 0]
+        self.slot2: List[int] = [0, 0, 0]
+        self.slot3: List[int] = [0, 0, 0]
+        self.grid_positions: List[Tuple[int, int]] = []
 
     SPIN_SCREEN: str = "spin_screen"
     RESULT_SCREEN: str = "result_screen"
@@ -92,6 +116,8 @@ class SlotsBrogan(GambleScreen):
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
 
+        self.draw_grid_box(state)
+
         if self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
@@ -121,6 +147,52 @@ class SlotsBrogan(GambleScreen):
 
 
         pygame.display.flip()
+
+    def draw_grid_box(self, state: "GameState") -> None:
+        screen_width, screen_height = state.DISPLAY.get_size()
+        box_width, box_height = 80, 80  # Adjust box size to fit images
+        line_thickness = 2
+        grid_columns = 1  # Since you want 10 rows, we'll have 1 column
+        grid_rows = len(self.slot_images)  # 10 rows
+
+        total_grid_width = box_width * grid_columns + line_thickness * (grid_columns - 1)
+        total_grid_height = box_height * grid_rows + line_thickness * (grid_rows - 1)
+
+        start_x = (screen_width - total_grid_width) // 2
+        start_y = (screen_height - total_grid_height) // 2
+
+        black_color = (0, 0, 0)
+        white_color = (255, 255, 255)
+
+        # Iterate over the images and positions
+        for index, image in enumerate(self.slot_images):
+            row = index  # Since we have 1 column, row index is the same as the image index
+            col = 0
+            box_x = start_x + col * (box_width + line_thickness)
+            box_y = start_y + row * (box_height + line_thickness)
+
+            # Draw the box
+            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_width, box_height))
+
+            # Resize the image to fit the box if necessary
+            resized_image = pygame.transform.scale(image, (box_width, box_height))
+
+            # Blit the image onto the box
+            state.DISPLAY.blit(resized_image, (box_x, box_y))
+
+            # Draw the white lines around the box
+            pygame.draw.rect(state.DISPLAY, white_color, (box_x, box_y, box_width, box_height), line_thickness)
+
+        # Draw horizontal lines separating each row
+        for i in range(grid_rows + 1):
+            y = start_y + i * (box_height + line_thickness) - line_thickness // 2
+            pygame.draw.line(
+                state.DISPLAY,
+                white_color,
+                (start_x, y),
+                (start_x + box_width * grid_columns + line_thickness * (grid_columns - 1), y),
+                line_thickness
+            )
 
     def draw_magic_menu_selection_box(self, state):
         if self.magic_screen_choices[self.magic_screen_index] == Magic.SLOTS_HACK.value:
