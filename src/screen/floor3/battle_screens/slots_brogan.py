@@ -39,18 +39,20 @@ class SlotsBrogan(GambleScreen):
         self.lock_down_inactive: int = 0
         self.index_stepper = 1
 
-        self.slot_images: List[pygame.Surface] = [
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),  # Bomb
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 60)),  # Lucky Seven
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52)),  # Dice
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 30, 75, 52)),  # Coin
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 170, 75, 52)),  # Diamond
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(15, 275, 80, 52)),  # Crown
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 275, 75, 58)),  # Chest
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 210, 75, 58)),  # Cherry
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 210, 50, 58)),  # Dice 6
-            self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 58)),  # Spin
-        ]
+        self.slot_images: Dict[str, pygame.Surface] = {
+            "bomb": self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),
+            "lucky_seven": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 60)),
+            "dice": self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52)),
+            "coin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 30, 75, 52)),
+            "diamond": self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 170, 75, 52)),
+            "crown": self.slot_images_sprite_sheet.subsurface(pygame.Rect(15, 275, 80, 52)),
+            "chest": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 275, 75, 58)),
+            "cherry": self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 210, 75, 58)),
+            "dice_six": self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 210, 50, 58)),
+            "spin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 58)),
+        }
+
+        self.slot_image_keys: List[str] = list(self.slot_images.keys())
 
         # Initialize your slot positions and values
         self.slot_positions1: List[int] = [-50, 0, 50]
@@ -152,8 +154,8 @@ class SlotsBrogan(GambleScreen):
         screen_width, screen_height = state.DISPLAY.get_size()
         box_width, box_height = 80, 80  # Adjust box size to fit images
         line_thickness = 2
-        grid_columns = 3  # We have 3 columns
-        grid_rows = len(self.slot_images)  # 10 rows, one for each image
+        grid_columns = 3  # 3 columns as per your requirement
+        grid_rows = len(self.slot_images)  # 10 rows for each image
 
         total_grid_width = box_width * grid_columns + line_thickness * (grid_columns - 1)
         total_grid_height = box_height * grid_rows + line_thickness * (grid_rows - 1)
@@ -165,9 +167,9 @@ class SlotsBrogan(GambleScreen):
         white_color = (255, 255, 255)
 
         # Iterate over the grid positions
-        for col in range(grid_columns):
-            for row in range(grid_rows):
-                image = self.slot_images[row]
+        for row, key in enumerate(self.slot_image_keys):
+            for col in range(grid_columns):
+                image = self.slot_images[key]
                 box_x = start_x + col * (box_width + line_thickness)
                 box_y = start_y + row * (box_height + line_thickness)
 
