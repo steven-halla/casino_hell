@@ -1,3 +1,4 @@
+import random
 from typing import Dict, Tuple, List
 
 import pygame
@@ -39,6 +40,13 @@ class SlotsBrogan(GambleScreen):
         self.lock_down_inactive: int = 0
         self.index_stepper = 1
 
+        # Create a list of image keys to maintain order
+
+
+
+
+
+
         self.slot_images: Dict[str, pygame.Surface] = {
             "bomb": self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),
             "lucky_seven": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 60)),
@@ -51,8 +59,8 @@ class SlotsBrogan(GambleScreen):
             "dice_six": self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 210, 50, 58)),
             "spin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 58)),
         }
-
         self.slot_image_keys: List[str] = list(self.slot_images.keys())
+
 
         # Initialize your slot positions and values
         self.slot_positions1: List[int] = [-50, 0, 50]
@@ -62,10 +70,44 @@ class SlotsBrogan(GambleScreen):
         self.slot2: List[int] = [0, 0, 0]
         self.slot3: List[int] = [0, 0, 0]
         self.grid_positions: List[Tuple[int, int]] = []
+        # Create reel surfaces
+        self.reel_surfaces: List[pygame.Surface] = []
+        for _ in range(3):  # Three reels
+            reel_surface = self.create_reel_surface()
+            self.reel_surfaces.append(reel_surface)
+
+        # Reel positions to control vertical movement
+        self.reel_positions: List[float] = [0.0, 0.0, 0.0]
+
+        # Spinning state
+        self.spinning: bool = False
+        self.spin_speed: float = 10.0  # Pixels per frame
+        self.last_update_time: int = pygame.time.get_ticks()
 
     SPIN_SCREEN: str = "spin_screen"
     RESULT_SCREEN: str = "result_screen"
     BACK: str = "Back"
+
+    def create_reel_surface(self) -> pygame.Surface:
+        # Randomize the order of images for the reel
+        image_keys = self.slot_image_keys.copy()
+        random.shuffle(image_keys)
+
+        # Calculate the total height of the reel surface
+        box_width, box_height = 80, 80  # Same as in draw_grid_box
+        reel_height = box_height * len(image_keys)
+
+        # Create the reel surface
+        reel_surface = pygame.Surface((box_width, reel_height)).convert_alpha()
+        reel_surface.fill((0, 0, 0, 0))  # Transparent background
+
+        # Blit each image onto the reel surface
+        for idx, key in enumerate(image_keys):
+            image = self.slot_images[key]
+            resized_image = pygame.transform.scale(image, (box_width, box_height))
+            reel_surface.blit(resized_image, (0, idx * box_height))
+
+        return reel_surface
 
     def start(self, state: 'GameState'):
         pass
@@ -81,6 +123,24 @@ class SlotsBrogan(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        current_time = pygame.time.get_ticks()
+        delta_time = current_time - self.last_update_time
+        self.last_update_time = current_time
+
+        if self.spinning:
+            for i in range(3):  # For each reel
+                self.reel_positions[i] += self.spin_speed * (delta_time / 1000.0)  # Convert to seconds
+                reel_height = self.reel_surfaces[i].get_height()
+                # Loop the reel position
+                if self.reel_positions[i] >= reel_height:
+                    self.reel_positions[i] -= reel_height
+
+        # Handle input to start/stop spinning
+        controller = state.controller
+        controller.update()
+        if controller.isTPressed:
+            controller.isTPressed = False
+            self.spinning = not self.spinning  # Toggle spinning state
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller)
@@ -152,62 +212,50 @@ class SlotsBrogan(GambleScreen):
 
     def draw_grid_box(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()
-        box_width, box_height = 80, 80  # Adjust box size to fit images
+        box_width, box_height = 80, 80
         line_thickness = 2
-        grid_columns = 3  # 3 columns as per your requirement
-        grid_rows = len(self.slot_images)  # 10 rows for each image
+        grid_columns = 3
+        images_to_show = 3  # Number of boxes vertically to display
 
         total_grid_width = box_width * grid_columns + line_thickness * (grid_columns - 1)
-        total_grid_height = box_height * grid_rows + line_thickness * (grid_rows - 1)
+        total_grid_height = box_height * images_to_show + line_thickness * (images_to_show - 1)
 
         start_x = (screen_width - total_grid_width) // 2
         start_y = (screen_height - total_grid_height) // 2
 
-        black_color = (0, 0, 0)
-        white_color = (255, 255, 255)
+        for i in range(3):  # For each reel
+            reel_surface = self.reel_surfaces[i]
+            reel_height = reel_surface.get_height()
 
-        # Iterate over the grid positions
-        for row, key in enumerate(self.slot_image_keys):
-            for col in range(grid_columns):
-                image = self.slot_images[key]
-                box_x = start_x + col * (box_width + line_thickness)
-                box_y = start_y + row * (box_height + line_thickness)
+            # Calculate the area of the reel to display
+            reel_y_pos = self.reel_positions[i] % reel_height
+            rect = pygame.Rect(0, reel_y_pos, box_width, box_height * images_to_show)
 
-                # Draw the box
-                pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_width, box_height))
+            # If the rect goes beyond the reel height, we need to stitch the images
+            if reel_y_pos + box_height * images_to_show > reel_height:
+                upper_part_height = reel_height - reel_y_pos
+                lower_part_height = (box_height * images_to_show) - upper_part_height
 
-                # Resize the image to fit the box if necessary
-                resized_image = pygame.transform.scale(image, (box_width, box_height))
+                upper_part = reel_surface.subsurface(pygame.Rect(0, reel_y_pos, box_width, upper_part_height))
+                lower_part = reel_surface.subsurface(pygame.Rect(0, 0, box_width, lower_part_height))
 
-                # Blit the image onto the box
-                state.DISPLAY.blit(resized_image, (box_x, box_y))
+                combined_surface = pygame.Surface((box_width, box_height * images_to_show)).convert_alpha()
+                combined_surface.blit(upper_part, (0, 0))
+                combined_surface.blit(lower_part, (0, upper_part_height))
+            else:
+                combined_surface = reel_surface.subsurface(rect)
 
-                # Draw the white lines around the box
-                pygame.draw.rect(state.DISPLAY, white_color, (box_x, box_y, box_width, box_height), line_thickness)
+            # Blit the combined surface onto the screen
+            box_x = start_x + i * (box_width + line_thickness)
+            box_y = start_y
 
-        # Draw vertical grid lines
-        for j in range(grid_columns + 1):
-            x = start_x + j * (box_width + line_thickness) - line_thickness // 2
-            x = int(x)
-            pygame.draw.line(
-                state.DISPLAY,
-                white_color,
-                (x, start_y),
-                (x, start_y + total_grid_height - line_thickness),
-                line_thickness
-            )
+            state.DISPLAY.blit(combined_surface, (box_x, box_y))
 
-        # Draw horizontal grid lines
-        for i in range(grid_rows + 1):
-            y = start_y + i * (box_height + line_thickness) - line_thickness // 2
-            y = int(y)
-            pygame.draw.line(
-                state.DISPLAY,
-                white_color,
-                (start_x, y),
-                (start_x + total_grid_width - line_thickness, y),
-                line_thickness
-            )
+            # Draw the white lines around the boxes
+            for j in range(images_to_show):
+                rect_x = box_x
+                rect_y = box_y + j * (box_height + line_thickness)
+                pygame.draw.rect(state.DISPLAY, (255, 255, 255), (rect_x, rect_y, box_width, box_height), line_thickness)
 
     def draw_magic_menu_selection_box(self, state):
         if self.magic_screen_choices[self.magic_screen_index] == Magic.SLOTS_HACK.value:
@@ -419,6 +467,11 @@ class SlotsBrogan(GambleScreen):
         for name, (blit_coords, sprite_rect) in sprite_data.items():
             sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(*sprite_rect))
             state.DISPLAY.blit(sprite, blit_coords)
+
+    def update_reels(self):
+        for i in range(3):
+            self.reel_positions[i] = (self.reel_positions[i] + 1) % len(self.slot_image_keys)
+
 
 
 
