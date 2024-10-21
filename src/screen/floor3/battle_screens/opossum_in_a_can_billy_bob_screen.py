@@ -5,6 +5,7 @@ import pygame
 
 from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
@@ -40,6 +41,35 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.magic_screen_index: int = 0
         self.magic_menu_selector: list[str] = []
         self.shake_cost = 10
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "My Opossums sure are friendly, they wont bite you. They just wanna nibble."
+            ]),
+
+            self.PICK_TALLY_MENU_MESSAGE: MessageBox([
+                "Pick to go to trash can selection, tally to end round and turn in points."
+            ]),
+
+
+            self.MAGIC_MENU_SHAKE_DESCRIPTION: MessageBox([
+                "Shakes the can, reveals 1 opossum and 1 lucky star."
+            ]),
+            self.PICK_SELECTION_MESSAGE: MessageBox([
+                "Shakes the can, reveals 1 opossum and 1 lucky star."
+            ]),
+
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
+
+            self.PLAYER_WIN_MESSAGE: MessageBox([
+                "You won the toss!!!"
+            ]),
+            self.PLAYER_LOSE_MESSAGE: MessageBox([
+                "You lost the toss."
+            ]),
+
+        }
 
 
         self.magic_lock: bool = False
@@ -90,6 +120,14 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     # TALLY_SCREEN:str = "tally_screen"
     PLAYER_LOSE_SCREEN:str = "player_lose_screen"
     PLAYER_WIN_SCREEN:str = "player_win_screen"
+
+    PLAYER_WIN_MESSAGE: str = "player_win_message"
+    PLAYER_LOSE_MESSAGE: str = "player_lose_message"
+    MAGIC_MENU_SHAKE_DESCRIPTION: str = "magic_menu_force_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
+    PICK_SELECTION_MESSAGE: str = "pick_selection_message"
+
 
     BACK: str = "Back"
 
@@ -171,16 +209,22 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller, state)
-            # self.battle_messages[self.WELCOME_MESSAGE].update(state)
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
         if self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
 
         elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
+
+
+            self.battle_messages[self.PICK_TALLY_MENU_MESSAGE].update(state)
+
             self.update_pick_tally_menu_screen_logic(controller)
 
             # self.battle_messages[self.PICK_MESSAGE].update(state)
         elif self.game_state == self.PICK_SCREEN:
             self.update_pick_screen(controller, state)
+            self.battle_messages[self.PICK_SELECTION_MESSAGE].update(state)
+
 
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             if controller.isTPressed:
@@ -193,6 +237,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
+            print("you are here")
             if controller.isTPressed:
                 controller.isTPressed = False
                 state.player.money += self.player_score
@@ -238,16 +283,20 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
 
-            # self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
 
         elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
             self.draw_pick_tally_menu_logic(state)
+            self.battle_messages[self.PICK_TALLY_MENU_MESSAGE].draw(state)
+
             # self.battle_messages[self.PICK_MESSAGE].draw(state)
 
         elif self.game_state == self.PICK_SCREEN:
+            self.battle_messages[self.PICK_SELECTION_MESSAGE].draw(state)
+
             self.draw_pick_screen(state)
 
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
@@ -265,16 +314,16 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         pygame.display.flip()
 
     def draw_magic_menu_selection_box(self, state):
-        # if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
-        #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value:
+            self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].draw(state)
         #
         #
         # elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
         #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
         #
         #
-        # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-        #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
 
 
         choice_spacing = 40
@@ -319,17 +368,15 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
     def update_magic_menu_selection_box(self, controller, state):
         if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value:
-            pass
-            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].update(state)
             #
             # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
-            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
         elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-            pass
-            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].reset()
             #
             # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
-            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
         # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
         #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
         #
@@ -360,6 +407,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
     def update_pick_screen(self, controller, state):
+        if controller.isBPressed:
+            controller.isBPressed = False
+            self.game_state = self.PICK_TALLY_MENU_SCREEN
         time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
         time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
         key_press_threshold = 80  # Example threshold, adjust as needed
@@ -395,6 +445,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
             # Check for 'T' key press
         if state.controller.isTPressed:
+            print(";fdsjfds;lafjsaf;lj")
             # print(self.game_state)
 
             # Call the function to reveal the selected box content
@@ -645,12 +696,15 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
     def update_pick_tally_menu_screen_logic(self, controller):
         if controller.isTPressed:
+            print(";fdjfl;jsalfjsafjsf;ljsa")
+            print(self.pick_screen_index)
             controller.isTPressed = False
 
-            if self.pick_screen_index == self.pick_index:
+            if self.pick_tally_screen_index == self.pick_index:
                 self.game_state = self.PICK_SCREEN
-            elif self.pick_screen_index == self.tally_index:
+            elif self.pick_tally_screen_index == self.tally_index:
                 self.game_state = self.PLAYER_WIN_SCREEN
+
 
 
         if controller.isUpPressed:
