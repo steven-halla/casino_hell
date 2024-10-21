@@ -1,5 +1,6 @@
 import pygame
 
+from constants import WHITE
 from entity.gui.screen.gamble_screen import GambleScreen
 
 
@@ -25,6 +26,9 @@ class SlotsBrogan(GambleScreen):
         self.player_stamina_high_cost: int = 10  # useing higher bet option
         self.lock_down_inactive: int = 0
 
+    SPIN_SCREEN: str = "spin_screen"
+    RESULT_SCREEN: str = "result_screen"
+
     def start(self, state: 'GameState'):
         pass
 
@@ -40,8 +44,55 @@ class SlotsBrogan(GambleScreen):
         state.player.update(state)
         super().update(state)
 
+        if self.game_state == self.WELCOME_SCREEN:
+            pass
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            pass
+        elif self.game_state == self.BET_SCREEN:
+            pass
+        elif self.game_state == self.SPIN_SCREEN:
+            pass
+        elif self.game_state == self.RESULT_SCREEN:
+            pass
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+
+            if state.player.money <= no_money_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+            elif state.player.stamina_points <= no_stamina_game_over:
+                if controller.isTPressed:
+                    controller.isTPressed = False
+                    self.reset_slots_game()
+                    state.player.money -= 100
+                    # state.currentScreen = state.area3RestScreen
+                    # state.area3RestScreen.start(state)
+
+
     def draw(self, state):
         super().draw(state)
+
+        if self.game_state == self.WELCOME_SCREEN:
+            pass
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            pass
+        elif self.game_state == self.BET_SCREEN:
+            pass
+        elif self.game_state == self.SPIN_SCREEN:
+            pass
+        elif self.game_state == self.RESULT_SCREEN:
+            pass
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+            if state.player.money <= no_money_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            elif state.player.stamina <= no_stamina_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+
 
         # Set the coordinates for the sprite
 

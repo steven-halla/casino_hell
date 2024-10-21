@@ -13,18 +13,6 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
 
 
-
-##### NEED TO SET BETTING TO 50 WHEN ITEM HAS BEEN GOTTEN
-###### NEED  to set inDICATOR WHEN LUCKY STRIKE IS ACTIVE BY CHANGING PLAYER NAME
-####### LUCkY STRIKE WONT GET INT EH WAY OF 000 BECAUSE THE RANGE IS NOT THERE
-
-
-
-
-
-
-#need to build status effect unlucky for rib demon when lucky strike is active
-
 class SlotsRippaSnappaScreen(BattleScreen):
     def __init__(self) -> None:
         super().__init__("Casino Slots Screen")
