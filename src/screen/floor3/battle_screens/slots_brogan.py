@@ -129,7 +129,7 @@ class SlotsBrogan(GambleScreen):
 
         if self.spinning:
             for i in range(3):  # For each reel
-                self.reel_positions[i] += self.spin_speed * (delta_time / 1000.0)  # Convert to seconds
+                self.reel_positions[i] -= self.spin_speed * (delta_time / 1000.0)  # Convert to seconds
                 reel_height = self.reel_surfaces[i].get_height()
                 # Loop the reel position
                 if self.reel_positions[i] >= reel_height:
