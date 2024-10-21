@@ -2,6 +2,7 @@ import pygame
 
 from constants import WHITE
 from entity.gui.screen.gamble_screen import GambleScreen
+from game_constants.magic import Magic
 
 
 class SlotsBrogan(GambleScreen):
@@ -15,8 +16,10 @@ class SlotsBrogan(GambleScreen):
         self.spell_sound.set_volume(0.3)
         self.magic_screen_choices: list[str] = []
         self.bet_screen_choices: list[str] = ["Back"]
-        self.magic_screen_index: int = 0
-        self.bet: int = 50
+        self.spin_screen_index: int = 0
+        self.magic_screen_index: int = 1
+        self.bet_screen_index: int = 2
+        self.quit_index: int = 3
         pygame.mixer.music.stop()
         self.magic_lock: bool = False
         self.blit_message_x: int = 65
@@ -28,6 +31,7 @@ class SlotsBrogan(GambleScreen):
 
     SPIN_SCREEN: str = "spin_screen"
     RESULT_SCREEN: str = "result_screen"
+    BACK: str = "Back"
 
     def start(self, state: 'GameState'):
         pass
@@ -45,11 +49,12 @@ class SlotsBrogan(GambleScreen):
         super().update(state)
 
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.update_welcome_screen_logic(controller)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             pass
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.bet_screen_helper(controller)
+
         elif self.game_state == self.SPIN_SCREEN:
             pass
         elif self.game_state == self.RESULT_SCREEN:
@@ -74,9 +79,16 @@ class SlotsBrogan(GambleScreen):
 
     def draw(self, state):
         super().draw(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
+        self.draw_bottom_black_box(state)
 
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.draw_menu_selection_box(state)
+            self.draw_welcome_screen_box_info(state)
+
+
+
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             pass
         elif self.game_state == self.BET_SCREEN:
@@ -96,12 +108,108 @@ class SlotsBrogan(GambleScreen):
 
         # Set the coordinates for the sprite
 
-        self.draw_slot_images(state)
+        # self.draw_slot_images(state)
 
 
         pygame.display.flip()
 
-        # It's usually better to call pygame.display.flip() once after all draw methods
+
+    def bet_screen_helper(self, controller):
+        if controller.isBPressed:
+            controller.isBPressed = False
+            self.game_state = self.WELCOME_SCREEN
+        min_bet = 50
+        bet_step = 25
+        max_bet = 100
+        if controller.isUpPressed:
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += bet_step
+        elif controller.isDownPressed:
+            controller.isDownPressed = False
+
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= bet_step
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+
+    def update_welcome_screen_logic(self, controller):
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.welcome_screen_index == self.spin_screen_index:
+                self.game_state = self.SPIN_SCREEN
+            elif self.welcome_screen_index == self.magic_screen_index:
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.bet_screen_index:
+                self.game_state = self.BET_SCREEN
+            elif self.welcome_screen_index == self.quit_index:
+                print("this will come later")
+
+
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
+
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        if Magic.SLOTS_HACK.value not in state.player.magicinventory:
+            self.magic_lock = True
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif Magic.SLOTS_HACK.value in state.player.magicinventory:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if Magic.SLOTS_HACK.value in state.player.magicinventory:
+            self.magic_screen_choices.append(Magic.SLOTS_HACK.value)
+
+
+        if self.BACK not in self.magic_screen_choices:
+            self.magic_screen_choices.append(self.BACK)
+
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
+            )
 
     def draw_slot_images(self, state):
         sprite_data = {
