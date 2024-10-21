@@ -144,16 +144,21 @@ body belt: adds + 1 to body
 opossum guilty shoes- if score is above 800 and you lose , retain 200 points
 slots 999- gain an extra 25 HP 25 MP and 100 gold on jack pot
 hippo ticket - win extra coins the more people survive that you pick - global
-loaded dice - adds + 1 to all dice results for dice fighter, not sure on this one more of  a place holder
+loaded dice - + When you are attacker and get a double that is less than defender, adds +1 to all 3 dice.
+spell: Loaded Dice: 
 triples - instant win
 doubles - re roll 1 dice
 
 battle dice:
+Attacker role- you are trying to break the point
+Defender role: you have set up the break point by rolling doubles, your job is to roll triples, no need to re roll doubles, just the 3rd dice.
+if triples on first roll and win condition, player wins triple pot.
+Triple 6 at any point wins double pot
 both players roll 3d6, highest value goes first, if tie re roll
-both players roll 3d6, if two dice say 2 twos, re roll 3rd dice
+both players roll 3d6 ( 1 at a time), if two dice say 2 twos, re roll 3rd dice on next turn
 other player can break this by getting doules of a higher value. 
-if you get a higher double roll, you break the opponent roll and they ahve ot roll 3d6 
-first to match 3 numbers wins
+if you get a higher double roll, you break the opponent ponit roll and they have to roll 3d6 to break your roll or match to win
+first to match 3 numbers wins (higher or equal to break point)
 each time abreak happens, the breaker has the chance to increase the pot, and other player can settle or go in.
 in order to win, you need tripples of same value or higher than opponet. 
 

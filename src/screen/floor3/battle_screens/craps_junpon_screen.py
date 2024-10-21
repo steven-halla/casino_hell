@@ -352,10 +352,8 @@ class CrapsJunponScreen(GambleScreen):
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].draw(state)
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
-
             self.draw_menu_selection_box(state)
             self.draw_point_screen_box_info(state)
-
             if self.is_timer_active == False and self.dice_roll_1 > 0:
                 self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
                 state.DISPLAY.blit(self.font.render(f"You need a {self.come_out_roll_total} and you rolled an: {self.point_roll_total} ", True, WHITE), (self.blit_message_x, self.blit_message_y))
@@ -366,15 +364,11 @@ class CrapsJunponScreen(GambleScreen):
             time_elapsed: int = int((pygame.time.get_ticks() - self.blow_timer_start) / 1000)
             timer_x_pois = 333
             timer_y_pois = 125
-
             state.DISPLAY.blit(self.font.render(f"TIMER: {time_elapsed}/7  ", True, RED), (timer_x_pois, timer_y_pois))
-
             if time_elapsed >= 7:
                 self.blow_timer_start = pygame.time.get_ticks()  # Reset the start time
                 # No need to manually set time_elapsed to 0, as it will be recalculated based on the new start time
-
             self.create_blow_meter(state, time_elapsed)
-
             self.create_blow_meter(state, self.blow_counter)
             self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].draw(state)
 

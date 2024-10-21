@@ -64,6 +64,7 @@ from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlber
 from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
 from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
+from screen.floor3.battle_screens.slots_brogan import SlotsBrogan
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -207,6 +208,7 @@ class GameState:
         self.blackJackAlbertScreen = BlackJackAlbertScreen()
         self.coinFlipDexterScreen = CoinFlipDexterScreen()
         self.opossumInACanBillyBob = OpossumInACanBillyBobScreen()
+        self.slots_brogan = SlotsBrogan()
 
 
 
@@ -220,7 +222,7 @@ class GameState:
         # the below is the default of what i need
         # self.currentScreen = self.startLoadScreen
 
-        self.currentScreen = self.opossumInACanBillyBob
+        self.currentScreen = self.slots_brogan
 
 
 
