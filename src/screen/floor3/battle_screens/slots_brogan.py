@@ -15,12 +15,18 @@ class SlotsBrogan(GambleScreen):
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.magic_screen_choices: list[str] = []
+        self.hack_cost = 50
+        self.money: int = 1000
+        self.slot_hack_active: int = 5
+        self.slot_hack_inactive: int = 0
+
 
         self.bet_screen_choices: list[str] = ["Back"]
         self.spin_screen_index: int = 0
         self.magic_screen_index: int = 1
         self.bet_screen_index: int = 2
         self.quit_index: int = 3
+        self.magic_index = 0
         pygame.mixer.music.stop()
         self.magic_lock: bool = False
         self.blit_message_x: int = 65
@@ -163,22 +169,22 @@ class SlotsBrogan(GambleScreen):
             )
 
         # Draw the arrow at the current magic screen index position
-        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
+        arrow_y_position = start_y_right_box + (self.magic_index * choice_spacing) + text_y_offset
         state.DISPLAY.blit(
             self.font.render("->", True, WHITE),
             (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
         )
 
     def update_magic_menu_selection_box(self, controller, state):
-        if self.magic_screen_choices[self.magic_screen_index] == Magic.SLOTS_HACK.value:
-            print("HACKED")
+        if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
+            pass
             # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
             #
             # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
             # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
 
-        elif self.magic_screen_choices[self.magic_screen_index] == self.BACK:
-            print("BACK")
+        elif self.magic_screen_choices[self.magic_index] == self.BACK:
+            pass
             # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
             #
             # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
@@ -187,30 +193,27 @@ class SlotsBrogan(GambleScreen):
         if controller.isUpPressed:
             controller.isUpPressed = False
             self.menu_movement_sound.play()
-            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_screen_choices)
+            self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
             print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
         elif controller.isDownPressed:
             controller.isDownPressed = False
             self.menu_movement_sound.play()
-            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_screen_choices)
+            self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
             print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
 
         if controller.isTPressed:
             controller.isTPressed = False
-            if self.magic_screen_choices[self.magic_screen_index] == Magic.SHIELD.value and state.player.focus_points >= self.shield_cost:
-                state.player.focus_points -= self.shield_cost
-                self.shield_debuff = 3
-                print(f"Shield debuff: {self.shield_debuff}")
+            if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
+                print("yes")
+                state.player.focus_points -= self.hack_cost
+                self.slot_hack_active = 5
                 self.spell_sound.play()  # Play the sound effect once
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
-            elif self.magic_screen_choices[self.magic_screen_index] == Magic.HEADS_FORCE.value and state.player.focus_points >= self.heads_force_cost:
-                state.player.focus_points -= self.heads_force_cost
-                self.heads_force_active = True
-                self.spell_sound.play()  # Play the sound effect once
-                self.magic_lock = True
-                self.game_state = self.WELCOME_SCREEN
-            elif self.magic_screen_choices[self.magic_screen_index] == self.BACK:
+                print(self.slot_hack_active)
+
+            elif self.magic_screen_choices[self.magic_index] == self.BACK:
+                self.magic_index = 0
                 self.game_state = self.WELCOME_SCREEN
 
 
