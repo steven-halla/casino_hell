@@ -162,6 +162,11 @@ first to match 3 numbers wins (higher or equal to break point)
 each time abreak happens, the breaker has the chance to increase the pot, and other player can settle or go in.
 in order to win, you need tripples of same value or higher than opponet. 
 
+comands:
+attack- rolls 3d6
+defend - rolls 1d6 when you have a match
+bet-when you break increase bet
+
 `
 
 

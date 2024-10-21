@@ -44,46 +44,23 @@ class SlotsBrogan(GambleScreen):
         super().draw(state)
 
         # Set the coordinates for the sprite
-        bomb_x, bomb_y = 10, 20
+        sprite_data = {
+            "bomb": ((10, 20), (450, 100, 50, 52)),
+            "lucky_seven": ((100, 20), (300, 30, 60, 60)),
+            "dice": ((181, 20), (350, 100, 50, 52)),
+            "coin": ((240, 20), (20, 30, 75, 52)),
+            "diamond": ((320, 20), (20, 170, 75, 52)),
+            "crown": ((400, 20), (15, 275, 80, 52)),
+            "chest": ((500, 20), (300, 275, 75, 58)),
+            "cherry": ((20, 80), (120, 210, 75, 58)),
+            "dice_6": ((120, 80), (400, 210, 50, 58)),
+            "spin": ((200, 80), (40, 110, 52, 58)),
+        }
 
-        # sprite is the entire sprite sheet
-        # sprite_sheet_full = self.slot_images_sprite_sheet.subsurface(pygame.Rect(1, 1, 500, 350))
-        bomb_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(450,100, 50,52))
-
-        # Blit the subsurface onto the state.DISPLAY at coordinates (x, y)
-        state.DISPLAY.blit(bomb_sprite, (bomb_x, bomb_y))
-
-        lucky_seven_x , lucky_seven_y = 100, 20
-        lucky_seven_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(300,30, 60,60))
-        # self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52))
-        state.DISPLAY.blit(lucky_seven_sprite, (lucky_seven_x, lucky_seven_y))
-
-
-        dice_x, dice_y = 181, 20
-        dice_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52))
-        # self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52))
-        state.DISPLAY.blit(dice_sprite, (dice_x, dice_y))
-
-        coin_x, coin_y = 240, 20
-        coin_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(20,30, 75, 52))
-        state.DISPLAY.blit(coin_sprite, (coin_x, coin_y))
-
-        diamond_x, diamond_y = 320, 20
-        diamond_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 170, 75, 52))
-        state.DISPLAY.blit(diamond_sprite, (diamond_x, diamond_y))
-
-        crown_x, crown_y = 400, 20
-        crown_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(15, 275, 80, 52))
-        state.DISPLAY.blit(crown_sprite, (crown_x, crown_y))
-
-        chest_x, chest_y = 500, 20
-        chest_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 275, 75, 58))
-        state.DISPLAY.blit(chest_sprite, (chest_x, chest_y))
-
-        cherry_x, cherry_y = 20, 80
-        cherry_sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 210, 75, 58))
-        state.DISPLAY.blit(cherry_sprite, (cherry_x, cherry_y))
-
+        # Loop through the dictionary and blit each sprite
+        for name, (blit_coords, sprite_rect) in sprite_data.items():
+            sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(*sprite_rect))
+            state.DISPLAY.blit(sprite, blit_coords)
 
 
 
