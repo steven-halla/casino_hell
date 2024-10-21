@@ -152,8 +152,8 @@ class SlotsBrogan(GambleScreen):
         screen_width, screen_height = state.DISPLAY.get_size()
         box_width, box_height = 80, 80  # Adjust box size to fit images
         line_thickness = 2
-        grid_columns = 1  # Since you want 10 rows, we'll have 1 column
-        grid_rows = len(self.slot_images)  # 10 rows
+        grid_columns = 3  # We have 3 columns
+        grid_rows = len(self.slot_images)  # 10 rows, one for each image
 
         total_grid_width = box_width * grid_columns + line_thickness * (grid_columns - 1)
         total_grid_height = box_height * grid_rows + line_thickness * (grid_rows - 1)
@@ -164,33 +164,46 @@ class SlotsBrogan(GambleScreen):
         black_color = (0, 0, 0)
         white_color = (255, 255, 255)
 
-        # Iterate over the images and positions
-        for index, image in enumerate(self.slot_images):
-            row = index  # Since we have 1 column, row index is the same as the image index
-            col = 0
-            box_x = start_x + col * (box_width + line_thickness)
-            box_y = start_y + row * (box_height + line_thickness)
+        # Iterate over the grid positions
+        for col in range(grid_columns):
+            for row in range(grid_rows):
+                image = self.slot_images[row]
+                box_x = start_x + col * (box_width + line_thickness)
+                box_y = start_y + row * (box_height + line_thickness)
 
-            # Draw the box
-            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_width, box_height))
+                # Draw the box
+                pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_width, box_height))
 
-            # Resize the image to fit the box if necessary
-            resized_image = pygame.transform.scale(image, (box_width, box_height))
+                # Resize the image to fit the box if necessary
+                resized_image = pygame.transform.scale(image, (box_width, box_height))
 
-            # Blit the image onto the box
-            state.DISPLAY.blit(resized_image, (box_x, box_y))
+                # Blit the image onto the box
+                state.DISPLAY.blit(resized_image, (box_x, box_y))
 
-            # Draw the white lines around the box
-            pygame.draw.rect(state.DISPLAY, white_color, (box_x, box_y, box_width, box_height), line_thickness)
+                # Draw the white lines around the box
+                pygame.draw.rect(state.DISPLAY, white_color, (box_x, box_y, box_width, box_height), line_thickness)
 
-        # Draw horizontal lines separating each row
+        # Draw vertical grid lines
+        for j in range(grid_columns + 1):
+            x = start_x + j * (box_width + line_thickness) - line_thickness // 2
+            x = int(x)
+            pygame.draw.line(
+                state.DISPLAY,
+                white_color,
+                (x, start_y),
+                (x, start_y + total_grid_height - line_thickness),
+                line_thickness
+            )
+
+        # Draw horizontal grid lines
         for i in range(grid_rows + 1):
             y = start_y + i * (box_height + line_thickness) - line_thickness // 2
+            y = int(y)
             pygame.draw.line(
                 state.DISPLAY,
                 white_color,
                 (start_x, y),
-                (start_x + box_width * grid_columns + line_thickness * (grid_columns - 1), y),
+                (start_x + total_grid_width - line_thickness, y),
                 line_thickness
             )
 
