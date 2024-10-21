@@ -247,10 +247,12 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
+            if self.player_score > self.money:
+                self.player_score = self.money
             if self.player_score < 750:
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gai {self.player_score}: money and gain {self.exp_gain_low}:   experience points!"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gain {self.player_score}: money and gain {self.exp_gain_low}:   experience points!"]
             elif self.player_score > 750:
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gai {self.player_score}: money and gain {self.exp_gain_medium}:   experience points!"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gain {self.player_score}: money and gain {self.exp_gain_medium}:   experience points!"]
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
             if controller.isTPressed:
@@ -260,8 +262,16 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                     state.player.exp += self.exp_gain_medium
 
                 controller.isTPressed = False
+
+                if self.player_score > self.money:
+                    self.player_score = self.money
+
                 state.player.money += self.player_score
+                self.money -= self.player_score
+                if self.money < 0:
+                    self.money = 0
                 self.opossum_round_reset(state)
+
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
@@ -272,7 +282,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                     controller.isTPressed = False
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 if controller.isTPressed:
                     controller.isTPressed = False
                     self.opossum_round_reset(state)

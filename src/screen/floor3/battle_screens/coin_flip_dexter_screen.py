@@ -241,7 +241,7 @@ class CoinFlipDexterScreen(GambleScreen):
                     controller.isTPressed = False
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 if controller.isTPressed:
                     controller.isTPressed = False
                     self.reset_coin_flip_game()
