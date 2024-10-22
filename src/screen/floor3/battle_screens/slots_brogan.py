@@ -12,6 +12,8 @@ class SlotsBrogan(GambleScreen):
     def __init__(self, screenName: str = "Slots") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
+        self.slots: List[str] = []  # Initialize slots as an empty list
+
         self.dealer_name: str = "Brogan"
         self.slot_images_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/slots_images_trans.png")
 
@@ -122,6 +124,24 @@ class SlotsBrogan(GambleScreen):
             else:
                 print(f"Symbol {symbol_name} not found on reel {i + 1}")
 
+    def calculate_target_positions(self, slots: List[str]):
+        symbol_height = 80  # Height of each symbol image
+        self.target_positions = [0.0, 0.0, 0.0]  # Initialize target positions for each reel
+        for i in range(3):  # For each reel
+            symbol_name = slots[i]
+            # Find the index of the symbol on the reel
+            if symbol_name in self.reel_symbol_names[i]:
+                symbol_index = self.reel_symbol_names[i].index(symbol_name)
+                # Calculate the target position to align the symbol in the display
+                target_position = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
+                # Adjust so the symbol is centered in the display
+                target_position -= (symbol_height / 2)
+                target_position %= self.reel_surfaces[i].get_height()
+                self.target_positions[i] = target_position
+            else:
+                print(f"Symbol {symbol_name} not found on reel {i + 1}")
+                self.target_positions[i] = 0  # Default to position 0 if symbol not found
+
     def generate_numbers(self, state) -> List[str]:
         # Generate random values for each slot
         generated_values = [random.randint(1, 100) for _ in range(3)]
@@ -198,17 +218,24 @@ class SlotsBrogan(GambleScreen):
         if controller.isTPressed:
             controller.isTPressed = False
             if not any(self.reel_spinning):
+                # Generate the spin results before starting the spin
+                self.spin_results_generated = False  # Reset the flag
+                self.slots = self.generate_numbers(state)  # Generate symbols
+                print(f"Spin results: {self.slots}")
+
+                # Calculate target positions for each reel based on the generated symbols
+                self.calculate_target_positions(self.slots)
+
                 # Start spinning all reels
                 self.reel_spinning = [True, True, True]
                 self.spin_start_time = current_time  # Record the time when spinning started
                 self.last_update_time = current_time  # Reset last update time
-                self.spin_results_generated = False  # Reset the flag
 
                 # Set stop times for each reel
                 self.reel_stop_times = [
                     current_time + 3000,  # Reel 0 stops after 3 seconds
-                    current_time + 5000,  # Reel 1 stops after 5 seconds
-                    current_time + 8000  # Reel 2 stops after 8 seconds
+                    current_time + 4000,  # Reel 1 stops after 4 seconds
+                    current_time + 5000  # Reel 2 stops after 5 seconds
                 ]
 
         # Calculate delta_time before updating self.last_update_time
@@ -219,30 +246,24 @@ class SlotsBrogan(GambleScreen):
         for i in range(3):  # For each reel
             if self.reel_spinning[i]:
                 # Update the reel's position
-                self.reel_positions[i] -= self.spin_speed * delta_time
-                reel_height = self.reel_surfaces[i].get_height()
-                self.reel_positions[i] %= reel_height
+                self.reel_positions[i] = (self.reel_positions[i] - self.spin_speed * delta_time) % self.reel_surfaces[i].get_height()
 
                 # Check if it's time to stop this reel
                 if current_time >= self.reel_stop_times[i]:
-                    self.reel_spinning[i] = False  # Stop the reel
+                    # Stop the reel at the target position
+                    self.reel_spinning[i] = False
+                    self.reel_positions[i] = self.target_positions[i]
 
         # Update overall spinning state
         self.spinning = any(self.reel_spinning)
 
         # Check if all reels have stopped
         if not self.spinning and not self.spin_results_generated:
-            # All reels have stopped, generate and display the results
+            # All reels have stopped, proceed with any outcome logic
             self.spin_results_generated = True  # Set the flag to prevent re-running this block
 
-            # Generate the spin results
-            slots = self.generate_numbers(state)  # This returns the list of symbols
-
-            # Adjust the reels to stop on the generated symbols
-            self.adjust_reels_to_results(slots)
-
             # Print the results
-            print(f"Final spin results: {slots}")
+            print(f"Final spin results: {self.slots}")
 
             # Proceed with any outcome logic (e.g., checking for wins)
 
