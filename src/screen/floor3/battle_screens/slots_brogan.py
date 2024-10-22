@@ -3,7 +3,7 @@ from typing import Dict, Tuple, List, Optional
 
 import pygame
 
-from constants import WHITE, BLACK
+from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from game_constants.events import Events
@@ -30,6 +30,7 @@ class SlotsBrogan(GambleScreen):
         self.slot_hack_debuff: int = 0
         self.exp_gain_low:int = 10
         self.exp_gain_no_match: int= 5
+        self.bet = 100
         self.exp_gain_high: int= 50
 
 
@@ -53,17 +54,8 @@ class SlotsBrogan(GambleScreen):
 
         self.slot_3_magnet:bool = False
         self.slot_2_magnet:bool = False
-        # self.triple_bomb:bool = False
-        # self.triple_lucky_seven:bool = False
-        # self.triple_dice:bool = False
-        # self.triple_coin:bool = False
-        # self.triple_diamond:bool = False
-        # self.triple_crown:bool = False
-        # self.triple_chest:bool = False
-        # self.triple_cherry:bool = False
-        # self.triple_dice_six: bool = False
-        # self.triple_spin: bool = False
-        self.no_match:bool = False
+
+        self.no_match: bool = False
         self.player_coin_high_drain:int = 300
         self.player_coin_low_drain:int = 150
         self.player_coin_med_drain:int = 75
@@ -99,12 +91,6 @@ class SlotsBrogan(GambleScreen):
                 f"You didn't match 3 in a row."
             ]),
         }
-
-
-
-
-
-
 
         self.slot_images: Dict[str, pygame.Surface] = {
             "bomb": self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),
@@ -209,6 +195,8 @@ class SlotsBrogan(GambleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
+
 
         self.draw_grid_box(state)
 
@@ -633,47 +621,6 @@ class SlotsBrogan(GambleScreen):
             (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
         )
 
-    # def update_magic_menu_selection_box(self, controller, state):
-    #     if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
-    #         pass
-    #         # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
-    #         #
-    #         # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
-    #         # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-    #
-    #     elif self.magic_screen_choices[self.magic_index] == self.BACK:
-    #         pass
-    #         # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-    #         #
-    #         # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
-    #         # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
-    #
-    #     if controller.isUpPressed:
-    #         controller.isUpPressed = False
-    #         self.menu_movement_sound.play()
-    #         self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
-    #         print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
-    #     elif controller.isDownPressed:
-    #         controller.isDownPressed = False
-    #         self.menu_movement_sound.play()
-    #         self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
-    #         print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
-    #
-    #     if controller.isTPressed:
-    #         controller.isTPressed = False
-    #         if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
-    #             print("yes")
-    #             state.player.focus_points -= self.hack_cost
-    #             self.slot_hack_active = 5
-    #             self.spell_sound.play()  # Play the sound effect once
-    #             self.magic_lock = True
-    #             self.game_state = self.WELCOME_SCREEN
-    #             print(self.slot_hack_active)
-    #
-    #         elif self.magic_screen_choices[self.magic_index] == self.BACK:
-    #             self.magic_index = 0
-    #             self.game_state = self.WELCOME_SCREEN
-
 
     def bet_screen_helper(self, controller):
         print(self.bet)
@@ -832,14 +779,11 @@ class SlotsBrogan(GambleScreen):
     def generate_numbers(self, state) -> List[str]:
         # Generate random values for each slot
         generated_values = [random.randint(1, 100) for _ in range(3)]
-        print(f"Generated values: {generated_values}")
 
-        # if self.rib_stalker > 0:
-        # new slot _mapping
 
-        # if self.
 
-        # Define the slot mapping with symbols
+
+        #default
         slot_mapping = {
             range(1, 7): "bomb",
             range(7, 15): "dice",
@@ -852,6 +796,40 @@ class SlotsBrogan(GambleScreen):
             range(85, 95): "chest",
             range(95, 101): "lucky_seven",
         }
+        # rib demon stalker
+        if self.rib_stalker > 0:
+            slot_mapping = {
+                range(1, 15): "bomb",
+                range(15, 25): "dice",
+                range(25, 35): "coin",
+                range(27, 42): "cherry",
+                range(42, 54): "spin",
+                range(54, 101): "crown",
+            }
+        if self.lucky_strike > 0:
+            slot_mapping = {
+                range(1, 30): "cherry",
+                range(30, 40): "spin",
+                range(40, 50): "crown",
+                range(50, 60): "dice_six",
+                range(60, 70): "diamond",
+                range(70, 80): "chest",
+                range(80, 101): "lucky_seven",
+            }
+
+        if self.bet > 100 and self.rib_stalker == 0 and self.lucky_strike == 0:
+            slot_mapping = {
+                range(1, 7): "bomb",
+                range(7, 15): "dice",
+                range(15, 27): "coin",
+                range(27, 37): "cherry",
+                range(37, 45): "spin",
+                range(45, 55): "crown",
+                range(55, 66): "dice_six",
+                range(66, 75): "diamond",
+                range(75, 95): "chest",
+                range(95, 101): "lucky_seven",
+            }
 
         # Define a priority mapping for slot symbols
         symbol_priority = {
@@ -867,10 +845,7 @@ class SlotsBrogan(GambleScreen):
             "lucky_seven": 10
         }
 
-        # Now you can check the numeric value instead of the string
-
-        # Map the generated values to symbols
-        # Map the generated values to symbols
+        print(slot_mapping)
         slots = []
         for value in generated_values:
             for key in slot_mapping:
@@ -953,7 +928,6 @@ class SlotsBrogan(GambleScreen):
         self.triple_cherry: bool = False
         self.triple_dice_six: bool = False
         self.triple_spin: bool = False
-        self.no_match: bool = False
         # Reset the spin results flag so the reels can spin again
         self.spin_results_generated = False
 
@@ -976,7 +950,6 @@ class SlotsBrogan(GambleScreen):
         self.triple_cherry: bool = False
         self.triple_dice_six: bool = False
         self.triple_spin: bool = False
-        self.no_match: bool = False
         # Reset the spin results flag so the reels can spin again
         self.spin_results_generated = False
 
@@ -1044,6 +1017,42 @@ class SlotsBrogan(GambleScreen):
         if not any(self.reel_spinning):
             self.spinning = False  # Reels have stopped, no new spin will start
             self.game_state = self.RESULT_SCREEN
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
+        enemy_name_y_position = 33
+        phase_y_position = 108
+        choice_y_position = 148
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+        score_header = "Score"
+
+        if self.lucky_strike > 0:
+            state.DISPLAY.blit(self.font.render(f"LuckyStrike: {self.lucky_strike}", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position))
+        else:
+            state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+        if self.rib_stalker == 0:
+            state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
+        elif self.rib_stalker > 0:
+            state.DISPLAY.blit(self.font.render(f"Stalker: {self.rib_stalker}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
+
+
+
+
 
 
 
