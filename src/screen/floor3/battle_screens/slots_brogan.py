@@ -5,6 +5,7 @@ import pygame
 
 from constants import WHITE, BLACK
 from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
 from game_constants.events import Events
 from game_constants.magic import Magic
 
@@ -58,7 +59,7 @@ class SlotsBrogan(GambleScreen):
         # self.triple_cherry:bool = False
         # self.triple_dice_six: bool = False
         # self.triple_spin: bool = False
-        # self.no_match:bool = False
+        self.no_match:bool = False
         self.player_coin_high_drain:int = 300
         self.player_coin_low_drain:int = 150
         self.player_coin_med_drain:int = 75
@@ -68,6 +69,32 @@ class SlotsBrogan(GambleScreen):
         self.secret_item_found = False
 
         # Create a list of image keys to maintain order
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "Kee kee kee, you have some tasty looking ribs."
+            ]),
+
+            self.BET_MESSAGE: MessageBox([
+                "Increase your bet by +50, increase chance for item! Dont' forget to rest to 100 if you get a lucky strike."
+            ]),
+            self.MAGIC_MENU_HACK_DESCRIPTION: MessageBox([
+                "Attach a string to a coin."
+            ]),
+
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
+
+            self.PLAYER_WIN_MESSAGE: MessageBox([
+                "You won the toss!!!"
+            ]),
+            self.PLAYER_LOSE_MESSAGE: MessageBox([
+                "You lost the toss."
+            ]),
+            self.PLAYER_DRAW_MESSAGE: MessageBox([
+                f"You didn't match 3 in a row."
+            ]),
+        }
 
 
 
@@ -133,6 +160,19 @@ class SlotsBrogan(GambleScreen):
     SPIN_SCREEN: str = "spin_screen"
     RESULT_SCREEN: str = "result_screen"
     BACK: str = "Back"
+
+
+    PLAYER_WIN_MESSAGE: str = "player_win_message"
+    CHOOSE_SIDE_MESSAGE: str = "choose_side_message"
+    PLAYER_LOSE_MESSAGE: str = "player_lose_message"
+    PLAYER_DRAW_MESSAGE: str = "player_draw_message"
+    COIN_FLIP_MESSAGE: str = "coin_flip_message"
+    MAGIC_MENU_HACK_DESCRIPTION: str = "magic_menu_hack_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    BET_MESSAGE: str = "bet_message"
+    PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
+    ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
+    PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
 
     def adjust_reels_to_results(self, slots: List[str]):
         symbol_height = 70  # Height of each symbol image
@@ -393,11 +433,14 @@ class SlotsBrogan(GambleScreen):
 
         # Get current time once at the beginning
         if self.game_state == self.WELCOME_SCREEN:
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+            self.battle_messages[self.BET_MESSAGE].reset()
             self.welcome_screen_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.magic_menu_helper(state)
 
         elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].update(state)
             self.bet_screen_helper(controller)
         elif self.game_state == self.SPIN_SCREEN:
             self.spin_reels_helper(controller, state)
@@ -417,6 +460,8 @@ class SlotsBrogan(GambleScreen):
         self.draw_grid_box(state)
 
         if self.game_state == self.WELCOME_SCREEN:
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
 
@@ -424,7 +469,7 @@ class SlotsBrogan(GambleScreen):
             self.draw_magic_menu_selection_box_slots(state)
 
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.battle_messages[self.BET_MESSAGE].draw(state)
         elif self.game_state == self.SPIN_SCREEN:
             pass
         elif self.game_state == self.RESULT_SCREEN:
@@ -446,16 +491,12 @@ class SlotsBrogan(GambleScreen):
         pygame.display.flip()
 
     def draw_magic_menu_selection_box_slots(self, state):
-        # if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
-        #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
-        #
-        #
-        # elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
-        #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
-        #
-        #
-        # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-        #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
+            self.battle_messages[self.MAGIC_MENU_HACK_DESCRIPTION].draw(state)
+
+
+        elif self.magic_screen_choices[self.magic_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
 
 
         choice_spacing = 40
@@ -499,6 +540,14 @@ class SlotsBrogan(GambleScreen):
         )
 
     def magic_menu_helper(self, state):
+        if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
+            self.battle_messages[self.MAGIC_MENU_HACK_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+
+        elif self.magic_screen_choices[self.magic_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_HACK_DESCRIPTION].reset()
 
 
         controller = state.controller
@@ -542,8 +591,13 @@ class SlotsBrogan(GambleScreen):
         if controller.isTPressed:
             controller.isTPressed = False
             if self.slots == ["bomb", "bomb", "bomb"]:
-                state.player.stamina_points -= self.player_stamina_high_cost
-                state.player.money -= self.player_coin_high_drain
+                if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
+                    state.player.stamina_points -= self.player_stamina_high_cost
+                    state.player.money -= self.player_coin_high_drain
+
+                elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
+                    state.player.stamina_points -= self.player_stamina_low_cost
+                    state.player.money -= self.player_coin_high_drain
             elif self.slots == ["dice", "dice", "dice"]:
 
                 state.player.stamina_points -= self.player_stamina_low_cost
