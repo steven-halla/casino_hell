@@ -54,7 +54,7 @@ class SlotsBrogan(GambleScreen):
             "bomb": self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),
             "lucky_seven": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 52)),
             "dice": self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52)),
-            "coin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(35, 32, 70, 50)),
+            "coin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(95, 160, 58, 50)),
             "diamond": self.slot_images_sprite_sheet.subsurface(pygame.Rect(30, 170, 75, 52)),
             "crown": self.slot_images_sprite_sheet.subsurface(pygame.Rect(25, 280, 80, 52)),
             "chest": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 280, 75, 52)),
