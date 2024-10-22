@@ -25,6 +25,7 @@ class SlotsBrogan(GambleScreen):
         self.money: int = 1000
         self.slot_hack_active: int = 5
         self.slot_hack_inactive: int = 0
+        self.slot_hack_debuff: int = 0
 
 
         self.bet_screen_choices: list[str] = ["Back"]
@@ -47,17 +48,17 @@ class SlotsBrogan(GambleScreen):
 
         self.slot_3_magnet:bool = False
         self.slot_2_magnet:bool = False
-        self.triple_bomb:bool = False
-        self.triple_lucky_seven:bool = False
-        self.triple_dice:bool = False
-        self.triple_coin:bool = False
-        self.triple_diamond:bool = False
-        self.triple_crown:bool = False
-        self.triple_chest:bool = False
-        self.triple_cherry:bool = False
-        self.triple_dice_six: bool = False
-        self.triple_spin: bool = False
-        self.no_match:bool = False
+        # self.triple_bomb:bool = False
+        # self.triple_lucky_seven:bool = False
+        # self.triple_dice:bool = False
+        # self.triple_coin:bool = False
+        # self.triple_diamond:bool = False
+        # self.triple_crown:bool = False
+        # self.triple_chest:bool = False
+        # self.triple_cherry:bool = False
+        # self.triple_dice_six: bool = False
+        # self.triple_spin: bool = False
+        # self.no_match:bool = False
         self.player_coin_high_drain:int = 300
         self.player_coin_low_drain:int = 150
         self.player_coin_med_drain:int = 75
@@ -394,9 +395,10 @@ class SlotsBrogan(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            pass
+            self.magic_menu_helper(state)
+
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.bet_screen_helper(controller)
         elif self.game_state == self.SPIN_SCREEN:
             self.spin_reels_helper(controller, state)
 
@@ -419,7 +421,8 @@ class SlotsBrogan(GambleScreen):
             self.draw_welcome_screen_box_info(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            self.draw_magic_menu_selection_box(state)
+            self.draw_magic_menu_selection_box_slots(state)
+
         elif self.game_state == self.BET_SCREEN:
             pass
         elif self.game_state == self.SPIN_SCREEN:
@@ -431,7 +434,7 @@ class SlotsBrogan(GambleScreen):
             no_stamina_game_over = 0
             if state.player.money <= no_money_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
 
@@ -441,6 +444,98 @@ class SlotsBrogan(GambleScreen):
 
 
         pygame.display.flip()
+
+    def draw_magic_menu_selection_box_slots(self, state):
+        # if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+        #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
+        #
+        #
+        # elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+        #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
+        #
+        #
+        # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+        #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.magic_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def magic_menu_helper(self, state):
+
+
+        controller = state.controller
+
+        if controller.isUpPressed:
+            print(self.magic_index)
+
+            controller.isUpPressed = False
+            self.menu_movement_sound.play()
+            self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
+        elif controller.isDownPressed:
+            print(self.magic_index)
+
+
+            controller.isDownPressed = False
+            self.menu_movement_sound.play()
+            self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
+
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
+                state.player.focus_points -= self.hack_cost
+                self.slot_hack_debuff = 5
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.magic_index = 0
+
+                self.game_state = self.WELCOME_SCREEN
+            if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points < self.hack_cost:
+                print("Nope")
+
+
+            elif self.magic_screen_choices[self.magic_screen_index] == self.BACK:
+                self.magic_index = 0
+                self.game_state = self.WELCOME_SCREEN
+
+
 
     def update_result_helper(self, controller, state):
         self.jack_pot = 0
@@ -488,6 +583,7 @@ class SlotsBrogan(GambleScreen):
                 self.jack_pot = 500
                 state.player.money += self.jack_pot
 
+            self.reset_slots_round()
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -507,17 +603,16 @@ class SlotsBrogan(GambleScreen):
                 self.game_state = self.SPIN_SCREEN
                 state.player.stamina_points -= self.player_stamina_med_cost
 
-            elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False \
-                    and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
-                self.magic_screen_index = self.magic_screen_menu_lucky_seven_index
-                self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
+            elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
+                # self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
                 self.game_state = self.MAGIC_MENU_SCREEN
 
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
 
-            elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
-                self.reset_craps_game(state)
+            elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
+                print("for now we will do this later")
+                # self.reset_craps_game(state)
                 # state.current_player = state.area3GamblingScreen
                 # state.area3GamblingScreen.start(state)
 
@@ -618,55 +713,56 @@ class SlotsBrogan(GambleScreen):
             (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
         )
 
-    def update_magic_menu_selection_box(self, controller, state):
-        if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
-            pass
-            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
-            #
-            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
-            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-
-        elif self.magic_screen_choices[self.magic_index] == self.BACK:
-            pass
-            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-            #
-            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
-            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
-
-        if controller.isUpPressed:
-            controller.isUpPressed = False
-            self.menu_movement_sound.play()
-            self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
-            print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
-        elif controller.isDownPressed:
-            controller.isDownPressed = False
-            self.menu_movement_sound.play()
-            self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
-            print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
-
-        if controller.isTPressed:
-            controller.isTPressed = False
-            if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
-                print("yes")
-                state.player.focus_points -= self.hack_cost
-                self.slot_hack_active = 5
-                self.spell_sound.play()  # Play the sound effect once
-                self.magic_lock = True
-                self.game_state = self.WELCOME_SCREEN
-                print(self.slot_hack_active)
-
-            elif self.magic_screen_choices[self.magic_index] == self.BACK:
-                self.magic_index = 0
-                self.game_state = self.WELCOME_SCREEN
+    # def update_magic_menu_selection_box(self, controller, state):
+    #     if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
+    #         pass
+    #         # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].update(state)
+    #         #
+    #         # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+    #         # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+    #
+    #     elif self.magic_screen_choices[self.magic_index] == self.BACK:
+    #         pass
+    #         # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+    #         #
+    #         # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+    #         # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+    #
+    #     if controller.isUpPressed:
+    #         controller.isUpPressed = False
+    #         self.menu_movement_sound.play()
+    #         self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
+    #         print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
+    #     elif controller.isDownPressed:
+    #         controller.isDownPressed = False
+    #         self.menu_movement_sound.play()
+    #         self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
+    #         print(f"Current Magic Menu Selector: {self.magic_screen_choices[self.magic_screen_index]}")
+    #
+    #     if controller.isTPressed:
+    #         controller.isTPressed = False
+    #         if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
+    #             print("yes")
+    #             state.player.focus_points -= self.hack_cost
+    #             self.slot_hack_active = 5
+    #             self.spell_sound.play()  # Play the sound effect once
+    #             self.magic_lock = True
+    #             self.game_state = self.WELCOME_SCREEN
+    #             print(self.slot_hack_active)
+    #
+    #         elif self.magic_screen_choices[self.magic_index] == self.BACK:
+    #             self.magic_index = 0
+    #             self.game_state = self.WELCOME_SCREEN
 
 
     def bet_screen_helper(self, controller):
+        print(self.bet)
         if controller.isBPressed:
             controller.isBPressed = False
             self.game_state = self.WELCOME_SCREEN
-        min_bet = 50
-        bet_step = 25
-        max_bet = 100
+        min_bet = 100
+        bet_step = 50
+        max_bet = 150
         if controller.isUpPressed:
             controller.isUpPressed = False
             self.menu_movement_sound.play()  # Play the sound effect once
