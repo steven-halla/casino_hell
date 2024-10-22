@@ -39,6 +39,7 @@ class SlotsBrogan(GambleScreen):
         self.player_stamina_high_cost: int = 10  # useing higher bet option
         self.lock_down_inactive: int = 0
         self.index_stepper = 1
+        self.spin_results_generated = False  # Initialize the flag
 
         # Create a list of image keys to maintain order
 
@@ -59,6 +60,7 @@ class SlotsBrogan(GambleScreen):
             "dice_six": self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 210, 50, 58)),
             "spin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 58)),
         }
+
         self.slot_image_keys: List[str] = list(self.slot_images.keys())
 
 
@@ -71,10 +73,14 @@ class SlotsBrogan(GambleScreen):
         self.slot3: List[int] = [0, 0, 0]
         self.grid_positions: List[Tuple[int, int]] = []
         # Create reel surfaces
+        # Initialize reel surfaces and symbol names
         self.reel_surfaces: List[pygame.Surface] = []
+        self.reel_symbol_names: List[List[str]] = []  # Stores the symbol order for each reel
+
         for _ in range(3):  # Three reels
-            reel_surface = self.create_reel_surface()
+            reel_surface, symbol_names = self.create_reel_surface()
             self.reel_surfaces.append(reel_surface)
+            self.reel_symbol_names.append(symbol_names)
 
         # Reel positions to control vertical movement
         self.reel_positions: List[float] = [0.0, 0.0, 0.0]
@@ -96,11 +102,60 @@ class SlotsBrogan(GambleScreen):
         # Set the spin speed (assuming a constant speed)
         self.spin_speed: float = 400.0  # Pixels per second
 
+
     SPIN_SCREEN: str = "spin_screen"
     RESULT_SCREEN: str = "result_screen"
     BACK: str = "Back"
 
-    def create_reel_surface(self) -> pygame.Surface:
+    def adjust_reels_to_results(self, slots: List[str]):
+        symbol_height = 80  # Height of each symbol image
+        for i in range(3):  # For each reel
+            symbol_name = slots[i]
+            # Find the index of the symbol on the reel
+            if symbol_name in self.reel_symbol_names[i]:
+                symbol_index = self.reel_symbol_names[i].index(symbol_name)
+                # Calculate the reel position to align the symbol in the display
+                self.reel_positions[i] = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
+                # Adjust so the symbol is centered in the display
+                self.reel_positions[i] -= (symbol_height / 2)
+                self.reel_positions[i] %= self.reel_surfaces[i].get_height()
+            else:
+                print(f"Symbol {symbol_name} not found on reel {i + 1}")
+
+    def generate_numbers(self, state) -> List[str]:
+        # Generate random values for each slot
+        generated_values = [random.randint(1, 100) for _ in range(3)]
+        print(f"Generated values: {generated_values}")
+
+        # Define the slot mapping with symbols
+        slot_mapping = {
+            range(1, 7): "bomb",
+            range(7, 15): "lucky_seven",
+            range(15, 27): "dice",
+            range(27, 42): "coin",
+            range(42, 54): "diamond",
+            range(54, 66): "crown",
+            range(66, 76): "chest",
+            range(76, 85): "cherry",
+            range(85, 95): "dice_six",
+            range(95, 101): "spin",
+        }
+
+        # Map the generated values to symbols
+        slots = []
+        for value in generated_values:
+            for key in slot_mapping:
+                if value in key:
+                    slots.append(slot_mapping[key])
+                    break
+            else:
+                # Default symbol in case no range matches
+                slots.append("bomb")  # Or any default symbol you prefer
+
+        print(f"Slot results: {slots}")
+        return slots  # Return the list of symbols
+
+    def create_reel_surface(self) -> Tuple[pygame.Surface, List[str]]:
         # Use the same order of images for all reels
         image_keys = self.slot_image_keys.copy()
         # Optionally shuffle if desired
@@ -120,7 +175,7 @@ class SlotsBrogan(GambleScreen):
             resized_image = pygame.transform.scale(image, (box_width, box_height))
             reel_surface.blit(resized_image, (0, idx * box_height))
 
-        return reel_surface
+        return reel_surface, image_keys  # Return the surface and the list of symbols
 
     def start(self, state: 'GameState'):
         pass
@@ -147,6 +202,7 @@ class SlotsBrogan(GambleScreen):
                 self.reel_spinning = [True, True, True]
                 self.spin_start_time = current_time  # Record the time when spinning started
                 self.last_update_time = current_time  # Reset last update time
+                self.spin_results_generated = False  # Reset the flag
 
                 # Set stop times for each reel
                 self.reel_stop_times = [
@@ -172,22 +228,23 @@ class SlotsBrogan(GambleScreen):
                     self.reel_spinning[i] = False  # Stop the reel
 
         # Update overall spinning state
-        # Update overall spinning state
         self.spinning = any(self.reel_spinning)
 
         # Check if all reels have stopped
-        if not self.spinning and any(self.reel_stop_times):  # Ensure this runs only once after reels stop
-            # All reels have stopped, calculate and print the symbols
-            symbol_height = 80  # Height of each symbol image
-            box_height = 80  # Height of the displayed box
-            total_symbols = len(self.slot_image_keys)
+        if not self.spinning and not self.spin_results_generated:
+            # All reels have stopped, generate and display the results
+            self.spin_results_generated = True  # Set the flag to prevent re-running this block
 
-            for i in range(3):  # For each reel
-                reel_position = self.reel_positions[i] % self.reel_surfaces[i].get_height()
-                center_position = reel_position + (box_height / 2)
-                symbol_index = int(center_position // symbol_height) % total_symbols
-                symbol_name = self.slot_image_keys[symbol_index]
-                print(f"Reel {i + 1} stopped on: {symbol_name}")
+            # Generate the spin results
+            slots = self.generate_numbers(state)  # This returns the list of symbols
+
+            # Adjust the reels to stop on the generated symbols
+            self.adjust_reels_to_results(slots)
+
+            # Print the results
+            print(f"Final spin results: {slots}")
+
+            # Proceed with any outcome logic (e.g., checking for wins)
 
     def draw(self, state):
         super().draw(state)
