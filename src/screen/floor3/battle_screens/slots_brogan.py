@@ -226,7 +226,8 @@ class SlotsBrogan(GambleScreen):
         elif self.game_state == self.SPIN_SCREEN:
             pass
         elif self.game_state == self.RESULT_SCREEN:
-            pass
+            self.battle_messages[self.PLAYER_DRAW_MESSAGE].draw(state)
+
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
@@ -364,16 +365,16 @@ class SlotsBrogan(GambleScreen):
 
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
-                state.player.exp += self.exp_gain_med
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_med} exp"]
+                state.player.exp += self.exp_gain_low
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_low} exp"]
 
             elif self.slots == ["coin", "coin", "coin"]:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_med_drain
                 self.rib_stalker = 5
-                state.player.exp += self.exp_gain_med
+                state.player.exp += self.exp_gain_low
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_med} exp"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
 
 
 
@@ -438,6 +439,7 @@ class SlotsBrogan(GambleScreen):
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
 
             elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
+                print("dlsalf;j;dlsajfjsalflsajfdsljlsaf;aslf;asfa;;ldsa")
                 state.player.exp += self.exp_gain_no_match
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"No matches.  Gain {self.exp_gain_no_match} exp"]
 
