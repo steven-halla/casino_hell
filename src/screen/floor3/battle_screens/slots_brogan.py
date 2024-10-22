@@ -224,12 +224,6 @@ class SlotsBrogan(GambleScreen):
             elif state.player.stamina_points <= no_stamina_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
-
-        # Set the coordinates for the sprite
-
-        # self.draw_slot_images(state)
-
-
         pygame.display.flip()
 
     def draw_magic_menu_selection_box_slots(self, state):
@@ -856,10 +850,26 @@ class SlotsBrogan(GambleScreen):
                 # Default symbol in case no range matches
                 slots.append("bomb")  # Or any default symbol you prefer
 
+        if symbol_priority[slots[0]] == 0 and self.rib_stalker > 0:
+            if random.randint(1, 100) <= 50:   # Adjusted chance
+                print("Im ribbing active")
+                self.slot_2_magnet = True
+                slots[1] = slots[0]  # Match slot 2 to slot 1
+            else:
+                self.slot_2_magnet = False
+
+            if random.randint(1, 100) <= 75:
+                print("Im ribbing active")
+                self.slot_3_magnet = True
+                slots[2] = slots[0]  # Match slot 3 to slot 1
+            else:
+                self.slot_3_magnet = False
+
+
         slot_2_luck_bonus = 0
 
         print(f"Slot results: {slots}")
-        if symbol_priority[slots[0]] > 2:  # Use symbol's priority for comparison
+        if symbol_priority[slots[0]] > 3:  # Use symbol's priority for comparison
             for luck in range(state.player.luck):
                 slot_2_luck_bonus += 2
 
