@@ -26,7 +26,7 @@ class DiceFighterSirSiegfried(GambleScreen):
     PLAYER_WIN_SCREEN: str = "player_win_screen"
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
 
-    def start(self):
+    def start(self, state: 'GameState'):
         pass
     def restart_dice_fighter_game(self):
         pass
@@ -34,12 +34,18 @@ class DiceFighterSirSiegfried(GambleScreen):
         pass
 
     def update(self, state):
-        pass
+        super().update(state)
+        controller = state.controller
+        controller.update()
+        state.player.update(state)
     def draw(self, state):
-        pass
+        super().draw(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
+        self.draw_bottom_black_box(state)
 
 
-
+        pygame.display.flip()
 
 
 
