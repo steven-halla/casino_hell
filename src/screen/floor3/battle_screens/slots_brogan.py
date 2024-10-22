@@ -101,9 +101,10 @@ class SlotsBrogan(GambleScreen):
     BACK: str = "Back"
 
     def create_reel_surface(self) -> pygame.Surface:
-        # Randomize the order of images for the reel
+        # Use the same order of images for all reels
         image_keys = self.slot_image_keys.copy()
-        random.shuffle(image_keys)
+        # Optionally shuffle if desired
+        # random.shuffle(image_keys)
 
         # Calculate the total height of the reel surface
         box_width, box_height = 80, 80  # Same as in draw_grid_box
@@ -144,28 +145,19 @@ class SlotsBrogan(GambleScreen):
             if not any(self.reel_spinning):
                 # Start spinning all reels
                 self.reel_spinning = [True, True, True]
-                current_time = pygame.time.get_ticks()
                 self.spin_start_time = current_time  # Record the time when spinning started
                 self.last_update_time = current_time  # Reset last update time
 
                 # Set stop times for each reel
                 self.reel_stop_times = [
                     current_time + 3000,  # Reel 0 stops after 3 seconds
-                    current_time + 4000,  # Reel 1 stops after 4 seconds
-                    current_time + 5000  # Reel 2 stops after 5 seconds
+                    current_time + 5000,  # Reel 1 stops after 5 seconds
+                    current_time + 8000  # Reel 2 stops after 8 seconds
                 ]
 
-        # Update spin speed
-        # if self.spinning:
-        #     elapsed_time = (current_time - self.spin_start_time) / 1000.0  # In seconds
-        #     # Decrease spin speed over time
-        #     self.spin_speed = max(0.0, self.initial_spin_speed - self.spin_speed_decrement * elapsed_time)
-        #     if self.spin_speed == 0.0:
-        #         self.spinning = False  # Stop spinning when speed reaches zero
-
-        current_time = pygame.time.get_ticks()
+        # Calculate delta_time before updating self.last_update_time
         delta_time = (current_time - self.last_update_time) / 1000.0  # Convert milliseconds to seconds
-        self.last_update_time = current_time
+        self.last_update_time = current_time  # Update after calculating delta_time
 
         # Update reel positions and check for stopping
         for i in range(3):  # For each reel
@@ -179,34 +171,23 @@ class SlotsBrogan(GambleScreen):
                 if current_time >= self.reel_stop_times[i]:
                     self.reel_spinning[i] = False  # Stop the reel
 
-        # Other game state updates...
-        if self.game_state == self.WELCOME_SCREEN:
-            self.update_welcome_screen_logic(controller)
-        elif self.game_state == self.MAGIC_MENU_SCREEN:
-            self.update_magic_menu_selection_box(controller, state)
-        elif self.game_state == self.BET_SCREEN:
-            self.bet_screen_helper(controller)
-        elif self.game_state == self.SPIN_SCREEN:
-            pass
-        elif self.game_state == self.RESULT_SCREEN:
-            pass
-        elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-
-            if state.player.money <= no_money_game_over:
-                if controller.isTPressed:
-                    controller.isTPressed = False
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-            elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed:
-                    controller.isTPressed = False
-                    self.reset_slots_game()
-                    state.player.money -= 100
+        # Update overall spinning state
         # Update overall spinning state
         self.spinning = any(self.reel_spinning)
 
+        # Check if all reels have stopped
+        if not self.spinning and any(self.reel_stop_times):  # Ensure this runs only once after reels stop
+            # All reels have stopped, calculate and print the symbols
+            symbol_height = 80  # Height of each symbol image
+            box_height = 80  # Height of the displayed box
+            total_symbols = len(self.slot_image_keys)
+
+            for i in range(3):  # For each reel
+                reel_position = self.reel_positions[i] % self.reel_surfaces[i].get_height()
+                center_position = reel_position + (box_height / 2)
+                symbol_index = int(center_position // symbol_height) % total_symbols
+                symbol_name = self.slot_image_keys[symbol_index]
+                print(f"Reel {i + 1} stopped on: {symbol_name}")
 
     def draw(self, state):
         super().draw(state)
