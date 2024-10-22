@@ -601,7 +601,15 @@ class SlotsBrogan(GambleScreen):
                 print("HYes")
 
                 self.game_state = self.SPIN_SCREEN
-                state.player.stamina_points -= self.player_stamina_med_cost
+                if self.slot_hack_debuff == self.slot_hack_inactive:
+                    state.player.stamina_points -= self.player_stamina_med_cost
+                    state.player.money -= self.bet
+
+                elif self.slot_hack_debuff > self.slot_hack_inactive:
+                    state.player.stamina_points -= self.player_stamina_med_cost
+                    print("your spell is active for a freeby")
+                    if self.bet > 100:
+                        state.player.money -= 50
 
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
                 # self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
