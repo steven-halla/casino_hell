@@ -207,6 +207,7 @@ class SlotsBrogan(GambleScreen):
         # Update overall spinning state
         self.spinning = any(self.reel_spinning)
 
+
     def draw(self, state):
         super().draw(state)
         self.draw_hero_info_boxes(state)
@@ -250,13 +251,13 @@ class SlotsBrogan(GambleScreen):
         box_width, box_height = 80, 80
         line_thickness = 2
         grid_columns = 3
-        images_to_show = 3  # Number of boxes vertically to display
+        images_to_show = 1  # Change this from 3 to 1 to display only one row
 
         total_grid_width = box_width * grid_columns + line_thickness * (grid_columns - 1)
         total_grid_height = box_height * images_to_show + line_thickness * (images_to_show - 1)
 
         start_x = (screen_width - total_grid_width) // 2
-        start_y = (screen_height - total_grid_height) // 2
+        start_y = (screen_height - box_height) // 2  # Center the single row vertically
 
         for i in range(3):  # For each reel
             reel_surface = self.reel_surfaces[i]
@@ -264,17 +265,17 @@ class SlotsBrogan(GambleScreen):
 
             # Calculate the area of the reel to display
             reel_y_pos = self.reel_positions[i] % reel_height
-            rect = pygame.Rect(0, reel_y_pos, box_width, box_height * images_to_show)
+            rect = pygame.Rect(0, reel_y_pos, box_width, box_height)
 
-            # If the rect goes beyond the reel height, we need to stitch the images
-            if reel_y_pos + box_height * images_to_show > reel_height:
+            # If the rect goes beyond the reel height, we need to wrap around
+            if reel_y_pos + box_height > reel_height:
                 upper_part_height = reel_height - reel_y_pos
-                lower_part_height = (box_height * images_to_show) - upper_part_height
+                lower_part_height = box_height - upper_part_height
 
                 upper_part = reel_surface.subsurface(pygame.Rect(0, reel_y_pos, box_width, upper_part_height))
                 lower_part = reel_surface.subsurface(pygame.Rect(0, 0, box_width, lower_part_height))
 
-                combined_surface = pygame.Surface((box_width, box_height * images_to_show)).convert_alpha()
+                combined_surface = pygame.Surface((box_width, box_height)).convert_alpha()
                 combined_surface.blit(upper_part, (0, 0))
                 combined_surface.blit(lower_part, (0, upper_part_height))
             else:
@@ -286,11 +287,8 @@ class SlotsBrogan(GambleScreen):
 
             state.DISPLAY.blit(combined_surface, (box_x, box_y))
 
-            # Draw the white lines around the boxes
-            for j in range(images_to_show):
-                rect_x = box_x
-                rect_y = box_y + j * (box_height + line_thickness)
-                pygame.draw.rect(state.DISPLAY, (255, 255, 255), (rect_x, rect_y, box_width, box_height), line_thickness)
+            # Draw the white rectangle around the box
+            pygame.draw.rect(state.DISPLAY, (255, 255, 255), (box_x, box_y, box_width, box_height), line_thickness)
 
     def draw_magic_menu_selection_box(self, state):
         if self.magic_screen_choices[self.magic_screen_index] == Magic.SLOTS_HACK.value:
