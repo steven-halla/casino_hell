@@ -40,8 +40,22 @@ class SlotsBrogan(GambleScreen):
         self.player_stamina_med_cost: int = 5
         self.player_stamina_high_cost: int = 10  # useing higher bet option
         self.lock_down_inactive: int = 0
-        self.index_stepper = 1
-        self.spin_results_generated = False  # Initialize the flag
+        self.index_stepper:int = 1
+        self.spin_results_generated:bool = False  # Initialize the flag
+
+        self.slot_3_magnet:bool = False
+        self.slot_2_magnet:bool = False
+        self.triple_bomb:bool = False
+        self.triple_lucky_seven:bool = False
+        self.triple_dice:bool = False
+        self.triple_coin:bool = False
+        self.triple_diamond:bool = False
+        self.triple_crown:bool = False
+        self.triple_chest:bool = False
+        self.triple_cherry:bool = False
+        self.triple_dice_six: bool = False
+        self.triple_spin: bool = False
+        self.no_match:bool = False
 
         # Create a list of image keys to maintain order
 
@@ -150,17 +164,35 @@ class SlotsBrogan(GambleScreen):
         # Define the slot mapping with symbols
         slot_mapping = {
             range(1, 7): "bomb",
-            range(7, 15): "lucky_seven",
-            range(15, 27): "dice",
-            range(27, 42): "coin",
-            range(42, 54): "diamond",
+            range(7, 15): "dice",
+            range(15, 27): "coin",
+            range(27, 42): "cherry",
+            range(42, 54): "spin",
             range(54, 66): "crown",
-            range(66, 76): "chest",
-            range(76, 85): "cherry",
-            range(85, 95): "dice_six",
-            range(95, 101): "spin",
+            range(66, 76): "dice_six",
+            range(76, 85): "diamond",
+            range(85, 95): "chest",
+            range(95, 101): "lucky_seven",
         }
 
+        # Define a priority mapping for slot symbols
+        symbol_priority = {
+            "bomb": 1,
+            "dice": 2,
+            "coin": 3,
+            "cherry": 4,
+            "spin": 5,
+            "crown": 6,
+            "dice_six": 7,
+            "diamond": 8,
+            "chest": 9,
+            "lucky_seven": 10
+        }
+
+        # Now you can check the numeric value instead of the string
+
+
+        # Map the generated values to symbols
         # Map the generated values to symbols
         slots = []
         for value in generated_values:
@@ -172,9 +204,38 @@ class SlotsBrogan(GambleScreen):
                 # Default symbol in case no range matches
                 slots.append("bomb")  # Or any default symbol you prefer
 
-        print(f"Slot results: {slots}")
-        return slots  # Return the list of symbols
+        slot_2_luck_bonus = 0
 
+        print(f"Slot results: {slots}")
+        if symbol_priority[slots[0]] > 2:  # Use symbol's priority for comparison
+            for luck in range(state.player.luck):
+                slot_2_luck_bonus += 2
+
+        if random.randint(1, 100) <= 50 + slot_2_luck_bonus:  # Adjusted chance
+            print("Im active")
+            self.slot_2_magnet = True
+            slots[1] = slots[0]  # Match slot 2 to slot 1
+        else:
+            self.slot_2_magnet = False
+
+        print(f"Slot results: {slots}")
+
+        slot_3_luck_bonus = 0
+
+        if symbol_priority[slots[0]] > 2:  # Same logic for slot 3
+            for luck in range(state.player.luck):
+                slot_3_luck_bonus += 2
+
+        if random.randint(1, 100) <= 40 + slot_3_luck_bonus:
+            print("Im active")
+            self.slot_3_magnet = True
+            slots[2] = slots[0]  # Match slot 3 to slot 1
+        else:
+            self.slot_3_magnet = False
+
+        print(f"Slot results: {slots}")
+
+        return slots  # Return the list of symbols
     def create_reel_surface(self) -> Tuple[pygame.Surface, List[str]]:
         # Use the same order of images for all reels
         image_keys = self.slot_image_keys.copy()
