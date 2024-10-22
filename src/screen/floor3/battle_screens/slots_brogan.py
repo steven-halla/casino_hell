@@ -9,6 +9,7 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.events import Events
 from game_constants.magic import Magic
 
+# spell: rib lock on : roll 6 times, take 25 damage per successful hit
 
 class SlotsBrogan(GambleScreen):
     def __init__(self, screenName: str = "Slots") -> None:
@@ -22,11 +23,14 @@ class SlotsBrogan(GambleScreen):
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.magic_screen_choices: list[str] = []
-        self.hack_cost = 75
+        self.hack_cost:int = 75
         self.money: int = 1000
         self.slot_hack_active: int = 5
         self.slot_hack_inactive: int = 0
         self.slot_hack_debuff: int = 0
+        self.exp_gain_low:int = 10
+        self.exp_gain_no_match: int= 5
+        self.exp_gain_high: int= 50
 
 
         self.bet_screen_choices: list[str] = ["Back"]
@@ -40,9 +44,9 @@ class SlotsBrogan(GambleScreen):
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.brogan_bankrupt: int = 0
-        self.player_stamina_med_cost: int = 10
-        self.player_stamina_high_cost: int = 50  # useing higher bet option
         self.player_stamina_low_cost: int = 25
+        self.player_stamina_high_cost: int = 75  # useing higher bet option
+        self.player_stamina_med_cost: int = 50
         self.lock_down_inactive: int = 0
         self.index_stepper:int = 1
         self.spin_results_generated:bool = False  # Initialize the flag
@@ -174,256 +178,6 @@ class SlotsBrogan(GambleScreen):
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
 
-    def adjust_reels_to_results(self, slots: List[str]):
-        symbol_height = 70  # Height of each symbol image
-        for i in range(3):  # For each reel
-            symbol_name = slots[i]
-            # Find the index of the symbol on the reel
-            if symbol_name in self.reel_symbol_names[i]:
-                symbol_index = self.reel_symbol_names[i].index(symbol_name)
-                # Calculate the reel position to align the symbol in the display
-                self.reel_positions[i] = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
-                # Adjust so the symbol is centered in the display
-                self.reel_positions[i] -= (symbol_height / 2 + 90)
-                self.reel_positions[i] %= self.reel_surfaces[i].get_height()
-            else:
-                print(f"Symbol {symbol_name} not found on reel {i + 1}")
-
-    def calculate_target_positions(self, slots: List[str]):
-        symbol_height = 80  # Height of each symbol image
-        self.target_positions = [0.0, 0.0, 0.0]  # Initialize target positions for each reel
-        for i in range(3):  # For each reel
-            symbol_name = slots[i]
-            # Find the index of the symbol on the reel
-            if symbol_name in self.reel_symbol_names[i]:
-                symbol_index = self.reel_symbol_names[i].index(symbol_name)
-                # Calculate the target position to align the symbol in the display
-                target_position = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
-                # Adjust so the symbol is centered in the display
-                target_position -= (symbol_height / 2 - 40)
-                target_position %= self.reel_surfaces[i].get_height()
-                self.target_positions[i] = target_position
-            else:
-                print(f"Symbol {symbol_name} not found on reel {i + 1}")
-                self.target_positions[i] = 0  # Default to position 0 if symbol not found
-
-    def generate_numbers(self, state) -> List[str]:
-        # Generate random values for each slot
-        generated_values = [random.randint(1, 100) for _ in range(3)]
-        print(f"Generated values: {generated_values}")
-
-        # if self.rib_stalker > 0:
-        # new slot _mapping
-
-        # if self.
-
-        # Define the slot mapping with symbols
-        slot_mapping = {
-            range(1, 7): "bomb",
-            range(7, 15): "dice",
-            range(15, 27): "coin",
-            range(27, 42): "cherry",
-            range(42, 54): "spin",
-            range(54, 66): "crown",
-            range(66, 76): "dice_six",
-            range(76, 85): "diamond",
-            range(85, 95): "chest",
-            range(95, 101): "lucky_seven",
-        }
-
-        # Define a priority mapping for slot symbols
-        symbol_priority = {
-            "bomb": 1,
-            "dice": 2,
-            "coin": 3,
-            "cherry": 4,
-            "spin": 5,
-            "crown": 6,
-            "dice_six": 7,
-            "diamond": 8,
-            "chest": 9,
-            "lucky_seven": 10
-        }
-
-        # Now you can check the numeric value instead of the string
-
-
-        # Map the generated values to symbols
-        # Map the generated values to symbols
-        slots = []
-        for value in generated_values:
-            for key in slot_mapping:
-                if value in key:
-                    slots.append(slot_mapping[key])
-                    break
-            else:
-                # Default symbol in case no range matches
-                slots.append("bomb")  # Or any default symbol you prefer
-
-        slot_2_luck_bonus = 0
-
-        print(f"Slot results: {slots}")
-        if symbol_priority[slots[0]] > 2:  # Use symbol's priority for comparison
-            for luck in range(state.player.luck):
-                slot_2_luck_bonus += 2
-
-        if random.randint(1, 100) <= 50 + slot_2_luck_bonus:  # Adjusted chance
-            print("Im active")
-            self.slot_2_magnet = True
-            slots[1] = slots[0]  # Match slot 2 to slot 1
-        else:
-            self.slot_2_magnet = False
-
-        print(f"Slot results: {slots}")
-
-        slot_3_luck_bonus = 0
-
-        if symbol_priority[slots[0]] > 2:  # Same logic for slot 3
-            for luck in range(state.player.luck):
-                slot_3_luck_bonus += 2
-
-        if random.randint(1, 100) <= 40 + slot_3_luck_bonus:
-            print("Im active")
-            self.slot_3_magnet = True
-            slots[2] = slots[0]  # Match slot 3 to slot 1
-        else:
-            self.slot_3_magnet = False
-
-        print(f"Slot results: {slots}")
-
-        return slots  # Return the list of symbols
-    def create_reel_surface(self) -> Tuple[pygame.Surface, List[str]]:
-        # Use the same order of images for all reels
-        image_keys = self.slot_image_keys.copy()
-        # Optionally shuffle if desired
-        # random.shuffle(image_keys)
-
-        # Calculate the total height of the reel surface
-        box_width, box_height = 80, 80  # Same as in draw_grid_box
-        reel_height = box_height * len(image_keys)
-
-        # Create the reel surface
-        reel_surface = pygame.Surface((box_width, reel_height)).convert_alpha()
-        reel_surface.fill((0, 0, 0, 0))  # Transparent background
-
-        # Blit each image onto the reel surface
-        for idx, key in enumerate(image_keys):
-            image = self.slot_images[key]
-            resized_image = pygame.transform.scale(image, (box_width, box_height))
-            reel_surface.blit(resized_image, (0, idx * box_height))
-
-        return reel_surface, image_keys  # Return the surface and the list of symbols
-
-    def start(self, state: 'GameState'):
-        if Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED.value in state.player.level_three_npc_state:
-            self.secret_item_found = True
-
-    def reset_slots_game(self):
-        self.slot_3_magnet: bool = False
-        self.slot_2_magnet: bool = False
-        self.triple_bomb: bool = False
-        self.triple_lucky_seven: bool = False
-        self.triple_dice: bool = False
-        self.triple_coin: bool = False
-        self.triple_diamond: bool = False
-        self.triple_crown: bool = False
-        self.triple_chest: bool = False
-        self.triple_cherry: bool = False
-        self.triple_dice_six: bool = False
-        self.triple_spin: bool = False
-        self.no_match: bool = False
-        # Reset the spin results flag so the reels can spin again
-        self.spin_results_generated = False
-
-        # Reset reel spinning state
-        self.reel_spinning = [False, False, False]
-        self.lucky_strike:int = 0
-
-        self.rib_stalker: int = 0
-
-
-
-    def reset_slots_round(self):
-        self.slot_3_magnet: bool = False
-        self.slot_2_magnet: bool = False
-        self.triple_bomb: bool = False
-        self.triple_lucky_seven: bool = False
-        self.triple_dice: bool = False
-        self.triple_coin: bool = False
-        self.triple_diamond: bool = False
-        self.triple_crown: bool = False
-        self.triple_chest: bool = False
-        self.triple_cherry: bool = False
-        self.triple_dice_six: bool = False
-        self.triple_spin: bool = False
-        self.no_match: bool = False
-        # Reset the spin results flag so the reels can spin again
-        self.spin_results_generated = False
-
-        # Reset reel spinning state
-        self.reel_spinning = [False, False, False]
-        if self.rib_stalker > 0:
-            self.rib_stalker -= 1
-        if self.lucky_strike > 0:
-            self.lucky_strike -= 1
-
-    def spin_reels_helper(self, controller, state):
-        # Get current time once at the beginning
-        current_time = pygame.time.get_ticks()
-
-        # Only start spinning if reels aren't spinning and results haven't been generated
-        if not any(self.reel_spinning) and not self.spin_results_generated:
-            # Generate the spin results before starting the spin
-            self.spin_results_generated = False  # Reset the flag
-            self.slots = self.generate_numbers(state)  # Generate symbols
-            print(f"Spin results: {self.slots}")
-
-            # Calculate target positions for each reel based on the generated symbols
-            self.calculate_target_positions(self.slots)
-
-            # Start spinning all reels
-            self.reel_spinning = [True, True, True]
-            self.spin_start_time = current_time  # Record the time when spinning started
-            self.last_update_time = current_time  # Reset last update time
-
-            # Set stop times for each reel
-            self.reel_stop_times = [
-                current_time + 3000,  # Reel 0 stops after 3 seconds
-                current_time + 4000,  # Reel 1 stops after 4 seconds
-                current_time + 5000  # Reel 2 stops after 5 seconds
-            ]
-
-        # Calculate delta_time before updating self.last_update_time
-        delta_time = (current_time - self.last_update_time) / 1000.0  # Convert milliseconds to seconds
-        self.last_update_time = current_time  # Update after calculating delta_time
-
-        # Update reel positions and check for stopping
-        for i in range(3):  # For each reel
-            if self.reel_spinning[i]:
-                # Update the reel's position
-                self.reel_positions[i] = (self.reel_positions[i] - self.spin_speed * delta_time) % self.reel_surfaces[i].get_height()
-
-                # Check if it's time to stop this reel
-                if current_time >= self.reel_stop_times[i]:
-                    # Stop the reel at the target position
-                    self.reel_spinning[i] = False
-                    self.reel_positions[i] = self.target_positions[i]
-
-        # Update overall spinning state
-        self.spinning = any(self.reel_spinning)
-
-        # Check if all reels have stopped
-        if not any(self.reel_spinning) and not self.spin_results_generated:
-            # All reels have stopped, proceed with any outcome logic
-            self.spin_results_generated = True  # Set the flag to prevent re-running this block
-
-            # Print the results
-            print(f"Final spin results: {self.slots}")
-
-        # Prevent another spin from being triggered automatically
-        if not any(self.reel_spinning):
-            self.spinning = False  # Reels have stopped, no new spin will start
-            self.game_state = self.RESULT_SCREEN
 
     def update(self, state):
         super().update(state)
@@ -449,7 +203,6 @@ class SlotsBrogan(GambleScreen):
             self.update_result_helper(controller, state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             pass
-
 
     def draw(self, state):
         super().draw(state)
@@ -591,51 +344,103 @@ class SlotsBrogan(GambleScreen):
         if controller.isTPressed:
             controller.isTPressed = False
             if self.slots == ["bomb", "bomb", "bomb"]:
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
+
                 if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
                     state.player.stamina_points -= self.player_stamina_high_cost
                     state.player.money -= self.player_coin_high_drain
+                    state.player.exp += self.exp_gain_high
+                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
+
 
                 elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
                     state.player.stamina_points -= self.player_stamina_low_cost
                     state.player.money -= self.player_coin_high_drain
+                    state.player.exp += self.exp_gain_high
+
+                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_med_cost} HP and {self.player_coin_high_drain} money. Gain {self.exp_gain_high} exp"]
+
             elif self.slots == ["dice", "dice", "dice"]:
 
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
+                state.player.exp += self.exp_gain_med
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_med} exp"]
+
             elif self.slots == ["coin", "coin", "coin"]:
-                state.player.stamina_points -= self.player_stamina_med_cost
+                state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_med_drain
                 self.rib_stalker = 5
+                state.player.exp += self.exp_gain_med
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_med} exp"]
+
 
 
             elif self.slots == ["cherry", "cherry", "cherry"]:
                 self.jack_pot = 50
                 state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
 
 
             elif self.slots == ["spin", "spin", "spin"]:
                 self.jack_pot = 100
                 state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
             elif self.slots == ["crown", "crown", "crown"]:
                 self.jack_pot = 150
                 state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
             elif self.slots == ["dice_six", "dice_six", "dice_six"]:
                 self.lucky_strike += 6
+                state.player.exp += self.exp_gain_low
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"Lucky Strike activated, time to get that money! Gain {self.exp_gain_low} exp"]
+
             elif self.slots == ["diamond", "diamond", "diamond"]:
                 self.jack_pot = 250
                 state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
             elif self.slots == ["chest", "chest", "chest"]:
                 if self.secret_item_found == True:
                     self.jack_pot = 200
                     state.player.money += self.jack_pot
+                    state.player.exp += self.exp_gain_low
+
+                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
+
                 elif self.secret_item_found == False:
+                    state.player.exp += self.exp_gain_high
+
                     Events.add_level_three_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
+
                     # need to give item here
-                self.secret_item_found = True
+                    self.secret_item_found = True
 
             elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
                 self.jack_pot = 500
                 state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_high
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
+
+            elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
+                state.player.exp += self.exp_gain_no_match
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"No matches.  Gain {self.exp_gain_no_match} exp"]
+
 
             self.reset_slots_round()
             self.game_state = self.WELCOME_SCREEN
@@ -937,6 +742,256 @@ class SlotsBrogan(GambleScreen):
     def update_reels(self):
         for i in range(3):
             self.reel_positions[i] = (self.reel_positions[i] + 1) % len(self.slot_image_keys)
+
+    def adjust_reels_to_results(self, slots: List[str]):
+        symbol_height = 70  # Height of each symbol image
+        for i in range(3):  # For each reel
+            symbol_name = slots[i]
+            # Find the index of the symbol on the reel
+            if symbol_name in self.reel_symbol_names[i]:
+                symbol_index = self.reel_symbol_names[i].index(symbol_name)
+                # Calculate the reel position to align the symbol in the display
+                self.reel_positions[i] = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
+                # Adjust so the symbol is centered in the display
+                self.reel_positions[i] -= (symbol_height / 2 + 90)
+                self.reel_positions[i] %= self.reel_surfaces[i].get_height()
+            else:
+                print(f"Symbol {symbol_name} not found on reel {i + 1}")
+
+    def calculate_target_positions(self, slots: List[str]):
+        symbol_height = 80  # Height of each symbol image
+        self.target_positions = [0.0, 0.0, 0.0]  # Initialize target positions for each reel
+        for i in range(3):  # For each reel
+            symbol_name = slots[i]
+            # Find the index of the symbol on the reel
+            if symbol_name in self.reel_symbol_names[i]:
+                symbol_index = self.reel_symbol_names[i].index(symbol_name)
+                # Calculate the target position to align the symbol in the display
+                target_position = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
+                # Adjust so the symbol is centered in the display
+                target_position -= (symbol_height / 2 - 40)
+                target_position %= self.reel_surfaces[i].get_height()
+                self.target_positions[i] = target_position
+            else:
+                print(f"Symbol {symbol_name} not found on reel {i + 1}")
+                self.target_positions[i] = 0  # Default to position 0 if symbol not found
+
+    def generate_numbers(self, state) -> List[str]:
+        # Generate random values for each slot
+        generated_values = [random.randint(1, 100) for _ in range(3)]
+        print(f"Generated values: {generated_values}")
+
+        # if self.rib_stalker > 0:
+        # new slot _mapping
+
+        # if self.
+
+        # Define the slot mapping with symbols
+        slot_mapping = {
+            range(1, 7): "bomb",
+            range(7, 15): "dice",
+            range(15, 27): "coin",
+            range(27, 42): "cherry",
+            range(42, 54): "spin",
+            range(54, 66): "crown",
+            range(66, 76): "dice_six",
+            range(76, 85): "diamond",
+            range(85, 95): "chest",
+            range(95, 101): "lucky_seven",
+        }
+
+        # Define a priority mapping for slot symbols
+        symbol_priority = {
+            "bomb": 1,
+            "dice": 2,
+            "coin": 3,
+            "cherry": 4,
+            "spin": 5,
+            "crown": 6,
+            "dice_six": 7,
+            "diamond": 8,
+            "chest": 9,
+            "lucky_seven": 10
+        }
+
+        # Now you can check the numeric value instead of the string
+
+        # Map the generated values to symbols
+        # Map the generated values to symbols
+        slots = []
+        for value in generated_values:
+            for key in slot_mapping:
+                if value in key:
+                    slots.append(slot_mapping[key])
+                    break
+            else:
+                # Default symbol in case no range matches
+                slots.append("bomb")  # Or any default symbol you prefer
+
+        slot_2_luck_bonus = 0
+
+        print(f"Slot results: {slots}")
+        if symbol_priority[slots[0]] > 2:  # Use symbol's priority for comparison
+            for luck in range(state.player.luck):
+                slot_2_luck_bonus += 2
+
+        if random.randint(1, 100) <= 50 + slot_2_luck_bonus:  # Adjusted chance
+            print("Im active")
+            self.slot_2_magnet = True
+            slots[1] = slots[0]  # Match slot 2 to slot 1
+        else:
+            self.slot_2_magnet = False
+
+        print(f"Slot results: {slots}")
+
+        slot_3_luck_bonus = 0
+
+        if symbol_priority[slots[0]] > 2:  # Same logic for slot 3
+            for luck in range(state.player.luck):
+                slot_3_luck_bonus += 2
+
+        if random.randint(1, 100) <= 40 + slot_3_luck_bonus:
+            print("Im active")
+            self.slot_3_magnet = True
+            slots[2] = slots[0]  # Match slot 3 to slot 1
+        else:
+            self.slot_3_magnet = False
+
+        print(f"Slot results: {slots}")
+
+        return slots  # Return the list of symbols
+
+    def create_reel_surface(self) -> Tuple[pygame.Surface, List[str]]:
+        # Use the same order of images for all reels
+        image_keys = self.slot_image_keys.copy()
+        # Optionally shuffle if desired
+        # random.shuffle(image_keys)
+
+        # Calculate the total height of the reel surface
+        box_width, box_height = 80, 80  # Same as in draw_grid_box
+        reel_height = box_height * len(image_keys)
+
+        # Create the reel surface
+        reel_surface = pygame.Surface((box_width, reel_height)).convert_alpha()
+        reel_surface.fill((0, 0, 0, 0))  # Transparent background
+
+        # Blit each image onto the reel surface
+        for idx, key in enumerate(image_keys):
+            image = self.slot_images[key]
+            resized_image = pygame.transform.scale(image, (box_width, box_height))
+            reel_surface.blit(resized_image, (0, idx * box_height))
+
+        return reel_surface, image_keys  # Return the surface and the list of symbols
+
+    def start(self, state: 'GameState'):
+        if Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED.value in state.player.level_three_npc_state:
+            self.secret_item_found = True
+
+    def reset_slots_game(self):
+        self.slot_3_magnet: bool = False
+        self.slot_2_magnet: bool = False
+        self.triple_bomb: bool = False
+        self.triple_lucky_seven: bool = False
+        self.triple_dice: bool = False
+        self.triple_coin: bool = False
+        self.triple_diamond: bool = False
+        self.triple_crown: bool = False
+        self.triple_chest: bool = False
+        self.triple_cherry: bool = False
+        self.triple_dice_six: bool = False
+        self.triple_spin: bool = False
+        self.no_match: bool = False
+        # Reset the spin results flag so the reels can spin again
+        self.spin_results_generated = False
+
+        # Reset reel spinning state
+        self.reel_spinning = [False, False, False]
+        self.lucky_strike: int = 0
+
+        self.rib_stalker: int = 0
+
+    def reset_slots_round(self):
+        self.slot_3_magnet: bool = False
+        self.slot_2_magnet: bool = False
+        self.triple_bomb: bool = False
+        self.triple_lucky_seven: bool = False
+        self.triple_dice: bool = False
+        self.triple_coin: bool = False
+        self.triple_diamond: bool = False
+        self.triple_crown: bool = False
+        self.triple_chest: bool = False
+        self.triple_cherry: bool = False
+        self.triple_dice_six: bool = False
+        self.triple_spin: bool = False
+        self.no_match: bool = False
+        # Reset the spin results flag so the reels can spin again
+        self.spin_results_generated = False
+
+        # Reset reel spinning state
+        self.reel_spinning = [False, False, False]
+        if self.rib_stalker > 0:
+            self.rib_stalker -= 1
+        if self.lucky_strike > 0:
+            self.lucky_strike -= 1
+
+    def spin_reels_helper(self, controller, state):
+        # Get current time once at the beginning
+        current_time = pygame.time.get_ticks()
+
+        # Only start spinning if reels aren't spinning and results haven't been generated
+        if not any(self.reel_spinning) and not self.spin_results_generated:
+            # Generate the spin results before starting the spin
+            self.spin_results_generated = False  # Reset the flag
+            self.slots = self.generate_numbers(state)  # Generate symbols
+            print(f"Spin results: {self.slots}")
+
+            # Calculate target positions for each reel based on the generated symbols
+            self.calculate_target_positions(self.slots)
+
+            # Start spinning all reels
+            self.reel_spinning = [True, True, True]
+            self.spin_start_time = current_time  # Record the time when spinning started
+            self.last_update_time = current_time  # Reset last update time
+
+            # Set stop times for each reel
+            self.reel_stop_times = [
+                current_time + 3000,  # Reel 0 stops after 3 seconds
+                current_time + 4000,  # Reel 1 stops after 4 seconds
+                current_time + 5000  # Reel 2 stops after 5 seconds
+            ]
+
+        # Calculate delta_time before updating self.last_update_time
+        delta_time = (current_time - self.last_update_time) / 1000.0  # Convert milliseconds to seconds
+        self.last_update_time = current_time  # Update after calculating delta_time
+
+        # Update reel positions and check for stopping
+        for i in range(3):  # For each reel
+            if self.reel_spinning[i]:
+                # Update the reel's position
+                self.reel_positions[i] = (self.reel_positions[i] - self.spin_speed * delta_time) % self.reel_surfaces[i].get_height()
+
+                # Check if it's time to stop this reel
+                if current_time >= self.reel_stop_times[i]:
+                    # Stop the reel at the target position
+                    self.reel_spinning[i] = False
+                    self.reel_positions[i] = self.target_positions[i]
+
+        # Update overall spinning state
+        self.spinning = any(self.reel_spinning)
+
+        # Check if all reels have stopped
+        if not any(self.reel_spinning) and not self.spin_results_generated:
+            # All reels have stopped, proceed with any outcome logic
+            self.spin_results_generated = True  # Set the flag to prevent re-running this block
+
+            # Print the results
+            print(f"Final spin results: {self.slots}")
+
+        # Prevent another spin from being triggered automatically
+        if not any(self.reel_spinning):
+            self.spinning = False  # Reels have stopped, no new spin will start
+            self.game_state = self.RESULT_SCREEN
+
 
 
 
