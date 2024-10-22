@@ -1039,6 +1039,13 @@ class SlotsBrogan(GambleScreen):
         else:
             state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
+        if self.slot_hack_debuff > 0:
+            state.DISPLAY.blit(self.font.render(f"Hacked: {self.slot_hack_debuff}", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position + 122))
+        else:
+            state.DISPLAY.blit(self.font.render(f"", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position + 122))
+
+
+
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
