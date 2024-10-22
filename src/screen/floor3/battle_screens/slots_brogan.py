@@ -1,5 +1,5 @@
 import random
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Optional
 
 import pygame
 
@@ -81,8 +81,20 @@ class SlotsBrogan(GambleScreen):
 
         # Spinning state
         self.spinning: bool = False
-        self.spin_speed: float = 10.0  # Pixels per frame
+        self.initial_spin_speed: float = 400.0  # Starting spin speed in pixels per second
+        self.spin_start_time: Optional[int] = None  # Time when spinning started
+
         self.last_update_time: int = pygame.time.get_ticks()
+        # self.spin_speed_decrement: float = 100.0  # Decrease spin speed by this amount every second
+
+        # Initialize spinning states for each reel
+        self.reel_spinning: List[bool] = [False, False, False]  # All reels start not spinning
+
+        # Initialize stop times for each reel
+        self.reel_stop_times: List[Optional[int]] = [None, None, None]  # Stop times are not set yet
+
+        # Set the spin speed (assuming a constant speed)
+        self.spin_speed: float = 400.0  # Pixels per second
 
     SPIN_SCREEN: str = "spin_screen"
     RESULT_SCREEN: str = "result_screen"
@@ -117,39 +129,63 @@ class SlotsBrogan(GambleScreen):
     def reset_slots_round(self):
         pass
 
-    def update(self,  state):
-        # print(self.game_state)
+    def update(self, state):
+        super().update(state)
         controller = state.controller
         controller.update()
         state.player.update(state)
-        super().update(state)
+
+        # Get current time once at the beginning
         current_time = pygame.time.get_ticks()
-        delta_time = current_time - self.last_update_time
-        self.last_update_time = current_time
 
-        if self.spinning:
-            for i in range(3):  # For each reel
-                self.reel_positions[i] -= self.spin_speed * (delta_time / 1000.0)  # Convert to seconds
-                reel_height = self.reel_surfaces[i].get_height()
-                # Loop the reel position
-                if self.reel_positions[i] >= reel_height:
-                    self.reel_positions[i] -= reel_height
-
-        # Handle input to start/stop spinning
-        controller = state.controller
-        controller.update()
+        # Handle input to start spinning
         if controller.isTPressed:
             controller.isTPressed = False
-            self.spinning = not self.spinning  # Toggle spinning state
+            if not any(self.reel_spinning):
+                # Start spinning all reels
+                self.reel_spinning = [True, True, True]
+                current_time = pygame.time.get_ticks()
+                self.spin_start_time = current_time  # Record the time when spinning started
+                self.last_update_time = current_time  # Reset last update time
 
+                # Set stop times for each reel
+                self.reel_stop_times = [
+                    current_time + 3000,  # Reel 0 stops after 3 seconds
+                    current_time + 4000,  # Reel 1 stops after 4 seconds
+                    current_time + 5000  # Reel 2 stops after 5 seconds
+                ]
+
+        # Update spin speed
+        # if self.spinning:
+        #     elapsed_time = (current_time - self.spin_start_time) / 1000.0  # In seconds
+        #     # Decrease spin speed over time
+        #     self.spin_speed = max(0.0, self.initial_spin_speed - self.spin_speed_decrement * elapsed_time)
+        #     if self.spin_speed == 0.0:
+        #         self.spinning = False  # Stop spinning when speed reaches zero
+
+        current_time = pygame.time.get_ticks()
+        delta_time = (current_time - self.last_update_time) / 1000.0  # Convert milliseconds to seconds
+        self.last_update_time = current_time
+
+        # Update reel positions and check for stopping
+        for i in range(3):  # For each reel
+            if self.reel_spinning[i]:
+                # Update the reel's position
+                self.reel_positions[i] -= self.spin_speed * delta_time
+                reel_height = self.reel_surfaces[i].get_height()
+                self.reel_positions[i] %= reel_height
+
+                # Check if it's time to stop this reel
+                if current_time >= self.reel_stop_times[i]:
+                    self.reel_spinning[i] = False  # Stop the reel
+
+        # Other game state updates...
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
-
         elif self.game_state == self.BET_SCREEN:
             self.bet_screen_helper(controller)
-
         elif self.game_state == self.SPIN_SCREEN:
             pass
         elif self.game_state == self.RESULT_SCREEN:
@@ -168,9 +204,8 @@ class SlotsBrogan(GambleScreen):
                     controller.isTPressed = False
                     self.reset_slots_game()
                     state.player.money -= 100
-                    # state.currentScreen = state.area3RestScreen
-                    # state.area3RestScreen.start(state)
-
+        # Update overall spinning state
+        self.spinning = any(self.reel_spinning)
 
     def draw(self, state):
         super().draw(state)
