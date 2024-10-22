@@ -226,7 +226,7 @@ class SlotsBrogan(GambleScreen):
         elif self.game_state == self.SPIN_SCREEN:
             pass
         elif self.game_state == self.RESULT_SCREEN:
-            self.battle_messages[self.PLAYER_DRAW_MESSAGE].draw(state)
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
 
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
@@ -342,113 +342,164 @@ class SlotsBrogan(GambleScreen):
 
     def update_result_helper(self, controller, state):
         self.jack_pot = 0
-        if controller.isTPressed:
-            controller.isTPressed = False
-            if self.slots == ["bomb", "bomb", "bomb"]:
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
 
-                if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
+        if self.slots == ["bomb", "bomb", "bomb"]:
+
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
+
+            if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
+                if controller.isTPressed:
+                    controller.isTPressed = False
                     state.player.stamina_points -= self.player_stamina_high_cost
                     state.player.money -= self.player_coin_high_drain
                     state.player.exp += self.exp_gain_high
-                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
-
-
-                elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
+                    self.reset_slots_round()
+                    self.game_state = self.WELCOME_SCREEN
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
+            elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
+                if controller.isTPressed:
+                    controller.isTPressed = False
                     state.player.stamina_points -= self.player_stamina_low_cost
                     state.player.money -= self.player_coin_high_drain
                     state.player.exp += self.exp_gain_high
+                    self.reset_slots_round()
+                    self.game_state = self.WELCOME_SCREEN
 
-                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_med_cost} HP and {self.player_coin_high_drain} money. Gain {self.exp_gain_high} exp"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_med_cost} HP and {self.player_coin_high_drain} money. Gain {self.exp_gain_high} exp"]
 
-            elif self.slots == ["dice", "dice", "dice"]:
-
+        elif self.slots == ["dice", "dice", "dice"]:
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
                 state.player.exp += self.exp_gain_low
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_low} exp"]
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_low} exp"]
 
-            elif self.slots == ["coin", "coin", "coin"]:
+        elif self.slots == ["coin", "coin", "coin"]:
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_med_drain
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
 
 
 
-            elif self.slots == ["cherry", "cherry", "cherry"]:
-                self.jack_pot = 50
+        elif self.slots == ["cherry", "cherry", "cherry"]:
+            self.jack_pot = 50
+
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
 
 
-            elif self.slots == ["spin", "spin", "spin"]:
-                self.jack_pot = 100
+        elif self.slots == ["spin", "spin", "spin"]:
+            self.jack_pot = 100
+
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
-            elif self.slots == ["crown", "crown", "crown"]:
-                self.jack_pot = 150
+        elif self.slots == ["crown", "crown", "crown"]:
+            self.jack_pot = 150
+
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
-            elif self.slots == ["dice_six", "dice_six", "dice_six"]:
+        elif self.slots == ["dice_six", "dice_six", "dice_six"]:
+            if controller.isTPressed:
+                controller.isTPressed = False
                 self.lucky_strike += 6
                 state.player.exp += self.exp_gain_low
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"Lucky Strike activated, time to get that money! Gain {self.exp_gain_low} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"Lucky Strike activated, time to get that money! Gain {self.exp_gain_low} exp"]
 
-            elif self.slots == ["diamond", "diamond", "diamond"]:
-                self.jack_pot = 250
+        elif self.slots == ["diamond", "diamond", "diamond"]:
+            self.jack_pot = 250
+
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
-            elif self.slots == ["chest", "chest", "chest"]:
-                if self.secret_item_found == True:
-                    self.jack_pot = 200
+        elif self.slots == ["chest", "chest", "chest"]:
+            self.jack_pot = 200
+
+            if self.secret_item_found == True:
+
+                if controller.isTPressed:
+                    controller.isTPressed = False
                     state.player.money += self.jack_pot
                     state.player.exp += self.exp_gain_low
+                    self.reset_slots_round()
+                    self.game_state = self.WELCOME_SCREEN
 
-                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
 
-                elif self.secret_item_found == False:
+            elif self.secret_item_found == False:
+                if controller.isTPressed:
+                    controller.isTPressed = False
                     state.player.exp += self.exp_gain_high
-
                     Events.add_level_three_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
-                    self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
-
-                    # need to give item here
                     self.secret_item_found = True
 
-            elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
-                self.jack_pot = 500
+                    self.reset_slots_round()
+                    self.game_state = self.WELCOME_SCREEN
+
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
+
+                # need to give item here
+
+        elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
+            self.jack_pot = 500
+
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_high
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
 
-            elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
-                print("dlsalf;j;dlsajfjsalflsajfdsljlsaf;aslf;asfa;;ldsa")
+        elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
+            if controller.isTPressed:
+                controller.isTPressed = False
                 state.player.exp += self.exp_gain_no_match
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"No matches.  Gain {self.exp_gain_no_match} exp"]
+                self.reset_slots_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"No matches.  Gain {self.exp_gain_no_match} exp"]
 
-
-            self.reset_slots_round()
-            self.game_state = self.WELCOME_SCREEN
-
-
-
+        self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
 
 
     def welcome_screen_helper(self, state: "GameState") -> None:
