@@ -5,6 +5,7 @@ import pygame
 
 from constants import WHITE, BLACK
 from entity.gui.screen.gamble_screen import GambleScreen
+from game_constants.events import Events
 from game_constants.magic import Magic
 
 
@@ -37,8 +38,9 @@ class SlotsBrogan(GambleScreen):
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.brogan_bankrupt: int = 0
-        self.player_stamina_med_cost: int = 5
-        self.player_stamina_high_cost: int = 10  # useing higher bet option
+        self.player_stamina_med_cost: int = 10
+        self.player_stamina_high_cost: int = 50  # useing higher bet option
+        self.player_stamina_low_cost: int = 25
         self.lock_down_inactive: int = 0
         self.index_stepper:int = 1
         self.spin_results_generated:bool = False  # Initialize the flag
@@ -56,8 +58,16 @@ class SlotsBrogan(GambleScreen):
         self.triple_dice_six: bool = False
         self.triple_spin: bool = False
         self.no_match:bool = False
+        self.player_coin_high_drain:int = 300
+        self.player_coin_low_drain:int = 150
+        self.player_coin_med_drain:int = 75
+        self.rib_stalker: int = 0
+        self.jack_pot:int = 0
+        self.lucky_strike:int = 0
+        self.secret_item_found = False
 
         # Create a list of image keys to maintain order
+
 
 
 
@@ -161,6 +171,11 @@ class SlotsBrogan(GambleScreen):
         generated_values = [random.randint(1, 100) for _ in range(3)]
         print(f"Generated values: {generated_values}")
 
+        # if self.rib_stalker > 0:
+        # new slot _mapping
+
+        # if self.
+
         # Define the slot mapping with symbols
         slot_mapping = {
             range(1, 7): "bomb",
@@ -259,45 +274,83 @@ class SlotsBrogan(GambleScreen):
         return reel_surface, image_keys  # Return the surface and the list of symbols
 
     def start(self, state: 'GameState'):
-        pass
+        if Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED.value in state.player.level_three_npc_state:
+            self.secret_item_found = True
 
     def reset_slots_game(self):
-        pass
+        self.slot_3_magnet: bool = False
+        self.slot_2_magnet: bool = False
+        self.triple_bomb: bool = False
+        self.triple_lucky_seven: bool = False
+        self.triple_dice: bool = False
+        self.triple_coin: bool = False
+        self.triple_diamond: bool = False
+        self.triple_crown: bool = False
+        self.triple_chest: bool = False
+        self.triple_cherry: bool = False
+        self.triple_dice_six: bool = False
+        self.triple_spin: bool = False
+        self.no_match: bool = False
+        # Reset the spin results flag so the reels can spin again
+        self.spin_results_generated = False
+
+        # Reset reel spinning state
+        self.reel_spinning = [False, False, False]
+        self.lucky_strike:int = 0
+
+        self.rib_stalker: int = 0
+
+
+
     def reset_slots_round(self):
-        pass
+        self.slot_3_magnet: bool = False
+        self.slot_2_magnet: bool = False
+        self.triple_bomb: bool = False
+        self.triple_lucky_seven: bool = False
+        self.triple_dice: bool = False
+        self.triple_coin: bool = False
+        self.triple_diamond: bool = False
+        self.triple_crown: bool = False
+        self.triple_chest: bool = False
+        self.triple_cherry: bool = False
+        self.triple_dice_six: bool = False
+        self.triple_spin: bool = False
+        self.no_match: bool = False
+        # Reset the spin results flag so the reels can spin again
+        self.spin_results_generated = False
 
-    def update(self, state):
-        super().update(state)
-        controller = state.controller
-        controller.update()
-        state.player.update(state)
+        # Reset reel spinning state
+        self.reel_spinning = [False, False, False]
+        if self.rib_stalker > 0:
+            self.rib_stalker -= 1
+        if self.lucky_strike > 0:
+            self.lucky_strike -= 1
 
+    def spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
         current_time = pygame.time.get_ticks()
 
-        # Handle input to start spinning
-        if controller.isTPressed:
-            controller.isTPressed = False
-            if not any(self.reel_spinning):
-                # Generate the spin results before starting the spin
-                self.spin_results_generated = False  # Reset the flag
-                self.slots = self.generate_numbers(state)  # Generate symbols
-                print(f"Spin results: {self.slots}")
+        # Only start spinning if reels aren't spinning and results haven't been generated
+        if not any(self.reel_spinning) and not self.spin_results_generated:
+            # Generate the spin results before starting the spin
+            self.spin_results_generated = False  # Reset the flag
+            self.slots = self.generate_numbers(state)  # Generate symbols
+            print(f"Spin results: {self.slots}")
 
-                # Calculate target positions for each reel based on the generated symbols
-                self.calculate_target_positions(self.slots)
+            # Calculate target positions for each reel based on the generated symbols
+            self.calculate_target_positions(self.slots)
 
-                # Start spinning all reels
-                self.reel_spinning = [True, True, True]
-                self.spin_start_time = current_time  # Record the time when spinning started
-                self.last_update_time = current_time  # Reset last update time
+            # Start spinning all reels
+            self.reel_spinning = [True, True, True]
+            self.spin_start_time = current_time  # Record the time when spinning started
+            self.last_update_time = current_time  # Reset last update time
 
-                # Set stop times for each reel
-                self.reel_stop_times = [
-                    current_time + 3000,  # Reel 0 stops after 3 seconds
-                    current_time + 4000,  # Reel 1 stops after 4 seconds
-                    current_time + 5000  # Reel 2 stops after 5 seconds
-                ]
+            # Set stop times for each reel
+            self.reel_stop_times = [
+                current_time + 3000,  # Reel 0 stops after 3 seconds
+                current_time + 4000,  # Reel 1 stops after 4 seconds
+                current_time + 5000  # Reel 2 stops after 5 seconds
+            ]
 
         # Calculate delta_time before updating self.last_update_time
         delta_time = (current_time - self.last_update_time) / 1000.0  # Convert milliseconds to seconds
@@ -319,14 +372,39 @@ class SlotsBrogan(GambleScreen):
         self.spinning = any(self.reel_spinning)
 
         # Check if all reels have stopped
-        if not self.spinning and not self.spin_results_generated:
+        if not any(self.reel_spinning) and not self.spin_results_generated:
             # All reels have stopped, proceed with any outcome logic
             self.spin_results_generated = True  # Set the flag to prevent re-running this block
 
             # Print the results
             print(f"Final spin results: {self.slots}")
 
-            # Proceed with any outcome logic (e.g., checking for wins)
+        # Prevent another spin from being triggered automatically
+        if not any(self.reel_spinning):
+            self.spinning = False  # Reels have stopped, no new spin will start
+            self.game_state = self.RESULT_SCREEN
+
+    def update(self, state):
+        super().update(state)
+        controller = state.controller
+        controller.update()
+        state.player.update(state)
+
+        # Get current time once at the beginning
+        if self.game_state == self.WELCOME_SCREEN:
+            self.welcome_screen_helper(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            pass
+        elif self.game_state == self.BET_SCREEN:
+            pass
+        elif self.game_state == self.SPIN_SCREEN:
+            self.spin_reels_helper(controller, state)
+
+        elif self.game_state == self.RESULT_SCREEN:
+            self.update_result_helper(controller, state)
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            pass
+
 
     def draw(self, state):
         super().draw(state)
@@ -339,8 +417,6 @@ class SlotsBrogan(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
-
-
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
@@ -365,6 +441,85 @@ class SlotsBrogan(GambleScreen):
 
 
         pygame.display.flip()
+
+    def update_result_helper(self, controller, state):
+        self.jack_pot = 0
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.slots == ["bomb", "bomb", "bomb"]:
+                state.player.stamina_points -= self.player_stamina_high_cost
+                state.player.money -= self.player_coin_high_drain
+            elif self.slots == ["dice", "dice", "dice"]:
+
+                state.player.stamina_points -= self.player_stamina_low_cost
+                state.player.money -= self.player_coin_low_drain
+            elif self.slots == ["coin", "coin", "coin"]:
+                state.player.stamina_points -= self.player_stamina_med_cost
+                state.player.money -= self.player_coin_med_drain
+                self.rib_stalker = 5
+
+
+            elif self.slots == ["cherry", "cherry", "cherry"]:
+                self.jack_pot = 50
+                state.player.money += self.jack_pot
+
+
+            elif self.slots == ["spin", "spin", "spin"]:
+                self.jack_pot = 100
+                state.player.money += self.jack_pot
+            elif self.slots == ["crown", "crown", "crown"]:
+                self.jack_pot = 150
+                state.player.money += self.jack_pot
+            elif self.slots == ["dice_six", "dice_six", "dice_six"]:
+                self.lucky_strike += 6
+            elif self.slots == ["diamond", "diamond", "diamond"]:
+                self.jack_pot = 250
+                state.player.money += self.jack_pot
+            elif self.slots == ["chest", "chest", "chest"]:
+                if self.secret_item_found == True:
+                    self.jack_pot = 200
+                    state.player.money += self.jack_pot
+                elif self.secret_item_found == False:
+                    Events.add_level_three_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+                    # need to give item here
+                self.secret_item_found = True
+
+            elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
+                self.jack_pot = 500
+                state.player.money += self.jack_pot
+
+            self.game_state = self.WELCOME_SCREEN
+
+
+
+
+
+    def welcome_screen_helper(self, state: "GameState") -> None:
+        controller = state.controller
+        controller.update()
+        # self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        if state.controller.isTPressed:
+            state.controller.isTPressed = False
+
+            if self.welcome_screen_index == self.welcome_screen_play_index:
+                print("HYes")
+
+                self.game_state = self.SPIN_SCREEN
+                state.player.stamina_points -= self.player_stamina_med_cost
+
+            elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False \
+                    and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
+                self.magic_screen_index = self.magic_screen_menu_lucky_seven_index
+                self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
+                self.game_state = self.MAGIC_MENU_SCREEN
+
+            elif self.welcome_screen_index == self.welcome_screen_bet_index:
+                self.game_state = self.BET_SCREEN
+
+            elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
+                self.reset_craps_game(state)
+                # state.current_player = state.area3GamblingScreen
+                # state.area3GamblingScreen.start(state)
 
     def draw_grid_box(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()

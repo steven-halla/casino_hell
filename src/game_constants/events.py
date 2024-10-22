@@ -34,12 +34,18 @@ class Events(Enum):
     BLACK_JACK_ALBERT_DEFEATED = "black jack albert defeated"
     COIN_FLIP_DEXTER_DEFEATED = "coin flip dexter defeated"
     OPOSSUM_IN_A_CAN_BILLY_BOB_DEFEATED = "opossum in a can billy bob defeated"
+    SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED = "slots_level_3_secret_item_acquired"
 
 
     @staticmethod
     def add_event_to_player(player, event):
         if event.value not in player.level_two_npc_state:
             player.level_two_npc_state.append(event.value)
+
+    @staticmethod
+    def add_level_three_event_to_player(player, event):
+        if event.value not in player.level_three_npc_state:
+            player.level_three_npc_state.append(event.value)
 
     def add_item_to_player(player, event):
         if event.value not in player.quest_items:

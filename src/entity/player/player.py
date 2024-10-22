@@ -88,6 +88,7 @@ class Player(Entity):
         self.menu_movement_sound.set_volume(0.2)
 
         self.level_two_npc_state = []
+        self.level_three_npc_state = []
         self.leveling_up = False
 
         self.stamina_increase_from_level = 20
@@ -171,6 +172,7 @@ class Player(Entity):
             "food": self.food,
             "days": self.days,
             "leveltwonpcstate": self.level_two_npc_state,
+            "levelthreenpcstate": self.level_three_npc_state,
             "slots_vest": self.slots_vest,
 
             "cutscene1": state.restScreen.barscene1,
@@ -1825,6 +1827,7 @@ class Player(Entity):
 
             # Update player's stats with the loaded data
             state.player.level_two_npc_state = player_data['leveltwonpcstate']
+            state.player.level_three_npc_state = player_data['levelthreenpcstate']
             state.player.slots_vest = player_data['slots_vest']
 
             state.player.level = player_data['level']
