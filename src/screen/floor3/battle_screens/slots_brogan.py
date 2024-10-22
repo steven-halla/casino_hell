@@ -52,15 +52,15 @@ class SlotsBrogan(GambleScreen):
 
         self.slot_images: Dict[str, pygame.Surface] = {
             "bomb": self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),
-            "lucky_seven": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 60)),
+            "lucky_seven": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 52)),
             "dice": self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52)),
-            "coin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 30, 75, 52)),
-            "diamond": self.slot_images_sprite_sheet.subsurface(pygame.Rect(20, 170, 75, 52)),
-            "crown": self.slot_images_sprite_sheet.subsurface(pygame.Rect(15, 275, 80, 52)),
-            "chest": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 275, 75, 58)),
-            "cherry": self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 210, 75, 58)),
-            "dice_six": self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 210, 50, 58)),
-            "spin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 58)),
+            "coin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(35, 32, 70, 50)),
+            "diamond": self.slot_images_sprite_sheet.subsurface(pygame.Rect(30, 170, 75, 52)),
+            "crown": self.slot_images_sprite_sheet.subsurface(pygame.Rect(25, 280, 80, 52)),
+            "chest": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 280, 75, 52)),
+            "cherry": self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 215, 75, 52)),
+            "dice_six": self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 215, 50, 52)),
+            "spin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 52)),
         }
 
         self.slot_image_keys: List[str] = list(self.slot_images.keys())
@@ -110,7 +110,7 @@ class SlotsBrogan(GambleScreen):
     BACK: str = "Back"
 
     def adjust_reels_to_results(self, slots: List[str]):
-        symbol_height = 80  # Height of each symbol image
+        symbol_height = 70  # Height of each symbol image
         for i in range(3):  # For each reel
             symbol_name = slots[i]
             # Find the index of the symbol on the reel
@@ -119,7 +119,7 @@ class SlotsBrogan(GambleScreen):
                 # Calculate the reel position to align the symbol in the display
                 self.reel_positions[i] = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
                 # Adjust so the symbol is centered in the display
-                self.reel_positions[i] -= (symbol_height / 2)
+                self.reel_positions[i] -= (symbol_height / 2 + 90)
                 self.reel_positions[i] %= self.reel_surfaces[i].get_height()
             else:
                 print(f"Symbol {symbol_name} not found on reel {i + 1}")
@@ -135,7 +135,7 @@ class SlotsBrogan(GambleScreen):
                 # Calculate the target position to align the symbol in the display
                 target_position = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
                 # Adjust so the symbol is centered in the display
-                target_position -= (symbol_height / 2)
+                target_position -= (symbol_height / 2 - 40)
                 target_position %= self.reel_surfaces[i].get_height()
                 self.target_positions[i] = target_position
             else:
@@ -347,7 +347,7 @@ class SlotsBrogan(GambleScreen):
             state.DISPLAY.blit(combined_surface, (box_x, box_y))
 
             # Draw the white rectangle around the box
-            pygame.draw.rect(state.DISPLAY, (255, 255, 255), (box_x, box_y, box_width, box_height), line_thickness)
+            pygame.draw.rect(state.DISPLAY, WHITE, (box_x, box_y , box_width, box_height), line_thickness)
 
     def draw_magic_menu_selection_box(self, state):
         if self.magic_screen_choices[self.magic_screen_index] == Magic.SLOTS_HACK.value:
