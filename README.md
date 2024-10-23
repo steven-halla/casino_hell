@@ -142,7 +142,7 @@ craps blow- this opens the blow commnad
 mind hat - + 30 mp
 body belt: adds + 1 to body
 opossum guilty shoes- if score is above 800 and you lose , retain 200 points
-slots 999- gain an extra 25 HP 25 MP and 100 gold on jack pot
+slots 999- gain an extra 50 HP 50 MP and 100 gold on jack pot
 hippo ticket - win extra coins the more people survive that you pick - global
 loaded dice - + When you are attacker and get a double that is less than defender, adds +1 to all 3 dice.
 spell: Loaded Dice: 
