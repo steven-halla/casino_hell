@@ -35,6 +35,9 @@ class DiceFighterSirSiegfried(GambleScreen):
         self.player_triple_roll: bool = False
         self.enemy_triple_roll: bool = False
         self.point_break: int = 0
+        self.stamina_points = 300
+        self.inflict_damage = 75
+        self.money = 1000
 
 
     BACK: str = "Back"
@@ -80,7 +83,6 @@ class DiceFighterSirSiegfried(GambleScreen):
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic_dice_fighter(controller, state)
-
         elif self.game_state == self.INITIATIVE_SCREEN:
             self.initiative_screen_logic(state)
         elif self.game_state == self.POINT_SET_SCREEN:
@@ -88,19 +90,22 @@ class DiceFighterSirSiegfried(GambleScreen):
         elif self.game_state == self.ATTACK_PHASE_SCREEN:
             self.attack_phase_screen_logic()
         elif self.game_state == self.DEFENSE_PHASE_SCREEN:
-            pass
+            self.defense_phase_screen_logic()
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             pass
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             pass
         elif self.game_state == self.PLAYER_DEALS_DAMAGE_SCREEN:
-            pass
+            if controller.isTPressed:
+                controller.setTPressed = False
+                self.stamina_points -= self.inflict_damage
+
         elif self.game_state == self.ENEMY_DEALS_DAMAGE_SCREEN:
-            pass
+            if controller.isTPressed:
+                controller.setTPressed = False
+                state.player.stamina_points -= self.inflict_damage
         elif self.game_state == self.GAME_OVER_SCREEN:
             pass
-
-
 
     def draw(self, state):
         super().draw(state)
@@ -162,7 +167,7 @@ class DiceFighterSirSiegfried(GambleScreen):
 
         else:
             player_defense_roll: int = random.randint(1, 6)
-            print("enemy defense roll is: " + str(enemy_defense_roll))
+            print("enemy defense roll is: " + str(player_defense_roll))
             print("Piont break is: " + str(self.point_break))
 
             if player_defense_roll == self.point_break:
