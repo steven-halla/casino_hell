@@ -188,6 +188,11 @@ dice fighter you cannot quit this match its all or nothing
 
 
 
+player does triple roll
+enemy does triple roll
+
+
+
 
 
 
