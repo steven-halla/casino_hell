@@ -72,6 +72,8 @@ class DiceFighterSirSiegfried(GambleScreen):
         self.enemy_point_roll_3: int = 0
         self.enemy_point_roll_total: int = 0
         self.point_screen_index = 0
+        self.player_win_point = False
+        self.enemy_win_point = False
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -91,12 +93,22 @@ class DiceFighterSirSiegfried(GambleScreen):
                 "Time to roll for init."
             ]),
 
+            self.POINT_ROLL_MESSAGE: MessageBox([
+                "ROLL to set the point"
+            ]),
+
+            self.POST_POINT_ROLL_MESSAGE: MessageBox([
+                "POST ROLL to set the point"
+            ]),
+
         }
 
     PLAYER_WIN_MESSAGE: str = "player_win_message"
     ENEMY_WIN_MESSAGE: str = "enemy_win_message"
     INIT_MESSAGE: str = "init_message"
     POST_INIT_MESSAGE: str = "post_init_message"
+    POINT_ROLL_MESSAGE: str = "point_roll_message"
+    POST_POINT_ROLL_MESSAGE: str = "post_point_roll_message"
 
     BACK: str = "Back"
 
@@ -115,6 +127,7 @@ class DiceFighterSirSiegfried(GambleScreen):
     ENEMY_ATTACK_SCREEN: str = "enemy_attack_screen"
     PLAYER_DEFENSE_SCREEN: str = "player_defense_screen"
     ENEMY_DEFENSE_SCREEN: str = "enemy_defense_screen"
+    POST_POINT_SET_SCREEN: str = "post_point_set_screen"
 
 
 
@@ -130,6 +143,8 @@ class DiceFighterSirSiegfried(GambleScreen):
         self.enemy_triple_roll: bool = False
         self.point_break: int = 0
         self.blow_init_dice = False
+        self.player_win_point = False
+        self.enemy_win_point = False
 
 
     def restart_dice_fighter_round(self):
@@ -141,8 +156,11 @@ class DiceFighterSirSiegfried(GambleScreen):
         self.enemy_point_roll: int = 0
         self.point_break: int = 0
         self.blow_init_dice = False
+        self.player_win_point = False
+        self.enemy_win_point = False
 
     def update(self, state):
+        # print(self.game_state)
         super().update(state)
         controller = state.controller
         controller.update()
@@ -183,7 +201,21 @@ class DiceFighterSirSiegfried(GambleScreen):
 
 
         elif self.game_state == self.POINT_SET_SCREEN:
+            self.battle_messages[self.POINT_ROLL_MESSAGE].update(state)
+
             self.point_set_screen_logic_dice_fighter(controller)
+
+        elif self.game_state == self.POST_POINT_SET_SCREEN:
+            if self.player_win_point == True:
+                self.battle_messages[self.POST_POINT_ROLL_MESSAGE].messages = [f"You won the point and is set at{self.point_break}!"]
+            elif self.enemy_win_point == True:
+                self.battle_messages[self.POST_POINT_ROLL_MESSAGE].messages = [f"ENEMY WON the point and is set at{self.point_break}!"]
+
+            self.battle_messages[self.POST_POINT_ROLL_MESSAGE].update(state)
+
+
+
+
 
         elif self.game_state == self.PLAYER_ATTACK_SCREEN:
             if controller.isTPressed:
@@ -364,6 +396,8 @@ class DiceFighterSirSiegfried(GambleScreen):
 
 
         elif self.game_state == self.POINT_SET_SCREEN:
+            self.battle_messages[self.POINT_ROLL_MESSAGE].draw(state)
+
             self.draw_menu_selection_box(state)
             self.draw_point_screen_box_info_dice_fighter(state)
 
@@ -371,6 +405,13 @@ class DiceFighterSirSiegfried(GambleScreen):
             self.display_dice_point_roll(state,
                                           self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
                                           self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3)
+
+
+        elif self.game_state == self.POST_POINT_SET_SCREEN:
+            self.battle_messages[self.POST_POINT_ROLL_MESSAGE].draw(state)
+            self.display_dice_point_roll(state,
+                                         self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
+                                         self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3)
 
         elif self.game_state == self.PLAYER_ATTACK_SCREEN:
             self.display_defense_dice(state,
@@ -569,17 +610,23 @@ class DiceFighterSirSiegfried(GambleScreen):
                 if self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 != self.player_attack_roll_3:
                     self.point_break = self.player_attack_roll_1
                     print("Your break point is: " + str(self.point_break))
-                    self.game_state = self.ENEMY_ATTACK_SCREEN
+                    self.player_win_point = True
+                    self.game_state = self.POST_POINT_SET_SCREEN
+
                     return
                 elif self.player_attack_roll_1 == self.player_attack_roll_3 and self.player_attack_roll_1 != self.player_attack_roll_2:
                     self.point_break = self.player_attack_roll_1
-                    self.game_state = self.ENEMY_ATTACK_SCREEN
+                    self.player_win_point = True
+                    self.game_state = self.POST_POINT_SET_SCREEN
+
                     print("Your break point is: " + str(self.point_break))
                     return
 
                 elif self.player_attack_roll_2 == self.player_attack_roll_3 and self.player_attack_roll_2 != self.player_attack_roll_1:
                     self.point_break = self.player_attack_roll_2
-                    self.game_state = self.ENEMY_ATTACK_SCREEN
+                    self.player_win_point = True
+                    self.game_state = self.POST_POINT_SET_SCREEN
+
                     print("Your break point is: " + str(self.point_break))
 
                     return
@@ -605,22 +652,30 @@ class DiceFighterSirSiegfried(GambleScreen):
                     return
                 if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 != self.enemy_attack_roll_3:
                     self.point_break = self.enemy_attack_roll_1
-                    self.game_state = self.PLAYER_ATTACK_SCREEN
+                    self.enemy_win_point = True
+                    self.game_state = self.POST_POINT_SET_SCREEN
+
                     print("Your break point is: " + str(self.point_break))
                     return
                 elif self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 != self.enemy_attack_roll_2:
                     self.point_break = self.enemy_attack_roll_1
-                    self.game_state = self.PLAYER_ATTACK_SCREEN
+                    self.enemy_win_point = True
+                    self.game_state = self.POST_POINT_SET_SCREEN
+
                     print("Your break point is: " + str(self.point_break))
                     return
                 elif self.enemy_attack_roll_2 == self.enemy_attack_roll_3 and self.enemy_attack_roll_2 != self.enemy_attack_roll_1:
                     self.point_break = self.enemy_attack_roll_2
-                    self.game_state = self.PLAYER_ATTACK_SCREEN
+                    self.enemy_win_point = True
+                    self.game_state = self.POST_POINT_SET_SCREEN
+
                     print("Your break point is: " + str(self.point_break))
                     return
                 else:
                     self.player_win_init = True
                     self.enemy_win_init = False
+
+
 
             if self.point_break == 0:
                 if controller.isTPressed:
