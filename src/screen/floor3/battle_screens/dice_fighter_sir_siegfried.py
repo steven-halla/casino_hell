@@ -144,10 +144,10 @@ class DiceFighterSirSiegfried(GambleScreen):
 
         elif self.game_state == self.POINT_SET_SCREEN:
             self.point_set_screen_logic_dice_fighter(controller)
-        # elif self.game_state == self.ATTACK_PHASE_SCREEN:
-        #     self.attack_phase_screen_logic(controller)
-        # elif self.game_state == self.DEFENSE_PHASE_SCREEN:
-        #     self.defense_phase_screen_logic(controller)
+        elif self.game_state == self.ATTACK_PHASE_SCREEN:
+            self.attack_phase_screen_logic(controller)
+        elif self.game_state == self.DEFENSE_PHASE_SCREEN:
+            self.defense_phase_screen_logic(controller)
         # elif self.game_state == self.PLAYER_WIN_SCREEN:
         #     pass
         # elif self.game_state == self.PLAYER_LOSE_SCREEN:
@@ -196,13 +196,13 @@ class DiceFighterSirSiegfried(GambleScreen):
             self.display_dice_point_roll(state,
                                          self.player_point_roll_1, self.player_point_roll_2, self.player_point_roll_3,
                                          self.enemy_point_roll_1, self.enemy_point_roll_2, self.enemy_point_roll_3)
-        # elif self.game_state == self.ATTACK_PHASE_SCREEN:
-        #     # Call to display the attack dice
-        #     self.display_attack_dice(state, self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3)
-        #
-        # elif self.game_state == self.DEFENSE_PHASE_SCREEN:
-        #     # Call to display the defense dice
-        #     self.display_defense_dice(state, self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3)
+        elif self.game_state == self.ATTACK_PHASE_SCREEN:
+            # Call to display the attack dice
+            self.display_attack_dice(state, self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3, self.enemy_defense_roll)
+
+        elif self.game_state == self.DEFENSE_PHASE_SCREEN:
+            # Call to display the defense dice
+            self.display_defense_dice(state, self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3, self.player_defense_roll)
         #
         # elif self.game_state == self.PLAYER_WIN_SCREEN:
         #     pass
@@ -220,78 +220,86 @@ class DiceFighterSirSiegfried(GambleScreen):
         pygame.display.flip()
 
     def defense_phase_screen_logic(self, controller):
-        self.enemy_attack_roll_1: int = random.randint(1, 6)
-        self.enemy_attack_roll_2: int = random.randint(1, 6)
-        self.enemy_attack_roll_3: int = random.randint(1, 6)
-        if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 >= self.point_break:
-            self.game_state = self.ENEMY_DEALS_DAMAGE_SCREEN
-            print("Enemy got a triple, enemy wins")
-            return
-        elif self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 != self.enemy_attack_roll_3 and self.enemy_attack_roll_1 >= self.point_break:
-            self.point_break = self.enemy_attack_roll_1
-            print("Enemy's break point is: " + str(self.point_break))
-            self.game_state = self.ATTACK_PHASE_SCREEN
-            return
-        elif self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 != self.enemy_attack_roll_2:
-            self.point_break = self.enemy_attack_roll_1
-            self.game_state = self.ATTACK_PHASE_SCREEN
-            print("Enemy's break point is: " + str(self.point_break))
-            return
-        elif self.enemy_attack_roll_2 == self.enemy_attack_roll_3 and self.enemy_attack_roll_2 != self.enemy_attack_roll_1:
-            self.point_break = self.enemy_attack_roll_2
-            self.game_state = self.ATTACK_PHASE_SCREEN
-            print("Enemy's break point is: " + str(self.point_break))
-            return
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.player_defense_roll == 0:
+                self.enemy_attack_roll_1: int = random.randint(1, 6)
+                self.enemy_attack_roll_2: int = random.randint(1, 6)
+                self.enemy_attack_roll_3: int = random.randint(1, 6)
+            if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 >= self.point_break:
+                self.game_state = self.ENEMY_DEALS_DAMAGE_SCREEN
+                print("Enemy got a triple, enemy wins")
+                return
+            elif self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 != self.enemy_attack_roll_3 and self.enemy_attack_roll_1 >= self.point_break:
+                self.point_break = self.enemy_attack_roll_1
+                print("Enemy's break point is: " + str(self.point_break))
+                self.game_state = self.ATTACK_PHASE_SCREEN
+                return
+            elif self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 != self.enemy_attack_roll_2 and self.enemy_attack_roll_1 >= self.point_break:
+                self.point_break = self.enemy_attack_roll_1
+                self.game_state = self.ATTACK_PHASE_SCREEN
+                print("Enemy's break point is: " + str(self.point_break))
+                return
+            elif self.enemy_attack_roll_2 == self.enemy_attack_roll_3 and self.enemy_attack_roll_2 != self.enemy_attack_roll_1 and self.enemy_attack_roll_2 >= self.point_break:
+                self.point_break = self.enemy_attack_roll_2
+                self.game_state = self.ATTACK_PHASE_SCREEN
+                print("Enemy's break point is: " + str(self.point_break))
+                return
 
-        else:
-            self.player_defense_roll: int = random.randint(1, 6)
-            print("enemy defense roll is: " + str(self.player_defense_roll))
-            print("Piont break is: " + str(self.point_break))
-
-            if self.player_defense_roll == self.point_break:
-                print("player wins")
             else:
-                if controller.isTPressed:
-                    controller.isTPressed = False
-                    self.defense_phase_screen_logic(controller)
+                self.player_defense_roll: int = random.randint(1, 6)
+                print("enemy defense roll is: " + str(self.player_defense_roll))
+                print("Piont break is: " + str(self.point_break))
+
+                if self.player_defense_roll == self.point_break:
+                    print("player wins")
+                else:
+                    if controller.isTPressed:
+                        controller.isTPressed = False
+                        self.player_defense_roll = 0
+                        self.defense_phase_screen_logic(controller)
 
     def attack_phase_screen_logic(self,controller):
-        self.player_attack_roll_1: int = random.randint(1, 6)
-        self.player_attack_roll_2: int = random.randint(1, 6)
-        self.player_attack_roll_3: int = random.randint(1, 6)
-        if self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 == self.player_attack_roll_3 and self.player_attack_roll_1 >= self.point_break:
-            self.game_state = self.PLAYER_DEALS_DAMAGE_SCREEN
-            print("You got a triple you win")
-            return
-        elif self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 != self.player_attack_roll_3 and self.player_attack_roll_1 >= self.point_break:
-            self.point_break = self.player_attack_roll_1
-            print("Your break point is: " + str(self.point_break))
-            self.game_state = self.DEFENSE_PHASE_SCREEN
-            return
-        elif self.player_attack_roll_1 == self.player_attack_roll_3 and self.player_attack_roll_1 != self.player_attack_roll_2:
-            self.point_break = self.player_attack_roll_1
-            self.game_state = self.DEFENSE_PHASE_SCREEN
-            print("Your break point is: " + str(self.point_break))
-            return
-        elif self.player_attack_roll_2 == self.player_attack_roll_3 and self.player_attack_roll_2 != self.player_attack_roll_1:
-            self.point_break = self.player_attack_roll_2
-            self.game_state = self.DEFENSE_PHASE_SCREEN
-            print("Your break point is: " + str(self.point_break))
-            return
+        if controller.isTPressed:
+            controller.isTPressed = False
+            if self.enemy_defense_roll == 0:
 
-        else:
-            self.enemy_defense_roll: int = random.randint(1, 6)
-            print("enemy defense roll is: " + str(self.enemy_defense_roll))
-            print("Piont break is: " + str(self.point_break))
+                self.player_attack_roll_1: int = random.randint(1, 6)
+                self.player_attack_roll_2: int = random.randint(1, 6)
+                self.player_attack_roll_3: int = random.randint(1, 6)
+            if self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 == self.player_attack_roll_3 and self.player_attack_roll_1 >= self.point_break:
+                self.game_state = self.PLAYER_DEALS_DAMAGE_SCREEN
+                print("You got a triple you win")
+                return
+            elif self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 != self.player_attack_roll_3 and self.player_attack_roll_1 >= self.point_break:
+                self.point_break = self.player_attack_roll_1
+                print("Your break point is: " + str(self.point_break))
+                self.game_state = self.DEFENSE_PHASE_SCREEN
+                return
+            elif self.player_attack_roll_1 == self.player_attack_roll_3 and self.player_attack_roll_1 != self.player_attack_roll_2:
+                self.point_break = self.player_attack_roll_1
+                self.game_state = self.DEFENSE_PHASE_SCREEN
+                print("Your break point is: " + str(self.point_break))
+                return
+            elif self.player_attack_roll_2 == self.player_attack_roll_3 and self.player_attack_roll_2 != self.player_attack_roll_1:
+                self.point_break = self.player_attack_roll_2
+                self.game_state = self.DEFENSE_PHASE_SCREEN
+                print("Your break point is: " + str(self.point_break))
+                return
 
-            if self.enemy_defense_roll == self.point_break:
-                print("enemy wins")
             else:
-                if controller.isTPressed:
-                    controller.isTPressed = False
-                    self.attack_phase_screen_logic(controller)
+                self.enemy_defense_roll: int = random.randint(1, 6)
+                print("enemy defense roll is: " + str(self.enemy_defense_roll))
+                print("Piont break is: " + str(self.point_break))
 
-                
+                if self.enemy_defense_roll == self.point_break:
+                    print("enemy wins")
+                else:
+                    if controller.isTPressed:
+                        controller.isTPressed = False
+                        self.attack_phase_screen_logic(controller)
+
+
 
     def initiative_screen_logic(self, state):
         self.player_init_roll_1: int = random.randint(1, 6)
@@ -549,7 +557,7 @@ class DiceFighterSirSiegfried(GambleScreen):
             )
 
 
-    def display_attack_dice(self, state: "GameState", attack_roll_1: int, attack_roll_2: int, attack_roll_3: int) -> None:
+    def display_attack_dice(self, state: "GameState", attack_roll_1: int, attack_roll_2: int, attack_roll_3: int, enemy_defense_roll: int) -> None:
         dice_x_start_position = 300  # Starting position for dice display
         dice_y_position = 50  # Y-position for attack dice (adjust as necessary)
         dice_x_gap = 120  # Gap between dice
@@ -577,7 +585,14 @@ class DiceFighterSirSiegfried(GambleScreen):
         state.DISPLAY.blit(cropped_attack2, (dice_x_start_position + dice_x_gap, dice_y_position))
         state.DISPLAY.blit(cropped_attack3, (dice_x_start_position + dice_x_gap * 2, dice_y_position))
 
-    def display_defense_dice(self, state: "GameState", defense_roll_1: int, defense_roll_2: int, defense_roll_3: int) -> None:
+        defense_y_position = dice_y_position + 200  # Y-position for defense dice below the attack dice
+        defense_rect = dice_faces[enemy_defense_roll - 1]
+        cropped_defense = self.dice_sprite_sheet.subsurface(defense_rect)
+
+        # Blit defense dice onto the display
+        state.DISPLAY.blit(cropped_defense, (dice_x_start_position, defense_y_position))
+
+    def display_defense_dice(self, state: "GameState", defense_roll_1: int, defense_roll_2: int, defense_roll_3: int, player_defense_roll: int) -> None:
         dice_x_start_position = 300  # Starting position for dice display
         dice_y_position = 250  # Y-position for defense dice (adjust as necessary)
         dice_x_gap = 120  # Gap between dice
@@ -604,6 +619,13 @@ class DiceFighterSirSiegfried(GambleScreen):
         state.DISPLAY.blit(cropped_defense1, (dice_x_start_position, dice_y_position))
         state.DISPLAY.blit(cropped_defense2, (dice_x_start_position + dice_x_gap, dice_y_position))
         state.DISPLAY.blit(cropped_defense3, (dice_x_start_position + dice_x_gap * 2, dice_y_position))
+
+        player_defense_y_position = dice_y_position + 150  # Display player's defense dice below regular defense dice
+        player_defense_rect = dice_faces[player_defense_roll - 1]
+        cropped_player_defense = self.dice_sprite_sheet.subsurface(player_defense_rect)
+
+        # Blit player defense dice onto the display
+        state.DISPLAY.blit(cropped_player_defense, (dice_x_start_position, player_defense_y_position))
 
     def display_dice_point_roll(self, state: "GameState",
                                 player_point_roll_1: int, player_point_roll_2: int, player_point_roll_3: int,
