@@ -222,6 +222,10 @@ class DiceFighterSirSiegfried(GambleScreen):
     def defense_phase_screen_logic(self, controller):
         if controller.isTPressed:
             controller.isTPressed = False
+            print("defense screen")
+            print("enemy attack roll of 1 is: " + str(self.enemy_attack_roll_1))
+            print("enemy attack roll of 2 is: " + str(self.enemy_attack_roll_2))
+            print("enemy attack roll of 3 is: " + str(self.enemy_attack_roll_3))
             if self.player_defense_roll == 0:
                 self.enemy_attack_roll_1: int = random.randint(1, 6)
                 self.enemy_attack_roll_2: int = random.randint(1, 6)
@@ -262,6 +266,11 @@ class DiceFighterSirSiegfried(GambleScreen):
     def attack_phase_screen_logic(self,controller):
         if controller.isTPressed:
             controller.isTPressed = False
+            print("attack screen")
+            print("player attack roll of 1 is: " + str(self.player_attack_roll_1))
+            print("player attack roll of 2 is: " + str(self.player_attack_roll_2))
+            print("player attack roll of 3 is: " + str(self.player_attack_roll_3))
+
             if self.enemy_defense_roll == 0:
 
                 self.player_attack_roll_1: int = random.randint(1, 6)
@@ -690,19 +699,6 @@ class DiceFighterSirSiegfried(GambleScreen):
             ]
 
             # Player dice rolls
-            player_dice_rect1 = dice_faces[player_init_roll_1 - 1]
-            player_dice_rect2 = dice_faces[player_init_roll_2 - 1]
-            player_dice_rect3 = dice_faces[player_init_roll_3 - 1]
-
-            cropped_player_dice1 = self.dice_sprite_sheet.subsurface(player_dice_rect1)
-            cropped_player_dice2 = self.dice_sprite_sheet.subsurface(player_dice_rect2)
-            cropped_player_dice3 = self.dice_sprite_sheet.subsurface(player_dice_rect3)
-
-            state.DISPLAY.blit(cropped_player_dice1, (dice_x_start_position, dice_y_position))  # First dice position
-            state.DISPLAY.blit(cropped_player_dice2, (dice_x_start_position + dice_x_gap, dice_y_position))  # Second dice position
-            state.DISPLAY.blit(cropped_player_dice3, (dice_x_start_position + 2 * dice_x_gap, dice_y_position))  # Third dice position
-
-            # Enemy dice rolls
             enemy_dice_rect1 = dice_faces[enemy_init_roll_1 - 1]
             enemy_dice_rect2 = dice_faces[enemy_init_roll_2 - 1]
             enemy_dice_rect3 = dice_faces[enemy_init_roll_3 - 1]
@@ -711,12 +707,25 @@ class DiceFighterSirSiegfried(GambleScreen):
             cropped_enemy_dice2 = self.dice_sprite_sheet.subsurface(enemy_dice_rect2)
             cropped_enemy_dice3 = self.dice_sprite_sheet.subsurface(enemy_dice_rect3)
 
+            state.DISPLAY.blit(cropped_enemy_dice1, (dice_x_start_position, dice_y_position))  # First dice position
+            state.DISPLAY.blit(cropped_enemy_dice2, (dice_x_start_position + dice_x_gap, dice_y_position))  # Second dice position
+            state.DISPLAY.blit(cropped_enemy_dice3, (dice_x_start_position + 2 * dice_x_gap, dice_y_position))  # Third dice position
+
+            # Enemy dice rolls
+            player_dice_rect1 = dice_faces[player_init_roll_1 - 1]
+            player_dice_rect2 = dice_faces[player_init_roll_2 - 1]
+            player_dice_rect3 = dice_faces[player_init_roll_3 - 1]
+
+            cropped_player_dice1 = self.dice_sprite_sheet.subsurface(player_dice_rect1)
+            cropped_player_dice2 = self.dice_sprite_sheet.subsurface(player_dice_rect2)
+            cropped_player_dice3 = self.dice_sprite_sheet.subsurface(player_dice_rect3)
+
             # Adjust y-position for enemy dice
             enemy_dice_y_position = dice_y_position + 200  # Assuming 200px below player dice
 
-            state.DISPLAY.blit(cropped_enemy_dice1, (dice_x_start_position, enemy_dice_y_position))  # First dice position
-            state.DISPLAY.blit(cropped_enemy_dice2, (dice_x_start_position + dice_x_gap, enemy_dice_y_position))  # Second dice position
-            state.DISPLAY.blit(cropped_enemy_dice3, (dice_x_start_position + 2 * dice_x_gap, enemy_dice_y_position))  # Third dice position
+            state.DISPLAY.blit(cropped_player_dice1, (dice_x_start_position, enemy_dice_y_position))  # First dice position
+            state.DISPLAY.blit(cropped_player_dice2, (dice_x_start_position + dice_x_gap, enemy_dice_y_position))  # Second dice position
+            state.DISPLAY.blit(cropped_player_dice3, (dice_x_start_position + 2 * dice_x_gap, enemy_dice_y_position))  # Third dice position
 
 
 
