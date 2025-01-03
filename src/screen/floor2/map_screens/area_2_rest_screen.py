@@ -176,31 +176,31 @@ class Area2RestScreen(Screen):
         if controller.isExitPressed:
             state.isRunning = False
 
-        if controller.isUpPressed:
-            self.y_up_move = True
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-        elif controller.isDownPressed:
-            self.y_down_move = True
-            self.y_up_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-        elif controller.isLeftPressed:
-            self.x_left_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_right_move = False
-        elif controller.isRightPressed:
-            self.x_right_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-        else:
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
+        # if controller.isUpPressed:
+        #     self.y_up_move = True
+        #     self.y_down_move = False
+        #     self.x_left_move = False
+        #     self.x_right_move = False
+        # elif controller.isDownPressed:
+        #     self.y_down_move = True
+        #     self.y_up_move = False
+        #     self.x_left_move = False
+        #     self.x_right_move = False
+        # elif controller.isLeftPressed:
+        #     self.x_left_move = True
+        #     self.y_up_move = False
+        #     self.y_down_move = False
+        #     self.x_right_move = False
+        # elif controller.isRightPressed:
+        #     self.x_right_move = True
+        #     self.y_up_move = False
+        #     self.y_down_move = False
+        #     self.x_left_move = False
+        # else:
+        #     self.y_up_move = False
+        #     self.y_down_move = False
+        #     self.x_left_move = False
+        #     self.x_right_move = False
 
         player.update(state)
 

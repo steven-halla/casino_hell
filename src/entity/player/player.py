@@ -3,6 +3,8 @@ from typing import Tuple
 
 import pygame
 import logging
+import math  # Ensure you have math imported for square root calculation
+
 
 
 from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, BLUEBLACK
@@ -19,6 +21,7 @@ class Player(Entity):
 
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
+        self.controller_speed_increaser = 2
         self.money = 1000
         self.current_frame_index = 0
         self.exp = 0
@@ -367,7 +370,10 @@ class Player(Entity):
             self.menu_paused = False
 
             if controller.isLeftPressedSwitch:
-                self.velocity.x = -self.walk_speed
+
+
+
+                self.velocity.x = -self.walk_speed - self.controller_speed_increaser
                 self.current_direction = 'left'
                 current_time = pygame.time.get_ticks()
 
@@ -377,9 +383,11 @@ class Player(Entity):
 
                     # Update the frame index, looping back to 0 if at the end of the list
                     self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
+                    speed = math.sqrt(self.velocity.x ** 2 + self.velocity.y ** 2)
+                    logging.info(f"Current speed: {speed}")
 
             elif controller.isRightPressedSwitch:
-                self.velocity.x = self.walk_speed
+                self.velocity.x = self.walk_speed + self.controller_speed_increaser
                 self.current_direction = 'right'
                 current_time = pygame.time.get_ticks()
 
@@ -399,7 +407,7 @@ class Player(Entity):
             if controller.isUpPressedSwitch:
                 logging.info("is up pressed switch ")
 
-                self.velocity.y = -self.walk_speed
+                self.velocity.y = -self.walk_speed - self.controller_speed_increaser
                 self.current_direction = 'up'
                 current_time = pygame.time.get_ticks()
 
@@ -411,7 +419,7 @@ class Player(Entity):
                     self.current_frame_index = (self.current_frame_index + 1) % len(self.up_frames)
 
             elif controller.isDownPressedSwitch:
-                self.velocity.y = self.walk_speed
+                self.velocity.y = self.walk_speed + self.controller_speed_increaser
                 self.current_direction = 'down'
                 current_time = pygame.time.get_ticks()
 
@@ -428,8 +436,12 @@ class Player(Entity):
                 if abs(self.velocity.y) < 0.15:  # If y velocity is close to zero, just set to zero
                     self.velocity.y = 0
 
+
+
+
+
             if controller.isLeftPressed:
-                logging.info("is left pressed key ")
+
 
                 self.velocity.x = -self.walk_speed
                 self.current_direction = 'left'
@@ -441,6 +453,8 @@ class Player(Entity):
 
                     # Update the frame index, looping back to 0 if at the end of the list
                     self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
+                    speed = math.sqrt(self.velocity.x ** 2 + self.velocity.y ** 2)
+                    logging.info(f"Current speed: {speed}")
 
 
             elif controller.isRightPressed:
