@@ -950,16 +950,16 @@ class Player(Entity):
 
             if state.controller.isAPressedSwitch:
                 if self.menu_index == 0:
-                    state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     self.current_screen = "equipment_screen"
                 elif self.menu_index == 1:
-                    state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     self.current_screen = "quest_items_screen"
                 elif self.menu_index == 2:
-                    state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     self.current_screen = "magic_inventory_screen"
                 elif self.menu_index == 3:
-                    state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     self.current_screen = "status_screen"
 
 
@@ -968,7 +968,7 @@ class Player(Entity):
             # Handle menu navigation with up/down arrow keys
             if self.menu_paused:
 
-                if state.controller.isUpPressed:
+                if state.controller.isUpPressed :
                     self.menu_index = (self.menu_index - 1) % len(menu_items)
                     state.controller.isUpPressed = False
                     self.menu_movement_sound.play()  # Play the sound effect once
@@ -1033,7 +1033,6 @@ class Player(Entity):
                 # Equip the selected item if T is pressed
                 # Equip the selected item if T is pressed
                 if state.controller.isTPressed or state.controller.isAPressedSwitch:
-                    print("hai")
 
                     state.controller.isTPressed = False
                     state.controller.isAPressedSwitch = False
@@ -1094,23 +1093,26 @@ class Player(Entity):
                         self.looking_at_items = False
 
 
-                if state.controller.isBPressed:
+                if state.controller.isBPressed or state.controller.isBPressedSwitch:
                     state.controller.isBPressed = False
+                    state.controller.isBPressedSwitch = False
                     self.looking_at_items = False
                 # Handle up/down navigation for items
-                if state.controller.isUpPressed:
+                if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.item_index = (self.item_index - 1) % len(self.items)
                     state.controller.isUpPressed = False
+                    state.controller.isUpPressedSwitch = False
                     print(self.items[self.item_index])  # Print the item at the current index
                     self.show_item_description(state)
 
-                elif state.controller.isDownPressed:
+                elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.item_index = (self.item_index + 1) % len(self.items)
                     state.controller.isDownPressed = False
+                    state.controller.isDownPressedSwitch = False
                     print(self.items[self.item_index])  # Print the item at the current index
                     self.show_item_description(state)
 
@@ -1119,11 +1121,13 @@ class Player(Entity):
 
             elif self.looking_at_items == False:
 
-                if state.controller.isBPressed:
+                if state.controller.isBPressed or state.controller.isBPressedSwitch:
                     state.controller.isBPressed = False
+                    state.controller.isBPressedSwitch = False
                     self.current_screen = "main_menu_screen"
-                if state.controller.isTPressed:
+                if state.controller.isTPressed or state.controller.isAPressedSwitch:
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     self.looking_at_items = True
                 # Determine the maximum index based on perception level
                 if self.perception < 3:
@@ -1134,18 +1138,20 @@ class Player(Entity):
                     max_index = 4  # Can access all slots (index 0, 1, 2, 3, 4)
 
                 # Handle up/down navigation for equipped items based on max_index
-                if state.controller.isUpPressed:
+                if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.items_equipped_index = (self.items_equipped_index - 1) % (max_index + 1)
                     state.controller.isUpPressed = False
+                    state.controller.isUpPressedSwitch = False
                     print(f"Selected equipped item slot: {self.items_equipped_index}")  # Print the currently selected equipped item slot
 
-                elif state.controller.isDownPressed:
+                elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.items_equipped_index = (self.items_equipped_index + 1) % (max_index + 1)
                     state.controller.isDownPressed = False
+                    state.controller.isDownPressedSwitch = False
                     print(f"Selected equipped item slot: {self.items_equipped_index}")  # Print the currently selected equipped item slot
 
                 # Print the currently selected equipped item or indicate if the slot is empty
@@ -1158,42 +1164,47 @@ class Player(Entity):
                     # print(f"Selected slot {self.items_equipped_index} is empty.")
 
         elif self.current_screen == "quest_items_screen":
-            if state.controller.isUpPressed:
+            if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.quest_items_index = (self.quest_items_index - 1) % len(self.quest_items)
                 state.controller.isUpPressed = False
+                state.controller.isUpPressedSwitch = False
                 print(self.quest_items[self.quest_items_index])  # Print the item at the current index
 
-            elif state.controller.isDownPressed:
+            elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.quest_items_index = (self.quest_items_index + 1) % len(self.quest_items)
                 state.controller.isDownPressed = False
+                state.controller.isDownPressedSwitch = False
                 print(self.quest_items[self.quest_items_index])  # Print the item at the current index
 
             self.quest_item_screen(state)
             self.show_quest_items_description(state)
 
-            if state.controller.isBPressed:
+            if state.controller.isBPressed or state.controller.isBPressedSwitch:
                 state.controller.isBPressed = False
+                state.controller.isBPressedSwitch = False
                 self.current_screen = "main_menu_screen"
 
         elif self.current_screen == "magic_inventory_screen":
 
             # Handle Up/Down navigation for the magic inventory
-            if state.controller.isUpPressed:
+            if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.magic_inventory_index = (self.magic_inventory_index - 1) % len(self.magicinventory)
                 state.controller.isUpPressed = False
+                state.controller.isUpPressedSwitch = False
                 print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
 
-            elif state.controller.isDownPressed:
+            elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
                 state.controller.isDownPressed = False
+                state.controller.isDownPressedSwitch = False
                 print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
 
             # First, render the magic inventory screen
@@ -1203,13 +1214,15 @@ class Player(Entity):
             self.show_magic_description(state)
 
             # Handle back button press to return to the main menu
-            if state.controller.isBPressed:
+            if state.controller.isBPressed or state.controller.isBPressedSwitch:
                 state.controller.isBPressed = False
+                state.controller.isBPressedSwitch = False
                 self.current_screen = "main_menu_screen"
 
         elif self.current_screen == "status_screen":
-            if state.controller.isBPressed:
+            if state.controller.isBPressed or state.controller.isBPressedSwitch:
                 state.controller.isBPressed = False
+                state.controller.isBPressedSwitch = False
                 self.current_screen = "main_menu_screen"
             self.status_screen(state)
 
