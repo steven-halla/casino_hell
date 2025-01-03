@@ -1,7 +1,11 @@
 import pygame
-
+import logging
 from game_state import GameState
 
+logging.basicConfig(
+    level=logging.INFO,  # INFO
+    format="[%(asctime)s][%(name)s][%(levelname)s] %(message)s"
+)
 
 # Instantiate mixer
 # this is where we get our music:
@@ -9,6 +13,7 @@ from game_state import GameState
 
 class Game:
     def __init__(self):
+        # global logging
         pygame.init()
         pygame.display.set_caption("Casino Man")
         self.state = GameState()  # create a new GameState()

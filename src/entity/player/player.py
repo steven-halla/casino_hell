@@ -2,6 +2,8 @@ import json
 from typing import Tuple
 
 import pygame
+import logging
+
 
 from constants import TILE_SIZE, RED, SCREEN_WIDTH, SCREEN_HEIGHT, BLUEBLACK
 from entity.entity import Entity
@@ -364,12 +366,71 @@ class Player(Entity):
         if self.canMove:
             self.menu_paused = False
 
+            if controller.isLeftPressedSwitch:
+                self.velocity.x = -self.walk_speed
+                self.current_direction = 'left'
+                current_time = pygame.time.get_ticks()
 
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
 
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
 
+            elif controller.isRightPressedSwitch:
+                self.velocity.x = self.walk_speed
+                self.current_direction = 'right'
+                current_time = pygame.time.get_ticks()
 
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
+
+            else:
+                # Gradual deceleration if no D-pad direction is pressed
+                self.velocity.x *= 0.65  # Gradually slow the x velocity down
+                if abs(self.velocity.x) < 0.15:  # If x velocity is close to zero, just set to zero
+                    self.velocity.x = 0
+
+            if controller.isUpPressedSwitch:
+                logging.info("is up pressed switch ")
+
+                self.velocity.y = -self.walk_speed
+                self.current_direction = 'up'
+                current_time = pygame.time.get_ticks()
+
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.up_frames)
+
+            elif controller.isDownPressedSwitch:
+                self.velocity.y = self.walk_speed
+                self.current_direction = 'down'
+                current_time = pygame.time.get_ticks()
+
+                # Check if it's time to update to the next frame based on the interval
+                if (current_time - self.sprite_animation_timer) > self.sprite_animation_interval:
+                    self.sprite_animation_timer = current_time  # Reset the timer for the next frame update
+
+                    # Update the frame index, looping back to 0 if at the end of the list
+                    self.current_frame_index = (self.current_frame_index + 1) % len(self.down_frames)
+
+            else:
+                # Gradual deceleration if no D-pad direction is pressed
+                self.velocity.y *= 0.65  # Gradually slow the y velocity down
+                if abs(self.velocity.y) < 0.15:  # If y velocity is close to zero, just set to zero
+                    self.velocity.y = 0
 
             if controller.isLeftPressed:
+                logging.info("is left pressed key ")
+
                 self.velocity.x = -self.walk_speed
                 self.current_direction = 'left'
                 current_time = pygame.time.get_ticks()
