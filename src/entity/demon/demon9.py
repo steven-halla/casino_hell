@@ -19,7 +19,7 @@ class Demon9(Demon):
             ],
             (50, 450, 50, 45), 30, 500
         )
-        self.move_distance = 3.8  # Movement speed
+        self.move_distance = 2.8  # Origional was 3.8
         self.velocity = pygame.math.Vector2(0, 0)
 
         # For storing the last position (needed for undoLastMove)

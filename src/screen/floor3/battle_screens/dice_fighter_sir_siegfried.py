@@ -7,6 +7,14 @@ from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from game_constants.magic import Magic
 
+# Game is not complete
+# give option to concede a match
+# give option to attack or defend
+# create AI To make attack or defend or concede choices
+# blow command : win initiative every time, this is an equipment item
+#magic spell: elimiates 1s on attack dice rolls usable only during player attack phase for 1 roll
+#
+
 
 class DiceFighterSirSiegfried(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:

@@ -31,7 +31,7 @@ from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 
-
+# need to use water tiles or something else that is more obvious for slowing down demon
 class Area2RibDemonMazeScreen2(Screen):
 
     def __init__(self):

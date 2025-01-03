@@ -143,11 +143,17 @@ mind hat - + 30 mp
 body belt: adds + 1 to body
 opossum guilty shoes- if score is above 800 and you lose , retain 200 points
 slots 999- gain an extra 50 HP 50 MP and 100 gold on jack pot
-hippo ticket - win extra coins the more people survive that you pick - global
-loaded dice - + When you are attacker and get a double that is less than defender, adds +1 to all 3 dice.
-spell: Loaded Dice: 
-triples - instant win
-doubles - re roll 1 dice
+hippo silver ticket - win extra coins the more people survive that you pick - global
+agile hands: blow command: win every init roll
+
+Magic:
+spell: Loaded Dice: for attack rolls, a 1 cannot be rolled, last 1 turn - mind level 3
+spell: redraw - asks enemy to redraw one of thier face up cards - quest 
+spell: Order: Re inislitze the trash cans, keeping your score.
+
+
+
+
 
 battle dice:
 Attacker role- you are trying to break the point
@@ -168,8 +174,6 @@ defend - rolls 1d6 when you have a match
 bet-when you break increase bet
 
 `
-
-
 priest: removes curses for a feee
 new idea for stat boosters: curse the item cannot be removed,not only do you have to go and rest, but also have to
 pay a fee for curse removal
@@ -177,19 +181,13 @@ should set max to 4, as in if you have 4 perception the item wont do you any goo
 player room - this is  where player goes after staying at inn
 all items not equipped after rest go in treasure chest
 controller support
-maybe allow 1 extra item slot for player for having high spirit?
-
-dice fighter- 3 v 3 match
-warrior: 10 hp  3 DD 0 spell cards 2 def dice
-priest:  12 HP  2 DD 2 spell cards 3 def dice
-wizard:  8 HP   1 DD 4 spell cards 1 def dice
-roll to see which hero you target
-dice fighter you cannot quit this match its all or nothing
-
-
 
 player does triple roll
 enemy does triple roll
+
+
+
+
 
 
 

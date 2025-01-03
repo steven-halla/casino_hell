@@ -36,10 +36,10 @@ class Player(Entity):
         self.max_focus_points = 10
         self.items = ["sir leopold's paw"]
 
-        self.equipped_items = ["sir leopold amulet", "Black Hat"]
+        self.equipped_items = []
 
         self.npc_items = []
-        self.magicinventory = ["Shield", "Force", "shake", "redraw","reveal", "HACK" ]
+        self.magicinventory = ["shield", "shake","reveal",  ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -144,6 +144,8 @@ class Player(Entity):
             7: 2800,  # Continue adding levels as needed
             # Add more levels as needed
         }
+
+        pygame.joystick.init()
 
     def to_dict(self, state: "GameState") -> dict:
         return {
@@ -361,6 +363,12 @@ class Player(Entity):
 
         if self.canMove:
             self.menu_paused = False
+
+
+
+
+
+
             if controller.isLeftPressed:
                 self.velocity.x = -self.walk_speed
                 self.current_direction = 'left'
@@ -372,6 +380,7 @@ class Player(Entity):
 
                     # Update the frame index, looping back to 0 if at the end of the list
                     self.current_frame_index = (self.current_frame_index + 1) % len(self.left_frames)
+
 
             elif controller.isRightPressed:
                 self.velocity.x = self.walk_speed

@@ -1,72 +1,82 @@
 {
-    "level": 4,
-    "exp": 600,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
-    "focus_points": 120,
-    "max_focus_points": 120,
+    "level": 7,
+    "exp": 2188,
+    "stamina_points": 320,
+    "max_stamina_points": 320,
+    "focus_points": 170,
+    "max_focus_points": 170,
     "companions": [
         "sir leopold"
     ],
     "items": [
         "sir leopold's paw",
         "opossum repellent",
-        "coin flip glasses"
+        "coin flip glasses",
+        "Cool Shades"
     ],
     "equipped_items": [
         "sir leopold's paw",
-        "opossum repellent",
+        "Cool Shades",
         "coin flip glasses"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token"
+        "level 4 token",
+        "level 5 token",
+        "level 6 token",
+        "level 7 token"
     ],
     "magicinventory": [
         "reveal",
         "shield",
         "shake"
     ],
-    "body": 1,
+    "body": 2,
     "mind": 1,
-    "spirit": 1,
-    "perception": 1,
+    "spirit": 2,
+    "perception": 2,
     "baseperception": 1,
-    "luck": 1,
-    "money": 1500,
+    "luck": 2,
+    "money": 2700,
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "Invitation",
+        "rib demon key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 1,
+    "days": 5,
     "leveltwonpcstate": [
-
-
-
+        "COIN_FLIP_BETTY_DEFEATED",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "500 Gold",
+        "CHICKEN_QUEST_START",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "MC_NUGGET_QUEST_1_REWARD",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "MC_NUGGET_BETA_QUEST_COMPLETE",
+        "MC_NUGGET_FIRST_QUEST_COMPLETE",
+        "focus boost"
     ],
-    "levelthreenpcstate":[
-
-
-    ],
+    "levelthreenpcstate": [],
     "slots_vest": false,
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 1000,
+    "coinflipbetteymoney": 0,
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 1000,
+    "opossuminacancandymoney": 0,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "blackjackmackmoney": 1500,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 1500,
+    "slotsrippasnappamoney": 0,
     "crapscrappymoney": 1500
 }

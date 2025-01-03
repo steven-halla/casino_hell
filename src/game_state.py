@@ -224,7 +224,7 @@ class GameState:
         # the below is the default of what i need
         # self.currentScreen = self.startLoadScreen
 
-        self.currentScreen = self.diceFighterSirSiegfried
+        self.currentScreen = self.startLoadScreen
 
 
 
