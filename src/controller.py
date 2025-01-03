@@ -131,6 +131,13 @@ class Controller:
                 elif event.button == 14:  # D-pad Right
                     logging.info("D-pad Right pressed")
                     self.isRightPressedSwitch = True
+                elif event.button == 6:  # Start
+                    logging.info("D-pad Right pressed")
+                    self.isRightPressedSwitch = True
+
+                elif event.button == 4:  # select
+                    logging.info("D-pad Right pressed")
+                    self.isRightPressedSwitch = True
 
 
             elif event.type == pygame.JOYBUTTONUP:
