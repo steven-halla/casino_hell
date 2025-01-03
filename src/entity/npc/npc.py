@@ -26,6 +26,7 @@ class Npc(Entity):
         # print(time.process_time() - self.speakStartTime)
         if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (
                 time.process_time() - self.speakStartTime) > .20:
+            state.controller.isAPressedSwitch = False
             print("hi there partner")
 
             distance = math.sqrt(

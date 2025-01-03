@@ -91,9 +91,14 @@ class Johnathon(Npc):
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False
+        if state.controller.isAPressedSwitch:
+            print("Controller A button pressed!")
+        if state.controller.isTPressed:
+            print("Controller A button pressed!")
 
         if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
             self.state = "waiting"
+            state.controller.isAPressedSwitch = False
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
 
