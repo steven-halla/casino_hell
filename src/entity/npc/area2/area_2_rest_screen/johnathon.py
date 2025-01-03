@@ -57,12 +57,12 @@ class Johnathon(Npc):
                 current_message = self.npc_messages["erika_in_party"]
 
             if current_message.message_index == 1:
-                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
+                if (state.controller.isAPressed or state.controller.isAPressedSwitch) and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
 
-                elif state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
+                elif (state.controller.isBPressed or state.controller.isBPressedSwitch) and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
@@ -75,7 +75,7 @@ class Johnathon(Npc):
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40 and state.player.menu_paused == False:
@@ -92,7 +92,7 @@ class Johnathon(Npc):
         current_message.update(state)
         state.player.canMove = False
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True

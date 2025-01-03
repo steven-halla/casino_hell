@@ -24,7 +24,7 @@ class Npc(Entity):
 
         player = state.player
         # print(time.process_time() - self.speakStartTime)
-        if state.controller.isTPressed and (
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (
                 time.process_time() - self.speakStartTime) > .20:
             print("hi there partner")
 
