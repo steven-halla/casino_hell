@@ -948,6 +948,22 @@ class Player(Entity):
                     state.controller.isTPressed = False
                     self.current_screen = "status_screen"
 
+            if state.controller.isAPressedSwitch:
+                if self.menu_index == 0:
+                    state.controller.isTPressed = False
+                    self.current_screen = "equipment_screen"
+                elif self.menu_index == 1:
+                    state.controller.isTPressed = False
+                    self.current_screen = "quest_items_screen"
+                elif self.menu_index == 2:
+                    state.controller.isTPressed = False
+                    self.current_screen = "magic_inventory_screen"
+                elif self.menu_index == 3:
+                    state.controller.isTPressed = False
+                    self.current_screen = "status_screen"
+
+
+
 
             # Handle menu navigation with up/down arrow keys
             if self.menu_paused:
@@ -963,6 +979,18 @@ class Player(Entity):
 
                     self.menu_index = (self.menu_index + 1) % len(menu_items)
                     state.controller.isDownPressed = False
+
+                if state.controller.isUpPressedSwitch:
+                    self.menu_index = (self.menu_index - 1) % len(menu_items)
+                    state.controller.isUpPressedSwitch = False
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
+
+                elif state.controller.isDownPressedSwitch:
+                    self.menu_movement_sound.play()  # Play the sound effect once
+
+                    self.menu_index = (self.menu_index + 1) % len(menu_items)
+                    state.controller.isDownPressedSwitch = False
 
 
         if self.current_screen == "equipment_screen":
@@ -1004,9 +1032,11 @@ class Player(Entity):
 
                 # Equip the selected item if T is pressed
                 # Equip the selected item if T is pressed
-                if state.controller.isTPressed:
+                if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                    print("hai")
 
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
 
 
                     # Check if the selected item is already equipped
