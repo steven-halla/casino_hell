@@ -13,7 +13,7 @@ class NatNat(Npc):
         self.npc_messages = {
             "default_message": NpcTextBox(
                 [
-                    "Natasha: The demons are nice enough to give us the clothes of people that lose all their money.",
+                    "CatNat: The demons are nice enough to give us the clothes of people that lose all their money.",
                     "I'll never part with my daughter's clothing, it's the only thing I have to remember her by.",
                     "Now what was her name again, I can't seem to remember it...Did I really have a daughter?"
 
@@ -22,7 +22,7 @@ class NatNat(Npc):
             ),
             "erika_in_party": NpcTextBox(
                 [
-                    "Natasha: So many people come here with friends and family, I've seen so many torn apart by this place.",
+                    "CatNat: So many people come here with friends and family, I've seen so many torn apart by this place.",
 
 
                 ],
@@ -75,7 +75,7 @@ class NatNat(Npc):
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40 and state.player.menu_paused == False:
@@ -92,7 +92,7 @@ class NatNat(Npc):
         current_message.update(state)
         state.player.canMove = False
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if(state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
             self.state = "waiting"
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
