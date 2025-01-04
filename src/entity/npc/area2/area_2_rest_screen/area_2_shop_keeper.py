@@ -79,11 +79,12 @@ class Area2ShopKeeper(Npc):
 
 
             # Handle selection confirmation (e.g., with 'T' press)
-            if state.controller.isTPressed and pygame.time.get_ticks() - self.input_time > 400:
+            if (state.controller.isTPressed or state.controller.isAPressedSwitch) and pygame.time.get_ticks() - self.input_time > 400:
                 selected_stat = stats[self.stat_point_increase_index]
                 print(f"Player selected: {selected_stat}")
                 # Handle the logic for applying the stat point increase
                 state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
 
                 if self.stat_point_increase_index == 0 and state.player.body < 2:
                     state.player.body += 1
@@ -160,7 +161,7 @@ class Area2ShopKeeper(Npc):
             cost = int(self.shop_costs[self.selected_item_index])
 
 
-            if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500 and self.stat_point_increase == False:
+            if (state.controller.isBPressed or state.controller.isBPressedSwitch) and pygame.time.get_ticks() - self.input_time > 500 and self.stat_point_increase == False:
                 self.input_time = pygame.time.get_ticks()
                 self.state = "waiting"
                 print("Leaving the shop...")
@@ -172,8 +173,9 @@ class Area2ShopKeeper(Npc):
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
 
-                if state.controller.isTPressed:
+                if state.controller.isTPressed or state.controller.isAPressedSwitch:
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
 
 
                     if state.player.money > 899 and self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value not in state.player.level_two_npc_state:

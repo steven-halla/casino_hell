@@ -102,7 +102,7 @@ class Alex(Npc):
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40 and state.player.menu_paused == False:
@@ -125,7 +125,7 @@ class Alex(Npc):
         current_message.update(state)
         state.player.canMove = False
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
 
 
             self.state = "waiting"

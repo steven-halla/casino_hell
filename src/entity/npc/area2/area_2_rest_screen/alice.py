@@ -78,7 +78,7 @@ class Alice(Npc):
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40 and state.player.menu_paused == False:
@@ -123,7 +123,7 @@ class Alice(Npc):
 
 
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
 
             if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state and Equipment.BLACK_JACK_HAT.value not in state.player.items and state.player.spirit >= 2:
                 print("jadsjfl")
