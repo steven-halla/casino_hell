@@ -79,7 +79,7 @@ class NpcTextBox(Entity):
             self.characters_to_display += 1
 
         if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_time - self.time > self.delay:
-            state.controller.isAPressedSwitch = False
+            # state.controller.isAPressedSwitch = False
             if self.characters_to_display < len(text):
                 self.characters_to_display = len(text)
                 self.time = pygame.time.get_ticks()  # Reset the time to prevent immediate skipping

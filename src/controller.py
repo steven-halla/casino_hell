@@ -108,6 +108,8 @@ class Controller:
 
                 if event.button == 0:  # A button
                     self.isAPressedSwitch = True
+                    logging.info("Controller A button pressed!!!!!")
+
                 elif event.button == 1:  # B button
                     self.isBPressedSwitch = True
                 elif event.button == 11:  # D-pad Up
@@ -180,6 +182,8 @@ class Controller:
                 elif event.key == pygame.K_e:
                     self.isEPressed = True
                 elif event.key == pygame.K_t:
+                    logging.info("KEYBOARD T button pressed!")
+
                     self.isTPressed = True
                 elif event.key == pygame.K_w:
                     self.isWPressed = True

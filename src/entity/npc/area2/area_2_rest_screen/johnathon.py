@@ -57,7 +57,7 @@ class Johnathon(Npc):
                 current_message = self.npc_messages["erika_in_party"]
 
             if current_message.message_index == 1:
-                if (state.controller.isAPressed or state.controller.isAPressedSwitch) and pygame.time.get_ticks() - self.input_time > 500:
+                if state.controller.isAPressed and pygame.time.get_ticks() - self.input_time > 500:
                     self.input_time = pygame.time.get_ticks()
                     self.state = "waiting"
 
@@ -91,14 +91,15 @@ class Johnathon(Npc):
     def update_talking(self, state: "GameState", current_message):
         current_message.update(state)
         state.player.canMove = False
-        if state.controller.isAPressedSwitch:
-            print("Controller A button pressed!")
-        if state.controller.isTPressed:
-            print("Controller A button pressed!")
+        # if state.controller.isAPressedSwitch:
+        #     print("Controller A button pressed!")
+        # if state.controller.isTPressed:
+        #     print("Controller T button pressed!")
 
-        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
+        if state.controller.isTPressed or state.controller.isAPressedSwitch and current_message.is_finished():
             self.state = "waiting"
-            state.controller.isAPressedSwitch = False
+            print("Hi")
+            # state.controller.isAPressedSwitch = False
             self.state_start_time = pygame.time.get_ticks()
             state.player.canMove = True
 
