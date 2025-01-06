@@ -40,11 +40,11 @@ class Area2RestToGamblingArea(Npc):
         distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
                              (player.collision.y - self.collision.y) ** 2)
 
-        if distance < 40 and state.controller.isTPressed and \
+        if distance < 40 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and \
                 (pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
 
             self.state_start_time = pygame.time.get_ticks()
-            if state.controller.isTPressed:
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
                 state.area_2_gambling_area_to_rest_point = True
 
                 state.currentScreen = state.area2GamblingScreen
