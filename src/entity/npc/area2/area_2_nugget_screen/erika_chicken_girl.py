@@ -68,7 +68,7 @@ class ErikaChickenGirl(Npc):
 
             # Determine which message to use based on player state
             if state.player.money >= 3000:
-                if self.menu_index == 0 and state.controller.isTPressed:
+                if self.menu_index == 0 and (state.controller.isTPressed or state.controller.isAPressedSwitch):
                     if state.player.money >= 3000:
                         state.player.money -= 2000
                         self.quest_accepted = True
@@ -123,7 +123,7 @@ class ErikaChickenGirl(Npc):
         if min_distance < 10:
             print("nooo")
 
-        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt((player.collision.x - self.collision.x) ** 2 + (player.collision.y - self.collision.y) ** 2)
 
             if distance < 40 and state.player.menu_paused == False:
@@ -151,7 +151,7 @@ class ErikaChickenGirl(Npc):
 
 
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
             print("we are here at player waiting")
 
 
