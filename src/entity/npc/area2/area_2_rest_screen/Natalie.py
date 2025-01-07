@@ -18,7 +18,7 @@ class Natalie(Npc):
                     "If you roll a 5 or 9 then going a medium kind of bet is best with a 11.11% probability.",
                     "A roll of 4 and 10 has a probablity of 8.33% so bet low.",
                     "A roll of 3 and 11 has a probablity of 5.56% so bet  low if you roll an 11.",
-                    "A roll of 2 and 12 has a probablity of 2.78% ,though that wont matter much as you cant st that as point roll. ",
+                    "A roll of 2 and 12 has a probablity of 2.78% ,though that wont matter much as you cant set that as point roll. ",
 
 
 
