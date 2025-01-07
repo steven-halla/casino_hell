@@ -37,7 +37,7 @@ class Switch7(Npc):
                              (player.collision.y - self.collision.y) ** 2)
 
         # If the player is near the switch and presses 'T' and the switch is not yet activated
-        if distance < 40 and state.controller.isTPressed and not self.switch_activated and \
+        if distance < 40 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and not self.switch_activated and \
                 (pygame.time.get_ticks() - self.state_start_time) > 500 and not state.player.menu_paused:
 
             self.state_start_time = pygame.time.get_ticks()

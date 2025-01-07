@@ -107,16 +107,18 @@ class StartLoadScreen(Screen):
 
         # Additional update logic...
 
-        if state.controller.isUpPressed and self.t_key_pressed == False:
+        if (state.controller.isUpPressed or state.controller.isUpPressedSwitch)  and self.t_key_pressed == False:
             state.controller.isUpPressed = False
+            state.controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()  # Play the sound effect once
 
 
             self.arrow_index = (self.arrow_index - 1) % len(self.choices)
             print("Up pressed, arrow_index:", self.arrow_index)  # Debugging line
 
-        elif state.controller.isDownPressed and self.t_key_pressed == False:
+        elif (state.controller.isDownPressed or state.controller.isDownPressedSwitch) and self.t_key_pressed == False:
             state.controller.isDownPressed = False
+            state.controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()  # Play the sound effect once
 
             self.arrow_index = (self.arrow_index + 1) % len(self.choices)
@@ -124,21 +126,23 @@ class StartLoadScreen(Screen):
 
         selected_option = self.choices[self.arrow_index]
 
-        if selected_option == "Yes" and state.controller.isTPressed:
+        if selected_option == "Yes" and (state.controller.isTPressed or state.controller.isAPressedSwitch):
             self.t_key_pressed = True  # Add this line
 
             pygame.mixer.music.stop()
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
             if self.timer_start_time is None:
                 self.start_timer(1200)  # Start a 1.2-second delay
                 self.spell_sound.play()  # Play the sound effect
 
-        elif selected_option == "No" and state.controller.isTPressed:
+        elif selected_option == "No" and (state.controller.isTPressed or state.controller.isAPressedSwitch):
             self.t_key_pressed = True  # Add this line
 
             pygame.mixer.music.stop()
 
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
             if self.timer_start_time is None:
                 self.start_timer(2000)  # Start a 2-second delay
                 self.spell_sound.play()  # Play the sound effect
