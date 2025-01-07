@@ -46,7 +46,7 @@ class SlotsRippaSnappa(Npc):
         distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
                              (player.collision.y - self.collision.y) ** 2)
 
-        if distance < 40 and state.controller.isTPressed and \
+        if distance < 40 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and \
                 (pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
@@ -84,7 +84,7 @@ class SlotsRippaSnappa(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and current_message.message_at_end() and state.controller.isTPressed and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value not in state.player.level_two_npc_state:
+        if current_message.is_finished() and current_message.message_at_end() and (state.controller.isTPressed or state.controller.isAPressedSwitch) and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value not in state.player.level_two_npc_state:
 
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
@@ -98,8 +98,9 @@ class SlotsRippaSnappa(Npc):
             if not state.controller.isTPressed:
                 self.t_pressed = False
 
-        if state.controller.isTPressed and current_message.is_finished():
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
             # Exiting the conversation
             self.state = "waiting"
             self.menu_index = 0

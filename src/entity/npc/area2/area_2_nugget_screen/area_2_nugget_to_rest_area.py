@@ -61,9 +61,6 @@ class Area2NuggetToRestArea(Npc):
         state.player.canMove = False
 
 
-
-
-
     def draw(self, state):
 
 

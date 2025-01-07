@@ -56,11 +56,12 @@ class BlackJackMack(Npc):
         distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
                              (player.collision.y - self.collision.y) ** 2)
 
-        if distance < 40 and state.controller.isTPressed and \
+        if distance < 40 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and \
                 (pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
 
             if Events.BLACK_JACK_BLACK_MACK_DEFEATED.value in state.player.level_two_npc_state:
                 self.black_jack_thomas_messages["defeated_message"].reset()
@@ -92,7 +93,7 @@ class BlackJackMack(Npc):
                 state.controller.isDownPressed = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if current_message.is_finished() and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state and current_message.message_at_end() and state.controller.isTPressed:
+        if current_message.is_finished() and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state and current_message.message_at_end() and (state.controller.isTPressed or state.controller.isAPressedSwitch):
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
@@ -109,8 +110,10 @@ class BlackJackMack(Npc):
             if not state.controller.isTPressed:
                 self.t_pressed = False
 
-        if state.controller.isTPressed and current_message.is_finished():
+
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) and current_message.is_finished():
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
             # Exiting the conversation
             self.state = "waiting"
             self.menu_index = 0
