@@ -86,6 +86,7 @@ class BlackJackMack(Npc):
             if state.controller.isUpPressed:
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
                 state.controller.isUpPressed = False
+                state.controller.isUpPressed = False
 
 
             elif state.controller.isDownPressed:
