@@ -294,21 +294,24 @@ class CoinFlipBettyScreen(BattleScreen):
         controller = state.controller
         controller.update()
 
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             self.bet += 50
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(200)
             self.isUpPressed = False
+            controller.isUpPressedSwitch = False
             print(self.bet)
 
 
-        elif controller.isDownPressed:
+        elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
             self.bet -= 50
             self.menu_movement_sound.play()  # Play the sound effect once
 
             pygame.time.delay(200)
             self.isDownPressed = False
+            controller.isDownPressedSwitch = False
+
             print(self.bet)
 
 
@@ -324,10 +327,11 @@ class CoinFlipBettyScreen(BattleScreen):
         if self.bet > state.player.money:
             self.bet = state.player.money
 
-        if controller.isTPressed:
+        if state.controller.isTPressed or state.controller.isAPressedSwitch:
 
             self.game_state = "welcome_screen"
             state.controller.isTPressed = False  # Reset the button state
+            state.controller.isAPressedSwitch = False  # Reset the button state
 
     def flipCoin(self, state: "GameState"):
         #here we need logic to handle if player leaves and comes back
@@ -470,36 +474,41 @@ class CoinFlipBettyScreen(BattleScreen):
             elif state.player.money <= 0:
                 self.game_state = "game_over_screen"
 
-            if controller.isUpPressed:
+            if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
                 controller.isUpPressed = False
-            elif controller.isDownPressed:
+                controller.isUpPressedSwitch = False
+            elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
                 self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
                 controller.isDownPressed = False
+                controller.isDownPressedSwitch = False
 
-            if self.welcome_screen_index == 0 and controller.isTPressed:
+            if self.welcome_screen_index == 0 and (state.controller.isTPressed or state.controller.isAPressedSwitch):
                 for i in range(0, self.bet, 50):
                     state.player.stamina_points -= 4
                 self.game_state = "heads_tails_choose_screen"
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
 
-            elif self.welcome_screen_index == 1 and controller.isTPressed and self.magic_lock == False and self.player_debuff_silence_counter == 0:
+            elif self.welcome_screen_index == 1 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and self.magic_lock == False and self.player_debuff_silence_counter == 0:
                 self.magic_screen_index = 0
                 self.battle_messages["magic_message"].reset()
                 self.game_state = "magic_screen"
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
 
-            elif self.welcome_screen_index == 2 and controller.isTPressed:
+            elif self.welcome_screen_index == 2 and (state.controller.isTPressed or state.controller.isAPressedSwitch):
                 self.battle_messages["bet_message"].reset()
                 self.game_state = "bet_screen"
 
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
 
-            elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0 and self.player_debuff_silence_counter == 0:
+            elif self.welcome_screen_index == 3 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and self.lock_down == 0 and self.player_debuff_silence_counter == 0:
                 if self.quest_money >= 500 and Events.QUEST_1_BADGE.value not in state.player.level_two_npc_state:
                     print("hi")
                     Events.add_event_to_player(state.player, Events.QUEST_1_BADGE)
@@ -518,6 +527,7 @@ class CoinFlipBettyScreen(BattleScreen):
                 self.debuff_vanish = 0
                 self.player_debuff_silence_counter = 0
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 self.magic_points = 1
 
         if self.game_state == "level_up_screen":
@@ -528,8 +538,9 @@ class CoinFlipBettyScreen(BattleScreen):
 
         if self.game_state == "spell_casting":
             self.battle_messages["spell_magic_lock_message"].update(state)
-            if self.battle_messages["spell_magic_lock_message"].is_finished() and state.controller.isTPressed:
+            if self.battle_messages["spell_magic_lock_message"].is_finished() and (state.controller.isTPressed or state.controller.isAPressedSwitch):
                 state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
                 self.spell_sound.play()
                 print("mew mew mew mew mew mew mwem---------------------")
                 self.game_state = "welcome_screen"
@@ -561,7 +572,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
             if self.battle_messages["bet_message"].is_finished():
-                if state.controller.isUpPressed:
+                if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                     self.headstailsindex -= 1
                     self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -572,7 +583,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
                 # Handling Down Press
-                elif state.controller.isDownPressed:
+                elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                     self.headstailsindex += 1
                     self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -588,7 +599,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
 
 
-            if state.controller.isUpPressed:
+            if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.magicindex -= 1
                 self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -599,7 +610,7 @@ class CoinFlipBettyScreen(BattleScreen):
                 # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
 
-            elif state.controller.isDownPressed:
+            elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.magicindex += 1
                 self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -662,7 +673,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
             if "coin flip glasses" in state.player.equipped_items and self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
-                if controller.isTPressed:
+                if state.controller.isTPressed or state.controller.isAPressedSwitch:
 
                     self.phase += 1
                     state.player.money += self.bet + 20
@@ -681,6 +692,7 @@ class CoinFlipBettyScreen(BattleScreen):
                         state.player.money -= 20
                         self.quest_money -= 20
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     if self.player_debuff_silence_counter > 0:
                         self.player_debuff_silence_counter -= 1
                     if self.phase > 5:
@@ -696,7 +708,7 @@ class CoinFlipBettyScreen(BattleScreen):
 
             elif self.player_choice == self.result:
                 # print("Ninejljdfjsldajfjasf;sjf;ladsjf;js;fjsa;ljfl;sajfld;sajf;lsjf;lasjfl;sjf;ljas")
-                if controller.isTPressed:
+                if state.controller.isTPressed or state.controller.isAPressedSwitch:
                     self.phase += 1
 
 
@@ -710,6 +722,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     self.quest_money += self.bet
 
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     if self.player_debuff_silence_counter > 0:
                         self.player_debuff_silence_counter -= 1
                     if self.phase > 5:
@@ -725,7 +738,7 @@ class CoinFlipBettyScreen(BattleScreen):
             elif self.player_choice != self.result:
 
 
-                if controller.isTPressed and self.debuff_vanish == False:
+                if (state.controller.isTPressed or state.controller.isAPressedSwitch) and self.debuff_vanish == False:
                     self.phase += 1
                     state.player.exp += 20
                     self.exp_gain = 15
@@ -739,6 +752,7 @@ class CoinFlipBettyScreen(BattleScreen):
                     self.quest_money -= self.bet
 
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     if self.player_debuff_silence_counter > 0:
                         self.player_debuff_silence_counter -= 1
                     if self.phase > 5:
@@ -749,10 +763,6 @@ class CoinFlipBettyScreen(BattleScreen):
                     self.weighted_coin = False
                     if self.debuff_counter > 0:
                         self.debuff_counter -= 1
-
-
-
-
 
                 if self.debuff_vanish == True:
                     self.phase += 1
@@ -814,12 +824,12 @@ class CoinFlipBettyScreen(BattleScreen):
                 # Set the flag to True after printing the message
                 self.message_printed = True
 
-            if state.controller.isUpPressed:
+            if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.arrow_index -= 1
                 if self.arrow_index < 0:
                     self.arrow_index = len(self.yes_or_no_menu) - 1  # Wrap around to the last item
                 pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-            elif state.controller.isDownPressed:
+            elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.arrow_index += 1
                 if self.arrow_index >= len(self.yes_or_no_menu):
                     self.arrow_index = 0  # Wrap around to the first item

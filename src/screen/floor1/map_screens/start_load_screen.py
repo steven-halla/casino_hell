@@ -107,7 +107,7 @@ class StartLoadScreen(Screen):
 
         # Additional update logic...
 
-        if (state.controller.isUpPressed or state.controller.isUpPressedSwitch)  and self.t_key_pressed == False:
+        if (state.controller.isUpPressed or state.controller.isUpPressedSwitch) and self.t_key_pressed == False:
             state.controller.isUpPressed = False
             state.controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()  # Play the sound effect once
