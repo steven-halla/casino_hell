@@ -182,16 +182,18 @@ class Area3RestScreen(Screen):
         if state.player.hide_player == False:
             state.player.draw(state)
 
-        if state.controller.isPPressed:
+        if state.controller.isPPressed or state.controller.isXPressedSwitch:
             state.player.canMove = False
-
+            print("Yes")
             state.player.draw_player_stats(state)
-            if state.controller.isBPressed and state.player.current_screen == "main_menu_screen":
-                if state.controller.isPPressed:
+
+            if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
+                if state.controller.isPPressed or state.controller.isXPressedSwitch:
                     state.player.canMove = True
                     state.player.menu_paused = False
 
                     state.controller.isPPressed = False
+                    state.controller.isXPressedSwitch = False
                     return
 
         # Update the display

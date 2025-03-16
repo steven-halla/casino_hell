@@ -1,6 +1,6 @@
 {
     "level": 4,
-    "exp": 400,
+    "exp": 600,
     "stamina_points": 280,
     "max_stamina_points": 280,
     "focus_points": 140,
@@ -36,12 +36,12 @@
         "HACK",
         "Force"
     ],
-    "body": 2,
+    "body": 1,
     "mind": 2,
-    "spirit": 2,
+    "spirit": 1,
     "perception": 1,
     "baseperception": 1,
-    "luck": 2,
+    "luck": 1,
     "money": 2000,
     "rabies": false,
     "immunity": true,

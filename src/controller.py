@@ -82,26 +82,42 @@ class Controller:
                         self.isDownPressedSwitch = False
                         self.isLeftPressedSwitch = False
                         self.isRightPressedSwitch = False
+                        # self.isXPressedSwitch = False
+
                     elif event.value == (0, -1):  # Down
                         self.isUpPressedSwitch = False
                         self.isDownPressedSwitch = True
                         self.isLeftPressedSwitch = False
                         self.isRightPressedSwitch = False
+                        # self.isXPressedSwitch = False
+
                     elif event.value == (-1, 0):  # Left
                         self.isUpPressedSwitch = False
                         self.isDownPressedSwitch = False
                         self.isLeftPressedSwitch = True
                         self.isRightPressedSwitch = False
+                        # self.isXPressedSwitch = False
+
                     elif event.value == (1, 0):  # Right
                         self.isUpPressedSwitch = False
                         self.isDownPressedSwitch = False
                         self.isLeftPressedSwitch = False
                         self.isRightPressedSwitch = True
+                        # self.isXPressedSwitch = False
+
+                    elif event.button == 2:  # X button
+                        self.isXPressedSwitch = True
+                        self.isUpPressedSwitch = False
+                        self.isDownPressedSwitch = False
+                        self.isLeftPressedSwitch = False
+                        self.isRightPressedSwitch = False
                     elif event.value == (0, 0):  # Neutral
                         self.isUpPressedSwitch = False
                         self.isDownPressedSwitch = False
                         self.isLeftPressedSwitch = False
                         self.isRightPressedSwitch = False
+                        # self.isXPressedSwitch = False
+
 
             # Handle button input (JOYBUTTONDOWN and JOYBUTTONUP)
             if event.type == pygame.JOYBUTTONDOWN:
@@ -112,6 +128,10 @@ class Controller:
 
                 elif event.button == 1:  # B button
                     self.isBPressedSwitch = True
+                elif event.button == 2:  # X button
+                    self.isXPressedSwitch = True
+
+
                 elif event.button == 11:  # D-pad Up
                     self.isUpPressedSwitch = True
                 elif event.button == 12:  # D-pad Down
@@ -127,6 +147,8 @@ class Controller:
                     self.isRightPressedSwitch = True
 
 
+
+
             elif event.type == pygame.JOYBUTTONUP:
                 # logging.info("is up pressed switch ")
 
@@ -134,6 +156,8 @@ class Controller:
                     self.isAPressedSwitch = False
                 elif event.button == 1:  # B button
                     self.isBPressedSwitch = False
+                # elif event.button == 2:  # X button
+                #     self.isXPressedSwitch = False
                 elif event.button == 11:  # D-pad Up
                     self.isUpPressedSwitch = False
                 elif event.button == 12:  # D-pad Down
