@@ -111,7 +111,10 @@ class BlackJackAlbertScreen(GambleScreen):
             self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE: MessageBox([
                 f"It's a DRAW! You win 0 gold and win {self.low_exp} experience points"
             ]),
-            self.LEVEL_UP: MessageBox([
+            self.LEVEL_UP_SCREEN: MessageBox([
+                f"You leveld up!"
+            ]),
+            self.LEVEL_UP_MESSAGE: MessageBox([
                 f"You leveld up!"
             ]),
 
@@ -338,8 +341,6 @@ class BlackJackAlbertScreen(GambleScreen):
 
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.draw_level_up(state)
-
-
 
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
@@ -1055,7 +1056,7 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.money <= 0:
             print("enemy defeated")
 
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
             if self.welcome_screen_index  == self.welcome_screen_play_index:
                 self.game_state = self.DRAW_CARD_SCREEN
@@ -1064,7 +1065,17 @@ class BlackJackAlbertScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
-                self.reset_black_jack_game()
+                controller.isTPressed = False
+                controller.isAPressedSwitch = False
+                # self.welcome_screen_index = self.play_index
+                # self.reveal_hand = self.reveal_spell_duration_expired
+                # self.magic_lock = False
+                # self.bet = self.bet_minimum
+                # self.magic_points = self.max_mp
+                state.currentScreen = state.area3RestScreen
+                state.area3RestScreen.start(state)
+
+                state.player.canMove = True
 
     def initialize_music(self):
         pass
