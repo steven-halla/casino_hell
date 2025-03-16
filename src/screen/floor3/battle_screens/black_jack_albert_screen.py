@@ -259,7 +259,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
-            if state.contorller.isTPressed:
+            if state.controller.isTPressed:
                 state.controller.isTPressed = False
                 self.round_reset()
                 state.player.exp += self.low_exp
@@ -640,6 +640,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
 
+
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
             controller.isUpPressedSwitch = False
@@ -719,6 +720,9 @@ class BlackJackAlbertScreen(GambleScreen):
                 new_card = self.deck.enemy_draw_hand(1)[0]
                 self.enemy_hand.insert(1, new_card)
                 self.redraw_counter = False
+                # Recalculate the enemy's score after redrawing their hand
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                print(self.enemy_score)
 
     def animate_face_down_card_player(self, state, card_index):
         # Set the initial position of the card off the screen (above the screen)
