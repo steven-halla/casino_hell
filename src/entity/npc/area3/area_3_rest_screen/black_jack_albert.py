@@ -104,7 +104,7 @@ class BlackJackAlbert(Npc):
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes" and state.player.stamina_points > 0:
+            if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
                 state.currentScreen = state.blackJackAlbertScreen
                 state.blackJackAlbertScreen.start(state)
