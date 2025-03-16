@@ -29,6 +29,7 @@ from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_rest_screen.karn import Karn
 from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_rest_screen.paul import Paul
+from entity.npc.area3.area_3_rest_screen.black_jack_albert import BlackJackAlbert
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
@@ -96,6 +97,7 @@ class Area3RestScreen(Screen):
         #     state.treasurechests.append(Area2FocusBoost(16 * 111, 14 * 111))
 
         state.npcs = [
+            BlackJackAlbert(16 * 15, 16 * 15),
 
         ]
 
