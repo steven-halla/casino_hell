@@ -30,6 +30,7 @@ from entity.npc.area2.area_2_rest_screen.karn import Karn
 from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_rest_screen.paul import Paul
 from entity.npc.area3.area_3_rest_screen.black_jack_albert import BlackJackAlbert
+from entity.npc.area3.area_3_rest_screen.coin_flip_dexter import CoinFlipDexter
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
@@ -98,7 +99,8 @@ class Area3RestScreen(Screen):
 
         state.npcs = [
             # below are for geting into games and such
-            BlackJackAlbert(16 * 15, 16 * 15),
+            BlackJackAlbert(16 * 1, 16 * 15),
+            CoinFlipDexter(16 * 15, 16 * 15),
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 35),  # fin

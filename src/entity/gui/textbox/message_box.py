@@ -40,6 +40,7 @@ class MessageBox(Entity):
             state.controller.isTPressed = False
 
     def draw(self, state: "GameState"):
+
         text_to_display = self.messages[self.message_index][:self.characters_to_display]
         wrapped_text = textwrap.wrap(text_to_display, 58)
         for i, line in enumerate(wrapped_text):

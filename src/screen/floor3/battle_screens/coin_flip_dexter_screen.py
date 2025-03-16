@@ -165,6 +165,7 @@ class CoinFlipDexterScreen(GambleScreen):
             self.magic_lock = False
 
     def update(self, state):
+        # print("Battle Messages Keys:", self.battle_messages.keys())
         super().update(state)
         controller = state.controller
         controller.update()

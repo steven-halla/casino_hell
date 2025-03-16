@@ -3,16 +3,12 @@ from enum import Enum
 
 class Equipment(Enum):
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
-    REFRESH = "refresh" # black jacks gain +20 stamina
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception
     SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
     BOSS_KEY = "boss key"
     OPOSSUM_REPELLENT = "opossum repellent"
-
-
-
     COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
     RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
     HEALTHY_GLOVES = "HEALTHY GLOVES"   # can be bought in shop
@@ -21,7 +17,13 @@ class Equipment(Enum):
     SIR_LEOPOLD_AMULET = "sir leopold amulet"
     DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
 
+        # the below are for level 3 or EXPERIMENT
     CRAPS_WRIST_WATCH = "craps wrist watch" # blow command
+    REFRESH = "refresh" # black jacks gain +20 stamina not
+    COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
+
+
+
 
     @staticmethod
     def add_equipment_to_player(player, equipment):
