@@ -83,15 +83,16 @@ class BlackJackAlbert(Npc):
         # Check for keypresses only once per frame
         if current_message.is_finished() and current_message.message_at_end():
 
-            if state.controller.isUpPressed:
+            if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.arrow_index = (self.arrow_index - 1) % len(self.choices)
                 state.controller.isUpPressed = False
-                state.controller.isUpPressed = False
+                state.controller.isUpPressedSwitch = False
 
 
-            elif state.controller.isDownPressed:
+            elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.arrow_index = (self.arrow_index + 1) % len(self.choices)
                 state.controller.isDownPressed = False
+                state.controller.isDownPressedSwitch = False
 
         # Check if the "T" key is pressed and the flag is not set
         if (current_message.is_finished() and Events.BLACK_JACK_ALBERT_DEFEATED.value

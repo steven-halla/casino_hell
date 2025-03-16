@@ -31,7 +31,7 @@ class MessageBox(Entity):
             self.characters_to_display += 1
 
         # Handle button press to see the next message.
-        if controller.isTPressed and \
+        if controller.isTPressed or controller.isAPressedSwitch and \
                 pygame.time.get_ticks() - self.time > self.delay and \
                 self.message_index < len(self.messages) - 1:
             self.time = pygame.time.get_ticks()

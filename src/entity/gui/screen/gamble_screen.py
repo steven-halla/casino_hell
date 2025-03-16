@@ -30,16 +30,15 @@ class GambleScreen:
         self.player_bankrupt = 0
         self.player_stamina_depleted = 0
         self.level_up_checker_sound:bool = True
-        self.music_file_level_up: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")
+        self.music_file_level_up: pygame.mixer.Sound \
+            = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")
         self.music_level_up_volume: float = 0.3  # Adjust as needed
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")
+        self.menu_movement_sound \
+            = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")
         self.menu_movement_sound.set_volume(0.2)
         self.stat_modifier = 1
         self.game_level_2_stat_max = 2
         self.battle_message_level_up_last_index = 3
-
-
-
 
 
     WELCOME_SCREEN = "welcome_screen"
@@ -89,15 +88,19 @@ class GambleScreen:
         if state.player.leveling_up == True:
             self.game_state = self.LEVEL_UP_SCREEN
 
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
             # the % modulus  operator keeps our number in the index range
-            self.welcome_screen_index = (self.welcome_screen_index - self.move_index_by_1) % len(self.welcome_screen_choices)
-        elif controller.isDownPressed:
+            self.welcome_screen_index = (self.welcome_screen_index
+                                         - self.move_index_by_1) % len(self.welcome_screen_choices)
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()
-            self.welcome_screen_index = (self.welcome_screen_index + self.move_index_by_1) % len(self.welcome_screen_choices)
+            self.welcome_screen_index = (self.welcome_screen_index
+                                         + self.move_index_by_1) % len(self.welcome_screen_choices)
 
 
 
@@ -152,20 +155,27 @@ class GambleScreen:
 
             self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
 
-            if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished():
-                if controller.isUpPressed:
-                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index - self.move_index_by_1) % len(self.level_screen_stats)
+            if (self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index
+                    and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished()):
+                if controller.isUpPressed or controller.isUpPressedSwitch:
+                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index
+                                                         - self.move_index_by_1) % len(self.level_screen_stats)
                     controller.isUpPressed = False
-                elif controller.isDownPressed:
-                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index + self.move_index_by_1) % len(self.level_screen_stats)
+                    controller.isUpPressedSwitch = False
+                elif controller.isDownPressed or controller.isDownPressedSwitch:
+                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index
+                                                         + self.move_index_by_1) % len(self.level_screen_stats)
                     controller.isDownPressed = False
+                    controller.isDownPressedSwitch = False
 
                 selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
 
-                if selected_stat == self.PLAYER_STAT_BODY and state.controller.isTPressed and state.player.body <  self.game_level_2_stat_max:
+                if (selected_stat == self.PLAYER_STAT_BODY and state.controller.isTPressed
+                        or state.controller.isAPressedSwitch and state.player.body <  self.game_level_2_stat_max):
                     state.player.body += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
 
                     state.player.max_stamina_points += state.player.level_2_body_stamina_increase
@@ -177,10 +187,12 @@ class GambleScreen:
                     self.game_state = self.WELCOME_SCREEN
 
 
-                elif selected_stat == self.PLAYER_STAT_MIND and state.controller.isTPressed and state.player.mind < self.game_level_2_stat_max:
+                elif (selected_stat == self.PLAYER_STAT_MIND and state.controller.isTPressed
+                      or state.controller.isAPressedSwitch and state.player.mind < self.game_level_2_stat_max):
                     state.player.mind += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
                     Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
@@ -190,10 +202,12 @@ class GambleScreen:
                     self.game_state = self.WELCOME_SCREEN
 
 
-                elif selected_stat == self.PLAYER_STAT_SPIRIT and state.controller.isTPressed and state.player.spirit < self.game_level_2_stat_max:
+                elif (selected_stat == self.PLAYER_STAT_SPIRIT and state.controller.isTPressed
+                      or state.controller.isAPressedSwitch and state.player.spirit < self.game_level_2_stat_max):
                     state.player.spirit += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
 
@@ -202,10 +216,12 @@ class GambleScreen:
                     self.game_state = self.WELCOME_SCREEN
 
 
-                elif selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed and state.player.perception < self.game_level_2_stat_max:
+                elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
+                      or state.controller.isAPressedSwitch and state.player.perception < self.game_level_2_stat_max):
                     state.player.perception += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
                     self.level_up_checker_sound = True
@@ -213,30 +229,36 @@ class GambleScreen:
                     # state.player.base_perception += 1
 
 
-                elif selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed and state.player.perception < 3 and \
-                        Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+                elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
+                      or state.controller.isAPressedSwitch and state.player.perception < 3 and \
+                        Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items):
                     state.player.perception += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
                     self.level_up_checker_sound = True
                     self.game_state = self.WELCOME_SCREEN
 
-                elif selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed and state.player.luck < self.game_level_2_stat_max:
+                elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
+                      or state.controller.isAPressedSwitch and state.player.luck < self.game_level_2_stat_max):
                     state.player.luck += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
                     self.level_up_checker_sound = True
                     self.game_state = self.WELCOME_SCREEN
 
-                elif selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed and state.player.luck < 3 and \
-                        state.player.enhanced_luck == True:
+                elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
+                      or state.controller.isAPressedSwitch and state.player.luck < 3
+                      and state.player.enhanced_luck == True):
                     state.player.luck += self.stat_modifier
                     print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
                     self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
                     self.level_up_checker_sound = True

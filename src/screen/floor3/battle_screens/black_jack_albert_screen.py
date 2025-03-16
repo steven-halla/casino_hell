@@ -111,6 +111,10 @@ class BlackJackAlbertScreen(GambleScreen):
             self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE: MessageBox([
                 f"It's a DRAW! You win 0 gold and win {self.low_exp} experience points"
             ]),
+            self.LEVEL_UP: MessageBox([
+                f"You leveld up!"
+            ]),
+
         }
 
     PLAYER_ACTION_MESSAGE: str = "player_action_message"
@@ -125,12 +129,14 @@ class BlackJackAlbertScreen(GambleScreen):
     PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+    LEVEL_UP: str = "level_up_message"
 
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
     BACK = "back"
 
     PLAYER_ACTION_SCREEN: str = "player_action_screen"
+    LEVEL_UP_SCREEN = "level_up_screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
     PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN: str = "player_enemy_draw_jack_screen "
     PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
@@ -143,7 +149,10 @@ class BlackJackAlbertScreen(GambleScreen):
     # you silly humans make no logical sense
 
     def start(self, state: 'GameState'):
-        self.deck.shuffle()
+        # self.deck.shuffle()
+        self.initialize_music()
+        print("yes")
+
         # passtt
 
     def round_reset(self):
@@ -205,6 +214,12 @@ class BlackJackAlbertScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0  # Adjust as needed
+            pygame.mixer.music.set_volume(self.music_volume)
+
+            self.handle_level_up(state, state.controller)
 
         elif self.game_state == self.BET_SCREEN:
             self.bet_screen_helper(controller)
@@ -320,6 +335,12 @@ class BlackJackAlbertScreen(GambleScreen):
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
+
+
+
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
 
@@ -703,338 +724,6 @@ class BlackJackAlbertScreen(GambleScreen):
             # Redraw the entire screen (including other cards) before each new frame of animation
             self.draw(state)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             # Move the card down gradually
             initial_y_position += card_speed
 
@@ -1376,6 +1065,9 @@ class BlackJackAlbertScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
                 self.reset_black_jack_game()
+
+    def initialize_music(self):
+        pass
 
 
 

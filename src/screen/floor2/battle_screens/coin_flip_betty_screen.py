@@ -335,10 +335,6 @@ class CoinFlipBettyScreen(BattleScreen):
 
     def flipCoin(self, state: "GameState"):
         #here we need logic to handle if player leaves and comes back
-
-
-
-
         # evens and odds
         if self.weighted_coin == True:
             self.result = CoinFlipConstants.HEADS.value
