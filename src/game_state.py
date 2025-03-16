@@ -2,6 +2,8 @@ import pygame
 import json
 
 
+
+
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
@@ -66,6 +68,7 @@ from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.floor3.battle_screens.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
 from screen.floor3.battle_screens.slots_brogan import SlotsBrogan
+from screen.floor3.map_screens.area_3_rest_screen import Area3RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -146,6 +149,7 @@ class GameState:
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
         self.area2RestScreen = Area2RestScreen()
+        self.area3RestScreen = Area3RestScreen()
         self.area2GamblingScreen = Area2GamblingScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()

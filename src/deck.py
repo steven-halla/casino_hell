@@ -72,6 +72,7 @@ class Deck:
             if "Ace" in self.ranks:
                 self.cards.append(("Ace", suit, 1))
                 self.cards.append(("Ace", suit, 11))
+
         # self.cards.append(('Joker', 'red', 0))
         # self.cards.append(('Joker', 'black', 0))
 

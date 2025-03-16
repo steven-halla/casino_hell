@@ -2021,10 +2021,10 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.area2RestScreen
+            state.currentScreen = state.area3RestScreen
 
 
-            state.area2RestScreen.start(state)
+            state.area3RestScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")
