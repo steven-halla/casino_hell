@@ -28,7 +28,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.money: int = 1000
+        self.money: int = 50
         self.albert_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -152,7 +152,7 @@ class BlackJackAlbertScreen(GambleScreen):
     # you silly humans make no logical sense
 
     def start(self, state: 'GameState'):
-        # self.deck.shuffle()
+        self.deck.shuffle()
         self.initialize_music()
 
         # passtt
@@ -197,7 +197,11 @@ class BlackJackAlbertScreen(GambleScreen):
         super().update(state)
 
         if self.money <= self.albert_bankrupt:
-            Events.add_event_to_player(state.player, Events.BLACK_JACK_ALBERT_DEFEATED)
+
+
+            state.currentScreen = state.area3RestScreen
+            state.area3RestScreen.start(state)
+            Events.add_level_three_event_to_player(state.player, Events.BLACK_JACK_ALBERT_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
@@ -283,7 +287,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
-            if state.contorller.isTPressed or state.controller.isAPressedSwitch:
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
                 state.controller.isTPressed = False
                 state.controller.isAPressedSwitch = False
                 self.round_reset()
@@ -311,6 +315,9 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
+
+
+
             if state.player.money <= no_money_game_over:
                 if controller.isTPressed or state.controller.isAPressedSwitch:
                     controller.isTPressed = False
@@ -318,15 +325,15 @@ class BlackJackAlbertScreen(GambleScreen):
 
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 if controller.isTPressed or state.controller.isAPressedSwitch:
                     controller.isTPressed = False
                     controller.isAPressedSwitch = False
                     state.player.money -= 100
 
                     self.reset_black_jack_game()
-                    # state.currentScreen = state.area3RestScreen
-                    # state.area3RestScreen.start(state)
+                    state.currentScreen = state.area3RestScreen
+                    state.area3RestScreen.start(state)
 
 
 
@@ -427,7 +434,7 @@ class BlackJackAlbertScreen(GambleScreen):
             no_stamina_game_over = 0
             if state.player.money <= no_money_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
         pygame.display.flip()
 

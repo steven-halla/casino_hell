@@ -202,7 +202,9 @@ class CoinFlipDexterScreen(GambleScreen):
                     self.game_state = self.PLAYER_LOSE_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
-            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You WIN {self.bet}: money and gain {self.exp_gain_high}:   experience points!"]
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You WIN {self.bet}:"
+                                                                      f" money and gain {self.exp_gain_high}:  "
+                                                                      f" experience points!"]
             self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
 
             if controller.isTPressed:
@@ -214,7 +216,9 @@ class CoinFlipDexterScreen(GambleScreen):
                 self.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
-            self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"You Lose! You Lose {self.bet}: money and gain {self.exp_gain_low}:   experience points!"]
+            self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"You Lose! You Lose {self.bet}:"
+                                                                       f" money and gain {self.exp_gain_low}:   "
+                                                                       f"experience points!"]
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
             if controller.isTPressed:
                 controller.isTPressed = False

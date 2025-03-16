@@ -56,8 +56,9 @@ class BlackJackAlbert(Npc):
         distance = math.sqrt((player.collision.x - self.collision.x) ** 2 +
                              (player.collision.y - self.collision.y) ** 2)
 
-        if distance < 40 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and \
-                (pygame.time.get_ticks() - self.state_start_time) > 500 and state.player.menu_paused == False:
+        if (distance < 40 and (state.controller.isTPressed or state.controller.isAPressedSwitch) and \
+                (pygame.time.get_ticks() - self.state_start_time) > 500
+                and state.player.menu_paused == False):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
             state.controller.isTPressed = False
@@ -156,7 +157,8 @@ class BlackJackAlbert(Npc):
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if current_message.is_finished() and Events.BLACK_JACK_BLACK_MACK_DEFEATED.value not in state.player.level_two_npc_state and current_message.message_at_end():
+            if (current_message.is_finished() and Events.BLACK_JACK_ALBERT_DEFEATED.value
+                    not in state.player.level_three_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5
@@ -167,7 +169,8 @@ class BlackJackAlbert(Npc):
 
                 bet_box = pygame.Surface((bet_box_width, bet_box_height))
                 bet_box.fill((0, 0, 0))
-                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
+                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height
+                                               + 2 * border_width))
                 white_border.fill((255, 255, 255))
                 white_border.blit(bet_box, (border_width, border_width))
 
@@ -179,12 +182,15 @@ class BlackJackAlbert(Npc):
                 state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
                 # Draw the text on the screen (over the box)
-                state.DISPLAY.blit(self.font.render(f"Yes ", True, (255, 255, 255)), (text_x, text_y_yes))
-                state.DISPLAY.blit(self.font.render(f"No ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
+                state.DISPLAY.blit(self.font.render(f"Yes ", True,
+                                                    (255, 255, 255)), (text_x, text_y_yes))
+                state.DISPLAY.blit(self.font.render(f"No ", True,
+                                                    (255, 255, 255)), (text_x, text_y_yes + 40))
                 arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
                 arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
 
                 # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
                 # Here's a simple example using a triangle:
                 pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
+                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10),
+                                     (arrow_x + 10, arrow_y + 10)])
