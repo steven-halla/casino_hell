@@ -1,10 +1,10 @@
 {
-    "level": 4,
-    "exp": 1000,
-    "stamina_points": 280,
-    "max_stamina_points": 280,
-    "focus_points": 140,
-    "max_focus_points": 140,
+    "level": 8,
+    "exp": 2800,
+    "stamina_points": 420,
+    "max_stamina_points": 420,
+    "focus_points": 200,
+    "max_focus_points": 200,
     "companions": [
         "sir leopold"
     ],
@@ -24,8 +24,11 @@
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token"
-
+        "level 4 token",
+        "level 5 token",
+        "level 6 token",
+        "level 7 token",
+        "level 8 token"
     ],
     "magicinventory": [
         "reveal",
@@ -36,24 +39,22 @@
         "HACK",
         "Force"
     ],
-    "body": 1,
+    "body": 2,
     "mind": 2,
-    "spirit": 1,
+    "spirit": 2,
     "perception": 1,
     "baseperception": 1,
-    "luck": 1,
-    "money": 2000,
+    "luck": 2,
+    "money": 1800,
     "rabies": false,
     "immunity": true,
     "quest_items": [
         "contract"
     ],
     "level3reward": false,
-    "food": 2,
+    "food": 1,
     "days": 1,
-    "leveltwonpcstate": [
-
-    ],
+    "leveltwonpcstate": [],
     "levelthreenpcstate": [],
     "slots_vest": false,
     "cutscene1": true,

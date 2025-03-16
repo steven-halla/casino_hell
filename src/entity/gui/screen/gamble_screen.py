@@ -145,6 +145,8 @@ class GambleScreen:
                 self.level_up_checker_sound = True
 
         elif state.player.stat_point_increase == True:
+            selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
+            print(selected_stat)
 
             self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
@@ -219,7 +221,7 @@ class GambleScreen:
                 elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
                       or state.controller.isAPressedSwitch and state.player.perception < self.game_level_2_stat_max):
                     state.player.perception += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
@@ -233,7 +235,7 @@ class GambleScreen:
                       or state.controller.isAPressedSwitch and state.player.perception < 3 and \
                         Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items):
                     state.player.perception += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
@@ -244,7 +246,8 @@ class GambleScreen:
                 elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
                       or state.controller.isAPressedSwitch and state.player.luck < self.game_level_2_stat_max):
                     state.player.luck += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is noww: {getattr(state.player, selected_stat.lower())}")
+
                     state.controller.isTPressed = False
                     state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False
@@ -256,7 +259,9 @@ class GambleScreen:
                       or state.controller.isAPressedSwitch and state.player.luck < 3
                       and state.player.enhanced_luck == True):
                     state.player.luck += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is nowww: {getattr(state.player, selected_stat.lower())}")
+                    print("moooooooofsoadfdjsa;f;dlsjfjsa;fks")
+
                     state.controller.isTPressed = False
                     state.controller.isAPressedSwitch = False
                     state.player.leveling_up = False

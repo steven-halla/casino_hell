@@ -137,7 +137,7 @@ class BattleScreen:
 
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 2:
                     state.player.perception += 1
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is meow: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
@@ -155,7 +155,7 @@ class BattleScreen:
                 elif selected_stat == "Perception" and state.controller.isTPressed and state.player.perception < 3 and \
                         Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
                     state.player.perception += 1
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
@@ -170,7 +170,7 @@ class BattleScreen:
 
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 2:
                     state.player.luck += 1
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is wow: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()
@@ -186,7 +186,7 @@ class BattleScreen:
                 elif selected_stat == "Luck" and state.controller.isTPressed and state.player.luck < 3 and \
                         state.player.enhanced_luck == True:
                     state.player.luck += 1
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+                    print(f"Player {selected_stat} is wow: {getattr(state.player, selected_stat.lower())}")
                     state.controller.isTPressed = False
                     state.player.leveling_up = False
                     self.battle_messages["level_up"].reset()

@@ -76,7 +76,7 @@ class BlackJackAlbertScreen(GambleScreen):
             ]),
 
             self.BET_MESSAGE: MessageBox([
-                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet."
+                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to Exit."
             ]),
             self.MAGIC_MENU_REVEAL_DESCRIPTION: MessageBox([
                 "You can feel the print of the face down card."
@@ -154,7 +154,6 @@ class BlackJackAlbertScreen(GambleScreen):
     def start(self, state: 'GameState'):
         # self.deck.shuffle()
         self.initialize_music()
-        print("yes")
 
         # passtt
 
@@ -268,9 +267,10 @@ class BlackJackAlbertScreen(GambleScreen):
                                                                              f"money and gain {self.med_exp} experience points!"]
 
             # Now, update the message as needed
-            if state.controller.isTPressed:
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
 
                 state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
                 self.round_reset()
 
                 state.player.exp += self.med_exp
@@ -283,8 +283,9 @@ class BlackJackAlbertScreen(GambleScreen):
 
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
-            if state.contorller.isTPressed:
+            if state.contorller.isTPressed or state.controller.isAPressedSwitch:
                 state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
                 self.round_reset()
 
                 state.player.money -= self.bet * self.critical_multiplier
@@ -311,14 +312,16 @@ class BlackJackAlbertScreen(GambleScreen):
             no_money_game_over = 0
             no_stamina_game_over = 0
             if state.player.money <= no_money_game_over:
-                if controller.isTPressed:
+                if controller.isTPressed or state.controller.isAPressedSwitch:
                     controller.isTPressed = False
+                    controller.isAPressedSwitch = False
 
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
             elif state.player.stamina <= no_stamina_game_over:
-                if controller.isTPressed:
+                if controller.isTPressed or state.controller.isAPressedSwitch:
                     controller.isTPressed = False
+                    controller.isAPressedSwitch = False
                     state.player.money -= 100
 
                     self.reset_black_jack_game()
@@ -431,12 +434,14 @@ class BlackJackAlbertScreen(GambleScreen):
     def bet_screen_helper(self, controller):
         min_bet = 50
         max_bet = 200
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()  # Play the sound effect once
             self.bet += min_bet
-        elif controller.isDownPressed:
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
 
             self.menu_movement_sound.play()  # Play the sound effect once
             self.bet -= min_bet
@@ -446,11 +451,17 @@ class BlackJackAlbertScreen(GambleScreen):
         elif self.bet >= max_bet:
             self.bet = max_bet
 
+        if controller.isBPressed or controller.isBPressedSwitch:
+            self.game_state = self.WELCOME_SCREEN
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+
 
     def update_player_phase_win(self, state, controller) -> None:
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
 
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             self.round_reset()
 
             state.player.money += self.bet
@@ -459,8 +470,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_lose(self, state, controller) -> None:
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             self.round_reset()
 
             state.player.money -= self.bet
@@ -469,8 +481,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_draw(self,state,  controller) -> None:
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             self.round_reset()
 
             state.player.exp += self.low_exp
@@ -480,34 +493,52 @@ class BlackJackAlbertScreen(GambleScreen):
     def update_magic_menu(self, state: "GameState", controller):
         controller = state.controller
 
-        if controller.isUpPressed:
+        if controller.isBPressedSwitch or controller.isBPressed:
+            self.game_state = self.WELCOME_SCREEN
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+            self.magic_menu_index = 0
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_menu_index = (self.magic_menu_index - self.index_stepper) % len(self.magic_screen_choices)
-        elif controller.isDownPressed:
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_menu_index = (self.magic_menu_index + self.index_stepper) % len(self.magic_screen_choices)
 
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
-            if Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices and self.magic_menu_index == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value):
+            controller.isAPressedSwitch = False
+            if (Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices
+                    and self.magic_menu_index
+                    == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value)):
                 if state.player.focus_points >= self.redraw_cast_cost:
                     self.redraw_debuff_counter = self.redraw_start_counter
                     self.spell_sound.play()  # Play the sound effect once
                     state.player.focus_points -= self.redraw_cast_cost
                     self.magic_lock = True
+                    self.magic_menu_index = 0
+
                     self.game_state = self.WELCOME_SCREEN
 
-            elif Magic.REVEAL.value in self.magic_screen_choices and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value):
+            elif (Magic.REVEAL.value in self.magic_screen_choices
+                  and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value)):
                 if state.player.focus_points >= self.reveal_cast_cost:
                     self.reveal_buff_counter = self.reveal_start_counter
                     self.spell_sound.play()  # Play the sound effect for Reveal
                     state.player.focus_points -= self.reveal_cast_cost
                     self.magic_lock = True
+                    self.magic_menu_index = 0
+
                     self.game_state = self.WELCOME_SCREEN
 
             elif self.magic_screen_choices[self.magic_menu_index] == "back":
+                self.magic_menu_index = 0
+
                 self.game_state = self.WELCOME_SCREEN
 
     def draw_magic_menu_selection_box(self, state):
@@ -535,7 +566,8 @@ class BlackJackAlbertScreen(GambleScreen):
         # Blit the border with the black box inside
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
+        if (Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory
+                and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices):
             self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
 
         for idx, choice in enumerate(self.magic_screen_choices):
@@ -566,7 +598,8 @@ class BlackJackAlbertScreen(GambleScreen):
         player_hand_max = 4
         draw_option = 1
 
-        if self.redraw_debuff_counter > self.redraw_end_counter and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices:
+        if (self.redraw_debuff_counter > self.redraw_end_counter
+                and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices):
             self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
 
         for idx, choice in enumerate(self.player_action_phase_choices):
@@ -577,7 +610,8 @@ class BlackJackAlbertScreen(GambleScreen):
             else:
                 rendered_choice = self.font.render(choice, True, WHITE)
 
-            if choice == self.player_action_phase_choices[draw_option] and len(self.player_hand) == player_hand_max:
+            if (choice == self.player_action_phase_choices[draw_option]
+                    and len(self.player_hand) == player_hand_max):
                 rendered_draw = self.font.render(choice, True, RED)
             else:
                 rendered_draw = self.font.render(choice, True, WHITE)
@@ -599,19 +633,24 @@ class BlackJackAlbertScreen(GambleScreen):
 
 
 
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
-            self.player_action_phase_index = (self.player_action_phase_index - self.move_index_by_1) % len(self.player_action_phase_choices)
+            self.player_action_phase_index = (self.player_action_phase_index
+                                              - self.move_index_by_1) % len(self.player_action_phase_choices)
             print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
-        elif controller.isDownPressed:
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()
-            self.player_action_phase_index = (self.player_action_phase_index + self.move_index_by_1) % len(self.player_action_phase_choices)
+            self.player_action_phase_index = (self.player_action_phase_index
+                                              + self.move_index_by_1) % len(self.player_action_phase_choices)
             print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
 
-        elif state.controller.isTPressed:
+        elif state.controller.isTPressed or state.controller.isAPressedSwitch:
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
             if self.player_action_phase_index == self.player_action_phase_play_index:
                 state.player.stamina_points -= self.low_stamina_drain
 
@@ -639,7 +678,8 @@ class BlackJackAlbertScreen(GambleScreen):
                     print("483")
                     self.game_state = self.PLAYER_WIN_ACTION_SCREEN
 
-            if self.player_action_phase_index == self.player_action_phase_draw_index and len(self.player_hand) <= card_max:
+            if (self.player_action_phase_index == self.player_action_phase_draw_index
+                    and len(self.player_hand) <= card_max):
                 # self.player_hand += self.deck.player_draw_hand(1)
                 # self.deck.compute_hand_value(self.player_hand)
                 # self.player_score = self.deck.compute_hand_value(self.player_hand)
@@ -666,7 +706,8 @@ class BlackJackAlbertScreen(GambleScreen):
                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
 
-            if self.player_action_phase_index == self.player_action_phase_force_redraw_index and self.redraw_counter == True:
+            if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
+                    and self.redraw_counter == True):
                 self.enemy_hand.pop(1)
                 new_card = self.deck.enemy_draw_hand(1)[0]
                 self.enemy_hand.insert(1, new_card)
@@ -705,7 +746,8 @@ class BlackJackAlbertScreen(GambleScreen):
         new_card = self.deck.player_draw_hand(1)[0]  # Get the single card drawn
 
         # Now that the animation is complete, draw the card face-up
-        self.deck.draw_card_face_up(new_card[1], new_card[0], (x_position, target_y_position), state.DISPLAY)
+        self.deck.draw_card_face_up(new_card[1], new_card[0],
+                                    (x_position, target_y_position), state.DISPLAY)
 
         # Add the card to the enemy's hand after the animation
         self.player_hand.append(new_card)
@@ -746,7 +788,8 @@ class BlackJackAlbertScreen(GambleScreen):
         new_card = self.deck.enemy_draw_hand(1)[0]  # Get the single card drawn
 
         # Now that the animation is complete, draw the card face-up
-        self.deck.draw_card_face_up(new_card[1], new_card[0], (x_position, target_y_position), state.DISPLAY)
+        self.deck.draw_card_face_up(new_card[1], new_card[0], (x_position,
+                                                               target_y_position), state.DISPLAY)
         pygame.display.flip()
 
         # Add the card to the enemy's hand after the animation
@@ -789,9 +832,11 @@ class BlackJackAlbertScreen(GambleScreen):
             player_y_position = player_target_y_position
 
             if i == 1 and player_y_position >= flip_y_position:
-                deck.draw_card_face_up(card[1], card[0], (player_x_position, player_y_position), display)
+                deck.draw_card_face_up(card[1], card[0], (player_x_position,
+                                                          player_y_position), display)
             else:
-                deck.draw_card_face_up(card[1], card[0], (player_x_position, player_y_position), display)
+                deck.draw_card_face_up(card[1], card[0], (player_x_position,
+                                                          player_y_position), display)
 
         # Draw enemy's hand
         for i, card in enumerate(enemy_hand):
@@ -1058,6 +1103,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
         if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             if self.welcome_screen_index  == self.welcome_screen_play_index:
                 self.game_state = self.DRAW_CARD_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:

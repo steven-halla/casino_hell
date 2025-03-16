@@ -97,7 +97,12 @@ class Area3RestScreen(Screen):
         #     state.treasurechests.append(Area2FocusBoost(16 * 111, 14 * 111))
 
         state.npcs = [
+            # below are for geting into games and such
             BlackJackAlbert(16 * 15, 16 * 15),
+
+            # below are shops and such
+            Area2InnKeeper(16 * 25, 16 * 35),  # fin
+
 
         ]
 
@@ -184,7 +189,6 @@ class Area3RestScreen(Screen):
 
         if state.controller.isPPressed or state.controller.isXPressedSwitch:
             state.player.canMove = False
-            print("Yes")
             state.player.draw_player_stats(state)
 
             if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
