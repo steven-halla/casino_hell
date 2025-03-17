@@ -6,6 +6,7 @@ from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from game_constants.coin_flip_constants import CoinFlipConstants
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
@@ -63,6 +64,9 @@ class CoinFlipDexterScreen(GambleScreen):
         self.result_anchor = False
         self.timer_start = None  # Initialize the timer variable
 
+        self.money: int = 450  # Add this line
+
+
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "I follow the path of Yin and Yang. Balance is the only true way to play coin flip."
@@ -81,7 +85,7 @@ class CoinFlipDexterScreen(GambleScreen):
                 "go back to previous menu"
             ]),
             self.COIN_FLIP_MESSAGE: MessageBox([
-                "Coin is flipping oh boy I wonder where it will landfff?"
+                "Coin is flipping oh boy I wonder where it will land?"
             ]),
             self.CHOOSE_SIDE_MESSAGE: MessageBox([
                 "Pick Heads or Tails."
@@ -182,7 +186,7 @@ class CoinFlipDexterScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.dexter_bankrupt:
-            Events.add_event_to_player(state.player, Events.COIN_FLIP_DEXTER_DEFEATED)
+            Events.add_level_three_event_to_player(state.player, Events.COIN_FLIP_DEXTER_DEFEATED)
 
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -191,7 +195,7 @@ class CoinFlipDexterScreen(GambleScreen):
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
-            self.bet_screen_helper(controller)
+            self.bet_screen_helper(state, controller)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
@@ -263,8 +267,9 @@ class CoinFlipDexterScreen(GambleScreen):
             no_stamina_game_over = 0
 
             if state.player.money <= no_money_game_over:
-                if controller.isTPressed:
+                if controller.isTPressed or controller.isAPressedSwitch:
                     controller.isTPressed = False
+                    controller.isAPressedSwitch = False
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
             elif state.player.stamina_points <= no_stamina_game_over:
@@ -317,7 +322,7 @@ class CoinFlipDexterScreen(GambleScreen):
             no_stamina_game_over = 0
             if state.player.money <= no_money_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         pygame.display.flip()
@@ -687,13 +692,19 @@ class CoinFlipDexterScreen(GambleScreen):
         self.result_anchor = False
 
 
-    def bet_screen_helper(self, controller):
+    def bet_screen_helper(self,state,  controller):
+
+
         if controller.isBPressed or controller.isBPressedSwitch:
             controller.isBPressed = False
             controller.isBPressedSwitch = False
             self.game_state = self.WELCOME_SCREEN
         min_bet = 50
-        max_bet = 200
+        if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
+            max_bet = 400
+        else:
+            max_bet = 200
+
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
             controller.isUpPressedSwitch = False
@@ -706,10 +717,15 @@ class CoinFlipDexterScreen(GambleScreen):
             self.menu_movement_sound.play()  # Play the sound effect once
             self.bet -= min_bet
 
+
+
         if self.bet <= min_bet:
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
+        print(max_bet)
+
+
 
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
