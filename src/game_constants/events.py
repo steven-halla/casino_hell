@@ -14,8 +14,7 @@ class Events(Enum):
     COIN_FLIP_BETTY_DEFEATED = "COIN_FLIP_BETTY_DEFEATED"
     CRAPS_HAPPY_DEFEATED = "CRAPS_HAPPY_DEFEATED"
 
-    #level 3 below
-    BLACK_JACK_Albert_DEFEATED = "BLACK_JACK_ALBERT_DEFEATED"
+
 
 
 
@@ -39,6 +38,8 @@ class Events(Enum):
     BLACK_JACK_ALBERT_DEFEATED = "black jack albert defeated"
     COIN_FLIP_DEXTER_DEFEATED = "coin flip dexter defeated"
     OPOSSUM_IN_A_CAN_BILLY_BOB_DEFEATED = "opossum in a can billy bob defeated"
+    DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED = "dice fighter sir siegfried defeated"
+
     SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED = "slots_level_3_secret_item_acquired"
 
 

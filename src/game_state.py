@@ -65,9 +65,11 @@ from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlbertScreen
 from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
 from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
-from screen.floor3.battle_screens.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
+from screen.floor3.battle_screens.dice_fighter_sir_siegfried_screen import DiceFighterSirSiegfriedScreen
 from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
-from screen.floor3.battle_screens.slots_brogan import SlotsBrogan
+
+
+from screen.floor3.battle_screens.slots_brogan_screen import SlotsBroganScreen
 from screen.floor3.map_screens.area_3_rest_screen import Area3RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
@@ -213,8 +215,8 @@ class GameState:
         self.blackJackAlbertScreen = BlackJackAlbertScreen()
         self.coinFlipDexterScreen = CoinFlipDexterScreen()
         self.opossumInACanBillyBob = OpossumInACanBillyBobScreen()
-        self.slots_brogan = SlotsBrogan()
-        self.diceFighterSirSiegfried = DiceFighterSirSiegfried()
+        self.slotsBroganScreen = SlotsBroganScreen()
+        self.diceFighterSirSiegfriedScreen = DiceFighterSirSiegfriedScreen()
 
 
 

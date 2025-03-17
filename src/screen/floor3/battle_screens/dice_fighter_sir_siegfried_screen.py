@@ -16,7 +16,7 @@ from game_constants.magic import Magic
 #
 
 
-class DiceFighterSirSiegfried(GambleScreen):
+class DiceFighterSirSiegfriedScreen(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.dice_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")

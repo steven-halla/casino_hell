@@ -99,8 +99,8 @@ class Area3RestScreen(Screen):
 
         state.npcs = [
             # below are for geting into games and such
-            BlackJackAlbert(16 * 1, 16 * 15),
-            CoinFlipDexter(16 * 15, 16 * 15),
+            BlackJackAlbert(16 * 5, 16 * 15),
+            CoinFlipDexter(16 * 20, 16 * 15),
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 35),  # fin

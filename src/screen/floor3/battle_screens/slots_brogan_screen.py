@@ -11,7 +11,7 @@ from game_constants.magic import Magic
 
 # spell: rib lock on : roll 6 times, take 25 damage per successful hit
 
-class SlotsBrogan(GambleScreen):
+class SlotsBroganScreen(GambleScreen):
     def __init__(self, screenName: str = "Slots") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
