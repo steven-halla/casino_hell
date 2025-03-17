@@ -20,7 +20,8 @@
     ],
     "equipped_items": [
         "sir leopold's paw",
-        "coin flip glasses"
+        "coin flip glasses",
+        "HEALTHY GLOVES"
     ],
     "npcitems": [
         "level 2 token",
@@ -43,7 +44,7 @@
     "body": 2,
     "mind": 2,
     "spirit": 2,
-    "perception": 3,
+    "perception": 1,
     "baseperception": 1,
     "luck": 2,
     "money": 2000,

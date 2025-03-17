@@ -64,7 +64,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.result_anchor = False
         self.timer_start = None  # Initialize the timer variable
 
-        self.money: int = 450  # Add this line
+        self.money: int = 200  # Add this line
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -186,6 +186,8 @@ class CoinFlipDexterScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.dexter_bankrupt:
+            state.currentScreen = state.area3RestScreen
+            state.area3RestScreen.start(state)
             Events.add_level_three_event_to_player(state.player, Events.COIN_FLIP_DEXTER_DEFEATED)
 
 
@@ -241,9 +243,22 @@ class CoinFlipDexterScreen(GambleScreen):
                 perception_bonus = 0  # Initialize perception bonus
 
                 if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
+                    perception_bonus = 0  # Initialize perception bonus
+
                     for bonus in range(state.player.perception):  # Loop for each perception point
                         perception_bonus += 10  # Add +10 for each perception point
-                    state.player.money += perception_bonus
+
+                    # Ensure enemy money doesn't go below 0
+                    if self.money < 0:
+                        self.money = 0
+
+                    # Player should only receive what is actually available
+                    amount_to_gain = min(perception_bonus, self.money)  # Only take what's available
+                    state.player.money += amount_to_gain
+
+                    # Deduct from enemy money
+                    self.money -= amount_to_gain
+
 
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
@@ -317,6 +332,8 @@ class CoinFlipDexterScreen(GambleScreen):
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
             self.draw_results_screen_logic(state)
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            self.battle_messages[self.PLAYER_LOSE_MESSAGE].draw(state)
+
             self.draw_results_screen_logic(state)
 
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
@@ -549,8 +566,10 @@ class CoinFlipDexterScreen(GambleScreen):
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.isAPressedSwitch :
             state.controller.isAPressedSwitch = False
+            self.reset_coin_flip_game()
 
-            print("we'll work on this later")
+            state.currentScreen = state.area3RestScreen
+            state.area3RestScreen.start(state)
 
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):

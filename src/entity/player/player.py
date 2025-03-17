@@ -648,6 +648,8 @@ class Player(Entity):
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
     def draw_player_stats(self, state):
+        # if we do not start with 3 items equipped, then it will glitch
+        # need to allow plaeyrs to unequip items
 
         self.menu_paused = True
 
