@@ -220,6 +220,12 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
                 self.blow_init_dice = True
                 state.player.stamina_points -= self.blow_stamina_drain
+            if self.enemy_win_init == True or self.player_win_init == True:
+                if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                    self.game_state = self.POST_INIT_SCREEN
+                    state.controller.isTPressed = False
+                    state.controller.isAPressedSwitch = False
+
         elif self.game_state == self.POST_INIT_SCREEN:
             if self.player_init_roll_total > self.enemy_init_roll_total:
                 self.battle_messages[self.POST_INIT_MESSAGE].messages = [f"You WON the init.You  rolled a {self.player_init_roll_total} and enemy rolled a {self.enemy_init_roll_total}"]
@@ -598,26 +604,18 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.player_win_init = True
             print("Ok good duck")
 
-            if state.controller.isEPressed or state.controller.isAPressedSwitch:
-                print("mew me mewwwwwwwwwww")
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
-                print("Ok good luckkkkkkk")
-                self.game_state = self.POST_INIT_SCREEN
         elif self.player_init_roll_total < self.enemy_init_roll_total:
             print("Ok bad quak")
-            if state.controller.isTPressed or state.controller.isAPressedSwitch:
-                print("Ok good fdsafsas")
+            self.enemy_win_init = True
 
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
 
-                self.enemy_win_init = True
-                self.game_state = self.POST_INIT_SCREEN
         else:
+            print("am ai here? i better not be")
             self.player_init_roll_total: int = 0
             self.enemy_init_roll_total: int = 0
             self.initiative_screen_logic(state)
+
+
 
     def triple_dice_checker(self):
         pass
