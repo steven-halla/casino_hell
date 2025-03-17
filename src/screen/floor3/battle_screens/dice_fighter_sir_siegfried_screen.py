@@ -17,6 +17,7 @@ from game_constants.magic import Magic
 
 
 class DiceFighterSirSiegfriedScreen(GambleScreen):
+    # this class has an error with T key so far black jack is only class not affected
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.dice_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
@@ -200,18 +201,23 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         elif self.game_state == self.INITIATIVE_SCREEN:
             self.battle_messages[self.INIT_MESSAGE].update(state)
 
-            if controller.isUpPressed:
+            if controller.isUpPressed or controller.isUpPressedSwitch:
                 controller.isUpPressed = False
+                controller.isUpPressedSwitch = False
                 self.init_screen_index = (self.init_screen_index + self.index_stepper) % len(self.init_screen_choices)
-            elif controller.isDownPressed:
+            elif controller.isDownPressed or controller.isDownPressedSwitch:
                 controller.isDownPressed = False
+                controller.isDownPressedSwitch = False
                 self.init_screen_index = (self.init_screen_index - self.index_stepper) % len(self.init_screen_choices)
 
-            if controller.isTPressed and self.init_screen_index == 0 and self.player_init_roll_total == 0:
+            if controller.isTPressed or controller.isAPressedSwitch and self.init_screen_index == 0 and self.player_init_roll_total == 0:
                 controller.setTPressed = False
+                controller.isAPressedSwitch = False
                 self.initiative_screen_logic(state)
-            elif controller.isTPressed and self.init_screen_index == 1 and self.blow_init_dice == False :
+            elif controller.isTPressed or controller.isAPressedSwitch and self.init_screen_index == 1 and self.blow_init_dice == False :
                 controller.setTPressed = False
+                controller.isAPressedSwitch = False
+
                 self.blow_init_dice = True
                 state.player.stamina_points -= self.blow_stamina_drain
         elif self.game_state == self.POST_INIT_SCREEN:
@@ -222,8 +228,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
             self.battle_messages[self.POST_INIT_MESSAGE].update(state)
 
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
+                print("mew mew mew  232")
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
+
                 self.game_state = self.POINT_SET_SCREEN
 
 
@@ -239,8 +248,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 self.battle_messages[self.POST_POINT_ROLL_MESSAGE].messages = [f"ENEMY WON the point and is set at{self.point_break}! ENemy has the advantage"]
 
             self.battle_messages[self.POST_POINT_ROLL_MESSAGE].update(state)
-            if self.battle_messages[self.POST_POINT_ROLL_MESSAGE].is_finished() and controller.isTPressed == True:
+            if self.battle_messages[self.POST_POINT_ROLL_MESSAGE].is_finished() and controller.isTPressed == True or controller.isAPressedSwitch == True:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 print("FIn")
                 if self.player_win_point == True:
                     self.game_state = self.ENEMY_ATTACK_SCREEN
@@ -257,8 +267,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.battle_screen_helper(controller)
 
 
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 print(self.game_state)
 
                 self.player_attack_roll_1: int = random.randint(1, 6)
@@ -297,8 +308,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
             self.battle_screen_helper(controller)
 
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 print(self.game_state)
 
                 self.enemy_attack_roll_1: int = random.randint(1, 6)
@@ -336,16 +348,15 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
             self.battle_screen_helper(controller)
 
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 print(self.game_state)
-
                 self.player_defense_roll = random.randint(1, 6)
                 print(self.player_defense_roll)
                 if self.player_defense_roll == self.point_break:
                     print("we have won the game!!!!!!!!!!")
                     # self.stamina_points -= self.inflict_damage
-
                     self.game_state = self.PLAYER_WIN_SCREEN
                 else:
                     if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 != self.enemy_attack_roll_3 and self.enemy_attack_roll_1 >= self.point_break:
@@ -372,8 +383,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.battle_messages[self.ENEMY_DEFENSE_MESSAGE].update(state)
 
             self.battle_screen_helper(controller)
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 print(self.game_state)
 
                 self.enemy_defense_roll = random.randint(1, 6)
@@ -414,10 +426,15 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
     def draw(self, state):
+        # print(self.game_state)
+
         super().draw(state)
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
+
+
 
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
@@ -545,12 +562,14 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         pygame.display.flip()
 
     def battle_screen_helper(self, controller):
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
             self.battle_screen_index = (self.battle_screen_index - self.index_stepper) % len(self.battle_screen_choices)
-        elif controller.isDownPressed:
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()
             self.battle_screen_index = (self.battle_screen_index + self.index_stepper) % len(self.battle_screen_choices)
 
@@ -577,14 +596,22 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         # blow command takes 10 stamina
         if self.player_init_roll_total > self.enemy_init_roll_total:
             self.player_win_init = True
-            if state.controller.isTPressed:
+            print("Ok good duck")
+
+            if state.controller.isEPressed or state.controller.isAPressedSwitch:
+                print("mew me mewwwwwwwwwww")
                 state.controller.isTPressed = False
-                print("Ok good luck")
+                state.controller.isAPressedSwitch = False
+                print("Ok good luckkkkkkk")
                 self.game_state = self.POST_INIT_SCREEN
         elif self.player_init_roll_total < self.enemy_init_roll_total:
-            print("Ok bad luck")
-            if state.controller.isTPressed:
+            print("Ok bad quak")
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                print("Ok good fdsafsas")
+
                 state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+
                 self.enemy_win_init = True
                 self.game_state = self.POST_INIT_SCREEN
         else:
@@ -597,8 +624,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
     def point_set_screen_logic_dice_fighter(self, controller):
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             if self.player_win_init == True:
                 self.player_attack_roll_1: int = random.randint(1, 6)
                 self.player_attack_roll_2: int = random.randint(1, 6)
@@ -684,13 +712,15 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
             if self.point_break == 0:
-                if controller.isTPressed:
+                if controller.isTPressed or controller.isAPressedSwitch:
                     controller.isTPressed = False
+                    controller.isAPressedSwitch = False
                     self.point_set_screen_logic_dice_fighter(controller)
 
     def update_welcome_screen_logic_dice_fighter(self, controller, state):
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
 
             if self.welcome_screen_index == self.welcome_to_play_screen_index:
                 self.game_state = self.INITIATIVE_SCREEN
@@ -1021,6 +1051,33 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         state.DISPLAY.blit(cropped_player_dice1, (dice_x_start_position, player_dice_y_position))  # Player dice in enemy position
         state.DISPLAY.blit(cropped_player_dice2, (dice_x_start_position + dice_x_gap, player_dice_y_position))  # Second player dice
         state.DISPLAY.blit(cropped_player_dice3, (dice_x_start_position + 2 * dice_x_gap, player_dice_y_position))  # Third player dice
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
+        enemy_name_y_position = 33
+        phase_y_position = 108
+        choice_y_position = 148
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+        score_header = "Score"
+
+
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
 
     def display_dice_init_roll(self, state: "GameState",
                                    player_init_roll_1: int, player_init_roll_2: int, player_init_roll_3: int,

@@ -12,6 +12,8 @@ from game_constants.magic import Magic
 
 
 class CoinFlipDexterScreen(GambleScreen):
+    # this class has an error with T key so far black jack is only class not affected
+
     # our money is not in balance let me correct that:
     # Greediest of all the pigs of filth, share your horde with the poor and down trodden of the world...money balancer
     # money balancer effects: Draw player loses self.bet, win player wins self.bet // 1/2 loss player loses self.bet * 2
