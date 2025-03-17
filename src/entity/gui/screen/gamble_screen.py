@@ -352,7 +352,6 @@ class GambleScreen:
         self.battle_messages[self.LEVEL_UP_MESSAGE].draw(state)
 
     def draw_menu_selection_box(self, state: "GameState"):
-        print("draw menu selection box")
         # Define local variables for dimensions and positions
         box_height_offset = 50
         box_width_offset = 10

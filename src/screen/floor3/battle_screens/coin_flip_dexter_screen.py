@@ -238,6 +238,13 @@ class CoinFlipDexterScreen(GambleScreen):
                 state.player.exp += self.exp_gain_high
                 state.player.money += self.bet
                 self.money -= self.bet
+                perception_bonus = 0  # Initialize perception bonus
+
+                if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
+                    for bonus in range(state.player.perception):  # Loop for each perception point
+                        perception_bonus += 10  # Add +10 for each perception point
+                    state.player.money += perception_bonus
+
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"You Lose! You Lose {self.bet}:"
@@ -547,7 +554,6 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
-        print("512")
 
         box_width_offset = 10
         horizontal_padding = 25

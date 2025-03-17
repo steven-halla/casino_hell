@@ -2,6 +2,7 @@
 from enum import Enum
 
 class Equipment(Enum):
+    COIN_FLIP_GLASSES = "coin flip glasses"
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception
