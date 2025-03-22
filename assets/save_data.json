@@ -16,11 +16,12 @@
         "Cool Shades",
         "Nuggie Amulet",
         "HEALTHY GLOVES",
+        "craps wrist watch",
         "coin flip gloves"
     ],
     "equipped_items": [
         "sir leopold's paw",
-        "coin flip glasses",
+        "craps wrist watch",
         "HEALTHY GLOVES"
     ],
     "npcitems": [
@@ -47,7 +48,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 2,
-    "money": 2000,
+    "money": 1800,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -55,7 +56,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 1,
+    "days": 2,
     "leveltwonpcstate": [],
     "levelthreenpcstate": [],
     "slots_vest": false,

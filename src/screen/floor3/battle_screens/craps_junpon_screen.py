@@ -66,6 +66,7 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_turn: int = 0
         self.last_blow_decrement_time = pygame.time.get_ticks()  # Initialize to current game time
         self.blow_sound_checker: bool = True
+        self.blow_timer_start = 0
         self.play_tune: bool = False
         self.blow_meter_ready:pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/blowready.wav")  # Adjust the path as needed
         self.blow_meter_ready.set_volume(0.6)
@@ -157,6 +158,7 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_turn = self.set_variable_to_zero
 
         self.blow_sound_checker = True
+        self.blow_timer_start = 0
 
     def reset_craps_game(self, state: 'GameState'):
         # need to reset value of enemy spell to 0
@@ -176,6 +178,8 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_meter = self.set_variable_to_zero
         self.blow_turn = self.set_variable_to_zero
         self.blow_sound_checker = True
+        self.blow_timer_start = 0
+
 
     def update(self, state: 'GameState'):
         # print(self.game_state)
@@ -277,7 +281,7 @@ class CrapsJunponScreen(GambleScreen):
             if self.blow_counter >= blow_counter_max:
                 self.blow_counter = blow_counter_max
 
-            if state.controller.isTPressed == False and self.blow_counter >= blow_counter_min_needed:
+            if (state.controller.isTPressed or state.controller.isAPressedSwitch) == False and self.blow_counter >= blow_counter_min_needed:
                 self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
 
                 self.point_roll_total = self.come_out_roll_total
@@ -287,16 +291,18 @@ class CrapsJunponScreen(GambleScreen):
             print(f"Time elapsed: {time_elapsed} seconds")
 
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 self.round_reset()
                 self.money += self.bet
                 state.player.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 self.round_reset()
                 self.money -= self.bet
                 state.player.money += self.bet
@@ -394,23 +400,26 @@ class CrapsJunponScreen(GambleScreen):
 
 
     def handle_dice_rolling_simulation(self, controller):
-        if controller.isTPressed:
-            if controller.isLeftPressed and not self.is_left_pressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
+            if (controller.isLeftPressed or controller.isLeftPressedSwitch) and not self.is_left_pressed:
+                print("Hre")
                 self.is_left_pressed = True
                 self.left_press_time = pygame.time.get_ticks()
                 controller.isLeftPressed = False
+                controller.isLeftPressedSwitch = False
 
-            elif controller.isRightPressed and self.is_left_pressed:
+            elif (controller.isRightPressed or controller.isRightPressedSwitch) and self.is_left_pressed:
                 time_since_left = (pygame.time.get_ticks() - self.left_press_time) / 1000
 
                 if time_since_left <= 0.5:
                     self.is_left_pressed = False
                     controller.isRightPressed = False
-                    self.blow_counter += 1
+                    controller.isRightPressedSwitch = False
+                    self.blow_counter += 2
                 else:
                     self.is_left_pressed = False
 
-        if not controller.isTPressed:
+        if not (controller.isTPressed or controller.isAPressedSwitch):
             self.is_left_pressed = False
 
         current_time = pygame.time.get_ticks()
@@ -566,7 +575,7 @@ class CrapsJunponScreen(GambleScreen):
         if self.power_meter_index >= power_meter_max:
             self.power_meter_index = power_meter_min
 
-        if controller.isPPressed or controller.isBPressed:
+        if controller.isPPressed or controller.isBPressedSwitch:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
             controller.isPPressed = False
@@ -675,6 +684,9 @@ class CrapsJunponScreen(GambleScreen):
                 state.area3RestScreen.start(state)
 
     def draw_point_screen_box_info(self, state: 'GameState'):
+        # in the future the text box should read if the counter is on elemnt of blow, to read the
+        # number of turns left in text box
+        # need to make sure the game is understandable to newer people
         box_width_offset = 10
         horizontal_padding = 25
         vertical_position = 240
@@ -694,12 +706,19 @@ class CrapsJunponScreen(GambleScreen):
         for idx, choice in enumerate(self.point_roll_choices):
             y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
 
-            if idx == 1 and self.blow_turn >= blow_ability_active and Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items and self.blow_sound_checker == False:
-                text_surface = self.font.render(choice, True, GREEN)
+            if idx == 1:
+                if self.blow_counter < 5:
+                    text_surface = self.font.render(choice, True, RED)
+                elif self.blow_turn >= blow_ability_active and Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items and not self.blow_sound_checker:
+                    text_surface = self.font.render(choice, True, GREEN)
+                else:
+                    text_surface = self.font.render(choice, True, WHITE)
             else:
                 text_surface = self.font.render(choice, True, WHITE)
 
+
             state.DISPLAY.blit(text_surface, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+
 
         if Equipment.CRAPS_WRIST_WATCH.value not in state.player.equipped_items:
             self.point_roll_choices[1] = "Locked"
@@ -867,26 +886,34 @@ class CrapsJunponScreen(GambleScreen):
     def point_screen_helper(self, state):
         controller = state.controller
         controller.update()
-        if controller.isUpPressed and self.is_timer_active == False:
+        if (controller.isUpPressed or controller.isUpPressedSwitch) and self.is_timer_active == False:
             self.menu_movement_sound.play()  # Play the sound effect once
 
             self.point_roll_index = (self.point_roll_index - self.index_stepper) % len(self.point_roll_choices)
             controller.isUpPressed = False
-        elif controller.isDownPressed and self.is_timer_active == False:
+            controller.isUpPressedSwitch = False
+        elif (controller.isDownPressed or controller.isDownPressedSwitch) and self.is_timer_active == False:
             self.menu_movement_sound.play()  # Play the sound effect once
             self.point_roll_index = (self.point_roll_index + self.index_stepper) % len(self.point_roll_choices)
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
 
-        if controller.isTPressed and not self.is_timer_active and self.point_roll_index == 0:
+        if (controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 0:
             self.start_time = pygame.time.get_ticks()  # Set start time
             self.is_timer_active = True
             self.blow_turn += 1
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
 
-        elif controller.isTPressed and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 5:
+        elif (controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 0:
+
+
             state.player.stamina_points -= self.player_stamina_high_cost
             self.game_state = self.BLOW_POINT_ROLL_SCREEN
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
 
-        elif controller.isTPressed and not self.is_timer_active and self.point_roll_index == 2:
+        elif (controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 2:
             self.game_state = self.BET_SCREEN
 
         if self.is_timer_active:
@@ -914,7 +941,7 @@ class CrapsJunponScreen(GambleScreen):
                     self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
                     return
                 else:
-                    if self.blow_turn == 5 and self.blow_sound_checker == True:
+                    if self.blow_turn == 0 and self.blow_sound_checker == True:
                         self.blow_sound_checker = False
                         self.blow_meter_ready.play()
                     print(f"Neither win nor lose condition met, you rolled {self.point_roll_total}.")
