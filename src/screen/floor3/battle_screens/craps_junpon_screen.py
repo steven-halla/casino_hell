@@ -255,6 +255,12 @@ class CrapsJunponScreen(GambleScreen):
             self.point_screen_helper(state)
 
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+            # there are still some issues here
+
+
+
+
+            # need it more clear for if the player fails to release in time
             meter_finished = 7
             self.bet = self.bet_minimum
             blow_counter_max = 21
