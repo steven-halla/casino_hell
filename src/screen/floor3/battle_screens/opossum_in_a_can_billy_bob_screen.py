@@ -17,7 +17,7 @@ from game_constants.magic import Magic
 class OpossumInACanBillyBobScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
-        self.bet: int = 100
+        self.bet: int = 300
         self.dealer_name = "Billy Bob"
         self.billy_bob_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
@@ -116,6 +116,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.exp_gain_high = 25
         self.exp_gain_low = 10
         self.exp_gain_medium = 20
+        self.money = 50
 
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
@@ -170,6 +171,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
     def opossum_game_reset(self, state):
         self.shake = False
+        self.debuff_keen_perception: bool = False
+
         self.magic_lock = False
         self.initializeGarbageCans(state)
         self.player_score = 0
@@ -187,7 +190,10 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.pick_tally_screen_index = 0
 
     def opossum_round_reset(self, state):
+        print("oppsum round rest trig")
         self.shake = False
+        self.debuff_keen_perception: bool = False
+
         if self.shake == False:
             self.magic_lock = False
         self.initializeGarbageCans(state)
@@ -207,7 +213,10 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
     def update(self, state):
         if self.money <= self.billy_bob_bankrupt:
-            Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_BILLY_BOB_DEFEATED)
+            Events.add_level_three_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_BILLY_BOB_DEFEATED)
+            state.currentScreen = state.area3RestScreen
+            state.area3RestScreen.start(state)
+
         super().update(state)
         controller = state.controller
         controller.update()
@@ -294,8 +303,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                     controller.isAPressedSwitch = False
                     self.opossum_round_reset(state)
                     state.player.money -= 100
-                    # state.currentScreen = state.area3RestScreen
-                    # state.area3RestScreen.start(state)
+                    state.currentScreen = state.area3RestScreen
+                    state.area3RestScreen.start(state)
 
 
     def draw(self, state):
@@ -769,6 +778,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             controller.isTPressed = False
             controller.isAPressedSwitch = False
             if self.welcome_screen_index == self.pick_index:
+                self.money += self.bet
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
