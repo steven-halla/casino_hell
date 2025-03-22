@@ -530,10 +530,9 @@ class SlotsBroganScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
 
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
-                print("for now we will do this later")
                 # self.reset_craps_game(state)
-                # state.current_player = state.area3GamblingScreen
-                # state.area3GamblingScreen.start(state)
+                state.currentScreen = state.area3RestScreen
+                state.area3RestScreen.start(state)
 
     def draw_grid_box(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()
