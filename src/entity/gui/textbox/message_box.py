@@ -31,15 +31,19 @@ class MessageBox(Entity):
             self.characters_to_display += 1
 
         # Handle button press to see the next message.
-        if controller.isTPressed or controller.isAPressedSwitch and \
-                pygame.time.get_ticks() - self.time > self.delay and \
-                self.message_index < len(self.messages) - 1:
-            self.time = pygame.time.get_ticks()
-            self.message_index += 1
-            self.characters_to_display = 0
-            state.controller.isTPressed = False
+        # if controller.isTPressed or controller.isAPressedSwitch and \
+        #         pygame.time.get_ticks() - self.time > self.delay and \
+        #         self.message_index < len(self.messages) - 1:
+        #     state.controller.isTPressed = False
+        #     state.controller.isTPressed = False
+        #     self.time = pygame.time.get_ticks()
+        #     self.message_index += 1
+        #     self.characters_to_display = 0
+
 
     def draw(self, state: "GameState"):
+
+        # print(f"Message index {self.message_index} is at the last message!")
 
         text_to_display = self.messages[self.message_index][:self.characters_to_display]
         wrapped_text = textwrap.wrap(text_to_display, 58)

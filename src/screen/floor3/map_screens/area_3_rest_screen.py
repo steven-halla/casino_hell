@@ -31,6 +31,7 @@ from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_rest_screen.paul import Paul
 from entity.npc.area3.area_3_rest_screen.black_jack_albert import BlackJackAlbert
 from entity.npc.area3.area_3_rest_screen.coin_flip_dexter import CoinFlipDexter
+from entity.npc.area3.area_3_rest_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_rest_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 
 from entity.player.player import Player
@@ -103,9 +104,10 @@ class Area3RestScreen(Screen):
             BlackJackAlbert(16 * 5, 16 * 15),
             CoinFlipDexter(16 * 20, 16 * 15),
             DiceFighterSirSiegfried(16 * 35, 16 * 15),
+            CrapsJunpon(16 * 35, 16 * 35),
 
             # below are shops and such
-            Area2InnKeeper(16 * 25, 16 * 35),  # fin
+            Area2InnKeeper(16 * 25, 16 * 50),  # fin
 
 
         ]

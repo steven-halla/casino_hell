@@ -544,6 +544,7 @@ class CoinFlipDexterScreen(GambleScreen):
         )
 
     def update_welcome_screen_logic(self, controller, state):
+        print(self.welcome_screen_index)
         # print("493")
         # self.game_state = self.CHOOSE_SIDE_SCREEN
 
@@ -553,21 +554,29 @@ class CoinFlipDexterScreen(GambleScreen):
         #     state.controller.isTPressed = False
         # print("497")
 
-        if self.welcome_screen_index == self.flip_coin_index and controller.isAPressedSwitch :
+        if self.welcome_screen_index == self.flip_coin_index and (controller.isAPressedSwitch or controller.isTPressed):
             state.controller.isAPressedSwitch = False
+            state.controller.isTPressed = False
 
             state.player.stamina_points -= self.low_stamina_drain
             self.game_state = self.CHOOSE_SIDE_SCREEN
-        elif self.welcome_screen_index == self.magic_index and self.magic_lock == False and controller.isAPressedSwitch :
+        elif self.welcome_screen_index == self.magic_index and self.magic_lock == False and (controller.isAPressedSwitch or controller.isTPressed) :
             state.controller.isAPressedSwitch = False
+            state.controller.isTPressed = False
+
 
             self.game_state = self.MAGIC_MENU_SCREEN
-        elif self.welcome_screen_index == self.bet_index and controller.isAPressedSwitch :
+        elif self.welcome_screen_index == self.bet_index and ( controller.isAPressedSwitch or controller.isTPressed) :
             state.controller.isAPressedSwitch = False
+            state.controller.isTPressed = False
+
 
             self.game_state = self.BET_SCREEN
-        elif self.welcome_screen_index == self.quit_index and controller.isAPressedSwitch :
+        elif self.welcome_screen_index == self.quit_index and (controller.isAPressedSwitch or controller.isTPressed):
             state.controller.isAPressedSwitch = False
+            state.controller.isTPressed = False
+            print("yes")
+
             self.reset_coin_flip_game()
 
             state.currentScreen = state.area3RestScreen

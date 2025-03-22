@@ -225,8 +225,9 @@ class CrapsJunponScreen(GambleScreen):
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             print("are we in the come out screen?")
             print(self.game_state)
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 self.round_reset()
                 state.player.money += self.bet
                 self.money -= self.bet
@@ -236,8 +237,9 @@ class CrapsJunponScreen(GambleScreen):
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].messages[0] = f"You rolled a {self.come_out_roll_total}"
 
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 self.round_reset()
                 state.player.money -= self.bet
                 self.money += self.bet
@@ -466,17 +468,20 @@ class CrapsJunponScreen(GambleScreen):
     def magic_menu_helper(self, state):
         controller = state.controller
 
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_screen_choices)
-        elif controller.isDownPressed:
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_screen_choices)
 
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             if self.magic_screen_index == self.triple_dice_index and state.player.focus_points >= self.triple_dice_cast_cost:
                 self.lucky_seven_buff_counter = self.triple_dice_counter_start_set
                 self.spell_sound.play()  # Play the sound effect once
@@ -494,46 +499,52 @@ class CrapsJunponScreen(GambleScreen):
         is_player_in_come_out_roll = 0
 
         if self.come_out_roll_total == player_at_come_out_roll_phase:
-            if controller.isUpPressed:
+            if controller.isUpPressed or controller.isUpPressedSwitch:
                 controller.isUpPressed = False
+                controller.isUpPressedSwitch = False
                 self.menu_movement_sound.play()  # Play the sound effect once
                 self.bet += come_out_point_roll_bet_min
 
                 if self.point_roll_total == is_player_in_come_out_roll:
                     if self.bet >= come_out_roll_bet_max:
                         self.bet = come_out_roll_bet_max
-            if controller.isDownPressed:
+            if controller.isDownPressed or controller.isDownPressedSwitch:
                 controller.isDownPressed = False
+                controller.isDownPressedSwitch = False
                 self.bet -= come_out_point_roll_bet_min
 
                 self.menu_movement_sound.play()  # Play the sound effect once
                 if self.bet <= come_out_point_roll_bet_min:
                     self.bet = come_out_point_roll_bet_min
 
-            if controller.isBPressed:
+            if controller.isBPressed or controller.isBPressedSwitch:
                 controller.isBPressed = False
+                controller.isBPressedSwitch = False
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.come_out_roll_total > player_at_point_phase:
 
-            if controller.isUpPressed:
+            if controller.isUpPressed or controller.isUpPressedSwitch:
                 controller.isUpPressed = False
+                controller.isUpPressedSwitch = False
                 self.menu_movement_sound.play()  # Play the sound effect once
                 self.bet += come_out_point_roll_bet_min
 
                 if self.point_roll_total == player_at_point_phase:
                     if self.bet >= point_roll_bet_max:
                         self.bet = point_roll_bet_max
-            if controller.isDownPressed:
+            if controller.isDownPressed or controller.isDownPressedSwitch:
                 controller.isDownPressed = False
+                controller.isDownPressedSwitch = False
                 self.bet -= come_out_point_roll_bet_min
 
                 self.menu_movement_sound.play()  # Play the sound effect once
                 if self.bet <= come_out_point_roll_bet_min:
                     self.bet = come_out_point_roll_bet_min
 
-            if controller.isBPressed:
+            if controller.isBPressed or controller.isBPressedSwitch:
                 controller.isBPressed = False
+                controller.isBPressedSwitch = False
                 self.game_state = self.POINT_ROLL_SCREEN
 
     def power_meter_screen_helper(self, state):
@@ -552,10 +563,11 @@ class CrapsJunponScreen(GambleScreen):
         if self.power_meter_index >= power_meter_max:
             self.power_meter_index = power_meter_min
 
-        if controller.isPPressed:
+        if controller.isPPressed or controller.isBPressed:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
             controller.isPPressed = False
+            controller.isBPressedSwitch = False
             if self.power_meter_index >= power_meter_success:
                 self.successful_power_strike_sound_effect.play()
                 self.lucky_seven = True
@@ -638,8 +650,9 @@ class CrapsJunponScreen(GambleScreen):
         controller = state.controller
         controller.update()
         self.battle_messages[self.WELCOME_MESSAGE].update(state)
-        if state.controller.isTPressed:
+        if state.controller.isTPressed or state.controller.isAPressedSwitch:
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
             if self.welcome_screen_index == self.welcome_screen_play_index:
                 self.game_state = self.POWER_METER_SCREEN
                 state.player.stamina_points -= self.player_stamina_med_cost
