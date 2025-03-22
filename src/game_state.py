@@ -214,7 +214,7 @@ class GameState:
         self.crapsJunponScreen = CrapsJunponScreen()
         self.blackJackAlbertScreen = BlackJackAlbertScreen()
         self.coinFlipDexterScreen = CoinFlipDexterScreen()
-        self.opossumInACanBillyBob = OpossumInACanBillyBobScreen()
+        self.opossumInACanBillyBobScreen = OpossumInACanBillyBobScreen()
         self.slotsBroganScreen = SlotsBroganScreen()
         self.diceFighterSirSiegfriedScreen = DiceFighterSirSiegfriedScreen()
 
