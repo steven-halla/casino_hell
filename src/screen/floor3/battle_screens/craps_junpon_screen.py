@@ -488,6 +488,9 @@ class CrapsJunponScreen(GambleScreen):
                 state.player.focus_points -= self.triple_dice_cast_cost
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
+            elif self.magic_screen_index == self.back_index:
+                self.game_state = self.WELCOME_SCREEN
+
 
     def bet_screen_helper(self, state):
         come_out_point_roll_bet_min = 25
@@ -668,8 +671,8 @@ class CrapsJunponScreen(GambleScreen):
 
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
                 self.reset_craps_game(state)
-                # state.current_player = state.area3GamblingScreen
-                # state.area3GamblingScreen.start(state)
+                state.currentScreen = state.area3RestScreen
+                state.area3RestScreen.start(state)
 
     def draw_point_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
