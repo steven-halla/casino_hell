@@ -184,6 +184,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.high_win_x, self.high_win_y = None, None
         self.med_win_x, self.med_win_y = None, None
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+        self.pick_tally_screen_index = 0
 
     def opossum_round_reset(self, state):
         self.shake = False
@@ -201,6 +202,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.high_win_x, self.high_win_y = None, None
         self.med_win_x, self.med_win_y = None, None
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+        self.pick_tally_screen_index = 0
+
 
     def update(self, state):
         if self.money <= self.billy_bob_bankrupt:
@@ -445,44 +448,42 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
                 self.game_state = self.WELCOME_SCREEN
 
-    def update_pick_screen(self, controller, state):
-        if controller.isBPressed or controller.isBPressedSwitch:
-            controller.isBPressed = False
-            controller.isBPressedSwitch = False
-            self.game_state = self.PICK_TALLY_MENU_SCREEN
-        time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
-        time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
-        key_press_threshold = 80  # Example threshold, adjust as needed
-        current_can_content = ""
+    def update_pick_screen(self, controller, state, _last_box_move_time=[0]):
+        current_time = pygame.time.get_ticks()
+        cooldown = 300  # milliseconds
 
-        if (state.controller.isRightPressed or state.controller.isRightPressedSwitch) and time_since_right_pressed >= key_press_threshold:
-            # Initially move to the next box
+        print(f"DEBUG: current_time = {current_time}, last_box_move_time = {_last_box_move_time[0]}")
 
-            self.current_box_index = (self.current_box_index + 1) % 8
-            current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-
-            # Continue moving right if the can is empty
-            while current_can_content == "":
+        if current_time - _last_box_move_time[0] >= cooldown:
+            if state.controller.isRightPressed or state.controller.isRightPressedSwitch:
                 self.current_box_index = (self.current_box_index + 1) % 8
+                _last_box_move_time[0] = current_time
                 current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
 
-            self.menu_movement_sound.play()  # Play the sound effect once for the valid move
-            print(f"Current full box index: {self.current_box_index}, Content: {current_can_content}")
-            state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
+                while current_can_content == "":
+                    print("DEBUG: Empty can encountered, incrementing index")
+                    self.current_box_index = (self.current_box_index + 1) % 8
+                    current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                    print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
 
-        elif (state.controller.isLeftPressed or state.controller.isLeftPressedSwitch) and time_since_left_pressed >= key_press_threshold:
-            # Initially move to the previous box
-            self.current_box_index = (self.current_box_index - 1 + 8) % 8  # Adding 8 before modulo for negative index handling
-            current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                self.menu_movement_sound.play()
+                print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
 
-            # Continue moving left if the can is empty
-            while current_can_content == "":
-                self.current_box_index = (self.current_box_index - 1 + 8) % 8  # Ensure the index wraps correctly
+            elif state.controller.isLeftPressed or state.controller.isLeftPressedSwitch:
+                self.current_box_index = (self.current_box_index - 1) % 8
+                _last_box_move_time[0] = current_time
                 current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
 
-            self.menu_movement_sound.play()  # Play the sound effect once for the valid move
-            print(f"Current green box index: {self.current_box_index}, Content: {current_can_content}")
-            state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
+                while current_can_content == "":
+                    print("DEBUG: Empty can encountered, decrementing index")
+                    self.current_box_index = (self.current_box_index - 1) % 8
+                    current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                    print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
+
+                self.menu_movement_sound.play()
+                print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
 
             # Check for 'T' key press
         if state.controller.isTPressed or state.controller.isAPressedSwitch:
@@ -494,6 +495,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             state.controller.isAPressedSwitch = False
 
             self.reveal_selected_box_content(state)
+
+        elif state.controller.isBPressedSwitch or state.controller.isBPressed:
+            self.game_state = self.PICK_TALLY_MENU_SCREEN
 
     def reveal_selected_box_content(self, state):
         selected_can_attribute = f'can{self.current_box_index + 1}'
