@@ -236,8 +236,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The hungry opossum deals 50 damage, you gain {self.exp_gain_high}:   experience points and 0 money."]
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
 
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
@@ -255,13 +256,14 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gain {self.player_score}: money and gain {self.exp_gain_medium}:   experience points!"]
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
-            if controller.isTPressed:
+            if controller.isTPressed or controller.isAPressedSwitch:
                 if self.player_score < 750:
                     state.player.exp += self.exp_gain_low
                 elif self.player_score > 750:
                     state.player.exp += self.exp_gain_medium
 
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
 
                 if self.player_score > self.money:
                     self.player_score = self.money
@@ -278,13 +280,15 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             no_stamina_game_over = 0
 
             if state.player.money <= no_money_game_over:
-                if controller.isTPressed:
+                if controller.isTPressed or controller.isAPressedSwitch:
                     controller.isTPressed = False
+                    controller.isAPressedSwitch = False
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
             elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed:
+                if controller.isTPressed or controller.isAPressedSwitch:
                     controller.isTPressed = False
+                    controller.isAPressedSwitch = False
                     self.opossum_round_reset(state)
                     state.player.money -= 100
                     # state.currentScreen = state.area3RestScreen
@@ -415,19 +419,22 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
         #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
 
-        if controller.isUpPressed:
+        if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
             print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
-        elif controller.isDownPressed:
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
             controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
             print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
 
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
             if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value and state.player.focus_points >= self.shake_cost:
                 state.player.focus_points -= self.shake_cost
                 self.debuff_keen_perception = True
@@ -439,16 +446,18 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
     def update_pick_screen(self, controller, state):
-        if controller.isBPressed:
+        if controller.isBPressed or controller.isBPressedSwitch:
             controller.isBPressed = False
+            controller.isBPressedSwitch = False
             self.game_state = self.PICK_TALLY_MENU_SCREEN
         time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
         time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
         key_press_threshold = 80  # Example threshold, adjust as needed
         current_can_content = ""
 
-        if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
+        if (state.controller.isRightPressed or state.controller.isRightPressedSwitch) and time_since_right_pressed >= key_press_threshold:
             # Initially move to the next box
+
             self.current_box_index = (self.current_box_index + 1) % 8
             current_can_content = getattr(self, f'can{self.current_box_index + 1}')
 
@@ -461,7 +470,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             print(f"Current full box index: {self.current_box_index}, Content: {current_can_content}")
             state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
 
-        elif state.controller.isLeftPressed and time_since_left_pressed >= key_press_threshold:
+        elif (state.controller.isLeftPressed or state.controller.isLeftPressedSwitch) and time_since_left_pressed >= key_press_threshold:
             # Initially move to the previous box
             self.current_box_index = (self.current_box_index - 1 + 8) % 8  # Adding 8 before modulo for negative index handling
             current_can_content = getattr(self, f'can{self.current_box_index + 1}')
@@ -476,12 +485,13 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
 
             # Check for 'T' key press
-        if state.controller.isTPressed:
+        if state.controller.isTPressed or state.controller.isAPressedSwitch:
             print(";fdsjfds;lafjsaf;lj")
             # print(self.game_state)
 
             # Call the function to reveal the selected box content
             state.controller.isTPressed = False
+            state.controller.isAPressedSwitch = False
 
             self.reveal_selected_box_content(state)
 
@@ -727,10 +737,11 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         )
 
     def update_pick_tally_menu_screen_logic(self, controller):
-        if controller.isTPressed:
+        if controller.isTPressed or controller.isAPressedSwitch:
             print(";fdjfl;jsalfjsafjsf;ljsa")
             print(self.pick_screen_index)
             controller.isTPressed = False
+            controller.isAPressedSwitch = False
 
             if self.pick_tally_screen_index == self.pick_index:
                 self.game_state = self.PICK_SCREEN
