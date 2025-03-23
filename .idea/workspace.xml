@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new NPC,  creating hsh game">
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area3/area_3_rest_screen/hungry_starving_hippos_hippy.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area3/area_3_rest_screen/hungry_starving_hippos_hippy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_constants/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/hungry_starving_hippos_hippy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/hungry_starving_hippos_hippy_screen.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -363,7 +368,7 @@
       <workItem from="1741031167534" duration="551000" />
       <workItem from="1741034716738" duration="607000" />
       <workItem from="1741124681663" duration="918000" />
-      <workItem from="1741756527760" duration="69064000" />
+      <workItem from="1741756527760" duration="69645000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -708,7 +713,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1255" />
+    <option name="localTasksCounter" value="1256" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -737,7 +742,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="black jack screen now lets you leave" />
     <MESSAGE value="updating game with better controls using switch controller as well as QOL fixes for menus" />
     <MESSAGE value="fixed bugs with blackjack screen all minor" />
     <MESSAGE value="fixed bug with redraw ability not procing" />
@@ -762,7 +766,8 @@
     <MESSAGE value="new npc for slots, updated slots for controller support" />
     <MESSAGE value="fixed bug that prevented proper leaving" />
     <MESSAGE value="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
+    <MESSAGE value="new NPC,  creating hsh game" />
+    <option name="LAST_COMMIT_MESSAGE" value="new NPC,  creating hsh game" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

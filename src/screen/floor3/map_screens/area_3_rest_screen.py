@@ -33,6 +33,7 @@ from entity.npc.area3.area_3_rest_screen.black_jack_albert import BlackJackAlber
 from entity.npc.area3.area_3_rest_screen.coin_flip_dexter import CoinFlipDexter
 from entity.npc.area3.area_3_rest_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_rest_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
+from entity.npc.area3.area_3_rest_screen.hungry_starving_hippos_hippy import HungryStarvingHipposHippy
 from entity.npc.area3.area_3_rest_screen.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
 from entity.npc.area3.area_3_rest_screen.slots_brogan import SlotsBrogan
 
@@ -109,6 +110,7 @@ class Area3RestScreen(Screen):
             CrapsJunpon(16 * 35, 16 * 35),
             OpossumInACanBillyBob(16 * 20, 16 * 35),
             SlotsBrogan(16 * 5, 16 * 35),
+            HungryStarvingHipposHippy(16 * 5, 16 * 50),
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin

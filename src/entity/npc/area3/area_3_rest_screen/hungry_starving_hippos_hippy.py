@@ -65,16 +65,16 @@ class HungryStarvingHipposHippy(Npc):
             state.controller.isAPressedSwitch = False
 
             if Events.CRAPS_JUNPON_DEFEATED.value in state.player.level_three_npc_state:
-                self.craps_junpon_messages["defeated_message"].reset()
+                self.hungry_starving_hippos_hippy_messages["defeated_message"].reset()
 
             else:
-                self.craps_junpon_messages["welcome_message"].reset()
+                self.hungry_starving_hippos_hippy_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.craps_junpon_messages["defeated_message"]
-            if Events.CRAPS_JUNPON_DEFEATED.value in state.player.level_three_npc_state
-            else self.craps_junpon_messages["welcome_message"]
+            self.hungry_starving_hippos_hippy_messages["defeated_message"]
+            if Events.HUNGRY_STARVING_HIPPOS_HIPPY_DEFEATED.value in state.player.level_three_npc_state
+            else self.hungry_starving_hippos_hippy_messages["welcome_message"]
         )
         current_message.update(state)
 
@@ -96,7 +96,7 @@ class HungryStarvingHipposHippy(Npc):
                 state.controller.isDownPressedSwitch = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if (current_message.is_finished() and Events.CRAPS_JUNPON_DEFEATED.value
+        if (current_message.is_finished() and Events.HUNGRY_STARVING_HIPPOS_HIPPY_DEFEATED.value
                 not in state.player.level_three_npc_state
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
@@ -106,8 +106,8 @@ class HungryStarvingHipposHippy(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.crapsJunponScreen
-                state.crapsJunponScreen.start(state)
+                state.currentScreen = state.hungryStarvingHipposHippyScreen
+                state.hungryStarvingHipposHippyScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -149,15 +149,15 @@ class HungryStarvingHipposHippy(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.craps_junpon_messages["defeated_message"]
+                self.hungry_starving_hippos_hippy_messages["defeated_message"]
                 if Events.CRAPS_JUNPON_DEFEATED.value in state.player.level_three_npc_state
-                else self.craps_junpon_messages["welcome_message"]
+                else self.hungry_starving_hippos_hippy_messages["welcome_message"]
             )
 
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if (current_message.is_finished() and Events.BLACK_JACK_ALBERT_DEFEATED.value
+            if (current_message.is_finished() and Events.HUNGRY_STARVING_HIPPOS_HIPPY_DEFEATED.value
                     not in state.player.level_three_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100
