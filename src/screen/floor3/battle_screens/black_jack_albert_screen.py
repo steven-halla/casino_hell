@@ -316,8 +316,6 @@ class BlackJackAlbertScreen(GambleScreen):
             no_money_game_over = 0
             no_stamina_game_over = 0
 
-
-
             if state.player.money <= no_money_game_over:
                 if controller.isTPressed or state.controller.isAPressedSwitch:
                     controller.isTPressed = False
