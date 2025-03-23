@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed bug that prevented proper leaving">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/slots_brogan_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/slots_brogan_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -366,7 +363,7 @@
       <workItem from="1741031167534" duration="551000" />
       <workItem from="1741034716738" duration="607000" />
       <workItem from="1741124681663" duration="918000" />
-      <workItem from="1741756527760" duration="68435000" />
+      <workItem from="1741756527760" duration="69064000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -711,7 +708,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1254" />
+    <option name="localTasksCounter" value="1255" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -740,7 +737,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="controller now works for main area level 3" />
     <MESSAGE value="black jack screen now lets you leave" />
     <MESSAGE value="updating game with better controls using switch controller as well as QOL fixes for menus" />
     <MESSAGE value="fixed bugs with blackjack screen all minor" />
@@ -765,7 +761,8 @@
     <MESSAGE value="fixed bugs with leaving now it goes to correct place,  winning now gives event marker to correct place" />
     <MESSAGE value="new npc for slots, updated slots for controller support" />
     <MESSAGE value="fixed bug that prevented proper leaving" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug that prevented proper leaving" />
+    <MESSAGE value="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
