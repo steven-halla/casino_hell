@@ -304,27 +304,31 @@ class HungryStarvingHipposHippyScreen(Screen):
         if self.game_state == "bet_screen":
             self.battle_messages["bet_message"].update(state)
 
-            if controller.isTPressed and len(self.human_picks) < 3:
+            if (controller.isTPressed or controller.isAPressedSwitch) and len(self.human_picks) < 3:
                 controller.isTPressed = False
+                controller.isAPressedSwitch = False
                 selected_human = self.bet_selection[self.bet_selection_index]
                 if selected_human not in self.human_picks:
                     self.human_picks.append(selected_human)
                     print(f"Human picks: {self.human_picks}")
 
-            if controller.isBPressed and self.human_picks:
+            if (controller.isBPressed or controller.isBPressedSwitch) and self.human_picks:
                 controller.isBPressed = False
+                controller.isBPressedSwitch = False
                 self.human_picks.pop()
 
-            if controller.isDownPressed:
+            if controller.isDownPressed or controller.isDownPressedSwitch:
                 controller.isDownPressed = False
+                controller.isDownPressedSwitch = False
                 if self.bet_selection_index < len(self.bet_selection) - 1:
                     self.bet_selection_index += 1
-            elif controller.isUpPressed:
+            elif controller.isUpPressed or controller.isUpPressedSwitch:
                 controller.isUpPressed = False
+                controller.isUpPressedSwitch = False
                 if self.bet_selection_index > 0:
                     self.bet_selection_index -= 1
 
-            if controller.isAPressed and len(self.human_picks) == 3:
+            if (controller.isAPressed or controller.isAPressedSwitch) and len(self.human_picks) == 3:
                 self.game_state = "human_race"
                 self.initialize_human_position(state)  # Ensure humans are initialized for the race
                 self.start_time = time.time()  # Reset the timer for the race
