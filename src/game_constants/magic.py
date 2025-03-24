@@ -12,8 +12,10 @@ class Magic(Enum):
     SHAKE = "shake"
 
     #the below are experiments OR level 3
-    TATTLE = "tattle" # tell on the coinflip dealer for a one time penalty of -500 coins. Magic of 4 needed
     BLACK_JACK_REDRAW = "redraw"   # we get this level 3 quest
+    PEEK = "peek" #level 3 using your wit you ask the dealer whats in the can
+
+
 
 
 

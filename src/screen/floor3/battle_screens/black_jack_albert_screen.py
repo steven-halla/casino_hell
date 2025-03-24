@@ -65,6 +65,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.high_stamina_drain: int = 30
         self.albert_magic_points: int = 2
         self.cards_of_frailty: int = 0
+        self.buff_peek: bool = False
 
 
 

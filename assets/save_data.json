@@ -40,7 +40,8 @@
         "redraw",
         "Triple D",
         "HACK",
-        "Force"
+        "Force",
+        "peek"
     ],
     "body": 2,
     "mind": 2,

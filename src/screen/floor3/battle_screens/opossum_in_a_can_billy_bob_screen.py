@@ -54,6 +54,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.MAGIC_MENU_SHAKE_DESCRIPTION: MessageBox([
                 "Shakes the can, reveals 1 opossum and 1 lucky star."
             ]),
+            self.MAGIC_MENU_PEEK_DESCRIPTION: MessageBox([
+                "Ask the dealer very nicelyto get a quick peek in can."
+            ]),
             self.PICK_SELECTION_MESSAGE: MessageBox([
                 "Shakes the can, reveals 1 opossum and 1 lucky star."
             ]),
@@ -116,7 +119,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.exp_gain_high = 25
         self.exp_gain_low = 10
         self.exp_gain_medium = 20
-        self.money = 50
+        self.money:int = 50
+        self.peek_cost:int = 25
+        self.buff_peek = False
 
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
@@ -128,6 +133,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     PLAYER_WIN_MESSAGE: str = "player_win_message"
     PLAYER_LOSE_MESSAGE: str = "player_lose_message"
     MAGIC_MENU_SHAKE_DESCRIPTION: str = "magic_menu_force_description"
+    MAGIC_MENU_PEEK_DESCRIPTION: str = "magic_menu_peek_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
     PICK_SELECTION_MESSAGE: str = "pick_selection_message"
@@ -188,6 +194,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.med_win_x, self.med_win_y = None, None
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
+        self.buff_peek = False
 
     def opossum_round_reset(self, state):
         print("oppsum round rest trig")
@@ -209,6 +216,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.med_win_x, self.med_win_y = None, None
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
+        self.buff_peek = False
+
 
 
     def update(self, state):
@@ -226,6 +235,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.update_welcome_screen_logic(controller, state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         if self.game_state == self.MAGIC_MENU_SCREEN:
+
             self.update_magic_menu_selection_box(controller, state)
 
         elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
@@ -364,6 +374,12 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     def draw_magic_menu_selection_box(self, state):
         if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value:
             self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].draw(state)
+
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value:
+            self.battle_messages[self.MAGIC_MENU_PEEK_DESCRIPTION].draw(state)
+
+
+
         #
         #
         # elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
@@ -420,6 +436,11 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             #
             # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
             self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value:
+            self.battle_messages[self.MAGIC_MENU_PEEK_DESCRIPTION].update(state)
+            #
+            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
         elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
             self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].reset()
             #
@@ -453,6 +474,12 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.spell_sound.play()  # Play the sound effect once
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value and state.player.focus_points >= self.peek_cost:
+                state.player.focus_points -= self.peek_cost
+                self.buff_peek = True
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
 
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
                 self.game_state = self.WELCOME_SCREEN
@@ -461,49 +488,60 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         current_time = pygame.time.get_ticks()
         cooldown = 300  # milliseconds
 
-        print(f"DEBUG: current_time = {current_time}, last_box_move_time = {_last_box_move_time[0]}")
+        # print(f"DEBUG: current_time = {current_time}, last_box_move_time = {_last_box_move_time[0]}")
 
         if current_time - _last_box_move_time[0] >= cooldown:
             if state.controller.isRightPressed or state.controller.isRightPressedSwitch:
                 self.current_box_index = (self.current_box_index + 1) % 8
                 _last_box_move_time[0] = current_time
                 current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
+                # print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
 
                 while current_can_content == "":
-                    print("DEBUG: Empty can encountered, incrementing index")
+                    # print("DEBUG: Empty can encountered, incrementing index")
                     self.current_box_index = (self.current_box_index + 1) % 8
                     current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-                    print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
+                    # print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
 
                 self.menu_movement_sound.play()
-                print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
+                # print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
 
             elif state.controller.isLeftPressed or state.controller.isLeftPressedSwitch:
                 self.current_box_index = (self.current_box_index - 1) % 8
                 _last_box_move_time[0] = current_time
                 current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
+                # print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
 
                 while current_can_content == "":
-                    print("DEBUG: Empty can encountered, decrementing index")
+                    # print("DEBUG: Empty can encountered, decrementing index")
                     self.current_box_index = (self.current_box_index - 1) % 8
                     current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-                    print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
+                    # print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
 
                 self.menu_movement_sound.play()
-                print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
+                # print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
 
             # Check for 'T' key press
         if state.controller.isTPressed or state.controller.isAPressedSwitch:
-            print(";fdsjfds;lafjsaf;lj")
+            if self.buff_peek:
+                selected_can_index = self.current_box_index + 1  # since can1 to can8 are 1-indexed
+                peeked_value = getattr(self, f"can{selected_can_index}")
+                print(f"You peeked into can {selected_can_index} and saw: {peeked_value}")
+                self.battle_messages[self.PICK_SELECTION_MESSAGE].messages = [f"The can contains a: {peeked_value}"]
+                self.buff_peek = False
+
             # print(self.game_state)
 
-            # Call the function to reveal the selected box content
-            state.controller.isTPressed = False
-            state.controller.isAPressedSwitch = False
+                # Call the function to reveal the selected box content
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
 
-            self.reveal_selected_box_content(state)
+            else:
+                print("jfdklsjf;salkfj;saf")
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+
+                self.reveal_selected_box_content(state)
 
         elif state.controller.isBPressedSwitch or state.controller.isBPressed:
             self.game_state = self.PICK_TALLY_MENU_SCREEN
@@ -781,6 +819,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.money += self.bet
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
+                if Magic.PEEK.value in state.player.magicinventory:
+                    self.magic_menu_selector.insert(1, Magic.PEEK.value)
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.quit_index:
                 state.currentScreen = state.area3RestScreen
