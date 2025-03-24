@@ -77,6 +77,10 @@ class CrapsJunponScreen(GambleScreen):
         self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
         self.successful_power_strike_sound_effect.set_volume(0.6)
 
+        self.junpon_magic_points: int = 2
+        self.debuff_dice_of_deception: int = 0
+        self.debuff_counter:int = 3
+
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "This is the welcome screen"
@@ -111,6 +115,9 @@ class CrapsJunponScreen(GambleScreen):
             self.BLOW_POINT_ROLL_MESSAGE: MessageBox([
                 f"Hold A key and rock d pad"
             ]),
+            self.JUNPON_CASTING_SPELL_MESSAGE: MessageBox([
+                f"Corrupting tendrils of hell, avert lady luck's gaze to evil incarnate...dice of deception"
+            ]),
         }
 
     POWER_METER_MESSAGE: str = "power_meter_message"
@@ -124,6 +131,9 @@ class CrapsJunponScreen(GambleScreen):
     POINT_ROLL_ROLLED_DICE_MESSAGE: str = "point_roll_roll_rolled_dice_message"
     BLOW_POINT_ROLL_MESSAGE: str = "blow_point_roll_message"
     BET_MESSAGE: str = "bet_message"
+    JUNPON_CASTING_SPELL_MESSAGE:str = "junpon_casting_spell_message"
+
+
     TRIPLE_DICE: str = "Triple Dice"
 
     PLAYER_WIN_COME_OUT_SCREEN: str = "player_win_come_out_screen"
@@ -135,6 +145,7 @@ class CrapsJunponScreen(GambleScreen):
     PLAYER_WIN_POINT_ROLL_SCREEN: str = "player_win_point_roll_screen"
     PLAYER_LOSE_POINT_ROLL_SCREEN: str = "player_lose_point_roll_screen"
     BLOW_POINT_ROLL_SCREEN: str = "blow_point_roll_screen"
+    JUNPON_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
 
     def start(self, state: 'GameState'):
         pass
@@ -159,6 +170,8 @@ class CrapsJunponScreen(GambleScreen):
 
         self.blow_sound_checker = True
         self.blow_timer_start = 0
+        self.debuff_counter = 3
+
 
     def reset_craps_game(self, state: 'GameState'):
         # need to reset value of enemy spell to 0
@@ -179,10 +192,12 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_turn = self.set_variable_to_zero
         self.blow_sound_checker = True
         self.blow_timer_start = 0
+        self.debuff_counter = 3
+        self.junpon_magic_points = 2
+
 
 
     def update(self, state: 'GameState'):
-        # print(self.game_state)
         controller = state.controller
         controller.update()
         state.player.update(state)
@@ -203,7 +218,17 @@ class CrapsJunponScreen(GambleScreen):
             print("TypeError: lucky_seven_buff_counter is not of the expected type")
             self.magic_lock = False
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
+            print("CATING NOW")
+            self.battle_messages[self.JUNPON_CASTING_SPELL_MESSAGE].update(state)
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+                self.junpon_magic_points -= 1
+                self.debuff_dice_of_deception = 5
+                self.game_state = self.WELCOME_SCREEN
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
 
@@ -212,6 +237,8 @@ class CrapsJunponScreen(GambleScreen):
             self.bet_screen_helper(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
+
+
             triple_dice_spell = 0
             back_to_welcome_screen = 1
             if self.magic_screen_index == triple_dice_spell:
@@ -227,15 +254,25 @@ class CrapsJunponScreen(GambleScreen):
             self.battle_messages[self.POWER_METER_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
-            print("are we in the come out screen?")
-            print(self.game_state)
+
             if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
                 self.round_reset()
                 state.player.money += self.bet
                 self.money -= self.bet
-                self.game_state = self.WELCOME_SCREEN
+
+                if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0:
+                    print("HI")
+                    dice_of_deception_random_chance = random.randint(9, 10)
+                    if self.money < 1000 and self.junpon_magic_points > 0:
+                        dice_of_deception_random_chance += 3
+                    if dice_of_deception_random_chance > 9:
+                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
+                    else:
+                        self.game_state = self.WELCOME_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
@@ -247,7 +284,18 @@ class CrapsJunponScreen(GambleScreen):
                 self.round_reset()
                 state.player.money -= self.bet
                 self.money += self.bet
-                self.game_state = self.WELCOME_SCREEN
+                if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0:
+                    print("BI")
+
+                    dice_of_deception_random_chance = random.randint(9, 10)
+                    if self.money < 1000 and self.junpon_magic_points > 0:
+                        dice_of_deception_random_chance += 3
+                    if dice_of_deception_random_chance > 9:
+                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
+                    else:
+                        self.game_state = self.WELCOME_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
 
         elif self.game_state == self.POINT_ROLL_SCREEN:
@@ -303,7 +351,18 @@ class CrapsJunponScreen(GambleScreen):
                 self.round_reset()
                 self.money += self.bet
                 state.player.money -= self.bet
-                self.game_state = self.WELCOME_SCREEN
+                if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0:
+                    print("OWL")
+
+                    dice_of_deception_random_chance = random.randint(9, 10)
+                    if self.money < 1000 and self.junpon_magic_points > 0:
+                        dice_of_deception_random_chance += 3
+                    if dice_of_deception_random_chance > 9:
+                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
+                    else:
+                        self.game_state = self.WELCOME_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
             if controller.isTPressed or controller.isAPressedSwitch:
@@ -312,7 +371,21 @@ class CrapsJunponScreen(GambleScreen):
                 self.round_reset()
                 self.money -= self.bet
                 state.player.money += self.bet
-                self.game_state = self.WELCOME_SCREEN
+                print("DIce of deception" + str(self.debuff_dice_of_deception))
+                print("MP" + str(self.junpon_magic_points))
+
+                if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0:
+                    print("Meow")
+
+                    dice_of_deception_random_chance = random.randint(9, 10)
+                    if self.money < 1000 and self.junpon_magic_points > 0:
+                        dice_of_deception_random_chance += 3
+                    if dice_of_deception_random_chance > 9:
+                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
+                    else:
+                        self.game_state = self.WELCOME_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
@@ -338,7 +411,11 @@ class CrapsJunponScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.WELCOME_SCREEN:
+
+        if self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.JUNPON_CASTING_SPELL_MESSAGE].draw(state)
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
@@ -408,7 +485,6 @@ class CrapsJunponScreen(GambleScreen):
     def handle_dice_rolling_simulation(self, controller):
         if controller.isTPressed or controller.isAPressedSwitch:
             if (controller.isLeftPressed or controller.isLeftPressedSwitch) and not self.is_left_pressed:
-                print("Hre")
                 self.is_left_pressed = True
                 self.left_press_time = pygame.time.get_ticks()
                 controller.isLeftPressed = False
@@ -923,9 +999,14 @@ class CrapsJunponScreen(GambleScreen):
             self.game_state = self.BET_SCREEN
 
         if self.is_timer_active:
+
             if self.rolling_dice_timer():
-                state.player.stamina_points -= self.player_stamina_low_cost
                 self.dice_roll_1 = random.randint(1, 6)
+                state.player.stamina_points -= self.player_stamina_low_cost
+                if self.debuff_dice_of_deception > 0 and self.debuff_counter > 0:
+                    self.dice_roll_1 = 3
+                    self.debuff_counter -= 1
+                    print("debuff_counter after result: ", str(self.debuff_counter))
                 self.dice_roll_2 = random.randint(1, 6)
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
                 self.is_timer_active = False
@@ -950,7 +1031,6 @@ class CrapsJunponScreen(GambleScreen):
                     if self.blow_turn == 0 and self.blow_sound_checker == True:
                         self.blow_sound_checker = False
                         self.blow_meter_ready.play()
-                    print(f"Neither win nor lose condition met, you rolled {self.point_roll_total}.")
 
     def create_blow_meter(self, state: "GameState", blow_counter: int) -> None:
         meter_width = 300  # Total width of the meter

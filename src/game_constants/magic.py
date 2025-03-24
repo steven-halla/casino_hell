@@ -10,9 +10,13 @@ class Magic(Enum):
     REVEAL = "reveal"
     CARD_MORPH = "card morph" # this changes the value of a card, like all kings are now 2's
     SHAKE = "shake"
+
     #the below are experiments OR level 3
     TATTLE = "tattle" # tell on the coinflip dealer for a one time penalty of -500 coins. Magic of 4 needed
     BLACK_JACK_REDRAW = "redraw"   # we get this level 3 quest
+
+
+
 
 
     @staticmethod
