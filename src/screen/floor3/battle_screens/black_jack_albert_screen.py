@@ -8,10 +8,6 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
-
-#
-
-
 class BlackJackAlbertScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
@@ -28,7 +24,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.money: int = 50
+        self.money: int = 950
         self.albert_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -67,6 +63,8 @@ class BlackJackAlbertScreen(GambleScreen):
         self.low_stamina_drain: int = 10
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
+        self.albert_magic_points: int = 2
+        self.cards_of_frailty: int = 0
 
 
 
@@ -117,6 +115,9 @@ class BlackJackAlbertScreen(GambleScreen):
             self.LEVEL_UP_MESSAGE: MessageBox([
                 f"You leveld up!"
             ]),
+            self.ALBERT_CASTING_SPELL: MessageBox([
+                f"Time being ever so cruel, take strong bones and turn them to dust...cards of frailty"
+            ]),
 
         }
 
@@ -133,6 +134,7 @@ class BlackJackAlbertScreen(GambleScreen):
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
     LEVEL_UP: str = "level_up_message"
+    ALBERT_CASTING_SPELL: str = "albert_casting_spell"
 
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
@@ -147,6 +149,7 @@ class BlackJackAlbertScreen(GambleScreen):
     PLAYER_WIN_ACTION_SCREEN: str = "player_win_action_phase"
     ENEMY_WIN_ACTION_SCREEN: str = "enemy_win_action_phase"
     PLAYER_ENEMY_DRAW_ACTION_SCREEN: str = "player_enemy_draw_action_phase"
+    ALBERT_CASTING_SPELL_SCREEN: str = "albert_casting_spell_screen"
 
     #demon: why do you guys always draw 1 card per player per round why not just give players thier carss , its faster that way
     # you silly humans make no logical sense
@@ -196,6 +199,8 @@ class BlackJackAlbertScreen(GambleScreen):
         state.player.update(state)
         super().update(state)
 
+
+
         if self.money <= self.albert_bankrupt:
 
 
@@ -217,9 +222,20 @@ class BlackJackAlbertScreen(GambleScreen):
             print("TypeError: lucky_seven_buff_counter is not of the expected type")
             self.magic_lock = False
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.ALBERT_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.ALBERT_CASTING_SPELL].update(state)
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+                self.albert_magic_points -= 1
+                self.cards_of_frailty += 5
+                self.game_state = self.WELCOME_SCREEN
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
 
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0  # Adjust as needed
@@ -342,7 +358,12 @@ class BlackJackAlbertScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.ALBERT_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.ALBERT_CASTING_SPELL].draw(state)
+
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
@@ -464,6 +485,8 @@ class BlackJackAlbertScreen(GambleScreen):
 
     def update_player_phase_win(self, state, controller) -> None:
         if controller.isTPressed or controller.isAPressedSwitch:
+            albert_casts_a_spell = random.randint(1, 2)
+            print("thre is a 10% chance he'll cast " + str(albert_casts_a_spell))
 
             controller.isTPressed = False
             controller.isAPressedSwitch = False
@@ -472,7 +495,13 @@ class BlackJackAlbertScreen(GambleScreen):
             state.player.money += self.bet
             self.money -= self.bet
             state.player.exp += self.low_exp
-            self.game_state = self.WELCOME_SCREEN
+            if albert_casts_a_spell > 1:
+                if self.albert_magic_points > 0:
+                    self.game_state = self.ALBERT_CASTING_SPELL_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
+            else:
+                self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.isTPressed or controller.isAPressedSwitch:
@@ -655,9 +684,15 @@ class BlackJackAlbertScreen(GambleScreen):
             print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
 
         elif state.controller.isTPressed or state.controller.isAPressedSwitch:
+            print(self.player_score)
+
             state.controller.isTPressed = False
             state.controller.isAPressedSwitch = False
             if self.player_action_phase_index == self.player_action_phase_play_index:
+                if self.cards_of_frailty > 0:
+                    self.player_score -= len(self.player_hand)
+                    print(self.player_score)
+
                 state.player.stamina_points -= self.low_stamina_drain
 
 
@@ -970,11 +1005,9 @@ class BlackJackAlbertScreen(GambleScreen):
             if self.ace_detected_time is not None:
                 current_time = pygame.time.get_ticks()
                 elapsed_time = current_time - self.ace_detected_time
-                print(f"Elapsed time: {elapsed_time} ms")
 
                 # Handle the Ace effect once the timer has elapsed
                 if elapsed_time >= 1200:  # 1200 ms = 1.2 seconds
-                    print("Ace time")
                     self.enemy_hand.pop(1)
                     new_card = self.deck.enemy_draw_hand(1)[0]
                     self.enemy_hand.insert(1, new_card)
@@ -983,7 +1016,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     # Reset the timer and flag
                     self.ace_effect_triggered = True
                     self.ace_detected_time = None
-                    print("Ace replaced and timer reset")
                 else:
                     # Return early to stop further execution if the timer hasn't expired yet
                     return

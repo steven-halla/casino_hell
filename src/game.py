@@ -2,10 +2,10 @@ import pygame
 import logging
 from game_state import GameState
 
-logging.basicConfig(
-    level=logging.INFO,  # INFO
-    format="[%(asctime)s][%(name)s][%(levelname)s] %(message)s"
-)
+# logging.basicConfig(
+#     level=logging.INFO,  # INFO
+#     format="[%(asctime)s][%(name)s][%(levelname)s] %(message)s"
+# )
 
 # Instantiate mixer
 # this is where we get our music:

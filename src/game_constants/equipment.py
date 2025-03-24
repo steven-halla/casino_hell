@@ -20,7 +20,6 @@ class Equipment(Enum):
 
         # the below are for level 3 or EXPERIMENT
     CRAPS_WRIST_WATCH = "craps wrist watch" # blow command
-    REFRESH = "refresh" # black jacks gain +20 stamina not
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
 
 

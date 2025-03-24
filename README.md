@@ -79,24 +79,17 @@ sound effect for when coin is flipped and lands
 
 
 Opposum in a can:
-Need to show what the player picked on the screen so its not empty
 sound effects for when bite
 
 Black jack:
-need to slow down dealing of cards for both player and AI
-put a limit of 5 cards for draw.
 sound effects for laying down cards
 Need to fix text boxes in my init method to be more uniform
 maybe show sir leopold on screen when he steals on ace or have him dart across screen 
 
 slots:
 sound effects while putting in coin, pulling lever,wheel spinning
-more graphcis that looks like a slot machine
 
-Craps:
-limit of 7 rolls during point phase 8th roll should always finish the round 
-maybe give player bonus luck points option by betting extra gold?
-dice sound effects
+
 
 Hungry starving hippos:
 mix up runners randomly
@@ -185,6 +178,19 @@ controller support
 player does triple roll
 enemy does triple roll
 
+
+
+level 3:
+
+new game: Spin the cards
+match starts with a small card battle, such as high/low, or who has highest card, or some other thing
+but I want the player to be able to use a little strategy.
+
+BLACK JACK:
+CREATE 1 MAGIC SPELL FOR ENEMY TO CAST
+swap  = enemy can swap a card of thiers for one of yours
+lock draw  - unable to use draw command
+poisoin card - each card has a negative 1 value does not work against black jack
 
 
 
