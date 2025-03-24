@@ -6,6 +6,7 @@ import pygame
 from constants import WHITE, BLACK, RED
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
@@ -509,12 +510,20 @@ class SlotsBroganScreen(GambleScreen):
         elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
             self.jack_pot = 500
 
+
+
             if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
+                if Equipment.SLOTS_SHOES.value in state.player.equipped_items:
+                    state.player.stamina_points += 100
+                    state.player.focus_points += 50
+
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_high
                 self.reset_slots_brogan_round()
+
+
                 self.game_state = self.WELCOME_SCREEN
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
@@ -827,6 +836,8 @@ class SlotsBroganScreen(GambleScreen):
     def generate_numbers(self, state) -> List[str]:
         # Generate random values for each slot
         generated_values = [random.randint(1, 100) for _ in range(3)]
+
+
 
 
 

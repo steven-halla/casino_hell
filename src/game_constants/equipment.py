@@ -21,6 +21,8 @@ class Equipment(Enum):
         # the below are for level 3 or EXPERIMENT
     CRAPS_WRIST_WATCH = "craps wrist watch" # blow command
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
+    SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
+
 
 
 

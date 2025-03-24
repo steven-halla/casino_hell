@@ -53,7 +53,8 @@
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract"
+        "contract",
+        "SLOTS_VEST_FOUND"
     ],
     "level3reward": false,
     "food": 1,
