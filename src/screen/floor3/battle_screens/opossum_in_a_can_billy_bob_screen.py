@@ -43,7 +43,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.shake_cost = 10
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "My Opossums sure are friendly, they wont bite you. They just wanna nibble."
+                "BIlly Bob: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
             ]),
 
             self.PICK_TALLY_MENU_MESSAGE: MessageBox([
@@ -70,6 +70,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             ]),
             self.PLAYER_LOSE_MESSAGE: MessageBox([
                 "You lost the toss."
+            ]),
+            self.BILLY_BOB_CASTING_SPELL_MESSAGE: MessageBox([
+                "“From the hollers of Hell and the backwoods beyond,let my critters grab ‘n squeeze ‘til he don’t squirm no more… Opossum Clampdown!”"
             ]),
 
         }
@@ -119,9 +122,12 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.exp_gain_high = 25
         self.exp_gain_low = 10
         self.exp_gain_medium = 20
-        self.money:int = 50
-        self.peek_cost:int = 25
+        self.money: int = 444
+        self.peek_cost: int = 25
         self.buff_peek = False
+        self.opossum_lock: bool = False
+
+
 
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
@@ -129,6 +135,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     # TALLY_SCREEN:str = "tally_screen"
     PLAYER_LOSE_SCREEN:str = "player_lose_screen"
     PLAYER_WIN_SCREEN:str = "player_win_screen"
+    BILLY_BOB_CASTING_SPELL_SCREEN: str = "billy_bob_casting_spell_screen"
+
 
     PLAYER_WIN_MESSAGE: str = "player_win_message"
     PLAYER_LOSE_MESSAGE: str = "player_lose_message"
@@ -137,6 +145,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
     PICK_SELECTION_MESSAGE: str = "pick_selection_message"
+    BILLY_BOB_CASTING_SPELL_MESSAGE: str = "billy_bob_casting_spell_message"
+
+
 
 
     BACK: str = "Back"
@@ -195,6 +206,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
         self.buff_peek = False
+        self.opossum_lock = False
 
     def opossum_round_reset(self, state):
         print("oppsum round rest trig")
@@ -234,7 +246,16 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller, state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-        if self.game_state == self.MAGIC_MENU_SCREEN:
+
+        elif self.game_state == self.BILLY_BOB_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.BILLY_BOB_CASTING_SPELL_MESSAGE].update(state)
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+                self.opossum_lock = True
+                self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
 
             self.update_magic_menu_selection_box(controller, state)
 
@@ -296,7 +317,10 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                     self.money = 0
                 self.opossum_round_reset(state)
 
-                self.game_state = self.WELCOME_SCREEN
+                if self.money < 750 and self.opossum_lock == False:
+                    self.game_state = self.BILLY_BOB_CASTING_SPELL_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
@@ -340,6 +364,10 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.draw_welcome_screen_box_info(state)
 
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
+        elif self.game_state == self.BILLY_BOB_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.BILLY_BOB_CASTING_SPELL_MESSAGE].draw(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
@@ -819,10 +847,10 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 self.money += self.bet
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
-                if Magic.PEEK.value in state.player.magicinventory:
+                if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
                     self.magic_menu_selector.insert(1, Magic.PEEK.value)
                 self.game_state = self.MAGIC_MENU_SCREEN
-            elif self.welcome_screen_index == self.quit_index:
+            elif self.welcome_screen_index == self.quit_index and self.opossum_lock == False:
                 state.currentScreen = state.area3RestScreen
                 state.area3RestScreen.start(state)
 
@@ -843,9 +871,17 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         arrow_y_coordinate_padding_quit = 92
 
         for idx, choice in enumerate(self.welcome_screen_choices):
-            y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
+            y_position = start_y_right_box + idx * spacing_between_choices
+
+            if choice == "Quit" and self.opossum_lock:
+                display_text = "Locked"
+                text_color = RED
+            else:
+                display_text = choice
+                text_color = WHITE
+
             state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
+                self.font.render(display_text, True, text_color),
                 (start_x_right_box + text_x_offset, y_position + text_y_offset)
             )
 
