@@ -187,10 +187,11 @@ match starts with a small card battle, such as high/low, or who has highest card
 but I want the player to be able to use a little strategy.
 
 BLACK JACK:
-CREATE 1 MAGIC SPELL FOR ENEMY TO CAST
 swap  = enemy can swap a card of thiers for one of yours
 lock draw  - unable to use draw command
-poisoin card - each card has a negative 1 value does not work against black jack
+
+COIN FLIP:
+
 
 
 

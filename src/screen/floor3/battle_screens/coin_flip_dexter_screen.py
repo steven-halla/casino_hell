@@ -9,6 +9,7 @@ from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+import math
 
 
 class CoinFlipDexterScreen(GambleScreen):
@@ -66,7 +67,10 @@ class CoinFlipDexterScreen(GambleScreen):
         self.result_anchor = False
         self.timer_start = None  # Initialize the timer variable
 
-        self.money: int = 200  # Add this line
+        self.money: int = 999  # Add this line
+        self.dexter_magic_points = 2
+        self.debuff_money_balancer = 0
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -107,6 +111,9 @@ class CoinFlipDexterScreen(GambleScreen):
             self.ANIMAL_DEFENSE_MESSAGE: MessageBox([
                 f"A lucky bird swooped in to help you out of a jam!"
             ]),
+            self.DEXTER_CASTING_SPELL_MESSAGE: MessageBox([
+                f"Disgusting pigs of filth and greed, submit yourself to the scales of fairness...money balancer"
+            ]),
         }
 
     # dont draw the coin if its a draw, or maybe draw a bird or animal in its place that "stole/ate
@@ -119,6 +126,7 @@ class CoinFlipDexterScreen(GambleScreen):
     PLAYER_WIN_SCREEN: str = "player_win_screen"
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
+    DEXTER_CASTING_SPELL_SCREEN: str = "dexter_casting_spell_screen"
 
     LEVEL_UP_MESSAGE: str = "level_up_message"
 
@@ -136,6 +144,7 @@ class CoinFlipDexterScreen(GambleScreen):
     PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+    DEXTER_CASTING_SPELL_MESSAGE: str= "dexter_casting_spell_message"
 
     def start(self, state: 'GameState'):
         pass
@@ -157,8 +166,13 @@ class CoinFlipDexterScreen(GambleScreen):
         self.player_choice = ""
         # self.coin_image_position = (300, 400)  # Reset to the initial value at the start of the round
         self.weighted_coin = False
+        self.dexter_casting_spell = 2
+        self.debuff_money_balancer = 0
 
     def reset_round(self):
+
+        if self.debuff_money_balancer > 0:
+            self.debuff_money_balancer -= 1
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
         self.weighted_coin = False
@@ -181,6 +195,11 @@ class CoinFlipDexterScreen(GambleScreen):
         if self.shield_debuff == 0 and self.weighted_coin == False:
             self.magic_lock = False
 
+        print("debuff monye balanacer" + str(self.debuff_money_balancer))
+        print("dexter magic points " + str(self.dexter_magic_points))
+
+
+
     def update(self, state):
 
         super().update(state)
@@ -193,7 +212,19 @@ class CoinFlipDexterScreen(GambleScreen):
             Events.add_level_three_event_to_player(state.player, Events.COIN_FLIP_DEXTER_DEFEATED)
 
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.DEXTER_CASTING_SPELL_SCREEN:
+            print("dfljldsa;jfldsjfjdsalfj;lsajf;lsakfj;slafkj;sajflksafjsla;fj")
+            self.battle_messages[self.DEXTER_CASTING_SPELL_MESSAGE].update(state)
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+                self.dexter_magic_points -= 1
+                self.debuff_money_balancer = 5
+                self.game_state = self.WELCOME_SCREEN
+
+
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
@@ -240,9 +271,21 @@ class CoinFlipDexterScreen(GambleScreen):
                 self.reset_round()
 
                 state.player.exp += self.exp_gain_high
-                state.player.money += self.bet
-                self.money -= self.bet
+
+                if self.debuff_money_balancer == 0:
+                    state.player.money += self.bet
+                else:
+                    state.player.money += math.ceil(self.bet / 2)
+
+
+
+                if self.debuff_money_balancer == 0:
+                    self.money -= math.ceil(self.bet / 2)
+                else:
+                    self.money -= self.bet
                 perception_bonus = 0  # Initialize perception bonus
+
+
 
                 if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
                     perception_bonus = 0  # Initialize perception bonus
@@ -261,8 +304,18 @@ class CoinFlipDexterScreen(GambleScreen):
                     # Deduct from enemy money
                     self.money -= amount_to_gain
 
+                if self.debuff_money_balancer == 0 and self.money < 1000 and self.dexter_magic_points > 0:
+                    print("dfjs;fldsajf;dsalfjdsjfldsjalfjsl;ajfa")
+                    dexter_casting_chance = random.randint(1, 5)
+                    if dexter_casting_chance == 1:
+                        print("mew mew mew mew mew mew ew")
 
-                self.game_state = self.WELCOME_SCREEN
+                        self.game_state = self.DEXTER_CASTING_SPELL_SCREEN
+                    else:
+                        self.game_state = self.WELCOME_SCREEN
+
+                else:
+                    self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"You Lose! You Lose {self.bet}:"
                                                                        f" money and gain {self.exp_gain_low}:   "
@@ -273,8 +326,15 @@ class CoinFlipDexterScreen(GambleScreen):
                 controller.isAPressedSwitch = False
                 self.reset_round()
                 state.player.exp += self.exp_gain_low
-                state.player.money -= self.bet
-                self.money += self.bet
+                if self.debuff_money_balancer == 0:
+                    self.money += self.bet
+                else:
+                    self.money += math.ceil(self.bet / 2)
+
+                if self.debuff_money_balancer == 0:
+                    state.player.money += math.ceil(self.bet / 2)
+                else:
+                    state.player.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
             self.battle_messages[self.PLAYER_DRAW_MESSAGE].update(state)
@@ -312,7 +372,10 @@ class CoinFlipDexterScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.DEXTER_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.DEXTER_CASTING_SPELL_MESSAGE].draw(state)
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
@@ -544,15 +607,7 @@ class CoinFlipDexterScreen(GambleScreen):
         )
 
     def update_welcome_screen_logic(self, controller, state):
-        print(self.welcome_screen_index)
-        # print("493")
-        # self.game_state = self.CHOOSE_SIDE_SCREEN
 
-        # if state.controller.isTPressed:
-        #     print("497")
-        #
-        #     state.controller.isTPressed = False
-        # print("497")
 
         if self.welcome_screen_index == self.flip_coin_index and (controller.isAPressedSwitch or controller.isTPressed):
             state.controller.isAPressedSwitch = False

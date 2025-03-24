@@ -177,6 +177,8 @@ class BlackJackAlbertScreen(GambleScreen):
         self.enemy_card_y_positions = []
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
+        if self.cards_of_frailty > 0:
+            self.cards_of_frailty -= 1
 
     def reset_black_jack_game(self):
         self.player_card_y_positions = []
@@ -192,6 +194,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
+        self.albert_magic_points = 2
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -684,7 +687,6 @@ class BlackJackAlbertScreen(GambleScreen):
             print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
 
         elif state.controller.isTPressed or state.controller.isAPressedSwitch:
-            print(self.player_score)
 
             state.controller.isTPressed = False
             state.controller.isAPressedSwitch = False
@@ -694,8 +696,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     print(self.player_score)
 
                 state.player.stamina_points -= self.low_stamina_drain
-
-
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
                     if self.enemy_score < self.player_score:
                         self.animate_face_down_card(state, len(self.enemy_hand))
@@ -703,7 +703,6 @@ class BlackJackAlbertScreen(GambleScreen):
                         break
 
                 if self.player_score == self.enemy_score:
-                    print("470")
                     self.game_state = self.PLAYER_ENEMY_DRAW_ACTION_SCREEN
 
                 elif self.enemy_score > max_before_bust:
