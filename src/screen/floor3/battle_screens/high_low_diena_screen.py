@@ -10,7 +10,7 @@ from game_constants.magic import Magic
 from game_state import GameState
 
 
-class HighLowScreen(GambleScreen):
+class HighLowScreenDienaScreen(GambleScreen):
     def __init__(self, screenName: str = "high low") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
@@ -69,6 +69,7 @@ class HighLowScreen(GambleScreen):
     ENEMY_DRAWS_ACE_SCREEN = "enemy_draws_ace_screen"
     PLAYER_WINS_SCREEN = "player_wins_screen"
     ENEMY_WINS_SCREEN = "enemy_wins_screen"
+    PLAYER_SPREAD_SCREEN = "player_spread_screen"
 
     def start(self, state: 'GameState'):
         self.deck.shuffle()
@@ -139,6 +140,10 @@ class HighLowScreen(GambleScreen):
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
             pass
 
+        elif self.game_state == self.PLAYER_SPREAD_SCREEN:
+            pass
+
+
         elif self.game_state == self.PLAYER_WINS_SCREEN:
             pass
 
@@ -200,6 +205,9 @@ class HighLowScreen(GambleScreen):
             pass
 
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_SPREAD_SCREEN:
             pass
 
         elif self.game_state == self.PLAYER_WINS_SCREEN:

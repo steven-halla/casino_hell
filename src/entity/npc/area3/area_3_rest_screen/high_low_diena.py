@@ -14,18 +14,18 @@ from game_constants.magic import Magic
 # if you win 500 coins get a coin
 # if you win 500 coins from two games those coins become mega coin.
 # if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class SlotsBrogan(Npc):
+class HighLowDiena(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
         # Integrated textbox content into guy_messages
         self.selected_item_index = 0
-        self.slots_brogan_messages = {
+        self.high_low_diena_messages = {
             "welcome_message": NpcTextBox(
-                ["Brogan: Are you sure you want to battle the king of slots?"],
+                ["Diena: Are you sure you want to battle the Queen of High Low??"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Brogan: How, impossible, nobody has every defeated my slots."],
+                ["Diena: How, impossible, nobody has every defeated my Cards."],
                 (50, 450, 700, 130), 36, 500),
 
 
@@ -64,17 +64,17 @@ class SlotsBrogan(Npc):
             state.controller.isTPressed = False
             state.controller.isAPressedSwitch = False
 
-            if Events.SLOTS_BROGAN_DEFEATED.value in state.player.level_three_npc_state:
-                self.slots_brogan_messages["defeated_message"].reset()
+            if Events.HIGH_LOW_DIENA_DEFEATED.value in state.player.level_three_npc_state:
+                self.high_low_diena_messages["defeated_message"].reset()
 
             else:
-                self.slots_brogan_messages["welcome_message"].reset()
+                self.high_low_diena_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.slots_brogan_messages["defeated_message"]
-            if Events.SLOTS_BROGAN_DEFEATED.value in state.player.level_three_npc_state
-            else self.slots_brogan_messages["welcome_message"]
+            self.high_low_diena_messages["defeated_message"]
+            if Events.HIGH_LOW_DIENA_DEFEATED.value in state.player.level_three_npc_state
+            else self.high_low_diena_messages["welcome_message"]
         )
         current_message.update(state)
 
@@ -96,7 +96,7 @@ class SlotsBrogan(Npc):
                 state.controller.isDownPressedSwitch = False
 
         # Check if the "T" key is pressed and the flag is not set
-        if (current_message.is_finished() and Events.SLOTS_BROGAN_DEFEATED.value
+        if (current_message.is_finished() and Events.HIGH_LOW_DIENA_DEFEATED.value
                 not in state.player.level_three_npc_state
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
@@ -106,8 +106,8 @@ class SlotsBrogan(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.slotsBroganScreen
-                state.slotsBroganScreen.start(state)
+                state.currentScreen = state.highLowDienaScreen
+                state.highLowDienaScreen.start(state)
 
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
@@ -149,15 +149,15 @@ class SlotsBrogan(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.slots_brogan_messages["defeated_message"]
-                if Events.SLOTS_BROGAN_DEFEATED.value in state.player.level_three_npc_state
-                else self.slots_brogan_messages["welcome_message"]
+                self.high_low_diena_messages["defeated_message"]
+                if Events.HIGH_LOW_DIENA_DEFEATED.value in state.player.level_three_npc_state
+                else self.high_low_diena_messages["welcome_message"]
             )
 
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if (current_message.is_finished() and Events.SLOTS_BROGAN_DEFEATED.value
+            if (current_message.is_finished() and Events.HIGH_LOW_DIENA_DEFEATED.value
                     not in state.player.level_three_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100

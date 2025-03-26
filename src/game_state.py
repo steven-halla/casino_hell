@@ -66,6 +66,7 @@ from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlber
 from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
 from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.floor3.battle_screens.dice_fighter_sir_siegfried_screen import DiceFighterSirSiegfriedScreen
+from screen.floor3.battle_screens.high_low_diena_screen import HighLowScreenDienaScreen
 from screen.floor3.battle_screens.hungry_starving_hippos_hippy_screen import HungryStarvingHipposHippyScreen
 from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
 
@@ -218,6 +219,7 @@ class GameState:
         self.opossumInACanBillyBobScreen = OpossumInACanBillyBobScreen()
         self.slotsBroganScreen = SlotsBroganScreen()
         self.diceFighterSirSiegfriedScreen = DiceFighterSirSiegfriedScreen()
+        self.highLowDienaScreen = HighLowScreenDienaScreen()
         self.hungryStarvingHipposHippyScreen = HungryStarvingHipposHippyScreen()
 
 
