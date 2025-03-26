@@ -1,7 +1,12 @@
 
 from enum import Enum
 
+
 class Equipment(Enum):
+
+    # stats need to be more sacred its going to make shit too hard going forward
+    # increasign luck + 1 is the only exception
+
     COIN_FLIP_GLASSES = "coin flip glasses"
     BLACK_JACK_HAT = "Black Hat"  # reward from Alice
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
@@ -22,6 +27,9 @@ class Equipment(Enum):
     CRAPS_WRIST_WATCH = "craps wrist watch" # blow command
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
     SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
+    MP_BRACELET = "mp bracelet" # gives player 30 MP
+
+
 
 
 

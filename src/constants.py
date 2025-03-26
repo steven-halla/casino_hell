@@ -21,5 +21,4 @@ PURPLE: Tuple[int, int, int] = (200, 0, 125)
 #player position
 PLAYER_OFFSET = (16 * 23, 16 * 16)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # path to current file
-ASSETS_DIR = os.path.join(BASE_DIR, "..", "..", "..", "..", "assets", "images")
+

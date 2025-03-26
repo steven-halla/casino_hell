@@ -17,9 +17,6 @@ import os
 IMAGES_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "assets", "images")
 
 
-
-
-
 class CoinFlipDexterScreen(GambleScreen):
     # this class has an error with T key so far black jack is only class not affected
 
