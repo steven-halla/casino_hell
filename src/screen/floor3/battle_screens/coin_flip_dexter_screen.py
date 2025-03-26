@@ -11,6 +11,14 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 import math
 
+import os
+
+
+IMAGES_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "assets", "images")
+
+
+
+
 
 class CoinFlipDexterScreen(GambleScreen):
     # this class has an error with T key so far black jack is only class not affected
@@ -43,9 +51,8 @@ class CoinFlipDexterScreen(GambleScreen):
         self.quit_index: int = 3
         self.headstailsindex: int = 0
         self.image_to_display = ""
-        self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
-        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
-
+        self.heads_image = pygame.image.load(os.path.join(IMAGES_DIR, "heads.png"))
+        self.tails_image = pygame.image.load(os.path.join(IMAGES_DIR, "tails.png"))
         self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.weighted_coin: bool = False  # this is our magic spell heads force

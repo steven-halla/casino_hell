@@ -66,7 +66,7 @@ class SlotsBroganScreen(GambleScreen):
         self.lucky_strike:int = 0
         self.secret_item_found:bool = False
         self.debuff_double_pluck:int = 0
-        self.brogan_mp: int = 2
+        self.brogan_mp: int = 3
 
         # Create a list of image keys to maintain order
         self.battle_messages: dict[str, MessageBox] = {
