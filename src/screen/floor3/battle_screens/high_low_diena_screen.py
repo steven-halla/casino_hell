@@ -7,6 +7,7 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_state import GameState
 
 
 class HighLowScreen(GambleScreen):
@@ -31,6 +32,7 @@ class HighLowScreen(GambleScreen):
         self.low_exp: int = 10
         self.medium_exp: int = 25
         self.high_exp: int = 50
+        self.diena_bankrupt: int = 0
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -60,14 +62,19 @@ class HighLowScreen(GambleScreen):
     BET_MESSAGE: str = "bet_message"
     LEVEL_UP: str = "level_up_message"
     BACK = "back"
+
     LEVEL_UP_SCREEN = "level_up_screen"
+    DRAW_CARD_SCREEN = "draw_card_screen"
+    PLAYER_DRAWS_ACE_SCREEN = "player_draws_ace_screen"
+    ENEMY_DRAWS_ACE_SCREEN = "enemy_draws_ace_screen"
+    PLAYER_WINS_SCREEN = "player_wins_screen"
+    ENEMY_WINS_SCREEN = "enemy_wins_screen"
 
     def start(self, state: 'GameState'):
-        print("start")
         self.deck.shuffle()
+        self.build_custom_26_card_deck()
 
     def build_custom_26_card_deck(self):
-        print("build custom deck")
         # Start fresh
         self.deck.cards.clear()
 
@@ -83,7 +90,135 @@ class HighLowScreen(GambleScreen):
         ]
 
         random.shuffle(self.deck.cards)
-        print(f"Custom deck built with {len(self.deck.cards)} cards: Only Hearts and Clubs, 2–Ace.")
 
 
+    def round_reset_high_low(self):
+        self.deck.shuffle()
+        self.build_custom_26_card_deck()
+        self.player_score = 0
+        self.enemy_score = 0
+        self.player_hand: str = ""
+        self.enemy_hand: str = ""
+
+    def reset_high_low_game(self):
+        self.deck.shuffle()
+        self.build_custom_26_card_deck()
+        self.player_score = 0
+        self.enemy_score = 0
+        self.player_hand: str = ""
+        self.enemy_hand: str = ""
+
+    def update(self, state: 'GameState'):
+        controller = state.controller
+        controller.update()
+        state.player.update(state)
+        super().update(state)
+
+        if self.money <= self.diena_bankrupt:
+            state.currentScreen = state.area3RestScreen
+            state.area3RestScreen.start(state)
+            Events.add_level_three_event_to_player(state.player, Events.HIGH_LOW_DIENA_DEFEATED)
+
+
+
+        if self.game_state == self.WELCOME_SCREEN:
+            pass
+
+        elif self.game_state == self.BET_SCREEN:
+            pass
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            pass
+
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
+            pass
+
+        elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_WINS_SCREEN:
+            pass
+
+        elif self.game_state == self.ENEMY_WINS_SCREEN:
+            pass
+
+
+        elif self.game_state == self.GAME_OVER_SCREEN:
+
+            no_money_game_over = 0
+
+            no_stamina_game_over = 0
+
+            if state.player.money <= no_money_game_over:
+
+                if controller.isTPressed or state.controller.isAPressedSwitch:
+                    controller.isTPressed = False
+
+                    controller.isAPressedSwitch = False
+
+                    state.currentScreen = state.gameOverScreen
+
+                    state.gameOverScreen.start(state)
+
+            elif state.player.stamina_points <= no_stamina_game_over:
+
+                if controller.isTPressed or state.controller.isAPressedSwitch:
+                    controller.isTPressed = False
+
+                    controller.isAPressedSwitch = False
+
+                    state.player.money -= 100
+
+                    self.reset_high_low_game()
+
+                    state.currentScreen = state.area3RestScreen
+
+                    state.area3RestScreen.start(state)
+
+    def draw(self, state: GameState):
+        super().draw(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
+        self.draw_bottom_black_box(state)
+
+        if self.game_state == self.WELCOME_SCREEN:
+            pass
+
+        elif self.game_state == self.BET_SCREEN:
+            pass
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            pass
+
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
+            pass
+
+        elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_WINS_SCREEN:
+            pass
+
+        elif self.game_state == self.ENEMY_WINS_SCREEN:
+            pass
+
+
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            pass
+
+
+
+
+
+
+
+
+
+        
 
