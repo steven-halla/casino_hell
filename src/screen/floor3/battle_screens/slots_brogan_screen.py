@@ -893,9 +893,9 @@ class SlotsBroganScreen(GambleScreen):
 
     def generate_numbers(self, state) -> List[str]:
         # Generate random values for each slot
-        # generated_values = [random.randint(1, 100) for _ in range(3)]
-        generated_values = [15, 15, 15]
-        print(f"[TEST] Forced generated values: {generated_values}")
+        generated_values = [random.randint(1, 100) for _ in range(3)]
+        # generated_values = [15, 15, 15]
+        # print(f"[TEST] Forced generated values: {generated_values}")
 
 
 
@@ -987,14 +987,19 @@ class SlotsBroganScreen(GambleScreen):
                 slots.append("bomb")  # Or any default symbol you prefer
 
         if symbol_priority[slots[0]] == 0 and self.rib_stalker > 0:
-            if random.randint(1, 100) <= 50:   # Adjusted chance
+            if self.debuff_double_pluck > 0:
+                spell_modifier = 5
+            else:
+                spell_modifier = 0
+
+            if random.randint(1, 100) <= (50 + spell_modifier):   # Adjusted chance
                 print("Im ribbing active")
                 self.slot_2_magnet = True
                 slots[1] = slots[0]  # Match slot 2 to slot 1
             else:
                 self.slot_2_magnet = False
 
-            if random.randint(1, 100) <= 75:
+            if random.randint(1, 100) <= (75 + spell_modifier):
                 print("Im ribbing active")
                 self.slot_3_magnet = True
                 slots[2] = slots[0]  # Match slot 3 to slot 1
