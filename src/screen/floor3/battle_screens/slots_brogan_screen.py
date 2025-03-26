@@ -910,18 +910,16 @@ class SlotsBroganScreen(GambleScreen):
         if self.debuff_double_pluck > 0:
             slot_mapping = {
                 range(1, 25): "bomb",
-                range(25, 31): "dice",
-                range(31, 43): "coin",
-                range(43, 58): "cherry",
-                range(58, 70): "spin",
-                range(70, 82): "crown",
-                range(82, 92): "dice_six",
-                range(92, 101): "diamond",
+                range(25, 40): "dice",
+                range(40, 55): "coin",
+                range(55, 60): "cherry",
+                range(60, 70): "spin",
+                range(70, 101): "crown",
             }
 
 
         # rib demon stalker
-        if self.rib_stalker > 0:
+        elif self.rib_stalker > 0:
             slot_mapping = {
                 range(1, 15): "bomb",
                 range(15, 25): "dice",
@@ -930,7 +928,7 @@ class SlotsBroganScreen(GambleScreen):
                 range(42, 54): "spin",
                 range(54, 101): "crown",
             }
-        if self.lucky_strike > 0:
+        elif self.lucky_strike > 0:
             slot_mapping = {
                 range(1, 30): "cherry",
                 range(30, 40): "spin",
@@ -941,7 +939,7 @@ class SlotsBroganScreen(GambleScreen):
                 range(80, 101): "lucky_seven",
             }
 
-        if self.bet > 100 and self.rib_stalker == 0 and self.lucky_strike == 0:
+        elif self.bet > 100 and self.rib_stalker == 0 and self.lucky_strike == 0:
             slot_mapping = {
                 range(1, 7): "bomb",
                 range(7, 15): "dice",
