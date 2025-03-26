@@ -11,6 +11,7 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 
 # spell: rib lock on : roll 6 times, take 25 damage per successful hit
+# i still need to make a new speical item
 
 class SlotsBroganScreen(GambleScreen):
     def __init__(self, screenName: str = "Slots") -> None:
@@ -64,8 +65,8 @@ class SlotsBroganScreen(GambleScreen):
         self.jack_pot:int = 0
         self.lucky_strike:int = 0
         self.secret_item_found:bool = False
-        self.debuff_double_pluck:int = 5
-        self.brogan_mp: int = 0
+        self.debuff_double_pluck:int = 0
+        self.brogan_mp: int = 2
 
         # Create a list of image keys to maintain order
         self.battle_messages: dict[str, MessageBox] = {
@@ -176,9 +177,17 @@ class SlotsBroganScreen(GambleScreen):
 
     def reset_brogan_slots_game(self):
         self.slot_hack_debuff = 0
+        self.rib_stalker = 0
+        self.lucky_strike = 0
+        self.debuff_double_pluck = 0
 
     def reset_slots_brogan_round(self):
-        print("hifadfs")
+        if self.rib_stalker > 0:
+            self.rib_stalker -= 1
+        if self.lucky_strike > 0:
+            self.lucky_strike -= 1
+        if self.debuff_double_pluck > 0:
+            self.debuff_double_pluck -= 1
         if self.slot_hack_debuff > 0:
             self.slot_hack_debuff -= 1
 
@@ -202,6 +211,8 @@ class SlotsBroganScreen(GambleScreen):
             self.welcome_screen_helper(state)
 
         elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
+            print("j;213;fjdsaljfl;213;aj;j 213")
+
 
             self.battle_messages[self.BROGAN_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.isTPressed or state.controller.isAPressedSwitch:
@@ -346,14 +357,12 @@ class SlotsBroganScreen(GambleScreen):
         controller = state.controller
 
         if controller.isUpPressed or controller.isUpPressedSwitch:
-            print(self.magic_index)
 
             controller.isUpPressed = False
             controller.isUpPressedSwitch = False
             self.menu_movement_sound.play()
             self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
         elif controller.isDownPressed or controller.isDownPressedSwitch:
-            print(self.magic_index)
 
 
             controller.isDownPressed = False
@@ -581,7 +590,6 @@ class SlotsBroganScreen(GambleScreen):
 
         elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
             if controller.isTPressed or controller.isAPressedSwitch:
-                print("fd;lsajfldsjafjdas;fdkjs;a")
 
 
                 state.player.exp += self.exp_gain_no_match
@@ -603,7 +611,6 @@ class SlotsBroganScreen(GambleScreen):
             state.controller.isAPressedSwitch = False
 
             if self.welcome_screen_index == self.welcome_screen_play_index:
-                print("HYes")
 
                 self.game_state = self.SPIN_SCREEN
                 if self.slot_hack_debuff == self.slot_hack_inactive:
@@ -886,8 +893,9 @@ class SlotsBroganScreen(GambleScreen):
 
     def generate_numbers(self, state) -> List[str]:
         # Generate random values for each slot
-        generated_values = [random.randint(1, 100) for _ in range(3)]
-
+        # generated_values = [random.randint(1, 100) for _ in range(3)]
+        generated_values = [15, 15, 15]
+        print(f"[TEST] Forced generated values: {generated_values}")
 
 
 
@@ -1053,53 +1061,53 @@ class SlotsBroganScreen(GambleScreen):
         if Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED.value in state.player.level_three_npc_state:
             self.secret_item_found = True
 
-    def reset_slots_game(self):
-        self.slot_3_magnet: bool = False
-        self.slot_2_magnet: bool = False
-        self.triple_bomb: bool = False
-        self.triple_lucky_seven: bool = False
-        self.triple_dice: bool = False
-        self.triple_coin: bool = False
-        self.triple_diamond: bool = False
-        self.triple_crown: bool = False
-        self.triple_chest: bool = False
-        self.triple_cherry: bool = False
-        self.triple_dice_six: bool = False
-        self.triple_spin: bool = False
-        # Reset the spin results flag so the reels can spin again
-        self.spin_results_generated = False
+    # def reset_slots_game(self):
+    #     self.slot_3_magnet: bool = False
+    #     self.slot_2_magnet: bool = False
+    #     self.triple_bomb: bool = False
+    #     self.triple_lucky_seven: bool = False
+    #     self.triple_dice: bool = False
+    #     self.triple_coin: bool = False
+    #     self.triple_diamond: bool = False
+    #     self.triple_crown: bool = False
+    #     self.triple_chest: bool = False
+    #     self.triple_cherry: bool = False
+    #     self.triple_dice_six: bool = False
+    #     self.triple_spin: bool = False
+    #     # Reset the spin results flag so the reels can spin again
+    #     self.spin_results_generated = False
+    #
+    #     # Reset reel spinning state
+    #     self.reel_spinning = [False, False, False]
+    #     self.lucky_strike: int = 0
+    #
+    #     self.rib_stalker: int = 0
+    #     self.debuff_double_pluck = 0
 
-        # Reset reel spinning state
-        self.reel_spinning = [False, False, False]
-        self.lucky_strike: int = 0
-
-        self.rib_stalker: int = 0
-        self.debuff_double_pluck = 0
-
-    def reset_slots_round(self):
-        self.slot_3_magnet: bool = False
-        self.slot_2_magnet: bool = False
-        self.triple_bomb: bool = False
-        self.triple_lucky_seven: bool = False
-        self.triple_dice: bool = False
-        self.triple_coin: bool = False
-        self.triple_diamond: bool = False
-        self.triple_crown: bool = False
-        self.triple_chest: bool = False
-        self.triple_cherry: bool = False
-        self.triple_dice_six: bool = False
-        self.triple_spin: bool = False
-        # Reset the spin results flag so the reels can spin again
-        self.spin_results_generated = False
-
-        # Reset reel spinning state
-        self.reel_spinning = [False, False, False]
-        if self.rib_stalker > 0:
-            self.rib_stalker -= 1
-        if self.lucky_strike > 0:
-            self.lucky_strike -= 1
-        if self.debuff_double_pluck > 0:
-            self.debuff_double_pluck -= 1
+    # def reset_slots_round(self):
+    #     self.slot_3_magnet: bool = False
+    #     self.slot_2_magnet: bool = False
+    #     self.triple_bomb: bool = False
+    #     self.triple_lucky_seven: bool = False
+    #     self.triple_dice: bool = False
+    #     self.triple_coin: bool = False
+    #     self.triple_diamond: bool = False
+    #     self.triple_crown: bool = False
+    #     self.triple_chest: bool = False
+    #     self.triple_cherry: bool = False
+    #     self.triple_dice_six: bool = False
+    #     self.triple_spin: bool = False
+    #     # Reset the spin results flag so the reels can spin again
+    #     self.spin_results_generated = False
+    #
+    #     # Reset reel spinning state
+    #     self.reel_spinning = [False, False, False]
+    #     if self.rib_stalker > 0:
+    #         self.rib_stalker -= 1
+    #     if self.lucky_strike > 0:
+    #         self.lucky_strike -= 1
+    #     if self.debuff_double_pluck > 0:
+    #         self.debuff_double_pluck -= 1
 
     def spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
@@ -1110,7 +1118,6 @@ class SlotsBroganScreen(GambleScreen):
             # Generate the spin results before starting the spin
             self.spin_results_generated = False  # Reset the flag
             self.slots = self.generate_numbers(state)  # Generate symbols
-            print(f"Spin results: {self.slots}")
 
             # Calculate target positions for each reel based on the generated symbols
             self.calculate_target_positions(self.slots)
@@ -1151,8 +1158,7 @@ class SlotsBroganScreen(GambleScreen):
             # All reels have stopped, proceed with any outcome logic
             self.spin_results_generated = True  # Set the flag to prevent re-running this block
 
-            # Print the results
-            print(f"Final spin results: {self.slots}")
+
 
         # Prevent another spin from being triggered automatically
         if not any(self.reel_spinning):

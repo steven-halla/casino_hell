@@ -11,6 +11,9 @@ from screen.examples.screen import Screen
 
 # need more testing for self.quest_money
 
+# I am thinking that this could benifit from luck
+# for casting of spells just make it to where the enemy is less likely to cast magic
+
 class CoinFlipBettyScreen(BattleScreen):
     def __init__(self):
         super().__init__("Casino Coin flip  Screen")

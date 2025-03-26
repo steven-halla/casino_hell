@@ -27,6 +27,7 @@ class Equipment(Enum):
 
 
 
+
     @staticmethod
     def add_equipment_to_player(player, equipment):
         if equipment.value not in player.items:
