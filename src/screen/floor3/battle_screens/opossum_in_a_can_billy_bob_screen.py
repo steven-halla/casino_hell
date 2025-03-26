@@ -72,7 +72,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
                 "You lost the toss."
             ]),
             self.BILLY_BOB_CASTING_SPELL_MESSAGE: MessageBox([
-                "“From the hollers of Hell and the backwoods beyond,let my critters grab ‘n squeeze ‘til he don’t squirm no more… Opossum Clampdown!”"
+                "“From the hollers of Hell and the backwoods beyond,let my critters hug your feet… Opossum Shoes!”"
             ]),
 
         }
@@ -146,6 +146,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
     PICK_SELECTION_MESSAGE: str = "pick_selection_message"
     BILLY_BOB_CASTING_SPELL_MESSAGE: str = "billy_bob_casting_spell_message"
+
 
 
 

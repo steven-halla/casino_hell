@@ -63,7 +63,9 @@ class SlotsBroganScreen(GambleScreen):
         self.rib_stalker: int = 0
         self.jack_pot:int = 0
         self.lucky_strike:int = 0
-        self.secret_item_found = False
+        self.secret_item_found:bool = False
+        self.debuff_double_pluck:int = 5
+        self.brogan_mp: int = 0
 
         # Create a list of image keys to maintain order
         self.battle_messages: dict[str, MessageBox] = {
@@ -91,6 +93,10 @@ class SlotsBroganScreen(GambleScreen):
             self.PLAYER_DRAW_MESSAGE: MessageBox([
                 f"You didn't match 3 in a row."
             ]),
+            self.BROGAN_CASTING_SPELL_MESSAGE: MessageBox([
+                "single strand of life, sever and cut yourself short...double pluck”"
+            ]),
+
         }
 
         self.slot_images: Dict[str, pygame.Surface] = {
@@ -149,6 +155,8 @@ class SlotsBroganScreen(GambleScreen):
 
 
     SPIN_SCREEN: str = "spin_screen"
+    BROGAN_CASTING_SPELL_SCREEN: str = "brogan casting spell screen"
+
     RESULT_SCREEN: str = "result_screen"
     BACK: str = "Back"
 
@@ -164,6 +172,7 @@ class SlotsBroganScreen(GambleScreen):
     PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+    BROGAN_CASTING_SPELL_MESSAGE: str = "brogan casting spell message"
 
     def reset_brogan_slots_game(self):
         self.slot_hack_debuff = 0
@@ -191,6 +200,17 @@ class SlotsBroganScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.welcome_screen_helper(state)
+
+        elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.BROGAN_CASTING_SPELL_MESSAGE].update(state)
+            if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+                self.debuff_double_pluck = 5
+                self.brogan_mp -= 1
+
+                self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.magic_menu_helper(state)
 
@@ -201,6 +221,7 @@ class SlotsBroganScreen(GambleScreen):
             self.spin_reels_helper(controller, state)
 
         elif self.game_state == self.RESULT_SCREEN:
+
             self.update_result_helper(controller, state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
@@ -237,6 +258,10 @@ class SlotsBroganScreen(GambleScreen):
 
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
+
+        elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.BROGAN_CASTING_SPELL_MESSAGE].draw(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box_slots(state)
@@ -368,21 +393,43 @@ class SlotsBroganScreen(GambleScreen):
                 if controller.isTPressed or controller.isAPressedSwitch:
                     controller.isTPressed = False
                     controller.isAPressedSwitch = False
-                    state.player.stamina_points -= self.player_stamina_high_cost
-                    state.player.money -= self.player_coin_high_drain
-                    state.player.exp += self.exp_gain_high
-                    self.reset_slots_brogan_round()
-                    self.game_state = self.WELCOME_SCREEN
+                    if self.debuff_double_pluck > 0:
+                        state.player.stamina_points -= self.player_stamina_high_cost
+                        state.player.stamina_points -= self.player_stamina_high_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_brogan_round()
+                        self.game_state = self.WELCOME_SCREEN
+                    else:
+                        state.player.stamina_points -= self.player_stamina_high_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_brogan_round()
+                        self.game_state = self.WELCOME_SCREEN
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
             elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
                 if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    state.player.stamina_points -= self.player_stamina_low_cost
-                    state.player.money -= self.player_coin_high_drain
-                    state.player.exp += self.exp_gain_high
-                    self.reset_slots_brogan_round()
-                    self.game_state = self.WELCOME_SCREEN
+                    if self.debuff_double_pluck > 0:
+                        controller.isTPressed = False
+                        controller.isAPressedSwitch = False
+                        state.player.stamina_points -= self.player_stamina_low_cost
+                        state.player.stamina_points -= self.player_stamina_low_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_brogan_round()
+                        self.game_state = self.WELCOME_SCREEN
+                    else:
+
+
+                        controller.isTPressed = False
+                        controller.isAPressedSwitch = False
+                        state.player.stamina_points -= self.player_stamina_low_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_brogan_round()
+                        self.game_state = self.WELCOME_SCREEN
 
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_med_cost} HP and {self.player_coin_high_drain} money. Gain {self.exp_gain_high} exp"]
 
@@ -399,6 +446,7 @@ class SlotsBroganScreen(GambleScreen):
 
         elif self.slots == ["coin", "coin", "coin"]:
             if controller.isTPressed or controller.isAPressedSwitch:
+
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
                 state.player.stamina_points -= self.player_stamina_low_cost
@@ -406,7 +454,10 @@ class SlotsBroganScreen(GambleScreen):
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_brogan_round()
-                self.game_state = self.WELCOME_SCREEN
+                if self.brogan_mp > 0 and self.debuff_double_pluck == 0:
+                    self.game_state = self.BROGAN_CASTING_SPELL_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
 
@@ -855,6 +906,20 @@ class SlotsBroganScreen(GambleScreen):
             range(85, 95): "chest",
             range(95, 101): "lucky_seven",
         }
+
+        if self.debuff_double_pluck > 0:
+            slot_mapping = {
+                range(1, 25): "bomb",
+                range(25, 31): "dice",
+                range(31, 43): "coin",
+                range(43, 58): "cherry",
+                range(58, 70): "spin",
+                range(70, 82): "crown",
+                range(82, 92): "dice_six",
+                range(92, 101): "diamond",
+            }
+
+
         # rib demon stalker
         if self.rib_stalker > 0:
             slot_mapping = {
@@ -1011,6 +1076,7 @@ class SlotsBroganScreen(GambleScreen):
         self.lucky_strike: int = 0
 
         self.rib_stalker: int = 0
+        self.debuff_double_pluck = 0
 
     def reset_slots_round(self):
         self.slot_3_magnet: bool = False
@@ -1034,6 +1100,8 @@ class SlotsBroganScreen(GambleScreen):
             self.rib_stalker -= 1
         if self.lucky_strike > 0:
             self.lucky_strike -= 1
+        if self.debuff_double_pluck > 0:
+            self.debuff_double_pluck -= 1
 
     def spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
