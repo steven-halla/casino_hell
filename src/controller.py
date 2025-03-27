@@ -263,3 +263,11 @@ class Controller:
                     self.is1Pressed = False
                 elif event.key == pygame.K_b:
                     self.isBPressed = False
+
+    @property
+    def confirm_button(self) -> bool:
+        if self.isTPressed or self.isAPressedSwitch:
+            self.isTPressed = False
+            self.isAPressedSwitch = False
+            return True
+        return False

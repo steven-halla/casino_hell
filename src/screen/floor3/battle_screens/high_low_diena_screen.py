@@ -7,10 +7,9 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
-from game_state import GameState
 
 
-class HighLowScreenDienaScreen(GambleScreen):
+class HighLowDienaScreen(GambleScreen):
     def __init__(self, screenName: str = "high low") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
@@ -110,6 +109,7 @@ class HighLowScreenDienaScreen(GambleScreen):
         self.enemy_hand: str = ""
 
     def update(self, state: 'GameState'):
+
         controller = state.controller
         controller.update()
         state.player.update(state)
@@ -123,7 +123,10 @@ class HighLowScreenDienaScreen(GambleScreen):
 
 
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.welcome_screen_helper(state, controller)
+
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
 
         elif self.game_state == self.BET_SCREEN:
             pass
@@ -183,14 +186,16 @@ class HighLowScreenDienaScreen(GambleScreen):
 
                     state.area3RestScreen.start(state)
 
-    def draw(self, state: GameState):
+    def draw(self, state: 'GameState'):
+
         super().draw(state)
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
 
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
 
         elif self.game_state == self.BET_SCREEN:
             pass
@@ -220,6 +225,20 @@ class HighLowScreenDienaScreen(GambleScreen):
         elif self.game_state == self.GAME_OVER_SCREEN:
             pass
 
+        pygame.display.flip()
+
+    def welcome_screen_helper(self, state: 'GameState', controller):
+        if state.player.money <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+        elif state.player.stamina_points <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+        elif self.money <= 0:
+            print("enemy defeated")
+
+        if controller.confirm_button:
+            print("yes it mother fucking worked")
 
 
 
@@ -228,5 +247,7 @@ class HighLowScreenDienaScreen(GambleScreen):
 
 
 
-        
+
+
+
 

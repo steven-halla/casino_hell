@@ -109,6 +109,8 @@ class CoinFlipDexter(Npc):
                 state.currentScreen = state.coinFlipDexterScreen
                 state.coinFlipDexterScreen.start(state)
 
+
+
             # Reset the flag when the "T" key is released
             if not state.controller.isTPressed:
                 self.t_pressed = False
