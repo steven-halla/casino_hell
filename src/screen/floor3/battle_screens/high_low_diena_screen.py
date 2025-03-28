@@ -192,8 +192,13 @@ class HighLowDienaScreen(GambleScreen):
         self.draw_hero_info_boxes(state)
         self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
+
 
         if self.game_state == self.WELCOME_SCREEN:
+            self.draw_menu_selection_box(state)
+            self.draw_welcome_screen_box_info(state)
+
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
 
@@ -228,6 +233,11 @@ class HighLowDienaScreen(GambleScreen):
         pygame.display.flip()
 
     def welcome_screen_helper(self, state: 'GameState', controller):
+        draw_screen = 0
+        magic_screen = 1
+        bet_screen = 2
+        leave_game = 3
+        # print(self.welcome_screen_index)
         if state.player.money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
@@ -238,16 +248,133 @@ class HighLowDienaScreen(GambleScreen):
             print("enemy defeated")
 
         if controller.confirm_button:
-            print("yes it mother fucking worked")
+            print("hfdfjdsfad")
+
+
+            if self.welcome_screen_index == draw_screen:
+                print("draw card")
+                self.game_state = self.DRAW_CARD_SCREEN
+
+            elif self.welcome_screen_index == magic_screen:
+                print("magic")
+                self.game_state = self.MAGIC_MENU_SCREEN
+
+            elif self.welcome_screen_index == bet_screen:
+                print("bet")
+                self.game_state = self.BET_SCREEN
+
+            elif self.welcome_screen_index == leave_game:
+                print("mew")
+
+                state.currentScreen = state.area3RestScreen
+                state.area3RestScreen.start(state)
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        enemy_name_y_position = 33
+        enemy_money_y_position = 70
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+
+        state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+        #
+
+    def draw_menu_selection_box(self, state: "GameState"):
+        # Define local variables for dimensions and positions
+        box_height_offset = 50
+        box_width_offset = 10
+        border_width = 5
+        horizontal_padding = 25
+        vertical_position = 240
+        box_initial_height = 221
+        white_border_top_left = 2
+        box_initial_width = 200
+
+        black_box_height = box_initial_height - box_height_offset
+        black_box_width = box_initial_width - box_width_offset
+
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + white_border_top_left * border_width, black_box_height + white_border_top_left * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
 
 
 
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
 
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
 
+        if Magic.CRAPS_LUCKY_7.value not in state.player.magicinventory:
+            self.magic_lock = True
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 
-
-
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
+            )
 
 

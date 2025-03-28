@@ -271,3 +271,43 @@ class Controller:
             self.isAPressedSwitch = False
             return True
         return False
+
+    @property
+    def action_and_cancel_button(self) -> bool:
+        if self.isPPressed or self.isBPressedSwitch:
+            self.isPPressed = False
+            self.isBPressedSwitch = False
+            return True
+        return False
+
+    @property
+    def up_button(self) -> bool:
+        if self.isUpPressed or self.isUpPressedSwitch:
+            self.isUpPressed = False
+            self.isUpPressedSwitch = False
+            return True
+        return False
+
+    @property
+    def down_button(self) -> bool:
+        if self.isDownPressed or self.isDownPressedSwitch:
+            self.isDownPressed = False
+            self.isDownPressedSwitch = False
+            return True
+        return False
+
+    @property
+    def left_button(self) -> bool:
+        if self.isLeftPressed or self.isLeftPressedSwitch:
+            self.isLeftPressed = False
+            self.isLeftPressedSwitch = False
+            return True
+        return False
+
+    @property
+    def right_button(self) -> bool:
+        if self.isRightPressed or self.isRightPressedSwitch:
+            self.isRightPressed = False
+            self.isRightPressedSwitch = False
+            return True
+        return False

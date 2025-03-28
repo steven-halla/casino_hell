@@ -72,18 +72,19 @@ class GambleScreen:
         pygame.display.set_caption(self.screenName)
 
     def welcome_screen_logic(self, state: 'GameState') -> None:
+
         controller = state.controller
         controller.update()
-        if state.player.stamina_points <= self.player_stamina_depleted:
-            state.player.canMove = True
-            self.game_state = self.GAME_OVER_SCREEN
+        # if state.player.stamina_points <= self.player_stamina_depleted:
+        #     state.player.canMove = True
+        #     self.game_state = self.GAME_OVER_SCREEN
 
         if state.player.money <= self.player_bankrupt:
             self.game_state = self.GAME_OVER_SCREEN
 
-        if self.money <= self.enemy_bankrupt:
-            state.player.canMove = True
-            self.game_state = self.GAME_OVER_SCREEN
+        # if self.money <= self.enemy_bankrupt:
+        #     state.player.canMove = True
+        #     self.game_state = self.GAME_OVER_SCREEN
 
         if state.player.leveling_up == True:
             self.game_state = self.LEVEL_UP_SCREEN

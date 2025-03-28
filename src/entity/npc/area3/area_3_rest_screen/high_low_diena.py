@@ -105,7 +105,6 @@ class HighLowDiena(Npc):
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
-                print("mmmmmmmmmmmm")
                 state.currentScreen = state.highLowDienaScreen
                 state.highLowDienaScreen.start(state)
 
