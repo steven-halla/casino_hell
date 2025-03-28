@@ -24,7 +24,7 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         self.opossumBite = False
 
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
         self.sallyOpossumIsDefeated = False
@@ -235,19 +235,19 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.fill_cans = True
         self.shake = False
 
-        self.trash_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
-        self.hand_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
+        self.trash_sprite_image = pygame.image.load("./assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.hand_sprite_image = pygame.image.load("./assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
 
 
         self.tally_money_once = True
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/opossum_in_a_can_screen.mp3"
+        self.music_file = "./assets/music/opossum_in_a_can_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.music_on = True
 
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.player_debuff_poison = 0
         self.exp_gain = 15

@@ -22,12 +22,12 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_score: int = 0
         self.bet: int = 100
         self.money: int = 1000
+
         self.diena_bankrupt: int = 0
         self.magic_lock: bool = False
         self.dealer_name: str = "diena"
         self.magic_screen_choices: list[str] = []
         self.magic_menu_screen_index: int = 0
-        self.welcome_menu_screen_index: int = 0
         self.low_exp: int = 10
         self.medium_exp: int = 25
         self.high_exp: int = 50

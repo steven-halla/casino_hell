@@ -42,14 +42,14 @@ class Area2RibDemonMazeScreen(Screen):
         self.poison_counter = 0
         self.clock = pygame.time.Clock()  # Initialize the clock
         self.penalty_poison_counter = 5
-        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound = pygame.mixer.Sound("./assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
         self.buy_sound.set_volume(0.3)
 
-        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound = pygame.mixer.Sound("./assets/music/cantbuy3.wav")  # Adjust the path as needed
         self.cant_buy_sound.set_volume(0.5)
 
 
-        self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/rib_demon_maze.mp3"
+        self.music_file =  "./assets/music/rib_demon_maze.mp3"
 
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()

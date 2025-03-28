@@ -18,7 +18,7 @@ class Nurgle(Npc):
         self.input_time = pygame.time.get_ticks()
         self.to_be_deleted = False  # Flag to mark the object for deletion
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
+            "./assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
 
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time

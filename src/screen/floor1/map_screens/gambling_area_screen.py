@@ -35,7 +35,7 @@ class GamblingAreaScreen(Screen):
         self.five_hundred_opossums = False
         self.nurgle_the_hedge_hog = False
         self.npcs = []  # Initialize the NPCs list as empty
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
+        self.music_file = "./assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.clock = pygame.time.Clock()  # Initialize the clock

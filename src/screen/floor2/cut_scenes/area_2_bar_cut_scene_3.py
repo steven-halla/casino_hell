@@ -48,7 +48,7 @@ class Area2BarCutScene3(Screen):
         self.move_distance = 30  # Distance to move the player during the cutscene
         # Initialize the clock
 
-        self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
+        self.music_file =  "./assets/music/relax_screen.mp3"
 
         self.display_message1 = False  # Flag to track if the message should be displayed
         self.display_message2 = False  # Flag to track if the message should be displayed

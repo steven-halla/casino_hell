@@ -26,7 +26,7 @@ class EvilCat(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/PSP - Lunar Silver Star Harmony - Animals.png").convert_alpha()
+            "./assets/images/PSP - Lunar Silver Star Harmony - Animals.png").convert_alpha()
     def update(self, state: "GameState"):
 
         if self.state == "waiting":

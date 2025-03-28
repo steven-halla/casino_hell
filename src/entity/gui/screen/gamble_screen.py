@@ -31,10 +31,10 @@ class GambleScreen:
         self.player_stamina_depleted = 0
         self.level_up_checker_sound:bool = True
         self.music_file_level_up: pygame.mixer.Sound \
-            = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")
+            = pygame.mixer.Sound("./assets/music/levelup.mp3")
         self.music_level_up_volume: float = 0.3  # Adjust as needed
         self.menu_movement_sound \
-            = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")
+            = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")
         self.menu_movement_sound.set_volume(0.2)
         self.stat_modifier = 1
         self.game_level_2_stat_max = 2

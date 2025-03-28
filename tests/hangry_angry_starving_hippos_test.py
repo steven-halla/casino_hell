@@ -5,7 +5,7 @@ import pygame
 import time
 
 # Add src to PYTHONPATH
-sys.path.insert(0, '/Users/stevenhalla/code/casino_hell/src')  # Adjust this path if necessary
+sys.path.insert(0, './src')  # Adjust this path if necessary
 
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
 

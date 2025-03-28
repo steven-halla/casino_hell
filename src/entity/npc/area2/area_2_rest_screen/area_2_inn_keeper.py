@@ -9,7 +9,7 @@ from game_constants.events import Events
 class Area2InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.sleep_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/02WhiteMagic.wav")  # Adjust the path as needed
+        self.sleep_sound = pygame.mixer.Sound("./assets/music/02WhiteMagic.wav")  # Adjust the path as needed
         self.sleep_sound.set_volume(0.3)
         self.selected_item_index = 0
         self.flipping_ted_messages = {
@@ -32,7 +32,7 @@ class Area2InnKeeper(Npc):
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Fisherman.png").convert_alpha()
+            "./assets/images/SNES - Harvest Moon - Fisherman.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":

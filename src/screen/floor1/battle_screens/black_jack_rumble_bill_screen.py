@@ -71,7 +71,7 @@ class BlackJackRumbleBillScreen(Screen):
         self.hero_winning_text_state = False
         self.player_status = ""
         self.enemy_status = ""
-        self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.sir_leopold_ace_attack = pygame.mixer.Sound("./assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
 
         self.black_jack_bluff_counter = 0
@@ -80,14 +80,14 @@ class BlackJackRumbleBillScreen(Screen):
         self.luck_of_jack = 7
         self.avatar_of_luck = False
         self.redraw_lock = False
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
+        self.music_file = "./assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.music_on = True
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.5)
 
         # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell

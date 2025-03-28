@@ -14,7 +14,7 @@ class Switch8(Npc):
         self.font = pygame.font.Font(None, 36)
         self.t_pressed = False
 
-        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound = pygame.mixer.Sound("./assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
         self.buy_sound.set_volume(0.3)
         self.rect_height = 50
         self.rect_width = 25

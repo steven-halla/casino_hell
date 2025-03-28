@@ -44,7 +44,7 @@ class Area2BossScreen(Screen):
 
 
 
-        # self.music_file =  "/Users/stevenhalla/code/casino_hell/assets/music/relax_screen.mp3"
+        # self.music_file =  "./assets/music/relax_screen.mp3"
         #
         # self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()

@@ -30,7 +30,7 @@ class OpossumInACanNellyScreen(Screen):
         self.opossum_font = pygame.font.Font(None, 36)
         self.font = pygame.font.Font(None, 36)
         self.player_score = 0
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.opossum_index = 0
         self.five_hundred_points = False
@@ -164,8 +164,8 @@ class OpossumInACanNellyScreen(Screen):
         self.trash_can_pick = ""
         self.magic_menu_opossum_index = 0
         self.initialized_message = False  # Add this line to initialize the flag
-        self.trash_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
-        self.hand_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
+        self.trash_sprite_image = pygame.image.load("./assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.hand_sprite_image = pygame.image.load("./assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
         self.game_state = "welcome_screen"
 
         self.box_color = (255, 0, 0)  # Initially red
@@ -216,13 +216,13 @@ class OpossumInACanNellyScreen(Screen):
 
         self.talley_checker = False
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/opossum_in_a_can_screen.mp3"
+        self.music_file = "./assets/music/opossum_in_a_can_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.music_on = True
 
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
 ##### what if I try to set a timer so we don't skip?

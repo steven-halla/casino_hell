@@ -11,7 +11,7 @@ class BlueFlower(TreasureChest):
         self.hidden_item = "blue flower"
         self.isOpened = False  # Define and initialize 'isOpened' attribute
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.treasure_open_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/open_treasure.mp3")  # Adjust the path as needed
+        self.treasure_open_sound = pygame.mixer.Sound("./assets/music/open_treasure.mp3")  # Adjust the path as needed
         self.treasure_open_sound.set_volume(0.5)
 
     def give_item(self, state: "GameState"):

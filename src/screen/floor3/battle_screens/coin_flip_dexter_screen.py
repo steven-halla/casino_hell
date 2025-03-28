@@ -38,7 +38,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.heads_or_tails_menu: list[str] = ["Heads", "Tails", "Back"]
         self.magic_menu_selector: list[str] = [Magic.SHIELD.value]
         self.welcome_screen_index: int = 0
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.phase: int = 1
         self.flip_coin_index: int = 0
@@ -50,7 +50,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.image_to_display = ""
         self.heads_image = pygame.image.load(os.path.join(IMAGES_DIR, "heads.png"))
         self.tails_image = pygame.image.load(os.path.join(IMAGES_DIR, "tails.png"))
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.weighted_coin: bool = False  # this is our magic spell heads force
         self.balance_modifier: int = 0

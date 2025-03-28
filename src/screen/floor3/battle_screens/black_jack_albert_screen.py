@@ -21,7 +21,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.enemy_score: int = 0
         self.ace_detected_time = None
         self.ace_effect_triggered = False
-        self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
+        self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
         self.money: int = 950
@@ -52,7 +52,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.redraw_magic_menu_index:int = 1
         self.back_magic_menu_index:int = 2
         self.index_stepper: int = 1
-        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.reveal_cast_cost:int = 50
         self.redraw_cast_cost:int = 30

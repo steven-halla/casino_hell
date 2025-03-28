@@ -37,10 +37,10 @@ class CoinFlipSandyScreen(Screen):
         self.debuff_counter = 0
         self.game_reset = False
         self.message_printed = False
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
         self.flip_screen_initialized = False  # Add this line
@@ -66,8 +66,8 @@ class CoinFlipSandyScreen(Screen):
         self.win_exp = False
         self.flip_timer = pygame.time.get_ticks() + 4000  # Initialize with a future time (2 seconds from now)
         self.pause_timer = 0  # Initialize with a future time (2 seconds from now)
-        self.heads_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/heads.png")
-        self.tails_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/tails.png")
+        self.heads_image = pygame.image.load("./assets/images/heads.png")
+        self.tails_image = pygame.image.load("./assets/images/tails.png")
 
         self.enemy_desperate_counter = False
         self.enemy_defeated_counter = False
@@ -79,7 +79,7 @@ class CoinFlipSandyScreen(Screen):
         self.lose_exp = False
         self.game_state = "welcome_screen"
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        self.music_file = "./assets/music/coin_flip_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.music_on = True

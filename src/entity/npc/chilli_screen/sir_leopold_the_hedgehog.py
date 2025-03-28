@@ -62,7 +62,7 @@ class SirLeopoldTheHedgeHog(Npc):
 
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
+            "./assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
 
     def update(self, state: "GameState"):
         # print("YOur hedge hog counter is now at:" + str(state.hedgeMazeScreen.hedge_hog_counter))

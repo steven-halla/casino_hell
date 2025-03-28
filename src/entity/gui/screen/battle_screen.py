@@ -22,7 +22,7 @@ class BattleScreen:
 
         self.level_up_checker_sound = True
 
-        self.music_file_level_up = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")  # Adjust the path as needed
+        self.music_file_level_up = pygame.mixer.Sound("./assets/music/levelup.mp3")  # Adjust the path as needed
 
         self.music_level_up_volume = 0.3  # Adjust as needed
 

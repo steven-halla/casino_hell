@@ -49,7 +49,7 @@ class DemonBoss(Npc):
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
+            "./assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
 
     def update(self, state: "GameState"):

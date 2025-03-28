@@ -27,7 +27,7 @@ class Samantha(Npc):
             ),
         }
         self.choices = ["Yes", "No"]
-        self.sprite_sheet = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/cindy_text_talk_image_2.png").convert_alpha()
+        self.sprite_sheet = pygame.image.load("./assets/images/cindy_text_talk_image_2.png").convert_alpha()
 
         # The size of the entire sprite sheet
         self.sprite_sheet_width = self.sprite_sheet.get_width()
@@ -41,10 +41,10 @@ class Samantha(Npc):
         self.coinFlipTedReward = False
 
         # self.character_sprite_image = pygame.image.load(
-        #     "/Users/stevenhalla/code/casino_hell/assets/images/cindy_long_hair_sprites.png")
+        #     "./assets/images/cindy_long_hair_sprites.png")
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/snes-anna-hmllllllll.png").convert_alpha()
+            "./assets/images/snes-anna-hmllllllll.png").convert_alpha()
 
         # Set the color key for transparency (replace (0, 255, 0) with the exact RGB value of your light green)
         self.character_sprite_image.set_colorkey((120,195,128))

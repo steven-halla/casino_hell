@@ -42,7 +42,7 @@ class Jasper(Npc):
         self.textboxstate = "textbox1" # state = "textbox1" | "textbox2" | "textbox3" | "textbox4" | "textbox5"
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/snes-anna-hmllllllll.png").convert_alpha()
+            "./assets/images/snes-anna-hmllllllll.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":

@@ -31,7 +31,7 @@ class BossTeleporter(Npc):
 
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
+            "./assets/images/Game Boy Advance - Breath of Fire - Doof.png").convert_alpha()
 
     def update(self, state: "GameState"):
         if self.state == "waiting":

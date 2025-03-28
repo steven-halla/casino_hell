@@ -34,9 +34,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.point_screen_choices: list[str] = ["Point R"]
         self.init_screen_choices: list[str] = ["Roll", "Blow"]
         self.magic_menu_selector: list[str] = []
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.welcome_to_play_screen_index: int = 0
         self.welcome_to_magic_screen_index: int = 1

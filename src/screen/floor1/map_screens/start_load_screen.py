@@ -24,11 +24,11 @@ class StartLoadScreen(Screen):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.choices = ["Yes", "No"]
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.timer_start_time = None  # New attribute for timer start time
 
-        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/startscreen4.mp3"
+        # self.music_file = "./assets/music/startscreen4.mp3"
         # self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.title_colors = [(0, 0, 51),(120, 0, 0), (160, 0, 0), (200, 0, 0), (255, 0, 0)]  # Deeper shades of red
@@ -40,7 +40,7 @@ class StartLoadScreen(Screen):
         self.title_font = pygame.font.SysFont('Times New Roman', 100, bold=True, italic=True)
         self.last_color = False
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.t_key_pressed = False  # Add this line
 

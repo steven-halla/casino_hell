@@ -27,7 +27,7 @@ class IchiOpossum(Npc):
         self.t_pressed = False
 
 
-        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Supernatural Entities.png").convert_alpha()
+        self.character_sprite_image = pygame.image.load("./assets/images/SNES - Harvest Moon - Supernatural Entities.png").convert_alpha()
 
 
     def update(self, state: "GameState"):

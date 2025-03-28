@@ -9,10 +9,10 @@ class Switch2(Npc):
         super().__init__(x, y)
         self.selected_item_index = 0
 
-        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound = pygame.mixer.Sound("./assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
         self.buy_sound.set_volume(0.3)
 
-        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound = pygame.mixer.Sound("./assets/music/cantbuy3.wav")  # Adjust the path as needed
         self.cant_buy_sound.set_volume(0.5)
         self.input_time = pygame.time.get_ticks()
         self.state_start_time = pygame.time.get_ticks()

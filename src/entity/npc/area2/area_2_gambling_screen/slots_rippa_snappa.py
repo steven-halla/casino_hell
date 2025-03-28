@@ -32,7 +32,7 @@ class SlotsRippaSnappa(Npc):
         self.t_pressed = False
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/Game Boy Advance - Breath of Fire - Doof.png"
+            "./assets/images/Game Boy Advance - Breath of Fire - Doof.png"
         ).convert_alpha()
 
     def update(self, state: "GameState"):

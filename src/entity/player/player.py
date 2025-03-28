@@ -72,24 +72,24 @@ class Player(Entity):
         # Initialize pygame's clock to manage the animation timer
         self.clock = pygame.time.Clock()
         self.erika_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/chicken_sprites.png").convert_alpha()
+            "./assets/images/chicken_sprites.png").convert_alpha()
         # TODO refrence the images with relative paths
         self.sir_leopold_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
+            "./assets/images/DS DSi - The World Ends With You - Hedge Hado Coa (1).png").convert_alpha()
 
 
-        self.up_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
-        self.down_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
-        self.left_sprite = pygame.image.load('/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.up_sprite = pygame.image.load('./assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.down_sprite = pygame.image.load('./assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
+        self.left_sprite = pygame.image.load('./assets/images/SNES - Harvest Moon - Jack.png').convert_alpha()
         self.left_frames = [(28, 146, 18, 26), (46, 146, 18, 26), (63, 146, 17.9, 26)]
         self.down_frames = [(28, 120, 18, 26), (45, 120, 18, 26), (63, 120, 17.9, 26)]
         self.up_frames = [(29, 172, 18, 26), (47, 172, 18, 26), (64, 172, 17.9, 26)]
         # Set the initial direction and frame index.
         self.current_direction = 'down'  # Default direction
-        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3"
+        # self.music_file = "./assets/music/levelup.mp3"
         # self.music_volume = 0.5  # Adjust as needed
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
         self.level_two_npc_state = []
@@ -1943,7 +1943,7 @@ class Player(Entity):
     def load_game(self, state):
 
         # Define the file path
-        file_path = '/Users/stevenhalla/code/casino_hell/assets/save_data.json'
+        file_path = './assets/save_data.json'
 
         # Read the JSON string from the file
         try:

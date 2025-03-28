@@ -1,6 +1,6 @@
 {
     "level": 8,
-    "exp": 2800,
+    "exp": 2832,
     "stamina_points": 420,
     "max_stamina_points": 420,
     "focus_points": 200,
@@ -49,7 +49,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 2,
-    "money": 1600,
+    "money": 3019,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -58,9 +58,11 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 3,
+    "days": 9,
     "leveltwonpcstate": [],
-    "levelthreenpcstate": [],
+    "levelthreenpcstate": [
+        "coin flip dexter defeated"
+    ],
     "slots_vest": false,
     "cutscene1": true,
     "cutscene2": true,

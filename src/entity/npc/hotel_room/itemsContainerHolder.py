@@ -26,7 +26,7 @@ class ItemsContainerHolder(Npc):
         self.menu_index = 0
         self.input_time = pygame.time.get_ticks()
 
-        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
+        self.character_sprite_image = pygame.image.load("./assets/images/SNES - Harvest Moon - Parents.png").convert_alpha()
 
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"

@@ -31,11 +31,11 @@ class BossScreen(Screen):
         self.player = Player(333, 555)
         self.hedge_hog_counter = 0
         move_player_down_flag = False
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
+        self.music_file = "./assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
 
-        self.collision_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/collision.mp3")  # Adjust the path as needed
+        self.collision_sound = pygame.mixer.Sound("./assets/music/collision.mp3")  # Adjust the path as needed
         self.last_sound_time = 0
         self.collision_sound.set_volume(0.2)  # Set the volume to 50%
 

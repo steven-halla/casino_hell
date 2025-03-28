@@ -10,9 +10,9 @@ from entity.gui.textbox.npc_text_box import NpcTextBox
 class BarKeep(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound = pygame.mixer.Sound("./assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
         self.buy_sound.set_volume(0.3)
-        self.cant_buy_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound = pygame.mixer.Sound("./assets/music/cantbuy3.wav")  # Adjust the path as needed
         self.cant_buy_sound.set_volume(0.5)
 
         self.textbox = ShopNpcTextBox(
@@ -36,7 +36,7 @@ class BarKeep(Npc):
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
+            "./assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
         self.selected_money_index = 0  # New attribute to track selected item index
 
 

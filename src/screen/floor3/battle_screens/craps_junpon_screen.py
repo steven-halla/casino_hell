@@ -17,7 +17,7 @@ class CrapsJunponScreen(GambleScreen):
         self.come_out_roll_total: int = 0
         self.dealer_name: str = "Junpon"
         self.start_time: int = 0
-        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.dice_roll_1: int = 0
         self.dice_roll_2: int = 0
@@ -68,13 +68,13 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_sound_checker: bool = True
         self.blow_timer_start = 0
         self.play_tune: bool = False
-        self.blow_meter_ready:pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/blowready.wav")  # Adjust the path as needed
+        self.blow_meter_ready:pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/blowready.wav")  # Adjust the path as needed
         self.blow_meter_ready.set_volume(0.6)
-        self.dice_roll: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/dice_rolling.wav")  # Adjust the path as needed
+        self.dice_roll: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/dice_rolling.wav")  # Adjust the path as needed
         self.dice_roll.set_volume(0.6)
-        self.failed_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/9FBlockSword.wav")  # Adjust the path as needed
         self.failed_power_strike_sound_effect.set_volume(0.6)
-        self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/8CRodHit.wav")  # Adjust the path as needed
         self.successful_power_strike_sound_effect.set_volume(0.6)
 
         self.junpon_magic_points: int = 2

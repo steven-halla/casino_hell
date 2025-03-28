@@ -2,7 +2,7 @@ import sys
 import unittest
 
 # Add src to PYTHONPATH
-sys.path.insert(0, '/Users/stevenhalla/code/casino_hell/src')  # Adjust this path if necessary
+sys.path.insert(0, './src')  # Adjust this path if necessary
 
 from game_constants.equipment import Equipment
 from game_state import GameState

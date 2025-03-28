@@ -30,7 +30,7 @@ class BlackJackThomasScreen(Screen):
         self.game_state = "welcome_screen"
         self.bet = 10
         self.cheater_bob_money = 500
-        self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.sir_leopold_ace_attack = pygame.mixer.Sound("./assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
         self.player_score = 0
         self.enemy_score = 0
@@ -47,7 +47,7 @@ class BlackJackThomasScreen(Screen):
         self.ace_value = 1
         self.bust_protection = False
         self.avatar_of_luck_card_redraw_counter = 3
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
         self.testing_low = False
@@ -79,13 +79,13 @@ class BlackJackThomasScreen(Screen):
         self.next_draw_time = pygame.time.get_ticks() + 2000  # Set initial delay for first draw
 
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
+        self.music_file = "./assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
         self.music_on = True
 
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.flip_timer = pygame.time.get_ticks() + 2000
         self.pause_timer = 0

@@ -34,7 +34,7 @@ class NellyOpossum(Npc):
 
 
         self.character_sprite_image = pygame.image.load(
-            "/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Nina.png").convert_alpha()
+            "./assets/images/SNES - Harvest Moon - Nina.png").convert_alpha()
 
 
 

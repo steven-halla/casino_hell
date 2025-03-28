@@ -13,7 +13,7 @@ from entity.entity import Entity
 #         super().__init__(x, y, 16, 16)  # Assuming 16x16 is the size of the chest
 #         self.color: Tuple[int, int, int] = PURPLE
 #         self.treasure_item = treasure_item  # The item in the chest
-#         self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/NES - Magician - Treasure Chest.png").convert_alpha()
+#         self.character_sprite_image = pygame.image.load("./assets/images/NES - Magician - Treasure Chest.png").convert_alpha()
 #
 #
 #
@@ -56,10 +56,10 @@ class TreasureChest(Entity):
         super().__init__(x, y, 16, 16)  # Assuming 16x16 is the size of the chest
         self.color: Tuple[int, int, int] = PURPLE
         self.treasure_item: str = treasure_item  # The item in the chest
-        self.character_sprite_image: pygame.Surface = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/NES - Magician - Treasure Chest.png").convert_alpha()
+        self.character_sprite_image: pygame.Surface = pygame.image.load("./assets/images/NES - Magician - Treasure Chest.png").convert_alpha()
         self.isOpened: bool = False  # Initialize 'isOpened' attribute
         self.state_start_time: int = pygame.time.get_ticks()  # Initialize start_time to the current time
-        self.treasure_open_sound: pygame.mixer.Sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/open_treasure.mp3")
+        self.treasure_open_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/open_treasure.mp3")
         self.treasure_open_sound.set_volume(0.5)
 
     def update(self, state: "GameState"):

@@ -167,18 +167,18 @@ class SlotsRippaSnappaScreen(BattleScreen):
         self.lucky_strike = 0
         self.hack_cast_cost = 50
 
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
-        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        # self.music_file = "./assets/music/coin_flip_screen.mp3"
         # self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.music_on = True
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/slots_music.mp3"
+        self.music_file = "./assets/music/slots_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         pygame.mixer.music.stop()
 

@@ -50,15 +50,15 @@ class BlackJackMackScreen(Screen):
         self.hero_speaking = False
         self.music_loop = True
         self.despair = False
-        self.music_file_level_up = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/levelup.mp3")  # Adjust the path as needed
+        self.music_file_level_up = pygame.mixer.Sound("./assets/music/levelup.mp3")  # Adjust the path as needed
         self.music_level_up_volume = 0.3  # Adjust as needed
         self.hero_losing_text_state = False
         self.hero_winning_text_state = False
         self.player_status = ""
         self.enemy_status = ""
-        self.sir_leopold_ace_attack = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/startloadaccept.wav")  # Adjust the path as needed
+        self.sir_leopold_ace_attack = pygame.mixer.Sound("./assets/music/startloadaccept.wav")  # Adjust the path as needed
         self.sir_leopold_ace_attack.set_volume(0.6)
-        self.lucky_strike = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/luckystrike.wav")  # Adjust the path as needed
+        self.lucky_strike = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.double_draw_casting = False
         self.player_debuff_double_draw = 0
@@ -66,12 +66,12 @@ class BlackJackMackScreen(Screen):
         self.reveal_hand = 11
         self.magic_lock = False
         self.redraw_lock = False
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/black_jack_screen.mp3"
+        self.music_file = "./assets/music/black_jack_screen.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.music_on = True
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.5)
         self.locked_text = self.font.render("Locked", True, (255, 255, 255))
         self.low_exp_gain = 7

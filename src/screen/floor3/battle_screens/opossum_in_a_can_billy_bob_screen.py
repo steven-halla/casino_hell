@@ -21,9 +21,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.dealer_name = "Billy Bob"
         self.billy_bob_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.stamina_drain: int = 50
         self.stamina_drain_repellant: int = 25
@@ -84,9 +84,9 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.index_stepper = 1
         self.positions = []  # Initialize positions list to store trash can positions
 
-        self.trash_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
-        self.opossum_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/opossum_redone2.png")
-        self.hand_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
+        self.trash_sprite_image = pygame.image.load("./assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.opossum_sprite_image = pygame.image.load("./assets/images/opossum_redone2.png")
+        self.hand_sprite_image = pygame.image.load("./assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
         self.winner_or_looser: List[str] = ["win", "med win",
                                             "big win", "high win", "lose",
                                             "lucky_star",

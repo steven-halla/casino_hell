@@ -37,7 +37,7 @@ class Sasquatch(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
-        self.character_sprite_image = pygame.image.load("/Users/stevenhalla/code/casino_hell/assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
+        self.character_sprite_image = pygame.image.load("./assets/images/SNES - Harvest Moon - Eve.png").convert_alpha()
 
         self.isWorthy = False
 

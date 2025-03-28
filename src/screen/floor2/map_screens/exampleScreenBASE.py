@@ -16,7 +16,7 @@ class ExampleScreenBASE(Screen):
         self.hedge_hog_counter: int = 0
         self.lock_screen: bool = False
         self.clock: pygame.time.Clock = pygame.time.Clock()
-        self.music_file: str = "/Users/stevenhalla/code/casino_hell/assets/music/town_music.mp3"
+        self.music_file: str = "./assets/music/town_music.mp3"
         self.music_volume: float = 0.5
         self.initialize_music()
         self.initialClearNPC: bool = False

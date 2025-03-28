@@ -217,24 +217,24 @@ class CrapsHappyScreen(BattleScreen):
         self.lucky_seven = False
         self.double_dice_cast_cost = 50
 
-        self.spell_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
 
-        self.menu_movement_sound = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
-        # self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/coin_flip_screen.mp3"
+        # self.music_file = "./assets/music/coin_flip_screen.mp3"
         # self.music_volume = 0.5  # Adjust as needed
         # self.initialize_music()
         self.music_on = True
 
-        self.failed_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect = pygame.mixer.Sound("./assets/music/9FBlockSword.wav")  # Adjust the path as needed
         self.failed_power_strike_sound_effect.set_volume(0.6)
 
-        self.successful_power_strike_sound_effect = pygame.mixer.Sound("/Users/stevenhalla/code/casino_hell/assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect = pygame.mixer.Sound("./assets/music/8CRodHit.wav")  # Adjust the path as needed
         self.successful_power_strike_sound_effect.set_volume(0.6)
 
-        self.music_file = "/Users/stevenhalla/code/casino_hell/assets/music/craps_music.mp3"
+        self.music_file = "./assets/music/craps_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         pygame.mixer.music.stop()
 
