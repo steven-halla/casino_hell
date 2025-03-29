@@ -223,7 +223,7 @@ class HighLowDienaScreen(GambleScreen):
 
         elif self.game_state == self.GAME_OVER_SCREEN:
 
-            self.game_over_helper()
+            self.game_over_helper(controller, state)
 
     def draw(self, state: 'GameState'):
 
