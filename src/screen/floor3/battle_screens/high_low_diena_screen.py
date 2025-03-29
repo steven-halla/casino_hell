@@ -17,6 +17,8 @@ class HighLowDienaScreen(GambleScreen):
         self.player_card_y_position: int = 0
         self.deck: Deck() = Deck()
         self.player_hand: str = ""
+        self.index_stepper: int = 1
+
         self.enemy_hand: str = ""
         self.player_score: int = 0
         self.enemy_score: int = 0
@@ -26,12 +28,15 @@ class HighLowDienaScreen(GambleScreen):
         self.diena_bankrupt: int = 0
         self.magic_lock: bool = False
         self.dealer_name: str = "diena"
-        self.magic_screen_choices: list[str] = []
         self.magic_menu_screen_index: int = 0
         self.low_exp: int = 10
         self.medium_exp: int = 25
         self.high_exp: int = 50
         self.diena_bankrupt: int = 0
+        self.magic_menu_selector: list[str] = [Magic.SHIELD.value, self.BACK]
+        self.magic_screen_index: int = 0
+
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -69,6 +74,7 @@ class HighLowDienaScreen(GambleScreen):
     PLAYER_WINS_SCREEN = "player_wins_screen"
     ENEMY_WINS_SCREEN = "enemy_wins_screen"
     PLAYER_SPREAD_SCREEN = "player_spread_screen"
+
 
     def start(self, state: 'GameState'):
         self.deck.shuffle()
@@ -129,10 +135,13 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.bet_screen_helper(state, controller)
+            self.battle_messages[self.BET_MESSAGE].update(state)
+
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            pass
+            self.update_magic_menu_selection_box(controller, state)
+
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
             pass
@@ -156,35 +165,7 @@ class HighLowDienaScreen(GambleScreen):
 
         elif self.game_state == self.GAME_OVER_SCREEN:
 
-            no_money_game_over = 0
-
-            no_stamina_game_over = 0
-
-            if state.player.money <= no_money_game_over:
-
-                if controller.isTPressed or state.controller.isAPressedSwitch:
-                    controller.isTPressed = False
-
-                    controller.isAPressedSwitch = False
-
-                    state.currentScreen = state.gameOverScreen
-
-                    state.gameOverScreen.start(state)
-
-            elif state.player.stamina_points <= no_stamina_game_over:
-
-                if controller.isTPressed or state.controller.isAPressedSwitch:
-                    controller.isTPressed = False
-
-                    controller.isAPressedSwitch = False
-
-                    state.player.money -= 100
-
-                    self.reset_high_low_game()
-
-                    state.currentScreen = state.area3RestScreen
-
-                    state.area3RestScreen.start(state)
+            self.game_over_helper()
 
     def draw(self, state: 'GameState'):
 
@@ -203,10 +184,12 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.battle_messages[self.BET_MESSAGE].draw(state)
+
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            pass
+            self.draw_magic_menu_selection_box(state)
+
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
             pass
@@ -377,4 +360,152 @@ class HighLowDienaScreen(GambleScreen):
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
 
+    def bet_screen_helper(self, state, controller):
 
+        if controller.isBPressed or controller.isBPressedSwitch:
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+            self.game_state = self.WELCOME_SCREEN
+        min_bet = 50
+        if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
+            max_bet = 400
+        else:
+            max_bet = 200
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += min_bet
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= min_bet
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+        print(max_bet)
+
+    def game_over_helper(self, controller, state: "GameState"):
+        no_money_game_over = 0
+
+        no_stamina_game_over = 0
+
+        if state.player.money <= no_money_game_over:
+
+            if controller.isTPressed or state.controller.isAPressedSwitch:
+                controller.isTPressed = False
+
+                controller.isAPressedSwitch = False
+
+                state.currentScreen = state.gameOverScreen
+
+                state.gameOverScreen.start(state)
+
+        elif state.player.stamina_points <= no_stamina_game_over:
+
+            if controller.isTPressed or state.controller.isAPressedSwitch:
+                controller.isTPressed = False
+
+                controller.isAPressedSwitch = False
+
+                state.player.money -= 100
+
+                self.reset_high_low_game()
+
+                state.currentScreen = state.area3RestScreen
+
+                state.area3RestScreen.start(state)
+
+    def draw_magic_menu_selection_box(self, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+            pass
+
+
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+            pass
+
+
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_menu_selector):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def update_magic_menu_selection_box(self, controller, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+            pass
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
+
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
+            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
+            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+
+        if controller.isTPressed or controller.isAPressedSwitch:
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN

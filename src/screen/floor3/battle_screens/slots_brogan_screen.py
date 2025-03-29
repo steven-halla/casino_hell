@@ -47,9 +47,9 @@ class SlotsBroganScreen(GambleScreen):
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.brogan_bankrupt: int = 0
-        self.player_stamina_low_cost: int = 25
-        self.player_stamina_high_cost: int = 75  # useing higher bet option
-        self.player_stamina_med_cost: int = 50
+        self.player_stamina_low_cost: int = 12
+        self.player_stamina_high_cost: int = 50  # useing higher bet option
+        self.player_stamina_med_cost: int = 25
         self.lock_down_inactive: int = 0
         self.index_stepper:int = 1
         self.spin_results_generated:bool = False  # Initialize the flag
@@ -206,6 +206,8 @@ class SlotsBroganScreen(GambleScreen):
 
         # Get current time once at the beginning
         if self.game_state == self.WELCOME_SCREEN:
+            self.spin_results_generated = False  # Reset the flag
+
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.welcome_screen_helper(state)
@@ -1121,7 +1123,6 @@ class SlotsBroganScreen(GambleScreen):
         # Only start spinning if reels aren't spinning and results haven't been generated
         if not any(self.reel_spinning) and not self.spin_results_generated:
             # Generate the spin results before starting the spin
-            self.spin_results_generated = False  # Reset the flag
             self.slots = self.generate_numbers(state)  # Generate symbols
 
             # Calculate target positions for each reel based on the generated symbols
