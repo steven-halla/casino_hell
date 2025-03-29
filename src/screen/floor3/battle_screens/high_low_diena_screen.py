@@ -144,7 +144,8 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
-            pass
+            self.update_draw_card_screen_logic(state)
+
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
             pass
@@ -192,7 +193,8 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
-            pass
+            self.draw_draw_card_screen(state)
+
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
             pass
@@ -509,3 +511,67 @@ class HighLowDienaScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
                 self.game_state = self.WELCOME_SCREEN
+
+    def draw_draw_card_screen(self, state: 'GameState'):
+        initial_x_position = 400
+        initial_y_position = 1
+        player_target_y = 300
+        enemy_target_y = 50
+        move_card_x = 75
+        card_speed = 3
+        flip_y_position = 145
+
+        # Validate hands
+        if not self.player_hand or not self.enemy_hand:
+            print("Error: player_hand or enemy_hand is empty.")
+            return
+
+        # Initialize player positions
+        if not hasattr(self, 'player_card_y_positions'):
+            self.player_card_y_positions = [initial_y_position]
+            self.player_card_x_positions = [initial_x_position]
+
+        # Initialize enemy positions
+        if not hasattr(self, 'enemy_card_y_positions'):
+            self.enemy_card_y_positions = [initial_y_position]
+            self.enemy_card_x_positions = [initial_x_position]
+
+        # Deal player card
+        if self.player_card_y_positions[0] < player_target_y:
+            self.player_card_y_positions[0] += card_speed
+            if self.player_card_y_positions[0] > player_target_y:
+                self.player_card_y_positions[0] = player_target_y
+
+            if self.player_card_y_positions[0] >= flip_y_position:
+                self.deck.draw_card_face_up(self.player_hand[0][1], self.player_hand[0][0],
+                                            (self.player_card_x_positions[0], self.player_card_y_positions[0]), DISPLAY)
+            else:
+                self.deck.draw_card_face_down((self.player_card_x_positions[0], self.player_card_y_positions[0]), DISPLAY)
+            return  # Wait until card reaches position before continuing
+
+        # Draw final player card
+        self.deck.draw_card_face_up(self.player_hand[0][1], self.player_hand[0][0],
+                                    (self.player_card_x_positions[0], self.player_card_y_positions[0]), DISPLAY)
+
+        # Deal enemy card
+        if self.enemy_card_y_positions[0] < enemy_target_y:
+            self.enemy_card_y_positions[0] += card_speed
+            if self.enemy_card_y_positions[0] > enemy_target_y:
+                self.enemy_card_y_positions[0] = enemy_target_y
+
+            self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+            return  # Wait until enemy card is placed before continuing
+
+        # Draw final enemy card (face down)
+        self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+
+        # Transition logic
+        # self.game_state = self.PLAYER_ACTION_SCREEN
+
+    def update_draw_card_screen_logic(self, state: 'GameState'):
+        # Only draw if hands are empty
+        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+            self.player_hand = self.deck.player_draw_hand(1)
+            self.enemy_hand = self.deck.enemy_draw_hand(1)
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
+            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)

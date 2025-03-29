@@ -194,6 +194,10 @@ COIN FLIP:
 
 
 
+draw_card
+
+x position
+blit the card
 
 
 
