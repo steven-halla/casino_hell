@@ -33,13 +33,10 @@ class HighLowDienaScreen(GambleScreen):
         self.medium_exp: int = 25
         self.high_exp: int = 50
         self.diena_bankrupt: int = 0
-        self.magic_menu_selector: list[str] = [Magic.SHIELD.value, self.BACK]
+        self.magic_menu_selector: list[str] = [Magic.FLUSH_DECK.value, self.BACK]
         self.magic_screen_index: int = 0
         self.spread_counter: int = 1
-
-
-
-
+        self.buff_red_card_only_in_deck: bool = False
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -110,18 +107,33 @@ class HighLowDienaScreen(GambleScreen):
         self.deck.cards.clear()
 
         # Define allowed suits and ranks
-        allowed_suits = ["Hearts", "Clubs"]
-        allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+        if self.buff_red_card_only_in_deck == False:
+            allowed_suits = ["Hearts", "Clubs"]
+            allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
-        # Rebuild the deck with only the allowed suits and ranks
-        self.deck.cards = [
-            (self.deck.rank_strings[rank], suit, self.deck.rank_values[rank])
-            for suit in allowed_suits
-            for rank in allowed_ranks
-        ]
+            # Rebuild the deck with only the allowed suits and ranks
+            self.deck.cards = [
+                (self.deck.rank_strings[rank], suit, self.deck.rank_values_high_low[rank])
+                for suit in allowed_suits
+                for rank in allowed_ranks
+            ]
+
+        elif self.buff_red_card_only_in_deck == True:
+            allowed_suits = ["Hearts"]
+            allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+
+            # Rebuild the deck with only the allowed suits and ranks
+            self.deck.cards = [
+                (self.deck.rank_strings[rank], suit, self.deck.rank_values_high_low[rank])
+                for suit in allowed_suits
+                for rank in allowed_ranks
+            ]
+
 
         random.shuffle(self.deck.cards)
 
+
+    # this is for when we are still waiting on an ace
     def reset_spread_no_ace(self):
         self.player_score = 0
         self.enemy_score = 0
@@ -129,6 +141,7 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_hand: list = []
 
 
+    # if an ace is gotten we do this
     def round_reset_high_low(self):
         print("round reset high low fun")
         self.deck.shuffle()
@@ -138,6 +151,7 @@ class HighLowDienaScreen(GambleScreen):
         self.player_hand: list = []
         self.enemy_hand: list = []
 
+    # if an ace is gotten we do this
     def reset_high_low_game(self):
         print("round reset low game fun ")
         self.deck.shuffle()
@@ -583,13 +597,17 @@ class HighLowDienaScreen(GambleScreen):
         )
 
     def update_magic_menu_selection_box(self, controller, state):
-        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
-            pass
-        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+        if controller.confirm_button:
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.FLUSH_DECK.value:
+                self.buff_red_card_only_in_deck = True
+                self.reset_high_low_game()
+                self.game_state = self.WELCOME_SCREEN
 
-            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN
+
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
 
 
 
@@ -684,8 +702,8 @@ class HighLowDienaScreen(GambleScreen):
 
             self.player_hand = self.deck.player_draw_hand(1)
             self.enemy_hand = self.deck.enemy_draw_hand(1)
-            self.player_score = self.deck.compute_hand_value(self.player_hand)
-            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            self.player_score = self.deck.compute_hand_value_high_low(self.player_hand)
+            self.enemy_score = self.deck.compute_hand_value_high_low(self.enemy_hand)
 
             print(f"Deck size after drawing: {len(self.deck.cards)}")
             print(f"Top 5 cards after draw: {self.deck.cards[-5:]}")
@@ -695,13 +713,13 @@ class HighLowDienaScreen(GambleScreen):
             print(self.enemy_hand)
             print(self.player_hand)
 
-            if ('Ace', 'Hearts', 11) in self.player_hand or ('Ace', 'Clubs', 11) in self.player_hand:
+            if ('Ace', 'Hearts', 20) in self.player_hand or ('Ace', 'Clubs', 20) in self.player_hand:
                 self.game_state = self.PLAYER_DRAWS_ACE_SCREEN
                 self.round_reset_high_low()
                 self.player_hand.clear()
                 self.enemy_hand.clear()
 
-            elif ('Ace', 'Hearts', 11) in self.enemy_hand or ('Ace', 'Clubs', 11) in self.enemy_hand:
+            elif ('Ace', 'Hearts', 20) in self.enemy_hand or ('Ace', 'Clubs', 20) in self.enemy_hand:
                 self.game_state = self.ENEMY_DRAWS_ACE_SCREEN
                 self.round_reset_high_low()
                 self.player_hand.clear()

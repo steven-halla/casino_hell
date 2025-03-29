@@ -1,5 +1,10 @@
 ******# Casino Hell
 
+below are for sprits for money
+https://gif-superretroworld.itch.io/interior-pack
+
+https://opengameart.org/content/tilesets-and-backgrounds-pixelart
+
 A 2D Casino game written in Pygame.
 
 Mini Games:

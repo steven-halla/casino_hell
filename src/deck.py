@@ -19,6 +19,9 @@ class Deck:
         self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9,
                             10: 10, "Jack": 10, "Queen": 10,
                             "King": 10, "Ace": 11}
+        self.rank_values_high_low = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9,
+                            10: 10, "Jack": 11, "Queen": 12,
+                            "King": 13, "Ace": 20}
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit],
                        self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
@@ -68,6 +71,8 @@ class Deck:
             "ace": 11
         }
 
+
+
         for suit in self.suits:
             if "Ace" in self.ranks:
                 self.cards.append(("Ace", suit, 1))
@@ -75,6 +80,14 @@ class Deck:
 
         # self.cards.append(('Joker', 'red', 0))
         # self.cards.append(('Joker', 'black', 0))
+
+    def compute_hand_value_high_low(self, hand: List[Tuple[str, str, int]]) -> int:
+        total_value = 0
+        for card in hand:
+            rank = card[0]
+            value = self.rank_values_high_low.get(rank, 0)
+            total_value += value
+        return total_value
 
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
         # Initialize the point value of the hand to 0

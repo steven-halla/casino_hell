@@ -14,6 +14,7 @@ class Magic(Enum):
     #the below are experiments OR level 3
     BLACK_JACK_REDRAW = "redraw"   # we get this level 3 quest
     PEEK = "peek" #level 3 using your wit you ask the dealer whats in the can
+    FLUSH_DECK = "flush deck"
 
 
 
