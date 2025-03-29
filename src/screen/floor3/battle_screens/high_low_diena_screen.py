@@ -16,10 +16,10 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_cad_y_position :int = 0
         self.player_card_y_position: int = 0
         self.deck: Deck() = Deck()
-        self.player_hand: str = ""
+        self.player_hand: list = []
         self.index_stepper: int = 1
 
-        self.enemy_hand: str = ""
+        self.enemy_hand: list = []
         self.player_score: int = 0
         self.enemy_score: int = 0
         self.bet: int = 100
@@ -86,10 +86,12 @@ class HighLowDienaScreen(GambleScreen):
 
 
     def start(self, state: 'GameState'):
+        print("Start fun")
         self.deck.shuffle()
         self.build_custom_26_card_deck()
 
     def build_custom_26_card_deck(self):
+        print("build custon 25 card deck fun")
         # Start fresh
         self.deck.cards.clear()
 
@@ -108,20 +110,22 @@ class HighLowDienaScreen(GambleScreen):
 
 
     def round_reset_high_low(self):
+        print("round reset high low fun")
         self.deck.shuffle()
         self.build_custom_26_card_deck()
         self.player_score = 0
         self.enemy_score = 0
-        self.player_hand: str = ""
-        self.enemy_hand: str = ""
+        self.player_hand: list = []
+        self.enemy_hand: list = []
 
     def reset_high_low_game(self):
+        print("round reset low game fun ")
         self.deck.shuffle()
         self.build_custom_26_card_deck()
         self.player_score = 0
         self.enemy_score = 0
-        self.player_hand: str = ""
-        self.enemy_hand: str = ""
+        self.player_hand: list = []
+        self.enemy_hand: list = []
 
     def update(self, state: 'GameState'):
 
@@ -581,11 +585,13 @@ class HighLowDienaScreen(GambleScreen):
             if self.enemy_card_y_positions[0] > enemy_target_y:
                 self.enemy_card_y_positions[0] = enemy_target_y
 
-            self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+            self.deck.draw_card_face_up(self.enemy_hand[0][1], self.enemy_hand[0][0],
+                                        (self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
             return  # Wait until enemy card is placed before continuing
 
         # Draw final enemy card (face down)
-        self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+        self.deck.draw_card_face_up(self.enemy_hand[0][1], self.enemy_hand[0][0],
+                                    (self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
 
         # Transition logic
         # self.game_state = self.PLAYER_ACTION_SCREEN
@@ -593,10 +599,16 @@ class HighLowDienaScreen(GambleScreen):
     def update_draw_card_screen_logic(self, state: 'GameState'):
         # Only draw if hands are empty
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+            print(f"Deck size before drawing: {len(self.deck.cards)}")
+            print(f"Top 5 cards before draw: {self.deck.cards[-5:]}")
+
             self.player_hand = self.deck.player_draw_hand(1)
             self.enemy_hand = self.deck.enemy_draw_hand(1)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+
+            print(f"Deck size after drawing: {len(self.deck.cards)}")
+            print(f"Top 5 cards after draw: {self.deck.cards[-5:]}")
 
 
         if state.controller.confirm_button:
@@ -606,12 +618,17 @@ class HighLowDienaScreen(GambleScreen):
             if ('Ace', 'Hearts', 11) in self.player_hand or ('Ace', 'Clubs', 11) in self.player_hand:
                 self.game_state = self.PLAYER_DRAWS_ACE_SCREEN
                 self.round_reset_high_low()
+                self.player_hand.clear()
+                self.enemy_hand.clear()
 
             elif ('Ace', 'Hearts', 11) in self.enemy_hand or ('Ace', 'Clubs', 11) in self.enemy_hand:
                 self.game_state = self.ENEMY_DRAWS_ACE_SCREEN
                 self.round_reset_high_low()
+                self.player_hand.clear()
+                self.enemy_hand.clear()
             else:
-                self.round_reset_high_low()
+                self.player_hand.clear()
+                self.enemy_hand.clear()
 
                 self.game_state = self.WELCOME_SCREEN
 
