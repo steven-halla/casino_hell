@@ -59,6 +59,13 @@ class HighLowDienaScreen(GambleScreen):
             self.LEVEL_UP_MESSAGE: MessageBox([
                 f"You leveld up!"
             ]),
+            self.PLAYER_DRAWS_ACE_MESSAGE: MessageBox([
+                f"You drw an ACE. You win "
+            ]),
+
+            self.ENEMY_DRAWS_ACE_MESSAGE: MessageBox([
+                f"Enemy drw an ACE. You lose "
+            ]),
 
         }
 
@@ -66,6 +73,8 @@ class HighLowDienaScreen(GambleScreen):
     BET_MESSAGE: str = "bet_message"
     LEVEL_UP: str = "level_up_message"
     BACK = "back"
+    PLAYER_DRAWS_ACE_MESSAGE: str = "player draws ace message"
+    ENEMY_DRAWS_ACE_MESSAGE: str = "enemy draws ace message"
 
     LEVEL_UP_SCREEN = "level_up_screen"
     DRAW_CARD_SCREEN = "draw_card_screen"
@@ -148,10 +157,21 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
-            pass
+            self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].update(state)
+            self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].messages = [f"You win {self.bet} money and gain {self.high_exp} exp points"]
+
+            if state.controller.confirm_button:
+                if self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].is_finished():
+                    self.game_state = self.WELCOME_SCREEN
+
 
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
-            pass
+            self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].update(state)
+            self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].messages = [f"You lose {self.bet} money and lose {self.high_exp} exp points"]
+
+            if state.controller.confirm_button:
+                if self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].is_finished():
+                    self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_SPREAD_SCREEN:
             pass
@@ -197,10 +217,12 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
-            pass
+            self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].draw(state)
+
 
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
-            pass
+            self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].draw(state)
+
 
         elif self.game_state == self.PLAYER_SPREAD_SCREEN:
             pass
@@ -575,3 +597,24 @@ class HighLowDienaScreen(GambleScreen):
             self.enemy_hand = self.deck.enemy_draw_hand(1)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+
+
+        if state.controller.confirm_button:
+            print(self.enemy_hand)
+            print(self.player_hand)
+
+            if ('Ace', 'Hearts', 11) in self.player_hand or ('Ace', 'Clubs', 11) in self.player_hand:
+                self.game_state = self.PLAYER_DRAWS_ACE_SCREEN
+                self.round_reset_high_low()
+
+            elif ('Ace', 'Hearts', 11) in self.enemy_hand or ('Ace', 'Clubs', 11) in self.enemy_hand:
+                self.game_state = self.ENEMY_DRAWS_ACE_SCREEN
+                self.round_reset_high_low()
+            else:
+                self.round_reset_high_low()
+
+                self.game_state = self.WELCOME_SCREEN
+
+
+
+
