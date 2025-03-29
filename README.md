@@ -200,6 +200,20 @@ x position
 blit the card
 
 
+split building:
+self.player hand
+self.enemy hand
+split
+split modifier
+new_range = []
+
+player_split_low self.player_score - self.split
+player_split_high self.player_score + self.split
+
+new_range.append(player.splitlow , playersplit high)
+if self.player_score in rage of new_range
+
+
 
 
 
