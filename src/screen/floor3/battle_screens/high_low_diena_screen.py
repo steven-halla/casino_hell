@@ -145,6 +145,7 @@ class HighLowDienaScreen(GambleScreen):
     def round_reset_high_low(self):
         print("round reset high low fun")
         self.deck.shuffle()
+
         self.build_custom_26_card_deck()
         self.player_score = 0
         self.enemy_score = 0
@@ -202,6 +203,8 @@ class HighLowDienaScreen(GambleScreen):
 
             if state.controller.confirm_button:
                 if self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].is_finished():
+                    self.buff_red_card_only_in_deck = False
+
                     self.reset_high_low_game()
 
                     self.game_state = self.WELCOME_SCREEN
@@ -214,6 +217,8 @@ class HighLowDienaScreen(GambleScreen):
             if state.controller.confirm_button:
                 if self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].is_finished():
                     self.reset_high_low_game()
+                    self.buff_red_card_only_in_deck = False
+
                     self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_SPREAD_SCREEN:
@@ -351,6 +356,9 @@ class HighLowDienaScreen(GambleScreen):
             return
         elif self.money <= 0:
             print("enemy defeated")
+
+        if len(self.deck.cards) < 2:
+            self.reset_high_low_game()
 
         if controller.confirm_button:
             print("hfdfjdsfad")
