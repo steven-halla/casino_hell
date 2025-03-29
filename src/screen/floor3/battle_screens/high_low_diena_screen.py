@@ -35,6 +35,7 @@ class HighLowDienaScreen(GambleScreen):
         self.diena_bankrupt: int = 0
         self.magic_menu_selector: list[str] = [Magic.SHIELD.value, self.BACK]
         self.magic_screen_index: int = 0
+        self.spread_counter: int = 1
 
 
 
@@ -66,6 +67,9 @@ class HighLowDienaScreen(GambleScreen):
             self.ENEMY_DRAWS_ACE_MESSAGE: MessageBox([
                 f"Enemy drw an ACE. You lose "
             ]),
+            self.SPLIT_MESSAGE: MessageBox([
+                f"Choose from a split from 1-3"
+            ]),
 
         }
 
@@ -75,6 +79,7 @@ class HighLowDienaScreen(GambleScreen):
     BACK = "back"
     PLAYER_DRAWS_ACE_MESSAGE: str = "player draws ace message"
     ENEMY_DRAWS_ACE_MESSAGE: str = "enemy draws ace message"
+    SPLIT_MESSAGE: str = "split message"
 
     LEVEL_UP_SCREEN = "level_up_screen"
     DRAW_CARD_SCREEN = "draw_card_screen"
@@ -178,7 +183,11 @@ class HighLowDienaScreen(GambleScreen):
                     self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_SPREAD_SCREEN:
-            pass
+            self.battle_messages[self.SPLIT_MESSAGE].update(state)
+
+            self.player_spread_screen_helper(state, controller)
+
+
 
 
         elif self.game_state == self.PLAYER_WINS_SCREEN:
@@ -222,14 +231,21 @@ class HighLowDienaScreen(GambleScreen):
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
             self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].draw(state)
+            self.draw_draw_card_screen(state)
+
 
 
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
             self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].draw(state)
+            self.draw_draw_card_screen(state)
+
 
 
         elif self.game_state == self.PLAYER_SPREAD_SCREEN:
-            pass
+            self.battle_messages[self.SPLIT_MESSAGE].draw(state)
+            self.draw_draw_card_screen(state)
+
+
 
         elif self.game_state == self.PLAYER_WINS_SCREEN:
             pass
@@ -242,6 +258,18 @@ class HighLowDienaScreen(GambleScreen):
             pass
 
         pygame.display.flip()
+
+
+    def player_spread_screen_helper(self, state: 'GameState', controller):
+        if controller.up_button:
+            if self.spread_counter < 3:
+                self.spread_counter += 1
+
+        elif controller.down_button:
+            if self.spread_counter > 1:
+                self.spread_counter -= 1
+
+        self.battle_messages[self.SPLIT_MESSAGE].messages = [f"Press up and down for your spread: {self.spread_counter}"]
 
     def welcome_screen_helper(self, state: 'GameState', controller):
         draw_screen = 0
@@ -627,10 +655,9 @@ class HighLowDienaScreen(GambleScreen):
                 self.player_hand.clear()
                 self.enemy_hand.clear()
             else:
-                self.player_hand.clear()
-                self.enemy_hand.clear()
 
-                self.game_state = self.WELCOME_SCREEN
+
+                self.game_state = self.PLAYER_SPREAD_SCREEN
 
 
 
