@@ -5,6 +5,7 @@ import pygame
 from constants import WHITE
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
+from game_constants.equipment import Equipment
 from game_constants.magic import Magic
 
 # Game is not complete
@@ -15,6 +16,13 @@ from game_constants.magic import Magic
 #magic spell: elimiates 1s on attack dice rolls usable only during player attack phase for 1 roll
 #
 
+
+# How to play:
+# if you have point set, your deense dice needs to match this
+# attack dice are for breaking point with at least 2 of the 3 rolls
+# i need to dispaly break point
+# I need to have a attack dice box and a defense dice box and label them as such
+# need text to let player know when the point has been broke, maybe a sound effect?
 
 class DiceFighterSirSiegfriedScreen(GambleScreen):
     # this class has an error with T key so far black jack is only class not affected
@@ -33,7 +41,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.attack_screen_choices: list[str] = ["Attack"]
         self.defense_screen_choices: list[str] = ["Defense"]
         self.point_screen_choices: list[str] = ["Point R"]
-        self.init_screen_choices: list[str] = ["Roll", "Blow"]
+        self.init_screen_choices: list[str] = ["Roll"]
         self.magic_menu_selector: list[str] = []
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
@@ -214,6 +222,16 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.bet_screen_helper(state, controller)
 
         elif self.game_state == self.INITIATIVE_SCREEN:
+            if Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
+                if len(self.init_screen_choices) > 1:
+                    self.init_screen_choices[1] = "Blow"
+                else:
+                    self.init_screen_choices.append("Blow")
+            else:
+                if len(self.init_screen_choices) > 1:
+                    self.init_screen_choices[1] = "LOCKED"
+                else:
+                    self.init_screen_choices.append("LOCKED")
             self.battle_messages[self.INIT_MESSAGE].update(state)
 
             if controller.isUpPressed or controller.isUpPressedSwitch:
@@ -623,10 +641,17 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         print("player init roll is :" + str(self.player_init_roll_total))
         print("enemy init roll is :" + str(self.enemy_init_roll_total))
 
+
+
         if self.blow_init_dice == True:
             print(str(self.blow_init_dice) + "this is the blow int bonus")
-            if self.player_init_roll_total <= 16:
-                self.player_init_roll_total += blow_init_modifier
+            if self.player_init_roll_total <= 9:
+                if self.player_init_roll_1 < 3:
+                    self.player_init_roll_1 = 4
+                if self.player_init_roll_2  < 3:
+                    self.player_init_roll_2 = 4
+                if self.player_init_roll_3 < 3:
+                    self.player_init_roll_3 = 4
                 print("player NEW init roll is :" + str(self.player_init_roll_total))
 
         # blow command takes 10 stamina

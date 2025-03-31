@@ -1,8 +1,8 @@
 {
     "level": 8,
     "exp": 2832,
-    "stamina_points": 420,
-    "max_stamina_points": 420,
+    "stamina_points": 390,
+    "max_stamina_points": 390,
     "focus_points": 200,
     "max_focus_points": 200,
     "companions": [
@@ -22,7 +22,7 @@
     "equipped_items": [
         "sir leopold's paw",
         "opossum repellent",
-        "HEALTHY GLOVES"
+        "craps wrist watch"
     ],
     "npcitems": [
         "level 2 token",
@@ -49,7 +49,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 2,
-    "money": 3019,
+    "money": 2819,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -58,7 +58,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 9,
+    "days": 10,
     "leveltwonpcstate": [],
     "levelthreenpcstate": [
         "coin flip dexter defeated"

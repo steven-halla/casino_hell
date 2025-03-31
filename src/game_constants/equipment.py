@@ -24,7 +24,7 @@ class Equipment(Enum):
     DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
 
         # the below are for level 3 or EXPERIMENT
-    CRAPS_WRIST_WATCH = "craps wrist watch" # blow command
+    CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
     SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
     MP_BRACELET = "mp bracelet" # gives player 30 MP
