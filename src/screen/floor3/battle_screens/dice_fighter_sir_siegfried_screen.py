@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from constants import WHITE
+from constants import WHITE, BLACK
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
@@ -95,6 +95,8 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.player_win_point: bool = False
         self.enemy_win_point: bool = False
         self.battle_screen_index: int = 0
+        self.debuff_bad_luck: int = 0
+        self.magic_screen_index: int = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -137,7 +139,17 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to go back."
             ]),
 
+            self.MAGIC_MENU_BAD_LUCK_DESCRIPTION: MessageBox([
+                "give the enemy bad luck on attack rolls."
+            ]),
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
+
         }
+
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    MAGIC_MENU_BAD_LUCK_DESCRIPTION: str = "magic_menu_bad_luck_description"
 
     PLAYER_DEFENSE_MESSAGE: str = "player_defense_message"
     ENEMY_DEFENSE_MESSAGE: str = "enemy_defense_message"
@@ -189,6 +201,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.enemy_win_point = False
         self.player_init_roll_total = 0
         self.enemy_init_roll_total = 0
+        self.magic_lock = False
 
 
     def restart_dice_fighter_round(self):
@@ -204,9 +217,14 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.enemy_win_point = False
         self.player_init_roll_total = 0
         self.enemy_init_roll_total = 0
+        if self.debuff_bad_luck > 0:
+            self.debuff_bad_luck -= 1
+        if self.debuff_bad_luck == 0:
+            self.magic_lock = False
+        elif self.debuff_bad_luck > 0:
+            self.magic_lock = True
 
     def update(self, state):
-        print(self.game_state)
         super().update(state)
         controller = state.controller
         controller.update()
@@ -220,6 +238,12 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].update(state)
 
             self.bet_screen_helper(state, controller)
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            if Magic.BAD_LUCK.value in state.player.magicinventory and Magic.BAD_LUCK.value not in self.magic_menu_selector:
+                self.magic_menu_selector.insert(0, Magic.BAD_LUCK.value)
+                # self.magic_menu_selector.insert(1, "Back")
+            self.update_magic_menu_selection_box(controller, state)
 
         elif self.game_state == self.INITIATIVE_SCREEN:
             if Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
@@ -302,6 +326,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_ATTACK_SCREEN:
+            lucky_attack: int = random.randint(1, 20)
+            lucky_attack += state.player.luck * 3
+
             self.battle_messages[self.PLAYER_ATTACK_MESSAGE].update(state)
 
             self.battle_screen_helper(controller)
@@ -311,9 +338,20 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
 
+
                 self.player_attack_roll_1: int = random.randint(1, 6)
                 self.player_attack_roll_2: int = random.randint(1, 6)
                 self.player_attack_roll_3: int = random.randint(1, 6)
+
+                if lucky_attack > 15:
+                    if self.player_attack_roll_1 < 5:
+                        self.player_attack_roll_1: int = self.point_break + 1
+                if lucky_attack > 23:
+                    if self.player_attack_roll_2 < 5:
+
+                        self.player_attack_roll_2: int = self.point_break + 1
+
+
                 print(self.player_attack_roll_1)
                 print(self.player_attack_roll_2)
                 print(self.player_attack_roll_3)
@@ -343,6 +381,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
         elif self.game_state == self.ENEMY_ATTACK_SCREEN:
+                # unlucky_attack: int = random.randint(1, 20)
+                # unlucky_attack += state.player.luck * 2
+
             self.battle_messages[self.ENEMY_ATTACK_MESSAGE].update(state)
 
             self.battle_screen_helper(controller)
@@ -351,12 +392,26 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
 
+
                 self.enemy_attack_roll_1: int = random.randint(1, 6)
                 self.enemy_attack_roll_2: int = random.randint(1, 6)
                 self.enemy_attack_roll_3: int = random.randint(1, 6)
+
+                if self.point_break > 1 and self.debuff_bad_luck > 0:
+                    unlucky_attack = random.randint(1, 20)
+                    unlucky_attack += state.player.luck * 2
+
+                    if unlucky_attack > 17:
+                        self.enemy_attack_roll_1 = 1
+                    if unlucky_attack > 22:
+                        self.enemy_attack_roll_2 = 1
+
                 print(self.enemy_attack_roll_1)
                 print(self.enemy_attack_roll_2)
                 print(self.enemy_attack_roll_3)
+
+
+
                 if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 >= self.point_break:
                     # self.game_state = self.ENEMY_DEALS_DAMAGE_SCREEN
                     self.game_state = self.ENEMY_WIN_SCREEN
@@ -495,6 +550,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box(state)
 
 
         elif self.game_state == self.INITIATIVE_SCREEN:
@@ -778,8 +836,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             if self.welcome_screen_index == self.welcome_to_play_screen_index:
                 self.game_state = self.INITIATIVE_SCREEN
             elif self.welcome_screen_index == self.welcome_to_magic_screen_index and self.magic_lock == False:
-                # self.game_state = self.MAGIC_MENU_SCREEN
-                print("well work on this later")
+                self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.bet_index:
                 state.controller.isAPressedSwitch = False
                 state.controller.isTPressed = False
@@ -1209,4 +1266,91 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.bet = max_bet
 
 
+    def draw_magic_menu_selection_box(self, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value:
+            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].draw(state)
 
+
+
+
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_menu_selector):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def update_magic_menu_selection_box(self, controller, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value:
+            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].reset()
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
+            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
+            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+
+        if controller.isTPressed or controller.isAPressedSwitch:
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value and state.player.focus_points >= 50:
+                state.player.focus_points -= 50
+                self.debuff_bad_luck = 10
+                print(f"Shield debuff: {self.debuff_bad_luck}")
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN
