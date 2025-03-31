@@ -22,7 +22,7 @@ class DiceFighterSirSiegfried(Npc):
         self.selected_item_index = 0
         self.sir_siegfried_messages = {
             "welcome_message": NpcTextBox(
-                ["Sir SiegFried: Are you sure you want to battle the king of COIN FLIP?"],
+                ["Sir SiegFried: Are you sure you want to battle the king of Battle DICE?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Sir SiegFreid: How, impossible, nobody has every defeated my double draw technique."],

@@ -23,12 +23,13 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.dice_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
 
         self.bet = 100
+        self.bet_index: int = 2
         self.bet_stepper = 50
         self.dealer_name: str = "Sir Siegfried"
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.game_state: str = self.WELCOME_SCREEN
-        self.welcome_screen_choices: list[str] = ["Play", "Magic",  "Quit"]
+        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
         self.attack_screen_choices: list[str] = ["Attack"]
         self.defense_screen_choices: list[str] = ["Defense"]
         self.point_screen_choices: list[str] = ["Point R"]
@@ -124,6 +125,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.ENEMY_DEFENSE_MESSAGE: MessageBox([
                 "ENEMY DEFENSSE ROLL"
             ]),
+            self.BET_MESSAGE: MessageBox([
+                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to go back."
+            ]),
 
         }
 
@@ -139,6 +143,8 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
     POST_POINT_ROLL_MESSAGE: str = "post_point_roll_message"
 
     BACK: str = "Back"
+    BET_MESSAGE: str = "bet_message"
+
 
     RESULTS_SCREEN: str = "results_screen"
     PLAYER_WIN_SCREEN: str = "player_win_screen"
@@ -173,6 +179,8 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.blow_init_dice = False
         self.player_win_point = False
         self.enemy_win_point = False
+        self.player_init_roll_total = 0
+        self.enemy_init_roll_total = 0
 
 
     def restart_dice_fighter_round(self):
@@ -186,9 +194,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.blow_init_dice = False
         self.player_win_point = False
         self.enemy_win_point = False
+        self.player_init_roll_total = 0
+        self.enemy_init_roll_total = 0
 
     def update(self, state):
-        # print(self.game_state)
+        print(self.game_state)
         super().update(state)
         controller = state.controller
         controller.update()
@@ -197,6 +207,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic_dice_fighter(controller, state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
+        elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].update(state)
+
+            self.bet_screen_helper(state, controller)
 
         elif self.game_state == self.INITIATIVE_SCREEN:
             self.battle_messages[self.INIT_MESSAGE].update(state)
@@ -210,13 +225,16 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 controller.isDownPressedSwitch = False
                 self.init_screen_index = (self.init_screen_index - self.index_stepper) % len(self.init_screen_choices)
 
-            if controller.isTPressed or controller.isAPressedSwitch and self.init_screen_index == 0 and self.player_init_roll_total == 0:
+            if (controller.isTPressed or controller.isAPressedSwitch) and self.init_screen_index == 0 and self.player_init_roll_total == 0:
                 controller.setTPressed = False
                 controller.isAPressedSwitch = False
+                print("Hi")
                 self.initiative_screen_logic(state)
-            elif controller.isTPressed or controller.isAPressedSwitch and self.init_screen_index == 1 and self.blow_init_dice == False :
+            elif (controller.isTPressed or controller.isAPressedSwitch) and self.init_screen_index == 1 and self.blow_init_dice == False:
                 controller.setTPressed = False
                 controller.isAPressedSwitch = False
+                print("Ya")
+
 
                 self.blow_init_dice = True
                 state.player.stamina_points -= self.blow_stamina_drain
@@ -235,7 +253,6 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.battle_messages[self.POST_INIT_MESSAGE].update(state)
 
             if controller.isTPressed or controller.isAPressedSwitch:
-                print("mew mew mew  232")
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
 
@@ -257,7 +274,6 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             if self.battle_messages[self.POST_POINT_ROLL_MESSAGE].is_finished() and controller.isTPressed == True or controller.isAPressedSwitch == True:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
-                print("FIn")
                 if self.player_win_point == True:
                     self.game_state = self.ENEMY_ATTACK_SCREEN
                 else:
@@ -276,7 +292,6 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
-                print(self.game_state)
 
                 self.player_attack_roll_1: int = random.randint(1, 6)
                 self.player_attack_roll_2: int = random.randint(1, 6)
@@ -317,7 +332,6 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             if controller.isTPressed or controller.isAPressedSwitch:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
-                print(self.game_state)
 
                 self.enemy_attack_roll_1: int = random.randint(1, 6)
                 self.enemy_attack_roll_2: int = random.randint(1, 6)
@@ -426,9 +440,22 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)        # elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            if state.controller.confirm_button and self.battle_messages[self.PLAYER_WIN_MESSAGE].current_message_finished():
+                state.player.money += self.bet
+                self.money -= self.bet
+                self.restart_dice_fighter_round()
+                self.game_state = self.WELCOME_SCREEN
+
 
         elif self.game_state == self.ENEMY_WIN_SCREEN:
+            self.restart_dice_fighter_round()
+
             self.battle_messages[self.ENEMY_WIN_MESSAGE].update(state)        # elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            if state.controller.confirm_button and self.battle_messages[self.ENEMY_WIN_MESSAGE].current_message_finished():
+                state.player.money -= self.bet
+                self.money += self.bet
+                self.restart_dice_fighter_round()
+                self.game_state = self.WELCOME_SCREEN
 
 
     def draw(self, state):
@@ -447,6 +474,9 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info_dice_fighter(state)
+
+        elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].draw(state)
 
 
         elif self.game_state == self.INITIATIVE_SCREEN:
@@ -725,6 +755,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_to_magic_screen_index and self.magic_lock == False:
                 # self.game_state = self.MAGIC_MENU_SCREEN
                 print("well work on this later")
+            elif self.welcome_screen_index == self.bet_index:
+                state.controller.isAPressedSwitch = False
+                state.controller.isTPressed = False
+
+                self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_to_gambling_area_screen_index:
                 print("we'll work on this later")
 
@@ -981,7 +1016,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         cropped_enemy_defense = self.dice_sprite_sheet.subsurface(enemy_defense_rect)
 
         # Blit enemy defense dice onto the display (top)
-        state.DISPLAY.blit(cropped_enemy_defense, (dice_x_start_position + dice_x_gap * 3, dice_y_position_enemy))
+        state.DISPLAY.blit(cropped_enemy_defense, (dice_x_start_position + 50 + dice_x_gap * 3, dice_y_position_enemy))
 
         # Player attack dice
         player_attack_rect1 = dice_faces[player_attack_roll_1 - 1]
@@ -1003,7 +1038,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         cropped_player_defense = self.dice_sprite_sheet.subsurface(player_defense_rect)
 
         # Blit player defense dice onto the display (bottom)
-        state.DISPLAY.blit(cropped_player_defense, (dice_x_start_position + dice_x_gap * 3, dice_y_position_player))
+        state.DISPLAY.blit(cropped_player_defense, (dice_x_start_position + 50 + dice_x_gap * 3, dice_y_position_player))
 
     def display_dice_point_roll(self, state: "GameState",
                                  player_attack_roll_1: int, player_attack_roll_2: int, player_attack_roll_3: int,
@@ -1122,11 +1157,31 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             state.DISPLAY.blit(cropped_player_dice2, (dice_x_start_position + dice_x_gap, enemy_dice_y_position))  # Second dice position
             state.DISPLAY.blit(cropped_player_dice3, (dice_x_start_position + 2 * dice_x_gap, enemy_dice_y_position))  # Third dice position
 
+    def bet_screen_helper(self, state, controller):
 
+        if controller.isBPressed or controller.isBPressedSwitch:
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+            self.game_state = self.WELCOME_SCREEN
+        min_bet = 50
+        max_bet = 200
 
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += min_bet
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
 
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= min_bet
 
-
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
 
 
 

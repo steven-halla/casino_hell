@@ -29,6 +29,8 @@ class Equipment(Enum):
     SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
     MP_BRACELET = "mp bracelet" # gives player 30 MP
 
+    HIGH_LOW_PANTS = "high low pants" #THI SIS NOT ASSIGNED YET
+
 
 
 
