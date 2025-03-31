@@ -202,6 +202,8 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.player_init_roll_total = 0
         self.enemy_init_roll_total = 0
         self.magic_lock = False
+        self.welcome_screen_index = 0
+        self.magic_screen_index = 0
 
 
     def restart_dice_fighter_round(self):
@@ -842,8 +844,10 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 state.controller.isTPressed = False
 
                 self.game_state = self.BET_SCREEN
-            elif self.welcome_screen_index == self.welcome_to_gambling_area_screen_index:
-                print("we'll work on this later")
+            elif self.welcome_screen_index == 3:
+                self.restart_dice_fighter_game()
+                state.currentScreen = state.area3RestScreen
+                state.area3RestScreen.start(state)
 
 
 
@@ -894,6 +898,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             state.DISPLAY.blit(
                 self.font.render("->", True, WHITE),
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
+            )
+        elif self.welcome_screen_index == 3:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
 
     def draw_point_screen_box_info_dice_fighter(self, state):
