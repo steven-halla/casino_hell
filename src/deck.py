@@ -82,12 +82,8 @@ class Deck:
         # self.cards.append(('Joker', 'black', 0))
 
     def compute_hand_value_high_low(self, hand: List[Tuple[str, str, int]]) -> int:
-        total_value = 0
-        for card in hand:
-            rank = card[0]
-            value = self.rank_values_high_low.get(rank, 0)
-            total_value += value
-        return total_value
+        return sum(card[2] for card in hand)
+
 
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
         # Initialize the point value of the hand to 0

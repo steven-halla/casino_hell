@@ -75,6 +75,9 @@ class HighLowDienaScreen(GambleScreen):
             self.PLAYER_LOSE_SPREAD_MESSAGE: MessageBox([
                 f"you lose the spread"
             ]),
+            self.DRAW_CARD_MESSAGE: MessageBox([
+                f"Here are your cards"
+            ]),
 
         }
 
@@ -87,6 +90,7 @@ class HighLowDienaScreen(GambleScreen):
     PLAYER_LOSE_SPREAD_MESSAGE: str = "player lose spread message"
     PLAYER_WIN_SPREAD_MESSAGE: str = "player win spread message"
     SPLIT_MESSAGE: str = "split message"
+    DRAW_CARD_MESSAGE: str = "draw card message"
 
     LEVEL_UP_SCREEN = "level_up_screen"
     DRAW_CARD_SCREEN = "draw_card_screen"
@@ -164,6 +168,11 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_hand: list = []
 
     def update(self, state: 'GameState'):
+        print("Player score is: "+ str(self.player_score))
+        print(f"Player Hand: {self.player_hand}")
+        print("Enemy score is: " + str(self.enemy_score))
+        print(f"ENemy Hand: {self.enemy_hand}")
+
         # print(self.player_score)
         # print(self.enemy_score)
 
@@ -195,33 +204,39 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
+
             self.update_draw_card_screen_logic(state)
 
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
+            self.draw_player_and_enemy_cards_face_up(state.DISPLAY)
             self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].update(state)
             self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].messages = [f"You win {self.bet} money and gain {self.high_exp} exp points"]
 
             if state.controller.confirm_button:
                 if self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].is_finished():
+
                     self.buff_red_card_only_in_deck = False
                     state.player.money += self.bet
                     state.player.exp += self.high_exp
-
                     self.money -= self.bet
-
-                    self.reset_high_low_game()
-
+                    self.round_reset_high_low()
+                    self.player_hand.clear()
+                    self.enemy_hand.clear()
                     self.game_state = self.WELCOME_SCREEN
 
 
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
+            self.draw_player_and_enemy_cards_face_up(state.DISPLAY)
             self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].update(state)
             self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].messages = [f"You lose {self.bet} money and lose {self.high_exp} exp points"]
 
             if state.controller.confirm_button:
                 if self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].is_finished():
-                    self.reset_high_low_game()
+                    self.round_reset_high_low()
+                    self.player_hand.clear()
+                    self.enemy_hand.clear()
                     state.player.money -= self.bet
                     state.player.exp += self.medium_exp
 
@@ -235,9 +250,6 @@ class HighLowDienaScreen(GambleScreen):
 
             self.player_spread_screen_helper(state, controller)
 
-
-
-
         elif self.game_state == self.PLAYER_WINS_SCREEN:
             self.battle_messages[self.PLAYER_WIN_SPREAD_MESSAGE].update(state)
             self.spread_over(controller, state)
@@ -248,12 +260,12 @@ class HighLowDienaScreen(GambleScreen):
             self.spread_over(controller, state)
 
 
-
         elif self.game_state == self.GAME_OVER_SCREEN:
 
             self.game_over_helper(controller, state)
 
     def draw(self, state: 'GameState'):
+
 
         super().draw(state)
         self.draw_hero_info_boxes(state)
@@ -278,32 +290,39 @@ class HighLowDienaScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
+
             self.draw_draw_card_screen(state)
 
 
         elif self.game_state == self.PLAYER_DRAWS_ACE_SCREEN:
+            self.draw_player_and_enemy_cards_face_up(state.DISPLAY)
             self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].draw(state)
-            self.draw_draw_card_screen(state)
+            # self.draw_draw_card_screen(state)
 
 
 
         elif self.game_state == self.ENEMY_DRAWS_ACE_SCREEN:
+            self.draw_player_and_enemy_cards_face_up(state.DISPLAY)
             self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].draw(state)
-            self.draw_draw_card_screen(state)
+            # self.draw_draw_card_screen(state)
 
 
 
         elif self.game_state == self.PLAYER_SPREAD_SCREEN:
+
             self.battle_messages[self.SPLIT_MESSAGE].draw(state)
             self.draw_draw_card_screen(state)
 
 
 
         elif self.game_state == self.PLAYER_WINS_SCREEN:
+            self.draw_player_and_enemy_cards_face_up(state.DISPLAY)
             self.battle_messages[self.PLAYER_WIN_SPREAD_MESSAGE].draw(state)
 
 
         elif self.game_state == self.ENEMY_WINS_SCREEN:
+            self.draw_player_and_enemy_cards_face_up(state.DISPLAY)
             self.battle_messages[self.PLAYER_LOSE_SPREAD_MESSAGE].draw(state)
 
 
@@ -726,13 +745,18 @@ class HighLowDienaScreen(GambleScreen):
             if self.enemy_card_y_positions[0] > enemy_target_y:
                 self.enemy_card_y_positions[0] = enemy_target_y
 
-            self.deck.draw_card_face_up(self.enemy_hand[0][1], self.enemy_hand[0][0],
-                                        (self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+            # self.deck.draw_card_face_up(self.enemy_hand[0][1], self.enemy_hand[0][0],
+            #                             (self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+            self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+
             return  # Wait until enemy card is placed before continuing
 
         # Draw final enemy card (face down)
-        self.deck.draw_card_face_up(self.enemy_hand[0][1], self.enemy_hand[0][0],
-                                    (self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+        # self.deck.draw_card_face_up(self.enemy_hand[0][1], self.enemy_hand[0][0],
+        #                             (self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
+
+        # draw  enemy card face up
+        self.deck.draw_card_face_down((self.enemy_card_x_positions[0], self.enemy_card_y_positions[0]), DISPLAY)
 
         # Transition logic
         # self.game_state = self.PLAYER_ACTION_SCREEN
@@ -758,19 +782,36 @@ class HighLowDienaScreen(GambleScreen):
 
             if ('Ace', 'Hearts', 20) in self.player_hand or ('Ace', 'Clubs', 20) in self.player_hand:
                 self.game_state = self.PLAYER_DRAWS_ACE_SCREEN
-                self.round_reset_high_low()
-                self.player_hand.clear()
-                self.enemy_hand.clear()
+
 
             elif ('Ace', 'Hearts', 20) in self.enemy_hand or ('Ace', 'Clubs', 20) in self.enemy_hand:
                 self.game_state = self.ENEMY_DRAWS_ACE_SCREEN
-                self.round_reset_high_low()
-                self.player_hand.clear()
-                self.enemy_hand.clear()
+
             else:
 
 
                 self.game_state = self.PLAYER_SPREAD_SCREEN
+
+    def draw_player_and_enemy_cards_face_up(self, display_surface):
+        # Use standard positions to match your layout
+        player_position = (400, 300)
+        enemy_position = (400, 50)
+
+        if self.player_hand:
+            self.deck.draw_card_face_up(
+                self.player_hand[0][1],  # suit
+                self.player_hand[0][0],  # rank
+                player_position,
+                display_surface
+            )
+
+        if self.enemy_hand:
+            self.deck.draw_card_face_up(
+                self.enemy_hand[0][1],  # suit
+                self.enemy_hand[0][0],  # rank
+                enemy_position,
+                display_surface
+            )
 
 
 
