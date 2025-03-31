@@ -550,10 +550,8 @@ class HighLowDienaScreen(GambleScreen):
             controller.isBPressedSwitch = False
             self.game_state = self.WELCOME_SCREEN
         min_bet = 50
-        if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
-            max_bet = 400
-        else:
-            max_bet = 200
+        max_bet = 200
+
 
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
@@ -571,7 +569,6 @@ class HighLowDienaScreen(GambleScreen):
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
-        print(max_bet)
 
     def game_over_helper(self, controller, state: "GameState"):
         no_money_game_over = 0
@@ -785,7 +782,23 @@ class HighLowDienaScreen(GambleScreen):
 
 
             elif ('Ace', 'Hearts', 20) in self.enemy_hand or ('Ace', 'Clubs', 20) in self.enemy_hand:
-                self.game_state = self.ENEMY_DRAWS_ACE_SCREEN
+                print("will we get a lucky strike?")
+
+                lucky_attack: int = random.randint(1, 20)
+                lucky_attack += state.player.luck * 3
+
+                if lucky_attack > 15:
+                    print("LUCKY?  YES WE DO!")
+
+                    # Swap hands to give player the win
+                    self.player_hand, self.enemy_hand = self.enemy_hand, self.player_hand
+                    self.player_score = self.deck.compute_hand_value_high_low(self.player_hand)
+                    self.enemy_score = self.deck.compute_hand_value_high_low(self.enemy_hand)
+                    self.game_state = self.PLAYER_DRAWS_ACE_SCREEN
+                else:
+                    print("will we get a lucky strike? NO WE DONT")
+
+                    self.game_state = self.ENEMY_DRAWS_ACE_SCREEN
 
             else:
 

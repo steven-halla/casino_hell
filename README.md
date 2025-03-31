@@ -219,7 +219,21 @@ new_range.append(player.splitlow , player.splithigh)
 if self.player_score in rage of new_range
     print("player wins)
 else:
-    print("Player loses)
+    print("Player loses)]]
+
+
+
+
+Level 3 to do list:
+create shop keeper
+create bar keeper
+update hungry starving hippos graphics
+
+
+there are 20 total magic spells
+THere are 30 total equipment pieces 
+
+# i still need luck for coin flip
 
 
 
