@@ -24,6 +24,7 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_score: int = 0
         self.bet: int = 100
         self.money: int = 1000
+        self.buff_red_card_only_in_deck_cost = 50
 
         self.diena_bankrupt: int = 0
         self.magic_lock: bool = False
@@ -204,6 +205,10 @@ class HighLowDienaScreen(GambleScreen):
             if state.controller.confirm_button:
                 if self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].is_finished():
                     self.buff_red_card_only_in_deck = False
+                    state.player.money += self.bet
+                    state.player.exp += self.high_exp
+
+                    self.money -= self.bet
 
                     self.reset_high_low_game()
 
@@ -217,6 +222,10 @@ class HighLowDienaScreen(GambleScreen):
             if state.controller.confirm_button:
                 if self.battle_messages[self.ENEMY_DRAWS_ACE_MESSAGE].is_finished():
                     self.reset_high_low_game()
+                    state.player.money -= self.bet
+                    state.player.exp += self.medium_exp
+
+                    self.money += self.bet
                     self.buff_red_card_only_in_deck = False
 
                     self.game_state = self.WELCOME_SCREEN
@@ -309,11 +318,36 @@ class HighLowDienaScreen(GambleScreen):
             if self.game_state == self.PLAYER_WINS_SCREEN:
                 if self.battle_messages[self.PLAYER_WIN_SPREAD_MESSAGE].is_finished():
                     self.reset_spread_no_ace()
+                    state.player.exp += self.low_exp
+
+                    if self.spread_counter == 1:
+                        state.player.exp += self.high_exp
+                        state.player.money += self.bet * 3
+                        self.money -= self.bet * 3
+                    elif self.spread_counter == 2:
+                        state.player.exp += self.medium_exp
+                        state.player.money += self.bet * 2
+                        self.money -= self.bet * 2
+                    elif self.spread_counter == 3:
+                        state.player.exp += self.medium_exp
+                        state.player.money += self.bet
+                        self.money -= self.bet
                     self.game_state = self.WELCOME_SCREEN
             elif self.game_state == self.ENEMY_WINS_SCREEN:
                 if self.battle_messages[self.PLAYER_LOSE_SPREAD_MESSAGE].is_finished():
                     self.reset_spread_no_ace()
-
+                    if self.spread_counter == 1:
+                        state.player.exp -= self.high_exp
+                        state.player.money -= self.bet * 3
+                        self.money += self.bet * 3
+                    elif self.spread_counter == 2:
+                        state.player.exp -= self.medium_exp
+                        state.player.money -= self.bet * 2
+                        self.money += self.bet * 2
+                    elif self.spread_counter == 3:
+                        state.player.exp -= self.medium_exp
+                        state.player.money -= self.bet
+                        self.money += self.bet
                     self.game_state = self.WELCOME_SCREEN
 
 
@@ -609,6 +643,7 @@ class HighLowDienaScreen(GambleScreen):
             if self.magic_menu_selector[self.magic_screen_index] == Magic.FLUSH_DECK.value:
                 self.buff_red_card_only_in_deck = True
                 self.reset_high_low_game()
+                state.player.focus_points -= self.buff_red_card_only_in_deck_cost
                 self.game_state = self.WELCOME_SCREEN
 
 

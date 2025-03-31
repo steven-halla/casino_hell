@@ -205,7 +205,7 @@ x position
 blit the card
 
 
-split building:
+split phase:
 self.player hand
 self.enemy hand
 split
@@ -215,8 +215,11 @@ new_range = []
 player_split_low self.player_score - self.split
 player_split_high self.player_score + self.split
 
-new_range.append(player.splitlow , playersplit high)
+new_range.append(player.splitlow , player.splithigh)
 if self.player_score in rage of new_range
+    print("player wins)
+else:
+    print("Player loses)
 
 
 
