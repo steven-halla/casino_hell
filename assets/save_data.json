@@ -40,8 +40,7 @@
         "Triple D",
         "HACK",
         "Force",
-        "redraw",
-        "peek",
+
         "bad luck",
         "flush deck"
     ],
@@ -51,7 +50,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 2,
-    "money": 1619,
+    "money": 5555,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -63,8 +62,8 @@
     "days": 10,
     "leveltwonpcstate": [],
     "levelthreenpcstate": [
-        "coin flip dexter defeated",
-        "COIN_SAVE_AREA_3"
+        "coin flip dexter defeated"
+
     ],
     "slots_vest": false,
     "cutscene1": true,

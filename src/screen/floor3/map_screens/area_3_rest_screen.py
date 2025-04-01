@@ -36,6 +36,7 @@ from entity.npc.area3.area_3_rest_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_rest_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 from entity.npc.area3.area_3_rest_screen.high_low_diena import HighLowDiena
 from entity.npc.area3.area_3_rest_screen.hungry_starving_hippos_hippy import HungryStarvingHipposHippy
+from entity.npc.area3.area_3_rest_screen.magic_man_level_3 import MagicManLevel3
 from entity.npc.area3.area_3_rest_screen.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
 from entity.npc.area3.area_3_rest_screen.slots_brogan import SlotsBrogan
 
@@ -48,7 +49,7 @@ from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 
 class Area3RestScreen(Screen):
-
+# WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
@@ -118,11 +119,20 @@ class Area3RestScreen(Screen):
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin
             Area3ShopKeeper(16 * 35, 16 * 5),  # fin
+            MagicManLevel3(16 * 25, 16 * 5),  # fin
 
 
         ]
 
     def update(self, state: "GameState"):
+        # In your update() function (or in a function that’s called every frame):
+        if "magic_man_level_3_vanished" not in state.player.level_three_npc_state:
+            # If MagicManLevel3 isn’t already in the npcs list, add it.
+            if not any(isinstance(npc, MagicManLevel3) for npc in state.npcs):
+                state.npcs.append(MagicManLevel3(16 * 20, 16 * 5))
+        else:
+            # If the vanish flag is set, remove any MagicManLevel3 from the list.
+            state.npcs = [npc for npc in state.npcs if not isinstance(npc, MagicManLevel3)]
 
         controller = state.controller
         player = state.player
