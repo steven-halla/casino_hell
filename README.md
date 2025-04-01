@@ -227,27 +227,41 @@ else:
 Level 3 to do list:
 create shop keeper
 create bar keeper
+create magic keeper - can only buy  1 magic
+
 update hungry starving hippos graphics
 
 
-there are 20 total magic spells
-THere are 30 total equipment pieces 
+there are 18 total magic spells
+THere are 25 total equipment pieces 
 
 # i still need luck for coin flip
 
 
 
 
+# quest can involve talking to all NPC or beating witin X number of turns
+# inventory allow player ot have 1 item in inventory per perception point 1, 2, 3
 
 
+# all missed content can get bought, for a heavy price
+
+# each level should have a magic that can be bought in a shop
+# level 3 no magic  quest but have 3 spells in shop and 1 you can learn 
+# allow magic to empower magic % chance
+# allow spirit to empower items 
+# maybe have some items to help with mazes and stuff
+# magic and equipment should nto be missable by proxy of failing quest
+on the bottom not sure what is best approach between what leve you get things
+# spirit of 4 should empwer compaion items
+# spirit of 5 should empower compaion items to affect more games and better bonues for base games
 
 
-
-
-
-
-
-
+# I need to make a fun that displays an image
+# first lets display teh full image
+# then lets do a section 
+# then do 3 sections and store each one as a param
+# cycle through the images
 
 
 

@@ -17,7 +17,8 @@
         "Nuggie Amulet",
         "HEALTHY GLOVES",
         "craps wrist watch",
-        "coin flip gloves"
+        "coin flip gloves",
+        ""
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -37,12 +38,13 @@
         "reveal",
         "shield",
         "shake",
-        "redraw",
         "Triple D",
         "HACK",
         "Force",
+        "redraw",
         "peek",
-        "bad luck"
+        "bad luck",
+        "flush deck"
     ],
     "body": 2,
     "mind": 2,

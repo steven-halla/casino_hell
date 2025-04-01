@@ -351,7 +351,22 @@ class HighLowDienaScreen(GambleScreen):
                         state.player.exp += self.medium_exp
                         state.player.money += self.bet
                         self.money -= self.bet
+                    if self.spread_counter == 1:
+                        state.player.exp += self.high_exp
+                        state.player.money += self.bet * 3
+                        self.money -= self.bet * 3
+                    elif self.spread_counter == 2:
+                        state.player.exp += self.medium_exp
+                        state.player.money += self.bet * 2
+                        self.money -= self.bet * 2
+                    elif self.spread_counter == 4:
+                        state.player.exp += self.low_exp
+                        state.player.money += self.bet // 2
+                        self.money -= self.bet // 2
+
+
                     self.game_state = self.WELCOME_SCREEN
+
             elif self.game_state == self.ENEMY_WINS_SCREEN:
                 if self.battle_messages[self.PLAYER_LOSE_SPREAD_MESSAGE].is_finished():
                     self.reset_spread_no_ace()
@@ -372,9 +387,13 @@ class HighLowDienaScreen(GambleScreen):
 
 
     def player_spread_screen_helper(self, state: 'GameState', controller):
+        if Equipment.HIGH_LOW_PANTS.value in state.player.equipped_items:
+            spread_bonus: int = 1
+        else:
+            spread_bonus: int = 0
 
         if controller.up_button:
-            if self.spread_counter < 3:
+            if self.spread_counter < (3 + spread_bonus):
                 self.spread_counter += 1
 
         elif controller.down_button:
@@ -385,7 +404,9 @@ class HighLowDienaScreen(GambleScreen):
             player_split_low = self.player_score - self.spread_counter
             player_split_high = self.player_score + self.spread_counter
             new_range = range(player_split_low, player_split_high + 1)
-
+            # we take away extra HP for balance reasons
+            if self.spread_counter > 3:
+                state.player.stamina_points -= 5
             if self.enemy_score in new_range:
                 self.game_state = self.PLAYER_WINS_SCREEN
             else:

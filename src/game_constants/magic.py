@@ -3,12 +3,13 @@
 from enum import Enum
 
 class Magic(Enum):
-    HEADS_FORCE = "Force"  # this is gained from alex quest
-    SHIELD = "Shield"
+    HEADS_FORCE = "Force"  # this is gained from alex quest but will have to redo
+    SHIELD = "Shield" # coin flip dedefends bad rolls
+
     SLOTS_HACK = "HACK"  # this is a level 2 tier reward from mc nugg
+
     CRAPS_LUCKY_7 = "Triple D"    #  this is gained with mind 2
     REVEAL = "reveal"
-    CARD_MORPH = "card morph" # this changes the value of a card, like all kings are now 2's
     SHAKE = "shake"
 
     #the below are experiments OR level 3
@@ -16,6 +17,12 @@ class Magic(Enum):
     PEEK = "peek" #level 3 using your wit you ask the dealer whats in the can
     FLUSH_DECK = "flush deck"
     BAD_LUCK = "bad luck" # dice fighter
+
+    # On level 3 and 5 have a shop keeper
+    # For pacing reasons we cannoot have more than 3 spells per level
+    # For pacing reasons we cannot have more than 4 equipments per level
+
+
 
 
 

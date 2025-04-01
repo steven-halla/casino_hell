@@ -17,6 +17,8 @@ class HungryStarvingHipposHippyScreen(Screen):
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
         self.commentary = False
         self.comment_to_use = 0
+        self.sprite_sheet_hippo_facing_right: pygame.Surface = pygame.image.load("./assets/images/hippo_facing_right.png")
+
         self.human_stats = {
             "A1": {"name": "A1", "speed": 22, "stamina": 7, "win_chance": 30},
             "B1": {"name": "B1", "speed": 7, "stamina": 10, "win_chance": 40},
@@ -292,6 +294,7 @@ class HungryStarvingHipposHippyScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         # print(self.human_stats)
+        print(self.game_state)
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -424,6 +427,7 @@ class HungryStarvingHipposHippyScreen(Screen):
         if self.game_state == "bet_screen":
             self.battle_messages["bet_message"].draw(state)
             self.draw_bet_selection(state)  # Add this line
+            self.display_hippos(state)
 
         if self.game_state == "human_race":
             self.draw_box_boundary(state)
@@ -499,9 +503,10 @@ class HungryStarvingHipposHippyScreen(Screen):
 
         if self.hippo:
             # Render the hippo text
-            text_surface = self.font.render("H1", True, color)
-            text_rect = text_surface.get_rect(center=(self.hippo["pos"][0] + self.human_size // 2, self.hippo["pos"][1] + self.human_size // 2))
-            state.DISPLAY.blit(text_surface, text_rect)
+            # text_surface = self.font.render("H1", True, color)
+            # text_rect = text_surface.get_rect(center=(self.hippo["pos"][0] + self.human_size // 2, self.hippo["pos"][1] + self.human_size // 2))
+            # state.DISPLAY.blit(text_surface, text_rect)
+            self.display_hippos(state)
 
     def draw_bottom_black_box(self, state: "GameState") -> None:
         black_box_height = 130
@@ -708,5 +713,34 @@ class HungryStarvingHipposHippyScreen(Screen):
         self.bet_selection_index = 0  # important
         self.human_picks = []
         self.win = False
+
+    def display_hippos(self, state):
+        # Local box dimensions for cropping
+        crop_width = 350
+        crop_height = 600
+        crop_x = 20
+        crop_y = 400
+
+        # Local display dimensions for rendering the hippo
+        hippo_width = 100
+        hippo_height = 100
+
+        crop_box = pygame.Rect(crop_x, crop_y, crop_width, crop_height)
+        cropped_surface = self.sprite_sheet_hippo_facing_right.subsurface(crop_box)
+        flipped_surface = pygame.transform.flip(cropped_surface, True, False)
+
+        scaled_hippo = pygame.transform.scale(flipped_surface, (hippo_width, hippo_height))
+
+        if self.hippo:
+            state.DISPLAY.blit(scaled_hippo, (self.hippo["pos"][0] - 10, self.hippo["pos"][1] - 10))
+
+
+
+
+
+
+
+
+
 
 
