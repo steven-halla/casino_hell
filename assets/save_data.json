@@ -17,8 +17,7 @@
         "Nuggie Amulet",
         "HEALTHY GLOVES",
         "craps wrist watch",
-        "coin flip gloves",
-        ""
+        "coin flip gloves"
     ],
     "equipped_items": [
         "sir leopold's paw",
@@ -52,7 +51,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 2,
-    "money": 2819,
+    "money": 1619,
     "rabies": false,
     "immunity": true,
     "quest_items": [
@@ -64,7 +63,8 @@
     "days": 10,
     "leveltwonpcstate": [],
     "levelthreenpcstate": [
-        "coin flip dexter defeated"
+        "coin flip dexter defeated",
+        "COIN_SAVE_AREA_3"
     ],
     "slots_vest": false,
     "cutscene1": true,

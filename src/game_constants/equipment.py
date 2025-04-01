@@ -34,7 +34,7 @@ class Equipment(Enum):
     # level 3 and 4 below
     LUCKY_CHARM = "lucky charm" # + 1 to luck
     CHEFS_HAT = "chefs hat" # + 30 HP AND + 1 FOOD PER DAY
-    MEDIUM_VEST = "medium vest"  # -20 opposum and slot demon damage
+    MEDIUM_VEST = "SLots Guard"  # -20 opposum and slot demon damage
     HIGH_VEST = "medium vest"  # -30 opposum and slot demon damage and game 10
     SPIRIT_CHARM = "spirit charm" # + 1 spirit lvl 4
 
@@ -44,8 +44,10 @@ class Equipment(Enum):
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
     BOSS_KEY = "boss key"
     COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
+    COIN_SAVE_AREA_3 = "COIN_SAVE_AREA_3" # BUY IN SHOP ONE TIME USE
     RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
     STAT_POTION_AREA_2 = "STAT_POTION_AREA_2" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
+    STAT_POTION_AREA_3 = "STAT_POTION_AREA_3" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
 
     # for testing
     HIPPO_SHOES = "HIPPO_SHOES"  # testing only
@@ -60,9 +62,21 @@ class Equipment(Enum):
             player.level_two_npc_state.append(equipment.value)
 
     @staticmethod
+    def add_equipment_to_player_level_3(player, equipment):
+        if equipment.value not in player.items:
+            player.items.append(equipment.value)
+            player.level_three_npc_state.append(equipment.value)
+
+    @staticmethod
     def add_potion_to_player(player, equipment):
         if equipment.value not in player.items:
             player.level_two_npc_state.append(equipment.value)
+
+
+    @staticmethod
+    def add_shop_items_to_player_inventory(player, equipment):
+        if equipment.value not in player.items:
+            player.level_three_npc_state.append(equipment.value)
 
     @staticmethod
     def add_item_to_quest_state(player, equipment):

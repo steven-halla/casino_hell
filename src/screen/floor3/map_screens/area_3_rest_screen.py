@@ -29,6 +29,7 @@ from entity.npc.area2.area_2_rest_screen.johnathon import Johnathon
 from entity.npc.area2.area_2_rest_screen.karn import Karn
 from entity.npc.area2.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2.area_2_rest_screen.paul import Paul
+from entity.npc.area3.area_3_rest_screen.area_3_shop_keeper import Area3ShopKeeper
 from entity.npc.area3.area_3_rest_screen.black_jack_albert import BlackJackAlbert
 from entity.npc.area3.area_3_rest_screen.coin_flip_dexter import CoinFlipDexter
 from entity.npc.area3.area_3_rest_screen.craps_junpon import CrapsJunpon
@@ -116,6 +117,7 @@ class Area3RestScreen(Screen):
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin
+            Area3ShopKeeper(16 * 35, 16 * 5),  # fin
 
 
         ]
