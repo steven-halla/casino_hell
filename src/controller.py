@@ -22,12 +22,13 @@ class Controller:
         self.isTPressed: bool = False
         self.isPPressed: bool = False
         self.isOPressed: bool = False
-        self.is1Pressed: bool = False
         self.isBPressed: bool = False
         self.keyPressedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         self.keyReleasedTimes: Dict[int, int] = {}  # Map<key number, key pressed millisecond
         # might need to delete this bottom line pygame.init()
         self.isAPressedSwitch: bool = False
+        self.isStartPressedSwitch: bool = False
+
         self.isBPressedSwitch: bool = False
         self.isXPressedSwitch: bool = False
         self.isYPressedSwitch: bool = False
@@ -141,7 +142,7 @@ class Controller:
                 elif event.button == 14:  # D-pad Right
                     self.isRightPressedSwitch = True
                 elif event.button == 6:  # Start
-                    self.isRightPressedSwitch = True
+                    self.isStartPressedSwitch = True
 
                 elif event.button == 4:  # select
                     self.isRightPressedSwitch = True
@@ -156,6 +157,9 @@ class Controller:
                     self.isAPressedSwitch = False
                 elif event.button == 1:  # B button
                     self.isBPressedSwitch = False
+
+                elif event.button == 6:  # Start
+                    self.isStartPressedSwitch = False
                 # elif event.button == 2:  # X button
                 #     self.isXPressedSwitch = False
                 elif event.button == 11:  # D-pad Up
@@ -255,8 +259,8 @@ class Controller:
                     self.isWPressed = False
                 elif event.key == pygame.K_1:
                     self.is1Pressed = False
-                # elif event.key == pygame.K_p:
-                #     self.isPPressed = False
+                elif event.key == pygame.K_p:
+                    self.isPPressed = False
                 elif event.key == pygame.K_o:
                     self.isOPressed = False
                 elif event.key == pygame.K_1:
@@ -274,8 +278,8 @@ class Controller:
 
     @property
     def action_and_cancel_button(self) -> bool:
-        if self.isPPressed or self.isBPressedSwitch:
-            self.isPPressed = False
+        if self.isBPressed or self.isBPressedSwitch:
+            self.isBPressed = False
             self.isBPressedSwitch = False
             return True
         return False
@@ -314,9 +318,9 @@ class Controller:
 
     @property
     def start_button(self) -> bool:
-        if self.isPPressed or self.isRightPressedSwitch:
-            self.isRightPressed = False
-            self.isRightPressedSwitch = False
+        if self.isStartPressedSwitch or self.isPPressed:
+            self.isStartPressedSwitch = False
+            self.isPPressed = False
             return True
         return False
 

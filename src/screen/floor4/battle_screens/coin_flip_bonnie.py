@@ -1,5 +1,6 @@
 import random
-
+import math
+import os
 import pygame
 
 from constants import WHITE, BLACK, RED
@@ -9,11 +10,6 @@ from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
-import math
-
-import os
-
-
 
 
 class CoinFlipBonnieScreen(GambleScreen):
@@ -25,7 +21,7 @@ class CoinFlipBonnieScreen(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100
-        self.dealer_name: str = "Dexter"
+        self.dealer_name: str = "Bonnie"
         self.initial_coin_image_position = (300, 250)  # Initial position for the coin
         self.timer_start = None
         self.coin_bottom = False
@@ -35,7 +31,7 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.game_state: str = self.WELCOME_SCREEN
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
         self.heads_or_tails_menu: list[str] = ["Heads", "Tails", "Back"]
-        self.magic_menu_selector: list[str] = [Magic.SHIELD.value]
+        self.magic_menu_selector: list[str] = []
         self.welcome_screen_index: int = 0
         self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
@@ -52,7 +48,6 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.weighted_coin: bool = False  # this is our magic spell heads force
-        self.balance_modifier: int = 0
         self.player_choice = ""
         self.coin_landed = CoinFlipConstants.HEADS.value
         self.bonnie_bankrupt: int = 0
@@ -68,14 +63,12 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.exp_gain_low = 1
         self.result_anchor = False
         self.money: int = 999  # Add this line
-        self.dexter_magic_points = 2
-        self.debuff_money_balancer = 0
-
-
+        self.bonnie_magic_points = 2
+        self.debuff_double_flip = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "I follow the path of Yin and Yang. Balance is the only true way to play coin flip."
+                "Bonnie: It's been a while since I last had a decent challenge."
             ]),
 
             self.BET_MESSAGE: MessageBox([
@@ -111,8 +104,10 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.ANIMAL_DEFENSE_MESSAGE: MessageBox([
                 f"A lucky bird swooped in to help you out of a jam!"
             ]),
-            self.DEXTER_CASTING_SPELL_MESSAGE: MessageBox([
-                f"Disgusting pigs of filth and greed, submit yourself to the scales of fairness...money balancer"
+            # if player gets first flip, then we flip one more time.
+            #  Heads force only works for first flip not 2nd
+            self.BONNIE_CASTING_SPELL_MESSAGE: MessageBox([
+                f"Gods of darkness and strife, increase my power times 2...double flip!Ï"
             ]),
         }
 
@@ -126,7 +121,7 @@ class CoinFlipBonnieScreen(GambleScreen):
     PLAYER_WIN_SCREEN: str = "player_win_screen"
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
-    DEXTER_CASTING_SPELL_SCREEN: str = "dexter_casting_spell_screen"
+    BONNIE_CASTING_SPELL_SCREEN: str = "BONNIE_CASTING_SPELL_SCREEN"
     LEVEL_UP_MESSAGE: str = "level_up_message"
     ANIMAL_DEFENSE_MESSAGE: str = "animal defense message"
     PLAYER_WIN_MESSAGE: str = "player_win_message"
@@ -141,16 +136,14 @@ class CoinFlipBonnieScreen(GambleScreen):
     PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
-    DEXTER_CASTING_SPELL_MESSAGE: str= "dexter_casting_spell_message"
+    BONNIE_CASTING_SPELL_MESSAGE: str= "BONNIE_CASTING_SPELL_MESSAGE"
 
     def start(self, state: 'GameState'):
         pass
-
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
         self.phase = 1
-        self.balance_modifier: int = 0
         self.welcome_screen_index = 0
         self.shield_debuff = 0
         self.heads_force_active = False
@@ -160,13 +153,10 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.image_to_display = ""
         self.player_choice = ""
         self.weighted_coin = False
-        self.dexter_casting_spell = 2
-        self.debuff_money_balancer = 0
+        self.bonnie_magic_points = 2
 
     def reset_round(self):
 
-        if self.debuff_money_balancer > 0:
-            self.debuff_money_balancer -= 1
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
         self.weighted_coin = False
@@ -182,12 +172,14 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.phase += 1
         if self.phase > 5:
             self.phase = 1
-        if self.phase == 1:
-            self.balance_modifier = 0
+
         if self.shield_debuff > 0:
             self.shield_debuff -= 1
         if self.shield_debuff == 0 and self.weighted_coin == False:
             self.magic_lock = False
+        if self.debuff_double_flip > 0:
+            self.debuff_double_flip -= 1
+
 
     def update(self, state):
 
@@ -201,13 +193,13 @@ class CoinFlipBonnieScreen(GambleScreen):
             Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_BONNIE_DEFEATED)
 
 
-        if self.game_state == self.DEXTER_CASTING_SPELL_SCREEN:
+        if self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
             print("dfljldsa;jfldsjfjdsalfj;lsajf;lsakfj;slafkj;sajflksafjsla;fj")
-            self.battle_messages[self.DEXTER_CASTING_SPELL_MESSAGE].update(state)
+            self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.isTPressed or state.controller.isAPressedSwitch:
                 state.controller.isTPressed = False
                 state.controller.isAPressedSwitch = False
-                self.dexter_magic_points -= 1
+                self.bonnie_magic_points -= 1
                 self.debuff_money_balancer = 5
                 self.game_state = self.WELCOME_SCREEN
 
@@ -293,13 +285,13 @@ class CoinFlipBonnieScreen(GambleScreen):
                     # Deduct from enemy money
                     self.money -= amount_to_gain
 
-                if self.debuff_money_balancer == 0 and self.money < 1000 and self.dexter_magic_points > 0:
+                if self.debuff_money_balancer == 0 and self.money < 1000 and self.bonnie_magic_points > 0:
                     print("dfjs;fldsajf;dsalfjdsjfldsjalfjsl;ajfa")
                     dexter_casting_chance = random.randint(1, 5)
                     if dexter_casting_chance == 1:
                         print("mew mew mew mew mew mew ew")
 
-                        self.game_state = self.DEXTER_CASTING_SPELL_SCREEN
+                        self.game_state = self.BONNIE_CASTING_SPELL_SCREEN
                     else:
                         self.game_state = self.WELCOME_SCREEN
 
@@ -361,8 +353,8 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.DEXTER_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.DEXTER_CASTING_SPELL_MESSAGE].draw(state)
+        if self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].draw(state)
 
         elif self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
@@ -751,31 +743,17 @@ class CoinFlipBonnieScreen(GambleScreen):
 
 
         if self.weighted_coin == True:
-            self.balance_modifier += 25
-            self.coin_landed = CoinFlipConstants.HEADS.value
-        coin_fate = random.randint(1, 100) + self.balance_modifier
+            pass
+        coin_fate = random.randint(1, 100)
         if coin_fate >= 51:
-            self.balance_modifier -= 15
-            if coin_fate >= 100:
-                self.balance_modifier -= 20
-            self.coin_landed = CoinFlipConstants.HEADS.value
+            pass
         elif coin_fate <= 50:
-            self.balance_modifier += 15
-            if coin_fate <= 0:
-                self.balance_modifier += 5
-            self.coin_landed = CoinFlipConstants.TAILS.value
-        print("Your coin fate is: " + str(coin_fate))
-        print("Your blanace modifer is: " + str(self.balance_modifier))
-
-
+            pass
 
         self.result_anchor = False
 
-
     def bet_screen_helper(self,state,  controller):
-
-
-        if controller.isBPressed or controller.isBPressedSwitch:
+        if controller.action_and_cancel_button:
             controller.isBPressed = False
             controller.isBPressedSwitch = False
             self.game_state = self.WELCOME_SCREEN
@@ -784,28 +762,16 @@ class CoinFlipBonnieScreen(GambleScreen):
             max_bet = 400
         else:
             max_bet = 200
-
-        if controller.isUpPressed or controller.isUpPressedSwitch:
-            controller.isUpPressed = False
-            controller.isUpPressedSwitch = False
+        if controller.up_button:
             self.menu_movement_sound.play()  # Play the sound effect once
             self.bet += min_bet
-        elif controller.isDownPressed or controller.isDownPressedSwitch:
-            controller.isDownPressed = False
-            controller.isDownPressedSwitch = False
-
+        elif controller.down_button:
             self.menu_movement_sound.play()  # Play the sound effect once
             self.bet -= min_bet
-
-
-
         if self.bet <= min_bet:
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
-        print(max_bet)
-
-
 
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
