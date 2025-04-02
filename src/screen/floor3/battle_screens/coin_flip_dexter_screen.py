@@ -14,7 +14,6 @@ import math
 import os
 
 
-IMAGES_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "assets", "images")
 
 
 class CoinFlipDexterScreen(GambleScreen):
@@ -48,8 +47,8 @@ class CoinFlipDexterScreen(GambleScreen):
         self.quit_index: int = 3
         self.headstailsindex: int = 0
         self.image_to_display = ""
-        self.heads_image = pygame.image.load(os.path.join(IMAGES_DIR, "heads.png"))
-        self.tails_image = pygame.image.load(os.path.join(IMAGES_DIR, "tails.png"))
+        self.heads_image = pygame.image.load(os.path.join("./assets/images/heads.png"))
+        self.tails_image = pygame.image.load(os.path.join(("./assets/images/tails.png")))
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.weighted_coin: bool = False  # this is our magic spell heads force
@@ -65,12 +64,9 @@ class CoinFlipDexterScreen(GambleScreen):
         self.shield_debuff = 0
         self.heads_force_cost = 50
         self.heads_force_active = False
-        self.coin_bottom = False
         self.exp_gain_high = 1
         self.exp_gain_low = 1
         self.result_anchor = False
-        self.timer_start = None  # Initialize the timer variable
-
         self.money: int = 999  # Add this line
         self.dexter_magic_points = 2
         self.debuff_money_balancer = 0
@@ -131,10 +127,7 @@ class CoinFlipDexterScreen(GambleScreen):
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
     DEXTER_CASTING_SPELL_SCREEN: str = "dexter_casting_spell_screen"
-
     LEVEL_UP_MESSAGE: str = "level_up_message"
-
-
     ANIMAL_DEFENSE_MESSAGE: str = "animal defense message"
     PLAYER_WIN_MESSAGE: str = "player_win_message"
     CHOOSE_SIDE_MESSAGE: str = "choose_side_message"
@@ -156,7 +149,6 @@ class CoinFlipDexterScreen(GambleScreen):
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
-
         self.phase = 1
         self.balance_modifier: int = 0
         self.welcome_screen_index = 0
@@ -165,10 +157,8 @@ class CoinFlipDexterScreen(GambleScreen):
         self.coin_bottom = False
         self.result_anchor = False
         self.timer_start = None  # Initialize the timer variable
-
         self.image_to_display = ""
         self.player_choice = ""
-        # self.coin_image_position = (300, 400)  # Reset to the initial value at the start of the round
         self.weighted_coin = False
         self.dexter_casting_spell = 2
         self.debuff_money_balancer = 0
@@ -198,11 +188,6 @@ class CoinFlipDexterScreen(GambleScreen):
             self.shield_debuff -= 1
         if self.shield_debuff == 0 and self.weighted_coin == False:
             self.magic_lock = False
-
-        print("debuff monye balanacer" + str(self.debuff_money_balancer))
-        print("dexter magic points " + str(self.dexter_magic_points))
-
-
 
     def update(self, state):
 

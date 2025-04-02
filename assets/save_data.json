@@ -40,7 +40,8 @@
         "Triple D",
         "HACK",
         "Force",
-
+        "redraw",
+        "peek",
         "bad luck",
         "flush deck"
     ],
@@ -62,24 +63,42 @@
     "days": 10,
     "leveltwonpcstate": [],
     "levelthreenpcstate": [
-        "coin flip dexter defeated"
+
+    ],
+      "levelfournpcstate": [
 
     ],
     "slots_vest": false,
     "cutscene1": true,
     "cutscene2": true,
     "quest1complete": false,
+
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
     "coinflipbetteymoney": 0,
+    "coinflipdextermoney": 0,
+    "coinflipbonniemoney": 0,
+
     "opossumnellymoney": 0,
     "opossumsallymoney": 0,
     "opossuminacancandymoney": 0,
+    "opossuminacanbillybobmoney": 0,
+
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 0,
     "blackjackmackmoney": 0,
+    "blackjackalbertmoney": 0,
+
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
+
     "slotsrippasnappamoney": 0,
-    "crapscrappymoney": 0
+    "slotsbroganmoney": 0,
+
+    "crapscrappymoney": 0,
+    "crapsjunponmoney": 0,
+
+    "dicefightersirsiegfriedmoney": 0,
+
+    "highlowdienamoney": 0
 }

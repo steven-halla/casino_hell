@@ -311,3 +311,12 @@ class Controller:
             self.isRightPressedSwitch = False
             return True
         return False
+
+    @property
+    def start_button(self) -> bool:
+        if self.isPPressed or self.isRightPressedSwitch:
+            self.isRightPressed = False
+            self.isRightPressedSwitch = False
+            return True
+        return False
+

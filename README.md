@@ -261,12 +261,23 @@ on the bottom not sure what is best approach between what leve you get things
 # first lets display teh full image
 # then lets do a section 
 # then do 3 sections and store each one as a param
-# cycle through the images
+# cycle through the images\
+
+# level one i am ok having 6 screens with 500 gold each to make it easier on player
+# i nee to work on quest
+# i need to creaet something in game to take up time and create a relief from gambling / talking
+# lets have hidden journals this could maybe be a good idea
 
 
 
+# a food that lets you save DO NOT DELETE THIS SLINE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!############
 
 
+
+# if I decide to go forward with % chance for magic, this will mean an over haul
+# stage 5 should focus on this 
+# peek - maybe have 1 more  at level 3 and 5
+# shake - at level 5 all oposum cans shake 
 
 
 

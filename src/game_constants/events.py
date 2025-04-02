@@ -46,6 +46,10 @@ class Events(Enum):
 
     SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED = "slots_level_3_secret_item_acquired"
 
+    # below is level 4:
+    COIN_FLIP_BONNIE_DEFEATED = "coin flip bonnie defeated"
+
+
 
     @staticmethod
     def add_event_to_player(player, event):

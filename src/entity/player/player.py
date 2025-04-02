@@ -94,6 +94,7 @@ class Player(Entity):
 
         self.level_two_npc_state = []
         self.level_three_npc_state = []
+        self.level_four_npc_state = []
         self.leveling_up = False
 
         self.stamina_increase_from_level = 20
@@ -180,6 +181,7 @@ class Player(Entity):
             "days": self.days,
             "leveltwonpcstate": self.level_two_npc_state,
             "levelthreenpcstate": self.level_three_npc_state,
+            "levelfournpcstate": self.level_four_npc_state,
             "slots_vest": self.slots_vest,
 
             "cutscene1": state.restScreen.barscene1,
@@ -190,22 +192,35 @@ class Player(Entity):
             "coinfliptedmoney": state.coinFlipTedScreen.coinFlipTedMoney,
             "coinflipfredmoney": state.coinFlipFredScreen.coinFlipFredMoney,
             "coinflipbetteymoney": state.coinFlipBettyScreen.money,
+            "coinflipdextermoney": state.coinFlipDexterScreen.money,
+            "coinflipbonniemoney": state.coinFlipBonnieScreen.money,
 
             "opossumnellymoney": state.opossumInACanNellyScreen.nellyOpossumMoney,
             "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
-            "opossuminacancandymoney": state.opossumInACanCandyScreen.sallyOpossumMoney,
+            "opossuminacancandymoney": state.opossumInACanCandyScreen.candyOpossumMoney,
+            "opossuminacanbillybobmoney": state.opossumInACanBillyBobScreen.billybobMoney,
 
             "blackjackthomasmoney": state.blackJackThomasScreen.cheater_bob_money,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
             "blackjackmackmoney": state.blackJackMackScreen.money,
+            "blackjackalbertmoney": state.blackJackAlbertScreen.money,
 
             "shopkeeperpotion": self.shop_keep_potion,
             "shopkeepersavecoin": self.shop_keep_save_coin,
 
 
-            # level 2
             "slotsrippasnappamoney": state.slotsRippaSnappaScreen.money,
+            "slotsbroganmoney": state.slotsBroganScreen.money,
+
             "crapscrappymoney": state.crapsHappyScreen.money,
+            "crapsjunponmoney": state.crapsJunponScreen.money,
+
+
+            "dicefightersirsiegfriedmoney": state.diceFighterSirSiegfriedScreen.money,
+
+            "highlowdienamoney": state.highLowDienaScreen.money,
+
+
 
             # Add more stats as needed
         }
@@ -1957,6 +1972,7 @@ class Player(Entity):
             # Update player's stats with the loaded data
             state.player.level_two_npc_state = player_data['leveltwonpcstate']
             state.player.level_three_npc_state = player_data['levelthreenpcstate']
+            state.player.level_four_npc_state = player_data['levelfournpcstate']
             state.player.slots_vest = player_data['slots_vest']
 
             state.player.level = player_data['level']
@@ -1993,7 +2009,7 @@ class Player(Entity):
 
             state.opossumInACanNellyScreen.nellyOpossumMoney = player_data['opossumnellymoney']
             state.opossumInACanSallyScreen.sallyOpossumMoney = player_data['opossumsallymoney']
-            state.opossumInACanCandyScreen.sallyOpossumMoney = player_data['opossuminacancandymoney']
+            state.opossumInACanCandyScreen.candyOpossumMoney = player_data['opossuminacancandymoney']
 
 
             state.blackJackThomasScreen.cheater_bob_money = player_data['blackjackthomasmoney']
@@ -2011,6 +2027,20 @@ class Player(Entity):
             state.slotsRippaSnappaScreen.money = player_data['slotsrippasnappamoney']
             state.crapsHappyScreen.money = player_data['crapscrappymoney']
 
+            # level 3
+            state.coinFlipDexterScreen.money = player_data['coinflipdextermoney']
+            state.opossumInACanBillyBobScreen.money = player_data['opossuminacanbillybobmoney']
+            state.blackJackAlbertScreen.money = player_data['blackjackalbertmoney']
+            state.slotsBroganScreen.money = player_data['slotsbroganmoney']
+            state.crapsJunponScreen.money = player_data['crapsjunponmoney']
+            state.diceFighterSirSiegfriedScreen.money = player_data['dicefightersirsiegfriedmoney']
+            state.highLowDienaScreen.money = player_data['highlowdienamoney']
+
+
+            #level 4
+
+
+            state.coinFlipBonnieScreen.money = player_data['coinflipbonniemoney']
 
 
 
@@ -2023,10 +2053,8 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.area3RestScreen
-
-
-            state.area3RestScreen.start(state)
+            state.currentScreen = state.area4RestScreen
+            state.area4RestScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")
