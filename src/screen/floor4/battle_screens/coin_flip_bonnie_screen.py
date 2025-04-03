@@ -116,6 +116,8 @@ class CoinFlipBonnieScreen(GambleScreen):
     # dont draw the coin if its a draw, or maybe draw a bird or animal in its place that "stole/ate
     # the coin.
 
+    # maybe give extra EXP for luck stat , higher luck higher % to get extra exp , money
+
     COIN_FLIP_SCREEN: str = "coin_flip_screen"
     BACK: str = "Back"
     RESULTS_SCREEN: str = "results_screen"
