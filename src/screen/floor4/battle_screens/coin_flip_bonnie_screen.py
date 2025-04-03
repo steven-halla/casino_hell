@@ -62,6 +62,11 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.debuff_double_flip: int = 0
         self.fate_holder:list = []
 
+        self.even = False
+        self.odd = False
+        self.tri = False
+
+
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "Bonnie: It's been a while since I last had a decent challenge."
@@ -532,58 +537,60 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.PLAYER_LOSE_SCREEN
 
     def update_flip_coin(self):
-        even = False
-        odd = False
-        tri = False
+
 
         if self.heads_force_active == True:
             self.result = CoinFlipConstants.HEADS.value
             #
-        if even == False and odd == False and tri == False:
+        if self.even == False and self.odd == False and self.tri == False:
             coin_fate = random.randint(1, 3)
+            print("YOur coin fate" + str(coin_fate))
             if coin_fate == 1:
-                even = True
+                self.even = True
             elif coin_fate == 2:
-                odd = True
+                self.odd = True
             elif coin_fate == 3:
-                tri = True
+                self.tri = True
 
-        if even == True and self.heads_force_active == False:
+        if self.even == True and self.heads_force_active == False:
+            print("555")
 
             if self.phase == 1:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 2:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 3:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 4:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 5:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
 
-        elif odd == True and self.heads_force_active == False:
+        elif self.odd == True and self.heads_force_active == False:
+            print("569")
             if self.phase == 1:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 2:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 3:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 4:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 5:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
 
-        elif tri == True and self.heads_force_active == False:
+        elif self.tri == True and self.heads_force_active == False:
+
             if self.phase == 1:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 2:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 3:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 4:
-                self.result = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 5:
-                self.result = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
 
         self.result_anchor = False
     def bet_screen_helper(self,state,  controller):
