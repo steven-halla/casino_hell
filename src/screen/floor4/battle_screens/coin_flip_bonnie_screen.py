@@ -206,7 +206,6 @@ class CoinFlipBonnieScreen(GambleScreen):
                     self.update_flip_coin()
                 else:
                     self.update_double_flip_coin()
-
             if controller.confirm_button:
                 self.update_flip_coin_logic_helper(controller)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
@@ -256,31 +255,21 @@ class CoinFlipBonnieScreen(GambleScreen):
             else:
                 self.draw_double_flip(state)
         elif self.game_state == self.RESULTS_SCREEN:
-            if self.debuff_double_flip == 0:
-                self.draw_results_screen_logic(state)
-            else:
-                self.draw_double_flip_results_screen_logic(state)
+            self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
-            if self.debuff_double_flip == 0:
-                self.draw_results_screen_logic(state)
-            else:
-                self.draw_double_flip_results_screen_logic(state)
+            self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].draw(state)
-            if self.debuff_double_flip == 0:
-                self.draw_results_screen_logic(state)
-            else:
-                self.draw_double_flip_results_screen_logic(state)
+            self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
             self.battle_messages[self.PLAYER_DRAW_MESSAGE].draw(state)
-            if self.debuff_double_flip == 0:
-                self.draw_results_screen_logic(state)
-            else:
-                self.draw_double_flip_results_screen_logic(state)
+            self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
         pygame.display.flip()
+
+
     def update_choose_side_logic(self, controller, state):
         self.battle_messages[self.CHOOSE_SIDE_MESSAGE].update(state)
         if controller.up_button:
@@ -304,79 +293,6 @@ class CoinFlipBonnieScreen(GambleScreen):
                 self.headstailsindex = 0
                 self.game_state = self.WELCOME_SCREEN
 
-    def draw_choose_side_logic(self, state):
-        self.battle_messages[self.CHOOSE_SIDE_MESSAGE].draw(state)
-        choice_spacing = 40
-        text_x_offset = 60
-        text_y_offset = 15
-        arrow_x_offset = 12
-        black_box_height = 221 - 50  # Adjust height
-        black_box_width = 200 - 10  # Adjust width to match the left box
-        border_width = 5
-        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-        start_y_right_box = 240  # Adjust vertical alignment
-        black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill(BLACK)
-        white_border = pygame.Surface(
-            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
-        )
-        white_border.fill(WHITE)
-        white_border.blit(black_box, (border_width, border_width))
-        black_box_x = start_x_right_box - border_width
-        black_box_y = start_y_right_box - border_width
-        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-        for idx, choice in enumerate(self.heads_or_tails_menu):
-            y_position = start_y_right_box + idx * choice_spacing
-            state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
-                (start_x_right_box + text_x_offset, y_position + text_y_offset)
-            )
-
-        arrow_y_position = start_y_right_box + (self.headstailsindex * choice_spacing) + text_y_offset
-        state.DISPLAY.blit(
-            self.font.render("->", True, WHITE),
-            (start_x_right_box + arrow_x_offset, arrow_y_position)
-        )
-
-    def draw_double_flip_results_screen_logic(self, state):
-        # Determine images based on coin results
-        image1 = self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
-        image2 = self.heads_image if self.double_coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
-
-        if self.heads_force_active:
-            image1 = self.heads_image  # force override for coin 1
-
-        # Center Y position and coin 1 X center
-        screen_center_x = state.DISPLAY.get_width() // 2
-        screen_center_y = state.DISPLAY.get_height() // 2
-        coin_spacing = 200
-
-        # Coin 1 placement
-        image1_rect = image1.get_rect()
-        image1_rect.center = (screen_center_x - coin_spacing // 2, screen_center_y)
-
-        # Coin 2 placement (200px to the right of Coin 1)
-        image2_rect = image2.get_rect()
-        image2_rect.center = (screen_center_x + coin_spacing // 2, screen_center_y)
-
-        # Draw both coins
-        state.DISPLAY.blit(image1, image1_rect)
-        state.DISPLAY.blit(image2, image2_rect)
-
-    def draw_results_screen_logic(self, state):
-        self.image_to_display = (
-            self.heads_image
-            if self.coin_landed == CoinFlipConstants.HEADS.value
-            else self.tails_image
-        )
-
-        if self.heads_force_active == True:
-            self.image_to_display = self.heads_image
-
-        image_rect = self.image_to_display.get_rect()
-        image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
-        state.DISPLAY.blit(self.image_to_display, image_rect)
 
     def update_magic_menu_selection_box(self, controller, state):
         if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
@@ -413,47 +329,7 @@ class CoinFlipBonnieScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
                 self.game_state = self.WELCOME_SCREEN
-    def draw_magic_menu_selection_box(self, state):
-        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
-            self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
-        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
-            self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
-        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
 
-        choice_spacing = 40
-        text_x_offset = 60
-        text_y_offset = 15
-        arrow_x_offset = 12
-        black_box_height = 221 - 50
-        black_box_width = 200 - 10
-        border_width = 5
-        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-        start_y_right_box = 240
-        black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill(BLACK)
-
-        white_border = pygame.Surface(
-            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
-        )
-        white_border.fill(WHITE)
-        white_border.blit(black_box, (border_width, border_width))
-        black_box_x = start_x_right_box - border_width
-        black_box_y = start_y_right_box - border_width
-        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-        for idx, choice in enumerate(self.magic_menu_selector):
-            y_position = start_y_right_box + idx * choice_spacing
-            state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
-                (start_x_right_box + text_x_offset, y_position + text_y_offset)
-            )
-
-        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
-        state.DISPLAY.blit(
-            self.font.render("->", True, WHITE),
-            (start_x_right_box + arrow_x_offset, arrow_y_position)
-        )
     def update_welcome_screen_logic(self, controller, state):
         if self.welcome_screen_index == self.flip_coin_index and controller.confirm_button:
             state.player.stamina_points -= self.low_stamina_drain
@@ -466,6 +342,254 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.reset_coin_flip_game()
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
+
+    def update_flip_coin_logic_helper(self,controller):
+        if self.heads_force_active == True:
+            self.coin_landed = CoinFlipConstants.HEADS.value
+
+        if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
+            self.game_state = self.PLAYER_WIN_SCREEN
+
+        if self.debuff_double_flip == 0:
+            if self.coin_landed == self.player_choice:
+                self.game_state = self.PLAYER_WIN_SCREEN
+            elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+                self.game_state = self.PLAYER_DRAW_SCREEN
+            elif self.coin_landed != self.player_choice:
+                self.game_state = self.PLAYER_LOSE_SCREEN
+        else:
+            if self.coin_landed == self.player_choice and self.double_coin_landed == self.player_choice:
+                self.game_state = self.PLAYER_WIN_SCREEN
+            elif (self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice) and self.shield_debuff > 0:
+                self.game_state = self.PLAYER_DRAW_SCREEN
+            elif self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice:
+                self.game_state = self.PLAYER_LOSE_SCREEN
+
+
+    def update_double_flip_coin(self):
+        # Coin 1 (uses phase-based logic)
+        if self.heads_force_active:
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        else:
+            if not self.even and not self.odd and not self.tri:
+                coin_fate = random.randint(1, 3)
+                print("Coin 1 fate:", coin_fate)
+                if coin_fate == 1:
+                    self.even = True
+                elif coin_fate == 2:
+                    self.odd = True
+                elif coin_fate == 3:
+                    self.tri = True
+
+            if self.even:
+                if self.phase in [1, 2, 5]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [3, 4]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+            elif self.odd:
+                if self.phase in [1, 2, 3, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+                elif self.phase == 4:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+
+            elif self.tri:
+                if self.phase in [1, 3, 4]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [2, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+        # Coin 2 (simple 50/50) → assign to double_coin_landed
+        self.double_coin_landed = random.choice([
+            CoinFlipConstants.HEADS.value,
+            CoinFlipConstants.TAILS.value
+        ])
+
+        self.result_anchor = False
+
+    def update_double_flip_coin(self):
+        # Coin 1 (uses phase-based logic)
+        if self.heads_force_active:
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        else:
+            if not self.even and not self.odd and not self.tri:
+                coin_fate = random.randint(1, 3)
+                print("Coin 1 fate:", coin_fate)
+                if coin_fate == 1:
+                    self.even = True
+                elif coin_fate == 2:
+                    self.odd = True
+                elif coin_fate == 3:
+                    self.tri = True
+
+            if self.even:
+                if self.phase in [1, 2, 5]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [3, 4]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+            elif self.odd:
+                if self.phase in [1, 2, 3, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+                elif self.phase == 4:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+
+            elif self.tri:
+                if self.phase in [1, 3, 4]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [2, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+        # Coin 2 (simple 50/50) → assign to double_coin_landed
+        self.double_coin_landed = random.choice([
+            CoinFlipConstants.HEADS.value,
+            CoinFlipConstants.TAILS.value
+        ])
+
+        self.result_anchor = False
+
+    def update_player_draw_screen_helper(self):
+        self.reset_round()
+        self.game_state = self.WELCOME_SCREEN
+
+
+    def update_flip_coin(self):
+        if self.heads_force_active == True:
+            self.result = CoinFlipConstants.HEADS.value
+            #
+        if self.even == False and self.odd == False and self.tri == False:
+            coin_fate = random.randint(1, 3)
+            print("YOur coin fate" + str(coin_fate))
+            if coin_fate == 1:
+                self.even = True
+            elif coin_fate == 2:
+                self.odd = True
+            elif coin_fate == 3:
+                self.tri = True
+
+        if self.even == True and self.heads_force_active == False:
+            if self.phase == 1:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            elif self.phase == 2:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            elif self.phase == 3:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+            elif self.phase == 4:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+            elif self.phase == 5:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+
+        elif self.odd == True and self.heads_force_active == False:
+            if self.phase == 1:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+            elif self.phase == 2:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+            elif self.phase == 3:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+            elif self.phase == 4:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            elif self.phase == 5:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+
+        elif self.tri == True and self.heads_force_active == False:
+            if self.phase == 1:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            elif self.phase == 2:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+            elif self.phase == 3:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            elif self.phase == 4:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            elif self.phase == 5:
+                self.coin_landed = CoinFlipConstants.TAILS.value
+
+        self.result_anchor = False
+
+    def update_bet_screen_helper(self,state,  controller):
+        if controller.action_and_cancel_button:
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+            self.game_state = self.WELCOME_SCREEN
+        min_bet = 50
+        if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
+            max_bet = 400
+        else:
+            max_bet = 200
+        if controller.up_button:
+            self.menu_movement_sound.play()
+            self.bet += min_bet
+        elif controller.down_button:
+            self.menu_movement_sound.play()
+            self.bet -= min_bet
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+
+    def update_bonnies_casting_spell_screen_helper(self, state: 'GameState'):
+        if state.controller.confirm_button:
+            self.bonnie_magic_points -= 1
+            self.debuff_double_flip += 10
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_coin_flip_screen_helper(self, state: 'GameState'):
+        self.result_anchor = True
+        if self.coin_bottom == True:
+            self.game_state = self.RESULTS_SCREEN
+
+    def update_player_win_screen_helper(self, state: 'GameState'):
+        perception_bonus = 0
+        amount_to_gain = min(perception_bonus, self.money)
+        self.reset_round()
+        state.player.exp += self.exp_gain_high
+        state.player.money += amount_to_gain
+        self.money -= amount_to_gain
+        self.game_state = self.WELCOME_SCREEN
+
+        if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
+            for bonus in range(state.player.perception):
+                perception_bonus += 10
+            if self.money < 0:
+                self.money = 0
+            state.player.money += amount_to_gain
+            self.money -= amount_to_gain
+            self.game_state = self.WELCOME_SCREEN
+    def update_player_lose_message_helper(self, state: 'GameState'):
+        self.reset_round()
+        state.player.exp += self.exp_gain_low
+        state.player.money -= self.bet
+        self.money += self.bet
+        self.game_state = self.WELCOME_SCREEN
+
+
+    def game_over_screen_level_4(self, state: 'GameState', controller):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+        elif state.player.stamina_points <= no_stamina_game_over:
+            if controller.confirm_button:
+                self.reset_coin_flip_game()
+                state.player.money -= 100
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+    def draw_game_over_screen_helper(self, state: 'Gamestate'):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        elif state.player.stamina_points <= no_stamina_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+
+
+    def draw_coin_results_single_or_double_flip(self, state: 'GameState'):
+        if self.debuff_double_flip == 0:
+            self.draw_results_screen_logic(state)
+        else:
+            self.draw_double_flip_results_screen_logic(state)
+
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
         horizontal_padding = 25
@@ -609,188 +733,122 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.initial_coin_image_position = (300, 250)
 
         state.DISPLAY.blit(sprite, coin_image_position)
-    def update_flip_coin_logic_helper(self,controller):
-        if self.heads_force_active == True:
-            self.coin_landed = CoinFlipConstants.HEADS.value
 
-        if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
-            self.game_state = self.PLAYER_WIN_SCREEN
+    def draw_choose_side_logic(self, state):
+        self.battle_messages[self.CHOOSE_SIDE_MESSAGE].draw(state)
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        if self.debuff_double_flip == 0:
-            if self.coin_landed == self.player_choice:
-                self.game_state = self.PLAYER_WIN_SCREEN
-            elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-                self.game_state = self.PLAYER_DRAW_SCREEN
-            elif self.coin_landed != self.player_choice:
-                self.game_state = self.PLAYER_LOSE_SCREEN
-        else:
-            if self.coin_landed == self.player_choice and self.double_coin_landed == self.player_choice:
-                self.game_state = self.PLAYER_WIN_SCREEN
-            elif (self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice) and self.shield_debuff > 0:
-                self.game_state = self.PLAYER_DRAW_SCREEN
-            elif self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice:
-                self.game_state = self.PLAYER_LOSE_SCREEN
+        for idx, choice in enumerate(self.heads_or_tails_menu):
+            y_position = start_y_right_box + idx * choice_spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
 
+        arrow_y_position = start_y_right_box + (self.headstailsindex * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)
+        )
 
-    def update_double_flip_coin(self):
-        # Coin 1 (uses phase-based logic)
+    def draw_double_flip_results_screen_logic(self, state):
+        # Determine images based on coin results
+        image1 = self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
+        image2 = self.heads_image if self.double_coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
+
         if self.heads_force_active:
-            self.coin_landed = CoinFlipConstants.HEADS.value
-        else:
-            if not self.even and not self.odd and not self.tri:
-                coin_fate = random.randint(1, 3)
-                print("Coin 1 fate:", coin_fate)
-                if coin_fate == 1:
-                    self.even = True
-                elif coin_fate == 2:
-                    self.odd = True
-                elif coin_fate == 3:
-                    self.tri = True
+            image1 = self.heads_image  # force override for coin 1
 
-            if self.even:
-                if self.phase in [1, 2, 5]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [3, 4]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
+        # Center Y position and coin 1 X center
+        screen_center_x = state.DISPLAY.get_width() // 2
+        screen_center_y = state.DISPLAY.get_height() // 2
+        coin_spacing = 200
 
-            elif self.odd:
-                if self.phase in [1, 2, 3, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-                elif self.phase == 4:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
+        # Coin 1 placement
+        image1_rect = image1.get_rect()
+        image1_rect.center = (screen_center_x - coin_spacing // 2, screen_center_y)
 
-            elif self.tri:
-                if self.phase in [1, 3, 4]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [2, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
+        # Coin 2 placement (200px to the right of Coin 1)
+        image2_rect = image2.get_rect()
+        image2_rect.center = (screen_center_x + coin_spacing // 2, screen_center_y)
 
-        # Coin 2 (simple 50/50) → assign to double_coin_landed
-        self.double_coin_landed = random.choice([
-            CoinFlipConstants.HEADS.value,
-            CoinFlipConstants.TAILS.value
-        ])
+        # Draw both coins
+        state.DISPLAY.blit(image1, image1_rect)
+        state.DISPLAY.blit(image2, image2_rect)
 
-        self.result_anchor = False
-
-    def update_double_flip_coin(self):
-        # Coin 1 (uses phase-based logic)
-        if self.heads_force_active:
-            self.coin_landed = CoinFlipConstants.HEADS.value
-        else:
-            if not self.even and not self.odd and not self.tri:
-                coin_fate = random.randint(1, 3)
-                print("Coin 1 fate:", coin_fate)
-                if coin_fate == 1:
-                    self.even = True
-                elif coin_fate == 2:
-                    self.odd = True
-                elif coin_fate == 3:
-                    self.tri = True
-
-            if self.even:
-                if self.phase in [1, 2, 5]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [3, 4]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-
-            elif self.odd:
-                if self.phase in [1, 2, 3, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-                elif self.phase == 4:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-
-            elif self.tri:
-                if self.phase in [1, 3, 4]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [2, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-
-        # Coin 2 (simple 50/50) → assign to double_coin_landed
-        self.double_coin_landed = random.choice([
-            CoinFlipConstants.HEADS.value,
-            CoinFlipConstants.TAILS.value
-        ])
-
-        self.result_anchor = False
-
-    def update_flip_coin(self):
-
+    def draw_results_screen_logic(self, state):
+        self.image_to_display = (
+            self.heads_image
+            if self.coin_landed == CoinFlipConstants.HEADS.value
+            else self.tails_image
+        )
 
         if self.heads_force_active == True:
-            self.result = CoinFlipConstants.HEADS.value
-            #
-        if self.even == False and self.odd == False and self.tri == False:
-            coin_fate = random.randint(1, 3)
-            print("YOur coin fate" + str(coin_fate))
-            if coin_fate == 1:
-                self.even = True
-            elif coin_fate == 2:
-                self.odd = True
-            elif coin_fate == 3:
-                self.tri = True
+            self.image_to_display = self.heads_image
 
-        if self.even == True and self.heads_force_active == False:
-            print("555")
+        image_rect = self.image_to_display.get_rect()
+        image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
+        state.DISPLAY.blit(self.image_to_display, image_rect)
+    def draw_magic_menu_selection_box(self, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
+            self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+            self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
 
-            if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 3:
-                self.coin_landed = CoinFlipConstants.TAILS.value
-            elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.TAILS.value
-            elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
 
-        elif self.odd == True and self.heads_force_active == False:
-            print("569")
-            if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.TAILS.value
-            elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value
-            elif self.phase == 3:
-                self.coin_landed = CoinFlipConstants.TAILS.value
-            elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        elif self.tri == True and self.heads_force_active == False:
+        for idx, choice in enumerate(self.magic_menu_selector):
+            y_position = start_y_right_box + idx * choice_spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
 
-            if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value
-            elif self.phase == 3:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)
+        )
 
-        self.result_anchor = False
-    def update_bet_screen_helper(self,state,  controller):
-        if controller.action_and_cancel_button:
-            controller.isBPressed = False
-            controller.isBPressedSwitch = False
-            self.game_state = self.WELCOME_SCREEN
-        min_bet = 50
-        if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
-            max_bet = 400
-        else:
-            max_bet = 200
-        if controller.up_button:
-            self.menu_movement_sound.play()
-            self.bet += min_bet
-        elif controller.down_button:
-            self.menu_movement_sound.play()
-            self.bet -= min_bet
-        if self.bet <= min_bet:
-            self.bet = min_bet
-        elif self.bet >= max_bet:
-            self.bet = max_bet
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
         enemy_name_y_position = 33
@@ -818,60 +876,3 @@ class CoinFlipBonnieScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-    def update_bonnies_casting_spell_screen_helper(self, state: 'GameState'):
-        if state.controller.confirm_button:
-            self.bonnie_magic_points -= 1
-            self.debuff_double_flip += 10
-            self.game_state = self.WELCOME_SCREEN
-    def update_coin_flip_screen_helper(self, state: 'GameState'):
-        self.result_anchor = True
-        if self.coin_bottom == True:
-            self.game_state = self.RESULTS_SCREEN
-    def update_player_win_screen_helper(self, state: 'GameState'):
-        perception_bonus = 0
-        amount_to_gain = min(perception_bonus, self.money)
-        self.reset_round()
-        state.player.exp += self.exp_gain_high
-        state.player.money += amount_to_gain
-        self.money -= amount_to_gain
-        self.game_state = self.WELCOME_SCREEN
-
-        if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
-            for bonus in range(state.player.perception):
-                perception_bonus += 10
-            if self.money < 0:
-                self.money = 0
-            state.player.money += amount_to_gain
-            self.money -= amount_to_gain
-            self.game_state = self.WELCOME_SCREEN
-    def update_player_lose_message_helper(self, state: 'GameState'):
-        self.reset_round()
-        state.player.exp += self.exp_gain_low
-        state.player.money -= self.bet
-        self.money += self.bet
-        self.game_state = self.WELCOME_SCREEN
-
-    def update_player_draw_screen_helper(self):
-        self.reset_round()
-        self.game_state = self.WELCOME_SCREEN
-
-    def game_over_screen_level_4(self, state: 'GameState', controller):
-        no_money_game_over = 0
-        no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
-            if controller.confirm_button:
-                state.currentScreen = state.gameOverScreen
-                state.gameOverScreen.start(state)
-        elif state.player.stamina_points <= no_stamina_game_over:
-            if controller.confirm_button:
-                self.reset_coin_flip_game()
-                state.player.money -= 100
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
-    def draw_game_over_screen_helper(self, state: 'Gamestate'):
-        no_money_game_over = 0
-        no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
-            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-        elif state.player.stamina_points <= no_stamina_game_over:
-            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
