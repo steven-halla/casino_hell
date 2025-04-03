@@ -8,7 +8,8 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
-class BlackJackAlbertScreen(GambleScreen):
+
+class BlackJackJasmineScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
         self.enemy_card_y_positions: list[int] = []
@@ -30,7 +31,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
         self.magic_lock: bool = False
-        self.dealer_name: str = "albert"
+        self.dealer_name: str = "jasmine"
         self.lock_down_inactive: int = 0
         self.initial_hand: int = 2
         self.hedge_hog_time: bool = False
@@ -47,31 +48,27 @@ class BlackJackAlbertScreen(GambleScreen):
         self.reveal_debuff_counter: int = 0
         self.reveal_end_counter: int = 0
         self.reveal_start_counter: int = 10
-        self.magic_menu_index:int = 0
-        self.magic_menu_reveal_index:int = 0
-        self.redraw_magic_menu_index:int = 1
-        self.back_magic_menu_index:int = 2
+        self.magic_menu_index: int = 0
+        self.magic_menu_reveal_index: int = 0
+        self.redraw_magic_menu_index: int = 1
+        self.back_magic_menu_index: int = 2
         self.index_stepper: int = 1
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.reveal_cast_cost:int = 50
-        self.redraw_cast_cost:int = 30
-        self.low_exp: int= 10
+        self.reveal_cast_cost: int = 50
+        self.redraw_cast_cost: int = 30
+        self.low_exp: int = 10
         self.med_exp: int = 20
         self.high_exp: int = 30
         self.critical_multiplier: int = 2
         self.low_stamina_drain: int = 10
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
-        self.albert_magic_points: int = 2
-        self.cards_of_frailty: int = 0
-        self.buff_peek: bool = False
-
-
+        self.jasmine_magic_points: int = 2
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "This is the welcome screen"
+                "Jasmine: This is the welcome screen"
             ]),
 
             self.BET_MESSAGE: MessageBox([
@@ -116,7 +113,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.LEVEL_UP_MESSAGE: MessageBox([
                 f"You leveld up!"
             ]),
-            self.ALBERT_CASTING_SPELL: MessageBox([
+            self.JASMINE_CASTING_SPELL: MessageBox([
                 f"Time being ever so cruel, take strong bones and turn them to dust...cards of frailty"
             ]),
 
@@ -135,7 +132,7 @@ class BlackJackAlbertScreen(GambleScreen):
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
     LEVEL_UP: str = "level_up_message"
-    ALBERT_CASTING_SPELL: str = "albert_casting_spell"
+    JASMINE_CASTING_SPELL: str = "JASMINE_CASTING_SPELL"
 
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
@@ -150,16 +147,11 @@ class BlackJackAlbertScreen(GambleScreen):
     PLAYER_WIN_ACTION_SCREEN: str = "player_win_action_phase"
     ENEMY_WIN_ACTION_SCREEN: str = "enemy_win_action_phase"
     PLAYER_ENEMY_DRAW_ACTION_SCREEN: str = "player_enemy_draw_action_phase"
-    ALBERT_CASTING_SPELL_SCREEN: str = "albert_casting_spell_screen"
-
-    #demon: why do you guys always draw 1 card per player per round why not just give players thier carss , its faster that way
-    # you silly humans make no logical sense
+    JASMINE_CASTING_SPELL_SCREEN: str = "JASMINE_CASTING_SPELL_screen"
 
     def start(self, state: 'GameState'):
         self.deck.shuffle()
         self.initialize_music()
-
-        # passtt
 
     def round_reset(self):
         self.deck.shuffle()
@@ -178,8 +170,6 @@ class BlackJackAlbertScreen(GambleScreen):
         self.enemy_card_y_positions = []
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
-        if self.cards_of_frailty > 0:
-            self.cards_of_frailty -= 1
 
     def reset_black_jack_game(self):
         self.player_card_y_positions = []
@@ -195,7 +185,7 @@ class BlackJackAlbertScreen(GambleScreen):
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
-        self.albert_magic_points = 2
+        self.jasmine_magic_points = 2
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -222,31 +212,21 @@ class BlackJackAlbertScreen(GambleScreen):
             print("TypeError: lucky_seven_buff_counter is not of the expected type")
             self.magic_lock = False
 
-        if self.game_state == self.ALBERT_CASTING_SPELL_SCREEN:
-
-            self.battle_messages[self.ALBERT_CASTING_SPELL].update(state)
-            if state.controller.isTPressed or state.controller.isAPressedSwitch:
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
-                self.albert_magic_points -= 1
-                self.cards_of_frailty += 5
+        if self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.JASMINE_CASTING_SPELL].update(state)
+            if state.controller.confirm_button:
+                self.jasmine_magic_points -= 1
                 self.game_state = self.WELCOME_SCREEN
-
         elif self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-
-
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0  # Adjust as needed
             pygame.mixer.music.set_volume(self.music_volume)
-
             self.handle_level_up(state, state.controller)
-
         elif self.game_state == self.BET_SCREEN:
             self.bet_screen_helper(controller)
             self.battle_messages[self.BET_MESSAGE].update(state)
-
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state, controller)
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
@@ -269,14 +249,11 @@ class BlackJackAlbertScreen(GambleScreen):
                 elif self.magic_menu_index == 1:
                     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
-
-
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
-            if state.controller.isTPressed:
-                state.controller.isTPressed = False
+            if state.controller.confirm_button:
                 self.round_reset()
                 state.player.exp += self.low_exp
                 self.game_state = self.WELCOME_SCREEN
@@ -285,29 +262,17 @@ class BlackJackAlbertScreen(GambleScreen):
             # First, initialize the message box and store it in the attribute
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} "
                                                                              f"money and gain {self.med_exp} experience points!"]
-
-            # Now, update the message as needed
-            if state.controller.isTPressed or state.controller.isAPressedSwitch:
-
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
+            if state.controller.confirm_button:
                 self.round_reset()
-
                 state.player.exp += self.med_exp
                 state.player.money += self.bet * self.critical_multiplier
                 self.money -= self.bet * self.critical_multiplier
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
-
-         
-
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
-            if state.controller.isTPressed or state.controller.isAPressedSwitch:
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
+            if state.controller.confirm_button:
                 self.round_reset()
-
                 state.player.money -= self.bet * self.critical_multiplier
                 self.money += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
@@ -317,7 +282,6 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
-
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp}   experience points!"]
             self.update_player_phase_win(state, controller)
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
@@ -349,8 +313,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     state.currentScreen = state.area3RestScreen
                     state.area3RestScreen.start(state)
 
-
-
     def draw(self, state: 'GameState'):
         super().draw(state)
         self.draw_hero_info_boxes(state)
@@ -358,9 +320,9 @@ class BlackJackAlbertScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.ALBERT_CASTING_SPELL_SCREEN:
+        if self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
 
-            self.battle_messages[self.ALBERT_CASTING_SPELL].draw(state)
+            self.battle_messages[self.JASMINE_CASTING_SPELL].draw(state)
 
 
         elif self.game_state == self.WELCOME_SCREEN:
@@ -482,7 +444,6 @@ class BlackJackAlbertScreen(GambleScreen):
             controller.isBPressed = False
             controller.isBPressedSwitch = False
 
-
     def update_player_phase_win(self, state, controller) -> None:
         if controller.isTPressed or controller.isAPressedSwitch:
             albert_casts_a_spell = random.randint(1, 2)
@@ -496,8 +457,8 @@ class BlackJackAlbertScreen(GambleScreen):
             self.money -= self.bet
             state.player.exp += self.low_exp
             if albert_casts_a_spell > 1:
-                if self.albert_magic_points > 0:
-                    self.game_state = self.ALBERT_CASTING_SPELL_SCREEN
+                if self.jasmine_magic_points > 0:
+                    self.game_state = self.JASMINE_CASTING_SPELL_SCREEN
                 else:
                     self.game_state = self.WELCOME_SCREEN
             else:
@@ -514,7 +475,7 @@ class BlackJackAlbertScreen(GambleScreen):
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
-    def update_player_phase_draw(self,state,  controller) -> None:
+    def update_player_phase_draw(self, state, controller) -> None:
         if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
             controller.isAPressedSwitch = False
@@ -522,7 +483,6 @@ class BlackJackAlbertScreen(GambleScreen):
 
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
-
 
     def update_magic_menu(self, state: "GameState", controller):
         controller = state.controller
@@ -665,9 +625,6 @@ class BlackJackAlbertScreen(GambleScreen):
         card_max = 3
         max_before_bust = 21
 
-
-
-
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
             controller.isUpPressedSwitch = False
@@ -683,15 +640,11 @@ class BlackJackAlbertScreen(GambleScreen):
                                               + self.move_index_by_1) % len(self.player_action_phase_choices)
             print(f"Current index: {self.player_action_phase_index}")  # Debug print to see the index
 
-        elif state.controller.isTPressed or state.controller.isAPressedSwitch:
+        elif state.controller.confirm_button:
 
             state.controller.isTPressed = False
             state.controller.isAPressedSwitch = False
             if self.player_action_phase_index == self.player_action_phase_play_index:
-                if self.cards_of_frailty > 0:
-                    self.player_score -= len(self.player_hand)
-                    print(self.player_score)
-
                 state.player.stamina_points -= self.low_stamina_drain
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
                     if self.enemy_score < self.player_score:
@@ -740,8 +693,7 @@ class BlackJackAlbertScreen(GambleScreen):
                             print(self.player_hand)
                             print(self.player_score)
                         else:
-                           self.game_state = self.ENEMY_WIN_ACTION_SCREEN
-
+                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
             if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
                     and self.redraw_counter == True):
@@ -1016,7 +968,6 @@ class BlackJackAlbertScreen(GambleScreen):
                     # Return early to stop further execution if the timer hasn't expired yet
                     return
 
-
         # Additional game state logic
         if self.player_score == 21 and self.enemy_score == 21:
             self.game_state = self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN
@@ -1025,7 +976,6 @@ class BlackJackAlbertScreen(GambleScreen):
         self.hedge_hog_time = True  # Temporarily force it to True
 
         if self.player_score == 21 and self.hedge_hog_time:
-
             self.game_state = self.PLAYER_BLACK_JACK_SCREEN
             return
 
@@ -1106,7 +1056,6 @@ class BlackJackAlbertScreen(GambleScreen):
         hero_focus_y_position = 330
         score_header = "Score"
 
-
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
@@ -1141,7 +1090,7 @@ class BlackJackAlbertScreen(GambleScreen):
         if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
             controller.isAPressedSwitch = False
-            if self.welcome_screen_index  == self.welcome_screen_play_index:
+            if self.welcome_screen_index == self.welcome_screen_play_index:
                 self.game_state = self.DRAW_CARD_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN

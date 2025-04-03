@@ -683,13 +683,9 @@ class HighLowDienaScreen(GambleScreen):
                 state.player.focus_points -= self.buff_red_card_only_in_deck_cost
                 self.game_state = self.WELCOME_SCREEN
 
-
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
                 self.game_state = self.WELCOME_SCREEN
-
                 self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-
-
 
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
