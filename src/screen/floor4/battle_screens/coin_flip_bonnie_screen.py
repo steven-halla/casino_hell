@@ -156,33 +156,24 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.bonnie_magic_points = 2
 
     def reset_round(self):
-
         self.battle_messages[self.WELCOME_MESSAGE].reset()
-
         self.weighted_coin = False
         self.heads_force_active = False
-        # self.coin_image_position = (300, 400)  # Reset to the initial value at the start of the round
-
         self.coin_bottom = False
         self.result_anchor = False
         self.image_to_display = ""
         self.player_choice = ""
         self.timer_start = None  # Initialize the timer variable
-
         self.phase += 1
         if self.phase > 5:
             self.phase = 1
-
         if self.shield_debuff > 0:
             self.shield_debuff -= 1
         if self.shield_debuff == 0 and self.weighted_coin == False:
             self.magic_lock = False
         if self.debuff_double_flip > 0:
             self.debuff_double_flip -= 1
-
-
     def update(self, state):
-
         super().update(state)
         controller = state.controller
         controller.update()
@@ -191,24 +182,13 @@ class CoinFlipBonnieScreen(GambleScreen):
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_BONNIE_DEFEATED)
-
-
-        if self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
-            print("dfljldsa;jfldsjfjdsalfj;lsajf;lsakfj;slafkj;sajflksafjsla;fj")
-            self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].update(state)
-            if state.controller.isTPressed or state.controller.isAPressedSwitch:
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
-                self.bonnie_magic_points -= 1
-                self.debuff_money_balancer = 5
-                self.game_state = self.WELCOME_SCREEN
-
-
-
-        elif self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
+        elif self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].update(state)
+            self.update_bonnies_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.bet_screen_helper(state, controller)
@@ -218,133 +198,32 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.update_choose_side_logic(controller, state)
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.battle_messages[self.COIN_FLIP_MESSAGE].update(state)
-            self.result_anchor = True
-            if self.coin_bottom == True:
-                self.game_state = self.RESULTS_SCREEN
+            self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
             if self.result_anchor == True:
                 self.update_flip_coin(controller)
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
-                if self.heads_force_active == True:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
-                    self.game_state = self.PLAYER_WIN_SCREEN
-
-                if self.coin_landed == self.player_choice:
-                    self.game_state = self.PLAYER_WIN_SCREEN
-                elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-
-                    self.game_state = self.PLAYER_DRAW_SCREEN
-                elif self.coin_landed != self.player_choice:
-                    self.game_state = self.PLAYER_LOSE_SCREEN
-
+            if controller.confirm_button:
+                self.update_flip_coin_logic_helper(controller)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You WIN {self.bet}:"
                                                                       f" money and gain {self.exp_gain_high}:  "
                                                                       f" experience points!"]
             self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
-
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
-                self.reset_round()
-
-                state.player.exp += self.exp_gain_high
-
-                if self.debuff_money_balancer == 0:
-                    state.player.money += self.bet
-                else:
-                    state.player.money += math.ceil(self.bet / 2)
-
-
-
-                if self.debuff_money_balancer == 0:
-                    self.money -= math.ceil(self.bet / 2)
-                else:
-                    self.money -= self.bet
-                perception_bonus = 0  # Initialize perception bonus
-
-
-
-                if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
-                    perception_bonus = 0  # Initialize perception bonus
-
-                    for bonus in range(state.player.perception):  # Loop for each perception point
-                        perception_bonus += 10  # Add +10 for each perception point
-
-                    # Ensure enemy money doesn't go below 0
-                    if self.money < 0:
-                        self.money = 0
-
-                    # Player should only receive what is actually available
-                    amount_to_gain = min(perception_bonus, self.money)  # Only take what's available
-                    state.player.money += amount_to_gain
-
-                    # Deduct from enemy money
-                    self.money -= amount_to_gain
-
-                if self.debuff_money_balancer == 0 and self.money < 1000 and self.bonnie_magic_points > 0:
-                    print("dfjs;fldsajf;dsalfjdsjfldsjalfjsl;ajfa")
-                    dexter_casting_chance = random.randint(1, 5)
-                    if dexter_casting_chance == 1:
-                        print("mew mew mew mew mew mew ew")
-
-                        self.game_state = self.BONNIE_CASTING_SPELL_SCREEN
-                    else:
-                        self.game_state = self.WELCOME_SCREEN
-
-                else:
-                    self.game_state = self.WELCOME_SCREEN
+            if controller.confirm_button:
+                self.update_player_win_screen_helper(state)
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"You Lose! You Lose {self.bet}:"
                                                                        f" money and gain {self.exp_gain_low}:   "
                                                                        f"experience points!"]
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
-                self.reset_round()
-                state.player.exp += self.exp_gain_low
-                if self.debuff_money_balancer == 0:
-                    self.money += self.bet
-                else:
-                    self.money += math.ceil(self.bet / 2)
-
-                if self.debuff_money_balancer == 0:
-                    state.player.money += math.ceil(self.bet / 2)
-                else:
-                    state.player.money -= self.bet
-                self.game_state = self.WELCOME_SCREEN
+            if controller.confirm_button:
+                self.update_player_lose_message_helper(state)
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
             self.battle_messages[self.PLAYER_DRAW_MESSAGE].update(state)
-
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
-                self.reset_round()
-
-                self.game_state = self.WELCOME_SCREEN
-
+            if controller.confirm_button:
+                self.update_player_draw_screen_helper()
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-
-            if state.player.money <= no_money_game_over:
-                if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-            elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    self.reset_coin_flip_game()
-                    state.player.money -= 100
-                    # state.currentScreen = state.area3RestScreen
-                    # state.area3RestScreen.start(state)
+            self.game_over_screen_level_4(state, controller)
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -739,6 +618,22 @@ class CoinFlipBonnieScreen(GambleScreen):
         # Blit (draw) the subsurface (the selected coin) onto the display surface
         state.DISPLAY.blit(sprite, coin_image_position)
 
+
+    def update_flip_coin_logic_helper(self,controller):
+
+        if self.heads_force_active == True:
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
+            self.game_state = self.PLAYER_WIN_SCREEN
+
+        if self.coin_landed == self.player_choice:
+            self.game_state = self.PLAYER_WIN_SCREEN
+        elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+
+            self.game_state = self.PLAYER_DRAW_SCREEN
+        elif self.coin_landed != self.player_choice:
+            self.game_state = self.PLAYER_LOSE_SCREEN
+
     def update_flip_coin(self, controller):
 
 
@@ -810,6 +705,59 @@ class CoinFlipBonnieScreen(GambleScreen):
 
 
 
+    def update_bonnies_casting_spell_screen_helper(self, state: 'GameState'):
+        if state.controller.confirm_button:
+            self.bonnie_magic_points -= 1
+            self.game_state = self.WELCOME_SCREEN
+
+
+    def update_coin_flip_screen_helper(self, state: 'GameState'):
+        self.result_anchor = True
+        if self.coin_bottom == True:
+            self.game_state = self.RESULTS_SCREEN
 
 
 
+
+    def update_player_win_screen_helper(self, state: 'GameState'):
+        self.reset_round()
+
+        state.player.exp += self.exp_gain_high
+
+        if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
+            perception_bonus = 0  # Initialize perception bonus
+            for bonus in range(state.player.perception):  # Loop for each perception point
+                perception_bonus += 10  # Add +10 for each perception point
+            # Ensure enemy money doesn't go below 0
+            if self.money < 0:
+                self.money = 0
+            amount_to_gain = min(perception_bonus, self.money)  # Only take what's available
+            state.player.money += amount_to_gain
+            self.money -= amount_to_gain
+            self.game_state = self.WELCOME_SCREEN
+
+
+    def update_player_lose_message_helper(self, state: 'GameState'):
+        self.reset_round()
+        state.player.exp += self.exp_gain_low
+        state.player.money -= self.bet
+        self.money += self.bet
+        self.game_state = self.WELCOME_SCREEN
+
+    def update_player_draw_screen_helper(self):
+        self.reset_round()
+        self.game_state = self.WELCOME_SCREEN
+
+    def game_over_screen_level_4(self, state: 'GameState', controller):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+        elif state.player.stamina_points <= no_stamina_game_over:
+            if controller.confirm_button:
+                self.reset_coin_flip_game()
+                state.player.money -= 100
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)

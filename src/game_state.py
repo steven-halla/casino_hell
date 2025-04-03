@@ -73,7 +73,7 @@ from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import Oposs
 
 from screen.floor3.battle_screens.slots_brogan_screen import SlotsBroganScreen
 from screen.floor3.map_screens.area_3_rest_screen import Area3RestScreen
-from screen.floor4.battle_screens.coin_flip_bonnie import CoinFlipBonnieScreen
+from screen.floor4.battle_screens.coin_flip_bonnie_screen import CoinFlipBonnieScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 

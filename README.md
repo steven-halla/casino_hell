@@ -271,6 +271,9 @@ on the bottom not sure what is best approach between what leve you get things
 
 
 # a food that lets you save DO NOT DELETE THIS SLINE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!############
+# boss on level 4 can be fought anytime (we weant to give the player a sense of how powerful
+# they are , for players wanting a challange they'll know they can procedd forward just fine.)
+# !!!######################################################################
 
 
 
@@ -278,6 +281,7 @@ on the bottom not sure what is best approach between what leve you get things
 # stage 5 should focus on this 
 # peek - maybe have 1 more  at level 3 and 5
 # shake - at level 5 all oposum cans shake 
+
 
 
 
