@@ -45,6 +45,7 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.menu_movement_sound.set_volume(0.2)
         self.player_choice:str = ""
         self.coin_landed:str = CoinFlipConstants.HEADS.value
+        self.double_coin_landed:str = CoinFlipConstants.HEADS.value
         self.bonnie_bankrupt: int = 0
         self.magic_lock = False
         self.low_stamina_drain: int = 10
@@ -59,8 +60,8 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.result_anchor:bool = False
         self.money: int = 999
         self.bonnie_magic_points: int = 2
-        self.debuff_double_flip: int = 0
-        self.fate_holder:list = []
+        self.debuff_double_flip: int = 10
+
 
         self.even = False
         self.odd = False
@@ -107,7 +108,7 @@ class CoinFlipBonnieScreen(GambleScreen):
             # if player gets first flip, then we flip one more time.
             #  Heads force only works for first flip not 2nd
             self.BONNIE_CASTING_SPELL_MESSAGE: MessageBox([
-                f"Gods of darkness and strife, increase my power times 2...double flip!Ï"
+                f"Gods of darkness and strife,accept this unholy sacrifice and  increase my power times 2...double flip!Ï"
             ]),
         }
 
@@ -164,7 +165,6 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.timer_start = None
         self.phase += 1
         if self.phase > 5:
-            self.fate_holder = []
             self.phase = 1
         if self.shield_debuff > 0:
             self.shield_debuff -= 1
@@ -191,17 +191,22 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.update_bonnies_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
-            self.bet_screen_helper(state, controller)
+            self.update_bet_screen_helper(state, controller)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
             self.update_choose_side_logic(controller, state)
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.battle_messages[self.COIN_FLIP_MESSAGE].update(state)
+
             self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
             if self.result_anchor == True:
-                self.update_flip_coin()
+                if self.debuff_double_flip == 0:
+                    self.update_flip_coin()
+                else:
+                    self.update_double_flip_coin()
+
             if controller.confirm_button:
                 self.update_flip_coin_logic_helper(controller)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
@@ -246,18 +251,33 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.draw_magic_menu_selection_box(state)
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.battle_messages[self.COIN_FLIP_MESSAGE].draw(state)
-            self.draw_flip_coin(state)
+            if self.debuff_double_flip == 0:
+                self.draw_flip_coin(state)
+            else:
+                self.draw_double_flip(state)
         elif self.game_state == self.RESULTS_SCREEN:
-            self.draw_results_screen_logic(state)
+            if self.debuff_double_flip == 0:
+                self.draw_results_screen_logic(state)
+            else:
+                self.draw_double_flip_results_screen_logic(state)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
-            self.draw_results_screen_logic(state)
+            if self.debuff_double_flip == 0:
+                self.draw_results_screen_logic(state)
+            else:
+                self.draw_double_flip_results_screen_logic(state)
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].draw(state)
-            self.draw_results_screen_logic(state)
+            if self.debuff_double_flip == 0:
+                self.draw_results_screen_logic(state)
+            else:
+                self.draw_double_flip_results_screen_logic(state)
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
             self.battle_messages[self.PLAYER_DRAW_MESSAGE].draw(state)
-            self.draw_results_screen_logic(state)
+            if self.debuff_double_flip == 0:
+                self.draw_results_screen_logic(state)
+            else:
+                self.draw_double_flip_results_screen_logic(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
         pygame.display.flip()
@@ -318,6 +338,31 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.font.render("->", True, WHITE),
             (start_x_right_box + arrow_x_offset, arrow_y_position)
         )
+
+    def draw_double_flip_results_screen_logic(self, state):
+        # Determine images based on coin results
+        image1 = self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
+        image2 = self.heads_image if self.double_coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
+
+        if self.heads_force_active:
+            image1 = self.heads_image  # force override for coin 1
+
+        # Center Y position and coin 1 X center
+        screen_center_x = state.DISPLAY.get_width() // 2
+        screen_center_y = state.DISPLAY.get_height() // 2
+        coin_spacing = 200
+
+        # Coin 1 placement
+        image1_rect = image1.get_rect()
+        image1_rect.center = (screen_center_x - coin_spacing // 2, screen_center_y)
+
+        # Coin 2 placement (200px to the right of Coin 1)
+        image2_rect = image2.get_rect()
+        image2_rect.center = (screen_center_x + coin_spacing // 2, screen_center_y)
+
+        # Draw both coins
+        state.DISPLAY.blit(image1, image1_rect)
+        state.DISPLAY.blit(image2, image2_rect)
 
     def draw_results_screen_logic(self, state):
         self.image_to_display = (
@@ -485,6 +530,48 @@ class CoinFlipBonnieScreen(GambleScreen):
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
 
+    def draw_double_flip(self, state: 'GameState'):
+        x_positions = [85, 235, 380, 525, 670, 815, 960, 1108, 1250, 1394]
+        y_position = 110
+        width, height = 170, 190
+        time_interval = 50
+        fall_speed = 4.5
+        max_height = 250
+        drop_height = 175
+        coin_spacing = 200  # Distance between the two coins on X axis
+
+        if self.timer_start is None:
+            self.timer_start = pygame.time.get_ticks()
+
+        current_time = pygame.time.get_ticks()
+        elapsed_time = current_time - self.timer_start
+        current_coin_index = (elapsed_time // time_interval) % len(x_positions)
+        subsurface_rect = pygame.Rect(x_positions[current_coin_index], y_position, width, height)
+        sprite = self.sprite_sheet.subsurface(subsurface_rect)
+
+        cycle_time = (2 * max_height // fall_speed) + (2 * drop_height // fall_speed)
+        cycle_position = (elapsed_time // time_interval) % cycle_time
+
+        if cycle_position < (max_height // fall_speed):
+            fall_distance = fall_speed * cycle_position
+            y_position = self.initial_coin_image_position[1] - fall_distance
+        elif cycle_position < (max_height // fall_speed) + (drop_height // fall_speed):
+            fall_distance = fall_speed * (cycle_position - (max_height // fall_speed))
+            y_position = self.initial_coin_image_position[1] - max_height + fall_distance
+        else:
+            fall_distance = fall_speed * (cycle_position - (max_height // fall_speed) - (drop_height // fall_speed))
+            y_position = self.initial_coin_image_position[1] - max_height + drop_height - fall_distance
+
+        if elapsed_time >= 4000:
+            self.timer_start = None
+            self.coin_bottom = True
+            self.initial_coin_image_position = (300, 250)
+
+        x1 = self.initial_coin_image_position[0]
+        x2 = x1 + coin_spacing
+        state.DISPLAY.blit(sprite, (x1, y_position))
+        state.DISPLAY.blit(sprite, (x2, y_position))
+
     def draw_flip_coin(self, state: 'GameState'):
         x_positions = [85, 235, 380, 525, 670, 815, 960, 1108, 1250, 1394]
         y_position = 110
@@ -529,12 +616,103 @@ class CoinFlipBonnieScreen(GambleScreen):
         if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
             self.game_state = self.PLAYER_WIN_SCREEN
 
-        if self.coin_landed == self.player_choice:
-            self.game_state = self.PLAYER_WIN_SCREEN
-        elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-            self.game_state = self.PLAYER_DRAW_SCREEN
-        elif self.coin_landed != self.player_choice:
-            self.game_state = self.PLAYER_LOSE_SCREEN
+        if self.debuff_double_flip == 0:
+            if self.coin_landed == self.player_choice:
+                self.game_state = self.PLAYER_WIN_SCREEN
+            elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+                self.game_state = self.PLAYER_DRAW_SCREEN
+            elif self.coin_landed != self.player_choice:
+                self.game_state = self.PLAYER_LOSE_SCREEN
+        else:
+            if self.coin_landed == self.player_choice and self.double_coin_landed == self.player_choice:
+                self.game_state = self.PLAYER_WIN_SCREEN
+            elif (self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice) and self.shield_debuff > 0:
+                self.game_state = self.PLAYER_DRAW_SCREEN
+            elif self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice:
+                self.game_state = self.PLAYER_LOSE_SCREEN
+
+
+    def update_double_flip_coin(self):
+        # Coin 1 (uses phase-based logic)
+        if self.heads_force_active:
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        else:
+            if not self.even and not self.odd and not self.tri:
+                coin_fate = random.randint(1, 3)
+                print("Coin 1 fate:", coin_fate)
+                if coin_fate == 1:
+                    self.even = True
+                elif coin_fate == 2:
+                    self.odd = True
+                elif coin_fate == 3:
+                    self.tri = True
+
+            if self.even:
+                if self.phase in [1, 2, 5]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [3, 4]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+            elif self.odd:
+                if self.phase in [1, 2, 3, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+                elif self.phase == 4:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+
+            elif self.tri:
+                if self.phase in [1, 3, 4]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [2, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+        # Coin 2 (simple 50/50) → assign to double_coin_landed
+        self.double_coin_landed = random.choice([
+            CoinFlipConstants.HEADS.value,
+            CoinFlipConstants.TAILS.value
+        ])
+
+        self.result_anchor = False
+
+    def update_double_flip_coin(self):
+        # Coin 1 (uses phase-based logic)
+        if self.heads_force_active:
+            self.coin_landed = CoinFlipConstants.HEADS.value
+        else:
+            if not self.even and not self.odd and not self.tri:
+                coin_fate = random.randint(1, 3)
+                print("Coin 1 fate:", coin_fate)
+                if coin_fate == 1:
+                    self.even = True
+                elif coin_fate == 2:
+                    self.odd = True
+                elif coin_fate == 3:
+                    self.tri = True
+
+            if self.even:
+                if self.phase in [1, 2, 5]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [3, 4]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+            elif self.odd:
+                if self.phase in [1, 2, 3, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+                elif self.phase == 4:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+
+            elif self.tri:
+                if self.phase in [1, 3, 4]:
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                elif self.phase in [2, 5]:
+                    self.coin_landed = CoinFlipConstants.TAILS.value
+
+        # Coin 2 (simple 50/50) → assign to double_coin_landed
+        self.double_coin_landed = random.choice([
+            CoinFlipConstants.HEADS.value,
+            CoinFlipConstants.TAILS.value
+        ])
+
+        self.result_anchor = False
 
     def update_flip_coin(self):
 
@@ -593,7 +771,7 @@ class CoinFlipBonnieScreen(GambleScreen):
                 self.coin_landed = CoinFlipConstants.TAILS.value
 
         self.result_anchor = False
-    def bet_screen_helper(self,state,  controller):
+    def update_bet_screen_helper(self,state,  controller):
         if controller.action_and_cancel_button:
             controller.isBPressed = False
             controller.isBPressedSwitch = False
@@ -643,6 +821,7 @@ class CoinFlipBonnieScreen(GambleScreen):
     def update_bonnies_casting_spell_screen_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
             self.bonnie_magic_points -= 1
+            self.debuff_double_flip += 10
             self.game_state = self.WELCOME_SCREEN
     def update_coin_flip_screen_helper(self, state: 'GameState'):
         self.result_anchor = True
