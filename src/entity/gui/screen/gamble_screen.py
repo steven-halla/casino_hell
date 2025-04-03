@@ -456,5 +456,3 @@ class GambleScreen:
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
 
-
-

@@ -234,22 +234,18 @@ class CoinFlipBonnieScreen(GambleScreen):
 
         if self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
             self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].draw(state)
-
         elif self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
-
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:
             self.draw_choose_side_logic(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
         elif self.game_state == self.COIN_FLIP_SCREEN:
-
             self.battle_messages[self.COIN_FLIP_MESSAGE].draw(state)
-
             self.draw_flip_coin(state)
         elif self.game_state == self.RESULTS_SCREEN:
             self.draw_results_screen_logic(state)
@@ -258,28 +254,16 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.draw_results_screen_logic(state)
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].draw(state)
-
             self.draw_results_screen_logic(state)
-
         elif self.game_state == self.PLAYER_DRAW_SCREEN:
             self.battle_messages[self.PLAYER_DRAW_MESSAGE].draw(state)
-
             self.draw_results_screen_logic(state)
-
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-            if state.player.money <= no_money_game_over:
-                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina_points <= no_stamina_game_over:
-                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
-
+            self.draw_game_over_screen_helper(state)
         pygame.display.flip()
-
 
     def update_choose_side_logic(self, controller, state):
         self.battle_messages[self.CHOOSE_SIDE_MESSAGE].update(state)
-
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
             controller.isUpPressedSwitch = False
@@ -761,3 +745,11 @@ class CoinFlipBonnieScreen(GambleScreen):
                 state.player.money -= 100
                 state.currentScreen = state.area4RestScreen
                 state.area4RestScreen.start(state)
+
+    def draw_game_over_screen_helper(self, state: 'Gamestate')
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        elif state.player.stamina_points <= no_stamina_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
