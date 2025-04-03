@@ -52,18 +52,19 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.index_stepper: int = 1
         self.magic_screen_index: int = 0
         self.shield_cost: int = 30
-        self.shield_debuff:int = 0
-        self.heads_force_cost:int = 50
-        self.heads_force_active:bool = False
-        self.exp_gain_high:int = 1
-        self.exp_gain_low:int = 1
-        self.result_anchor:bool = False
+        self.shield_debuff: int = 0
+        self.heads_force_cost: int = 50
+        self.heads_force_active: bool = False
+        self.exp_gain_high: int = 1
+        self.exp_gain_low: int = 1
+        self.result_anchor: bool = False
         self.money: int = 999
         self.bonnie_magic_points: int = 2
-        self.debuff_double_flip: int = 10
-        self.even = False
-        self.odd = False
+        self.debuff_double_flip: int = 0
+        self.even: bool = False
+        self.odd: bool = False
         self.tri = False
+        self.double_flip_chance: int = 0
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -170,6 +171,14 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.magic_lock = False
         if self.debuff_double_flip > 0:
             self.debuff_double_flip -= 1
+        self.double_flip_chance += 3
+        double_flip_randomizer = random.randint(1, 100) + self.double_flip_chance
+
+        if double_flip_randomizer > 90 and self.bonnie_magic_points > 0 and self.debuff_double_flip == 0:
+            self.current_screen = self.BONNIE_CASTING_SPELL_SCREEN
+            self.double_flip_chance = 0
+
+
     def update(self, state):
         super().update(state)
         controller = state.controller
@@ -351,6 +360,7 @@ class CoinFlipBonnieScreen(GambleScreen):
             if self.coin_landed == self.player_choice:
                 self.game_state = self.PLAYER_WIN_SCREEN
             elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+
                 self.game_state = self.PLAYER_DRAW_SCREEN
             elif self.coin_landed != self.player_choice:
                 self.game_state = self.PLAYER_LOSE_SCREEN
