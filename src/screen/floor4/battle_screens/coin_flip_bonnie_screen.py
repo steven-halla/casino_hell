@@ -61,8 +61,6 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.money: int = 999
         self.bonnie_magic_points: int = 2
         self.debuff_double_flip: int = 10
-
-
         self.even = False
         self.odd = False
         self.tri = False
@@ -198,7 +196,6 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.update_choose_side_logic(controller, state)
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.battle_messages[self.COIN_FLIP_MESSAGE].update(state)
-
             self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
             if self.result_anchor == True:
@@ -538,21 +535,18 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.RESULTS_SCREEN
 
     def update_player_win_screen_helper(self, state: 'GameState'):
-        perception_bonus = 0
-        amount_to_gain = min(perception_bonus, self.money)
         self.reset_round()
         state.player.exp += self.exp_gain_high
-        state.player.money += amount_to_gain
-        self.money -= amount_to_gain
+        state.player.money += self.bet
+        self.money -= self.bet
         self.game_state = self.WELCOME_SCREEN
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
-            for bonus in range(state.player.perception):
-                perception_bonus += 10
+
             if self.money < 0:
                 self.money = 0
-            state.player.money += amount_to_gain
-            self.money -= amount_to_gain
+            state.player.money += self.bet + self.spirit_bonus
+            self.money = self.money - (self.bet - self.spirit_bonus)
             self.game_state = self.WELCOME_SCREEN
     def update_player_lose_message_helper(self, state: 'GameState'):
         self.reset_round()

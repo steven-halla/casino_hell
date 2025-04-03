@@ -68,6 +68,7 @@ class GambleScreen:
     PLAYER_STAT_LUCK = "Luck"
 
     def start(self, state: 'GameState') -> None:
+        self.spirit_bonus: int = state.player.spirit * 10
         state.player.canMove = False
         pygame.display.set_caption(self.screenName)
 
