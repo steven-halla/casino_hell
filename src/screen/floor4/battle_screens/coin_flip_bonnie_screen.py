@@ -509,7 +509,7 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
         min_bet = 50
         if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
-            max_bet = 400
+            max_bet = 200 + (self.spirit_bonus * 4)
         else:
             max_bet = 200
         if controller.up_button:
@@ -545,8 +545,9 @@ class CoinFlipBonnieScreen(GambleScreen):
 
             if self.money < 0:
                 self.money = 0
-            state.player.money += self.bet + self.spirit_bonus
-            self.money = self.money - (self.bet - self.spirit_bonus)
+            total_gain = self.bet + (self.spirit_bonus * 2)
+            state.player.money += total_gain
+            self.money -= total_gain
             self.game_state = self.WELCOME_SCREEN
     def update_player_lose_message_helper(self, state: 'GameState'):
         self.reset_round()
