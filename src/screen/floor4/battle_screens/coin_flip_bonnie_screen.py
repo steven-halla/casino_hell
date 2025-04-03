@@ -65,6 +65,8 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.odd: bool = False
         self.tri = False
         self.double_flip_chance: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -139,7 +141,8 @@ class CoinFlipBonnieScreen(GambleScreen):
     BONNIE_CASTING_SPELL_MESSAGE: str= "BONNIE_CASTING_SPELL_MESSAGE"
 
     def start(self, state: 'GameState'):
-        pass # maybe I should call reset game here? or call reset coin flip game : def start()
+        self.spirit_bonus: int = state.player.spirit
+        self.magic_bonus: int = state.player.mind
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
@@ -323,7 +326,15 @@ class CoinFlipBonnieScreen(GambleScreen):
         if controller.confirm_button:
             if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value and state.player.focus_points >= self.shield_cost:
                 state.player.focus_points -= self.shield_cost
-                self.shield_debuff = 3
+                duration_bonus = self.magic_bonus // 2
+
+                if duration_bonus < 2:
+                    duration_bonus = 0
+                elif duration_bonus < 4:
+                    duration_bonus = 1
+                elif duration_bonus >= 4:
+                    duration_bonus = 2
+                self.shield_debuff = 3 + duration_bonus
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
@@ -360,8 +371,15 @@ class CoinFlipBonnieScreen(GambleScreen):
             if self.coin_landed == self.player_choice:
                 self.game_state = self.PLAYER_WIN_SCREEN
             elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+                # in future we will need a message to display roll chances for player spells
+                shield_chance = self.magic_bonus * 10
+                random_shield = random.randint(1, 100) + shield_chance
+                # Each level should have a different % higher
+                if random_shield > 60:
+                    self.game_state = self.PLAYER_DRAW_SCREEN
+                else:
+                    self.game_state = self.PLAYER_LOSE_SCREEN
 
-                self.game_state = self.PLAYER_DRAW_SCREEN
             elif self.coin_landed != self.player_choice:
                 self.game_state = self.PLAYER_LOSE_SCREEN
         else:
@@ -519,7 +537,7 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
         min_bet = 50
         if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
-            max_bet = 200 + (self.spirit_bonus * 4)
+            max_bet = 200 + (self.spirit_bonus * 40)
         else:
             max_bet = 200
         if controller.up_button:
@@ -555,7 +573,7 @@ class CoinFlipBonnieScreen(GambleScreen):
 
             if self.money < 0:
                 self.money = 0
-            total_gain = self.bet + (self.spirit_bonus * 2)
+            total_gain = self.bet + (self.spirit_bonus * 20)
             state.player.money += total_gain
             self.money -= total_gain
             self.game_state = self.WELCOME_SCREEN

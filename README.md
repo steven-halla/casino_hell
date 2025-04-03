@@ -270,7 +270,7 @@ on the bottom not sure what is best approach between what leve you get things
 
 
 
-# a food that lets you save DO NOT DELETE THIS SLINE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!############
+# a food that lets you save DO NOT DELETE THese LINeS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!############
 # boss on level 4 can be fought anytime (we weant to give the player a sense of how powerful
 # they are , for players wanting a challange they'll know they can procedd forward just fine.)
 # THE BELOW ARE MY THOUGHTS ON EQUIPMENT AND MAGIC
@@ -280,6 +280,8 @@ on the bottom not sure what is best approach between what leve you get things
 # HEALTH WE CAN HAVE MORE HP, AND FOOD , AT LEVELS 3 5 WE GET DAMAGE REDUCTIO
 # LUCK BETTER % CHANCE FOR ALL GAMES 
 # FOR BALANCE WE SHOULD PROABLY THINK MORE ON THIS
+# maybe create items to incrase spell chance, spell duratin, and equipment effectiveness
+# This could in fact be bonuses giving to companion items for a 5 spirit-
 # !!!######################################################################
 
 
