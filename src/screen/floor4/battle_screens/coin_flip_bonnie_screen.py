@@ -18,7 +18,7 @@ class CoinFlipBonnieScreen(GambleScreen):
         super().__init__(screenName)
         self.bet:int = 100
         self.dealer_name: str = "Bonnie"
-        self.initial_coin_image_position = (300, 250)  # Initial position for the coin
+        self.initial_coin_image_position = (300, 250)
         self.timer_start = None
         self.coin_bottom = False
         self.blit_message_x: int = 65
@@ -29,7 +29,7 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.heads_or_tails_menu: list[str] = ["Heads", "Tails", "Back"]
         self.magic_menu_selector: list[str] = []
         self.welcome_screen_index: int = 0
-        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")
         self.spell_sound.set_volume(0.3)
         self.phase: int = 1
         self.flip_coin_index: int = 0
@@ -41,9 +41,8 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.image_to_display = ""
         self.heads_image = pygame.image.load(os.path.join("./assets/images/heads.png"))
         self.tails_image = pygame.image.load(os.path.join(("./assets/images/tails.png")))
-        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")
         self.menu_movement_sound.set_volume(0.2)
-        self.weighted_coin: bool = False  # this is our magic spell heads force
         self.player_choice = ""
         self.coin_landed = CoinFlipConstants.HEADS.value
         self.bonnie_bankrupt: int = 0
@@ -148,12 +147,10 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.timer_start = None
         self.image_to_display = ""
         self.player_choice = ""
-        self.weighted_coin = False
         self.bonnie_magic_points = 2
 
     def reset_round(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
-        self.weighted_coin = False
         self.heads_force_active = False
         self.coin_bottom = False
         self.result_anchor = False
@@ -165,7 +162,7 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.phase = 1
         if self.shield_debuff > 0:
             self.shield_debuff -= 1
-        if self.shield_debuff == 0 and self.weighted_coin == False:
+        if self.shield_debuff == 0 and self.heads_force_active == False:
             self.magic_lock = False
         if self.debuff_double_flip > 0:
             self.debuff_double_flip -= 1
@@ -198,7 +195,7 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
             if self.result_anchor == True:
-                self.update_flip_coin(controller)
+                self.update_flip_coin()
             if controller.confirm_button:
                 self.update_flip_coin_logic_helper(controller)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
@@ -337,7 +334,6 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
         elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
             self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].update(state)
-
             self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
             self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
         elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
@@ -534,13 +530,12 @@ class CoinFlipBonnieScreen(GambleScreen):
         elif self.coin_landed != self.player_choice:
             self.game_state = self.PLAYER_LOSE_SCREEN
     def update_flip_coin(self):
-        if self.weighted_coin == True:
-            pass
+
         coin_fate = random.randint(1, 100)
         if coin_fate >= 51:
-            pass
+            self.coin_landed = CoinFlipConstants.HEADS.value
         elif coin_fate <= 50:
-            pass
+            self.coin_landed = CoinFlipConstants.TAILS.value
         self.result_anchor = False
     def bet_screen_helper(self,state,  controller):
         if controller.action_and_cancel_button:
@@ -598,16 +593,19 @@ class CoinFlipBonnieScreen(GambleScreen):
         if self.coin_bottom == True:
             self.game_state = self.RESULTS_SCREEN
     def update_player_win_screen_helper(self, state: 'GameState'):
+        perception_bonus = 0
+        amount_to_gain = min(perception_bonus, self.money)
         self.reset_round()
         state.player.exp += self.exp_gain_high
+        state.player.money += amount_to_gain
+        self.money -= amount_to_gain
+        self.game_state = self.WELCOME_SCREEN
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
-            perception_bonus = 0
             for bonus in range(state.player.perception):
                 perception_bonus += 10
             if self.money < 0:
                 self.money = 0
-            amount_to_gain = min(perception_bonus, self.money)
             state.player.money += amount_to_gain
             self.money -= amount_to_gain
             self.game_state = self.WELCOME_SCREEN
