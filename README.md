@@ -273,6 +273,13 @@ on the bottom not sure what is best approach between what leve you get things
 # a food that lets you save DO NOT DELETE THIS SLINE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!############
 # boss on level 4 can be fought anytime (we weant to give the player a sense of how powerful
 # they are , for players wanting a challange they'll know they can procedd forward just fine.)
+# THE BELOW ARE MY THOUGHTS ON EQUIPMENT AND MAGIC
+# SPIRIT CAN MAKE ITEMS STRONGER AT LEVEL 3 , LEVEL 4 WE GET NEW COMPANION ITEM LAW DEMON,LEVEL 5 IMPROVE COMPANION ITEMS PLUS MORE QUEST
+# PERCEPTION WE CAN HAVE AN INVENTORY LEVEL 2 AND 4 WE GET EXTRA SPACE 3 AND 5 WE CAN EQUIP MORE ITEMS, PLUS MORE CHEST
+# MAGIC WE CAN HAVE STRONGER SPELLS LEVELS 3 5 WE GET STRONGER MAGIC % ON SOME GAMES AND 2 4 WE GET LONGER DURATIONS, MORE MP
+# HEALTH WE CAN HAVE MORE HP, AND FOOD , AT LEVELS 3 5 WE GET DAMAGE REDUCTIO
+# LUCK BETTER % CHANCE FOR ALL GAMES 
+# FOR BALANCE WE SHOULD PROABLY THINK MORE ON THIS
 # !!!######################################################################
 
 

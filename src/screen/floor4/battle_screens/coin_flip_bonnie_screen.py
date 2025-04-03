@@ -18,9 +18,9 @@ class CoinFlipBonnieScreen(GambleScreen):
         super().__init__(screenName)
         self.bet:int = 100
         self.dealer_name: str = "Bonnie"
-        self.initial_coin_image_position = (300, 250)
-        self.timer_start = None
-        self.coin_bottom = False
+        self.initial_coin_image_position: tuple[int, int] = (300, 250)
+        self.timer_start:bool = None
+        self.coin_bottom:bool = False
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
@@ -38,34 +38,34 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.shield_debuff_inactive = 0
         self.quit_index: int = 3
         self.headstailsindex: int = 0
-        self.image_to_display = ""
+        self.image_to_display:str = ""
         self.heads_image = pygame.image.load(os.path.join("./assets/images/heads.png"))
         self.tails_image = pygame.image.load(os.path.join(("./assets/images/tails.png")))
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")
         self.menu_movement_sound.set_volume(0.2)
-        self.player_choice = ""
-        self.coin_landed = CoinFlipConstants.HEADS.value
+        self.player_choice:str = ""
+        self.coin_landed:str = CoinFlipConstants.HEADS.value
         self.bonnie_bankrupt: int = 0
         self.magic_lock = False
         self.low_stamina_drain: int = 10
         self.index_stepper: int = 1
         self.magic_screen_index: int = 0
         self.shield_cost: int = 30
-        self.shield_debuff = 0
-        self.heads_force_cost = 50
-        self.heads_force_active = False
-        self.exp_gain_high = 1
-        self.exp_gain_low = 1
-        self.result_anchor = False
+        self.shield_debuff:int = 0
+        self.heads_force_cost:int = 50
+        self.heads_force_active:bool = False
+        self.exp_gain_high:int = 1
+        self.exp_gain_low:int = 1
+        self.result_anchor:bool = False
         self.money: int = 999
-        self.bonnie_magic_points = 2
-        self.debuff_double_flip = 0
+        self.bonnie_magic_points: int = 2
+        self.debuff_double_flip: int = 0
+        self.fate_holder:list = []
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "Bonnie: It's been a while since I last had a decent challenge."
             ]),
-
             self.BET_MESSAGE: MessageBox([
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to go back."
             ]),
@@ -134,7 +134,7 @@ class CoinFlipBonnieScreen(GambleScreen):
     BONNIE_CASTING_SPELL_MESSAGE: str= "BONNIE_CASTING_SPELL_MESSAGE"
 
     def start(self, state: 'GameState'):
-        pass
+        pass # maybe I should call reset game here? or call reset coin flip game : def start()
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
@@ -159,6 +159,7 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.timer_start = None
         self.phase += 1
         if self.phase > 5:
+            self.fate_holder = []
             self.phase = 1
         if self.shield_debuff > 0:
             self.shield_debuff -= 1
@@ -529,13 +530,31 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.PLAYER_DRAW_SCREEN
         elif self.coin_landed != self.player_choice:
             self.game_state = self.PLAYER_LOSE_SCREEN
+
     def update_flip_coin(self):
 
         coin_fate = random.randint(1, 100)
+
+
+        for result in self.fate_holder:
+            if result == "heads":
+                print("Your coin fate is: " + str(coin_fate))
+
+                coin_fate -= 10
+                print("Your coin fate is: " + str(coin_fate))
+            elif result == "tails":
+                print("Your coin fate is: " + str(coin_fate))
+
+                coin_fate += 10
+                print("Your coin fate is: " + str(coin_fate))
+
         if coin_fate >= 51:
             self.coin_landed = CoinFlipConstants.HEADS.value
+            self.fate_holder.append(CoinFlipConstants.HEADS.value)
         elif coin_fate <= 50:
             self.coin_landed = CoinFlipConstants.TAILS.value
+            self.fate_holder.append(CoinFlipConstants.TAILS.value)
+
         self.result_anchor = False
     def bet_screen_helper(self,state,  controller):
         if controller.action_and_cancel_button:
