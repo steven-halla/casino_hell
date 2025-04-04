@@ -85,6 +85,8 @@ class Deck:
         return sum(card[2] for card in hand)
 
 
+
+
     def compute_hand_value(self, hand: List[Tuple[str, str, int]]) -> int:
         # Initialize the point value of the hand to 0
         hand_value = 0

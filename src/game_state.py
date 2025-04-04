@@ -6,6 +6,7 @@ import json
 
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
+from entity.npc.area4.area_4_rest_screen.black_jack_jasmine import BlackJackJasmine
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
@@ -73,6 +74,7 @@ from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import Oposs
 
 from screen.floor3.battle_screens.slots_brogan_screen import SlotsBroganScreen
 from screen.floor3.map_screens.area_3_rest_screen import Area3RestScreen
+from screen.floor4.battle_screens.black_jack_jasmine_screen import BlackJackJasmineScreen
 from screen.floor4.battle_screens.coin_flip_bonnie_screen import CoinFlipBonnieScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
@@ -227,6 +229,7 @@ class GameState:
 
 #-----------------------Area 4 is below-----------------------------------------#
         self.coinFlipBonnieScreen = CoinFlipBonnieScreen()
+        self.blackJackJasmineScreen = BlackJackJasmineScreen()
 
 
 

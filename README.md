@@ -282,6 +282,7 @@ on the bottom not sure what is best approach between what leve you get things
 # FOR BALANCE WE SHOULD PROABLY THINK MORE ON THIS
 # maybe create items to incrase spell chance, spell duratin, and equipment effectiveness
 # This could in fact be bonuses giving to companion items for a 5 spirit-
+# I need to do more types in parameters of my funcs "such as state: 'gamestate'"
 # !!!######################################################################
 
 
@@ -296,5 +297,16 @@ on the bottom not sure what is best approach between what leve you get things
 
 
 
+TO DO LIST:
+CREATE ALL BATTLE SCREENS FOR LEVELS 4 AND 5
+CREATE ALL MAGIC SPELLS
+CREATE ALL EQUIPMENT
+REFACTOR EVERY FILE
+FOR LEVEL 5 EVERYTHING NEEDS TO BE PERFECT AND TIGHT AS THAT WILL BE THE BASELINE FOR PREVIOUS SCREENS
+CREATE MAPS
+CREATE SOMETHING ELSE TO DO SUCH AS A MINI GAME OR SOMETHING
+MAYBE PUZZLES?
+REWORK SPIRETS
+MUSIC
 
 

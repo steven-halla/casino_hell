@@ -65,12 +65,14 @@ class BlackJackJasmineScreen(GambleScreen):
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
         self.jasmine_magic_points: int = 2
+        self.debuff_brain_rot: int = 0
+        self.debuff_brain_rot = 0
+
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "Jasmine: This is the welcome screen"
             ]),
-
             self.BET_MESSAGE: MessageBox([
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to Exit."
             ]),
@@ -114,9 +116,8 @@ class BlackJackJasmineScreen(GambleScreen):
                 f"You leveld up!"
             ]),
             self.JASMINE_CASTING_SPELL: MessageBox([
-                f"Time being ever so cruel, take strong bones and turn them to dust...cards of frailty"
+                f"Unknown man of the greatest wisdom, let your mind decay and fester in the insanity of an endless void for all eternity...brain rot (Mind and  Spirit reduced to 0) "
             ]),
-
         }
 
     PLAYER_ACTION_MESSAGE: str = "player_action_message"
@@ -133,11 +134,9 @@ class BlackJackJasmineScreen(GambleScreen):
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
     LEVEL_UP: str = "level_up_message"
     JASMINE_CASTING_SPELL: str = "JASMINE_CASTING_SPELL"
-
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
     BACK = "back"
-
     PLAYER_ACTION_SCREEN: str = "player_action_screen"
     LEVEL_UP_SCREEN = "level_up_screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
@@ -152,6 +151,8 @@ class BlackJackJasmineScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.deck.shuffle()
         self.initialize_music()
+        self.spirit_bonus: int = state.player.spirit
+        self.magic_bonus: int = state.player.mind
 
     def round_reset(self):
         self.deck.shuffle()
@@ -170,13 +171,20 @@ class BlackJackJasmineScreen(GambleScreen):
         self.enemy_card_y_positions = []
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
+        self.debuff_brain_rot += 5
+        double_flip_randomizer = random.randint(1, 100) + self.debuff_brain_rot
+
+        if double_flip_randomizer > 90 and self.jasmine_magic_points > 0 and self.debuff_brain_rot == 0:
+            self.current_screen = self.JASMINE_CASTING_SPELL_SCREEN
+            self.debuff_brain_rot = 0
+
+
 
     def reset_black_jack_game(self):
         self.player_card_y_positions = []
         self.enemy_card_y_positions = []
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
-
         self.deck.shuffle()
         self.player_hand.clear()
         self.enemy_hand.clear()
@@ -212,16 +220,17 @@ class BlackJackJasmineScreen(GambleScreen):
             print("TypeError: lucky_seven_buff_counter is not of the expected type")
             self.magic_lock = False
 
-        if self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
+        if self.game_state == self.WELCOME_SCREEN:
+            self.welcome_screen_update_logic(state, controller)
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        elif self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
             self.battle_messages[self.JASMINE_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
                 self.jasmine_magic_points -= 1
+                self.debuff_brain_rot += 10
                 self.game_state = self.WELCOME_SCREEN
-        elif self.game_state == self.WELCOME_SCREEN:
-            self.welcome_screen_update_logic(state, controller)
-            self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.LEVEL_UP_SCREEN:
-            self.music_volume = 0  # Adjust as needed
+            self.music_volume = 0
             pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
         elif self.game_state == self.BET_SCREEN:
@@ -259,7 +268,6 @@ class BlackJackJasmineScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
-            # First, initialize the message box and store it in the attribute
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} "
                                                                              f"money and gain {self.med_exp} experience points!"]
             if state.controller.confirm_button:
@@ -296,19 +304,11 @@ class BlackJackJasmineScreen(GambleScreen):
             no_money_game_over = 0
             no_stamina_game_over = 0
             if state.player.money <= no_money_game_over:
-                if controller.isTPressed or state.controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
+                if controller.confirm_button:
                     state.currentScreen = state.gameOverScreen
                     state.gameOverScreen.start(state)
             elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed or state.controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    state.player.money -= 100
-                    self.reset_black_jack_game()
-                    state.currentScreen = state.area4RestScreen
-                    state.area4RestScreen.start(state)
+                self.game_over_screen_level_4(state, controller)
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -649,6 +649,20 @@ class BlackJackJasmineScreen(GambleScreen):
         self.player_hand.append(new_card)
         self.player_score = self.deck.compute_hand_value(self.player_hand)
 
+    def game_over_screen_level_4(self, state: 'GameState', controller):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+        elif state.player.stamina_points <= no_stamina_game_over:
+            if controller.confirm_button:
+                self.reset_black_jack_game()
+                state.player.money -= 100
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+
     def animate_face_down_card(self, state, card_index):
         initial_y_position = 0
         target_y_position = 50
@@ -730,7 +744,7 @@ class BlackJackJasmineScreen(GambleScreen):
         lucky_strike_threshhold = 75
         initial_hand = 2
         adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
-        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0 and self.debuff_brain_rot == 0:
             self.player_hand = self.deck.player_draw_hand(2)
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
@@ -745,6 +759,7 @@ class BlackJackJasmineScreen(GambleScreen):
                             self.player_hand = self.deck.player_draw_hand(initial_hand)
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.critical_hit = True
+
     def draw_draw_card_screen(self, state: 'GameState'):
         card_one = 0
         card_two = 1
@@ -980,6 +995,14 @@ class BlackJackJasmineScreen(GambleScreen):
                                                 True, RED), (player_enemy_box_info_x_position,
                                                              hero_name_y_position))
     def welcome_screen_update_logic(self, state: 'GameState', controller):
+
+        if self.debuff_brain_rot > 0:
+            self.spirit_bonus: int = 0
+            self.magic_bonus: int = 0
+        elif self.debuff_brain_rot == 0:
+            self.spirit_bonus: int = state.player.spirit
+            self.magic_bonus: int = state.player.mind
+
         if state.player.money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
@@ -997,7 +1020,7 @@ class BlackJackJasmineScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
-                controller.isTPressed = False
+                controller.confirm_button = False
                 controller.isAPressedSwitch = False
                 state.currentScreen = state.area4RestScreen
                 state.area4RestScreen.start(state)
