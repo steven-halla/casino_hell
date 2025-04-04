@@ -221,7 +221,7 @@ class BlackJackJasmineScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.welcome_screen_update_logic(state, controller)
+            self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
             self.battle_messages[self.JASMINE_CASTING_SPELL].update(state)
@@ -234,7 +234,7 @@ class BlackJackJasmineScreen(GambleScreen):
             pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
         elif self.game_state == self.BET_SCREEN:
-            self.bet_screen_helper(controller)
+            self.update_bet_screen_helper(controller)
             self.battle_messages[self.BET_MESSAGE].update(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state)
@@ -327,19 +327,19 @@ class BlackJackJasmineScreen(GambleScreen):
             self.draw_draw_card_screen(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
-            self.reveal_draw_hands(
+            self.draw_reveal_draw_hands(
                 player_hand=self.player_hand,
                 enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
-            self.reveal_draw_hands(
+            self.draw_reveal_draw_hands(
                 player_hand=self.player_hand,
                 enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].draw(state)
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
-            self.reveal_draw_hands(
+            self.draw_reveal_draw_hands(
                 player_hand=self.player_hand,
                 enemy_hand=self.enemy_hand,
             )
@@ -353,35 +353,29 @@ class BlackJackJasmineScreen(GambleScreen):
             self.draw_player_action_right_menu(state)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
-            self.reveal_draw_hands(
+            self.draw_reveal_draw_hands(
                 player_hand=self.player_hand,
                 enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
-            self.reveal_draw_hands(
+            self.draw_reveal_draw_hands(
                 player_hand=self.player_hand,
                 enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
-            self.reveal_draw_hands(
+            self.draw_reveal_draw_hands(
                 player_hand=self.player_hand,
                 enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.blit_message_x: int = 65
-            self.blit_message_y: int = 460
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-            if state.player.money <= no_money_game_over:
-                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina_points <= no_stamina_game_over:
-                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            self.draw_game_over_screen_helper(state)
+
         pygame.display.flip()
 
-    def bet_screen_helper(self, controller):
+    def update_bet_screen_helper(self, controller):
         min_bet = 50
         max_bet = 200
         if controller.up_button:
@@ -422,6 +416,31 @@ class BlackJackJasmineScreen(GambleScreen):
             self.money += self.bet
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
+
+    def update_draw_card_screen_logic(self, state: 'GameState'):
+        luck_muliplier = 5
+        lucky_roll = random.randint(1, 100)
+        player_bad_score_min_range = 12
+        player_bad_score_max_range = 17
+        level_1_luck_score = 0
+        lucky_strike_threshhold = 75
+        initial_hand = 2
+        adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
+        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0 and self.debuff_brain_rot == 0:
+            self.player_hand = self.deck.player_draw_hand(2)
+            self.enemy_hand = self.deck.enemy_draw_hand(2)
+            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+            if state.player.luck > level_1_luck_score:
+                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                    if adjusted_lucky_roll >= lucky_strike_threshhold:
+                        self.lucky_strike.play()
+                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                            # this could, at a low % chance, empty out the deck and crash. maybe have 3 re rolls max
+                            self.player_hand = self.deck.player_draw_hand(initial_hand)
+                            self.player_score = self.deck.compute_hand_value(self.player_hand)
+                            self.critical_hit = True
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:
@@ -468,99 +487,7 @@ class BlackJackJasmineScreen(GambleScreen):
                 self.magic_menu_index = 0
                 self.game_state = self.WELCOME_SCREEN
 
-    def draw_magic_menu_selection_box(self, state):
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-            if self.magic_menu_index == 0:
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
-            elif self.magic_menu_index == 1:
-                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
-            elif self.magic_menu_index == 2:
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
-        elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
-            if self.magic_menu_index == 0:
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
-            elif self.magic_menu_index == 1:
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
-        choice_spacing = 40
-        text_x_offset = 60
-        text_y_offset = 15
-        arrow_x_offset = 12
-        black_box_height = 221 - 50
-        black_box_width = 200 - 10
-        border_width = 5
-        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-        start_y_right_box = 240
-        black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill(BLACK)
 
-        white_border = pygame.Surface(
-            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
-        )
-
-        white_border.fill(WHITE)
-        white_border.blit(black_box, (border_width, border_width))
-        black_box_x = start_x_right_box - border_width
-        black_box_y = start_y_right_box - border_width
-        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-        if (Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory
-                and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices):
-            self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
-
-        for idx, choice in enumerate(self.magic_screen_choices):
-            y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
-            state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
-                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
-            )
-
-        arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
-        state.DISPLAY.blit(
-            self.font.render("->", True, WHITE),
-            (start_x_right_box + arrow_x_offset, arrow_y_coordinate + text_y_offset)  # Align arrow with the text
-        )
-
-    def draw_player_action_right_menu(self, state: 'GameState'):
-        box_width_offset = 10
-        horizontal_padding = 25
-        vertical_position = 240
-        spacing_between_choices = 40
-        text_x_offset = 60
-        text_y_offset = 15
-        black_box_width = 200 - box_width_offset
-        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
-        start_y_right_box = vertical_position
-        arrow_x_coordinate_padding = 12
-        arrow_center = 10
-        player_hand_max = 4
-        draw_option = 1
-
-        if (self.redraw_debuff_counter > self.redraw_end_counter
-                and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices):
-            self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
-
-        for idx, choice in enumerate(self.player_action_phase_choices):
-            y_position = start_y_right_box + idx * spacing_between_choices
-
-            if choice == Magic.BLACK_JACK_REDRAW.value and self.redraw_counter == False:
-                rendered_choice = self.font.render(choice, True, RED)
-            else:
-                rendered_choice = self.font.render(choice, True, WHITE)
-
-            if (choice == self.player_action_phase_choices[draw_option]
-                    and len(self.player_hand) == player_hand_max):
-                rendered_draw = self.font.render(choice, True, RED)
-            else:
-                rendered_draw = self.font.render(choice, True, WHITE)
-
-            state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
-            state.DISPLAY.blit(rendered_draw, (start_x_right_box + text_x_offset, y_position + text_y_offset))
-
-        arrow_y_coordinate = arrow_center + start_y_right_box + self.player_action_phase_index * spacing_between_choices
-        state.DISPLAY.blit(
-            self.font.render("->", True, WHITE),
-            (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
-        )
 
     def update_player_action_logic(self, state: "GameState", controller):
         card_max = 3
@@ -643,6 +570,38 @@ class BlackJackJasmineScreen(GambleScreen):
         self.player_hand.append(new_card)
         self.player_score = self.deck.compute_hand_value(self.player_hand)
 
+    def update_welcome_screen_update_logic(self, state: 'GameState', controller):
+
+        if self.debuff_brain_rot > 0:
+            self.spirit_bonus: int = 0
+            self.magic_bonus: int = 0
+        elif self.debuff_brain_rot == 0:
+            self.spirit_bonus: int = state.player.spirit
+            self.magic_bonus: int = state.player.mind
+
+        if state.player.money <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+        elif state.player.stamina_points <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+
+        if controller.confirm_button:
+            if self.welcome_screen_index == self.welcome_screen_play_index:
+                self.game_state = self.DRAW_CARD_SCREEN
+            elif (self.welcome_screen_index == self.welcome_screen_magic_index
+                  and self.magic_lock == False):
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_bet_index:
+                self.game_state = self.BET_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_quit_index:
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+                state.player.canMove = True
+
+    def initialize_music(self):
+        pass
+
     def game_over_screen_level_4(self, state: 'GameState', controller):
         no_money_game_over = 0
         no_stamina_game_over = 0
@@ -682,7 +641,7 @@ class BlackJackJasmineScreen(GambleScreen):
         self.enemy_hand.append(new_card)
         self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
 
-    def reveal_draw_hands(self, player_hand: list, enemy_hand: list):
+    def draw_reveal_draw_hands(self, player_hand: list, enemy_hand: list):
         initial_x_position = 250
         player_target_y_position = 300
         enemy_target_y_position = 50
@@ -729,30 +688,7 @@ class BlackJackJasmineScreen(GambleScreen):
             else:
                 deck.draw_card_face_up(card[1], card[0], (enemy_x_position, enemy_y_position), display)
 
-    def update_draw_card_screen_logic(self, state: 'GameState'):
-        luck_muliplier = 5
-        lucky_roll = random.randint(1, 100)
-        player_bad_score_min_range = 12
-        player_bad_score_max_range = 17
-        level_1_luck_score = 0
-        lucky_strike_threshhold = 75
-        initial_hand = 2
-        adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
-        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0 and self.debuff_brain_rot == 0:
-            self.player_hand = self.deck.player_draw_hand(2)
-            self.enemy_hand = self.deck.enemy_draw_hand(2)
-            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-            self.player_score = self.deck.compute_hand_value(self.player_hand)
 
-            if state.player.luck > level_1_luck_score:
-                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                    if adjusted_lucky_roll >= lucky_strike_threshhold:
-                        self.lucky_strike.play()
-                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                            # this could, at a low % chance, empty out the deck and crash. maybe have 3 re rolls max
-                            self.player_hand = self.deck.player_draw_hand(initial_hand)
-                            self.player_score = self.deck.compute_hand_value(self.player_hand)
-                            self.critical_hit = True
 
     def draw_draw_card_screen(self, state: 'GameState'):
         card_one = 0
@@ -988,42 +924,108 @@ class BlackJackJasmineScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}",
                                                 True, RED), (player_enemy_box_info_x_position,
                                                              hero_name_y_position))
-    def welcome_screen_update_logic(self, state: 'GameState', controller):
 
-        if self.debuff_brain_rot > 0:
-            self.spirit_bonus: int = 0
-            self.magic_bonus: int = 0
-        elif self.debuff_brain_rot == 0:
-            self.spirit_bonus: int = state.player.spirit
-            self.magic_bonus: int = state.player.mind
+    def draw_magic_menu_selection_box(self, state):
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+            if self.magic_menu_index == 0:
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+            elif self.magic_menu_index == 1:
+                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+            elif self.magic_menu_index == 2:
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+            if self.magic_menu_index == 0:
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+            elif self.magic_menu_index == 1:
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
 
-        if state.player.money <= 0:
-            self.game_state = self.GAME_OVER_SCREEN
-            return
-        elif state.player.stamina_points <= 0:
-            self.game_state = self.GAME_OVER_SCREEN
-            return
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
 
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        if controller.confirm_button:
-            if self.welcome_screen_index == self.welcome_screen_play_index:
-                self.game_state = self.DRAW_CARD_SCREEN
-            elif (self.welcome_screen_index == self.welcome_screen_magic_index
-                  and self.magic_lock == False):
-                self.game_state = self.MAGIC_MENU_SCREEN
-            elif self.welcome_screen_index == self.welcome_screen_bet_index:
-                self.game_state = self.BET_SCREEN
-            elif self.welcome_screen_index == self.welcome_screen_quit_index:
-                controller.confirm_button = False
-                controller.isAPressedSwitch = False
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
-                state.player.canMove = True
+        if (Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory
+                and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices):
+            self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
 
-    def initialize_music(self):
-        pass
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
 
+        arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_coordinate + text_y_offset)  # Align arrow with the text
+        )
 
+    def draw_player_action_right_menu(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_center = 10
+        player_hand_max = 4
+        draw_option = 1
 
+        if (self.redraw_debuff_counter > self.redraw_end_counter
+                and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices):
+            self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
 
+        for idx, choice in enumerate(self.player_action_phase_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+
+            if choice == Magic.BLACK_JACK_REDRAW.value and self.redraw_counter == False:
+                rendered_choice = self.font.render(choice, True, RED)
+            else:
+                rendered_choice = self.font.render(choice, True, WHITE)
+
+            if (choice == self.player_action_phase_choices[draw_option]
+                    and len(self.player_hand) == player_hand_max):
+                rendered_draw = self.font.render(choice, True, RED)
+            else:
+                rendered_draw = self.font.render(choice, True, WHITE)
+
+            state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+            state.DISPLAY.blit(rendered_draw, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+
+        arrow_y_coordinate = arrow_center + start_y_right_box + self.player_action_phase_index * spacing_between_choices
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
+        )
+
+    def draw_game_over_screen_helper(self, state: 'Gamestate'):
+        self.blit_message_x: int = 65
+        self.blit_message_y: int = 460
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        elif state.player.stamina_points <= no_stamina_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
