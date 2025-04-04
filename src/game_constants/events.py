@@ -49,6 +49,8 @@ class Events(Enum):
     # below is level 4:
     COIN_FLIP_BONNIE_DEFEATED = "coin flip bonnie defeated"
     BLACK_JACK_JASMINE_DEFEATED = "BLACK_JACK_JASMINE_DEFEATED"
+    CRAPS_NABA_DEFEATED = "naba defeated"
+
 
 
 

@@ -527,6 +527,7 @@ class BlackJackJasmineScreen(GambleScreen):
 
                         else:
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+
             redraw_roll = random.randint(1, 100) + self.magic_bonus
 
             if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
@@ -536,6 +537,9 @@ class BlackJackJasmineScreen(GambleScreen):
                 self.enemy_hand.insert(1, new_card)
                 self.redraw_counter = False
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            if redraw_roll < self.LEVEL_4_PERCENTAGE_CHANCE:
+                self.redraw_counter = False
+
 
     def animate_face_down_card_player(self, state, card_index):
         initial_y_position = 0
