@@ -67,6 +67,14 @@ class GambleScreen:
     PLAYER_STAT_PERCEPTION = "Perception"
     PLAYER_STAT_LUCK = "Luck"
 
+    # teh below applies to all equpoment and magic
+    # implemtn this at level 5
+    LEVEL_1_PERCENTAGE_CHANCE = 45
+    LEVEL_2_PERCENTAGE_CHANCE = 55
+    LEVEL_3_PERCENTAGE_CHANCE = 65
+    LEVEL_4_PERCENTAGE_CHANCE = 75
+    LEVEL_5_PERCENTAGE_CHANCE = 85
+
     def start(self, state: 'GameState') -> None:
         # in future compaion items will affect the below by + 1
 
@@ -110,9 +118,9 @@ class GambleScreen:
 
 
     def update(self, state: 'GameState') -> None:
+        #
 
-        # controller = state.controller
-        # controller.update()
+
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_logic(state)
 

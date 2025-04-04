@@ -66,7 +66,6 @@ class BlackJackJasmineScreen(GambleScreen):
         self.high_stamina_drain: int = 30
         self.jasmine_magic_points: int = 2
         self.debuff_brain_rot: int = 0
-        self.debuff_brain_rot = 0
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -151,10 +150,11 @@ class BlackJackJasmineScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.deck.shuffle()
         self.initialize_music()
-        self.spirit_bonus: int = state.player.spirit
-        self.magic_bonus: int = state.player.mind
+        self.spirit_bonus: int = state.player.spirit * 10
+        self.magic_bonus: int = state.player.mind * 10
 
     def round_reset(self):
+        print("Round Reset")
         self.deck.shuffle()
         self.player_hand.clear()
         self.enemy_hand.clear()
@@ -201,6 +201,7 @@ class BlackJackJasmineScreen(GambleScreen):
         state.player.update(state)
         super().update(state)
 
+
         if self.money <= self.jasmine_bankrupt:
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
@@ -238,26 +239,7 @@ class BlackJackJasmineScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].update(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state)
-            if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-                if self.magic_menu_index == 0:
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
-                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-                elif self.magic_menu_index == 1:
-                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-                elif self.magic_menu_index == 2:
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
-            elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
-                if self.magic_menu_index == 0:
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-                elif self.magic_menu_index == 1:
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.update_draw_card_screen_logic(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
@@ -381,7 +363,7 @@ class BlackJackJasmineScreen(GambleScreen):
         if controller.up_button:
             self.menu_movement_sound.play()
             self.bet += min_bet
-        elif controller.isDownPressed or controller.isDownPressedSwitch:
+        elif controller.down_button:
             self.menu_movement_sound.play()
             self.bet -= min_bet
 
@@ -394,20 +376,9 @@ class BlackJackJasmineScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_win(self, state, controller) -> None:
-        if controller.confirm_button:
-            jasmine_casts_a_spell = random.randint(1, 2)
-            self.round_reset()
 
-            state.player.money += self.bet
-            self.money -= self.bet
-            state.player.exp += self.low_exp
-            if jasmine_casts_a_spell > 1:
-                if self.jasmine_magic_points > 0:
-                    self.game_state = self.JASMINE_CASTING_SPELL_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
-            else:
-                self.game_state = self.WELCOME_SCREEN
+        if controller.confirm_button:
+            self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.confirm_button:
@@ -426,7 +397,7 @@ class BlackJackJasmineScreen(GambleScreen):
         lucky_strike_threshhold = 75
         initial_hand = 2
         adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
-        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0 and self.debuff_brain_rot == 0:
+        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.player_hand = self.deck.player_draw_hand(2)
             self.enemy_hand = self.deck.enemy_draw_hand(2)
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
@@ -437,7 +408,6 @@ class BlackJackJasmineScreen(GambleScreen):
                     if adjusted_lucky_roll >= lucky_strike_threshhold:
                         self.lucky_strike.play()
                         while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                            # this could, at a low % chance, empty out the deck and crash. maybe have 3 re rolls max
                             self.player_hand = self.deck.player_draw_hand(initial_hand)
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.critical_hit = True
@@ -449,6 +419,27 @@ class BlackJackJasmineScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
 
     def update_magic_menu(self, state: "GameState"):
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+            if self.magic_menu_index == 0:
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+            elif self.magic_menu_index == 1:
+                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+            elif self.magic_menu_index == 2:
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+        elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+            if self.magic_menu_index == 0:
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+            elif self.magic_menu_index == 1:
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+
         controller = state.controller
 
         if controller.action_and_cancel_button:
@@ -526,25 +517,25 @@ class BlackJackJasmineScreen(GambleScreen):
                         if self.player_score > max_before_bust:
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
                     elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
-                        lucky_roll = random.randint(1, 4)
-                        lucky_roll_success = 4
-                        if lucky_roll == lucky_roll_success:
+
+                        lucky_roll = random.randint(1, 100) + self.spirit_bonus
+
+                        if lucky_roll >= self.LEVEL_4_PERCENTAGE_CHANCE:
                             self.player_hand.pop()
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.lucky_strike.play()
-                            print(self.player_hand)
-                            print(self.player_score)
+
                         else:
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+            redraw_roll = random.randint(1, 100) + self.magic_bonus
 
             if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
-                    and self.redraw_counter == True):
+                    and self.redraw_counter == True and redraw_roll > self.LEVEL_4_PERCENTAGE_CHANCE):
                 self.enemy_hand.pop(1)
                 new_card = self.deck.enemy_draw_hand(1)[0]
                 self.enemy_hand.insert(1, new_card)
                 self.redraw_counter = False
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print(self.enemy_score)
 
     def animate_face_down_card_player(self, state, card_index):
         initial_y_position = 0
@@ -576,8 +567,8 @@ class BlackJackJasmineScreen(GambleScreen):
             self.spirit_bonus: int = 0
             self.magic_bonus: int = 0
         elif self.debuff_brain_rot == 0:
-            self.spirit_bonus: int = state.player.spirit
-            self.magic_bonus: int = state.player.mind
+            self.spirit_bonus: int = state.player.spirit * 10
+            self.magic_bonus: int = state.player.mind * 10
 
         if state.player.money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
@@ -769,7 +760,9 @@ class BlackJackJasmineScreen(GambleScreen):
                                             (self.enemy_card_x_positions[i],
                                              self.enemy_card_y_positions[i]), DISPLAY)
 
-        if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items:
+        # level 5 remove this and put in update no idea why its in draw
+        sir_leopold_steal_roll = random.randint(1, 100) + self.spirit_bonus
+        if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items and sir_leopold_steal_roll > self.LEVEL_4_PERCENTAGE_CHANCE:
             if (len(self.enemy_hand) > 1 and self.enemy_hand[1][0]
                     == "Ace" and not self.ace_effect_triggered):
                 if self.ace_detected_time is None:
@@ -991,6 +984,7 @@ class BlackJackJasmineScreen(GambleScreen):
         arrow_center = 10
         player_hand_max = 4
         draw_option = 1
+
 
         if (self.redraw_debuff_counter > self.redraw_end_counter
                 and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices):
