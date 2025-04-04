@@ -237,7 +237,7 @@ class BlackJackJasmineScreen(GambleScreen):
             self.bet_screen_helper(controller)
             self.battle_messages[self.BET_MESSAGE].update(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            self.update_magic_menu(state, controller)
+            self.update_magic_menu(state)
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
                 if self.magic_menu_index == 0:
                     self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
@@ -301,14 +301,7 @@ class BlackJackJasmineScreen(GambleScreen):
             self.update_player_phase_draw(state, controller)
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-            if state.player.money <= no_money_game_over:
-                if controller.confirm_button:
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-            elif state.player.stamina_points <= no_stamina_game_over:
-                self.game_over_screen_level_4(state, controller)
+            self.game_over_screen_level_4(state, controller)
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -329,18 +322,7 @@ class BlackJackJasmineScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
-            if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-                if self.magic_menu_index == 0:
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
-                elif self.magic_menu_index == 1:
-                    self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
-                elif self.magic_menu_index == 2:
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
-            elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
-                if self.magic_menu_index == 0:
-                    self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
-                elif self.magic_menu_index == 1:
-                    self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.draw_draw_card_screen(state)
             self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
@@ -384,8 +366,8 @@ class BlackJackJasmineScreen(GambleScreen):
             self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
             self.reveal_draw_hands(
-                player_hand=self.player_hand,  # Player's hand
-                enemy_hand=self.enemy_hand,  # Enemy's hand
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
             )
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
@@ -487,6 +469,18 @@ class BlackJackJasmineScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
     def draw_magic_menu_selection_box(self, state):
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+            if self.magic_menu_index == 0:
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+            elif self.magic_menu_index == 1:
+                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+            elif self.magic_menu_index == 2:
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+            if self.magic_menu_index == 0:
+                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+            elif self.magic_menu_index == 1:
+                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
         choice_spacing = 40
         text_x_offset = 60
         text_y_offset = 15

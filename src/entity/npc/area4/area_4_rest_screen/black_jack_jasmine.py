@@ -93,15 +93,15 @@ class BlackJackJasmine(Npc):
         if (current_message.is_finished() and Events.BLACK_JACK_JASMINE_DEFEATED.value
                 not in state.player.level_four_npc_state
                 and current_message.message_at_end()
-                and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
+                and state.controller.confirm_button):
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.coinFlipBonnieScreen
-                state.coinFlipBonnieScreen.start(state)
+                state.currentScreen = state.blackJackJasmineScreen
+                state.blackJackJasmineScreen.start(state)
 
 
 
