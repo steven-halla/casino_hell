@@ -387,6 +387,7 @@ class CrapsNabaScreen(GambleScreen):
                 else:
                     self.game_state = self.WELCOME_SCREEN
             else:
+
                 self.game_state = self.WELCOME_SCREEN
 
     def update_handle_dice_rolling_simulation(self, controller):
