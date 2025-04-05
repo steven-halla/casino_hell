@@ -152,6 +152,9 @@ class CrapsNabaScreen(GambleScreen):
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind
     def round_reset(self, state: 'GameState'):
+        if self.debuff_spirit_drain > 0:
+            for i in range(self.bet // 25):
+                state.player.stamina_points -= 3
         self.bet = self.bet_minimum
         if self.lucky_seven_buff_counter >= self.lucky_seven_buff_not_active:
             self.lucky_seven_buff_counter -=  self.counter_stepper
@@ -173,9 +176,7 @@ class CrapsNabaScreen(GambleScreen):
         self.blow_sound_checker = True
         self.blow_timer_start = 0
         self.debuff_counter = 3
-        if self.debuff_spirit_drain > 0:
-            for i in range(self.bet // 25):
-                state.player.stamina_points -= 3
+
 
 
 
@@ -201,6 +202,7 @@ class CrapsNabaScreen(GambleScreen):
         self.blow_timer_start = 0
         self.debuff_counter = 3
         self.naba_magic_points = 2
+        self.debuff_spirit_drain = 0
 
 
 
@@ -225,14 +227,10 @@ class CrapsNabaScreen(GambleScreen):
             print("TypeError: lucky_seven_buff_counter is not of the expected type")
             self.magic_lock = False
 
-
-
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-
         elif self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
-            print("CATING NOW")
             self.battle_messages[self.NABA_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.confirm_button:
                 self.naba_magic_points -= 1
@@ -253,20 +251,16 @@ class CrapsNabaScreen(GambleScreen):
                 self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
                 self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
             self.magic_menu_helper(state)
-
         elif self.game_state == self.POWER_METER_SCREEN:
             self.power_meter_screen_helper(state)
             self.battle_messages[self.POWER_METER_MESSAGE].update(state)
-
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
-
-            if controller.isTPressed or controller.isAPressedSwitch:
+            if controller.confirm_button:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
                 self.round_reset(state)
                 state.player.money += self.bet
                 self.money -= self.bet
-
                 if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
                     print("HI")
                     dice_of_deception_random_chance = random.randint(9, 10)
@@ -279,119 +273,55 @@ class CrapsNabaScreen(GambleScreen):
                 else:
                     self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].update(state)
-
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
-            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].messages[0] = f"You rolled a {self.come_out_roll_total}"
-
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
+            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].messages[0] \
+                = f"You rolled a {self.come_out_roll_total}"
+            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
+            if controller.confirm_button:
                 self.round_reset(state)
                 state.player.money -= self.bet
                 self.money += self.bet
-                if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
-                    print("BI")
-
-                    dice_of_deception_random_chance = random.randint(9, 10)
-                    if self.money < 1000 and self.naba_magic_points > 0:
-                        dice_of_deception_random_chance += 3
-                    if dice_of_deception_random_chance > 9:
-                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
-                    else:
-                        self.game_state = self.WELCOME_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
-            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
-
+                self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.POINT_ROLL_SCREEN:
-
             self.point_screen_helper(state)
-
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
-            # there are still some issues here
-
-
-
-
-            # need it more clear for if the player fails to release in time
             meter_finished = 7
             self.bet = self.bet_minimum
             blow_counter_max = 21
             blow_counter_min_needed = 20
             self.handle_dice_rolling_simulation(controller)
-
-
             if not hasattr(self, 'blow_timer_start'):
-                self.blow_timer_start = pygame.time.get_ticks()  # Initialize timer
-
-            time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000  # Convert to seconds
-            # Convert time_elapsed to an integer to display a clean value
-            time_elapsed_display = int(time_elapsed)
-
-            # Render and blit the time elapsed
-
+                self.blow_timer_start = pygame.time.get_ticks()
+            time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
             if time_elapsed >= meter_finished:
                 self.dice_roll_1 = 3
                 self.dice_roll_2 = 4
                 self.point_roll_total = 7
                 self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
-                self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
-
+                self.blow_timer_start = pygame.time.get_ticks()
             if self.blow_counter >= blow_counter_max:
                 self.blow_counter = blow_counter_max
-
             if (state.controller.isTPressed or state.controller.isAPressedSwitch) == False and self.blow_counter >= blow_counter_min_needed:
-                self.blow_timer_start = pygame.time.get_ticks()  # Reset the timer for next check
-
+                self.blow_timer_start = pygame.time.get_ticks()
                 self.point_roll_total = self.come_out_roll_total
                 self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
-
             self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
-            print(f"Time elapsed: {time_elapsed} seconds")
-
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-            if controller.isTPressed or controller.isAPressedSwitch:
+            if controller.confirm_button:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
                 self.round_reset(state)
                 self.money += self.bet
                 state.player.money -= self.bet
-                if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
-                    print("OWL")
-
-                    dice_of_deception_random_chance = random.randint(9, 10)
-                    if self.money < 1000 and self.naba_magic_points > 0:
-                        dice_of_deception_random_chance += 3
-                    if dice_of_deception_random_chance > 9:
-                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
-                    else:
-                        self.game_state = self.WELCOME_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
-
+                self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
-            if controller.isTPressed or controller.isAPressedSwitch:
+            if controller.confirm_button:
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
                 self.round_reset(state)
                 self.money -= self.bet
                 state.player.money += self.bet
-                print("DIce of deception" + str(self.debuff_spirit_drain))
-                print("MP" + str(self.naba_magic_points))
-
-                if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
-                    print("Meow")
-
-                    dice_of_deception_random_chance = random.randint(9, 10)
-                    if self.money < 1000 and self.naba_magic_points > 0:
-                        dice_of_deception_random_chance += 3
-                    if dice_of_deception_random_chance > 9:
-                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
-                    else:
-                        self.game_state = self.WELCOME_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
-
+                self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
@@ -488,7 +418,7 @@ class CrapsNabaScreen(GambleScreen):
 
 
     def handle_dice_rolling_simulation(self, controller):
-        if controller.isTPressed or controller.isAPressedSwitch:
+        if controller.confirm_button:
             if (controller.isLeftPressed or controller.isLeftPressedSwitch) and not self.is_left_pressed:
                 self.is_left_pressed = True
                 self.left_press_time = pygame.time.get_ticks()
@@ -575,7 +505,7 @@ class CrapsNabaScreen(GambleScreen):
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_screen_choices)
 
-        if controller.isTPressed or controller.isAPressedSwitch:
+        if controller.confirm_button:
             controller.isTPressed = False
             controller.isAPressedSwitch = False
             if self.magic_screen_index == self.triple_dice_index and state.player.focus_points >= self.triple_dice_cast_cost:
