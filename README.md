@@ -292,7 +292,10 @@ on the bottom not sure what is best approach between what leve you get things
 # peek - maybe have 1 more  at level 3 and 5
 # shake - at level 5 all oposum cans shake 
 
-
+# STORY 1st screen
+# after getting poinsoned by spell Hero: I get it now....you use magic, because your weak, you cant even gamble, can you? You think I'm going to feel
+# feel or dispar because of you? Your pathetic and greedy, you have no love for the game
+# You disgust me to no end, beating you is going to bring me great satisfaction 
 
 
 

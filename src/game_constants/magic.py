@@ -18,6 +18,9 @@ class Magic(Enum):
     FLUSH_DECK = "flush deck"
     BAD_LUCK = "bad luck" # dice fighter
 
+    GREED_METER = "pig meter" #  scoring a 95 or higher nets you +50% win on bets
+
+
     # On level 3 and 5 have a shop keeper
     # For pacing reasons we cannoot have more than 3 spells per level
     # For pacing reasons we cannot have more than 4 equipments per level

@@ -69,18 +69,19 @@ class CrapsNabaScreen(GambleScreen):
         self.blow_sound_checker: bool = True
         self.blow_timer_start = 0
         self.play_tune: bool = False
-        self.blow_meter_ready:pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/blowready.wav")  # Adjust the path as needed
+        self.blow_meter_ready:pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/blowready.wav")
         self.blow_meter_ready.set_volume(0.6)
-        self.dice_roll: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/dice_rolling.wav")  # Adjust the path as needed
+        self.dice_roll: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/dice_rolling.wav")
         self.dice_roll.set_volume(0.6)
-        self.failed_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/9FBlockSword.wav")  # Adjust the path as needed
+        self.failed_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/9FBlockSword.wav")
         self.failed_power_strike_sound_effect.set_volume(0.6)
-        self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/8CRodHit.wav")  # Adjust the path as needed
+        self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/8CRodHit.wav")
         self.successful_power_strike_sound_effect.set_volume(0.6)
-
         self.naba_magic_points: int = 2
         self.debuff_spirit_drain: int = 0
         self.debuff_counter:int = 3
+        self.greed_meter: int = 0
+        self.greed_bank: bool = False
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -133,10 +134,7 @@ class CrapsNabaScreen(GambleScreen):
     BLOW_POINT_ROLL_MESSAGE: str = "blow_point_roll_message"
     BET_MESSAGE: str = "bet_message"
     NABA_CASTING_SPELL_MESSAGE:str = "NABA_CASTING_SPELL_MESSAGE"
-
-
     TRIPLE_DICE: str = "Triple Dice"
-
     PLAYER_WIN_COME_OUT_SCREEN: str = "player_win_come_out_screen"
     PLAYER_LOSE_COME_OUT_SCREEN: str = "player_lose_come_out_screen"
     BET_SCREEN: str = "Bet Screen"
@@ -172,17 +170,17 @@ class CrapsNabaScreen(GambleScreen):
         self.blow_counter = self.set_variable_to_zero
         self.blow_meter = self.set_variable_to_zero
         self.blow_turn = self.set_variable_to_zero
-
         self.blow_sound_checker = True
         self.blow_timer_start = 0
         self.debuff_counter = 3
-
-
-
-
+        self.greed_bank = False
+        if self.greed_meter > 0:
+            self.greed_meter -= 1
+            self.magic_lock = True
+        if self.greed_meter == 0:
+            self.magic_lock = False
 
     def reset_craps_game(self, state: 'GameState'):
-        # need to reset value of enemy spell to 0
         self.welcome_screen_quit_index = self.welcome_screen_play_index
         self.lucky_seven_buff_counter = self.lucky_seven_buff_not_active
         self.magic_lock = False
@@ -203,8 +201,8 @@ class CrapsNabaScreen(GambleScreen):
         self.debuff_counter = 3
         self.naba_magic_points = 2
         self.debuff_spirit_drain = 0
-
-
+        self.greed_meter: int = 0
+        self.greed_bank: bool = False
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -232,43 +230,18 @@ class CrapsNabaScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
             self.battle_messages[self.NABA_CASTING_SPELL_MESSAGE].update(state)
-            if state.controller.confirm_button:
-                self.naba_magic_points -= 1
-                self.debuff_spirit_drain = 5
-                self.game_state = self.WELCOME_SCREEN
+            self.update_naba_casting_spell_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.update_bet_screen_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            triple_dice_spell = 0
-            back_to_welcome_screen = 1
-            if self.magic_screen_index == triple_dice_spell:
-                self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].update(state)
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-            elif self.magic_screen_index == back_to_welcome_screen:
-                self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
             self.update_magic_menu_helper(state)
         elif self.game_state == self.POWER_METER_SCREEN:
             self.update_power_meter_screen_helper(state)
             self.battle_messages[self.POWER_METER_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
-            if controller.confirm_button:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
-                self.round_reset(state)
-                state.player.money += self.bet
-                self.money -= self.bet
-                if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
-                    dice_of_deception_random_chance = random.randint(9, 10)
-                    if self.money < 1000 and self.naba_magic_points > 0:
-                        dice_of_deception_random_chance += 3
-                    if dice_of_deception_random_chance > 9:
-                        self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
-                    else:
-                        self.game_state = self.WELCOME_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
+            self.update_come_out_roll_helper(state)
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].messages[0] \
@@ -375,6 +348,34 @@ class CrapsNabaScreen(GambleScreen):
             self.draw_game_over_screen_helper(state)
         pygame.display.flip()
 
+    def update_naba_casting_spell_helper(self, state):
+        if state.controller.confirm_button:
+            self.naba_magic_points -= 1
+            self.debuff_spirit_drain = 5
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_come_out_roll_helper(self, state: 'GameState'):
+        if state.controller.confirm_button:
+
+            self.round_reset(state)
+            if self.greed_bank == False:
+                state.player.money += self.bet
+                self.money -= self.bet
+            if self.greed_bank == True:
+                state.player.money += int(self.bet * 1.5)
+                self.money -= int(self.bet * 1.5)
+
+            if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
+                dice_of_deception_random_chance = random.randint(9, 10)
+                if self.money < 1000 and self.naba_magic_points > 0:
+                    dice_of_deception_random_chance += 3
+                if dice_of_deception_random_chance > 9:
+                    self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
+            else:
+                self.game_state = self.WELCOME_SCREEN
+
     def update_handle_dice_rolling_simulation(self, controller):
         if controller.confirm_button:
             if (controller.isLeftPressed or controller.isLeftPressedSwitch) and not self.is_left_pressed:
@@ -405,22 +406,25 @@ class CrapsNabaScreen(GambleScreen):
 
 
     def update_magic_menu_helper(self, state):
+
+        triple_dice_spell = 0
+        back_to_welcome_screen = 1
+        if self.magic_screen_index == triple_dice_spell:
+            self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_screen_index == back_to_welcome_screen:
+            self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
         controller = state.controller
 
-        if controller.isUpPressed or controller.isUpPressedSwitch:
-            controller.isUpPressed = False
-            controller.isUpPressedSwitch = False
+        if controller.up_button:
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_screen_choices)
-        elif controller.isDownPressed or controller.isDownPressedSwitch:
-            controller.isDownPressed = False
-            controller.isDownPressedSwitch = False
+        elif controller.down_button:
             self.menu_movement_sound.play()
             self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_screen_choices)
 
         if controller.confirm_button:
-            controller.isTPressed = False
-            controller.isAPressedSwitch = False
             if self.magic_screen_index == self.triple_dice_index and state.player.focus_points >= self.triple_dice_cast_cost:
                 self.lucky_seven_buff_counter = self.triple_dice_counter_start_set
                 self.spell_sound.play()  # Play the sound effect once
@@ -429,7 +433,6 @@ class CrapsNabaScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
             elif self.magic_screen_index == self.back_index:
                 self.game_state = self.WELCOME_SCREEN
-
 
     def update_bet_screen_helper(self, state):
         come_out_point_roll_bet_min = 25
@@ -514,6 +517,7 @@ class CrapsNabaScreen(GambleScreen):
         power_meter_min = 0
         power_meter_success = 80
         player_lucky_7_come_out_roll_reward = 7
+        greed_meter_min = 95
 
         self.power_meter_index += self.power_meter_speed
         if self.power_meter_index >= power_meter_max:
@@ -522,6 +526,11 @@ class CrapsNabaScreen(GambleScreen):
         if controller.action_and_cancel_button:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
+            
+            if self.greed_meter > 0:
+                if self.power_meter_index >= greed_meter_min:
+                    self.greed_bank = True
+
             if self.power_meter_index >= power_meter_success:
                 self.successful_power_strike_sound_effect.play()
                 self.lucky_seven = True
