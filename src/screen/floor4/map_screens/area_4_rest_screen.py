@@ -41,6 +41,7 @@ from entity.npc.area3.area_3_rest_screen.opossum_in_a_can_billy_bob import Oposs
 from entity.npc.area3.area_3_rest_screen.slots_brogan import SlotsBrogan
 from entity.npc.area4.area_4_rest_screen.black_jack_jasmine import BlackJackJasmine
 from entity.npc.area4.area_4_rest_screen.coin_flip_bonnie import CoinFlipBonnie
+from entity.npc.area4.area_4_rest_screen.craps_naba import CrapsNaba
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
@@ -49,6 +50,8 @@ from game_constants.events import Events
 from game_constants.treasure import Treasure
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from screen.floor4.battle_screens.craps_naba_screen import CrapsNabaScreen
+
 
 class Area4RestScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
@@ -111,6 +114,7 @@ class Area4RestScreen(Screen):
 
             CoinFlipBonnie(16 * 5, 16 * 5),  # fin
             BlackJackJasmine(16 * 20, 16 * 5),  # fin
+            CrapsNaba(16 * 35, 16 * 5),  # fin
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin

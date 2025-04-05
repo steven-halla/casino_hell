@@ -387,7 +387,6 @@ class CrapsNabaScreen(GambleScreen):
                 else:
                     self.game_state = self.WELCOME_SCREEN
             else:
-
                 self.game_state = self.WELCOME_SCREEN
 
     def update_handle_dice_rolling_simulation(self, controller):
@@ -634,8 +633,8 @@ class CrapsNabaScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
                 self.reset_craps_game(state)
-                state.currentScreen = state.area3RestScreen
-                state.area3RestScreen.start(state)
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
 
     def draw_point_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
