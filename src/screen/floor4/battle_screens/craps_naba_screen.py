@@ -228,7 +228,7 @@ class CrapsNabaScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.welcome_screen_helper(state)
+            self.update_welcome_screen_helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
             self.battle_messages[self.NABA_CASTING_SPELL_MESSAGE].update(state)
@@ -236,11 +236,9 @@ class CrapsNabaScreen(GambleScreen):
                 self.naba_magic_points -= 1
                 self.debuff_spirit_drain = 5
                 self.game_state = self.WELCOME_SCREEN
-
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
-            self.bet_screen_helper(state)
-
+            self.update_bet_screen_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             triple_dice_spell = 0
             back_to_welcome_screen = 1
@@ -250,9 +248,9 @@ class CrapsNabaScreen(GambleScreen):
             elif self.magic_screen_index == back_to_welcome_screen:
                 self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
                 self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-            self.magic_menu_helper(state)
+            self.update_magic_menu_helper(state)
         elif self.game_state == self.POWER_METER_SCREEN:
-            self.power_meter_screen_helper(state)
+            self.update_power_meter_screen_helper(state)
             self.battle_messages[self.POWER_METER_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
             if controller.confirm_button:
@@ -262,7 +260,6 @@ class CrapsNabaScreen(GambleScreen):
                 state.player.money += self.bet
                 self.money -= self.bet
                 if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
-                    print("HI")
                     dice_of_deception_random_chance = random.randint(9, 10)
                     if self.money < 1000 and self.naba_magic_points > 0:
                         dice_of_deception_random_chance += 3
@@ -283,13 +280,13 @@ class CrapsNabaScreen(GambleScreen):
                 self.money += self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.POINT_ROLL_SCREEN:
-            self.point_screen_helper(state)
+            self.update_point_screen_helper(state)
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
             meter_finished = 7
             self.bet = self.bet_minimum
             blow_counter_max = 21
             blow_counter_min_needed = 20
-            self.handle_dice_rolling_simulation(controller)
+            self.update_handle_dice_rolling_simulation(controller)
             if not hasattr(self, 'blow_timer_start'):
                 self.blow_timer_start = pygame.time.get_ticks()
             time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
@@ -308,37 +305,18 @@ class CrapsNabaScreen(GambleScreen):
             self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
             if controller.confirm_button:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
                 self.round_reset(state)
                 self.money += self.bet
                 state.player.money -= self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
             if controller.confirm_button:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
                 self.round_reset(state)
                 self.money -= self.bet
                 state.player.money += self.bet
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-            if state.player.money <= no_money_game_over:
-                if controller.isTPressed:
-                    controller.isTPressed = False
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-            elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed:
-                    controller.isTPressed = False
-                    state.player.money -= 100
-
-                    self.reset_craps_game(state)
-                    # state.currentScreen = state.area3RestScreen
-                    # state.area3RestScreen.start(state)
-
+            self.game_over_screen_level_4(state, controller)
     def draw(self, state: 'GameState'):
         super().draw(state)
         self.draw_hero_info_boxes(state)
@@ -346,78 +324,58 @@ class CrapsNabaScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-
         if self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
             self.battle_messages[self.NABA_CASTING_SPELL_MESSAGE].draw(state)
-
         elif self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
-
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
-
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
             if self.magic_screen_index == 0:
                 self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].draw(state)
             elif self.magic_screen_index == 1:
                 self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
-
         elif self.game_state == self.POWER_METER_SCREEN:
-            self.create_meter(state, self.power_meter_index)
+            self.draw_create_meter(state, self.power_meter_index)
             self.battle_messages[self.POWER_METER_MESSAGE].draw(state)
-
         elif self.game_state == self.PLAYER_WIN_COME_OUT_SCREEN:
-            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.draw_display_dice(state, self.dice_roll_1, self.dice_roll_2)
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].draw(state)
-
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
-            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.draw_display_dice(state, self.dice_roll_1, self.dice_roll_2)
             self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].draw(state)
-
         elif self.game_state == self.POINT_ROLL_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_point_screen_box_info(state)
             if self.is_timer_active == False and self.dice_roll_1 > 0:
-                self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+                self.draw_display_dice(state, self.dice_roll_1, self.dice_roll_2)
                 state.DISPLAY.blit(self.font.render(f"You need a {self.come_out_roll_total} and you rolled an: {self.point_roll_total} ", True, WHITE), (self.blit_message_x, self.blit_message_y))
             else:
                 state.DISPLAY.blit(self.font.render(f"Rolling the dice ", True, WHITE), (self.blit_message_x, self.blit_message_y))
-
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
             time_elapsed: int = int((pygame.time.get_ticks() - self.blow_timer_start) / 1000)
             timer_x_pois = 333
             timer_y_pois = 125
             state.DISPLAY.blit(self.font.render(f"TIMER: {time_elapsed}/7  ", True, RED), (timer_x_pois, timer_y_pois))
             if time_elapsed >= 7:
-                self.blow_timer_start = pygame.time.get_ticks()  # Reset the start time
-                # No need to manually set time_elapsed to 0, as it will be recalculated based on the new start time
-            self.create_blow_meter(state, time_elapsed)
-            self.create_blow_meter(state, self.blow_counter)
+                self.blow_timer_start = pygame.time.get_ticks()
+            self.draw_create_blow_meter(state, time_elapsed)
+            self.draw_create_blow_meter(state, self.blow_counter)
             self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].draw(state)
-
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
-            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.draw_display_dice(state, self.dice_roll_1, self.dice_roll_2)
             state.DISPLAY.blit(self.font.render(f"You WIN! Point: {self.point_roll_total} matching come out roll {self.come_out_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
-
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-            self.display_dice(state, self.dice_roll_1, self.dice_roll_2)
+            self.draw_display_dice(state, self.dice_roll_1, self.dice_roll_2)
             state.DISPLAY.blit(self.font.render(f"You LOSE! You rolled a: {self.point_roll_total}", True, WHITE), (self.blit_message_x, self.blit_message_y))
-
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-            if state.player.money <= no_money_game_over:
-                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina <= no_stamina_game_over:
-                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            self.draw_game_over_screen_helper(state)
         pygame.display.flip()
 
-
-
-    def handle_dice_rolling_simulation(self, controller):
+    def update_handle_dice_rolling_simulation(self, controller):
         if controller.confirm_button:
             if (controller.isLeftPressed or controller.isLeftPressedSwitch) and not self.is_left_pressed:
                 self.is_left_pressed = True
@@ -425,7 +383,7 @@ class CrapsNabaScreen(GambleScreen):
                 controller.isLeftPressed = False
                 controller.isLeftPressedSwitch = False
 
-            elif (controller.isRightPressed or controller.isRightPressedSwitch) and self.is_left_pressed:
+            elif controller.confirm_button and self.is_left_pressed:
                 time_since_left = (pygame.time.get_ticks() - self.left_press_time) / 1000
 
                 if time_since_left <= 0.5:
@@ -436,62 +394,17 @@ class CrapsNabaScreen(GambleScreen):
                 else:
                     self.is_left_pressed = False
 
-        if not (controller.isTPressed or controller.isAPressedSwitch):
+        if not controller.confirm_button:
             self.is_left_pressed = False
 
         current_time = pygame.time.get_ticks()
         if current_time - self.last_blow_decrement_time >= 2000:
             if self.blow_counter > 0:
                 self.blow_counter -= 1
-                print(f"Blow counter decreased: {self.blow_counter}")
             self.last_blow_decrement_time = current_time
 
-    def draw_magic_menu_selection_box(self, state):
-        choice_spacing = 40
-        text_x_offset = 60
-        text_y_offset = 15
-        arrow_x_offset = 12
-        arrow_y_offset_triple_dice = 12
-        arrow_y_offset_back = 52
-        black_box_height = 221 - 50  # Adjust height
-        black_box_width = 200 - 10  # Adjust width to match the left box
-        border_width = 5
-        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-        start_y_right_box = 240  # Adjust vertical alignment
 
-        black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill(BLACK)
-
-        white_border = pygame.Surface(
-            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
-        )
-        white_border.fill(WHITE)
-        white_border.blit(black_box, (border_width, border_width))
-
-        black_box_x = start_x_right_box - border_width
-        black_box_y = start_y_right_box - border_width
-
-        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-        for idx, choice in enumerate(self.magic_screen_choices):
-            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
-            state.DISPLAY.blit(
-                self.font.render(choice, True, WHITE),
-                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
-            )
-
-        if self.magic_screen_index == self.triple_dice_index:
-            state.DISPLAY.blit(
-                self.font.render("->", True, WHITE),
-                (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset_triple_dice)  # Use the arrow offsets
-            )
-        elif self.magic_screen_index == self.back_index:
-            state.DISPLAY.blit(
-                self.font.render("->", True, WHITE),
-                (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset_back)  # Use the arrow offsets
-            )
-
-    def magic_menu_helper(self, state):
+    def update_magic_menu_helper(self, state):
         controller = state.controller
 
         if controller.isUpPressed or controller.isUpPressedSwitch:
@@ -518,7 +431,7 @@ class CrapsNabaScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
 
-    def bet_screen_helper(self, state):
+    def update_bet_screen_helper(self, state):
         come_out_point_roll_bet_min = 25
         come_out_roll_bet_max = 75
         point_roll_bet_max = 200
@@ -576,7 +489,21 @@ class CrapsNabaScreen(GambleScreen):
                 controller.isBPressedSwitch = False
                 self.game_state = self.POINT_ROLL_SCREEN
 
-    def power_meter_screen_helper(self, state):
+    def game_over_screen_level_4(self, state: 'GameState', controller):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+        elif state.player.stamina_points <= no_stamina_game_over:
+            if controller.confirm_button:
+                self.reset_craps_game(state)
+                state.player.money -= 100
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+
+    def update_power_meter_screen_helper(self, state):
         controller = state.controller
         controller.update()
         nugget_amulet_buff = 10
@@ -592,42 +519,34 @@ class CrapsNabaScreen(GambleScreen):
         if self.power_meter_index >= power_meter_max:
             self.power_meter_index = power_meter_min
 
-        if controller.isPPressed or controller.isBPressedSwitch:
+        if controller.action_and_cancel_button:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
-            controller.isPPressed = False
-            controller.isBPressedSwitch = False
             if self.power_meter_index >= power_meter_success:
                 self.successful_power_strike_sound_effect.play()
                 self.lucky_seven = True
             elif self.power_meter_index < power_meter_success:
                 self.failed_power_strike_sound_effect.play()
                 self.lucky_seven = False
-
             if self.lucky_seven == False:
                 unlucky_two_roll = random.randint(1, 100)
                 if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items:
                     unlucky_two_roll -= nugget_amulet_buff
-
                 if unlucky_two_roll >= you_lose_unlucky_roll:
                     self.dice_roll_1 = 1
                     self.dice_roll_2 = 1
                     self.come_out_roll_total = 2
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
-
                 elif unlucky_two_roll < you_lose_unlucky_roll:
                     self.dice_roll_1 = random.randint(1, 6)
                     self.dice_roll_2 = random.randint(1, 6)
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
-
                     if self.come_out_roll_total == 2 or self.come_out_roll_total == 12:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
                         return
-
                     elif self.come_out_roll_total == 7:
                         self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                         return
-
                     if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items and self.come_out_roll_total == 3:
                         player_advantage = 4
                         self.dice_roll_1 = player_advantage
@@ -675,35 +594,27 @@ class CrapsNabaScreen(GambleScreen):
                         print("come out roll is : " + str(self.come_out_roll_total))
                         self.game_state = self.POINT_ROLL_SCREEN
 
-    def welcome_screen_helper(self, state: "GameState") -> None:
+    def update_welcome_screen_helper(self, state: "GameState") -> None:
         controller = state.controller
         controller.update()
         self.battle_messages[self.WELCOME_MESSAGE].update(state)
         if state.controller.confirm_button:
-            state.controller.isTPressed = False
-            state.controller.isAPressedSwitch = False
             if self.welcome_screen_index == self.welcome_screen_play_index:
                 self.game_state = self.POWER_METER_SCREEN
                 state.player.stamina_points -= self.player_stamina_med_cost
-
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False \
                     and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
                 self.magic_screen_index = self.magic_screen_menu_lucky_seven_index
                 self.battle_messages[self.MAGIC_MENU_TRIPLE_DICE_DESCRIPTION].reset()
                 self.game_state = self.MAGIC_MENU_SCREEN
-
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
-
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
                 self.reset_craps_game(state)
                 state.currentScreen = state.area3RestScreen
                 state.area3RestScreen.start(state)
 
     def draw_point_screen_box_info(self, state: 'GameState'):
-        # in the future the text box should read if the counter is on elemnt of blow, to read the
-        # number of turns left in text box
-        # need to make sure the game is understandable to newer people
         box_width_offset = 10
         horizontal_padding = 25
         vertical_position = 240
@@ -755,6 +666,15 @@ class CrapsNabaScreen(GambleScreen):
                 self.font.render("->", True, WHITE),
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
             )
+
+    def draw_game_over_screen_helper(self, state: 'Gamestate'):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        elif state.player.stamina_points <= no_stamina_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
@@ -840,7 +760,7 @@ class CrapsNabaScreen(GambleScreen):
         elif self.lock_down > self.lock_down_inactive:
             state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
 
-    def create_meter(self, state: "GameState", power: int) -> None:
+    def draw_create_meter(self, state: "GameState", power: int) -> None:
         meter_width = 300  # Three times wider
         meter_height = 30
         max_power = 100
@@ -878,7 +798,7 @@ class CrapsNabaScreen(GambleScreen):
         remaining_time = 2000 - (current_time - self.start_time)
         return False  # Timer is still running
 
-    def display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
+    def draw_display_dice(self, state: "GameState", dice_roll_1: int, dice_roll_2: int) -> None:
         dice_x_start_position = 300
         dice_y_position = 0
         dice_x_gap = 120
@@ -900,7 +820,7 @@ class CrapsNabaScreen(GambleScreen):
         state.DISPLAY.blit(cropped_dice1, (dice_x_start_position, dice_y_position))  # First dice position
         state.DISPLAY.blit(cropped_dice2, (dice_x_start_position + dice_x_gap, dice_y_position))  # Second dice with gap
 
-    def point_screen_helper(self, state):
+    def update_point_screen_helper(self, state):
         controller = state.controller
         controller.update()
         if (controller.isUpPressed or controller.isUpPressedSwitch) and self.is_timer_active == False:
@@ -922,26 +842,21 @@ class CrapsNabaScreen(GambleScreen):
             controller.isTPressed = False
             controller.isAPressedSwitch = False
 
-        elif (controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 0:
-
-
+        elif controller.confirm_button and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 0:
             state.player.stamina_points -= self.player_stamina_high_cost
             self.game_state = self.BLOW_POINT_ROLL_SCREEN
-            controller.isTPressed = False
-            controller.isAPressedSwitch = False
 
-        elif (controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 2:
+
+        elif controller.confirm_button and not self.is_timer_active and self.point_roll_index == 2:
             self.game_state = self.BET_SCREEN
 
         if self.is_timer_active:
-
             if self.rolling_dice_timer():
                 self.dice_roll_1 = random.randint(1, 6)
                 state.player.stamina_points -= self.player_stamina_low_cost
                 if self.debuff_spirit_drain > 0 and self.debuff_counter > 0:
                     self.dice_roll_1 = 3
                     self.debuff_counter -= 1
-                    print("debuff_counter after result: ", str(self.debuff_counter))
                 self.dice_roll_2 = random.randint(1, 6)
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
                 self.is_timer_active = False
@@ -967,7 +882,7 @@ class CrapsNabaScreen(GambleScreen):
                         self.blow_sound_checker = False
                         self.blow_meter_ready.play()
 
-    def create_blow_meter(self, state: "GameState", blow_counter: int) -> None:
+    def draw_create_blow_meter(self, state: "GameState", blow_counter: int) -> None:
         meter_width = 300  # Total width of the meter
         meter_height = 30
         max_blow_counter = 20  # 100% equals 20 points (5% per point, so 20 points total for full meter)
@@ -986,3 +901,47 @@ class CrapsNabaScreen(GambleScreen):
         goal_position = int((self.power_meter_goal / max_blow_counter) * meter_width) + meter_x_position
         pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end), line_thickness)
 
+    def draw_magic_menu_selection_box(self, state):
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        if self.magic_screen_index == self.triple_dice_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset_triple_dice)  # Use the arrow offsets
+            )
+        elif self.magic_screen_index == self.back_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset_back)  # Use the arrow offsets
+            )
