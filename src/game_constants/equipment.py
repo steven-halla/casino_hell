@@ -3,32 +3,38 @@ from enum import Enum
 
 
 class Equipment(Enum):
-
-    # stats need to be more sacred its going to make shit too hard going forward
-    # increasign luck + 1 is the only exception
-
-    #level 1
+    # coin flip
     COIN_FLIP_GLASSES = "coin flip glasses" # spirit 3 adds + 20 spirit 5 add + 50 to cins
+    COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
+    # opossum in a can
     OPOSSUM_REPELLENT = "opossum repellent" # more spirit = more dam reduction
-
-    #level 2
+    # hangry angry hippos
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception  at level 3 spirit add + 1 second
+    #black jack
+    BLACK_JACK_HAT = "Black Hat"  # protects from busts
+    SIR_LEOPOLD_AMULET = "sir leopold amulet" #companion item for stealing enemy aces
+    #craps
+    CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
+    DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
+    #dice fighter
+    # craps_wrist_watch applies
+    #slots
+    SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
+    #hi low
+    HIGH_LOW_PANTS = "high low pants" # This item gives +1 spread via spirit higher spreads take more HP
+
+
+
+
+
     SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
-    BLACK_JACK_HAT = "Black Hat"  # reward from Alice
     HEALTHY_GLOVES = "HEALTHY GLOVES"   # can be bought in shop + 10 hp per spirit
 
     #companion items
-    SIR_LEOPOLD_AMULET = "sir leopold amulet" #companion item
-    DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
     LAW_BOOK = "law book" # companion item level 3 at vert start of level 4
 
-
         # the below are for level 3 or EXPERIMENT
-    CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
-    COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
-    SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
     MP_BRACELET = "mp bracelet" # gives player 30 MP
-    HIGH_LOW_PANTS = "high low pants" # This item gives +1 spread via spirit higher spreads take more HP
     # but this adds depth as player cna still get enemy ace great way to burn cards
 
     # level 3 and 4 below

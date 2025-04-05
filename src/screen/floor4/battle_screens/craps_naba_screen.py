@@ -144,11 +144,14 @@ class CrapsNabaScreen(GambleScreen):
     PLAYER_WIN_POINT_ROLL_SCREEN: str = "player_win_point_roll_screen"
     PLAYER_LOSE_POINT_ROLL_SCREEN: str = "player_lose_point_roll_screen"
     BLOW_POINT_ROLL_SCREEN: str = "blow_point_roll_screen"
-    JUNPON_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
+    NABA_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
 
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind
+        if (Magic.GREED_METER.value in state.player.magicinventory
+                and Magic.GREED_METER.value not in self.magic_screen_choices):
+            self.magic_screen_choices.append(Magic.GREED_METER.value)
     def round_reset(self, state: 'GameState'):
         if self.debuff_spirit_drain > 0:
             for i in range(self.bet // 25):
@@ -228,7 +231,7 @@ class CrapsNabaScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-        elif self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
+        elif self.game_state == self.NABA_CASTING_SPELL_SCREEN:
             self.battle_messages[self.NABA_CASTING_SPELL_MESSAGE].update(state)
             self.update_naba_casting_spell_helper(state)
         elif self.game_state == self.BET_SCREEN:
@@ -252,7 +255,6 @@ class CrapsNabaScreen(GambleScreen):
             self.update_player_lose_point_roll(state)
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
             self.update_player_win_point_roll_helper(state)
-
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.game_over_screen_level_4(state, controller)
     def draw(self, state: 'GameState'):
@@ -262,7 +264,7 @@ class CrapsNabaScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
+        if self.game_state == self.NABA_CASTING_SPELL_SCREEN:
             self.battle_messages[self.NABA_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
@@ -332,7 +334,7 @@ class CrapsNabaScreen(GambleScreen):
         self.bet = self.bet_minimum
         blow_counter_max = 21
         blow_counter_min_needed = 20
-        self.update_handle_dice_rolling_simulation(controller)
+        self.update_handle_dice_rolling_simulation(state.controller)
         if not hasattr(self, 'blow_timer_start'):
             self.blow_timer_start = pygame.time.get_ticks()
         time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
@@ -368,7 +370,6 @@ class CrapsNabaScreen(GambleScreen):
 
     def update_come_out_roll_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
-
             self.round_reset(state)
             if self.greed_bank == False:
                 state.player.money += self.bet
@@ -382,7 +383,7 @@ class CrapsNabaScreen(GambleScreen):
                 if self.money < 1000 and self.naba_magic_points > 0:
                     dice_of_deception_random_chance += 3
                 if dice_of_deception_random_chance > 9:
-                    self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
+                    self.game_state = self.NABA_CASTING_SPELL_SCREEN
                 else:
                     self.game_state = self.WELCOME_SCREEN
             else:

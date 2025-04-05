@@ -3,22 +3,25 @@
 from enum import Enum
 
 class Magic(Enum):
-    HEADS_FORCE = "Force"  # this is gained from alex quest but will have to redo
+    # coin flip
+    HEADS_FORCE = "Force"  # All rolls are heads
     SHIELD = "Shield" # coin flip dedefends bad rolls
-
-    SLOTS_HACK = "HACK"  # this is a level 2 tier reward from mc nugg
-
-    CRAPS_LUCKY_7 = "Triple D"    #  this is gained with mind 2
-    REVEAL = "reveal"
-    SHAKE = "shake"
-
-    #the below are experiments OR level 3
-    BLACK_JACK_REDRAW = "redraw"   # we get this level 3 quest
-    PEEK = "peek" #level 3 using your wit you ask the dealer whats in the can
-    FLUSH_DECK = "flush deck"
-    BAD_LUCK = "bad luck" # dice fighter
-
+    # slots
+    SLOTS_HACK = "HACK"  # pay 0 money for slots
+    # craps
+    CRAPS_LUCKY_7 = "Triple D"    #  roll a 3rd dice, thx lady luck
     GREED_METER = "pig meter" #  scoring a 95 or higher nets you +50% win on bets
+    # opossum in a can
+    SHAKE = "shake"
+    PEEK = "peek" #level 3 using your wit you ask the dealer whats in the can
+    #black jack
+    BLACK_JACK_REDRAW = "redraw"   # sir leopold steals an ace so fast nobody sees it
+    REVEAL = "reveal" # shows how many points enemy has
+    # hi low
+    FLUSH_DECK = "flush deck" # cuts deck in half
+    # dice fighter
+    BAD_LUCK = "bad luck" # i dont remember
+
 
 
     # On level 3 and 5 have a shop keeper

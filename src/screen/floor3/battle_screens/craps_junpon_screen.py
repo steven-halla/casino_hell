@@ -10,6 +10,9 @@ from game_constants.magic import Magic
 # an eleven is a win condition for come out roll
 
 class CrapsJunponScreen(GambleScreen):
+
+
+    # I need to remove the equipmetn too soon no doubles as we get an item at level 3
     def __init__(self, screenName: str = "Craps") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
