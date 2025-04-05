@@ -235,7 +235,6 @@ class CrapsNabaScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.update_bet_screen_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-
             self.update_magic_menu_helper(state)
         elif self.game_state == self.POWER_METER_SCREEN:
             self.update_power_meter_screen_helper(state)
@@ -244,50 +243,16 @@ class CrapsNabaScreen(GambleScreen):
             self.update_come_out_roll_helper(state)
             self.battle_messages[self.PLAYER_WIN_COME_OUT_ROLL_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_LOSE_COME_OUT_SCREEN:
-            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].messages[0] \
-                = f"You rolled a {self.come_out_roll_total}"
-            self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
-            if controller.confirm_button:
-                self.round_reset(state)
-                state.player.money -= self.bet
-                self.money += self.bet
-                self.game_state = self.WELCOME_SCREEN
+            self.update_player_lose_come_out_roll(state)
         elif self.game_state == self.POINT_ROLL_SCREEN:
             self.update_point_screen_helper(state)
         elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
-            meter_finished = 7
-            self.bet = self.bet_minimum
-            blow_counter_max = 21
-            blow_counter_min_needed = 20
-            self.update_handle_dice_rolling_simulation(controller)
-            if not hasattr(self, 'blow_timer_start'):
-                self.blow_timer_start = pygame.time.get_ticks()
-            time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
-            if time_elapsed >= meter_finished:
-                self.dice_roll_1 = 3
-                self.dice_roll_2 = 4
-                self.point_roll_total = 7
-                self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
-                self.blow_timer_start = pygame.time.get_ticks()
-            if self.blow_counter >= blow_counter_max:
-                self.blow_counter = blow_counter_max
-            if (state.controller.isTPressed or state.controller.isAPressedSwitch) == False and self.blow_counter >= blow_counter_min_needed:
-                self.blow_timer_start = pygame.time.get_ticks()
-                self.point_roll_total = self.come_out_roll_total
-                self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
-            self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
+            self.update_blow_point_roll_helper(state)
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
-            if controller.confirm_button:
-                self.round_reset(state)
-                self.money += self.bet
-                state.player.money -= self.bet
-                self.game_state = self.WELCOME_SCREEN
+            self.update_player_lose_point_roll(state)
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
-            if controller.confirm_button:
-                self.round_reset(state)
-                self.money -= self.bet
-                state.player.money += self.bet
-                self.game_state = self.WELCOME_SCREEN
+            self.update_player_win_point_roll_helper(state)
+
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.game_over_screen_level_4(state, controller)
     def draw(self, state: 'GameState'):
@@ -347,6 +312,53 @@ class CrapsNabaScreen(GambleScreen):
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
         pygame.display.flip()
+
+    def update_player_win_point_roll_helper(self, state):
+        if state.controller.confirm_button:
+            self.round_reset(state)
+            self.money -= self.bet
+            state.player.money += self.bet
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_player_lose_point_roll(self, state):
+        if state.controller.confirm_button:
+            self.round_reset(state)
+            self.money += self.bet
+            state.player.money -= self.bet
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_blow_point_roll_helper(self, state):
+        meter_finished = 7
+        self.bet = self.bet_minimum
+        blow_counter_max = 21
+        blow_counter_min_needed = 20
+        self.update_handle_dice_rolling_simulation(controller)
+        if not hasattr(self, 'blow_timer_start'):
+            self.blow_timer_start = pygame.time.get_ticks()
+        time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
+        if time_elapsed >= meter_finished:
+            self.dice_roll_1 = 3
+            self.dice_roll_2 = 4
+            self.point_roll_total = 7
+            self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
+            self.blow_timer_start = pygame.time.get_ticks()
+        if self.blow_counter >= blow_counter_max:
+            self.blow_counter = blow_counter_max
+        if (state.controller.isTPressed or state.controller.isAPressedSwitch) == False and self.blow_counter >= blow_counter_min_needed:
+            self.blow_timer_start = pygame.time.get_ticks()
+            self.point_roll_total = self.come_out_roll_total
+            self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
+        self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
+
+    def update_player_lose_come_out_roll(self, state):
+        self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].messages[0] \
+            = f"You rolled a {self.come_out_roll_total}"
+        self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
+        if state.controller.confirm_button:
+            self.round_reset(state)
+            state.player.money -= self.bet
+            self.money += self.bet
+            self.game_state = self.WELCOME_SCREEN
 
     def update_naba_casting_spell_helper(self, state):
         if state.controller.confirm_button:
