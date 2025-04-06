@@ -77,6 +77,7 @@ from screen.floor3.map_screens.area_3_rest_screen import Area3RestScreen
 from screen.floor4.battle_screens.black_jack_jasmine_screen import BlackJackJasmineScreen
 from screen.floor4.battle_screens.coin_flip_bonnie_screen import CoinFlipBonnieScreen
 from screen.floor4.battle_screens.craps_naba_screen import CrapsNabaScreen
+from screen.floor4.battle_screens.dice_fighter_sophia_screen import DiceFighterSophiaScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
@@ -232,6 +233,8 @@ class GameState:
         self.coinFlipBonnieScreen = CoinFlipBonnieScreen()
         self.blackJackJasmineScreen = BlackJackJasmineScreen()
         self.crapsNabaScreen = CrapsNabaScreen()
+        self.diceFighterSophiaScreen = DiceFighterSophiaScreen()
+
 
 
 

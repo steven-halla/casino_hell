@@ -50,6 +50,8 @@ class Events(Enum):
     COIN_FLIP_BONNIE_DEFEATED = "coin flip bonnie defeated"
     BLACK_JACK_JASMINE_DEFEATED = "BLACK_JACK_JASMINE_DEFEATED"
     CRAPS_NABA_DEFEATED = "naba defeated"
+    DICE_FIGHTER_SOPHIA_DEFEATED = "dice fighter sophia defeated"
+
 
 
 
