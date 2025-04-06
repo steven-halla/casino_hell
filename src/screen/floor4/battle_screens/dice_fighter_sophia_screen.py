@@ -252,7 +252,7 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.update_sophia_casting_spell_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
-            self.bet_screen_helper(state, controller)
+            self.update_bet_screen_helper(state, controller)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_selection_box(controller, state)
         elif self.game_state == self.INITIATIVE_SCREEN:
@@ -303,31 +303,31 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.battle_messages[self.INIT_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_init_screen_box_info(state)
-            self.display_dice_init_roll(state,
+            self.draw_display_dice_init_roll(state,
                                         self.player_init_roll_1, self.player_init_roll_2, self.player_init_roll_3,
                                         self.enemy_init_roll_1, self.enemy_init_roll_2, self.enemy_init_roll_3)
         elif self.game_state == self.POST_INIT_SCREEN:
             self.battle_messages[self.POST_INIT_MESSAGE].draw(state)
-            self.display_dice_init_roll(state,
+            self.draw_display_dice_init_roll(state,
                                         self.player_init_roll_1, self.player_init_roll_2, self.player_init_roll_3,
                                         self.enemy_init_roll_1, self.enemy_init_roll_2, self.enemy_init_roll_3)
         elif self.game_state == self.POINT_SET_SCREEN:
             self.battle_messages[self.POINT_ROLL_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_point_screen_box_info_dice_fighter(state)
-            self.display_dice_point_roll(state,
+            self.draw_display_dice_point_roll(state,
                                           self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
                                           self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3)
         elif self.game_state == self.POST_POINT_SET_SCREEN:
             self.battle_messages[self.POST_POINT_ROLL_MESSAGE].draw(state)
-            self.display_dice_point_roll(state,
+            self.draw_display_dice_point_roll(state,
                                          self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
                                          self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3)
         elif self.game_state == self.PLAYER_ATTACK_SCREEN:
             self.battle_messages[self.PLAYER_ATTACK_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_battle_screen_box_info(state)
-            self.display_defense_dice(state,
+            self.draw_display_defense_dice(state,
                                       self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3,
                                       self.enemy_defense_roll,
                                       self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
@@ -336,7 +336,7 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.battle_messages[self.ENEMY_ATTACK_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_battle_screen_box_info(state)
-            self.display_defense_dice(state,
+            self.draw_display_defense_dice(state,
                                       self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3,
                                       self.enemy_defense_roll,
                                       self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
@@ -345,7 +345,7 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.battle_messages[self.PLAYER_DEFENSE_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_battle_screen_box_info(state)
-            self.display_defense_dice(state,
+            self.draw_display_defense_dice(state,
                                       self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3,
                                       self.enemy_defense_roll,
                                       self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
@@ -354,21 +354,21 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.battle_messages[self.ENEMY_DEFENSE_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_battle_screen_box_info(state)
-            self.display_defense_dice(state,
+            self.draw_display_defense_dice(state,
                                       self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3,
                                       self.enemy_defense_roll,
                                       self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
                                       self.player_defense_roll)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)  # elif self.game_state == self.PLAYER_LOSE_SCREEN:
-            self.display_defense_dice(state,
+            self.draw_display_defense_dice(state,
                                       self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3,
                                       self.enemy_defense_roll,
                                       self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
                                       self.player_defense_roll)
         elif self.game_state == self.ENEMY_WIN_SCREEN:
             self.battle_messages[self.ENEMY_WIN_MESSAGE].draw(state)
-            self.display_defense_dice(state,
+            self.draw_display_defense_dice(state,
                                       self.enemy_attack_roll_1, self.enemy_attack_roll_2, self.enemy_attack_roll_3,
                                       self.enemy_defense_roll,
                                       self.player_attack_roll_1, self.player_attack_roll_2, self.player_attack_roll_3,
@@ -620,6 +620,85 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.debuff_spirit_drain = 5
             self.game_state = self.WELCOME_SCREEN
 
+    def update_bet_screen_helper(self, state, controller):
+
+        if controller.isBPressed or controller.isBPressedSwitch:
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+            self.game_state = self.WELCOME_SCREEN
+        min_bet = 50
+        max_bet = 200
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += min_bet
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= min_bet
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+
+    def update_magic_menu_selection_box(self, controller, state):
+        if Magic.BAD_LUCK.value in state.player.magicinventory and Magic.BAD_LUCK.value not in self.magic_menu_selector:
+            self.magic_menu_selector.insert(0, Magic.BAD_LUCK.value)
+
+        if Magic.GOOD_LUCK.value in state.player.magicinventory and Magic.GOOD_LUCK.value not in self.magic_menu_selector:
+            self.magic_menu_selector.insert(1, Magic.GOOD_LUCK.value)
+
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value:
+            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+
+            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].reset()
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
+            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
+            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+
+        if controller.isTPressed or controller.isAPressedSwitch:
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value and state.player.focus_points >= 50:
+                state.player.focus_points -= 50
+                self.debuff_bad_luck = 10
+                print(f"Shield debuff: {self.debuff_bad_luck}")
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.GOOD_LUCK.value and state.player.focus_points >= 50:
+                state.player.focus_points -= 50
+                self.buff_lucky_smile = 5
+                state.player.luck += 3
+
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN
+
     def update_battle_screen_helper(self, controller):
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
@@ -719,48 +798,33 @@ class DiceFighterSophiaScreen(GambleScreen):
                 else:
                     self.player_win_init = False
                     self.enemy_win_init = True
-
-
             elif self.enemy_win_init == True:
                 self.enemy_attack_roll_1: int = random.randint(1, 6)
                 self.enemy_attack_roll_2: int = random.randint(1, 6)
                 self.enemy_attack_roll_3: int = random.randint(1, 6)
                 self.enemy_attack_roll_total: int = self.enemy_attack_roll_1 + self.enemy_attack_roll_2 + self.enemy_attack_roll_3
-                print("enemy attack roll is : " + str(self.enemy_attack_roll_total))
-                print("enemy attack roll 1: " + str(self.enemy_attack_roll_1))
-                print("enemy attack roll 2: " + str(self.enemy_attack_roll_2))
-                print("enemy attack roll 3: " + str(self.enemy_attack_roll_3))
                 self.enemy_attack_roll = self.enemy_attack_roll_total
                 if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 == self.enemy_attack_roll_3:
-                    print("Enemy got a triple win")
                     self.game_state = self.ENEMY_DEALS_DAMAGE_SCREEN
                     return
                 if self.enemy_attack_roll_1 == self.enemy_attack_roll_2 and self.enemy_attack_roll_1 != self.enemy_attack_roll_3:
                     self.point_break = self.enemy_attack_roll_1
                     self.enemy_win_point = True
                     self.game_state = self.POST_POINT_SET_SCREEN
-
-                    print("Your break point is: " + str(self.point_break))
                     return
                 elif self.enemy_attack_roll_1 == self.enemy_attack_roll_3 and self.enemy_attack_roll_1 != self.enemy_attack_roll_2:
                     self.point_break = self.enemy_attack_roll_1
                     self.enemy_win_point = True
                     self.game_state = self.POST_POINT_SET_SCREEN
-
-                    print("Your break point is: " + str(self.point_break))
                     return
                 elif self.enemy_attack_roll_2 == self.enemy_attack_roll_3 and self.enemy_attack_roll_2 != self.enemy_attack_roll_1:
                     self.point_break = self.enemy_attack_roll_2
                     self.enemy_win_point = True
                     self.game_state = self.POST_POINT_SET_SCREEN
-
-                    print("Your break point is: " + str(self.point_break))
                     return
                 else:
                     self.player_win_init = True
                     self.enemy_win_init = False
-
-
 
             if self.point_break == 0:
                 if controller.isTPressed or controller.isAPressedSwitch:
@@ -949,65 +1013,9 @@ class DiceFighterSophiaScreen(GambleScreen):
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
             )
 
-    def display_attack_dice(self, state: "GameState",
-                            player_attack_roll_1: int, player_attack_roll_2: int, player_attack_roll_3: int,
-                            player_defense_roll: int,
-                            enemy_attack_roll_1: int, enemy_attack_roll_2: int, enemy_attack_roll_3: int,
-                            enemy_defense_roll: int) -> None:
-        dice_x_start_position = 300  # Starting position for dice display
-        dice_y_position = 50  # Y-position for attack dice (adjust as necessary)
-        dice_x_gap = 120  # Gap between dice
-        dice_faces = [
-            pygame.Rect(50, 0, 133, 200),  # Dice face 1
-            pygame.Rect(210, 0, 133, 200),  # Dice face 2
-            pygame.Rect(370, 0, 133, 200),  # Dice face 3
-            pygame.Rect(545, 0, 133, 200),  # Dice face 4
-            pygame.Rect(710, 0, 133, 200),  # Dice face 5
-            pygame.Rect(880, 0, 133, 200)  # Dice face 6
-        ]
 
-        # Crop and blit player attack dice
-        attack_rect1 = dice_faces[player_attack_roll_1 - 1]
-        cropped_attack1 = self.dice_sprite_sheet.subsurface(attack_rect1)
 
-        attack_rect2 = dice_faces[player_attack_roll_2 - 1]
-        cropped_attack2 = self.dice_sprite_sheet.subsurface(attack_rect2)
-
-        attack_rect3 = dice_faces[player_attack_roll_3 - 1]
-        cropped_attack3 = self.dice_sprite_sheet.subsurface(attack_rect3)
-
-        # Blit player attack dice onto the display
-        state.DISPLAY.blit(cropped_attack1, (dice_x_start_position, dice_y_position))
-        state.DISPLAY.blit(cropped_attack2, (dice_x_start_position + dice_x_gap, dice_y_position))
-        state.DISPLAY.blit(cropped_attack3, (dice_x_start_position + dice_x_gap * 2, dice_y_position))
-
-        # Blit player defense dice below attack dice
-        player_defense_y_position = dice_y_position + 150
-        player_defense_rect = dice_faces[player_defense_roll - 1]
-        cropped_player_defense = self.dice_sprite_sheet.subsurface(player_defense_rect)
-        state.DISPLAY.blit(cropped_player_defense, (dice_x_start_position, player_defense_y_position))
-
-        # Blit enemy attack dice above player's attack dice
-        enemy_y_position = dice_y_position - 150
-        enemy_attack_rect1 = dice_faces[enemy_attack_roll_1 - 1]
-        cropped_enemy_attack1 = self.dice_sprite_sheet.subsurface(enemy_attack_rect1)
-        state.DISPLAY.blit(cropped_enemy_attack1, (dice_x_start_position, enemy_y_position))
-
-        enemy_attack_rect2 = dice_faces[enemy_attack_roll_2 - 1]
-        cropped_enemy_attack2 = self.dice_sprite_sheet.subsurface(enemy_attack_rect2)
-        state.DISPLAY.blit(cropped_enemy_attack2, (dice_x_start_position + dice_x_gap, enemy_y_position))
-
-        enemy_attack_rect3 = dice_faces[enemy_attack_roll_3 - 1]
-        cropped_enemy_attack3 = self.dice_sprite_sheet.subsurface(enemy_attack_rect3)
-        state.DISPLAY.blit(cropped_enemy_attack3, (dice_x_start_position + dice_x_gap * 2, enemy_y_position))
-
-        # Blit enemy defense dice below the enemy attack dice
-        enemy_defense_y_position = enemy_y_position + 150
-        enemy_defense_rect = dice_faces[enemy_defense_roll - 1]
-        cropped_enemy_defense = self.dice_sprite_sheet.subsurface(enemy_defense_rect)
-        state.DISPLAY.blit(cropped_enemy_defense, (dice_x_start_position, enemy_defense_y_position))
-
-    def display_defense_dice(self, state: "GameState",
+    def draw_display_defense_dice(self, state: "GameState",
                              enemy_attack_roll_1: int, enemy_attack_roll_2: int, enemy_attack_roll_3: int,
                              enemy_defense_roll: int,
                              player_attack_roll_1: int, player_attack_roll_2: int, player_attack_roll_3: int,
@@ -1069,7 +1077,7 @@ class DiceFighterSophiaScreen(GambleScreen):
         # Blit player defense dice onto the display (bottom)
         state.DISPLAY.blit(cropped_player_defense, (dice_x_start_position + 50 + dice_x_gap * 3, dice_y_position_player))
 
-    def display_dice_point_roll(self, state: "GameState",
+    def draw_display_dice_point_roll(self, state: "GameState",
                                  player_attack_roll_1: int, player_attack_roll_2: int, player_attack_roll_3: int,
                                  enemy_attack_roll_1: int, enemy_attack_roll_2: int, enemy_attack_roll_3: int) -> None:
         dice_x_start_position = 235
@@ -1141,7 +1149,7 @@ class DiceFighterSophiaScreen(GambleScreen):
 
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
 
-    def display_dice_init_roll(self, state: "GameState",
+    def draw_display_dice_init_roll(self, state: "GameState",
                                    player_init_roll_1: int, player_init_roll_2: int, player_init_roll_3: int,
                                    enemy_init_roll_1: int, enemy_init_roll_2: int, enemy_init_roll_3: int) -> None:
             dice_x_start_position = 235  # Starting x-position for player dice
@@ -1186,43 +1194,14 @@ class DiceFighterSophiaScreen(GambleScreen):
             state.DISPLAY.blit(cropped_player_dice2, (dice_x_start_position + dice_x_gap, enemy_dice_y_position))  # Second dice position
             state.DISPLAY.blit(cropped_player_dice3, (dice_x_start_position + 2 * dice_x_gap, enemy_dice_y_position))  # Third dice position
 
-    def bet_screen_helper(self, state, controller):
 
-        if controller.isBPressed or controller.isBPressedSwitch:
-            controller.isBPressed = False
-            controller.isBPressedSwitch = False
-            self.game_state = self.WELCOME_SCREEN
-        min_bet = 50
-        max_bet = 200
-
-        if controller.isUpPressed or controller.isUpPressedSwitch:
-            controller.isUpPressed = False
-            controller.isUpPressedSwitch = False
-            self.menu_movement_sound.play()  # Play the sound effect once
-            self.bet += min_bet
-        elif controller.isDownPressed or controller.isDownPressedSwitch:
-            controller.isDownPressed = False
-            controller.isDownPressedSwitch = False
-
-            self.menu_movement_sound.play()  # Play the sound effect once
-            self.bet -= min_bet
-
-        if self.bet <= min_bet:
-            self.bet = min_bet
-        elif self.bet >= max_bet:
-            self.bet = max_bet
 
 
     def draw_magic_menu_selection_box(self, state):
         if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value:
             self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].draw(state)
-
-
-
-
         elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
             self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
-
 
         choice_spacing = 40
         text_x_offset = 60
@@ -1264,56 +1243,63 @@ class DiceFighterSophiaScreen(GambleScreen):
             (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
         )
 
-    def update_magic_menu_selection_box(self, controller, state):
-        if Magic.BAD_LUCK.value in state.player.magicinventory and Magic.BAD_LUCK.value not in self.magic_menu_selector:
-            self.magic_menu_selector.insert(0, Magic.BAD_LUCK.value)
-
-        if Magic.GOOD_LUCK.value in state.player.magicinventory and Magic.GOOD_LUCK.value not in self.magic_menu_selector:
-            self.magic_menu_selector.insert(1, Magic.GOOD_LUCK.value)
 
 
-        if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value:
-            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].update(state)
-
-            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-
-        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-
-            self.battle_messages[self.MAGIC_MENU_BAD_LUCK_DESCRIPTION].reset()
-
-        if controller.isUpPressed or controller.isUpPressedSwitch:
-            controller.isUpPressed = False
-            controller.isUpPressedSwitch = False
-            self.menu_movement_sound.play()
-            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
-            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
-        elif controller.isDownPressed or controller.isDownPressedSwitch:
-            controller.isDownPressed = False
-            controller.isDownPressedSwitch = False
-            self.menu_movement_sound.play()
-            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
-            # print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
-
-        if controller.isTPressed or controller.isAPressedSwitch:
-            controller.isTPressed = False
-            controller.isAPressedSwitch = False
-            if self.magic_menu_selector[self.magic_screen_index] == Magic.BAD_LUCK.value and state.player.focus_points >= 50:
-                state.player.focus_points -= 50
-                self.debuff_bad_luck = 10
-                print(f"Shield debuff: {self.debuff_bad_luck}")
-                self.spell_sound.play()  # Play the sound effect once
-                self.magic_lock = True
-                self.game_state = self.WELCOME_SCREEN
-
-            if self.magic_menu_selector[self.magic_screen_index] == Magic.GOOD_LUCK.value and state.player.focus_points >= 50:
-                state.player.focus_points -= 50
-                self.buff_lucky_smile = 5
-                state.player.luck += 3
-
-                self.spell_sound.play()  # Play the sound effect once
-                self.magic_lock = True
-                self.game_state = self.WELCOME_SCREEN
-
-            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
-                self.game_state = self.WELCOME_SCREEN
+    # test before delte bottom
+    # def display_attack_dice(self, state: "GameState",
+    #                         player_attack_roll_1: int, player_attack_roll_2: int, player_attack_roll_3: int,
+    #                         player_defense_roll: int,
+    #                         enemy_attack_roll_1: int, enemy_attack_roll_2: int, enemy_attack_roll_3: int,
+    #                         enemy_defense_roll: int) -> None:
+    #     dice_x_start_position = 300  # Starting position for dice display
+    #     dice_y_position = 50  # Y-position for attack dice (adjust as necessary)
+    #     dice_x_gap = 120  # Gap between dice
+    #     dice_faces = [
+    #         pygame.Rect(50, 0, 133, 200),  # Dice face 1
+    #         pygame.Rect(210, 0, 133, 200),  # Dice face 2
+    #         pygame.Rect(370, 0, 133, 200),  # Dice face 3
+    #         pygame.Rect(545, 0, 133, 200),  # Dice face 4
+    #         pygame.Rect(710, 0, 133, 200),  # Dice face 5
+    #         pygame.Rect(880, 0, 133, 200)  # Dice face 6
+    #     ]
+    #
+    #     # Crop and blit player attack dice
+    #     attack_rect1 = dice_faces[player_attack_roll_1 - 1]
+    #     cropped_attack1 = self.dice_sprite_sheet.subsurface(attack_rect1)
+    #
+    #     attack_rect2 = dice_faces[player_attack_roll_2 - 1]
+    #     cropped_attack2 = self.dice_sprite_sheet.subsurface(attack_rect2)
+    #
+    #     attack_rect3 = dice_faces[player_attack_roll_3 - 1]
+    #     cropped_attack3 = self.dice_sprite_sheet.subsurface(attack_rect3)
+    #
+    #     # Blit player attack dice onto the display
+    #     state.DISPLAY.blit(cropped_attack1, (dice_x_start_position, dice_y_position))
+    #     state.DISPLAY.blit(cropped_attack2, (dice_x_start_position + dice_x_gap, dice_y_position))
+    #     state.DISPLAY.blit(cropped_attack3, (dice_x_start_position + dice_x_gap * 2, dice_y_position))
+    #
+    #     # Blit player defense dice below attack dice
+    #     player_defense_y_position = dice_y_position + 150
+    #     player_defense_rect = dice_faces[player_defense_roll - 1]
+    #     cropped_player_defense = self.dice_sprite_sheet.subsurface(player_defense_rect)
+    #     state.DISPLAY.blit(cropped_player_defense, (dice_x_start_position, player_defense_y_position))
+    #
+    #     # Blit enemy attack dice above player's attack dice
+    #     enemy_y_position = dice_y_position - 150
+    #     enemy_attack_rect1 = dice_faces[enemy_attack_roll_1 - 1]
+    #     cropped_enemy_attack1 = self.dice_sprite_sheet.subsurface(enemy_attack_rect1)
+    #     state.DISPLAY.blit(cropped_enemy_attack1, (dice_x_start_position, enemy_y_position))
+    #
+    #     enemy_attack_rect2 = dice_faces[enemy_attack_roll_2 - 1]
+    #     cropped_enemy_attack2 = self.dice_sprite_sheet.subsurface(enemy_attack_rect2)
+    #     state.DISPLAY.blit(cropped_enemy_attack2, (dice_x_start_position + dice_x_gap, enemy_y_position))
+    #
+    #     enemy_attack_rect3 = dice_faces[enemy_attack_roll_3 - 1]
+    #     cropped_enemy_attack3 = self.dice_sprite_sheet.subsurface(enemy_attack_rect3)
+    #     state.DISPLAY.blit(cropped_enemy_attack3, (dice_x_start_position + dice_x_gap * 2, enemy_y_position))
+    #
+    #     # Blit enemy defense dice below the enemy attack dice
+    #     enemy_defense_y_position = enemy_y_position + 150
+    #     enemy_defense_rect = dice_faces[enemy_defense_roll - 1]
+    #     cropped_enemy_defense = self.dice_sprite_sheet.subsurface(enemy_defense_rect)
+    #     state.DISPLAY.blit(cropped_enemy_defense, (dice_x_start_position, enemy_defense_y_position))
