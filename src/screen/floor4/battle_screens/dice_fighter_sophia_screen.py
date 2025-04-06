@@ -100,6 +100,8 @@ class DiceFighterSophiaScreen(GambleScreen):
         self.buff_corruption_hole: int = 0
         self.sophia_magic_points: int = 2
         self.buff_lucky_smile: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -191,8 +193,8 @@ class DiceFighterSophiaScreen(GambleScreen):
     SOPHIA_CASTING_SPELL_SCREEN: str = "sophia casting a spell screen"
 
     def start(self, state: 'GameState'):
-        self.spirit_bonus = state.spirit_bonus * 10
-        self.magic_bonus = state.magic_bonus * 10
+        self.spirit_bonus: int = state.player.spirit
+        self.magic_bonus: int = state.player.mind
     def restart_dice_fighter_game(self):
         self.player_win_init: bool = False
         self.enemy_win_init: bool = False
