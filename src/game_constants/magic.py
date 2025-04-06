@@ -20,7 +20,8 @@ class Magic(Enum):
     # hi low
     FLUSH_DECK = "flush deck" # cuts deck in half
     # dice fighter
-    BAD_LUCK = "bad luck" # i dont remember
+    BAD_LUCK = "bad luck" # affects enemy attack rolls
+    GOOD_LUCK = "good luck" # adds + 3 to luck
 
 
 

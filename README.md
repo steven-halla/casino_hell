@@ -311,5 +311,25 @@ CREATE SOMETHING ELSE TO DO SUCH AS A MINI GAME OR SOMETHING
 MAYBE PUZZLES?
 REWORK SPIRETS
 MUSIC
+REEL SYSTEM FOR SLOTS- HOLD ACTION BUTTON , A BAR APPEARS, A THIN LINE GOES UP AND DOWN, 
+EVERY ROUND WE CHANGE THE POINT , THIS WILL CHALLANGE THE PLAYER, PLAYER WILL PRESS DOWN BUTTON TO STOP METER
+NEW SPELL OR EQUPIMENT - FREEZE THE SLOTS BAR
+have the slot system work for up to 5 turns this way the player doesn't do that stuff all the time
+this will set  a bonus or negative bonus depending-maybe need to test
 
+
+
+    # @typechecked
+    # def update_player_lose_point_roll(self, state) -> str:
+    #     if state.controller.confirm_button:
+    #         self.round_reset(state)
+    #         self.money += self.bet
+    #         state.player.money -= self.bet
+    #         self.game_state = self.WELCOME_SCREEN
+    #         # this breaks
+    #     return 1233
+
+# i need to check the below in the future for type safety 
+pip install mypy
+mypy src/
 

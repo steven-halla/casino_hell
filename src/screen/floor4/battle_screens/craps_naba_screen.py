@@ -7,6 +7,8 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
+from typeguard import typechecked
+
 # an eleven is a win condition for come out roll
 # need to animate extra dice
 
@@ -322,12 +324,18 @@ class CrapsNabaScreen(GambleScreen):
             state.player.money += self.bet
             self.game_state = self.WELCOME_SCREEN
 
+
+
     def update_player_lose_point_roll(self, state):
         if state.controller.confirm_button:
             self.round_reset(state)
             self.money += self.bet
             state.player.money -= self.bet
             self.game_state = self.WELCOME_SCREEN
+
+
+
+
 
     def update_blow_point_roll_helper(self, state):
         meter_finished = 7
