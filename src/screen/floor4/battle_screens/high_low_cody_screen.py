@@ -189,7 +189,14 @@ class HighLowCodyScreen(GambleScreen):
 
 
     # this is for when we are still waiting on an ace
-    def reset_spread_no_ace(self):
+    def reset_spread_no_ace(self, state):
+        if self.debuff_countdown_rot > 0:
+            has_twos = any(card[0] == "2" for card in self.deck.cards)
+            if not has_twos:
+                self.money += 1000
+                state.player.money -= 1000
+                state.player.stamina_points -= 200
+                state.player.focus_points -= 100
         self.player_score = 0
         self.enemy_score = 0
         self.player_hand: list = []
@@ -228,6 +235,13 @@ class HighLowCodyScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+
+        if self.debuff_countdown_rot > 0:
+            has_twos = any(card[0] == "2" for card in self.deck.cards)
+            if not has_twos:
+                print("no 2")
+
+
 
         if self.money <= self.cody_bankrupt:
             state.currentScreen = state.area4RestScreen
@@ -350,7 +364,7 @@ class HighLowCodyScreen(GambleScreen):
         if controller.confirm_button:
             if self.game_state == self.PLAYER_WINS_SCREEN:
                 if self.battle_messages[self.PLAYER_WIN_SPREAD_MESSAGE].is_finished():
-                    self.reset_spread_no_ace()
+                    self.reset_spread_no_ace(state)
                     state.player.exp += self.low_exp
 
                     if self.spread_counter == 1:
@@ -380,7 +394,7 @@ class HighLowCodyScreen(GambleScreen):
                     self.game_state = self.WELCOME_SCREEN
             elif self.game_state == self.ENEMY_WINS_SCREEN:
                 if self.battle_messages[self.PLAYER_LOSE_SPREAD_MESSAGE].is_finished():
-                    self.reset_spread_no_ace()
+                    self.reset_spread_no_ace(state)
                     if self.spread_counter == 1:
                         state.player.exp -= self.high_exp
                         state.player.money -= self.bet * 3
