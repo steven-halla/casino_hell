@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="included new magic spell for the enemy">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/black_jack_albert_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/black_jack_albert_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/coin_flip_dexter_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/coin_flip_dexter_screen.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new spell created for enemy: countdown rot" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,6 +68,7 @@
     &quot;Python.game.executor&quot;: &quot;Run&quot;,
     &quot;Python.game_state.executor&quot;: &quot;Run&quot;,
     &quot;Python.hangry_angry_starving_hippos_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.high_low_diena_screen.executor&quot;: &quot;Run&quot;,
     &quot;Python.hungry_starving_hippos.executor&quot;: &quot;Run&quot;,
     &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
@@ -89,7 +85,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm Professional Edition.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
@@ -116,7 +112,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="hangry_angry_starving_hippos_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="high_low_diena_screen" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -125,12 +121,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/screen/floor3/battle_screens" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/hangry_angry_starving_hippos_test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/screen/floor3/battle_screens/high_low_diena_screen.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -258,20 +254,20 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.hangry_angry_starving_hippos_test" />
-      <item itemvalue="Python.hungry_starving_hippos" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.high_low_diena_screen" />
+      <item itemvalue="Python.hungry_starving_hippos" />
       <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest" />
       <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome" />
       <item itemvalue="Python tests.Python tests in hangry_angry_starving_hippos_test.py" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.high_low_diena_screen" />
         <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome" />
         <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest" />
         <item itemvalue="Python.hungry_starving_hippos" />
         <item itemvalue="Python tests.Python tests in hangry_angry_starving_hippos_test.py" />
-        <item itemvalue="Python.hangry_angry_starving_hippos_test" />
       </list>
     </recent_temporary>
   </component>
@@ -369,6 +365,7 @@
       <workItem from="1741034716738" duration="607000" />
       <workItem from="1741124681663" duration="918000" />
       <workItem from="1741756527760" duration="80562000" />
+      <workItem from="1742843337938" duration="196936000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -713,7 +710,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1259" />
+    <option name="localTasksCounter" value="1334" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -742,32 +739,32 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now cant go into battle with less than 1 hp" />
-    <MESSAGE value="now cant battle with less than 50 gold" />
-    <MESSAGE value="currently stuck on coin flip" />
-    <MESSAGE value="fixed both coin flip magics&#10;heads force now correctly displays and shield properly defends" />
-    <MESSAGE value="max bet now increased to 400 when item is equipped" />
-    <MESSAGE value="fixed equipment so now gets ethe extra coins for wins with coin flip glasses" />
-    <MESSAGE value="lose message now displays&#10;now exits on win condition&#10;now exits and resets game" />
-    <MESSAGE value="created new NPC" />
-    <MESSAGE value="updated controller&#10;added player info to boxes" />
-    <MESSAGE value="fixed isssue with being stuck in initiative screen with pressing button presses" />
-    <MESSAGE value="control fixes, bug fixes" />
-    <MESSAGE value="minor controll fixes for leaving the craps game and the magic back not working" />
-    <MESSAGE value="fixed blow bug, now it shows red, put blow down to 0 for testing, controller support is now fully supported for craps" />
-    <MESSAGE value="fixed controller issues with blow command and such" />
-    <MESSAGE value="new npc, fleshed out controller funtions" />
-    <MESSAGE value="currently fixing controlle rright" />
-    <MESSAGE value="now for pick screen the index changeing and not controller presses dictates speed of curser" />
-    <MESSAGE value="fixed bugs with leaving now it goes to correct place,  winning now gives event marker to correct place" />
-    <MESSAGE value="new npc for slots, updated slots for controller support" />
-    <MESSAGE value="fixed bug that prevented proper leaving" />
-    <MESSAGE value="fixed bug that was callign a method outside of class/parent class. Also fixed game overs to work added 2 new methods" />
-    <MESSAGE value="new NPC,  creating hsh game" />
-    <MESSAGE value="HSH NPC and main class updated to work in game" />
-    <MESSAGE value="updated controls for switch pro" />
-    <MESSAGE value="included new magic spell for the enemy" />
-    <option name="LAST_COMMIT_MESSAGE" value="included new magic spell for the enemy" />
+    <MESSAGE value="now it sets itself proper" />
+    <MESSAGE value="created new coin flip coin flip logic" />
+    <MESSAGE value="fixed only land on h eads bug which resulted from using the wrong variables" />
+    <MESSAGE value="double flip spell is now active in game" />
+    <MESSAGE value="refactor put draw funs on bottom of file and UPdate above all draw everything is grouped" />
+    <MESSAGE value="spirit bonus is now active for equipment" />
+    <MESSAGE value="we now have the ability for enemy to go to spell cast screen" />
+    <MESSAGE value="now we have empoewrd spells and duration based on mind stat" />
+    <MESSAGE value="game complete for level 4" />
+    <MESSAGE value="new spell created: Brain rot reduces Mind and Spirit to 0" />
+    <MESSAGE value="fixed bug of going to coin flip, refactor" />
+    <MESSAGE value="refactor" />
+    <MESSAGE value="fixed bug that was stuck on no tgiving player a new hand" />
+    <MESSAGE value="created new game screen" />
+    <MESSAGE value="refactored" />
+    <MESSAGE value="renamed funcs that belong primary to a update/draw method" />
+    <MESSAGE value="creating new funcs to make things more clean" />
+    <MESSAGE value="updated craps , new refactor , new spells, new equipment" />
+    <MESSAGE value="new npc created can now go into game &#10;fixed rest screen 3 bug" />
+    <MESSAGE value="refactor dice fighter" />
+    <MESSAGE value="refactor creating helper funs" />
+    <MESSAGE value="new NPC added" />
+    <MESSAGE value="dice fighter now playable" />
+    <MESSAGE value="created new high low class and did a big refactor from lvl 3 to the new lvl 4" />
+    <MESSAGE value="new spell created for enemy: countdown rot" />
+    <option name="LAST_COMMIT_MESSAGE" value="new spell created for enemy: countdown rot" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -802,6 +799,11 @@
           <line>47</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/screen/floor4/battle_screens/coin_flip_bonnie_screen.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -815,9 +817,10 @@
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$nukeem.coverage" NAME="nukeem Coverage Results" MODIFIED="1728164707576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/_old" />
     <SUITE FILE_PATH="coverage/casino_hell$cindy_long_hair.coverage" NAME="cindy_long_hair Coverage Results" MODIFIED="1708242568580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entity/npc/start_screen" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1742785847198" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1744050666590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1725751338530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/casino_hell$high_low_diena_screen.coverage" NAME="high_low_diena_screen Coverage Results" MODIFIED="1743092237437" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor3/battle_screens" />
     <SUITE FILE_PATH="coverage/nfeGame$opposuminacan.coverage" NAME="opposuminacan Coverage Results" MODIFIED="1702952391883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$hungry_starving_hippos.coverage" NAME="hungry_starving_hippos Coverage Results" MODIFIED="1725751052954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />

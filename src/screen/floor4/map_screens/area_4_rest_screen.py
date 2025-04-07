@@ -43,6 +43,7 @@ from entity.npc.area4.area_4_rest_screen.black_jack_jasmine import BlackJackJasm
 from entity.npc.area4.area_4_rest_screen.coin_flip_bonnie import CoinFlipBonnie
 from entity.npc.area4.area_4_rest_screen.craps_naba import CrapsNaba
 from entity.npc.area4.area_4_rest_screen.dice_fighter_sophia import DiceFighterSophia
+from entity.npc.area4.area_4_rest_screen.high_low_cody import HighLowCody
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
@@ -117,6 +118,7 @@ class Area4RestScreen(Screen):
             BlackJackJasmine(16 * 20, 16 * 5),  # fin
             CrapsNaba(16 * 35, 16 * 5),  # fin
             DiceFighterSophia(16 * 50, 16 * 5),  # fin
+            HighLowCody(16 * 5, 16 * 20),  # fin
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin
