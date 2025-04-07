@@ -239,7 +239,7 @@ class GameState:
         self.diceFighterSophiaScreen = DiceFighterSophiaScreen()
         self.highLowCodyScreen = HighLowCodyScreen()
         self.hungryStarvingHipposDippyScreen = HungryStarvingHipposDippyScreen()
-        self.opossumInACanSillyWillyBobScreen = OpossumInACanSillyWillyScreen()
+        self.opossumInACanSillyWillyScreen = OpossumInACanSillyWillyScreen()
 
 
 

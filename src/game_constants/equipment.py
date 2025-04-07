@@ -8,6 +8,7 @@ class Equipment(Enum):
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
     # opossum in a can
     OPOSSUM_REPELLENT = "opossum repellent" # more spirit = more dam reduction
+    VARMENT_HAT = "varment hat"# on a loss % chance to get gold back
     # hangry angry hippos
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception  at level 3 spirit add + 1 second
     #black jack

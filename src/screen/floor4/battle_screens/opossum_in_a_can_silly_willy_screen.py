@@ -269,13 +269,20 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                 self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The hungry opossum deals 50 damage, you gain {self.exp_gain_high}:   experience points and 0 money."]
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
 
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
+            if controller.confirm_button:
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
+
+                if Equipment.VARMENT_HAT.value in state.player.equipped_items:
+                    money_chance_additive = state.player.spirit * 5
+
+                    money_gain_randomizer = random.randint(1, 100) + money_chance_additive
+
+                    if money_gain_randomizer > 99:
+                        state.player.money += 200
+
                 state.player.exp += self.exp_gain_high
                 self.opossum_round_reset(state)
                 self.game_state = self.WELCOME_SCREEN
@@ -862,12 +869,15 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
 
         for idx, choice in enumerate(self.welcome_screen_choices):
             y_position = start_y_right_box + idx * spacing_between_choices
-
+            display_text = choice
+            text_color = WHITE
 
             state.DISPLAY.blit(
                 self.font.render(display_text, True, text_color),
                 (start_x_right_box + text_x_offset, y_position + text_y_offset)
             )
+
+
 
         if Magic.SHAKE.value not in state.player.magicinventory:
             self.magic_lock = True

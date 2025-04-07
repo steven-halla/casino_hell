@@ -45,6 +45,7 @@ from entity.npc.area4.area_4_rest_screen.craps_naba import CrapsNaba
 from entity.npc.area4.area_4_rest_screen.dice_fighter_sophia import DiceFighterSophia
 from entity.npc.area4.area_4_rest_screen.high_low_cody import HighLowCody
 from entity.npc.area4.area_4_rest_screen.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
+from entity.npc.area4.area_4_rest_screen.opossum_in_a_can_silly_willy import OpossumInACanSillyWilly
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
@@ -121,6 +122,7 @@ class Area4RestScreen(Screen):
             DiceFighterSophia(16 * 50, 16 * 5),  # fin
             HighLowCody(16 * 5, 16 * 20),  # fin
             HungryStarvingHipposDippy(16 * 20, 16 * 20),  # fin
+            OpossumInACanSillyWilly(16 * 35, 16 * 20),  # fin
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin
