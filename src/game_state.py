@@ -236,6 +236,8 @@ class GameState:
         self.crapsNabaScreen = CrapsNabaScreen()
         self.diceFighterSophiaScreen = DiceFighterSophiaScreen()
         self.highLowCodyScreen = HighLowCodyScreen()
+        self.hungryStarvingHipposDippyScreen = HungryStarvingHipposDippyScreen()
+
 
 
 

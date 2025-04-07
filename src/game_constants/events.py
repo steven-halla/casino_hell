@@ -52,6 +52,8 @@ class Events(Enum):
     CRAPS_NABA_DEFEATED = "naba defeated"
     DICE_FIGHTER_SOPHIA_DEFEATED = "dice fighter sophia defeated"
     HIGH_LOW_CODY_DEFEATED = "high low cody defeated"
+    HUNGRY_STARVING_HIPPOS_DIPPY_DEFEATED = "hungry starving hippos dippy defeated"
+
 
 
 
