@@ -79,6 +79,7 @@ from screen.floor4.battle_screens.coin_flip_bonnie_screen import CoinFlipBonnieS
 from screen.floor4.battle_screens.craps_naba_screen import CrapsNabaScreen
 from screen.floor4.battle_screens.dice_fighter_sophia_screen import DiceFighterSophiaScreen
 from screen.floor4.battle_screens.high_low_cody_screen import HighLowCodyScreen
+from screen.floor4.battle_screens.hungry_starving_hippos_dippy_screen import HungryStarvingHipposDippyScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
