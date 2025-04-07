@@ -127,6 +127,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.money: int = 444
         self.peek_cost: int = 25
         self.buff_peek: bool = False
+        self.poison_chance: int = 0
         self.silly_willy_magic_points: int = 2
 
 
@@ -204,6 +205,8 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
         self.buff_peek = False
+        self.silly_willy_magic_points: int = 2
+
 
     def opossum_round_reset(self, state):
         self.shake = False
@@ -228,6 +231,13 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
 
         if self.buff_poison_bite > 0:
             self.buff_poison_bite -= 1
+
+        self.poison_chance += 3
+        double_flip_randomizer = random.randint(1, 100) + self.poison_chance
+
+        if double_flip_randomizer > 90 and self.silly_willy_magic_points > 0 and self.buff_poison_bite == 0:
+            self.current_screen = self.SILLY_WILLY_CASTING_SPELL_SCREEN
+            self.poison_chance = 0
 
 
 
@@ -284,7 +294,6 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                         Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_POISON)
                         if Events.REFRESH in state.player.level_four_npc_state:
                             state.player.level_four_npc_state.remove(Events.REFRESH)
-
 
                     self.poison_damage += 1
                     if self.poison_damage == state.player.body:
