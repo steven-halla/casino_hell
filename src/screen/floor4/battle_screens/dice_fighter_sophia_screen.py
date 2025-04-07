@@ -387,7 +387,6 @@ class DiceFighterSophiaScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
             elif self.buff_corruption_hole > 0:
                 state.player.stamina_points += self.bet // 3
-
                 state.player.money -= self.bet * 3
                 self.money += self.bet * 3
                 self.restart_dice_fighter_round(state)

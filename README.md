@@ -317,6 +317,16 @@ NEW SPELL OR EQUPIMENT - FREEZE THE SLOTS BAR
 have the slot system work for up to 5 turns this way the player doesn't do that stuff all the time
 this will set  a bonus or negative bonus depending-maybe need to test
 
+#
+# for level 4 to do:
+# build poker, new game, update hungry hippos with runner, flesh out,single bets instead of 3
+# hungry hippos include an audience 
+# 
+
+
+
+#
+
 
 
     # @typechecked
