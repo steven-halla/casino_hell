@@ -80,6 +80,7 @@ from screen.floor4.battle_screens.craps_naba_screen import CrapsNabaScreen
 from screen.floor4.battle_screens.dice_fighter_sophia_screen import DiceFighterSophiaScreen
 from screen.floor4.battle_screens.high_low_cody_screen import HighLowCodyScreen
 from screen.floor4.battle_screens.hungry_starving_hippos_dippy_screen import HungryStarvingHipposDippyScreen
+from screen.floor4.battle_screens.opossum_in_a_can_silly_willy_screen import OpossumInACanSillyWillyScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
@@ -238,6 +239,8 @@ class GameState:
         self.diceFighterSophiaScreen = DiceFighterSophiaScreen()
         self.highLowCodyScreen = HighLowCodyScreen()
         self.hungryStarvingHipposDippyScreen = HungryStarvingHipposDippyScreen()
+        self.opossumInACanSillyWillyBobScreen = OpossumInACanSillyWillyScreen()
+
 
 
 
