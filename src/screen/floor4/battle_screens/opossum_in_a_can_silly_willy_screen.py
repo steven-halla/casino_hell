@@ -41,6 +41,8 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.magic_screen_index: int = 0
         self.magic_menu_selector: list[str] = []
         self.shake_cost = 10
+        self.buff_poison_bite: int = 0
+        self.poison_damage: int = 0
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "Silly Willy: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
@@ -72,7 +74,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                 "You lost the toss."
             ]),
             self.SILLY_WILLY_CASTING_SPELL_MESSAGE: MessageBox([
-                "“From the hollers of Hell and the backwoods beyond,let my critters hug your feet… Opossum Shoes!”"
+                "Rabies King of the Critter Kingdom, go on ‘n bless all yer furry young’uns with fancy brew...poison bite”"
             ]),
 
         }
@@ -182,6 +184,10 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.initializeGarbageCans(state)
 
+        # staying at end appends this
+        if Events.REFRESH.value in state.player.level_four_npc_state:
+            self.poison_damage = 0
+
     def opossum_game_reset(self, state):
         self.shake = False
         self.debuff_keen_perception: bool = False
@@ -200,7 +206,6 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.buff_peek = False
 
     def opossum_round_reset(self, state):
-        print("oppsum round rest trig")
         self.shake = False
         self.debuff_keen_perception: bool = False
 
@@ -220,6 +225,9 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
         self.buff_peek = False
+
+        if self.buff_poison_bite > 0:
+            self.buff_poison_bite -= 1
 
 
 
@@ -241,9 +249,9 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         elif self.game_state == self.SILLY_WILLY_CASTING_SPELL_SCREEN:
 
             self.battle_messages[self.SILLY_WILLY_CASTING_SPELL_MESSAGE].update(state)
-            if state.controller.isTPressed or state.controller.isAPressedSwitch:
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
+            if state.controller.confirm_button:
+                self.buff_poison_bite += 5
+
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.MAGIC_MENU_SCREEN:
 
@@ -270,6 +278,18 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
 
             if controller.confirm_button:
+                if self.buff_poison_bite > 0:
+                    # add the opposite of the below to inn keeper level 4
+                    if Events.OPOSSUM_POISON.value not in state.player.level_four_npc_state:
+                        Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_POISON)
+                        if Events.REFRESH in state.player.level_four_npc_state:
+                            state.player.level_four_npc_state.remove(Events.REFRESH)
+
+
+                    self.poison_damage += 1
+                    if self.poison_damage == state.player.body:
+                        state.player.hp -= 999
+
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:

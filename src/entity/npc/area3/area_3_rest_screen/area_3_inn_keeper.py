@@ -118,7 +118,22 @@ class Area3InnKeeper(Npc):
                 state.player.days += 1
                 if state.player.body > 0:
                     state.player.food = 1
+#------------------------------------------------------------------------------------------
 
+                # add the opposite of the below to inn keeper level 4
+                # if Events.REFRESH.value not in state.player.level_four_npc_state:
+                #     Events.add_level_four_event_to_player(state.player, Events.REFRESH)
+                #     if Events.OPOSSUM_POISON in state.player.level_four_npc_state:
+                #         state.player.level_four_npc_state.remove(Events.OPOSSUM_POISON)
+
+
+
+
+
+
+
+
+#----------------------------------------------------------------------------------------
 
 
                 state.player.stamina_points += 500

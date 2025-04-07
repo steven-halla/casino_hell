@@ -1,6 +1,8 @@
 from enum import Enum
 
 class Events(Enum):
+    OPOSSUM_POISON = "OPOSSUM_POISON"
+    REFRESH = "REFRESH"
     ERIKA_IN_PARTY = "erika"
     CHICKEN_QUEST_START = "CHICKEN_QUEST_START"
     QUEST_1_BADGE = "Quest Badge" #coin flip 500 coins quest by alex
