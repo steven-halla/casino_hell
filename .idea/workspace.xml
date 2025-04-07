@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new spell added poision bite: This ability can KO a player">
-      <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/opossum_in_a_can_silly_willy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/opossum_in_a_can_silly_willy_screen.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="can now cast spell at random">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -368,7 +369,7 @@
       <workItem from="1741124681663" duration="918000" />
       <workItem from="1741756527760" duration="80562000" />
       <workItem from="1742843337938" duration="196936000" />
-      <workItem from="1744054764747" duration="5389000" />
+      <workItem from="1744054764747" duration="6125000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -713,7 +714,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1340" />
+    <option name="localTasksCounter" value="1341" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -742,7 +743,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="we now have the ability for enemy to go to spell cast screen" />
     <MESSAGE value="now we have empoewrd spells and duration based on mind stat" />
     <MESSAGE value="game complete for level 4" />
     <MESSAGE value="new spell created: Brain rot reduces Mind and Spirit to 0" />
@@ -767,7 +767,8 @@
     <MESSAGE value="creating new opposim in a can screen" />
     <MESSAGE value="new NPC, new screen class for opossum in a can, new equipment - Varment hat" />
     <MESSAGE value="new spell added poision bite: This ability can KO a player" />
-    <option name="LAST_COMMIT_MESSAGE" value="new spell added poision bite: This ability can KO a player" />
+    <MESSAGE value="can now cast spell at random" />
+    <option name="LAST_COMMIT_MESSAGE" value="can now cast spell at random" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
