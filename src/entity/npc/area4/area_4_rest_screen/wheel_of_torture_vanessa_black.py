@@ -26,9 +26,6 @@ class WheelOfTortureVanessaBlack(Npc):
             "defeated_message": NpcTextBox(
                 ["vanessa black: How, impossible, nobody has every defeated my wheel."],
                 (50, 450, 700, 130), 36, 500),
-
-
-
         }
         self.choices = ["Yes", "No"]
         self.menu_index = 0
@@ -39,7 +36,6 @@ class WheelOfTortureVanessaBlack(Npc):
         self.font = pygame.font.Font(None, 36)
         self.arrow_index = 0  # Initialize the arrow index to the first item (e.g., "Yes")
         self.t_pressed = False
-
 
         self.character_sprite_image = pygame.image.load(
             "./assets/images/SNES - Harvest Moon - Shipping Workers.png").convert_alpha()

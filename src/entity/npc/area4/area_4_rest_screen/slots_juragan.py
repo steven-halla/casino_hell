@@ -18,8 +18,6 @@ class SlotsJuragan(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
-        # Integrated textbox content into guy_messages
-        self.selected_item_index = 0
         self.slots_juragan_messages = {
             "welcome_message": NpcTextBox(
                 ["Juragan: Are you sure you want to battle the king of slots?"],
