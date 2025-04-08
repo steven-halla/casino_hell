@@ -69,6 +69,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             if state.controller.confirm_button:
                 self.update_roll_dice_player()
+            elif state.controller.action_and_cancel_button:
+                self.update_roll_dice_dealer()
 
     def draw(self, state):
         super().draw(state)
@@ -101,6 +103,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     @typechecked
     def update_roll_dice_dealer(self) -> None:
         self.move_dealer = random.randint(1, 6)
+        self.enemy_position += self.move_dealer
+        if self.enemy_position > 29:
+            self.enemy_position = 29
+
 
 
 
@@ -130,14 +136,21 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     @typechecked
     def draw_enemy_token(self, state) -> None:
         """Draws the enemy's token (GREEN) in square 1."""
-        x_start: int = 45
-        y_position: int = 95
-        padding_inside_square: int = 35  # shifts token lower-right in the square
+        token_size: int = 10
+        padding_inside_square: int = 5
+        x_start: int = 65
+        y_start: int = 125
+        x_padding: int = 70
+        y_padding: int = 100
+        squares_per_row: int = 10
 
-        token_x: int = x_start + padding_inside_square
-        token_y: int = y_position + padding_inside_square
+        row: int = self.enemy_position // squares_per_row
+        col: int = self.enemy_position % squares_per_row
 
-        pygame.draw.rect(state.DISPLAY, GREEN, (token_x, token_y, self.enemy_token_position, self.enemy_token_position))
+        token_x: int = x_start + col * x_padding + padding_inside_square
+        token_y: int = y_start + row * y_padding + padding_inside_square
+
+        pygame.draw.rect(state.DISPLAY, GREEN, (token_x, token_y, token_size, token_size))
 
     @typechecked
     def draw_board(self, state) -> None:
