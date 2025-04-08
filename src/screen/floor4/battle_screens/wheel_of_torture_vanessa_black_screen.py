@@ -1,9 +1,10 @@
+import math
 from typing import List
 
 from pygame import surface
 from typeguard import typechecked
 
-from constants import BLACK, RED, PURPLE, GREEN
+from constants import BLACK, RED, PURPLE, GREEN, WHITE
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from entity.npc.npc import Npc
@@ -11,13 +12,10 @@ import pygame
 from game_constants.events import Events
 import random
 
-
-
-
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
-        self.game_state: str = self.WELCOME_SCREEN
+        self.game_state: str = self.SPIN_WHEEL_SCREEN
         self.money_pile: int = 0
         self.exp_pile: int = 0
         self.money: int = 2000
@@ -47,6 +45,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         }
 
     BET_MESSAGE: str = "bet_message"
+    SPIN_WHEEL_SCREEN: str = "spin wheel screen"
 
     def start(self, state):
         self.spirit_bonus: int = state.player.spirit * 10
@@ -66,11 +65,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
+
         if self.game_state == self.WELCOME_SCREEN:
             if state.controller.confirm_button:
                 self.update_roll_dice_player()
             elif state.controller.action_and_cancel_button:
                 self.update_roll_dice_dealer()
+        elif self.game_state == self.SPIN_WHEEL_SCREEN:
+            pass
 
     def draw(self, state):
         super().draw(state)
@@ -78,6 +80,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.draw_board(state)
             self.draw_enemy_token(state)
             self.draw_player_token(state)
+        elif self.game_state == self.SPIN_WHEEL_SCREEN:
+            self.draw_wheel(state)
         pygame.display.flip()
 
 #============================================update methods go below
@@ -106,10 +110,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_position += self.move_dealer
         if self.enemy_position > 29:
             self.enemy_position = 29
-
-
-
-
 
 #_-----------------------------------draw methods go below
 
@@ -163,7 +163,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         border_thickness: int = 2
         x_padding: int = 70
 
-
         for i in range(10):
             x_position = x_start + i * x_padding
             pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position, box_height, box_width), border_thickness)
@@ -176,7 +175,64 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             x_position = x_start + i * x_padding
             pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position_3, box_height, box_width), border_thickness)
 
+    @typechecked
+    def draw_wheel(self, state) -> None:
+        # in hell there is no slow down of wheel is stops aburptly
+        center_x: int = 400
+        center_y: int = 300
+        radius: int = 150
+        num_slices: int = 20
+        spin_speed: float = 1.01
+        max_frames: int = 180  # 3 seconds at 60 FPS
 
+        if not hasattr(self, "_wheel_angle"):
+            self._wheel_angle = 0.0
+        if not hasattr(self, "_wheel_frame_count"):
+            self._wheel_frame_count = 0
+        if not hasattr(self, "_is_spinning"):
+            self._is_spinning = False
+
+        if state.controller.confirm_button and not self._is_spinning:
+            self._is_spinning = True
+            self._wheel_angle = 0.0
+            self._wheel_frame_count = 0
+
+        if self._is_spinning:
+            self._wheel_angle += spin_speed
+            self._wheel_frame_count += 1
+            if self._wheel_frame_count >= max_frames:
+                self._is_spinning = False
+
+        # Draw green wheel
+        pygame.draw.circle(state.DISPLAY, GREEN, (center_x, center_y), radius)
+
+        # Draw white slices
+        for i in range(num_slices):
+            angle = (2 * math.pi / num_slices) * i + self._wheel_angle
+            end_x = int(center_x + radius * math.cos(angle))
+            end_y = int(center_y + radius * math.sin(angle))
+            pygame.draw.line(state.DISPLAY, WHITE, (center_x, center_y), (end_x, end_y), 2)
+
+    # @typechecked
+    # def draw_wheel(self, state) -> None:
+    #     """Draws a 300x300 green wheel with 20 white pie slice divisions."""
+    #     center_x: int = 400  # You can position this wherever you want
+    #     center_y: int = 300
+    #     radius: int = 150
+    #     num_slices: int = 20
+    #
+    #     # Draw the green circle
+    #     pygame.draw.circle(state.DISPLAY, GREEN, (center_x, center_y), radius)
+    #
+    #     # Draw the white lines for pie slices
+    #     for i in range(num_slices):
+    #         angle: float = (2 * math.pi / num_slices) * i
+    #         end_x: int = int(center_x + radius * math.cos(angle))
+    #         end_y: int = int(center_y + radius * math.sin(angle))
+    #         pygame.draw.line(state.DISPLAY, WHITE, (center_x, center_y), (end_x, end_y), 2)
+    #
+    #     if state.controller.confirm_button:
+    #         spin wheel
 
 
 
