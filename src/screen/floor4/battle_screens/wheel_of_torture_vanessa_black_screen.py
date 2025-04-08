@@ -15,7 +15,7 @@ import random
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
-        self.game_state: str = self.SPIN_WHEEL_SCREEN
+        self.game_state: str = self.WELCOME_SCREEN
         self.money_pile: int = 0
         self.exp_pile: int = 0
         self.money: int = 2000
