@@ -68,25 +68,26 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         pygame.display.flip()
 
     def draw_board(self, state) -> None:
-        """Draws a simple board of 30 black squares from left to right.
-
-        Each square is 30x30 pixels with 20 pixels of padding between them.
-        """
-        x_start = 30  # Starting x position
-        y_position = 100  # Fixed y position for all squares
-        y_position_2 = 150  # Fixed y position for all squares
-        box_height: int = 30
-        box_width: int = 30
+        x_start = 50
+        y_position = 100
+        y_position_2 = 200
+        y_position_3 = 300
+        box_height: int = 50
+        box_width: int = 50
         border_thickness: int = 2
-        x_padding: int = 50
+        x_padding: int = 70
 
-        for i in range(15):
-            x_position = x_start + i * (x_padding)
+        for i in range(10):
+            x_position = x_start + i * x_padding
             pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position, box_height, box_width), border_thickness)
 
-        for i in range(15):
-            x_position = x_start + i * (x_padding)
+        for i in range(10):
+            x_position = x_start + i * x_padding
             pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position_2, box_height, box_width), border_thickness)
+
+        for i in range(10):
+            x_position = x_start + i * x_padding
+            pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position_3, box_height, box_width), border_thickness)
 
 
 
