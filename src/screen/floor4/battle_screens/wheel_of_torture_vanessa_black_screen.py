@@ -33,6 +33,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_position: int = 0
         self.enemy_position: int = 0
         self.board_squares: List[str] = []
+        self.enemy_token_position: int = 15
+        self.player_token_position: int = 15
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -65,7 +67,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             state.area4RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            if state.controller.confirm_button:
+                self.update_roll_dice_player()
 
     def draw(self, state):
         super().draw(state)
@@ -87,10 +90,12 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         """Initializes the board as a list of 30 squares."""
         self.board_squares: list = [None] * 30
 
-
     @typechecked
     def update_roll_dice_player(self) -> None:
         self.move_player = random.randint(1, 6)
+        self.player_position += self.move_player
+        if self.player_position > 29:
+            self.player_position = 29  # cap at last square
 
 
     @typechecked
@@ -104,21 +109,27 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def draw_player_token(self, state) -> None:
-        """Draws the player's token (PURPLE) in square 1."""
-        token_size: int = 15
-        x_start: int = 50
-        y_position: int = 100
+        """Draws the player's token (PURPLE) based on their current board position."""
+        token_size: int = 10
         padding_inside_square: int = 5
+        x_start: int = 50
+        y_start: int = 100
+        x_padding: int = 70
+        y_padding: int = 100
+        squares_per_row: int = 10
 
-        token_x: int = x_start + padding_inside_square
-        token_y: int = y_position + padding_inside_square
+        # Calculate row and column based on player_position
+        row: int = self.player_position // squares_per_row
+        col: int = self.player_position % squares_per_row
+
+        token_x: int = x_start + col * x_padding + padding_inside_square
+        token_y: int = y_start + row * y_padding + padding_inside_square
 
         pygame.draw.rect(state.DISPLAY, PURPLE, (token_x, token_y, token_size, token_size))
 
     @typechecked
     def draw_enemy_token(self, state) -> None:
         """Draws the enemy's token (GREEN) in square 1."""
-        token_size: int = 15
         x_start: int = 45
         y_position: int = 95
         padding_inside_square: int = 35  # shifts token lower-right in the square
@@ -126,7 +137,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         token_x: int = x_start + padding_inside_square
         token_y: int = y_position + padding_inside_square
 
-        pygame.draw.rect(state.DISPLAY, GREEN, (token_x, token_y, token_size, token_size))
+        pygame.draw.rect(state.DISPLAY, GREEN, (token_x, token_y, self.enemy_token_position, self.enemy_token_position))
 
     @typechecked
     def draw_board(self, state) -> None:
