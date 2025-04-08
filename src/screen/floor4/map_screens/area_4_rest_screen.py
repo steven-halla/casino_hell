@@ -46,6 +46,8 @@ from entity.npc.area4.area_4_rest_screen.dice_fighter_sophia import DiceFighterS
 from entity.npc.area4.area_4_rest_screen.high_low_cody import HighLowCody
 from entity.npc.area4.area_4_rest_screen.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
 from entity.npc.area4.area_4_rest_screen.opossum_in_a_can_silly_willy import OpossumInACanSillyWilly
+from entity.npc.area4.area_4_rest_screen.slots_juragan import SlotsJuragan
+from entity.npc.area4.area_4_rest_screen.wheel_of_torture_vanessa_black import WheelOfTortureVanessaBlack
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
@@ -123,6 +125,8 @@ class Area4RestScreen(Screen):
             HighLowCody(16 * 5, 16 * 20),  # fin
             HungryStarvingHipposDippy(16 * 20, 16 * 20),  # fin
             OpossumInACanSillyWilly(16 * 35, 16 * 20),  # fin
+            SlotsJuragan(16 * 50, 16 * 20),  # fin
+            WheelOfTortureVanessaBlack(16 * 5, 16 * 35),  # fin
 
             # below are shops and such
             Area2InnKeeper(16 * 25, 16 * 50),  # fin
