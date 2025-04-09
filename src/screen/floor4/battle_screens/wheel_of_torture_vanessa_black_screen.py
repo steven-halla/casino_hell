@@ -15,7 +15,7 @@ import random
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
-        self.game_state: str = self.WELCOME_SCREEN
+        self.game_state: str = self.DRAW_CARD_SCREEN
         self.money_pile: int = 0
         self.exp_pile: int = 0
         self.money: int = 2000
@@ -46,6 +46,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     BET_MESSAGE: str = "bet_message"
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
+    DRAW_CARD_SCREEN: str = "draw card screen"
 
     def start(self, state):
         self.spirit_bonus: int = state.player.spirit * 10
@@ -74,6 +75,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             pass
 
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            pass
+
     def draw(self, state):
         super().draw(state)
         if self.game_state == self.WELCOME_SCREEN:
@@ -82,6 +86,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.draw_player_token(state)
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             self.draw_wheel(state)
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.draw_card()
         pygame.display.flip()
 
 #============================================update methods go below
@@ -112,6 +118,28 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.enemy_position = 29
 
 #_-----------------------------------draw methods go below
+
+    @typechecked
+    def draw_card(self) -> None:
+        """Draws a 500x200 white-bordered card with a black interior."""
+        card_width: int = 500
+        card_height: int = 200
+        card_x: int = 150
+        card_y: int = 200
+        border_thickness: int = 4
+
+        # Draw outer white border
+        pygame.draw.rect(pygame.display.get_surface(), WHITE, (card_x, card_y, card_width, card_height))
+
+        # Draw inner black fill slightly inset
+        inner_x: int = card_x + border_thickness
+        inner_y: int = card_y + border_thickness
+        inner_width: int = card_width - (border_thickness * 2)
+        inner_height: int = card_height - (border_thickness * 2)
+
+        pygame.draw.rect(pygame.display.get_surface(), BLACK, (inner_x, inner_y, inner_width, inner_height))
+
+
 
     @typechecked
     def draw_player_token(self, state) -> None:

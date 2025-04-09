@@ -343,49 +343,30 @@ this will set  a bonus or negative bonus depending-maybe need to test
 pip install mypy
 mypy src/
 
-# wheel of torture cards-Green:
-1) doubles all exp in pile
-2) double all gold in pile
-3) player gets 1 extra turn
-4) gain + 50 stamina (enemy gives player -50 stamina)
-5) gain + 25 focus
-6) gain 250 gold
-7) move up 3 squares (10% board movement)
-8) gain 250 exp
-9) gain + 100 stamina
-10) gain + 50 focus
-11) + 1 movement for player rest of round
-12) - 1 movement for enemy rest of round
-13) move enemy back 3 squares (10% board movement)
-14) swap positions if you are behind
-15) + 1 player luck
-16) + 1 magic rest of round
-17) + 1 spirit rest of round
-18) +50% exp bonus rest of round
-19) +50% money bonus rest of round
-20) gain special item or 1000 gold(enemy takes -1000 gold from player pile)
+1) Increase EXP in pile by 50%
+2) Increase gold in pile by 50%
+3) Gain 250 gold
+4) Gain 250 EXP
+5) Move up 3 squares (10% board movement)
+6) Gain +100 stamina + 50 focus
+7)  Player v enemy roll : winner gets a free win.  
+8) +1 movement for player (rest of round)
+9) -1 movement for enemy (rest of round)
+10) Move enemy back 3 squares (10% board movement)
+11) Swap positions with enemy
+12) +1 to player’s luck, spirit, and magic
+13) Gain special item or 1000 gold (enemy loses -1000 gold from player pile)
+14) Bankrupt – lose all money in pile
+15) Bankrupt – lose all EXP in pile
+16) Magic lock for rest of round
+17) Disable equipment for rest of round
+18) Move back 3 squares
+19) Enemy moves forward 3 squares
+20) move to mid point on map
 
-# wheel of torture cards-Red:
-1) bankrupt - lose all money in pile
-2) bankrupt - lose all exp in pile
-3) enemy gets extra turn
-4) lose 50 stamina
-5) lose 25 focus
-6) lose 100 stamina
-7) lose 50 focus
-8) move back 3 squares
-9) enemy moves 3 squres up
-10) -1 movement rest of round for player
-11)  enemy +1 movement rest of round
-12) if you are ahead switch positions
-13) -1 luck
-14) all 6s are now 5s
-15) - 250 gold from pile
-16) - 250 exp from pile
-17) magic lock rest of round
-18) disable equipment rest of round
-19) -1 magic rest of round
-20) -1 spirit rest of round
+
+
+
 
 
 
