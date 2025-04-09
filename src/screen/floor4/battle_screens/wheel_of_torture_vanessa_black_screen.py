@@ -35,6 +35,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_token_position: int = 15
 
 
+
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_SCREEN: MessageBox([
                 "Vanessea Black: this is the welcome screen"
@@ -44,17 +45,147 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             ]),
         }
 
+        # Initialize the card messages dictionary
+        self.card_messages: dict[str, MessageBox] = {
+            self.EXP_CARD_HALF_UP: MessageBox([
+                "1) Increase EXP in pile by 50%"
+            ]),
+            self.GOLD_CARD_HALF_UP: MessageBox([
+                "2) Increase gold in pile by 50%"
+            ]),
+            self.GOLD_CARD_BONUS: MessageBox([
+                "3) Gain 250 gold"
+            ]),
+            self.EXP_CARD_BONUS: MessageBox([
+                "4) Gain 250 EXP"
+            ]),
+            self.MOVE_3_SQUARES: MessageBox([
+                "5) Move up 3 squares (10% board movement)"
+            ]),
+            self.TASTY_CAR: MessageBox([
+                "6) Gain +100 stamina + 50 focus"
+            ]),
+            self.FREE_WIN: MessageBox([
+                "7) Player v enemy roll : winner gets a free win."
+            ]),
+            self.PLAYER_MOVE_FORWARD: MessageBox([
+                "8) +1 movement for player (rest of round)"
+            ]),
+            self.ENEMY_MOVE_BACK: MessageBox([
+                "9) -1 movement for enemy (rest of round)"
+            ]),
+            self.ENEMY_MOVE_BACK_3: MessageBox([
+                "10) Move enemy back 3 squares (10% board movement)"
+            ]),
+            self.SWAP_POSITIONS: MessageBox([
+                "11) Swap positions with enemy"
+            ]),
+            self.STAT_BOOSTER: MessageBox([
+                "12) +1 to player’s luck, spirit, and magic"
+            ]),
+            self.SPECIAL_ITEM: MessageBox([
+                "13) Gain special item or 1000 gold (enemy loses -1000 gold from player pile)"
+            ]),
+            self.BANKRUPT: MessageBox([
+                "14) Bankrupt – lose all money in pile"
+            ]),
+            self.EXP_HOLE: MessageBox([
+                "15) Bankrupt – lose all EXP in pile"
+            ]),
+            self.MAGIC_LOCK_UP: MessageBox([
+                "16) Magic lock for rest of round"
+            ]),
+            self.EQUIPMENT_LOCK_UP: MessageBox([
+                "17) Disable equipment for rest of round"
+            ]),
+            self.MOVE_BACK_3: MessageBox([
+                "18) Move back 3 squares"
+            ]),
+            self.MOVE_ENEMY_3: MessageBox([
+                "19) Enemy moves forward 3 squares"
+            ]),
+            self.MID_POINT_MOVE: MessageBox([
+                "20) Move to mid point on map"
+            ]),
+        }
+
     BET_MESSAGE: str = "bet_message"
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
 
+    EXP_CARD_HALF_UP: str = "exp_card_half_up"
+    GOLD_CARD_HALF_UP: str = "gold_card_half_up"
+    GOLD_CARD_BONUS: str = "gold_card_bonus"
+    EXP_CARD_BONUS: str = "exp_card_bonus"
+    MOVE_3_SQUARES: str = "move_3_squares"
+    TASTY_CAR: str = "tasty_car"
+    FREE_WIN: str = "free_win"
+    PLAYER_MOVE_FORWARD: str = "player_move_forward"
+    ENEMY_MOVE_BACK: str = "enemy_move_back"
+    ENEMY_MOVE_BACK_3: str = "enemy_move_back_3"
+    SWAP_POSITIONS: str = "swap_positions"
+    STAT_BOOSTER: str = "stat_booster"
+    SPECIAL_ITEM: str = "special_item"
+    BANKRUPT: str = "bankrupt"
+    EXP_HOLE: str = "exp_hole"
+    MAGIC_LOCK_UP: str = "magic_lock_up"
+    EQUIPMENT_LOCK_UP: str = "equipment_lock_up"
+    MOVE_BACK_3: str = "move_back_3"
+    MOVE_ENEMY_3: str = "move_enemy_3"
+    MID_POINT_MOVE: str = "mid_point_move"
+
+
     def start(self, state):
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
+        self.card_constants: list[str] = [
+            self.BANKRUPT,
+            self.EXP_HOLE,
+            self.MAGIC_LOCK_UP,
+            self.EQUIPMENT_LOCK_UP,
+            self.MOVE_BACK_3,
+            self.MID_POINT_MOVE,
+            self.EXP_CARD_HALF_UP,
+            self.GOLD_CARD_HALF_UP,
+            self.GOLD_CARD_BONUS,
+            self.EXP_CARD_BONUS,
+            self.MOVE_3_SQUARES,
+            self.TASTY_CAR,
+            self.MOVE_ENEMY_3,
+            self.STAT_BOOSTER,
+            self.FREE_WIN,
+            self.PLAYER_MOVE_FORWARD,
+            self.ENEMY_MOVE_BACK,
+            self.ENEMY_MOVE_BACK_3,
+            self.SWAP_POSITIONS,
+            self.SPECIAL_ITEM,
+        ]
 
     def round_reset(self):
         self.money_pile = 0
         self.exp_pile = 0
+        self.card_constants: list[str] = [
+            self.BANKRUPT,
+            self.EXP_HOLE,
+            self.MAGIC_LOCK_UP,
+            self.EQUIPMENT_LOCK_UP,
+            self.MOVE_BACK_3,
+            self.MID_POINT_MOVE,
+            self.EXP_CARD_HALF_UP,
+            self.GOLD_CARD_HALF_UP,
+            self.GOLD_CARD_BONUS,
+            self.EXP_CARD_BONUS,
+            self.MOVE_3_SQUARES,
+            self.TASTY_CAR,
+            self.MOVE_ENEMY_3,
+            self.STAT_BOOSTER,
+            self.FREE_WIN,
+            self.PLAYER_MOVE_FORWARD,
+            self.ENEMY_MOVE_BACK,
+            self.ENEMY_MOVE_BACK_3,
+            self.SWAP_POSITIONS,
+            self.SPECIAL_ITEM,
+        ]
 
     def update(self, state):
         controller = state.controller
@@ -76,7 +207,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             pass
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
-            pass
+            if state.controller.confirm_button:
+                self.update_draw_card()
 
     def draw(self, state):
         super().draw(state)
@@ -87,10 +219,24 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             self.draw_wheel(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
-            self.draw_card()
+            pass
         pygame.display.flip()
 
 #============================================update methods go below
+
+    @typechecked
+    def update_draw_card(self) -> None:
+        """Rolls a number from 1–100, maps it to a card, and prints the result."""
+        roll: int = random.randint(1, 100)
+        index: int = (roll - 1) // 5  # 0–19
+
+        selected_card: str = self.card_constants[index]
+        message_box: MessageBox = self.card_messages[selected_card]
+
+        print(f"🎲 Rolled: {roll}")
+        print(f"🃏 Selected Card: {selected_card}")
+        for line in message_box.messages:
+            print(f"📜 Message: {line}")
 
     @typechecked
     def update_square_effects(self) -> None:
@@ -119,25 +265,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 #_-----------------------------------draw methods go below
 
-    @typechecked
-    def draw_card(self) -> None:
-        """Draws a 500x200 white-bordered card with a black interior."""
-        card_width: int = 500
-        card_height: int = 200
-        card_x: int = 150
-        card_y: int = 200
-        border_thickness: int = 4
 
-        # Draw outer white border
-        pygame.draw.rect(pygame.display.get_surface(), WHITE, (card_x, card_y, card_width, card_height))
-
-        # Draw inner black fill slightly inset
-        inner_x: int = card_x + border_thickness
-        inner_y: int = card_y + border_thickness
-        inner_width: int = card_width - (border_thickness * 2)
-        inner_height: int = card_height - (border_thickness * 2)
-
-        pygame.draw.rect(pygame.display.get_surface(), BLACK, (inner_x, inner_y, inner_width, inner_height))
 
 
 
