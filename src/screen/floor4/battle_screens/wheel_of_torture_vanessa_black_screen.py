@@ -194,7 +194,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         ]
 
     def update(self, state):
-        print(self.game_cards)
 
         controller = state.controller
         controller.update()
@@ -236,20 +235,24 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def update_draw_card(self, state) -> None:
-        """Rolls a number from 1–100, maps it to a card, and prints the result."""
+        """Rolls a number from 1–100, maps it to a card, and selects the next available one if needed."""
         roll: int = random.randint(1, 100)
-        index: int = (roll - 1) // 5  # 0–19
+        start_index: int = (roll - 1) // 5
+        total_cards: int = len(self.card_constants)
 
-        selected_card: str = self.card_constants[index]
-        self.CARD_CONSTANT: str = selected_card  # Set the dynamic card constant
-
-        message_box: MessageBox = self.card_messages[selected_card]
-        self.card_messages[self.CARD_CONSTANT].update(state)  # Update logic
-
-        print(f"🎲 Rolled: {roll}")
-        print(f"🃏 Selected Card: {selected_card}")
-        for line in message_box.messages:
-            print(f"📜 Message: {line}")
+        # Start searching from rolled index, wrapping around if necessary
+        for offset in range(total_cards):
+            index = (start_index + offset) % total_cards
+            selected_card = self.card_constants[index]
+            if selected_card in self.card_messages:
+                self.CARD_CONSTANT = selected_card
+                self.card_messages[selected_card].reset()
+                print(f"🎲 Rolled: {roll}")
+                print(f"🃏 Selected Card: {selected_card}")
+                for line in self.card_messages[selected_card].messages:
+                    print(f"📜 Message: {line}")
+                self.card_constants.remove(selected_card)
+                break
 
     @typechecked
     def update_square_effects(self) -> None:
