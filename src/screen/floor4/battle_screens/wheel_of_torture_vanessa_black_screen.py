@@ -31,8 +31,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_position: int = 0
         self.enemy_position: int = 0
         self.board_squares: List[str] = []
+        self.game_cards: List[str] = []
         self.enemy_token_position: int = 15
         self.player_token_position: int = 15
+        self.card_constants: list[str] = []
 
 
 
@@ -109,10 +111,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             ]),
         }
 
+
     BET_MESSAGE: str = "bet_message"
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
-
     EXP_CARD_HALF_UP: str = "exp_card_half_up"
     GOLD_CARD_HALF_UP: str = "gold_card_half_up"
     GOLD_CARD_BONUS: str = "gold_card_bonus"
@@ -133,9 +135,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     MOVE_BACK_3: str = "move_back_3"
     MOVE_ENEMY_3: str = "move_enemy_3"
     MID_POINT_MOVE: str = "mid_point_move"
+    CARD_CONSTANT: str = "card_constant"
 
 
     def start(self, state):
+
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
         self.card_constants: list[str] = [
@@ -160,6 +164,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.SWAP_POSITIONS,
             self.SPECIAL_ITEM,
         ]
+        self.game_cards = self.card_constants.copy()
+
 
     def round_reset(self):
         self.money_pile = 0
@@ -188,6 +194,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         ]
 
     def update(self, state):
+        print(self.game_cards)
+
         controller = state.controller
         controller.update()
         state.player.update(state)
@@ -206,9 +214,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             pass
 
-        elif self.game_state == self.DRAW_CARD_SCREEN:
+        if self.game_state == self.DRAW_CARD_SCREEN:
+            if self.CARD_CONSTANT in self.card_messages:
+                self.card_messages[self.CARD_CONSTANT].update(state)
             if state.controller.confirm_button:
-                self.update_draw_card()
+                self.update_draw_card(state)
 
     def draw(self, state):
         super().draw(state)
@@ -219,19 +229,22 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             self.draw_wheel(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
-            pass
+            self.draw_card_message(state)
         pygame.display.flip()
 
 #============================================update methods go below
 
     @typechecked
-    def update_draw_card(self) -> None:
+    def update_draw_card(self, state) -> None:
         """Rolls a number from 1–100, maps it to a card, and prints the result."""
         roll: int = random.randint(1, 100)
         index: int = (roll - 1) // 5  # 0–19
 
         selected_card: str = self.card_constants[index]
+        self.CARD_CONSTANT: str = selected_card  # Set the dynamic card constant
+
         message_box: MessageBox = self.card_messages[selected_card]
+        self.card_messages[self.CARD_CONSTANT].update(state)  # Update logic
 
         print(f"🎲 Rolled: {roll}")
         print(f"🃏 Selected Card: {selected_card}")
@@ -265,6 +278,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 #_-----------------------------------draw methods go below
 
+    @typechecked
+    def draw_card_message(self,state) -> None:
+        """Draws the message box for the currently selected card."""
+        if self.CARD_CONSTANT in self.card_messages:
+            self.card_messages[self.CARD_CONSTANT].draw(state)
 
 
 
