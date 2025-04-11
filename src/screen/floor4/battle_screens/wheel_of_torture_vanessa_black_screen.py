@@ -1,5 +1,6 @@
 import math
 from typing import List
+from random import randint
 
 from pygame import surface
 from typeguard import typechecked
@@ -422,27 +423,25 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def update_board(self) -> None:
-        """Creates a 30-square board with exact type counts, no spacing rules."""
-        total_squares = 30
-        self.board_squares: list[str] = [None] * (total_squares - 1)  # Leave space for victory square
+        """Creates a 30-square board using self.old_squares and appends the victory square last."""
 
-        square_types_with_counts = {
-            self.CARD_SQUARE: 6,
-            self.GOLD_SQUARE: 10,
-            self.EXP_SQUARE: 6,
-            self.TRAP_SQUARE: 5,
-            self.THIEF_SQUARE: 2,
-        }
+        self.old_squares: list[str] = [
+            self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE,
+            self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE,
+            self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE,
+            self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE,
+            self.TRAP_SQUARE, self.TRAP_SQUARE, self.TRAP_SQUARE, self.TRAP_SQUARE, self.TRAP_SQUARE,
+            self.THIEF_SQUARE, self.THIEF_SQUARE,
+            self.VICTORY_SQUARE
+        ]
 
-        all_indexes = list(range(total_squares - 1))
-        random.shuffle(all_indexes)
-        index_pointer = 0
+        self.board_squares: list[str] = []
 
-        for square_type, count in square_types_with_counts.items():
-            for _ in range(count):
-                idx = all_indexes[index_pointer]
-                self.board_squares[idx] = square_type
-                index_pointer += 1
+        square_pool: list[str] = self.old_squares[:-1].copy()  # Exclude the victory square
+
+        while len(self.board_squares) < 29:
+            index = random.randint(0, len(square_pool) - 1)
+            self.board_squares.append(square_pool.pop(index))
 
         self.board_squares.append(self.VICTORY_SQUARE)
 
