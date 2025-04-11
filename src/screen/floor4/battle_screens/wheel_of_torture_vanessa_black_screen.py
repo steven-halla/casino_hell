@@ -15,10 +15,12 @@ import random
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
+        self.enemy_stat_boost = None
+        self.player_stat_boost = None
         self.enemy_position_holder = None
         self.player_position_holder = None
         self.enemy_equipment_lock: bool= False
-        self.game_state: str = self.DRAW_CARD_SCREEN
+        self.game_state: str = self.PLAYER_TURN_SCREEN
         self.player_money_pile: int = 0
         self.enemy_money_pile: int = 0
         self.player_exp_pile: int = 0
@@ -34,7 +36,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_win_token: int = 0
         self.player_move_boost: int = 0
         self.enemy_move_boost: int = 0
-
         self.money: int = 2000
         self.vanessa_black_bankrupt: int = 0
         self.magic_lock: bool = False
@@ -55,9 +56,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.card_constants: list[str] = []
         self.player_turn: bool = False
         self.enemy_turn: bool = False
-
-
-
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_SCREEN: MessageBox([
@@ -136,6 +134,18 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     BET_MESSAGE: str = "bet_message"
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
+    PLAYER_TURN_SCREEN: str = "player turn screen"
+    ENEMY_TURN_SCREEN: str = "enemy turn screen"
+
+    #squres of game board
+    GOLD_SQUARE: str = "gold square"
+    EXP_SQUARE: str = "exp square"
+    TRAP_SQUARE: str = "trap square"
+    VICTORY_SQUARE: str = "victory square"
+    THIEF_SQUARE: str = "thief square"
+    CARD_SQUARE: str = "card square"
+
+
 
     # the below are for cards
     EXP_CARD_HALF_UP: str = "exp_card_half_up"
@@ -193,9 +203,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.SPECIAL_ITEM,
         ]
         self.game_cards = self.card_constants.copy()
+        self.update_board()
 
 
-    def round_reset(self):
+    def round_reset(self, state):
         self.player_money_pile = 0
         self.exp_pile = 0
         self.card_constants: list[str] = [
@@ -220,6 +231,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.SWAP_POSITIONS,
             self.SPECIAL_ITEM,
         ]
+        self.update_board()
+
 
     def update(self, state):
 
@@ -234,12 +247,20 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
+            pass
+
+        elif self.game_state == self.SPIN_WHEEL_SCREEN:
+            pass
+        elif self.game_state == self.PLAYER_TURN_SCREEN:
             if state.controller.confirm_button:
                 self.update_roll_dice_player()
             elif state.controller.action_and_cancel_button:
                 self.update_roll_dice_dealer()
-        elif self.game_state == self.SPIN_WHEEL_SCREEN:
-            pass
+        elif self.game_state == self.ENEMY_TURN_SCREEN:
+            if state.controller.confirm_button:
+                self.update_roll_dice_player()
+            elif state.controller.action_and_cancel_button:
+                self.update_roll_dice_dealer()
         if self.game_state == self.DRAW_CARD_SCREEN:
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
@@ -251,10 +272,12 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     def draw(self, state):
         super().draw(state)
+        self.draw_board(state)
+        self.draw_enemy_token(state)
+        self.draw_player_token(state)
         if self.game_state == self.WELCOME_SCREEN:
-            self.draw_board(state)
-            self.draw_enemy_token(state)
-            self.draw_player_token(state)
+            pass
+
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             self.draw_wheel(state)
         elif self.game_state == self.DRAW_CARD_SCREEN:
@@ -337,9 +360,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.player_position += 3
         elif self.CARD_CONSTANT == self.STAT_BOOSTER:
             if self.player_turn == True:
-                pass
+                self.player_stat_boost += 1
             elif self.enemy_turn == True:
-                pass
+                self.enemy_stat_boost += 1
         elif self.CARD_CONSTANT == self.FREE_WIN:
             if self.player_turn == True:
                 self.player_win_token += 1
@@ -399,8 +422,33 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def update_board(self) -> None:
-        """Initializes the board as a list of 30 squares."""
-        self.board_squares: list = [None] * 30
+        """Creates a 30-square board with exact type counts, no spacing rules."""
+        total_squares = 30
+        self.board_squares: list[str] = [None] * (total_squares - 1)  # Leave space for victory square
+
+        square_types_with_counts = {
+            self.CARD_SQUARE: 6,
+            self.GOLD_SQUARE: 10,
+            self.EXP_SQUARE: 6,
+            self.TRAP_SQUARE: 5,
+            self.THIEF_SQUARE: 2,
+        }
+
+        all_indexes = list(range(total_squares - 1))
+        random.shuffle(all_indexes)
+        index_pointer = 0
+
+        for square_type, count in square_types_with_counts.items():
+            for _ in range(count):
+                idx = all_indexes[index_pointer]
+                self.board_squares[idx] = square_type
+                index_pointer += 1
+
+        self.board_squares.append(self.VICTORY_SQUARE)
+
+        print("\n=== BOARD SQUARE LAYOUT ===")
+        for idx, square in enumerate(self.board_squares):
+            print(f"Square {idx + 1:02}: {square}")
 
     @typechecked
     def update_roll_dice_player(self) -> None:

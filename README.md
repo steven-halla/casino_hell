@@ -343,26 +343,13 @@ this will set  a bonus or negative bonus depending-maybe need to test
 pip install mypy
 mypy src/
 
-1) Increase EXP in pile by 50%
-2) Increase gold in pile by 50%
-3) Gain 250 gold
-4) Gain 250 EXP
-5) Move up 3 squares (10% board movement)
-6) Gain +100 stamina + 50 focus
-7)  Player v enemy roll : winner gets a free win.  
-8) +1 movement for player (rest of round)
-9) -1 movement for enemy (rest of round)
-10) Move enemy back 3 squares (10% board movement)
-11) Swap positions with enemy
-12) +1 to player’s luck, spirit, and magic
-13) Gain special item or 1000 gold (enemy loses -1000 gold from player pile)
-14) Bankrupt – lose all money in pile
-15) Bankrupt – lose all EXP in pile
-16) Magic lock for rest of round
-17) Disable equipment for rest of round
-18) Move back 3 squares
-19) Enemy moves forward 3 squares
-20) move to mid point on map
+board square types:
+6 card squres (20%)
+1 victory sqare ( pass go pay 1000 gold for token or go back to start) cash in exp if you pass
+10 gold squres
+6 exp squares
+5 trap squares lose stamina
+2 theif squres steals random gold
 
 
 

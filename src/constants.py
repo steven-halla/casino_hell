@@ -18,6 +18,13 @@ WHITE: Tuple[int, int, int] = (255, 255, 255)
 BLUE: Tuple[int, int, int] = (0, 0, 255)
 RED: Tuple[int, int, int] = (255, 0, 0)
 PURPLE: Tuple[int, int, int] = (200, 0, 125)
+
+ORANGE: Tuple[int, int, int] = (255, 165, 0)
+CYAN: Tuple[int, int, int] = (0, 255, 255)
+MAGENTA: Tuple[int, int, int] = (255, 0, 255)
+LIME: Tuple[int, int, int] = (50, 205, 50)
+PINK: Tuple[int, int, int] = (255, 105, 180)
+GRAY: Tuple[int, int, int] = (128, 128, 128)
 #player position
 PLAYER_OFFSET = (16 * 23, 16 * 16)
 
