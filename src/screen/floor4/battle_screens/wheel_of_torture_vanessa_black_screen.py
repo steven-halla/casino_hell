@@ -57,6 +57,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.card_constants: list[str] = []
         self.player_turn: bool = False
         self.enemy_turn: bool = False
+        self.board_squares: list[str] = [
+
+        ]
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_SCREEN: MessageBox([
@@ -145,6 +148,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     VICTORY_SQUARE: str = "victory square"
     THIEF_SQUARE: str = "thief square"
     CARD_SQUARE: str = "card square"
+    EMPTY_SQUARE: str = "empty square"
 
 
 
@@ -204,7 +208,38 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.SPECIAL_ITEM,
         ]
         self.game_cards = self.card_constants.copy()
-        self.update_board()
+        self.board_squares: list[str] = [
+            self.EMPTY_SQUARE,  # 1
+            self.EXP_SQUARE,  # 2
+            self.TRAP_SQUARE,  # 3
+            self.GOLD_SQUARE,  # 4
+            self.CARD_SQUARE,  # 5
+            self.EXP_SQUARE,  # 6
+            self.TRAP_SQUARE,  # 7
+            self.GOLD_SQUARE,  # 8
+            self.EXP_SQUARE,  # 9
+            self.CARD_SQUARE,  # 10
+            self.GOLD_SQUARE,  # 11
+            self.THIEF_SQUARE,  # 12
+            self.EXP_SQUARE,  # 13
+            self.GOLD_SQUARE,  # 14
+            self.CARD_SQUARE,  # 15
+            self.TRAP_SQUARE,  # 16
+            self.EXP_SQUARE,  # 17
+            self.GOLD_SQUARE,  # 18
+            self.TRAP_SQUARE,  # 19
+            self.CARD_SQUARE,  # 20
+            self.EXP_SQUARE,  # 21
+            self.GOLD_SQUARE,  # 22
+            self.TRAP_SQUARE,  # 23
+            self.THIEF_SQUARE,  # 24
+            self.CARD_SQUARE,  # 25
+            self.GOLD_SQUARE,  # 26
+            self.GOLD_SQUARE,  # 27
+            self.GOLD_SQUARE,  # 28
+            self.CARD_SQUARE,  # 29
+            self.VICTORY_SQUARE  # 30
+        ]
 
 
     def round_reset(self, state):
@@ -232,10 +267,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.SWAP_POSITIONS,
             self.SPECIAL_ITEM,
         ]
-        self.update_board()
 
 
     def update(self, state):
+        print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
 
         controller = state.controller
         controller.update()
@@ -421,33 +456,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         current_player_square = self.board_squares[self.player_position]
         current_enemy_square = self.board_squares[self.enemy_position]
 
-    @typechecked
-    def update_board(self) -> None:
-        """Creates a 30-square board using self.old_squares and appends the victory square last."""
 
-        self.old_squares: list[str] = [
-            self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE,
-            self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE, self.GOLD_SQUARE,
-            self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE, self.EXP_SQUARE,
-            self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE, self.CARD_SQUARE,
-            self.TRAP_SQUARE, self.TRAP_SQUARE, self.TRAP_SQUARE, self.TRAP_SQUARE, self.TRAP_SQUARE,
-            self.THIEF_SQUARE, self.THIEF_SQUARE,
-            self.VICTORY_SQUARE
-        ]
 
-        self.board_squares: list[str] = []
 
-        square_pool: list[str] = self.old_squares[:-1].copy()  # Exclude the victory square
-
-        while len(self.board_squares) < 29:
-            index = random.randint(0, len(square_pool) - 1)
-            self.board_squares.append(square_pool.pop(index))
-
-        self.board_squares.append(self.VICTORY_SQUARE)
-
-        print("\n=== BOARD SQUARE LAYOUT ===")
-        for idx, square in enumerate(self.board_squares):
-            print(f"Square {idx + 1:02}: {square}")
 
     @typechecked
     def update_roll_dice_player(self) -> None:
@@ -517,25 +528,33 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     @typechecked
     def draw_board(self, state) -> None:
         x_start = 50
-        y_position = 100
-        y_position_2 = 200
-        y_position_3 = 300
+        y_start = 100
         box_height: int = 50
         box_width: int = 50
         border_thickness: int = 2
         x_padding: int = 70
+        y_padding: int = 100
+        squares_per_row: int = 10
 
-        for i in range(10):
-            x_position = x_start + i * x_padding
-            pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position, box_height, box_width), border_thickness)
+        # Color mapping by square type
+        color_map = {
+            self.GOLD_SQUARE: (255, 165, 0),  # ORANGE
+            self.EMPTY_SQUARE: (255, 111, 0),  # ORANGE
+            self.EXP_SQUARE: (0, 255, 255),  # CYAN
+            self.CARD_SQUARE: (255, 0, 255),  # MAGENTA
+            self.TRAP_SQUARE: (255, 105, 180),  # PINK
+            self.THIEF_SQUARE: (128, 128, 128),  # GRAY
+            self.VICTORY_SQUARE: (50, 205, 50),  # LIME
+        }
 
-        for i in range(10):
-            x_position = x_start + i * x_padding
-            pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position_2, box_height, box_width), border_thickness)
+        for index, square in enumerate(self.board_squares):
+            row = index // squares_per_row
+            col = index % squares_per_row
+            x_position = x_start + col * x_padding
+            y_position = y_start + row * y_padding
 
-        for i in range(10):
-            x_position = x_start + i * x_padding
-            pygame.draw.rect(state.DISPLAY, RED, (x_position, y_position_3, box_height, box_width), border_thickness)
+            color = color_map.get(square, (255, 0, 0))  # Fallback to RED if not found
+            pygame.draw.rect(state.DISPLAY, color, (x_position, y_position, box_height, box_width), border_thickness)
 
     @typechecked
     def draw_wheel(self, state) -> None:
