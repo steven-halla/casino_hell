@@ -482,24 +482,24 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def update_draw_card(self, state) -> None:
-        """Rolls a number from 1–100, maps it to a card, and selects the next available one if needed."""
-        roll: int = random.randint(1, 100)
-        start_index: int = (roll - 1) // 5
+        """Uses the selected_index from the wheel to choose a card and sets CARD_CONSTANT accordingly."""
         total_cards: int = len(self.card_constants)
 
-        # Start searching from rolled index, wrapping around if necessary
-        for offset in range(total_cards):
-            index = (start_index + offset) % total_cards
-            selected_card = self.card_constants[index]
-            if selected_card in self.card_messages:
-                self.CARD_CONSTANT = selected_card
-                self.card_messages[selected_card].reset()
-                print(f"🎲 Rolled: {roll}")
-                print(f"🃏 Selected Card: {selected_card}")
-                for line in self.card_messages[selected_card].messages:
-                    print(f"📜 Message: {line}")
-                self.card_constants.remove(selected_card)
-                break
+        if total_cards == 0:
+            print("⚠️ No cards left to draw.")
+            return
+
+        index: int = self.selected_index % total_cards
+        selected_card = self.card_constants[index]
+
+        if selected_card in self.card_messages:
+            self.CARD_CONSTANT = selected_card
+            self.card_messages[selected_card].reset()
+            print(f"🎯 Wheel selected index: {self.selected_index}")
+            print(f"🃏 Selected Card: {selected_card}")
+            for line in self.card_messages[selected_card].messages:
+                print(f"📜 Message: {line}")
+            self.card_constants.remove(selected_card)
 
     @typechecked
     def update_square_effects(self) -> None:
