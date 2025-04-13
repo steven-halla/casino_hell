@@ -13,6 +13,8 @@ import pygame
 from game_constants.events import Events
 import random
 
+
+
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
@@ -21,7 +23,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_position_holder = None
         self.player_position_holder = None
         self.enemy_equipment_lock: bool= False
-        self.game_state: str = self.PLAYER_TURN_SCREEN
+        self.game_state: str = self.SPIN_WHEEL_SCREEN
         self.player_money_pile: int = 0
         self.enemy_money_pile: int = 0
         self.player_exp_pile: int = 0
@@ -57,6 +59,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.card_constants: list[str] = []
         self.player_turn: bool = False
         self.enemy_turn: bool = False
+        self.selected_index = 0
         self.board_squares: list[str] = [
 
         ]
@@ -173,6 +176,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     MOVE_BACK_3: str = "move_back_3"
     MOVE_ENEMY_3: str = "move_enemy_3"
     MID_POINT_MOVE: str = "mid_point_move"
+
     CARD_CONSTANT: str = "card_constant"
 
 
@@ -270,7 +274,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def update(self, state):
-        print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
+        # print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
 
         controller = state.controller
         controller.update()
@@ -283,20 +287,19 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.update_welcome_screen_helper()
 
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
-            pass
+            if state.controller.confirm_button:
+                self.update_wheel_result()
         elif self.game_state == self.PLAYER_TURN_SCREEN:
             if state.controller.confirm_button:
-                self.update_roll_dice_player()
-            elif state.controller.action_and_cancel_button:
-                self.update_roll_dice_dealer()
+                self.update_roll_dice_player_enemy_roll_phase(state)
+
         elif self.game_state == self.ENEMY_TURN_SCREEN:
             if state.controller.confirm_button:
-                self.update_roll_dice_player()
-            elif state.controller.action_and_cancel_button:
-                self.update_roll_dice_dealer()
+                self.update_roll_dice_player_enemy_roll_phase()
+
         if self.game_state == self.DRAW_CARD_SCREEN:
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
@@ -321,6 +324,53 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         pygame.display.flip()
 
 #============================================update methods go below
+
+    @typechecked
+    def update_wheel_result(self) -> int:
+
+        """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
+        roll: int = random.randint(1, 100)
+
+        # RED slices (30%)
+        if roll <= 30:
+            red_indices = [1, 5, 9, 13, 15, 17]
+            self.selected_index = random.choice(red_indices)
+
+        # SKY BLUE slice (5%)
+        elif roll <= 35:
+            self.selected_index = 7
+
+        # PURPLE slices (10%)
+        elif roll <= 45:
+            purple_indices = [3, 11]
+            self.selected_index = random.choice(purple_indices)
+
+        # GREEN slices (55%)
+        else:
+            all_indices = set(range(20))
+            used = {1, 3, 5, 7, 9, 11, 13, 15, 17}
+            green_indices = list(all_indices - used)
+            self.selected_index = random.choice(green_indices)
+
+        print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
+        return self.selected_index  # <— now always returns an int
+
+    def update_welcome_screen_helper(self):
+        while True:
+            player_init_roll = random.randint(1, 6)
+            enemy_init_roll = random.randint(1, 6)
+            print(f"🎲 Player rolled: {player_init_roll}, Enemy rolled: {enemy_init_roll}")
+
+            if player_init_roll > enemy_init_roll:
+                self.game_state = self.PLAYER_TURN_SCREEN
+                print("🎮 Player goes first!")
+                break
+            elif enemy_init_roll > player_init_roll:
+                self.game_state = self.ENEMY_TURN_SCREEN
+                print("👾 Enemy goes first!")
+                break
+            else:
+                print("🔁 Tie! Rerolling...")
 
     @typechecked
     def update_card_effects(self, state) -> None:
@@ -456,17 +506,80 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         current_player_square = self.board_squares[self.player_position]
         current_enemy_square = self.board_squares[self.enemy_position]
 
-
-
-
-
     @typechecked
-    def update_roll_dice_player(self) -> None:
-        self.move_player = random.randint(1, 6)
-        self.player_position += self.move_player
-        if self.player_position > 29:
-            self.player_position = 29  # cap at last square
+    def update_roll_dice_player_enemy_roll_phase(self, state) -> None:
+        if self.player_turn == True:
+            self.move_player = random.randint(1, 6)
+            self.player_position += self.move_player
+            if self.player_position > 29:
+                self.player_position = 29
+            square_type = self.board_squares[self.player_position]
+            print(f"🎲 Player rolled: {self.move_player}")
+            print(f"🎯 Player landed on square {self.player_position}: {square_type}")
+        elif self.enemy_turn == True:
+            self.move_dealer = random.randint(1, 6)
+            self.enemy_position += self.move_dealer
+            if self.enemy_position > 29:
+                self.enemy_position = 29
+            square_type = self.board_squares[self.enemy_position]
+            print(f"🎲 Enemy rolled: {self.move_dealer}")
+            print(f"🎯 Enemy landed on square {self.enemy_position}: {square_type}")
+        else:
+            return  # no valid turn, exit safely
 
+        # ---- Handle square effect ----
+        if square_type == self.GOLD_SQUARE:
+            if self.player_turn == True:
+                self.player_money_pile += 25
+                print("💰 Player GOLD_SQUARE: +25 gold!")
+            elif self.enemy_turn == True:
+                self.enemy_money_pile += 25
+                print("💰 Enemy GOLD_SQUARE: +25 gold!")
+
+        elif square_type == self.EXP_SQUARE:
+            if self.player_turn == True:
+                self.player_exp_pile += 25
+                print("📘 Player EXP_SQUARE: +25 EXP!")
+            elif self.enemy_turn == True:
+                self.enemy_exp_pile += 25
+                print("📘 Enemy EXP_SQUARE: +25 EXP!")
+
+        elif square_type == self.TRAP_SQUARE:
+            if self.player_turn == True:
+                state.player.stamina_points -= 25
+                state.player.focus_points -= 25
+                print("💀 Player TRAP_SQUARE: -25 Stamina, -25 Focus!")
+            elif self.enemy_turn == True:
+                self.enemy_hp -= 2
+                self.enemy_mp -= 1
+                print("💀 Enemy TRAP_SQUARE: -2 HP, -1 MP!")
+
+        elif square_type == self.THIEF_SQUARE:
+            if self.player_turn == True:
+                self.player_money_pile -= 250
+                print("🦹 Player THIEF_SQUARE: -250 gold!")
+            elif self.enemy_turn == True:
+                self.enemy_money_pile -= 250
+                print("🦹 Enemy THIEF_SQUARE: -250 gold!")
+
+        elif square_type == self.CARD_SQUARE:
+            self.game_state = self.DRAW_CARD_SCREEN
+            if self.player_turn == True:
+                print("🃏 Player CARD_SQUARE: Switching to Card Screen!")
+            elif self.enemy_turn == True:
+                print("🃏 Enemy CARD_SQUARE: Switching to Card Screen!")
+
+        elif square_type == self.VICTORY_SQUARE:
+            if self.player_turn == True:
+                print("🏆 Player VICTORY_SQUARE: You win! 🎉")
+            elif self.enemy_turn == True:
+                print("💀 Enemy VICTORY_SQUARE: Enemy wins!")
+
+        elif square_type == self.EMPTY_SQUARE:
+            if self.player_turn == True:
+                print("😶 Player EMPTY_SQUARE: Nothing happens.")
+            elif self.enemy_turn == True:
+                print("😶 Enemy EMPTY_SQUARE: Nothing happens.")
 
     @typechecked
     def update_roll_dice_dealer(self) -> None:
@@ -474,6 +587,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_position += self.move_dealer
         if self.enemy_position > 29:
             self.enemy_position = 29
+
 
 #_-----------------------------------draw methods go below
 
@@ -558,14 +672,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def draw_wheel(self, state) -> None:
-        # in hell there is no slow down of wheel is stops aburptly
         center_x: int = 400
         center_y: int = 300
         radius: int = 150
         num_slices: int = 20
-        spin_speed: float = 1.01
-        max_frames: int = 180  # 3 seconds at 60 FPS
+        spin_speed: float = 0.10
+        max_frames: int = 180
 
+        # Internal spin state
         if not hasattr(self, "_wheel_angle"):
             self._wheel_angle = 0.0
         if not hasattr(self, "_wheel_frame_count"):
@@ -584,16 +698,76 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self._wheel_frame_count >= max_frames:
                 self._is_spinning = False
 
-        # Draw green wheel
-        pygame.draw.circle(state.DISPLAY, GREEN, (center_x, center_y), radius)
+        # Colors
+        SKY_BLUE = (135, 206, 235)
+        RED = (255, 0, 0)
+        GREEN = (0, 255, 0)
+        PURPLE = (138, 43, 226)
+        WHITE = (255, 255, 255)
 
-        # Draw white slices
+        # Final color layout (green every other slice)
+        wheel_colors: list[tuple[int, int, int]] = [
+            GREEN,  # 0
+            RED,  # 1
+            GREEN,  # 2
+            PURPLE,  # 3
+            GREEN,  # 4
+            RED,  # 5
+            GREEN,  # 6
+            SKY_BLUE,  # 7
+            GREEN,  # 8
+            RED,  # 9
+            GREEN,  # 10
+            PURPLE,  # 11
+            GREEN,  # 12
+            RED,  # 13
+            GREEN,  # 14
+            RED,  # 15
+            GREEN,  # 16
+            RED,  # 17
+            GREEN,  # 18
+            GREEN  # 19 ← filler green
+        ]
+
+        # Draw each slice
+        for i in range(num_slices):
+            angle_start = (2 * math.pi / num_slices) * i + self._wheel_angle
+            angle_end = (2 * math.pi / num_slices) * (i + 1) + self._wheel_angle
+
+            point1 = (center_x, center_y)
+            point2 = (
+                int(center_x + radius * math.cos(angle_start)),
+                int(center_y + radius * math.sin(angle_start))
+            )
+            point3 = (
+                int(center_x + radius * math.cos(angle_end)),
+                int(center_y + radius * math.sin(angle_end))
+            )
+
+            pygame.draw.polygon(state.DISPLAY, wheel_colors[i], [point1, point2, point3])
+
+        # Draw white dividing lines
         for i in range(num_slices):
             angle = (2 * math.pi / num_slices) * i + self._wheel_angle
             end_x = int(center_x + radius * math.cos(angle))
             end_y = int(center_y + radius * math.sin(angle))
             pygame.draw.line(state.DISPLAY, WHITE, (center_x, center_y), (end_x, end_y), 2)
 
+        # Draw top-down arrow
+        arrow_width = 20
+        arrow_height = 15
+        arrow_x = center_x
+        arrow_y = center_y - radius - 10
+
+        pygame.draw.polygon(
+            state.DISPLAY,
+            RED,
+            [
+                (arrow_x, arrow_y),
+                (arrow_x - arrow_width // 2, arrow_y - arrow_height),
+                (arrow_x + arrow_width // 2, arrow_y - arrow_height)
+            ]
+        )
     # @typechecked
     # def draw_wheel(self, state) -> None:
     #     """Draws a 300x300 green wheel with 20 white pie slice divisions."""
