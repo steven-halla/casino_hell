@@ -18,8 +18,10 @@ import random
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
+        self.confirm_spin = False
         self.enemy_stat_boost = None
         self.player_stat_boost = None
+        self.used_wheel_indices: set[int] = set()
         self.enemy_position_holder = None
         self.player_position_holder = None
         self.enemy_equipment_lock: bool= False
@@ -29,6 +31,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_exp_pile: int = 0
         self.enemy_exp_pile: int = 0
         self.exp_pile: int = 0
+        self.delay_start_time = None
         self.player_magic_lock: bool = False
         self.enemy_magic_lock: bool = False
         self.player_equipment_lock: bool = False
@@ -247,6 +250,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def round_reset(self, state):
+        self.confirm_spin = False
+        self.used_wheel_indices.clear()
+
         self.player_money_pile = 0
         self.exp_pile = 0
         self.card_constants: list[str] = [
@@ -275,6 +281,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     def update(self, state):
         # print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
+        print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -317,8 +324,16 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             pass
 
-        elif self.game_state == self.SPIN_WHEEL_SCREEN:
-            self.draw_wheel(state)
+        # elif self.game_state == self.SPIN_WHEEL_SCREEN:
+        #     self.draw_wheel(state)
+
+        if self.game_state == self.SPIN_WHEEL_SCREEN:
+            self.draw_wheel(state)  # This updates the wheel's animation
+            if self._has_landed:
+                # Reset the flag for future spins
+                self._has_landed = False
+                # Transition to the next game state
+                self.game_state = self.DRAW_CARD_SCREEN
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.draw_card_message(state)
         pygame.display.flip()
@@ -326,34 +341,47 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 #============================================update methods go below
 
     @typechecked
-    def update_wheel_result(self) -> int:
-
+    def update_wheel_result(self) -> None:
         """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
         roll: int = random.randint(1, 100)
 
-        # RED slices (30%)
-        if roll <= 30:
-            red_indices = [1, 5, 9, 13, 15, 17]
-            self.selected_index = random.choice(red_indices)
+        # Define index groups
+        red_indices = [1, 5, 9, 13, 15, 17]
+        sky_blue_index = 7
+        purple_indices = [3, 11]
+        all_indices = set(range(20))
+        used_indices = self.used_wheel_indices
 
-        # SKY BLUE slice (5%)
-        elif roll <= 35:
-            self.selected_index = 7
+        # Determine available indices for each color
+        available_red = [i for i in red_indices if i not in used_indices]
+        available_sky_blue = [sky_blue_index] if sky_blue_index not in used_indices else []
+        available_purple = [i for i in purple_indices if i not in used_indices]
+        available_green = list(all_indices - used_indices - set(red_indices + [sky_blue_index] + purple_indices))
 
-        # PURPLE slices (10%)
-        elif roll <= 45:
-            purple_indices = [3, 11]
-            self.selected_index = random.choice(purple_indices)
-
-        # GREEN slices (55%)
+        # Select index based on roll
+        if roll <= 30 and available_red:
+            self.selected_index = random.choice(available_red)
+        elif roll <= 35 and available_sky_blue:
+            self.selected_index = sky_blue_index
+        elif roll <= 45 and available_purple:
+            self.selected_index = random.choice(available_purple)
+        elif available_green:
+            self.selected_index = random.choice(available_green)
         else:
-            all_indices = set(range(20))
-            used = {1, 3, 5, 7, 9, 11, 13, 15, 17}
-            green_indices = list(all_indices - used)
-            self.selected_index = random.choice(green_indices)
+            # Fallback: select any unused index
+            remaining_indices = list(all_indices - used_indices)
+            if not remaining_indices:
+                print("⚠️ All wheel indices have been used this round.")
+                return -1  # Indicate that no selection was made
+            self.selected_index = random.choice(remaining_indices)
+
+        # Mark the selected index as used
+        self.used_wheel_indices.add(self.selected_index)
+        self.confirm_spin = True
 
         print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
-        return self.selected_index  # <— now always returns an int
+
+
 
     def update_welcome_screen_helper(self):
         while True:
@@ -375,6 +403,31 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     @typechecked
     def update_card_effects(self, state) -> None:
         """Applies the effects of the currently drawn card."""
+        index_to_card_constant = {
+            0: self.BANKRUPT,
+            1: self.EXP_HOLE,
+            2: self.MAGIC_LOCK_UP,
+            3: self.EQUIPMENT_LOCK_UP,
+            4: self.MOVE_BACK_3,
+            5: self.MID_POINT_MOVE,
+            6: self.EXP_CARD_HALF_UP,
+            7: self.GOLD_CARD_HALF_UP,
+            8: self.GOLD_CARD_BONUS,
+            9: self.EXP_CARD_BONUS,
+            10: self.MOVE_3_SQUARES,
+            11: self.TASTY_TREAT,
+            12: self.MOVE_ENEMY_3,
+            13: self.STAT_BOOSTER,
+            14: self.FREE_WIN,
+            15: self.PLAYER_MOVE_FORWARD,
+            16: self.ENEMY_MOVE_BACK,
+            17: self.ENEMY_MOVE_BACK_3,
+            18: self.SWAP_POSITIONS,
+            19: self.SPECIAL_ITEM,
+        }
+        self.CARD_CONSTANT = index_to_card_constant.get(self.selected_index)
+
+
         print(self.player_money_pile)
         if self.CARD_CONSTANT == self.BANKRUPT:
             if self.player_turn == True:
@@ -677,59 +730,65 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         radius: int = 150
         num_slices: int = 20
         spin_speed: float = 0.10
-        max_frames: int = 180
+        max_frames: int = 120  # 2 seconds at 60 FPS
 
-        # Internal spin state
-        if not hasattr(self, "_wheel_angle"):
-            self._wheel_angle = 0.0
-        if not hasattr(self, "_wheel_frame_count"):
-            self._wheel_frame_count = 0
-        if not hasattr(self, "_is_spinning"):
-            self._is_spinning = False
-
-        if state.controller.confirm_button and not self._is_spinning:
-            self._is_spinning = True
-            self._wheel_angle = 0.0
-            self._wheel_frame_count = 0
-
-        if self._is_spinning:
-            self._wheel_angle += spin_speed
-            self._wheel_frame_count += 1
-            if self._wheel_frame_count >= max_frames:
-                self._is_spinning = False
-
-        # Colors
+        # Color definitions
         SKY_BLUE = (135, 206, 235)
         RED = (255, 0, 0)
         GREEN = (0, 255, 0)
         PURPLE = (138, 43, 226)
         WHITE = (255, 255, 255)
 
-        # Final color layout (green every other slice)
+        # Final color layout
         wheel_colors: list[tuple[int, int, int]] = [
-            GREEN,  # 0
-            RED,  # 1
-            GREEN,  # 2
-            PURPLE,  # 3
-            GREEN,  # 4
-            RED,  # 5
-            GREEN,  # 6
-            SKY_BLUE,  # 7
-            GREEN,  # 8
-            RED,  # 9
-            GREEN,  # 10
-            PURPLE,  # 11
-            GREEN,  # 12
-            RED,  # 13
-            GREEN,  # 14
-            RED,  # 15
-            GREEN,  # 16
-            RED,  # 17
-            GREEN,  # 18
-            GREEN  # 19 ← filler green
+            GREEN, RED, GREEN, PURPLE, GREEN, RED, GREEN, SKY_BLUE, GREEN, RED,
+            GREEN, PURPLE, GREEN, RED, GREEN, RED, GREEN, RED, GREEN, GREEN
         ]
 
-        # Draw each slice
+        # Initialize wheel state
+        if not hasattr(self, "_wheel_angle"):
+            self._wheel_angle = 0.0
+        if not hasattr(self, "_wheel_frame_count"):
+            self._wheel_frame_count = 0
+        if not hasattr(self, "_is_spinning"):
+            self._is_spinning = False
+        if not hasattr(self, "_has_landed"):
+            self._has_landed = False
+
+        # Start spinning on confirm
+        if self.confirm_spin == True and not self._is_spinning and not self._has_landed:
+            self._is_spinning = True
+            self._wheel_angle = 0.0
+            self._wheel_frame_count = 0
+        # Initialize delay_start_time at the beginning of the function
+        delay_start_time = None
+
+        if self._is_spinning:
+            self._wheel_angle += spin_speed
+            self._wheel_frame_count += 1
+            if self._wheel_frame_count >= max_frames:
+                self._is_spinning = False
+                self.delay_start_time = pygame.time.get_ticks()  # Assign current time
+        if self.delay_start_time is not None:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.delay_start_time >= 2000:  # 2000 milliseconds = 2 seconds
+                self._has_landed = True
+                self.delay_start_time = None  # Reset after use
+                # Proceed to the next screen or state transition here
+        # # Spin phase
+        # if self._is_spinning:
+        #     self._wheel_angle += spin_speed
+        #     self._wheel_frame_count += 1
+        #     if self._wheel_frame_count >= max_frames:
+        #         self._is_spinning = False
+        #         self._has_landed = True
+        #
+        #         # Calculate final alignment angle
+        #         slice_angle = (2 * math.pi) / num_slices
+        #         self._wheel_angle = -slice_angle * self.selected_index
+        #         print(f"🎯 Final wheel stop on slice: {self.selected_index}")
+
+        # Draw slices
         for i in range(num_slices):
             angle_start = (2 * math.pi / num_slices) * i + self._wheel_angle
             angle_end = (2 * math.pi / num_slices) * (i + 1) + self._wheel_angle
@@ -746,14 +805,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
             pygame.draw.polygon(state.DISPLAY, wheel_colors[i], [point1, point2, point3])
 
-        # Draw white dividing lines
+        # Draw dividing lines
         for i in range(num_slices):
             angle = (2 * math.pi / num_slices) * i + self._wheel_angle
             end_x = int(center_x + radius * math.cos(angle))
             end_y = int(center_y + radius * math.sin(angle))
             pygame.draw.line(state.DISPLAY, WHITE, (center_x, center_y), (end_x, end_y), 2)
 
-        # Draw top-down arrow
+        # Draw arrow
         arrow_width = 20
         arrow_height = 15
         arrow_x = center_x
@@ -768,6 +827,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 (arrow_x + arrow_width // 2, arrow_y - arrow_height)
             ]
         )
+        self.confirm_spin = False
+
     # @typechecked
     # def draw_wheel(self, state) -> None:
     #     """Draws a 300x300 green wheel with 20 white pie slice divisions."""
