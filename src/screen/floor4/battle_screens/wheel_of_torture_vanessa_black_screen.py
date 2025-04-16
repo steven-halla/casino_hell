@@ -27,7 +27,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_position_holder: int = 0
         self.player_position_holder: int = 0
         self.enemy_equipment_lock: bool = False
-        self.game_state: str = self.SPIN_WHEEL_SCREEN
+        self.dice_rolled: bool = False
+        self.game_state: str = self.WELCOME_SCREEN
         self.player_money_pile: int = 0
         self.enemy_money_pile: int = 0
         self.player_exp_pile: int = 0
@@ -73,11 +74,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         ]
 
         self.battle_messages: dict[str, MessageBox] = {
-            self.WELCOME_SCREEN: MessageBox([
+            self.WELCOME_SCREEN_MESSAGE: MessageBox([
                 "Vanessea Black: this is the welcome screen"
             ]),
             self.BET_MESSAGE: MessageBox([
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to Exit."
+            ]),
+            self.INIT_SCREEN_MESSAGE: MessageBox([
+                "Vanessea Black: Roll the dice lets see who starts first this round. Press confirm button when ready"
             ]),
         }
 
@@ -151,6 +155,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     DRAW_CARD_SCREEN: str = "draw card screen"
     PLAYER_TURN_SCREEN: str = "player turn screen"
     ENEMY_TURN_SCREEN: str = "enemy turn screen"
+    INIT_SCREEN: str = "init screen"
+    WELCOME_SCREEN_MESSAGE: str = "welcome screen message"
+    INIT_SCREEN_MESSAGE: str = "init screen message"
 
     #squres of game board
     GOLD_SQUARE: str = "gold square"
@@ -304,7 +311,22 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.update_welcome_screen_helper()
+            self.battle_messages[self.WELCOME_SCREEN_MESSAGE].update(state)
+
+            if self.battle_messages[self.WELCOME_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
+                self.game_state = self.INIT_SCREEN
+
+
+            print(self.welcome_screen_index)
+
+
+        elif self.game_state == self.INIT_SCREEN:
+            self.battle_messages[self.INIT_SCREEN_MESSAGE].update(state)
+
+            if self.battle_messages[self.INIT_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
+                self.update_init_screen_helper(state)
+
+
 
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             if state.controller.confirm_button and self.wheel_lock == False:
@@ -330,7 +352,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.draw_enemy_token(state)
         self.draw_player_token(state)
         if self.game_state == self.WELCOME_SCREEN:
+            self.battle_messages[self.WELCOME_SCREEN_MESSAGE].draw(state)
+
+
+        elif self.game_state == self.INIT_SCREEN:
+            self.battle_messages[self.INIT_SCREEN_MESSAGE].draw(state)
+
             self.draw_display_dice(state, self.player_dice_roll, self.enemy_dice_roll)
+
 
         # elif self.game_state == self.SPIN_WHEEL_SCREEN:
         #     self.draw_wheel(state)
@@ -398,27 +427,52 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
         self.wheel_lock = True
 
-    def update_welcome_screen_helper(self):
-        while True:
-            player_init_roll = random.randint(1, 6)
-            enemy_init_roll = random.randint(1, 6)
-            print(f"🎲 Player rolled: {player_init_roll}, Enemy rolled: {enemy_init_roll}")
+    def update_init_screen_helper(self, state):
+        if not self.dice_rolled:
+            self.player_dice_roll = random.randint(1, 6)
+            self.enemy_dice_roll = random.randint(1, 6)
+            self.battle_messages[self.INIT_SCREEN_MESSAGE].messages = [
+                f"You rolled a {self.player_dice_roll}, Vanessa rolled a {self.enemy_dice_roll}."
+            ]
+            self.battle_messages[self.INIT_SCREEN_MESSAGE].reset()
+            self.dice_rolled = True
 
-            if player_init_roll > enemy_init_roll:
+        elif self.battle_messages[self.INIT_SCREEN_MESSAGE].is_finished() and state.controller.confirm_button:
+            if self.player_dice_roll > self.enemy_dice_roll:
                 self.player_turn = True
                 self.enemy_turn = False
-                # self.game_state = self.PLAYER_TURN_SCREEN
-                print("🎮 Player goes first!")
-                break
-            elif enemy_init_roll > player_init_roll:
+                self.game_state = self.PLAYER_TURN_SCREEN
+            elif self.enemy_dice_roll > self.player_dice_roll:
                 self.player_turn = False
-
                 self.enemy_turn = True
-                # self.game_state = self.ENEMY_TURN_SCREEN
-                print("👾 Enemy goes first!")
-                break
+                self.game_state = self.ENEMY_TURN_SCREEN
             else:
-                print("🔁 Tie! Rerolling...")
+                self.dice_rolled = False  # Tie: reroll
+
+    # def update_init_screen_helper(self, state):
+    #     while True:
+    #         player_init_roll = random.randint(1, 6)
+    #         enemy_init_roll = random.randint(1, 6)
+    #         print(f"🎲 Player rolled: {player_init_roll}, Enemy rolled: {enemy_init_roll}")
+    #
+    #         self.battle_messages[self.INIT_SCREEN_MESSAGE].messages = [f"You rolled a {player_init_roll}, Vanessa rolled a {enemy_init_roll}."]
+    #         self.battle_messages[self.INIT_SCREEN_MESSAGE].reset()
+    #         if self.battle_messages[self.INIT_SCREEN_MESSAGE].is_finished() and state.controller.confirm_button:
+    #             if player_init_roll > enemy_init_roll:
+    #                 self.player_turn = True
+    #                 self.enemy_turn = False
+    #                 self.game_state = self.PLAYER_TURN_SCREEN
+    #                 print("🎮 Player goes first!")
+    #                 break
+    #             elif enemy_init_roll > player_init_roll:
+    #                 self.player_turn = False
+    #
+    #                 self.enemy_turn = True
+    #                 self.game_state = self.ENEMY_TURN_SCREEN
+    #                 print("👾 Enemy goes first!")
+    #                 break
+    #             else:
+    #                 print("🔁 Tie! Rerolling...")
 
     @typechecked
     def update_card_effects(self, state) -> None:
@@ -1065,7 +1119,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             pygame.Rect(880, 0, 133, 200)  # Dice face 6p
         ]
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.INIT_SCREEN:
             player_dice_rect = dice_faces[player_dice_roll - 1]
             player_cropped_dice = self.sprite_sheet.subsurface(player_dice_rect)
             state.DISPLAY.blit(player_cropped_dice, (player_dice_x_start_position,player_dice_y_start_position))
