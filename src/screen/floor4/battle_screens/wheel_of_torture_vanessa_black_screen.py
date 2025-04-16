@@ -27,7 +27,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_position_holder: int = 0
         self.player_position_holder: int = 0
         self.enemy_equipment_lock: bool = False
-        self.game_state: str = self.WELCOME_SCREEN
+        self.game_state: str = self.SPIN_WHEEL_SCREEN
         self.player_money_pile: int = 0
         self.enemy_money_pile: int = 0
         self.player_exp_pile: int = 0
@@ -48,6 +48,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.vanessa_black_bankrupt: int = 0
         self.magic_lock: bool = False
         self.equipment_lock: bool = False
+        self.wheel_lock: bool = False
         self.dealer_name: str = "vanessa black"
         self.magic_screen_choices: list[str] = ["back"]
         self.magic_menu_index: int = 0
@@ -306,7 +307,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.update_welcome_screen_helper()
 
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
-            if state.controller.confirm_button:
+            if state.controller.confirm_button and self.wheel_lock == False:
                 self.update_wheel_result()
         elif self.game_state == self.PLAYER_TURN_SCREEN:
             if state.controller.confirm_button:
@@ -395,6 +396,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.confirm_spin = True
 
         print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
+        self.wheel_lock = True
 
     def update_welcome_screen_helper(self):
         while True:
@@ -718,6 +720,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def update_roll_dice_player_enemy_roll_phase(self, state) -> None:
+        self.wheel_lock = False
         if self.player_turn == True:
             self.move_player = random.randint(1, 6)
             print(self.move_player)
