@@ -337,6 +337,7 @@ class CrapsNabaScreen(GambleScreen):
 
 
 
+
     def update_blow_point_roll_helper(self, state):
         meter_finished = 7
         self.bet = self.bet_minimum

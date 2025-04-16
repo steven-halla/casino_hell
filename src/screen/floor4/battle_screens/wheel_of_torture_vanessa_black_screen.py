@@ -18,14 +18,14 @@ import random
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
-        self.confirm_spin = False
-        self.enemy_stat_boost = None
-        self.player_stat_boost = None
+        self.confirm_spin: bool = False
+        self.enemy_stat_boost: int  = 0
+        self.player_stat_boost: int = 0
         self.used_wheel_indices: set[int] = set()
-        self.enemy_position_holder = None
-        self.player_position_holder = None
-        self.enemy_equipment_lock: bool= False
-        self.game_state: str = self.SPIN_WHEEL_SCREEN
+        self.enemy_position_holder: int = 0
+        self.player_position_holder: int = 0
+        self.enemy_equipment_lock: bool = False
+        self.game_state: str = self.WELCOME_SCREEN
         self.player_money_pile: int = 0
         self.enemy_money_pile: int = 0
         self.player_exp_pile: int = 0
@@ -252,6 +252,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def round_reset(self, state):
         self.confirm_spin = False
         self.used_wheel_indices.clear()
+        self.player_turn = False
+        self.enemy_turn = False
+        self.player_position = 0
+        self.enemy_position = 0
 
         self.player_money_pile = 0
         self.exp_pile = 0
@@ -281,7 +285,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     def update(self, state):
         # print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
-        print(self.game_state)
+        # print(self.game_state)
+        # print(self.CARD_CONSTANT)
 
         controller = state.controller
         controller.update()
@@ -305,14 +310,15 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         elif self.game_state == self.ENEMY_TURN_SCREEN:
             if state.controller.confirm_button:
-                self.update_roll_dice_player_enemy_roll_phase()
+                self.update_roll_dice_player_enemy_roll_phase(state)
 
         if self.game_state == self.DRAW_CARD_SCREEN:
+            if state.controller.confirm_button:
+                self.update_draw_card(state)  # sets self.CARD_CONSTANT
+                self.update_card_effects(state)
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
-                self.update_card_effects(state)
-            if state.controller.confirm_button:
-                self.update_draw_card(state)
+
 
 
 
@@ -381,8 +387,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
 
-
-
     def update_welcome_screen_helper(self):
         while True:
             player_init_roll = random.randint(1, 6)
@@ -390,10 +394,15 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             print(f"🎲 Player rolled: {player_init_roll}, Enemy rolled: {enemy_init_roll}")
 
             if player_init_roll > enemy_init_roll:
+                self.player_turn = True
+                self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
                 print("🎮 Player goes first!")
                 break
             elif enemy_init_roll > player_init_roll:
+                self.player_turn = False
+
+                self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
                 print("👾 Enemy goes first!")
                 break
@@ -426,116 +435,249 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             19: self.SPECIAL_ITEM,
         }
         self.CARD_CONSTANT = index_to_card_constant.get(self.selected_index)
+        print(self.CARD_CONSTANT)
 
 
         print(self.player_money_pile)
         if self.CARD_CONSTANT == self.BANKRUPT:
             if self.player_turn == True:
                 self.player_money_pile = 0
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_money_pile = 0
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_HOLE:
             if self.player_turn == True:
                 self.player_exp_pile = 0
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_exp_pile = 0
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MAGIC_LOCK_UP:
             if self.player_turn == True:
                 self.player_magic_lock = True
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_magic_lock = True
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EQUIPMENT_LOCK_UP:
             if self.player_turn == True:
                 self.player_equipment_lock = True
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_equipment_lock = True
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MOVE_BACK_3:
             if self.player_turn == True:
                 self.player_position -= 3
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_position -= 3
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MID_POINT_MOVE:
             if self.player_turn == True:
                 self.player_position = 15
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_position = 15
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_CARD_HALF_UP:
             if self.player_turn == True:
                 self.player_exp_pile += self.player_exp_pile // 2
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_exp_pile += self.enemy_exp_pile // 2
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.GOLD_CARD_HALF_UP:
             if self.player_turn == True:
                 self.player_money_pile += self.player_money_pile // 2
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_money_pile += self.enemy_money_pile // 2
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_CARD_BONUS:
             if self.player_turn == True:
                 self.player_exp_pile += 250
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_exp_pile += 250
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.GOLD_CARD_BONUS:
             if self.player_turn == True:
                 self.player_money_pile += 250
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_money_pile += 250
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MOVE_3_SQUARES:
             if self.player_turn == True:
                 self.player_position += 3
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_position += 3
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.TASTY_TREAT:
             if self.player_turn == True:
                 # create a fun in player that doesn't allow stam/focus to go above max
                 state.player.stamina_points += 100
                 state.player.focus_points += 50
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_hp += 4
                 self.enemy_mp += 2
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MOVE_ENEMY_3:
             if self.player_turn == True:
                 self.enemy_position += 3
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.player_position += 3
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.STAT_BOOSTER:
             if self.player_turn == True:
                 self.player_stat_boost += 1
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_stat_boost += 1
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.FREE_WIN:
             if self.player_turn == True:
                 self.player_win_token += 1
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_win_token += 1
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.PLAYER_MOVE_FORWARD:
             if self.player_turn == True:
                 self.player_move_boost += 1
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.enemy_move_boost += 1
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.ENEMY_MOVE_BACK:
             if self.player_turn == True:
                 self.enemy_move_boost -= 1
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.player_move_boost -= 1
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.ENEMY_MOVE_BACK_3:
             if self.player_turn == True:
                 self.enemy_position -= 3
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
                 self.player_position -= 3
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.SWAP_POSITIONS:
             self.player_position_holder = self.player_position
             self.enemy_position_holder = self.enemy_position
             self.player_position = self.enemy_position_holder
             self.enemy_position = self.player_position_holder
-        elif self.CARD_CONSTANT == self.SPECIAL_ITEM:
             if self.player_turn == True:
-                pass
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
-                pass
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
+        elif self.CARD_CONSTANT == self.SPECIAL_ITEM:
+            if self.player_turn == True and self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
+                print("he")
+                self.player_turn = False
+                self.enemy_turn = True
+                self.game_state = self.ENEMY_TURN_SCREEN
+
+            if self.enemy_turn == True and self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
+                self.player_turn = True
+                self.enemy_turn = False
+                self.game_state = self.PLAYER_TURN_SCREEN
+                print("me")
 
     @typechecked
     def update_draw_card(self, state) -> None:
         """Uses the selected_index from the wheel to choose a card and sets CARD_CONSTANT accordingly."""
+        # total_cards: int = len(self.card_constants)
+        #
+        # if total_cards == 0:
+        #     print("⚠️ No cards left to draw.")
+        #     return
+        #
+        # index: int = self.selected_index % total_cards
+        # selected_card = self.card_constants[index]
+
         total_cards: int = len(self.card_constants)
 
         if total_cards == 0:
@@ -543,6 +685,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             return
 
         index: int = self.selected_index % total_cards
+
+        if index in self.used_wheel_indices:
+            print(f"❌ Index {index} already used. Skipping draw.")
+            return
+
         selected_card = self.card_constants[index]
 
         if selected_card in self.card_messages:
@@ -553,6 +700,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             for line in self.card_messages[selected_card].messages:
                 print(f"📜 Message: {line}")
             self.card_constants.remove(selected_card)
+            print(self.CARD_CONSTANT)
 
     @typechecked
     def update_square_effects(self) -> None:
@@ -563,17 +711,23 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def update_roll_dice_player_enemy_roll_phase(self, state) -> None:
         if self.player_turn == True:
             self.move_player = random.randint(1, 6)
+            print(self.move_player)
             self.player_position += self.move_player
             if self.player_position > 29:
                 self.player_position = 29
+                self.round_reset(state)
             square_type = self.board_squares[self.player_position]
             print(f"🎲 Player rolled: {self.move_player}")
             print(f"🎯 Player landed on square {self.player_position}: {square_type}")
         elif self.enemy_turn == True:
+            print("Look at my horse my horse is amazign give it a lick")
+
             self.move_dealer = random.randint(1, 6)
             self.enemy_position += self.move_dealer
             if self.enemy_position > 29:
                 self.enemy_position = 29
+                self.round_reset(state)
+
             square_type = self.board_squares[self.enemy_position]
             print(f"🎲 Enemy rolled: {self.move_dealer}")
             print(f"🎯 Enemy landed on square {self.enemy_position}: {square_type}")
@@ -585,50 +739,105 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.player_turn == True:
                 self.player_money_pile += 25
                 print("💰 Player GOLD_SQUARE: +25 gold!")
+                self.game_state = self.ENEMY_TURN_SCREEN
+                self.player_turn = False
+                self.enemy_turn = True
+
             elif self.enemy_turn == True:
                 self.enemy_money_pile += 25
                 print("💰 Enemy GOLD_SQUARE: +25 gold!")
+                self.game_state = self.PLAYER_TURN_SCREEN
+                self.enemy_turn = False
+                self.player_turn = True
+
+
+
 
         elif square_type == self.EXP_SQUARE:
             if self.player_turn == True:
                 self.player_exp_pile += 25
                 print("📘 Player EXP_SQUARE: +25 EXP!")
+                self.game_state = self.ENEMY_TURN_SCREEN
+                self.player_turn = False
+                self.enemy_turn = True
+
             elif self.enemy_turn == True:
                 self.enemy_exp_pile += 25
+                self.game_state = self.PLAYER_TURN_SCREEN
+                self.player_turn = True
+
+                self.enemy_turn = False
                 print("📘 Enemy EXP_SQUARE: +25 EXP!")
 
         elif square_type == self.TRAP_SQUARE:
             if self.player_turn == True:
                 state.player.stamina_points -= 25
                 state.player.focus_points -= 25
+                self.game_state = self.ENEMY_TURN_SCREEN
+                self.player_turn = False
+                self.enemy_turn = True
+
                 print("💀 Player TRAP_SQUARE: -25 Stamina, -25 Focus!")
             elif self.enemy_turn == True:
                 self.enemy_hp -= 2
                 self.enemy_mp -= 1
+                self.game_state = self.PLAYER_TURN_SCREEN
+                self.enemy_turn = False
+                self.player_turn = True
+
                 print("💀 Enemy TRAP_SQUARE: -2 HP, -1 MP!")
 
         elif square_type == self.THIEF_SQUARE:
             if self.player_turn == True:
                 self.player_money_pile -= 250
+                self.game_state = self.ENEMY_TURN_SCREEN
+                self.player_turn = False
+                self.enemy_turn = True
+
                 print("🦹 Player THIEF_SQUARE: -250 gold!")
             elif self.enemy_turn == True:
                 self.enemy_money_pile -= 250
+                self.game_state = self.PLAYER_TURN_SCREEN
+                self.enemy_turn = False
+                self.player_turn = True
+
                 print("🦹 Enemy THIEF_SQUARE: -250 gold!")
 
         elif square_type == self.CARD_SQUARE:
             self.game_state = self.DRAW_CARD_SCREEN
             if self.player_turn == True:
+                self.game_state = self.SPIN_WHEEL_SCREEN
+
                 print("🃏 Player CARD_SQUARE: Switching to Card Screen!")
             elif self.enemy_turn == True:
+                self.game_state = self.SPIN_WHEEL_SCREEN
+                self.game_state = self.PLAYER_TURN_SCREEN
+                self.enemy_turn = False
+                self.player_turn = True
+
+
                 print("🃏 Enemy CARD_SQUARE: Switching to Card Screen!")
 
         elif square_type == self.VICTORY_SQUARE:
             if self.player_turn == True:
+                self.game_state = self.WELCOME_SCREEN
+                self.round_reset(state)
+
+                # self.game_state = self.ENEMY_TURN_SCREEN
+                # self.player_turn = False
                 print("🏆 Player VICTORY_SQUARE: You win! 🎉")
             elif self.enemy_turn == True:
+                self.game_state = self.WELCOME_SCREEN
+
+                self.round_reset(state)
+
+                # self.game_state = self.PLAYER_TURN_SCREEN
+                # self.enemy_turn = False
                 print("💀 Enemy VICTORY_SQUARE: Enemy wins!")
 
         elif square_type == self.EMPTY_SQUARE:
+            self.game_state = self.WELCOME_SCREEN
+
             if self.player_turn == True:
                 print("😶 Player EMPTY_SQUARE: Nothing happens.")
             elif self.enemy_turn == True:
