@@ -20,6 +20,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         super().__init__(screenName)
         self.confirm_spin: bool = False
         self.enemy_stat_boost: int  = 0
+        self.player_dice_roll: int = 0
+        self.enemy_dice_roll: int = 0
         self.player_stat_boost: int = 0
         self.used_wheel_indices: set[int] = set()
         self.enemy_position_holder: int = 0
@@ -63,6 +65,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_turn: bool = False
         self.enemy_turn: bool = False
         self.selected_index = 0
+        self.sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
+
         self.board_squares: list[str] = [
 
         ]
@@ -319,21 +323,26 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
 
-
-
-
     def draw(self, state):
         super().draw(state)
         self.draw_board(state)
         self.draw_enemy_token(state)
         self.draw_player_token(state)
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.draw_display_dice(state, self.player_dice_roll, self.enemy_dice_roll)
 
         # elif self.game_state == self.SPIN_WHEEL_SCREEN:
         #     self.draw_wheel(state)
+        elif self.game_state == self.PLAYER_TURN_SCREEN:
+            self.draw_display_dice(state, self.player_dice_roll, self.enemy_dice_roll)
 
-        if self.game_state == self.SPIN_WHEEL_SCREEN:
+
+        elif self.game_state == self.ENEMY_TURN_SCREEN:
+            self.draw_display_dice(state, self.player_dice_roll, self.enemy_dice_roll)
+
+
+
+        elif self.game_state == self.SPIN_WHEEL_SCREEN:
             self.draw_wheel(state)  # This updates the wheel's animation
             if self._has_landed:
                 # Reset the flag for future spins
@@ -396,14 +405,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if player_init_roll > enemy_init_roll:
                 self.player_turn = True
                 self.enemy_turn = False
-                self.game_state = self.PLAYER_TURN_SCREEN
+                # self.game_state = self.PLAYER_TURN_SCREEN
                 print("🎮 Player goes first!")
                 break
             elif enemy_init_roll > player_init_roll:
                 self.player_turn = False
 
                 self.enemy_turn = True
-                self.game_state = self.ENEMY_TURN_SCREEN
+                # self.game_state = self.ENEMY_TURN_SCREEN
                 print("👾 Enemy goes first!")
                 break
             else:
@@ -1037,6 +1046,42 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             ]
         )
         self.confirm_spin = False
+
+
+    def draw_display_dice(self, state: 'GameState', player_dice_roll: int, enemy_dice_roll: int) -> None:
+        player_dice_x_start_position = 300
+        player_dice_y_start_position = 30
+        enemy_dice_x_start_position = 300
+        enemy_dice_y_start_position = 230
+        dice_faces = [
+            pygame.Rect(50, 0, 133, 200),  # Dice face 1=
+            pygame.Rect(210, 0, 133, 200),  # Dice face 2
+            pygame.Rect(370, 0, 133, 200),  # Dice face 3
+            pygame.Rect(545, 0, 133, 200),  # Dice face 4
+            pygame.Rect(710, 0, 133, 200),  # Dice face
+            pygame.Rect(880, 0, 133, 200)  # Dice face 6p
+        ]
+
+        if self.game_state == self.WELCOME_SCREEN:
+            player_dice_rect = dice_faces[player_dice_roll - 1]
+            player_cropped_dice = self.sprite_sheet.subsurface(player_dice_rect)
+            state.DISPLAY.blit(player_cropped_dice, (player_dice_x_start_position,player_dice_y_start_position))
+
+            enemy_dice_rect = dice_faces[enemy_dice_roll - 1]
+            enemy_cropped_dice = self.sprite_sheet.subsurface(enemy_dice_rect)
+            state.DISPLAY.blit(enemy_cropped_dice, (enemy_dice_x_start_position, enemy_dice_y_start_position))
+        elif self.game_state == self.PLAYER_TURN_SCREEN:
+            player_dice_rect = dice_faces[player_dice_roll - 1]
+            player_cropped_dice = self.sprite_sheet.subsurface(player_dice_rect)
+            state.DISPLAY.blit(player_cropped_dice, (player_dice_x_start_position, player_dice_y_start_position))
+        elif self.game_state == self.ENEMY_TURN_SCREEN:
+            enemy_dice_rect = dice_faces[enemy_dice_roll - 1]
+            enemy_cropped_dice = self.sprite_sheet.subsurface(enemy_dice_rect)
+            state.DISPLAY.blit(enemy_cropped_dice, (enemy_dice_x_start_position, enemy_dice_y_start_position))
+
+
+
+
 
     # @typechecked
     # def draw_wheel(self, state) -> None:
