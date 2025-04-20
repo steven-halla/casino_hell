@@ -329,6 +329,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         # print(self.CARD_CONSTANT)
         # print("Player roll is " + str(self.player_dice_roll))
         # print("enemy roll is " + str(self.enemy_dice_roll))
+        print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -403,16 +404,19 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_CARD_SCREEN:
-            if state.controller.confirm_button and not hasattr(self, "_card_drawn"):
+            if not hasattr(self, "_card_drawn"):
                 self.update_draw_card(state)
-                self._card_drawn = True  # ← ensures we only draw once
+                if self.CARD_CONSTANT in self.card_messages:
+                    self.card_messages[self.CARD_CONSTANT].reset()
+                self._card_drawn = True
 
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
                 if self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
-                    print("➡️ Moving to APPLY_CARD_SCREEN")
                     self.game_state = self.APPLY_CARD_SCREEN
-                    del self._card_drawn  # reset for next time
+                    del self._card_drawn
+
+
 
         # elif self.game_state == self.DRAW_CARD_SCREEN:
         #     if state.controller.confirm_button:
