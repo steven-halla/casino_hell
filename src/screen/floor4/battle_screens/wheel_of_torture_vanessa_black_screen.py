@@ -173,7 +173,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
-    APPLY_CARD_SCREEN: str = "draw card screen"
+    APPLY_CARD_SCREEN: str = "apply card screen"
     PLAYER_TURN_SCREEN: str = "player turn screen"
     ENEMY_TURN_SCREEN: str = "enemy turn screen"
     INIT_SCREEN: str = "init screen"
@@ -329,7 +329,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         # print(self.CARD_CONSTANT)
         # print("Player roll is " + str(self.player_dice_roll))
         # print("enemy roll is " + str(self.enemy_dice_roll))
-        print(self.game_state)
+        # print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -413,8 +413,15 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
                 if self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
+                    print("jfds;lakjfl;dsajfdlsa")
+                    print(self.game_state)
+
                     self.game_state = self.APPLY_CARD_SCREEN
+                    print(self.game_state)
+
                     del self._card_drawn
+                    print(self.game_state)
+
 
 
 
