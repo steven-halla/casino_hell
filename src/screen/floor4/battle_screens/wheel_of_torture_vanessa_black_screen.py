@@ -331,10 +331,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         state.player.update(state)
         super().update(state)
 
-        if self.money <= self.vanessa_black_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
+        # if self.money <= self.vanessa_black_bankrupt:
+        #     state.currentScreen = state.area4RestScreen
+        #     state.area4RestScreen.start(state)
+        #     Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_SCREEN_MESSAGE].update(state)
@@ -572,6 +572,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.player_position > 29:
                 self.player_position = 29
                 self.round_reset(state)
+                self.game_state = self.WELCOME_SCREEN
+
             square_type = self.board_squares[self.player_position]
             print(f"🎲 Player rolled: {self.move_player}")
             print(f"🎯 Player landed on square {self.player_position}: {square_type}")
@@ -587,6 +589,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.enemy_position > 29:
                 self.enemy_position = 29
                 self.round_reset(state)
+                self.game_state = self.WELCOME_SCREEN
             square_type = self.board_squares[self.enemy_position]
             print(f"🎲 ENEMY rolled: {self.move_player}")
             print(f"🎯 ENEMY landed on square {self.enemy_position}: {square_type}")
