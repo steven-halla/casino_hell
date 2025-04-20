@@ -94,6 +94,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.DRAW_CARD_SCREEN_MESSAGE: MessageBox([
                 "Vanessea Black: your draw card message"
             ]),
+            self.APPLY_CARD_SCREEN_MESSAGE: MessageBox([
+                "Vanessea Black: APPLYING CARD EFFECT"
+            ]),
             self.PLAYER_TURN_SCREEN_MESSAGE: MessageBox([
                 "Vanessea Black: ITS THE PLAYER TURN"
             ]),
@@ -170,6 +173,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
+    APPLY_CARD_SCREEN: str = "draw card screen"
     PLAYER_TURN_SCREEN: str = "player turn screen"
     ENEMY_TURN_SCREEN: str = "enemy turn screen"
     INIT_SCREEN: str = "init screen"
@@ -177,6 +181,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     WELCOME_SCREEN_MESSAGE: str = "welcome screen message"
     INIT_SCREEN_MESSAGE: str = "init screen message"
     DRAW_CARD_SCREEN_MESSAGE: str = "draw card screen message"
+    APPLY_CARD_SCREEN_MESSAGE: str = "apply card screen message"
     PLAYER_TURN_SCREEN_MESSAGE: str = "player turn screen message"
     ENEMY_TURN_SCREEN_MESSAGE: str = "enemy turn screen message"
     BET_MESSAGE: str = "bet_message"
@@ -319,9 +324,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def update(self, state):
-        print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
-        print(f"🎯 ENEMYT landed on: {self.board_squares[self.enemy_position]}")
-        # print(self.game_state)
+        # print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
+        # print(f"🎯 ENEMYT landed on: {self.board_squares[self.enemy_position]}")
         # print(self.CARD_CONSTANT)
         # print("Player roll is " + str(self.player_dice_roll))
         # print("enemy roll is " + str(self.enemy_dice_roll))
@@ -366,7 +370,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         #         self.update_roll_dice_player_enemy_roll_phase(state)
         elif self.game_state == self.PLAYER_TURN_SCREEN:
             if not self.player_rolled:
-                self.move_player = random.randint(1, 6)
+                # self.move_player = random.randint(1, 6)
+                self.move_player = 4
                 self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
                     f"PLAYER rolled a {self.move_player}."
                 ]
@@ -397,14 +402,52 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
 
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            if state.controller.confirm_button and not hasattr(self, "_card_drawn"):
+                self.update_draw_card(state)
+                self._card_drawn = True  # ← ensures we only draw once
 
-
-        if self.game_state == self.DRAW_CARD_SCREEN:
-            if state.controller.confirm_button:
-                self.update_draw_card(state)  # sets self.CARD_CONSTANT
-                self.update_card_effects(state)
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
+                if self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
+                    print("➡️ Moving to APPLY_CARD_SCREEN")
+                    self.game_state = self.APPLY_CARD_SCREEN
+                    del self._card_drawn  # reset for next time
+
+        # elif self.game_state == self.DRAW_CARD_SCREEN:
+        #     if state.controller.confirm_button:
+        #         print("🎬 Calling update_draw_card")
+        #         self.update_draw_card(state)
+        #
+        #     if self.CARD_CONSTANT:
+        #         print("➡️ Moving to APPLY_CARD_SCREEN")
+        #         self.game_state = self.APPLY_CARD_SCREEN
+
+
+        elif self.game_state == self.APPLY_CARD_SCREEN:
+            if state.controller.confirm_button:
+                selected_card = self.card_constants[self.index]
+
+                if selected_card in self.card_messages:
+                    self.CARD_CONSTANT = selected_card
+                    self.card_messages[selected_card].reset()
+                    print(f"🎯 Wheel selected index: {self.selected_index}")
+                    print(f"🃏 Selected Card: {selected_card}")
+                    for line in self.card_messages[selected_card].messages:
+                        print(f"📜 Message: {line}")
+                    self.card_constants.remove(selected_card)
+                    print(self.CARD_CONSTANT)
+                    self.update_card_effects(state)
+
+            if self.CARD_CONSTANT in self.card_messages:
+                self.card_messages[self.CARD_CONSTANT].update(state)
+
+
+
+
+
+
+
 
     def draw(self, state):
         super().draw(state)
@@ -444,6 +487,12 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.game_state = self.DRAW_CARD_SCREEN
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.draw_card_message(state)
+
+        elif self.game_state == self.APPLY_CARD_SCREEN:
+            if self.CARD_CONSTANT in self.card_messages:
+                self.card_messages[self.CARD_CONSTANT].draw(state)
+
+
         pygame.display.flip()
 
 #============================================update methods go below
@@ -512,44 +561,30 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             else:
                 self.dice_rolled = False  # Tie: reroll
 
-
-
-
     @typechecked
     def update_draw_card(self, state) -> None:
-        """Uses the selected_index from the wheel to choose a card and sets CARD_CONSTANT accordingly."""
-        # total_cards: int = len(self.card_constants)
-        #
-        # if total_cards == 0:
-        #     print("⚠️ No cards left to draw.")
-        #     return
-        #
-        # index: int = self.selected_index % total_cards
-        # selected_card = self.card_constants[index]
-
         total_cards: int = len(self.card_constants)
 
         if total_cards == 0:
             print("⚠️ No cards left to draw.")
             return
 
-        index: int = self.selected_index % total_cards
+        self.index: int = self.selected_index % total_cards
+        selected_card = self.card_constants[self.index]
 
-        if index in self.used_wheel_indices:
-            print(f"❌ Index {index} already used. Skipping draw.")
+        if selected_card not in self.card_messages:
+            print(f"❌ Card {selected_card} not found in messages.")
             return
 
-        selected_card = self.card_constants[index]
+        self.CARD_CONSTANT = selected_card
+        self.card_messages[selected_card].reset()
+        print(f"🎯 Wheel selected index: {self.selected_index}")
+        print(f"🃏 Selected Card: {selected_card}")
+        for line in self.card_messages[selected_card].messages:
+            print(f"📜 Message: {line}")
+        self.card_constants.remove(selected_card)
 
-        if selected_card in self.card_messages:
-            self.CARD_CONSTANT = selected_card
-            self.card_messages[selected_card].reset()
-            print(f"🎯 Wheel selected index: {self.selected_index}")
-            print(f"🃏 Selected Card: {selected_card}")
-            for line in self.card_messages[selected_card].messages:
-                print(f"📜 Message: {line}")
-            self.card_constants.remove(selected_card)
-            print(self.CARD_CONSTANT)
+
 
     @typechecked
     def update_square_effects(self) -> None:
