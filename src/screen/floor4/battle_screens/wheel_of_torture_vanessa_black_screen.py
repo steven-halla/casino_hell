@@ -31,7 +31,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_position_holder: int = 0
         self.enemy_equipment_lock: bool = False
         self.dice_rolled: bool = False
-        self.game_state: str = self.PLAYER_TURN_SCREEN
+        self.game_state: str = self.WELCOME_SCREEN
         self.player_money_pile: int = 0
         self.enemy_money_pile: int = 0
         self.player_exp_pile: int = 0
@@ -319,7 +319,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def update(self, state):
-        # print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
+        print(f"🎯 Player landed on: {self.board_squares[self.player_position]}")
+        print(f"🎯 ENEMYT landed on: {self.board_squares[self.enemy_position]}")
         # print(self.game_state)
         # print(self.CARD_CONSTANT)
         # print("Player roll is " + str(self.player_dice_roll))
@@ -898,10 +899,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def draw_display_dice(self, state: 'GameState', player_dice_roll: int, enemy_dice_roll: int) -> None:
-        player_dice_x_start_position = 300
-        player_dice_y_start_position = 30
-        enemy_dice_x_start_position = 300
-        enemy_dice_y_start_position = 230
+        player_dice_x_start_position = 50
+        player_dice_y_start_position = 300
+        enemy_dice_x_start_position = 600
+        enemy_dice_y_start_position = 300
         dice_faces = [
             pygame.Rect(50, 0, 133, 200),  # Dice face 1=
             pygame.Rect(210, 0, 133, 200),  # Dice face 2
