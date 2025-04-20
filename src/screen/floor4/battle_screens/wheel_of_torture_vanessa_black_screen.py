@@ -560,10 +560,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         self.wheel_lock = False
         if self.player_turn == True:
-            # self.move_player = random.randint(1, 6)
-            # self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].reset()
-
-
             self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
                 f"PLAYER rolled a {self.move_player}."
             ]
@@ -579,26 +575,20 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             print(f"🎲 Player rolled: {self.move_player}")
             print(f"🎯 Player landed on square {self.player_position}: {square_type}")
         elif self.enemy_turn == True:
-            self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].reset()
-
-            self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].update(state)
-
-            print("Look at my horse my horse is amazign give it a lick")
-
-            self.move_dealer = random.randint(1, 6)
-            self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].reset()
-
             self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].messages = [
                 f"ENEMY rolled a {self.move_dealer}."
             ]
+            # self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].update(state)
+            print(self.move_dealer)
+
+            print("Hi")
             self.enemy_position += self.move_dealer
             if self.enemy_position > 29:
                 self.enemy_position = 29
                 self.round_reset(state)
-
             square_type = self.board_squares[self.enemy_position]
-            print(f"🎲 Enemy rolled: {self.move_dealer}")
-            print(f"🎯 Enemy landed on square {self.enemy_position}: {square_type}")
+            print(f"🎲 ENEMY rolled: {self.move_player}")
+            print(f"🎯 ENEMY landed on square {self.enemy_position}: {square_type}")
         else:
             return  # no valid turn, exit safely
 
