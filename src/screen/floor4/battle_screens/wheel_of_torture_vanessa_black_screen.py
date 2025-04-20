@@ -19,6 +19,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
         self.player_rolled: bool = False
+        self.enemy_rolled: bool = False
         self.confirm_spin: bool = False
         self.enemy_stat_boost: int  = 0
         self.player_dice_roll: int = 0
@@ -377,8 +378,19 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.update_roll_dice_player_enemy_roll_phase(state)
                 self.player_rolled = False  # reset for next time
         elif self.game_state == self.ENEMY_TURN_SCREEN:
-            if state.controller.confirm_button:
+            if not self.enemy_rolled:
+                self.move_dealer = random.randint(1, 6)
+                self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].messages = [
+                    f"ENemy rolled a {self.move_dealer}."
+                ]
+                self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].reset()
+                self.enemy_rolled = True
+
+            self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].update(state)
+
+            if self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
                 self.update_roll_dice_player_enemy_roll_phase(state)
+                self.enemy_rolled = False  # reset for next time
 
 
 
