@@ -406,21 +406,19 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.game_state == self.DRAW_CARD_SCREEN:
             if not hasattr(self, "_card_drawn"):
                 self.update_draw_card(state)
-                if self.CARD_CONSTANT in self.card_messages:
-                    self.card_messages[self.CARD_CONSTANT].reset()
+                drawn_card = self.CARD_CONSTANT.replace("_", " ").title()
+                self.battle_messages[self.DRAW_CARD_SCREEN_MESSAGE].messages = [
+                    f"You drew the “{drawn_card}” card."
+                ]
+                self.battle_messages[self.DRAW_CARD_SCREEN_MESSAGE].reset()
                 self._card_drawn = True
 
-            if self.CARD_CONSTANT in self.card_messages:
-                self.card_messages[self.CARD_CONSTANT].update(state)
-                if self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
-                    print("jfds;lakjfl;dsajfdlsa")
-                    print(self.game_state)
+            self.battle_messages[self.DRAW_CARD_SCREEN_MESSAGE].update(state)
 
-                    self.game_state = self.APPLY_CARD_SCREEN
-                    print(self.game_state)
+            if self.battle_messages[self.DRAW_CARD_SCREEN_MESSAGE].is_finished() and state.controller.confirm_button:
+                self.game_state = self.APPLY_CARD_SCREEN
+                del self._card_drawn
 
-                    del self._card_drawn
-                    print(self.game_state)
 
 
 
@@ -434,24 +432,34 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         #         print("➡️ Moving to APPLY_CARD_SCREEN")
         #         self.game_state = self.APPLY_CARD_SCREEN
 
-
         elif self.game_state == self.APPLY_CARD_SCREEN:
-            if state.controller.confirm_button:
-                selected_card = self.card_constants[self.index]
-
-                if selected_card in self.card_messages:
-                    self.CARD_CONSTANT = selected_card
-                    self.card_messages[selected_card].reset()
-                    print(f"🎯 Wheel selected index: {self.selected_index}")
-                    print(f"🃏 Selected Card: {selected_card}")
-                    for line in self.card_messages[selected_card].messages:
-                        print(f"📜 Message: {line}")
-                    self.card_constants.remove(selected_card)
-                    print(self.CARD_CONSTANT)
-                    self.update_card_effects(state)
+            if not hasattr(self, "_effect_shown"):
+                if self.CARD_CONSTANT in self.card_messages:
+                    self.card_messages[self.CARD_CONSTANT].reset()
+                self._effect_shown = True
 
             if self.CARD_CONSTANT in self.card_messages:
                 self.card_messages[self.CARD_CONSTANT].update(state)
+                if self.card_messages[self.CARD_CONSTANT].is_finished() and state.controller.confirm_button:
+                    self.update_card_effects(state)
+                    del self._effect_shown
+
+            # if state.controller.confirm_button:
+            #     selected_card = self.card_constants[self.index]
+            #
+            #     if selected_card in self.card_messages:
+            #         self.CARD_CONSTANT = selected_card
+            #         self.card_messages[selected_card].reset()
+            #         print(f"🎯 Wheel selected index: {self.selected_index}")
+            #         print(f"🃏 Selected Card: {selected_card}")
+            #         for line in self.card_messages[selected_card].messages:
+            #             print(f"📜 Message: {line}")
+            #         self.card_constants.remove(selected_card)
+            #         print(self.CARD_CONSTANT)
+            #         self.update_card_effects(state)
+            #
+            # if self.CARD_CONSTANT in self.card_messages:
+            #     self.card_messages[self.CARD_CONSTANT].update(state)
 
 
 
@@ -497,11 +505,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 # Transition to the next game state
                 self.game_state = self.DRAW_CARD_SCREEN
         elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.battle_messages[self.DRAW_CARD_SCREEN_MESSAGE].draw(state)
+        elif self.game_state == self.APPLY_CARD_SCREEN:
+            # self.battle_messages[self.APPLY_CARD_SCREEN_MESSAGE].draw(state)
             self.draw_card_message(state)
 
-        elif self.game_state == self.APPLY_CARD_SCREEN:
-            if self.CARD_CONSTANT in self.card_messages:
-                self.card_messages[self.CARD_CONSTANT].draw(state)
+
+            # if self.CARD_CONSTANT in self.card_messages:
+            #     self.card_messages[self.CARD_CONSTANT].draw(state)
 
 
         pygame.display.flip()
