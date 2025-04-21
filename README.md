@@ -352,7 +352,9 @@ board square types:
 2 theif squres steals random gold
 
 
-
+POKER SPELL: 
+BLuff - Makes enemy fold depending on their hand
+i could also make a bluff mechanic 
 
 
 

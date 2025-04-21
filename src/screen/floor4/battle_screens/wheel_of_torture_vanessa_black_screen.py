@@ -384,9 +384,16 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
                 self.update_roll_dice_player_enemy_roll_phase(state)
                 self.player_rolled = False  # reset for next time
+
+
+
+
+
+
         elif self.game_state == self.ENEMY_TURN_SCREEN:
             if not self.enemy_rolled:
-                self.move_dealer = random.randint(1, 6)
+                # self.move_dealer = random.randint(1, 6)
+                self.move_dealer = 4
                 self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].messages = [
                     f"ENemy rolled a {self.move_dealer}."
                 ]
@@ -398,6 +405,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
                 self.update_roll_dice_player_enemy_roll_phase(state)
                 self.enemy_rolled = False  # reset for next time
+
+
+
+
 
 
 
@@ -563,8 +574,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     def update_init_screen_helper(self, state):
         if not self.dice_rolled:
-            self.player_dice_roll = random.randint(1, 6)
-            self.enemy_dice_roll = random.randint(1, 2)
+            self.player_dice_roll = random.randint(1, 2)
+            self.enemy_dice_roll = random.randint(1, 6)
             self.battle_messages[self.INIT_SCREEN_MESSAGE].messages = [
                 f"You rolled a {self.player_dice_roll}, Vanessa rolled a {self.enemy_dice_roll}."
             ]
@@ -730,9 +741,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 print("🃏 Player CARD_SQUARE: Switching to Card Screen!")
             elif self.enemy_turn == True:
                 self.game_state = self.SPIN_WHEEL_SCREEN
-                self.game_state = self.PLAYER_TURN_SCREEN
-                self.enemy_turn = False
-                self.player_turn = True
+                # self.game_state = self.PLAYER_TURN_SCREEN
+                # self.enemy_turn = False
+                # self.player_turn = True
 
 
                 print("🃏 Enemy CARD_SQUARE: Switching to Card Screen!")
