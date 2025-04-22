@@ -21,7 +21,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_rolled: bool = False
         self.enemy_rolled: bool = False
         self.confirm_spin: bool = False
-        self.enemy_stat_boost: int  = 0
+        self.enemy_stat_boost: int = 0
         self.player_dice_roll: int = 0
 
         self.enemy_dice_roll: int = 0
@@ -390,8 +390,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         #         self.update_roll_dice_player_enemy_roll_phase(state)
         elif self.game_state == self.PLAYER_TURN_SCREEN:
             if not self.player_rolled:
-                # self.move_player = random.randint(1, 6) + self.player_move_modifier
-                self.move_player = 4 + self.player_move_modifier
+                self.move_player = random.randint(1, 6) + self.player_move_modifier
+                # self.move_player = 4 + self.player_move_modifier
                 self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
                     f"PLAYER rolled a {self.move_player}."
                 ]
@@ -408,8 +408,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         elif self.game_state == self.ENEMY_TURN_SCREEN:
             if not self.enemy_rolled:
-                # self.move_dealer = random.randint(1, 6) + self.enemy_move_modifier
-                self.move_dealer = 4 + self.enemy_move_modifier
+                self.move_dealer = random.randint(1, 6) + self.enemy_move_modifier
+                # self.move_dealer = 4 + self.enemy_move_modifier
                 self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].messages = [
                     f"ENemy rolled a {self.move_dealer}."
                 ]
