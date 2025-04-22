@@ -158,7 +158,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 "14) RED  Bankrupt – lose all money in pile"
             ]),
             self.EXP_HOLE: MessageBox([
-                "15) RED  Bankrupt – lose all EXP in pile"
+                "15) RED  EXP BANKED – lose all EXP in pile"
             ]),
             self.MAGIC_LOCK_UP: MessageBox([
                 "16) RED  Magic lock for rest of round"
@@ -298,7 +298,15 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def round_reset(self, state):
+        if self.enemy_exp_pile >= 1000:
+            self.enemy_move_modifier += 1
+            self.enemy_exp_pile -= 1000
+
         self.confirm_spin = False
+        self.player_magic_lock = False
+        self.player_equipment_lock = False
+        self.enemy_equipment_lock = False
+        self.enemy_magic_lock = False
         self.used_wheel_indices.clear()
         self.player_turn = False
         self.enemy_turn = False
@@ -340,6 +348,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         # print("Player roll is " + str(self.player_dice_roll))
         # print("enemy roll is " + str(self.enemy_dice_roll))
         # print(self.game_state)
+
 
         controller = state.controller
         controller.update()
@@ -532,70 +541,72 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 #============================================update methods go below
 
-    @typechecked
-    def update_wheel_result(self) -> None:
-        """TEMP TEST: Force MID_POINT_MOVE at index 17 every time."""
-        self.selected_index = 17  # MID_POINT_MOVE
-        self.used_wheel_indices.add(17)
-        self.confirm_spin = True
-        self.wheel_lock = True
-        print("🎯 [TEST MODE] Forced index to MID_POINT_MOVE (17)")
-        return
-
     # @typechecked
     # def update_wheel_result(self) -> None:
-    #     """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
-    #     roll: int = random.randint(1, 100)
-    #
-    #     red_indices = [1, 5, 9, 13, 15, 17]
-    #     green_indices = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
-    #     purple_indices = [3, 11]
-    #     sky_blue_index = 7
-    #     all_indices = set(range(20))
-    #     used_indices = self.used_wheel_indices
-    #
-    #     # Determine available indices for each color
-    #     available_red = [i for i in red_indices if i not in used_indices]
-    #     available_sky_blue = [sky_blue_index] if sky_blue_index not in used_indices else []
-    #     available_purple = [i for i in purple_indices if i not in used_indices]
-    #     available_green = list(all_indices - used_indices - set(red_indices + [sky_blue_index] + purple_indices))
-    #
-    #     # Select index based on roll
-    #     # These rolls trigger exact slices for their color
-    #     red_rolls = [1, 5, 9, 13, 15, 17]
-    #     green_rolls = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
-    #     purple_rolls = [3, 11]
-    #     sky_blue_rolls = [7, 19]
-    #
-    #     if roll in red_rolls and available_red:
-    #         self.selected_index = random.choice(available_red)
-    #         print(f"DEBUG RED: roll={roll}, available_red={available_red}")
-    #
-    #     elif roll in green_rolls and available_green:
-    #         self.selected_index = random.choice(available_green)
-    #         print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
-    #
-    #     elif roll in purple_rolls and available_purple:
-    #         self.selected_index = random.choice(available_purple)
-    #         print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
-    #
-    #     elif roll in sky_blue_rolls and available_sky_blue:
-    #         self.selected_index = sky_blue_index
-    #         print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
-    #     else:
-    #         # Fallback: select any unused index
-    #         remaining_indices = list(all_indices - used_indices)
-    #         if not remaining_indices:
-    #             print("⚠️ All wheel indices have been used this round.")
-    #             return -1  # Indicate that no selection was made
-    #         self.selected_index = random.choice(remaining_indices)
-    #
-    #     # Mark the selected index as used
-    #     self.used_wheel_indices.add(self.selected_index)
+    #     self.player_exp_pile = 1000
+    #     """TEMP TEST: Force MID_POINT_MOVE at index 17 every time."""
+    #     self.selected_index = 5 # MID_POINT_MOVE
+    #     self.used_wheel_indices.add(5)
     #     self.confirm_spin = True
-    #
-    #     print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
     #     self.wheel_lock = True
+    #     print("🎯 Index 5 = EXP_CARD_HALF_UP")
+    #     print(f"🎴 Your CARD_CONSTANT is: {self.CARD_CONSTANT}")
+    #     return
+
+    @typechecked
+    def update_wheel_result(self) -> None:
+        """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
+        roll: int = random.randint(1, 100)
+
+        red_indices = [1, 5, 9, 13, 15, 17]
+        green_indices = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
+        purple_indices = [3, 11]
+        sky_blue_index = 7
+        all_indices = set(range(20))
+        used_indices = self.used_wheel_indices
+
+        # Determine available indices for each color
+        available_red = [i for i in red_indices if i not in used_indices]
+        available_sky_blue = [sky_blue_index] if sky_blue_index not in used_indices else []
+        available_purple = [i for i in purple_indices if i not in used_indices]
+        available_green = list(all_indices - used_indices - set(red_indices + [sky_blue_index] + purple_indices))
+
+        # Select index based on roll
+        # These rolls trigger exact slices for their color
+        red_rolls = [1, 5, 9, 13, 15, 17]
+        green_rolls = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+        purple_rolls = [3, 11]
+        sky_blue_rolls = [7, 19]
+
+        if roll in red_rolls and available_red:
+            self.selected_index = random.choice(available_red)
+            print(f"DEBUG RED: roll={roll}, available_red={available_red}")
+
+        elif roll in green_rolls and available_green:
+            self.selected_index = random.choice(available_green)
+            print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
+
+        elif roll in purple_rolls and available_purple:
+            self.selected_index = random.choice(available_purple)
+            print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
+
+        elif roll in sky_blue_rolls and available_sky_blue:
+            self.selected_index = sky_blue_index
+            print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
+        else:
+            # Fallback: select any unused index
+            remaining_indices = list(all_indices - used_indices)
+            if not remaining_indices:
+                print("⚠️ All wheel indices have been used this round.")
+                return -1  # Indicate that no selection was made
+            self.selected_index = random.choice(remaining_indices)
+
+        # Mark the selected index as used
+        self.used_wheel_indices.add(self.selected_index)
+        self.confirm_spin = True
+
+        print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
+        self.wheel_lock = True
 
     def update_init_screen_helper(self, state):
         if not self.dice_rolled:
@@ -1023,18 +1034,18 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             2: self.MAGIC_LOCK_UP,
             3: self.EQUIPMENT_LOCK_UP,
             4: self.MOVE_BACK_3,
-            5: self.MOVE_ENEMY_3,
-            6: self.EXP_CARD_HALF_UP,
-            7: self.GOLD_CARD_HALF_UP,
-            8: self.GOLD_CARD_BONUS,
-            9: self.EXP_CARD_BONUS,
-            10: self.MOVE_3_SQUARES,
-            11: self.TASTY_TREAT,
-            12: self.ENEMY_MOVE_BACK_3,
-            13: self.STAT_BOOSTER,
-            14: self.FREE_WIN,
-            15: self.PLAYER_MOVE_FORWARD,
-            16: self.ENEMY_MOVE_BACK,
+            5: self.EXP_CARD_HALF_UP,
+            6: self.GOLD_CARD_HALF_UP,
+            7: self.GOLD_CARD_BONUS,
+            8: self.EXP_CARD_BONUS,
+            9: self.MOVE_3_SQUARES,
+            10: self.TASTY_TREAT,
+            11: self.MOVE_ENEMY_3,
+            12: self.STAT_BOOSTER,
+            13: self.FREE_WIN,
+            14: self.PLAYER_MOVE_FORWARD,
+            15: self.ENEMY_MOVE_BACK,
+            16: self.ENEMY_MOVE_BACK_3,
             17: self.MID_POINT_MOVE,
             18: self.SWAP_POSITIONS,
             19: self.SPECIAL_ITEM,
@@ -1049,17 +1060,20 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
+                print("Player money is after bankrupted: " + str(self.player_money_pile))
             elif self.enemy_turn == True:
                 self.enemy_money_pile = 0
                 self.player_turn = True
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_HOLE:
+
             if self.player_turn == True:
                 self.player_exp_pile = 0
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
+                print("Player exp is after " + str(self.player_exp_pile))
             elif self.enemy_turn == True:
                 self.enemy_exp_pile = 0
                 self.player_turn = True
@@ -1071,6 +1085,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
+                print("Player magic lock up should be True:  " + str(self.player_magic_lock))
             elif self.enemy_turn == True:
                 self.enemy_magic_lock = True
                 self.player_turn = True
@@ -1082,6 +1097,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
+                print("Player Equipment lock up should be True:  " + str(self.player_equipment_lock))
+
             elif self.enemy_turn == True:
                 self.enemy_equipment_lock = True
                 self.player_turn = True
@@ -1116,11 +1133,15 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_CARD_HALF_UP:
+            print(f"[DEBUG] CARD_CONSTANT at APPLY_CARD_SCREEN: {self.CARD_CONSTANT}")
+
             if self.player_turn == True:
                 self.player_exp_pile += self.player_exp_pile // 2
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
+                print("fdasfdsafdsfsda   Player exp is after " + str(self.player_exp_pile))
+
             elif self.enemy_turn == True:
                 self.enemy_exp_pile += self.enemy_exp_pile // 2
                 self.player_turn = True
