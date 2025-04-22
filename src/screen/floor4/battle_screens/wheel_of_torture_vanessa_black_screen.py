@@ -42,8 +42,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_magic_lock: bool = False
         self.player_equipment_lock: bool = False
         self.enemy_equipment_lock: bool = False
-        self.enemy_mp: int = 2
-        self.enemy_hp: int = 4
+        self.enemy_mp: int = 0
+        self.enemy_hp: int = 500
         self.player_win_token: int = 0
         self.enemy_win_token: int = 0
         self.player_move_boost: int = 0
@@ -704,14 +704,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         # ---- Handle square effect ----
         if square_type == self.GOLD_SQUARE:
             if self.player_turn == True:
-                self.player_money_pile += 25
+                self.player_money_pile += 250
                 print("💰 Player GOLD_SQUARE: +25 gold!")
                 self.game_state = self.ENEMY_TURN_SCREEN
                 self.player_turn = False
                 self.enemy_turn = True
 
             elif self.enemy_turn == True:
-                self.enemy_money_pile += 25
+                self.enemy_money_pile += 250
                 print("💰 Enemy GOLD_SQUARE: +25 gold!")
                 self.game_state = self.PLAYER_TURN_SCREEN
                 self.enemy_turn = False
@@ -722,14 +722,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         elif square_type == self.EXP_SQUARE:
             if self.player_turn == True:
-                self.player_exp_pile += 25
+                self.player_exp_pile += 250
                 print("📘 Player EXP_SQUARE: +25 EXP!")
                 self.game_state = self.ENEMY_TURN_SCREEN
                 self.player_turn = False
                 self.enemy_turn = True
 
             elif self.enemy_turn == True:
-                self.enemy_exp_pile += 25
+                self.enemy_exp_pile += 250
                 self.game_state = self.PLAYER_TURN_SCREEN
                 self.player_turn = True
 
@@ -738,16 +738,16 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         elif square_type == self.TRAP_SQUARE:
             if self.player_turn == True:
-                state.player.stamina_points -= 25
-                state.player.focus_points -= 25
+                state.player.stamina_points -= 100
+                state.player.focus_points -= 50
                 self.game_state = self.ENEMY_TURN_SCREEN
                 self.player_turn = False
                 self.enemy_turn = True
 
                 print("💀 Player TRAP_SQUARE: -25 Stamina, -25 Focus!")
             elif self.enemy_turn == True:
-                self.enemy_hp -= 2
-                self.enemy_mp -= 1
+                self.enemy_hp -= 100
+                self.enemy_mp -= 50
                 self.game_state = self.PLAYER_TURN_SCREEN
                 self.enemy_turn = False
                 self.player_turn = True
@@ -1200,8 +1200,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
-                self.enemy_hp += 4
-                self.enemy_mp += 2
+                self.enemy_hp += 200
+                # self.enemy_mp += 2
                 self.player_turn = True
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
