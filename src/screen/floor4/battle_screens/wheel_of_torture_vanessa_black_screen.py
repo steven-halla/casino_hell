@@ -237,26 +237,26 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
         self.card_constants: list[str] = [
-            self.BANKRUPT,
-            self.EXP_HOLE,
-            self.MAGIC_LOCK_UP,
-            self.EQUIPMENT_LOCK_UP,
-            self.MOVE_BACK_3,
-            self.MID_POINT_MOVE,
-            self.EXP_CARD_HALF_UP,
-            self.GOLD_CARD_HALF_UP,
-            self.GOLD_CARD_BONUS,
-            self.EXP_CARD_BONUS,
-            self.MOVE_3_SQUARES,
-            self.TASTY_TREAT,
-            self.MOVE_ENEMY_3,
-            self.STAT_BOOSTER,
-            self.FREE_WIN,
-            self.PLAYER_MOVE_FORWARD,
-            self.ENEMY_MOVE_BACK,
-            self.ENEMY_MOVE_BACK_3,
-            self.SWAP_POSITIONS,
-            self.SPECIAL_ITEM,
+            self.BANKRUPT,  # 0
+            self.EXP_HOLE,  # 1
+            self.MAGIC_LOCK_UP,  # 2
+            self.EQUIPMENT_LOCK_UP,  # 3
+            self.MOVE_BACK_3,  # 4
+            self.EXP_CARD_HALF_UP,  # 5
+            self.GOLD_CARD_HALF_UP,  # 6
+            self.GOLD_CARD_BONUS,  # 7
+            self.EXP_CARD_BONUS,  # 8
+            self.MOVE_3_SQUARES,  # 9
+            self.TASTY_TREAT,  # 10
+            self.MOVE_ENEMY_3,  # 11
+            self.STAT_BOOSTER,  # 12
+            self.FREE_WIN,  # 13
+            self.PLAYER_MOVE_FORWARD,  # 14
+            self.ENEMY_MOVE_BACK,  # 15
+            self.ENEMY_MOVE_BACK_3,  # 16
+            self.MID_POINT_MOVE,  # 17 ✅ moved here
+            self.SWAP_POSITIONS,  # 18
+            self.SPECIAL_ITEM  # 19
         ]
         self.game_cards = self.card_constants.copy()
         self.board_squares: list[str] = [
@@ -306,26 +306,26 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.player_money_pile = 0
         self.exp_pile = 0
         self.card_constants: list[str] = [
-            self.BANKRUPT,
-            self.EXP_HOLE,
-            self.MAGIC_LOCK_UP,
-            self.EQUIPMENT_LOCK_UP,
-            self.MOVE_BACK_3,
-            self.MID_POINT_MOVE,
-            self.EXP_CARD_HALF_UP,
-            self.GOLD_CARD_HALF_UP,
-            self.GOLD_CARD_BONUS,
-            self.EXP_CARD_BONUS,
-            self.MOVE_3_SQUARES,
-            self.TASTY_TREAT,
-            self.MOVE_ENEMY_3,
-            self.STAT_BOOSTER,
-            self.FREE_WIN,
-            self.PLAYER_MOVE_FORWARD,
-            self.ENEMY_MOVE_BACK,
-            self.ENEMY_MOVE_BACK_3,
-            self.SWAP_POSITIONS,
-            self.SPECIAL_ITEM,
+            self.BANKRUPT,  # 0
+            self.EXP_HOLE,  # 1
+            self.MAGIC_LOCK_UP,  # 2
+            self.EQUIPMENT_LOCK_UP,  # 3
+            self.MOVE_BACK_3,  # 4
+            self.EXP_CARD_HALF_UP,  # 5
+            self.GOLD_CARD_HALF_UP,  # 6
+            self.GOLD_CARD_BONUS,  # 7
+            self.EXP_CARD_BONUS,  # 8
+            self.MOVE_3_SQUARES,  # 9
+            self.TASTY_TREAT,  # 10
+            self.MOVE_ENEMY_3,  # 11
+            self.STAT_BOOSTER,  # 12
+            self.FREE_WIN,  # 13
+            self.PLAYER_MOVE_FORWARD,  # 14
+            self.ENEMY_MOVE_BACK,  # 15
+            self.ENEMY_MOVE_BACK_3,  # 16
+            self.MID_POINT_MOVE,  # 17 ✅ moved here
+            self.SWAP_POSITIONS,  # 18
+            self.SPECIAL_ITEM  # 19
         ]
 
 
@@ -530,58 +530,68 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def update_wheel_result(self) -> None:
-        """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
-        roll: int = random.randint(1, 100)
-
-        red_indices = [1, 5, 9, 13, 15, 17]
-        green_indices = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
-        purple_indices = [3, 11]
-        sky_blue_index = 7
-        all_indices = set(range(20))
-        used_indices = self.used_wheel_indices
-
-        # Determine available indices for each color
-        available_red = [i for i in red_indices if i not in used_indices]
-        available_sky_blue = [sky_blue_index] if sky_blue_index not in used_indices else []
-        available_purple = [i for i in purple_indices if i not in used_indices]
-        available_green = list(all_indices - used_indices - set(red_indices + [sky_blue_index] + purple_indices))
-
-        # Select index based on roll
-        # These rolls trigger exact slices for their color
-        red_rolls = [1, 5, 9, 13, 15, 17]
-        green_rolls = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
-        purple_rolls = [3, 11]
-        sky_blue_rolls = [7, 19]
-
-        if roll in red_rolls and available_red:
-            self.selected_index = random.choice(available_red)
-            print(f"DEBUG RED: roll={roll}, available_red={available_red}")
-
-        elif roll in green_rolls and available_green:
-            self.selected_index = random.choice(available_green)
-            print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
-
-        elif roll in purple_rolls and available_purple:
-            self.selected_index = random.choice(available_purple)
-            print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
-
-        elif roll in sky_blue_rolls and available_sky_blue:
-            self.selected_index = sky_blue_index
-            print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
-        else:
-            # Fallback: select any unused index
-            remaining_indices = list(all_indices - used_indices)
-            if not remaining_indices:
-                print("⚠️ All wheel indices have been used this round.")
-                return -1  # Indicate that no selection was made
-            self.selected_index = random.choice(remaining_indices)
-
-        # Mark the selected index as used
-        self.used_wheel_indices.add(self.selected_index)
+        """TEMP TEST: Force MID_POINT_MOVE at index 17 every time."""
+        self.selected_index = 17  # MID_POINT_MOVE
+        self.used_wheel_indices.add(17)
         self.confirm_spin = True
-
-        print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
         self.wheel_lock = True
+        print("🎯 [TEST MODE] Forced index to MID_POINT_MOVE (17)")
+        return
+
+    # @typechecked
+    # def update_wheel_result(self) -> None:
+    #     """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
+    #     roll: int = random.randint(1, 100)
+    #
+    #     red_indices = [1, 5, 9, 13, 15, 17]
+    #     green_indices = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
+    #     purple_indices = [3, 11]
+    #     sky_blue_index = 7
+    #     all_indices = set(range(20))
+    #     used_indices = self.used_wheel_indices
+    #
+    #     # Determine available indices for each color
+    #     available_red = [i for i in red_indices if i not in used_indices]
+    #     available_sky_blue = [sky_blue_index] if sky_blue_index not in used_indices else []
+    #     available_purple = [i for i in purple_indices if i not in used_indices]
+    #     available_green = list(all_indices - used_indices - set(red_indices + [sky_blue_index] + purple_indices))
+    #
+    #     # Select index based on roll
+    #     # These rolls trigger exact slices for their color
+    #     red_rolls = [1, 5, 9, 13, 15, 17]
+    #     green_rolls = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+    #     purple_rolls = [3, 11]
+    #     sky_blue_rolls = [7, 19]
+    #
+    #     if roll in red_rolls and available_red:
+    #         self.selected_index = random.choice(available_red)
+    #         print(f"DEBUG RED: roll={roll}, available_red={available_red}")
+    #
+    #     elif roll in green_rolls and available_green:
+    #         self.selected_index = random.choice(available_green)
+    #         print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
+    #
+    #     elif roll in purple_rolls and available_purple:
+    #         self.selected_index = random.choice(available_purple)
+    #         print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
+    #
+    #     elif roll in sky_blue_rolls and available_sky_blue:
+    #         self.selected_index = sky_blue_index
+    #         print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
+    #     else:
+    #         # Fallback: select any unused index
+    #         remaining_indices = list(all_indices - used_indices)
+    #         if not remaining_indices:
+    #             print("⚠️ All wheel indices have been used this round.")
+    #             return -1  # Indicate that no selection was made
+    #         self.selected_index = random.choice(remaining_indices)
+    #
+    #     # Mark the selected index as used
+    #     self.used_wheel_indices.add(self.selected_index)
+    #     self.confirm_spin = True
+    #
+    #     print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
+    #     self.wheel_lock = True
 
     def update_init_screen_helper(self, state):
         if not self.dice_rolled:
@@ -1086,11 +1096,17 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MID_POINT_MOVE:
             if self.player_turn == True:
+                print(f"CARD_CONSTANT: {self.CARD_CONSTANT}")
+                print(f"MID_POINT_MOVE: {self.MID_POINT_MOVE}")
+                print(self.CARD_CONSTANT == self.MID_POINT_MOVE)
                 self.player_position = 15
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
             elif self.enemy_turn == True:
+                print(f"CARD_CONSTANT: {self.CARD_CONSTANT}")
+                print(f"MID_POINT_MOVE: {self.MID_POINT_MOVE}")
+                print(self.CARD_CONSTANT == self.MID_POINT_MOVE)
                 self.enemy_position = 15
                 self.player_turn = True
                 self.enemy_turn = False
