@@ -18,6 +18,7 @@ import random
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
+        self.enemy_exp_move_modifier:int = 0
         self.player_rolled: bool = False
         self.enemy_rolled: bool = False
         self.confirm_spin: bool = False
@@ -232,8 +233,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     def start(self, state):
         #v------TESTING---------v#
-        self.player_money_pile = 100
-        self.exp_pile = 100
+        # self.player_money_pile = 100
+        # self.exp_pile = 100
 
 
         #^-------TESTING---------^#
@@ -298,8 +299,12 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     def round_reset(self, state):
+        print("Player tokens at:" + str(self.player_win_token))
+        print("Enemy tokens at:" + str(self.enemy_win_token))
+        print("player money at:" + str(self.player_money_pile))
+        print("Enemy money at:" + str(self.enemy_money_pile))
         if self.enemy_exp_pile >= 1000:
-            self.enemy_move_modifier += 1
+            self.enemy_exp_move_modifier += 1
             self.enemy_exp_pile -= 1000
 
         self.confirm_spin = False
@@ -315,8 +320,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_move_modifier: int = 0
         self.player_move_modifier: int = 0
 
-        self.player_money_pile = 0
-        self.exp_pile = 0
+
         self.card_constants: list[str] = [
             self.BANKRUPT,  # 0
             self.EXP_HOLE,  # 1
@@ -348,6 +352,20 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         # print("Player roll is " + str(self.player_dice_roll))
         # print("enemy roll is " + str(self.enemy_dice_roll))
         # print(self.game_state)
+        if self.player_win_token >= 3:
+            print("Plyer winss!!!")
+        elif self.enemy_win_token >= 3:
+            print("ENEMY WINSQWRERFEW######")
+
+        if state.controller.isEPressed:
+            print("PLayer money is at: " + str(self.player_money_pile))
+            print("Enemy money is at: " + str(self.enemy_money_pile))
+
+        if self.player_money_pile < 0:
+            self.player_money_pile = 0
+        if self.enemy_money_pile < 0:
+            self.enemy_money_pile = 0
+
 
 
         controller = state.controller
@@ -675,7 +693,17 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             print("Hi")
             self.player_position += self.move_player
             if self.player_position > 29:
-                self.player_position = 29
+
+                if self.player_money_pile >= 1000:
+                    print("Player gets the win")
+                    self.player_money_pile -= 1000
+                    self.player_win_token += 1
+                    self.player_position = 29
+
+                elif self.player_money_pile <= 1000:
+                    self.player_money_pile += 250
+                    self.player_position = 29
+
                 self.round_reset(state)
                 self.game_state = self.WELCOME_SCREEN
 
@@ -692,7 +720,16 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             print("Hi")
             self.enemy_position += self.move_dealer
             if self.enemy_position > 29:
-                self.enemy_position = 29
+                if self.enemy_money_pile >= 1000:
+                    print("enemy gets the win")
+                    self.enemy_money_pile -= 1000
+                    self.enemy_win_token += 1
+                    self.enemy_position = 29
+
+                elif self.enemy_money_pile <= 1000:
+                    self.enemy_money_pile += 250
+                    self.enemy_position = 29
+
                 self.round_reset(state)
                 self.game_state = self.WELCOME_SCREEN
             square_type = self.board_squares[self.enemy_position]
@@ -832,7 +869,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     @typechecked
     def draw_player_token(self, state) -> None:
         """Draws the player's token (PURPLE) based on their current board position."""
-        token_size: int = 10
+        token_size: int = 15
         padding_inside_square: int = 5
         x_start: int = 50
         y_start: int = 100
@@ -1287,36 +1324,19 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.CARD_CONSTANT == self.SPECIAL_ITEM:
             if self.player_turn == True:
                 print("he")
+                self.player_money_pile += 1000
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
 
             if self.enemy_turn == True:
+                self.enemy_money_pile += 1000
                 self.player_turn = True
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
                 print("me")
 
-    # @typechecked
-    # def draw_wheel(self, state) -> None:
-    #     """Draws a 300x300 green wheel with 20 white pie slice divisions."""
-    #     center_x: int = 400  # You can position this wherever you want
-    #     center_y: int = 300
-    #     radius: int = 150
-    #     num_slices: int = 20
-    #
-    #     # Draw the green circle
-    #     pygame.draw.circle(state.DISPLAY, GREEN, (center_x, center_y), radius)
-    #
-    #     # Draw the white lines for pie slices
-    #     for i in range(num_slices):
-    #         angle: float = (2 * math.pi / num_slices) * i
-    #         end_x: int = int(center_x + radius * math.cos(angle))
-    #         end_y: int = int(center_y + radius * math.sin(angle))
-    #         pygame.draw.line(state.DISPLAY, WHITE, (center_x, center_y), (end_x, end_y), 2)
-    #
-    #     if state.controller.confirm_button:
-    #         spin wheel
+    # Enemy mid move is not working need to check enemy cards
 
 
 
