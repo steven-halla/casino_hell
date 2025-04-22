@@ -107,6 +107,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 "Vanessea Black:  ITS THE ENEMY TURN"
             ]),
 
+
         }
 
         # Initialize the card messages dictionary
