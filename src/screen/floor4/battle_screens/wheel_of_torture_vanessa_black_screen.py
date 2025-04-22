@@ -498,15 +498,21 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].draw(state)
 
             self.draw_display_dice(state, 0, self.move_dealer)
-
-
         elif self.game_state == self.SPIN_WHEEL_SCREEN:
             self.draw_wheel(state)  # This updates the wheel's animation
+
             if self._has_landed:
-                # Reset the flag for future spins
-                self._has_landed = False
-                # Transition to the next game state
-                self.game_state = self.DRAW_CARD_SCREEN
+                # Start the pause timer if it hasn't been started yet
+                if not hasattr(self, "_pause_timer"):
+                    self._pause_timer = pygame.time.get_ticks()
+
+                # Check if 1 second has passed
+                elif pygame.time.get_ticks() - self._pause_timer >= 1000:
+                    self._has_landed = False  # ✅ Clear after the pause finishes
+                    del self._pause_timer
+                    self.game_state = self.DRAW_CARD_SCREEN
+
+
         elif self.game_state == self.DRAW_CARD_SCREEN:
             self.battle_messages[self.DRAW_CARD_SCREEN_MESSAGE].draw(state)
         elif self.game_state == self.APPLY_CARD_SCREEN:
@@ -870,12 +876,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
     @typechecked
     def draw_wheel(self, state) -> None:
-        center_x: int = 400
-        center_y: int = 300
-        radius: int = 150
-        num_slices: int = 20
-        spin_speed: float = 0.10
-        max_frames: int = 120  # 2 seconds at 60 FPS
+        center_x = 400
+        center_y = 300
+        radius = 150
+        num_slices = 20
+        spin_speed = 0.10
 
         # Color definitions
         SKY_BLUE = (135, 206, 235)
@@ -884,59 +889,52 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         PURPLE = (138, 43, 226)
         WHITE = (255, 255, 255)
 
-        # Final color layout
-        wheel_colors: list[tuple[int, int, int]] = [
+        # Color layout
+        wheel_colors = [
             GREEN, RED, GREEN, PURPLE, GREEN, RED, GREEN, SKY_BLUE, GREEN, RED,
             GREEN, PURPLE, GREEN, RED, GREEN, RED, GREEN, RED, GREEN, GREEN
         ]
 
-        # Initialize wheel state
+        # One-time inits
         if not hasattr(self, "_wheel_angle"):
             self._wheel_angle = 0.0
-        if not hasattr(self, "_wheel_frame_count"):
-            self._wheel_frame_count = 0
-        if not hasattr(self, "_is_spinning"):
-            self._is_spinning = False
         if not hasattr(self, "_has_landed"):
             self._has_landed = False
+        if not hasattr(self, "delay_start_time"):
+            self.delay_start_time = None
 
-        # Start spinning on confirm
-        if self.confirm_spin == True and not self._is_spinning and not self._has_landed:
-            self._is_spinning = True
-            self._wheel_angle = 0.0
-            self._wheel_frame_count = 0
-        # Initialize delay_start_time at the beginning of the function
-        delay_start_time = None
+        # Start spin
+        if self.confirm_spin and self.delay_start_time is None and not self._has_landed:
+            self.delay_start_time = pygame.time.get_ticks()
 
-        if self._is_spinning:
-            self._wheel_angle += spin_speed
-            self._wheel_frame_count += 1
-            if self._wheel_frame_count >= max_frames:
-                self._is_spinning = False
-                self.delay_start_time = pygame.time.get_ticks()  # Assign current time
-        if self.delay_start_time is not None:
+        # Main spin logic
+        if self.delay_start_time is not None and not self._has_landed:
             current_time = pygame.time.get_ticks()
-            if current_time - self.delay_start_time >= 2000:  # 2000 milliseconds = 2 seconds
-                self._has_landed = True
-                self.delay_start_time = None  # Reset after use
-                # Proceed to the next screen or state transition here
-        # # Spin phase
-        # if self._is_spinning:
-        #     self._wheel_angle += spin_speed
-        #     self._wheel_frame_count += 1
-        #     if self._wheel_frame_count >= max_frames:
-        #         self._is_spinning = False
-        #         self._has_landed = True
-        #
-        #         # Calculate final alignment angle
-        #         slice_angle = (2 * math.pi) / num_slices
-        #         self._wheel_angle = -slice_angle * self.selected_index
-        #         print(f"🎯 Final wheel stop on slice: {self.selected_index}")
+            elapsed = current_time - self.delay_start_time
 
-        # Draw slices
+            slice_angle = (2 * math.pi) / num_slices
+            target_angle = -slice_angle * self.selected_index
+            angle_difference = abs((self._wheel_angle % (2 * math.pi)) - (target_angle % (2 * math.pi)))
+            snap_threshold = 0.05
+
+            if elapsed < 2000:
+                self._wheel_angle += spin_speed
+            else:
+                self._wheel_angle += spin_speed
+                if angle_difference <= snap_threshold:
+                    self._wheel_angle = target_angle
+                    self._has_landed = True
+                    self.delay_start_time = None
+                    print(f"✅ Final stop on index: {self.selected_index}")
+
+        # Center each slice under the arrow
+        slice_angle = (2 * math.pi) / num_slices
+        angle_offset = slice_angle / 2  # Center slice under arrow
+
+        # Draw slices (centered)
         for i in range(num_slices):
-            angle_start = (2 * math.pi / num_slices) * i + self._wheel_angle
-            angle_end = (2 * math.pi / num_slices) * (i + 1) + self._wheel_angle
+            angle_start = slice_angle * i + self._wheel_angle + angle_offset
+            angle_end = slice_angle * (i + 1) + self._wheel_angle + angle_offset
 
             point1 = (center_x, center_y)
             point2 = (
@@ -950,28 +948,24 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
             pygame.draw.polygon(state.DISPLAY, wheel_colors[i], [point1, point2, point3])
 
-        # Draw dividing lines
+        # Draw slice lines (aligned with visual slices)
         for i in range(num_slices):
-            angle = (2 * math.pi / num_slices) * i + self._wheel_angle
+            angle = slice_angle * i + self._wheel_angle + angle_offset
             end_x = int(center_x + radius * math.cos(angle))
             end_y = int(center_y + radius * math.sin(angle))
             pygame.draw.line(state.DISPLAY, WHITE, (center_x, center_y), (end_x, end_y), 2)
 
         # Draw arrow
-        arrow_width = 20
-        arrow_height = 15
-        arrow_x = center_x
-        arrow_y = center_y - radius - 10
-
+        arrow_x, arrow_y = center_x, center_y - radius - 10
         pygame.draw.polygon(
-            state.DISPLAY,
-            RED,
+            state.DISPLAY, RED,
             [
                 (arrow_x, arrow_y),
-                (arrow_x - arrow_width // 2, arrow_y - arrow_height),
-                (arrow_x + arrow_width // 2, arrow_y - arrow_height)
+                (arrow_x - 10, arrow_y - 15),
+                (arrow_x + 10, arrow_y - 15)
             ]
         )
+
         self.confirm_spin = False
 
 
