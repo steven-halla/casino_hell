@@ -110,6 +110,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         }
 
+
+
         # Initialize the card messages dictionary
         self.card_messages: dict[str, MessageBox] = {
             self.EXP_CARD_HALF_UP: MessageBox([
@@ -128,6 +130,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 "5) Move up 3 squares (10% board movement)"
             ]),
             self.TASTY_TREAT: MessageBox([
+
                 "6) Gain +100 stamina + 50 focus"
             ]),
             self.FREE_WIN: MessageBox([
