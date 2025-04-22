@@ -914,7 +914,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if self._wheel_frame_count >= max_frames:
                 self._is_spinning = False
                 self.delay_start_time = pygame.time.get_ticks()  # Assign current time
-                
         if self.delay_start_time is not None:
             current_time = pygame.time.get_ticks()
             if current_time - self.delay_start_time >= 2000:  # 2000 milliseconds = 2 seconds
