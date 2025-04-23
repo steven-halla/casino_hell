@@ -19,11 +19,53 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
         self.enemy_exp_move_modifier:int = 0
+        self.RED = (255, 0, 0)
+        self.GREEN = (0, 255, 0)
+        self.BLUE = (0, 0, 255)
+        self.YELLOW = (255, 255, 0)
+        self.ORANGE = (255, 165, 0)
+        self.PURPLE = (128, 0, 128)
+        self.CYAN = (0, 255, 255)
+        self.PINK = (255, 192, 203)
+        self.CHOCOLATE = (210, 105, 30)
+        self.TEAL = (0, 128, 128)
+        self.LIGHT_BLUE = (173, 216, 230)
+        self.DEEP_PINK = (255, 20, 147)
+        self.YELLOW_GREEN = (154, 205, 50)
+        self.SADDLE_BROWN = (139, 69, 19)
+        self.DARK_GREEN = (0, 100, 0)
+        self.TOMATO = (255, 99, 71)
+        self.STEEL_BLUE = (70, 130, 180)
+        self.OLIVE = (128, 128, 0)
+        self.DARK_ORANGE = (255, 140, 0)
+        self.MEDIUM_VIOLET_RED = (199, 21, 133)
         self.player_rolled: bool = False
         self.enemy_rolled: bool = False
         self.confirm_spin: bool = False
         self.enemy_stat_boost: int = 0
         self.player_dice_roll: int = 0
+        self.color_names = {
+            self.RED: "RED",
+            self.GREEN: "GREEN",
+            self.BLUE: "BLUE",
+            self.YELLOW: "YELLOW",
+            self.ORANGE: "ORANGE",
+            self.PURPLE: "PURPLE",
+            self.CYAN: "CYAN",
+            self.PINK: "PINK",
+            self.CHOCOLATE: "CHOCOLATE",
+            self.TEAL: "TEAL",
+            self.LIGHT_BLUE: "LIGHT_BLUE",
+            self.DEEP_PINK: "DEEP_PINK",
+            self.YELLOW_GREEN: "YELLOW_GREEN",
+            self.SADDLE_BROWN: "SADDLE_BROWN",
+            self.DARK_GREEN: "DARK_GREEN",
+            self.TOMATO: "TOMATO",
+            self.STEEL_BLUE: "STEEL_BLUE",
+            self.OLIVE: "OLIVE",
+            self.DARK_ORANGE: "DARK_ORANGE",
+            self.MEDIUM_VIOLET_RED: "MEDIUM_VIOLET_RED"
+        }
 
         self.enemy_dice_roll: int = 0
         self.player_stat_boost: int = 0
@@ -507,6 +549,31 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.draw_board(state)
         self.draw_enemy_token(state)
         self.draw_player_token(state)
+        font = pygame.font.SysFont("Arial", 24)
+
+        player_info = [
+            f"Player Money: {self.player_money_pile}",
+            f"Player EXP: {self.player_exp_pile}",
+            f"Player Position: {self.player_position}",
+            f"Player Space: {self.board_squares[self.player_position]}"
+        ]
+
+        enemy_info = [
+            f"Enemy Money: {self.enemy_money_pile}",
+            f"Enemy EXP: {self.enemy_exp_pile}",
+            f"Enemy Position: {self.enemy_position}",
+            f"Enemy Space: {self.board_squares[self.enemy_position]}"
+        ]
+
+        # Draw player info (bottom-left)
+        for i, text in enumerate(player_info):
+            rendered = font.render(text, True, WHITE)
+            state.DISPLAY.blit(rendered, (30, 500 + i * 25))
+
+        # Draw enemy info (bottom-left, right under player info)
+        for i, text in enumerate(enemy_info):
+            rendered = font.render(text, True, WHITE)
+            state.DISPLAY.blit(rendered, (400, 500 + i * 25))
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_SCREEN_MESSAGE].draw(state)
 
@@ -577,6 +644,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         roll: int = random.randint(1, 100)
 
         red_indices = [1, 5, 9, 13, 15, 17]
+        # red_indices = [1, 5, 9, 13, 15, 17, 4]
         green_indices = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 19]
         purple_indices = [3, 11]
         sky_blue_index = 7
@@ -594,28 +662,28 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         red_rolls = [1, 5, 9, 13, 15, 17]
         green_rolls = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
         purple_rolls = [3, 11]
-        sky_blue_rolls = [7, 19]
+        sky_blue_rolls = [7]
 
         if roll in red_rolls and available_red:
             self.selected_index = random.choice(available_red)
-            print(f"DEBUG RED: roll={roll}, available_red={available_red}")
+            # print(f"DEBUG RED: roll={roll}, available_red={available_red}")
 
         elif roll in green_rolls and available_green:
             self.selected_index = random.choice(available_green)
-            print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
+            # print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
 
         elif roll in purple_rolls and available_purple:
             self.selected_index = random.choice(available_purple)
-            print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
+            # print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
 
         elif roll in sky_blue_rolls and available_sky_blue:
             self.selected_index = sky_blue_index
-            print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
+            # print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
         else:
             # Fallback: select any unused index
             remaining_indices = list(all_indices - used_indices)
             if not remaining_indices:
-                print("⚠️ All wheel indices have been used this round.")
+                # print("⚠️ All wheel indices have been used this round.")
                 return -1  # Indicate that no selection was made
             self.selected_index = random.choice(remaining_indices)
 
@@ -623,8 +691,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.used_wheel_indices.add(self.selected_index)
         self.confirm_spin = True
 
-        print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
+        # print(f"🎯 Wheel result roll: {roll} → selected_index: {self.selected_index}")
         self.wheel_lock = True
+        selected_color = self.wheel_colors[self.selected_index]
+        print(f"🎨 Landed on color: {selected_color} at index {self.selected_index}")
+
 
     def update_init_screen_helper(self, state):
         if not self.dice_rolled:
@@ -661,13 +732,13 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         selected_card = self.card_constants[self.index]
 
         if selected_card not in self.card_messages:
-            print(f"❌ Card {selected_card} not found in messages.")
+            # print(f"❌ Card {selected_card} not found in messages.")
             return
 
         self.CARD_CONSTANT = selected_card
         self.card_messages[selected_card].reset()
-        print(f"🎯 Wheel selected index: {self.selected_index}")
-        print(f"🃏 Selected Card: {selected_card}")
+        # print(f"🎯 Wheel selected index: {self.selected_index}")
+        # print(f"🃏 Selected Card: {selected_card}")
         for line in self.card_messages[selected_card].messages:
             print(f"📜 Message: {line}")
         self.card_constants.remove(selected_card)
@@ -688,9 +759,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 f"PLAYER rolled a {self.move_player}."
             ]
             # self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].update(state)
-            print(self.move_player)
-
-            print("Hi")
+            # print(self.move_player)
+            #
+            # print("Hi")
             self.player_position += self.move_player
             if self.player_position > 29:
 
@@ -715,9 +786,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 f"ENEMY rolled a {self.move_dealer}."
             ]
             # self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].update(state)
-            print(self.move_dealer)
+            # print(self.move_dealer)
 
-            print("Hi")
+            # print("Hi")
             self.enemy_position += self.move_dealer
             if self.enemy_position > 29:
                 if self.enemy_money_pile >= 1000:
@@ -945,17 +1016,101 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         spin_speed = 0.10
 
         # Color definitions
-        SKY_BLUE = (135, 206, 235)
-        RED = (255, 0, 0)
-        GREEN = (0, 255, 0)
-        PURPLE = (138, 43, 226)
-        WHITE = (255, 255, 255)
+        # SKY_BLUE = (135, 206, 235)
+        # RED = (255, 0, 0)
+        # GREEN = (0, 255, 0)
+        # PURPLE = (138, 43, 226)
+        # WHITE = (255, 255, 255)
+        # RED = (255, 0, 0)
+        # GREEN = (0, 255, 0)
+        # BLUE = (0, 0, 255)
+        # YELLOW = (255, 255, 0)
+        # ORANGE = (255, 165, 0)
+        # PURPLE = (128, 0, 128)
+        # CYAN = (0, 255, 255)
+        # PINK = (255, 192, 203)
+        # CHOCOLATE = (210, 105, 30)
+        # TEAL = (0, 128, 128)
+        # LIGHT_BLUE = (173, 216, 230)
+        # DEEP_PINK = (255, 20, 147)
+        # YELLOW_GREEN = (154, 205, 50)
+        # SADDLE_BROWN = (139, 69, 19)
+        # DARK_GREEN = (0, 100, 0)
+        # TOMATO = (255, 99, 71)
+        # STEEL_BLUE = (70, 130, 180)
+        # OLIVE = (128, 128, 0)
+        # DARK_ORANGE = (255, 140, 0)
+        # MEDIUM_VIOLET_RED = (199, 21, 133)
+        self.RED = (255, 0, 0)
+        self.GREEN = (0, 255, 0)
+        self.BLUE = (0, 0, 255)
+        self.YELLOW = (255, 255, 0)
+        self.ORANGE = (255, 165, 0)
+        self.PURPLE = (128, 0, 128)
+        self.CYAN = (0, 255, 255)
+        self.PINK = (255, 192, 203)
+        self.CHOCOLATE = (210, 105, 30)
+        self.TEAL = (0, 128, 128)
+        self.LIGHT_BLUE = (173, 216, 230)
+        self.DEEP_PINK = (255, 20, 147)
+        self.YELLOW_GREEN = (154, 205, 50)
+        self.SADDLE_BROWN = (139, 69, 19)
+        self.DARK_GREEN = (0, 100, 0)
+        self.TOMATO = (255, 99, 71)
+        self.STEEL_BLUE = (70, 130, 180)
+        self.OLIVE = (128, 128, 0)
+        self.DARK_ORANGE = (255, 140, 0)
+        self.MEDIUM_VIOLET_RED = (199, 21, 133)
+
+        # red_indices = [1, 5, 9, 13, 15, 17]
+        # nnn = [
+        #     RED,  # 0  → BANKRUPT (Red)
+        #     GREEN,  # 1  → EXP_HOLE (Green)
+        #     BLUE,  # 2  → MAGIC_LOCK_UP (Blue/purple category)
+        #     YELLOW,  # 3  → EQUIPMENT_LOCK_UP (Yellow = caution)
+        #     ORANGE,  # 4  → MOVE_BACK_3
+        #     PURPLE,  # 5  → EXP_CARD_HALF_UP (Purple = bonus)
+        #     CYAN,  # 6  → GOLD_CARD_HALF_UP
+        #     PINK,  # 7  → GOLD_CARD_BONUS
+        #     CHOCOLATE,  # 8  → EXP_CARD_BONUS
+        #     TEAL,  # 9  → MOVE_3_SQUARES
+        #     LIGHT_BLUE,  # 10 → TASTY_TREAT
+        #     DEEP_PINK,  # 11 → MOVE_ENEMY_3
+        #     YELLOW_GREEN,  # 12 → STAT_BOOSTER
+        #     SADDLE_BROWN,  # 13 → FREE_WIN
+        #     DARK_GREEN,  # 14 → PLAYER_MOVE_FORWARD
+        #     TOMATO,  # 15 → ENEMY_MOVE_BACK
+        #     STEEL_BLUE,  # 16 → ENEMY_MOVE_BACK_3
+        #     OLIVE,  # 17 → MID_POINT_MOVE
+        #     DARK_ORANGE,  # 18 → SWAP_POSITIONS
+        #     MEDIUM_VIOLET_RED  # 19 → SPECIAL_ITEM
+        # ]
+
 
         # Color layout
-        wheel_colors = [
-            GREEN, RED, GREEN, PURPLE, GREEN, RED, GREEN, SKY_BLUE, GREEN, RED,
-            GREEN, PURPLE, GREEN, RED, GREEN, RED, GREEN, RED, GREEN, GREEN
+        # wheel_colors = [
+        #     GREEN, RED, GREEN, PURPLE, GREEN, RED, GREEN, SKY_BLUE, GREEN, RED,
+        #     GREEN, PURPLE, GREEN, RED, GREEN, RED, GREEN, RED, GREEN, GREEN
+        # ]
+        #
+        # wheel_colors = [
+        #     RED, GREEN, BLUE, YELLOW, ORANGE,
+        #     PURPLE, CYAN, PINK, CHOCOLATE, TEAL,
+        #     LIGHT_BLUE, DEEP_PINK, YELLOW_GREEN, SADDLE_BROWN, DARK_GREEN,
+        #     TOMATO, STEEL_BLUE, OLIVE, DARK_ORANGE, MEDIUM_VIOLET_RED
+        # ]
+        self.wheel_colors = [
+            self.RED, self.GREEN, self.BLUE, self.YELLOW, self.ORANGE,
+            self.PURPLE, self.CYAN, self.PINK, self.CHOCOLATE, self.TEAL,
+            self.LIGHT_BLUE, self.DEEP_PINK, self.YELLOW_GREEN, self.SADDLE_BROWN, self.DARK_GREEN,
+            self.TOMATO, self.STEEL_BLUE, self.OLIVE, self.DARK_ORANGE, self.MEDIUM_VIOLET_RED
         ]
+        # wheel_colors = [
+        #     GREEN, RED, GREEN, PURPLE, RED,  # 0–4
+        #     GREEN, GREEN, SKY_BLUE, GREEN, GREEN,  # 5–9
+        #     PURPLE, GREEN, RED, GREEN, RED,  # 10–14
+        #     RED, GREEN, RED, GREEN, GREEN  # 15–19
+        # ]
 
         # One-time inits
         if not hasattr(self, "_wheel_angle"):
@@ -975,7 +1130,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             elapsed = current_time - self.delay_start_time
 
             slice_angle = (2 * math.pi) / num_slices
-            target_angle = -slice_angle * self.selected_index
+            target_angle = -slice_angle + 5 * self.selected_index
             angle_difference = abs((self._wheel_angle % (2 * math.pi)) - (target_angle % (2 * math.pi)))
             snap_threshold = 0.05
 
@@ -995,6 +1150,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         # Draw slices (centered)
         for i in range(num_slices):
+
+
             angle_start = slice_angle * i + self._wheel_angle + angle_offset
             angle_end = slice_angle * (i + 1) + self._wheel_angle + angle_offset
 
@@ -1008,7 +1165,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 int(center_y + radius * math.sin(angle_end))
             )
 
-            pygame.draw.polygon(state.DISPLAY, wheel_colors[i], [point1, point2, point3])
+            pygame.draw.polygon(state.DISPLAY, self.wheel_colors[i], [point1, point2, point3])
 
         # Draw slice lines (aligned with visual slices)
         for i in range(num_slices):
@@ -1027,8 +1184,12 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 (arrow_x + 10, arrow_y - 15)
             ]
         )
+        selected_color = self.wheel_colors[self.selected_index]
+        color_name = self.color_names.get(selected_color, "UNKNOWN")
+        print(f"🎨 Landed on color: {color_name} at index {self.selected_index}")
 
         self.confirm_spin = False
+
 
 
     def draw_display_dice(self, state: 'GameState', player_dice_roll: int, enemy_dice_roll: int) -> None:
@@ -1093,30 +1254,38 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         print(self.player_money_pile)
         if self.CARD_CONSTANT == self.BANKRUPT:
             if self.player_turn == True:
+                print("YOU DREW THE BANKRUP CARD")
+
                 self.player_money_pile = 0
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
-                print("Player money is after bankrupted: " + str(self.player_money_pile))
+                # print("Player money is after bankrupted: " + str(self.player_money_pile))
             elif self.enemy_turn == True:
                 self.enemy_money_pile = 0
+                print("YOU DREW THE BANKRUP CARD")
+
                 self.player_turn = True
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_HOLE:
+            print("YOU REAW THE EXP HOLD CARD")
 
             if self.player_turn == True:
                 self.player_exp_pile = 0
                 self.player_turn = False
                 self.enemy_turn = True
                 self.game_state = self.ENEMY_TURN_SCREEN
-                print("Player exp is after " + str(self.player_exp_pile))
+                # print("Player exp is after " + str(self.player_exp_pile))
             elif self.enemy_turn == True:
                 self.enemy_exp_pile = 0
+                print("YOU REAW THE EXP HOLD CARD")
+
                 self.player_turn = True
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MAGIC_LOCK_UP:
+            print("You drew magic lock up")
             if self.player_turn == True:
                 self.player_magic_lock = True
                 self.player_turn = False
@@ -1129,6 +1298,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EQUIPMENT_LOCK_UP:
+            print("You drew equp lock up")
             if self.player_turn == True:
                 self.player_equipment_lock = True
                 self.player_turn = False
@@ -1142,6 +1312,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MOVE_BACK_3:
+            print("You drew move back 3")
+
             if self.player_turn == True:
                 self.player_position -= 3
                 self.player_turn = False
@@ -1153,6 +1325,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MID_POINT_MOVE:
+            print("you drew mid point move")
             if self.player_turn == True:
                 print(f"CARD_CONSTANT: {self.CARD_CONSTANT}")
                 print(f"MID_POINT_MOVE: {self.MID_POINT_MOVE}")
@@ -1170,7 +1343,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_CARD_HALF_UP:
-            print(f"[DEBUG] CARD_CONSTANT at APPLY_CARD_SCREEN: {self.CARD_CONSTANT}")
+            print("You drew exp card half up")
+            # print(f"[DEBUG] CARD_CONSTANT at APPLY_CARD_SCREEN: {self.CARD_CONSTANT}")
 
             if self.player_turn == True:
                 self.player_exp_pile += self.player_exp_pile // 2
@@ -1185,6 +1359,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.GOLD_CARD_HALF_UP:
+            print("You drew gold card half up")
             if self.player_turn == True:
                 self.player_money_pile += self.player_money_pile // 2
                 self.player_turn = False
@@ -1196,6 +1371,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.EXP_CARD_BONUS:
+            print("You get the exp card bonus card")
             if self.player_turn == True:
                 self.player_exp_pile += 250
                 self.player_turn = False
@@ -1207,6 +1383,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.GOLD_CARD_BONUS:
+            print("You get the gold card bonus card")
             if self.player_turn == True:
                 self.player_money_pile += 250
                 self.player_turn = False
@@ -1218,6 +1395,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MOVE_3_SQUARES:
+            print("You get the move 3 squres card")
             if self.player_turn == True:
                 self.player_position += 3
                 self.player_turn = False
@@ -1229,6 +1407,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.TASTY_TREAT:
+            print("You get the teasty treat card")
             if self.player_turn == True:
                 # create a fun in player that doesn't allow stam/focus to go above max
                 state.player.stamina_points += 100
@@ -1243,6 +1422,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.MOVE_ENEMY_3:
+            print("You get the move enemy 3 card")
             if self.player_turn == True:
                 self.enemy_position += 3
                 self.player_turn = False
@@ -1254,6 +1434,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.STAT_BOOSTER:
+            print("you get the state booster card")
+
             if self.player_turn == True:
                 self.player_stat_boost += 1
                 self.player_turn = False
@@ -1265,6 +1447,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.FREE_WIN:
+            print("You get the free win card")
             if self.player_turn == True:
                 self.player_win_token += 1
                 self.player_turn = False
@@ -1276,6 +1459,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.PLAYER_MOVE_FORWARD:
+            print("You get the player move forward card + 1 move entire roun")
             if self.player_turn == True:
                 self.player_move_modifier += 1
                 self.player_turn = False
@@ -1287,6 +1471,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.ENEMY_MOVE_BACK:
+            print("You get the enemy move back card enemy moves back  1 entire round")
             if self.player_turn == True:
                 self.enemy_move_modifier -= 1
                 self.player_turn = False
@@ -1298,6 +1483,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.ENEMY_MOVE_BACK_3:
+            print("you get the nemeyh move back 3 card")
             if self.player_turn == True:
                 self.enemy_position -= 3
                 self.player_turn = False
@@ -1309,6 +1495,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.SWAP_POSITIONS:
+            print("You get the swap positions card")
             self.player_position_holder = self.player_position
             self.enemy_position_holder = self.enemy_position
             self.player_position = self.enemy_position_holder
@@ -1322,6 +1509,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.enemy_turn = False
                 self.game_state = self.PLAYER_TURN_SCREEN
         elif self.CARD_CONSTANT == self.SPECIAL_ITEM:
+            print("You get the special item card")
             if self.player_turn == True:
                 print("he")
                 self.player_money_pile += 1000
