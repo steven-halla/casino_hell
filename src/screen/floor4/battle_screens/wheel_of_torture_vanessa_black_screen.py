@@ -10,6 +10,8 @@ from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from entity.npc.npc import Npc
 import pygame
+
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 import random
 
@@ -865,12 +867,19 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.enemy_position += self.move_dealer
             if self.enemy_position > 29:
                 if self.enemy_money_pile >= 1000:
+                    if Equipment.SIR_LEOPOLDS_RING.value in state.player.equipped_items:
+                        self.player_money_pile += 250
+
+
+
                     print("enemy gets the win")
                     self.enemy_money_pile -= 1000
                     self.enemy_win_token += 1
                     self.enemy_position = 29
 
                 elif self.enemy_money_pile <= 1000:
+                    if Equipment.SIR_LEOPOLDS_RING.value in state.player.equipped_items:
+                        self.player_money_pile += 250
                     self.enemy_money_pile += 250
                     self.enemy_position = 29
 

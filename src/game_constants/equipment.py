@@ -26,7 +26,8 @@ class Equipment(Enum):
 
 
 
-
+    # wheel of torture
+    SIR_LEOPOLDS_RING = "sir leopolds ring"
 
     SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
     HEALTHY_GLOVES = "HEALTHY GLOVES"   # can be bought in shop + 10 hp per spirit
