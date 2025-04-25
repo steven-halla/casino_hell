@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="adding tiled to project so that external computers can run game" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="saved filed for cross comptuers">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,11 +104,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/tilesets" />
       <recent name="$PROJECT_DIR$/src/screen/floor3/map_screens" />
       <recent name="$PROJECT_DIR$/assets/music" />
       <recent name="$PROJECT_DIR$/src/entity/player" />
       <recent name="$PROJECT_DIR$/assets/map" />
-      <recent name="$PROJECT_DIR$/assets/images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets/images" />
@@ -377,7 +379,7 @@
       <workItem from="1745281770686" duration="8687000" />
       <workItem from="1745338257737" duration="327000" />
       <workItem from="1745426314471" duration="5715000" />
-      <workItem from="1745594144601" duration="1081000" />
+      <workItem from="1745594144601" duration="2445000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -722,7 +724,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1390" />
+    <option name="localTasksCounter" value="1391" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -751,7 +753,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="transitions now work between screens" />
     <MESSAGE value="now displays dice" />
     <MESSAGE value="wheel no longer has mulitple spins using multiple button prssses" />
     <MESSAGE value="better flow for welcome screen and init screens" />
@@ -776,7 +777,8 @@
     <MESSAGE value="fixing wheel issue" />
     <MESSAGE value="wheel issue semi fixed" />
     <MESSAGE value="adding tiled to project so that external computers can run game" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding tiled to project so that external computers can run game" />
+    <MESSAGE value="saved filed for cross comptuers" />
+    <option name="LAST_COMMIT_MESSAGE" value="saved filed for cross comptuers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
