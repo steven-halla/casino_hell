@@ -20,6 +20,7 @@ class BattleScreen:
         self.level_screen_stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         self.stat_increase = False
 
+
         self.level_up_checker_sound = True
 
         self.music_file_level_up = pygame.mixer.Sound("./assets/music/levelup.mp3")  # Adjust the path as needed
