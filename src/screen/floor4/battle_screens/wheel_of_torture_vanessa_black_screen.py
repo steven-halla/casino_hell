@@ -27,7 +27,6 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_stat_boost: int = 0
         self.player_dice_roll: int = 0
         self.player_roll_dice_index: int = 0
-
         self.enemy_dice_roll: int = 0
         self.player_stat_boost: int = 0
         self.used_wheel_indices: set[int] = set()
@@ -75,7 +74,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.selected_index = 0
         self.sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
         self.transition_checker: bool = False
-        self.magic_dice: bool = True
+        self.magic_dice: bool = False
+        self.magic_dice_movement: int = 1
 
         self.player_turn: bool = True
 
@@ -108,6 +108,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             ]),
             self.ENEMY_TURN_SCREEN_MESSAGE: MessageBox([
                 "Vanessea Black:  ITS THE ENEMY TURN"
+            ]),
+            self.MAGIC_DICE_MESSAGE: MessageBox([
+                "Vanessea : Magic dice time"
             ]),
 
 
@@ -182,6 +185,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
     SPIN_WHEEL_SCREEN: str = "spin wheel screen"
+    MAGIC_DICE_SCREEN: str = "magic dice screen"
     DRAW_CARD_SCREEN: str = "draw card screen"
     APPLY_CARD_SCREEN: str = "apply card screen"
     PLAYER_TURN_SCREEN: str = "player turn screen"
@@ -195,6 +199,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     PLAYER_TURN_SCREEN_MESSAGE: str = "player turn screen message"
     ENEMY_TURN_SCREEN_MESSAGE: str = "enemy turn screen message"
     BET_MESSAGE: str = "bet_message"
+    MAGIC_DICE_MESSAGE: str = "magic dice message"
+
 
 
     #squres of game board
@@ -437,6 +443,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         #     if self.transition_checker == False:
         #         self.update_roll_dice_player_enemy_roll_phase(state)
         elif self.game_state == self.PLAYER_TURN_SCREEN:
+
+
             # print(self.player_roll_dice_index)
 
 
@@ -462,23 +470,23 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             if state.controller.confirm_button:
 
                 if self.player_roll_dice_index == 0:
-                    if not self.player_rolled:
+                    print("Magic dice" + str(self.magic_dice))
+
+                    if self.magic_dice == False:
                         self.move_player = random.randint(1, 6) + self.player_move_modifier
-                        if self.magic_dice == True:
-                            pass
+                    elif self.magic_dice == True:
+                        print("mew")
+                        self.move_player = self.magic_dice_movement + self.player_move_modifier
 
 
 
 
 
-
-
-                        
-                        # self.move_player = 4 + self.player_move_modifier
-                        self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
-                            f"PLAYER rolled a {self.move_player}."
-                        ]
-                        self.player_rolled = True
+                    # self.move_player = 4 + self.player_move_modifier
+                    self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
+                        f"PLAYER rolled a {self.move_player}."
+                    ]
+                    self.player_rolled = True
                     self.update_roll_dice_player_enemy_roll_phase(state)
                     self.player_rolled = False  # reset for next time
                 elif self.player_roll_dice_index == 1:
@@ -496,14 +504,40 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.magic_menu_index = (self.magic_menu_index + self.index_stepper) % len(self.magic_screen_choices)
             if state.controller.confirm_button:
                 if self.magic_menu_index == 0:
+                    self.magic_dice_movement = 1
                     self.magic_dice = True
-                    self.game_state = self.PLAYER_TURN_SCREEN
+                    self.game_state = self.MAGIC_DICE_SCREEN
                 if self.magic_menu_index == 1:
                     self.game_state = self.PLAYER_TURN_SCREEN
+
+        elif self.game_state == self.MAGIC_DICE_SCREEN:
+
+            self.battle_messages[self.MAGIC_DICE_MESSAGE].messages = [
+                f"Press up and down to change values. Dice is set to {self.magic_dice_movement}"
+            ]
+            self.battle_messages[self.MAGIC_DICE_MESSAGE].update(state)
+
+            if state.controller.up_button:
+                self.magic_dice_movement += 1
+
+            if state.controller.down_button:
+                self.magic_dice_movement -= 1
+
+            if self.magic_dice_movement < 1:
+                self.magic_dice_movement = 1
+
+            if self.magic_dice_movement > 6:
+                self.magic_dice_movement = 6
+
+            if state.controller.confirm_button:
+                self.game_state = self.PLAYER_TURN_SCREEN
+
+
 
 
 
         elif self.game_state == self.ENEMY_TURN_SCREEN:
+            self.magic_dice = False
             if not self.enemy_rolled:
                 self.move_dealer = random.randint(1, 6) + self.enemy_move_modifier
                 # self.move_dealer = 4 + self.enemy_move_modifier
@@ -643,6 +677,8 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
 
 
+        elif self.game_state == self.MAGIC_DICE_SCREEN:
+            self.battle_messages[self.MAGIC_DICE_MESSAGE].draw(state)
 
         elif self.game_state == self.ENEMY_TURN_SCREEN:
             self.battle_messages[self.ENEMY_TURN_SCREEN_MESSAGE].draw(state)
