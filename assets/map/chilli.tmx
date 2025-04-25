@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="35" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="../../../start_screen_tiles_one.tsx"/>
+ <tileset firstgid="1" source="../tilesets/start_screen_tiles_one.tsx"/>
  <tileset firstgid="5455" source="chili.tsx"/>
  <layer id="1" name="collision" width="40" height="35">
   <data encoding="csv">
