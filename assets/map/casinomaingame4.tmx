@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" source="casino_main2.tsx"/>
- <tileset firstgid="5455" source="../../../start_screen_tiles_one.tsx"/>
+ <tileset firstgid="1" source="../tilesets/start_screen_tiles_one.tsx"/>
  <layer id="1" name="bg" width="40" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,821,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,923,923,0,0,923,0,0,0,0,0,0,

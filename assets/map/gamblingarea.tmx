@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="45" height="55" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="../../../start_screen_tiles_one.tsx"/>
+ <tileset firstgid="1" source="../tilesets/start_screen_tiles_one.tsx"/>
  <layer id="1" name="collision" width="45" height="55">
   <data encoding="csv">
 1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1849,1850,1851,1849,1850,1851,1852,1853,1854,1850,1851,1852,1853,1854,1854,1854,1854,1854,1854,1854,1854,1854,1854,1854,1854,1854,1854,1854,
