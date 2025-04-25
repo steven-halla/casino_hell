@@ -43,7 +43,8 @@
         "redraw",
         "peek",
         "bad luck",
-        "flush deck"
+        "flush deck",
+        "Dice Force"
     ],
     "body": 4,
     "mind": 4,

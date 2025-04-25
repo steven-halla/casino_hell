@@ -4,6 +4,7 @@ from enum import Enum
 
 class Magic(Enum):
     # coin flip
+    DICE_FORCE = "Dice Force"
     HEADS_FORCE = "Force"  # All rolls are heads
     SHIELD = "Shield" # coin flip dedefends bad rolls
     # slots

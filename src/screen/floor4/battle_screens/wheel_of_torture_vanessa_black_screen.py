@@ -13,17 +13,20 @@ import pygame
 from game_constants.events import Events
 import random
 
+from game_constants.magic import Magic
 
 
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
+        self.player_roll_choices: dict[tuple:str] = ["Roll", "Magic"]
         self.enemy_exp_move_modifier:int = 0
         self.player_rolled: bool = False
         self.enemy_rolled: bool = False
         self.confirm_spin: bool = False
         self.enemy_stat_boost: int = 0
         self.player_dice_roll: int = 0
+        self.player_roll_dice_index: int = 0
 
         self.enemy_dice_roll: int = 0
         self.player_stat_boost: int = 0
@@ -72,8 +75,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.selected_index = 0
         self.sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
         self.transition_checker: bool = False
-
-
+        self.magic_dice: bool = True
 
         self.player_turn: bool = True
 
@@ -435,20 +437,69 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         #     if self.transition_checker == False:
         #         self.update_roll_dice_player_enemy_roll_phase(state)
         elif self.game_state == self.PLAYER_TURN_SCREEN:
-            if not self.player_rolled:
-                self.move_player = random.randint(1, 6) + self.player_move_modifier
-                # self.move_player = 4 + self.player_move_modifier
-                self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
-                    f"PLAYER rolled a {self.move_player}."
-                ]
-                self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].reset()
-                self.player_rolled = True
+            # print(self.player_roll_dice_index)
+
+
+            if controller.up_button:
+
+                self.menu_movement_sound.play()
+                # the % modulus  operator keeps our number in the index range
+                self.player_roll_dice_index = (self.player_roll_dice_index
+                                             - self.move_index_by_1) % len(self.player_roll_choices)
+            elif controller.down_button:
+
+                self.menu_movement_sound.play()
+                self.player_roll_dice_index = (self.player_roll_dice_index
+                                             + self.move_index_by_1) % len(self.player_roll_choices)
+
+            # self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].reset()
+
 
             self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].update(state)
 
-            if self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
-                self.update_roll_dice_player_enemy_roll_phase(state)
-                self.player_rolled = False  # reset for next time
+
+            # if self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
+            if state.controller.confirm_button:
+
+                if self.player_roll_dice_index == 0:
+                    if not self.player_rolled:
+                        self.move_player = random.randint(1, 6) + self.player_move_modifier
+                        if self.magic_dice == True:
+                            pass
+
+
+
+
+
+
+
+                        
+                        # self.move_player = 4 + self.player_move_modifier
+                        self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
+                            f"PLAYER rolled a {self.move_player}."
+                        ]
+                        self.player_rolled = True
+                    self.update_roll_dice_player_enemy_roll_phase(state)
+                    self.player_rolled = False  # reset for next time
+                elif self.player_roll_dice_index == 1:
+
+
+                    self.game_state = self.MAGIC_MENU_SCREEN
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            print(self.magic_menu_index)
+            if controller.up_button:
+                self.menu_movement_sound.play()
+                self.magic_menu_index = (self.magic_menu_index - self.index_stepper) % len(self.magic_screen_choices)
+            elif controller.down_button:
+                self.menu_movement_sound.play()
+                self.magic_menu_index = (self.magic_menu_index + self.index_stepper) % len(self.magic_screen_choices)
+            if state.controller.confirm_button:
+                if self.magic_menu_index == 0:
+                    self.magic_dice = True
+                    self.game_state = self.PLAYER_TURN_SCREEN
+                if self.magic_menu_index == 1:
+                    self.game_state = self.PLAYER_TURN_SCREEN
 
 
 
@@ -575,7 +626,22 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         elif self.game_state == self.PLAYER_TURN_SCREEN:
             self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].draw(state)
 
+            self.draw_player_roll_screen_box_info(state)
+            self.draw_player_roll_menu_selection_box(state)
+
             self.draw_display_dice(state, self.move_player, 0)
+
+
+
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box(state)
+
+
+
+
+
+
 
 
         elif self.game_state == self.ENEMY_TURN_SCREEN:
@@ -1468,6 +1534,169 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 return
 
     # Enemy mid move is not working need to check enemy cards
+
+    def draw_player_roll_menu_selection_box(self, state):
+        # if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+        #     if self.magic_menu_index == 0:
+        #         self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+        #     elif self.magic_menu_index == 1:
+        #         self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+        #     elif self.magic_menu_index == 2:
+        #         self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        # elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+        #     if self.magic_menu_index == 0:
+        #         self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+        #     elif self.magic_menu_index == 1:
+        #         self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+        #
+        # if (Magic.DICE_FORCE.value in state.player.magicinventory
+        #         and Magic.DICE_FORCE.value not in self.magic_screen_choices):
+        #     self.magic_screen_choices.insert(1, Magic.DICE_FORCE.value)
+
+        for idx, choice in enumerate(self.player_roll_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        arrow_y_coordinate = start_y_right_box + self.player_roll_dice_index * choice_spacing
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_coordinate + text_y_offset)  # Align arrow with the text
+        )
+
+    def draw_magic_menu_selection_box(self, state):
+        # if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+        #     if self.magic_menu_index == 0:
+        #         self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+        #     elif self.magic_menu_index == 1:
+        #         self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+        #     elif self.magic_menu_index == 2:
+        #         self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        # elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+        #     if self.magic_menu_index == 0:
+        #         self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+        #     elif self.magic_menu_index == 1:
+        #         self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        if (Magic.DICE_FORCE.value in state.player.magicinventory
+                and Magic.DICE_FORCE.value not in self.magic_screen_choices):
+            self.magic_screen_choices.insert(0, Magic.DICE_FORCE.value)
+
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_coordinate + text_y_offset)  # Align arrow with the text
+        )
+
+    def draw_player_roll_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
+
+        for idx, choice in enumerate(self.player_roll_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        # if Magic.REVEAL.value not in state.player.magicinventory:
+        #     self.magic_lock = True
+        #     self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        # elif Magic.REVEAL.value in state.player.magicinventory:
+        #     self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        # if self.magic_lock == True:
+        #     self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        # elif self.magic_lock == False:
+        #     self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.player_roll_dice_index == 0:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+                 + arrow_y_coordinate_padding_play)
+            )
+        elif self.player_roll_dice_index == 1:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+                 + arrow_y_coordinate_padding_magic)
+            )
+        # elif self.welcome_screen_index == self.welcome_screen_bet_index:
+        #     state.DISPLAY.blit(
+        #         self.font.render("->", True, WHITE),
+        #         (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+        #          + arrow_y_coordinate_padding_bet)
+        #     )
+        # elif self.welcome_screen_index == self.welcome_screen_quit_index:
+        #     state.DISPLAY.blit(
+        #         self.font.render("->", True, WHITE),
+        #         (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+        #          + arrow_y_coordinate_padding_quit)
+        #     )
 
 
 

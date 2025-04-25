@@ -16,6 +16,8 @@ class GambleScreen:
         self.money: int = 1000  # Add this line
         self.bet: int = 50  # Add this line
         self.lock_down: int = 0
+        self.index_stepper: int = 1
+
         self.level_up_stat_increase_index: int = 0  # Add this to track the selected stat
         self.level_screen_stats: list[str] = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         self.stat_increase: bool = False
