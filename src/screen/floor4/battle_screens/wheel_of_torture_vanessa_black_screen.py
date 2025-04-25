@@ -460,39 +460,31 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
                 self.player_roll_dice_index = (self.player_roll_dice_index
                                              + self.move_index_by_1) % len(self.player_roll_choices)
 
-            # self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].reset()
 
 
             self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].update(state)
 
-
-            # if self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].is_finished() and controller.confirm_button:
             if state.controller.confirm_button:
 
-                if self.player_roll_dice_index == 0:
-                    print("Magic dice" + str(self.magic_dice))
+                if not self.player_rolled:
+                    if self.player_roll_dice_index == 0:
+                        if not self.magic_dice:
+                            self.move_player = random.randint(1, 6) + self.player_move_modifier
+                        else:
+                            self.move_player = self.magic_dice_movement + self.player_move_modifier
 
-                    if self.magic_dice == False:
-                        self.move_player = random.randint(1, 6) + self.player_move_modifier
-                    elif self.magic_dice == True:
-                        print("mew")
-                        self.move_player = self.magic_dice_movement + self.player_move_modifier
+                        self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
+                            f"PLAYER rolled a {self.move_player}."
+                        ]
+                        self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].reset()  # important!
+                        self.player_rolled = True  # ✅ Now wait one cycle
 
+                    elif self.player_roll_dice_index == 1:
+                        self.game_state = self.MAGIC_MENU_SCREEN
 
-
-
-
-                    # self.move_player = 4 + self.player_move_modifier
-                    self.battle_messages[self.PLAYER_TURN_SCREEN_MESSAGE].messages = [
-                        f"PLAYER rolled a {self.move_player}."
-                    ]
-                    self.player_rolled = True
+                else:
                     self.update_roll_dice_player_enemy_roll_phase(state)
-                    self.player_rolled = False  # reset for next time
-                elif self.player_roll_dice_index == 1:
-
-
-                    self.game_state = self.MAGIC_MENU_SCREEN
+                    self.player_rolled = False
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             print(self.magic_menu_index)
