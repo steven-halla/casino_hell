@@ -21,6 +21,9 @@ from game_constants.magic import Magic
 class WheelOfTortureVanessaBlackScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)
+        self.player_luck_bonus: int = 0
+        self.enemy_luck_bonus: int = 4
+        self.luck_bonus = 0
         self.player_roll_choices: dict[tuple:str] = ["Roll", "Magic"]
         self.enemy_exp_move_modifier:int = 0
         self.player_rolled: bool = False
@@ -247,6 +250,9 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         self.enemy_money_pile = 100
         # self.exp_pile = 100
 
+        self.player_luck_bonus += state.player.luck
+        print("player luck bonus is" + str(self.player_luck_bonus))
+
 
         #^-------TESTING---------^#
 
@@ -390,6 +396,10 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
         # print("Player roll is " + str(self.player_dice_roll))
         # print("enemy roll is " + str(self.enemy_dice_roll))
         # print(self.game_state)
+
+
+
+
         if self.player_win_token >= 3:
             print("Plyer winss!!!")
         elif self.enemy_win_token >= 3:
@@ -723,7 +733,11 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
     @typechecked
     def update_wheel_result(self) -> None:
         """Rolls 1–100 and sets the selected slice index based on chance. Returns the selected index."""
-        roll: int = random.randint(1, 100)
+        if self.player_turn:
+            roll: int = random.randint(1, 100) + (self.player_luck_bonus * 2)
+        elif self.enemy_turn:
+            roll: int = random.randint(1, 100) + (self.enemy_luck_bonus * 2)
+
 
         red_indices = [1, 5, 9, 13, 15, 17]
         # red_indices = [1, 5, 9, 13, 15, 17, 4]
@@ -741,26 +755,17 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         # Select index based on roll
         # These rolls trigger exact slices for their color
-        red_rolls = [1, 5, 9, 13, 15, 17]
-        green_rolls = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
-        purple_rolls = [3, 11]
-        sky_blue_rolls = [7]
-
-        if roll in red_rolls and available_red:
+        if 1 <= roll <= 30 and available_red:
             self.selected_index = random.choice(available_red)
-            # print(f"DEBUG RED: roll={roll}, available_red={available_red}")
 
-        elif roll in green_rolls and available_green:
+        elif 31 <= roll <= 85 and available_green:
             self.selected_index = random.choice(available_green)
-            # print(f"DEBUG GREEN: roll={roll}, available_green={available_green}")
 
-        elif roll in purple_rolls and available_purple:
+        elif 86 <= roll <= 95 and available_purple:
             self.selected_index = random.choice(available_purple)
-            # print(f"DEBUG PURPLE: roll={roll}, available_purple={available_purple}")
 
-        elif roll in sky_blue_rolls and available_sky_blue:
+        elif 96 <= roll <= 100 and available_sky_blue:
             self.selected_index = sky_blue_index
-            # print(f"DEBUG SKY_BLUE: roll={roll}, available_sky_blue={available_sky_blue}")
         else:
             # Fallback: select any unused index
             remaining_indices = list(all_indices - used_indices)

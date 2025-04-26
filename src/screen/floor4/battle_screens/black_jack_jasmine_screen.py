@@ -8,7 +8,7 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
-
+#There is  a bug on the redraw
 class BlackJackJasmineScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
