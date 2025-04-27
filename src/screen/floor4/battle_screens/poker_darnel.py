@@ -8,8 +8,22 @@ class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
         self.money: int = 1000
+        self.player_bet: int = 0
+        self.enemy_bet: int = 0
         self.game_state = self.WELCOME_SCREEN
         deck = Deck()
+        self.player_hand_score: int = 0
+        self.player_value_score: int = 0
+        self.enemy_hand_score: int = 0
+        self.enemy_value_score: int = 0
+        self.player_hand: list[tuple[str, str, int]] = [
+            ("5", "Clubs", 5),
+            ("5", "Diamonds", 5),
+            ("8", "Hearts", 8),
+            ("Jack", "Spades", 10),
+            ("Queen", "Clubs", 10)
+        ]
+        # self.player_hand: list[tuple[str, str, int]] = []
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     FOURTH_ROUND_SHOW: str = "fourth_round_show"
@@ -25,9 +39,14 @@ class PokerDarnel(GambleScreen):
 
 
     def update(self, state):
+        controller = state.controller
+        controller.update()
+        state.player.update(state)
+        super().update(state)
 
         if self.game_state == self.WELCOME_SCREEN:
-            print("In welcome screen")
+            if controller.confirm_button:
+                self.poker_score_tracker()
         elif self.game_state == self.BET_SCREEN:
             print("In bet screen")
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -60,10 +79,8 @@ class PokerDarnel(GambleScreen):
     def draw(self, state):
         super().draw(state)
 
-
         if self.game_state == self.WELCOME_SCREEN:
-            print("In welcome screen")
-
+            pass
         elif self.game_state == self.BET_SCREEN:
             print("In bet screen")
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -73,7 +90,6 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
-
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
@@ -94,6 +110,20 @@ class PokerDarnel(GambleScreen):
             print("Draw")
 
         pygame.display.flip()
+
+    def poker_score_tracker(self) -> None:
+        ranks = [card[0] for card in self.player_hand]
+        rank_counts = {rank: ranks.count(rank) for rank in set(ranks)}
+
+        if 2 in rank_counts.values():
+            for rank, count in rank_counts.items():
+                if count == 2:
+                    print(f"You have a Pair of {rank}s!")
+                    break
+
+            print("Your full hand:")
+            for card in self.player_hand:
+                print(f"{card[0]} of {card[1]}")
 
 
 
