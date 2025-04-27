@@ -13,7 +13,7 @@ from game_constants.magic import Magic
 
 
 class CoinFlipBonnieScreen(GambleScreen):
-
+# have all coin flips be a 1-100 but if its 100% then set the value to 100
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100

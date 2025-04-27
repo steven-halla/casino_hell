@@ -2053,8 +2053,8 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.pokerDarnel
+            state.pokerDarnel.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")
