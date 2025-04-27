@@ -16,7 +16,10 @@ class PokerDarnel(GambleScreen):
     FOURTH_ROUND_DEAL: str = "fourth_round_deal"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
     FIFTH_ROUND_DEAL: str = "fifth_round_deal"
-
+    FINAL_RESULTS: str = "final_results"
+    PLAYER_WINS: str = "player_wins"
+    ENEMY_WINS: str = "enemy_wins"
+    DRAW: str = "draw"
 
 
 
@@ -41,9 +44,19 @@ class PokerDarnel(GambleScreen):
             print("showing next cards 5th round")
         elif self.game_state == self.FIFTH_ROUND_DEAL:
             print("Dealing final cards")
+        elif self.game_state == self.FINAL_RESULTS:
+            print("final resutls")
+        elif self.game_state == self.PLAYER_WINS:
+            print("Player wins ")
+        elif self.game_state == self.ENEMY_WINS:
+            print("ENEMY WINS")
+        elif self.game_state == self.DRAW:
+            print("Draw")
 
 
     def draw(self, state):
+        super().draw(state)
+
 
         if self.game_state == self.WELCOME_SCREEN:
             print("In welcome screen")
@@ -64,6 +77,14 @@ class PokerDarnel(GambleScreen):
             print("showing next cards 5th round")
         elif self.game_state == self.FIFTH_ROUND_DEAL:
             print("Dealing final cards")
+        elif self.game_state == self.FINAL_RESULTS:
+            print("final resutls")
+        elif self.game_state == self.PLAYER_WINS:
+            print("Player wins ")
+        elif self.game_state == self.ENEMY_WINS:
+            print("ENEMY WINS")
+        elif self.game_state == self.DRAW:
+            print("Draw")
 
         pygame.display.flip()
 
