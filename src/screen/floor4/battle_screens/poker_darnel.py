@@ -24,6 +24,13 @@ class PokerDarnel(GambleScreen):
             ("Queen", "Clubs", 10)
         ]
         # self.player_hand: list[tuple[str, str, int]] = []
+        self.enemy_hand: list[tuple[str, str, int]] = [
+            ("5", "Clubs", 5),
+            ("5", "Diamonds", 5),
+            ("8", "Hearts", 8),
+            ("Jack", "Spades", 10),
+            ("Queen", "Clubs", 10)
+        ]
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     FOURTH_ROUND_SHOW: str = "fourth_round_show"
@@ -112,18 +119,23 @@ class PokerDarnel(GambleScreen):
         pygame.display.flip()
 
     def poker_score_tracker(self) -> None:
-        ranks = [card[0] for card in self.player_hand]
-        rank_counts = {rank: ranks.count(rank) for rank in set(ranks)}
+        player_ranks = [player_card[0] for player_card in self.player_hand]
+        player_rank_counts = {player_rank: player_ranks.count(player_rank) for player_rank in set(player_ranks)}
 
-        if 2 in rank_counts.values():
-            for rank, count in rank_counts.items():
-                if count == 2:
-                    print(f"You have a Pair of {rank}s!")
+        if 2 in player_rank_counts.values():
+            for player_rank, player_count in player_rank_counts.items():
+                if player_count == 2:
+                    print(f"You have a Pair of {player_rank}s!")
                     break
 
             print("Your full hand:")
-            for card in self.player_hand:
-                print(f"{card[0]} of {card[1]}")
+            for player_card in self.player_hand:
+                print(f"{player_card[0]} of {player_card[1]}")
+
+        # enemy_ranks = [card[0] for each card in self.enemy_hand]
+        # enemy_rank_counts = {}
+
+
 
 
 
