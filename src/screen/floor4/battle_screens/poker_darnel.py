@@ -20,6 +20,7 @@ class PokerDarnel(GambleScreen):
     PLAYER_WINS: str = "player_wins"
     ENEMY_WINS: str = "enemy_wins"
     DRAW: str = "draw"
+    ACTION_SCREEN: str = "action_screen"
 
 
 
@@ -36,6 +37,8 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
+        elif self.game_state == self.ACTION_SCREEN:
+            print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
             print("showing next cards")
         elif self.game_state == self.FOURTH_ROUND_DEAL:
@@ -60,6 +63,7 @@ class PokerDarnel(GambleScreen):
 
         if self.game_state == self.WELCOME_SCREEN:
             print("In welcome screen")
+
         elif self.game_state == self.BET_SCREEN:
             print("In bet screen")
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -69,6 +73,9 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
+
+        elif self.game_state == self.ACTION_SCREEN:
+            print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
             print("showing next cards")
         elif self.game_state == self.FOURTH_ROUND_DEAL:
