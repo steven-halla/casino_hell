@@ -194,6 +194,17 @@ class CoinFlipBonnieScreen(GambleScreen):
             state.area4RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_BONNIE_DEFEATED)
 
+        # switch statement
+        # match self.game_state:
+        #     case self.WELCOME_SCREEN:
+        #         self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        #         self.battle_messages[self.BET_MESSAGE].reset()
+        #         self.update_welcome_screen_logic(controller, state)
+        #
+        #     case self.BONNIE_CASTING_SPELL_SCREEN:
+        #         self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].update(state)
+        #         self.update_bonnies_casting_spell_screen_helper(state)
+
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
@@ -600,6 +611,7 @@ class CoinFlipBonnieScreen(GambleScreen):
                 state.player.money -= 100
                 state.currentScreen = state.area4RestScreen
                 state.area4RestScreen.start(state)
+
     def draw_game_over_screen_helper(self, state: 'Gamestate'):
         no_money_game_over = 0
         no_stamina_game_over = 0

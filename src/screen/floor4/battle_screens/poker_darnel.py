@@ -2,6 +2,7 @@ import pygame
 
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
+from tests.test_poker_darnel import test_poker_score_tracker
 
 
 class PokerDarnel(GambleScreen):
@@ -17,19 +18,11 @@ class PokerDarnel(GambleScreen):
         self.enemy_hand_score: int = 0
         self.enemy_value_score: int = 0
         self.player_hand: list[tuple[str, str, int]] = [
-            ("Queen", "Clubs", 10),
-            ("Queen", "Diamonds", 10),
-            ("3", "Spades", 3),
-            ("7", "Hearts", 7),
-            ("Jack", "Spades", 10)
+
         ]
 
         self.enemy_hand: list[tuple[str, str, int]] = [
-            ("5", "Hearts", 5),
-            ("5", "Spades", 5),
-            ("2", "Clubs", 2),
-            ("9", "Diamonds", 9),
-            ("King", "Hearts", 10)
+
         ]
 
 
@@ -55,6 +48,7 @@ class PokerDarnel(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             if controller.confirm_button:
                 self.poker_score_tracker()
+                test_poker_score_tracker()
         elif self.game_state == self.BET_SCREEN:
             print("In bet screen")
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -122,50 +116,69 @@ class PokerDarnel(GambleScreen):
     def poker_score_tracker(self) -> None:
         player_ranks = [player_card[0] for player_card in self.player_hand]
         player_rank_counts = {player_rank: player_ranks.count(player_rank) for player_rank in set(player_ranks)}
-
-        if 2 in player_rank_counts.values():
-            for player_rank, player_count in player_rank_counts.items():
-                if player_count == 2:
-                    print(f"You have a Pair of {player_rank}s!")
-                    break
-
-            print("Your full hand for player: ")
-            for player_card in self.player_hand:
-                print(f"{player_card[0]} of {player_card[1]}")
-
         enemy_ranks = [enemy_card[0] for enemy_card in self.enemy_hand]
         enemy_rank_counts = {enemy_rank: enemy_ranks.count(enemy_rank) for enemy_rank in set(enemy_ranks)}
 
-        if 2 in enemy_rank_counts.values():
-            for enemy_rank, enemy_count in enemy_rank_counts.items():
-                if enemy_count == 2:
-                    print(f"Enemy has a Pair of {enemy_rank}s!")
-                    break
 
-            print("Enemy's full hand:")
-            for enemy_card in self.enemy_hand:
-                print(f"{enemy_card[0]} of {enemy_card[1]}")
+        player_pair_type = None
 
-        if 2 in player_rank_counts.values() and 2 in enemy_rank_counts.values():
-            player_pair_rank = None
-            enemy_pair_rank = None
+        if list(player_rank_counts.values()).count(2) == 2:
+            player_pair_type = "two_pair"
+        elif 2 in player_rank_counts.values():
+            player_pair_type = "one_pair"
 
-            for player_rank, player_count in player_rank_counts.items():
-                if player_count == 2:
-                    player_pair_rank = player_rank
-                    break
+        match player_pair_type:
+            case "two_pair":
+                player_two_pairs = []
+                for player_rank, player_count in player_rank_counts.items():
+                    if player_count == 2:
+                        player_two_pairs.append(player_rank)
+                print(f"You have Two Pair: {player_two_pairs[0]}s and {player_two_pairs[1]}s!")
+                print("Your full hand for player:")
+                for player_card in self.player_hand:
+                    print(f"{player_card[0]} of {player_card[1]}")
 
-            for enemy_rank, enemy_count in enemy_rank_counts.items():
-                if enemy_count == 2:
-                    enemy_pair_rank = enemy_rank
-                    break
+            case "one_pair":
+                for player_rank, player_count in player_rank_counts.items():
+                    if player_count == 2:
+                        print(f"You have a Pair of {player_rank}s!")
+                        break
+                print("Your full hand for player:")
+                for player_card in self.player_hand:
+                    print(f"{player_card[0]} of {player_card[1]}")
 
-            if self.deck.rank_order_poker[player_pair_rank] > self.deck.rank_order_poker[enemy_pair_rank]:
-                print("Player wins with the higher pair!")
-            elif self.deck.rank_order_poker[player_pair_rank] < self.deck.rank_order_poker[enemy_pair_rank]:
-                print("Enemy wins with the higher pair!")
-            else:
-                print("Both players have the same pair! It's a draw!")
+            case _:
+                pass  # No pairs found
+
+        enemy_pair_type = None
+
+        if list(enemy_rank_counts.values()).count(2) == 2:
+            enemy_pair_type = "two_pair"
+        elif 2 in enemy_rank_counts.values():
+            enemy_pair_type = "one_pair"
+
+        match enemy_pair_type:
+            case "two_pair":
+                enemy_two_pairs = []
+                for enemy_rank, enemy_count in enemy_rank_counts.items():
+                    if enemy_count == 2:
+                        enemy_two_pairs.append(enemy_rank)
+                print(f"Enemy has Two Pair: {enemy_two_pairs[0]}s and {enemy_two_pairs[1]}s!")
+                print("Enemy's full hand:")
+                for enemy_card in self.enemy_hand:
+                    print(f"{enemy_card[0]} of {enemy_card[1]}")
+
+            case "one_pair":
+                for enemy_rank, enemy_count in enemy_rank_counts.items():
+                    if enemy_count == 2:
+                        print(f"Enemy has a Pair of {enemy_rank}s!")
+                        break
+                print("Enemy's full hand:")
+                for enemy_card in self.enemy_hand:
+                    print(f"{enemy_card[0]} of {enemy_card[1]}")
+
+            case _:
+                pass  # No pairs found
 
 
 
