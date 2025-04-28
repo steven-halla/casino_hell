@@ -26,17 +26,17 @@ def test_poker_score_tracker():
                 else:
                     return "no_pair"
 
-            player_pair_type = determine_pair_type(player_rank_counts)
-            enemy_pair_type = determine_pair_type(enemy_rank_counts)
+            player_hand_type = determine_pair_type(player_rank_counts)
+            enemy_hand_type = determine_pair_type(enemy_rank_counts)
 
-            print(f"Player has: {player_pair_type.replace('_', ' ').title()}")
-            print(f"Enemy has: {enemy_pair_type.replace('_', ' ').title()}")
+            print(f"Player has: {player_hand_type.replace('_', ' ').title()}")
+            print(f"Enemy has: {enemy_hand_type.replace('_', ' ').title()}")
 
-            if player_pair_type == "two_pair" and enemy_pair_type != "two_pair":
+            if player_hand_type == "two_pair" and enemy_hand_type != "two_pair":
                 print("Player wins with Two Pair!")
-            elif enemy_pair_type == "two_pair" and player_pair_type != "two_pair":
+            elif enemy_hand_type == "two_pair" and player_hand_type != "two_pair":
                 print("Enemy wins with Two Pair!")
-            elif player_pair_type == "one_pair" and enemy_pair_type == "one_pair":
+            elif player_hand_type == "one_pair" and enemy_hand_type == "one_pair":
                 player_pair_rank = None
                 enemy_pair_rank = None
                 for rank, count in player_rank_counts.items():
@@ -54,7 +54,7 @@ def test_poker_score_tracker():
                     print("Enemy wins with higher pair!")
                 else:
                     print("Both players have the same pair! It's a draw!")
-            elif player_pair_type == "two_pair" and enemy_pair_type == "two_pair":
+            elif player_hand_type == "two_pair" and enemy_hand_type == "two_pair":
                 print("Both players have Two Pair! (Future: compare highest pairs)")
             else:
                 print("No winning hand detected.")

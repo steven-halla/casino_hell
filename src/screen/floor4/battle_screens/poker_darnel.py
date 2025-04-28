@@ -120,14 +120,14 @@ class PokerDarnel(GambleScreen):
         enemy_rank_counts = {enemy_rank: enemy_ranks.count(enemy_rank) for enemy_rank in set(enemy_ranks)}
 
 
-        player_pair_type = None
+        player_hand_type = None
 
         if list(player_rank_counts.values()).count(2) == 2:
-            player_pair_type = "two_pair"
+            player_hand_type = "two_pair"
         elif 2 in player_rank_counts.values():
-            player_pair_type = "one_pair"
+            player_hand_type = "one_pair"
 
-        match player_pair_type:
+        match player_hand_type:
             case "two_pair":
                 player_two_pairs = []
                 for player_rank, player_count in player_rank_counts.items():
@@ -150,14 +150,14 @@ class PokerDarnel(GambleScreen):
             case _:
                 pass  # No pairs found
 
-        enemy_pair_type = None
+        enemy_hand_type = None
 
         if list(enemy_rank_counts.values()).count(2) == 2:
-            enemy_pair_type = "two_pair"
+            enemy_hand_type = "two_pair"
         elif 2 in enemy_rank_counts.values():
-            enemy_pair_type = "one_pair"
+            enemy_hand_type = "one_pair"
 
-        match enemy_pair_type:
+        match enemy_hand_type:
             case "two_pair":
                 enemy_two_pairs = []
                 for enemy_rank, enemy_count in enemy_rank_counts.items():
