@@ -122,6 +122,8 @@ class PokerDarnel(GambleScreen):
         consecutive_count = 1
 
         for i in range(len(player_values) - 1):
+            print("fd;slkjfl;dsajfljsal;fjlsajfl;sjf;lsajfsafj;saf")
+
             print(f"Comparing {player_values[i]} to {player_values[i + 1]}")
             if player_values[i + 1] == player_values[i] + 1:
                 consecutive_count += 1
