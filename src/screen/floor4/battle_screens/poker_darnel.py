@@ -114,74 +114,45 @@ class PokerDarnel(GambleScreen):
         pygame.display.flip()
 
     def poker_score_tracker(self) -> None:
-        player_ranks = [player_card[0] for player_card in self.player_hand]
-        player_rank_counts = {player_rank: player_ranks.count(player_rank) for player_rank in set(player_ranks)}
-        enemy_ranks = [enemy_card[0] for enemy_card in self.enemy_hand]
-        enemy_rank_counts = {enemy_rank: enemy_ranks.count(enemy_rank) for enemy_rank in set(enemy_ranks)}
+        # --- PLAYER CHECK ---
+        player_values = sorted(card[2] for card in self.player_hand)
+        print("DEBUG player_values:", player_values)
 
+        player_hand_type = "no_hand"
+        consecutive_count = 1
 
-        player_hand_type = None
+        for i in range(len(player_values) - 1):
+            print(f"Comparing {player_values[i]} to {player_values[i + 1]}")
+            if player_values[i + 1] == player_values[i] + 1:
+                consecutive_count += 1
+                print("Consecutive count is now:", consecutive_count)
+                if consecutive_count == 5:
+                    player_hand_type = "straight"
+                    print("✅ STRAIGHT DETECTED")
+                    break
+            else:
+                consecutive_count = 1
 
-        if list(player_rank_counts.values()).count(2) == 2:
-            player_hand_type = "two_pair"
-        elif 2 in player_rank_counts.values():
-            player_hand_type = "one_pair"
+        player_value_counts = {value: player_values.count(value) for value in set(player_values)}
+        if player_hand_type == "no_hand":
+            if 3 in player_value_counts.values():
+                player_hand_type = "three_of_a_kind"
+            elif list(player_value_counts.values()).count(2) == 2:
+                player_hand_type = "two_pair"
+            elif 2 in player_value_counts.values():
+                player_hand_type = "one_pair"
 
         match player_hand_type:
+            case "straight":
+                print("You have a Straight!")
+            case "three_of_a_kind":
+                print("You have Three of a Kind!")
             case "two_pair":
-                player_two_pairs = []
-                for player_rank, player_count in player_rank_counts.items():
-                    if player_count == 2:
-                        player_two_pairs.append(player_rank)
-                print(f"You have Two Pair: {player_two_pairs[0]}s and {player_two_pairs[1]}s!")
-                print("Your full hand for player:")
-                for player_card in self.player_hand:
-                    print(f"{player_card[0]} of {player_card[1]}")
-
+                print("You have Two Pair!")
             case "one_pair":
-                for player_rank, player_count in player_rank_counts.items():
-                    if player_count == 2:
-                        print(f"You have a Pair of {player_rank}s!")
-                        break
-                print("Your full hand for player:")
-                for player_card in self.player_hand:
-                    print(f"{player_card[0]} of {player_card[1]}")
-
-            case _:
-                pass  # No pairs found
-
-        enemy_hand_type = None
-
-        if list(enemy_rank_counts.values()).count(2) == 2:
-            enemy_hand_type = "two_pair"
-        elif 2 in enemy_rank_counts.values():
-            enemy_hand_type = "one_pair"
-
-        match enemy_hand_type:
-            case "two_pair":
-                enemy_two_pairs = []
-                for enemy_rank, enemy_count in enemy_rank_counts.items():
-                    if enemy_count == 2:
-                        enemy_two_pairs.append(enemy_rank)
-                print(f"Enemy has Two Pair: {enemy_two_pairs[0]}s and {enemy_two_pairs[1]}s!")
-                print("Enemy's full hand:")
-                for enemy_card in self.enemy_hand:
-                    print(f"{enemy_card[0]} of {enemy_card[1]}")
-
-            case "one_pair":
-                for enemy_rank, enemy_count in enemy_rank_counts.items():
-                    if enemy_count == 2:
-                        print(f"Enemy has a Pair of {enemy_rank}s!")
-                        break
-                print("Enemy's full hand:")
-                for enemy_card in self.enemy_hand:
-                    print(f"{enemy_card[0]} of {enemy_card[1]}")
-
-            case _:
-                pass  # No pairs found
-
-
-
+                print("You have One Pair!")
+            case "no_hand":
+                print("You have No Hand.")
 
 
 

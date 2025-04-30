@@ -13,91 +13,151 @@ def test_poker_score_tracker():
             self.enemy_hand: list[tuple[str, str, int]] = []
 
         def poker_score_tracker(self) -> None:
-            player_ranks = [player_card[0] for player_card in self.player_hand]
-            player_rank_counts = {player_rank: player_ranks.count(player_rank) for player_rank in set(player_ranks)}
-            enemy_ranks = [enemy_card[0] for enemy_card in self.enemy_hand]
-            enemy_rank_counts = {enemy_rank: enemy_ranks.count(enemy_rank) for enemy_rank in set(enemy_ranks)}
+            player_values = sorted(card[2] for card in self.player_hand)
+            print("DEBUG player_values:", player_values)
 
-            def determine_pair_type(rank_counts):
-                if list(rank_counts.values()).count(2) == 2:
-                    return "two_pair"
-                elif 2 in rank_counts.values():
-                    return "one_pair"
+            enemy_values = sorted(card[2] for card in self.enemy_hand)
+            print("DEBUG enemy_values:", enemy_values)
+
+            player_hand_type = "no_hand"
+            enemy_hand_type = "no_hand"
+
+            # Straight detection (Player)
+            consecutive_count = 1
+            for i in range(len(player_values) - 1):
+                if player_values[i + 1] == player_values[i] + 1:
+                    consecutive_count += 1
+                    if consecutive_count == 5:
+                        player_hand_type = "straight"
+                        break
                 else:
-                    return "no_pair"
+                    consecutive_count = 1
 
-            player_hand_type = determine_pair_type(player_rank_counts)
-            enemy_hand_type = determine_pair_type(enemy_rank_counts)
+            # Straight detection (Enemy)
+            consecutive_count = 1
+            for i in range(len(enemy_values) - 1):
+                if enemy_values[i + 1] == enemy_values[i] + 1:
+                    consecutive_count += 1
+                    if consecutive_count == 5:
+                        enemy_hand_type = "straight"
+                        break
+                else:
+                    consecutive_count = 1
+
+            # If no straight, fallback to pair/trip logic
+            if player_hand_type == "no_hand":
+                player_ranks = [card[0] for card in self.player_hand]
+                player_rank_counts = {rank: player_ranks.count(rank) for rank in set(player_ranks)}
+
+                if 3 in player_rank_counts.values():
+                    player_hand_type = "three_of_a_kind"
+                elif list(player_rank_counts.values()).count(2) == 2:
+                    player_hand_type = "two_pair"
+                elif 2 in player_rank_counts.values():
+                    player_hand_type = "one_pair"
+
+            if enemy_hand_type == "no_hand":
+                enemy_ranks = [card[0] for card in self.enemy_hand]
+                enemy_rank_counts = {rank: enemy_ranks.count(rank) for rank in set(enemy_ranks)}
+
+                if 3 in enemy_rank_counts.values():
+                    enemy_hand_type = "three_of_a_kind"
+                elif list(enemy_rank_counts.values()).count(2) == 2:
+                    enemy_hand_type = "two_pair"
+                elif 2 in enemy_rank_counts.values():
+                    enemy_hand_type = "one_pair"
 
             print(f"Player has: {player_hand_type.replace('_', ' ').title()}")
             print(f"Enemy has: {enemy_hand_type.replace('_', ' ').title()}")
 
-            if player_hand_type == "two_pair" and enemy_hand_type != "two_pair":
-                print("Player wins with Two Pair!")
-            elif enemy_hand_type == "two_pair" and player_hand_type != "two_pair":
-                print("Enemy wins with Two Pair!")
-            elif player_hand_type == "one_pair" and enemy_hand_type == "one_pair":
-                player_pair_rank = None
-                enemy_pair_rank = None
-                for rank, count in player_rank_counts.items():
-                    if count == 2:
-                        player_pair_rank = rank
-                        break
-                for rank, count in enemy_rank_counts.items():
-                    if count == 2:
-                        enemy_pair_rank = rank
-                        break
-
-                if self.deck.rank_order_poker[player_pair_rank] > self.deck.rank_order_poker[enemy_pair_rank]:
-                    print("Player wins with higher pair!")
-                elif self.deck.rank_order_poker[player_pair_rank] < self.deck.rank_order_poker[enemy_pair_rank]:
-                    print("Enemy wins with higher pair!")
-                else:
-                    print("Both players have the same pair! It's a draw!")
-            elif player_hand_type == "two_pair" and enemy_hand_type == "two_pair":
-                print("Both players have Two Pair! (Future: compare highest pairs)")
-            else:
-                print("No winning hand detected.")
-
     # ---- TEST CASES ----
-    print("=== Test 1: Player Wins with Higher Pair ===")
+    print("=== Test 1.1: Player Wins with Higher Pair ===")
     game = DummyPokerDarnel()
     game.player_hand = [("King", "Hearts", 10), ("King", "Spades", 10), ("3", "Clubs", 3), ("7", "Diamonds", 7), ("9", "Hearts", 9)]
     game.enemy_hand = [("Jack", "Hearts", 10), ("Jack", "Clubs", 10), ("5", "Spades", 5), ("6", "Diamonds", 6), ("8", "Clubs", 8)]
     game.poker_score_tracker()
 
-    print("\n=== Test 2: Enemy Wins with Higher Pair ===")
+    print("\n=== Test 1.2: Enemy Wins with Higher Pair ===")
     game = DummyPokerDarnel()
     game.player_hand = [("8", "Hearts", 8), ("8", "Spades", 8), ("2", "Diamonds", 2), ("4", "Clubs", 4), ("7", "Spades", 7)]
     game.enemy_hand = [("Queen", "Hearts", 10), ("Queen", "Diamonds", 10), ("3", "Clubs", 3), ("5", "Spades", 5), ("9", "Hearts", 9)]
     game.poker_score_tracker()
 
-    print("\n=== Test 3: Draw with Same Pair ===")
+    print("\n=== Test 1.3: Draw with Same Pair ===")
     game = DummyPokerDarnel()
     game.player_hand = [("10", "Hearts", 10), ("10", "Spades", 10), ("2", "Diamonds", 2), ("3", "Clubs", 3), ("4", "Spades", 4)]
     game.enemy_hand = [("10", "Diamonds", 10), ("10", "Clubs", 10), ("5", "Hearts", 5), ("6", "Spades", 6), ("7", "Hearts", 7)]
     game.poker_score_tracker()
 
-    print("\n=== Test 4: Player and Enemy Both Two Pair ===")
+    print("\n=== Test 1.4: Perfect Mirror Hand (Exact Same Cards) ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("10", "Hearts", 10), ("10", "Spades", 10), ("2", "Diamonds", 2), ("3", "Clubs", 3),
+                        ("4", "Spades", 4)]
+    game.enemy_hand = [("10", "Hearts", 10), ("10", "Spades", 10), ("2", "Diamonds", 2), ("3", "Clubs", 3),
+                       ("4", "Spades", 4)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 2.1: Player and Enemy Both Two Pair ===")
     game = DummyPokerDarnel()
     game.player_hand = [("9", "Hearts", 9), ("9", "Clubs", 9), ("2", "Diamonds", 2), ("2", "Spades", 2), ("4", "Hearts", 4)]
     game.enemy_hand = [("8", "Spades", 8), ("8", "Diamonds", 8), ("3", "Clubs", 3), ("3", "Spades", 3), ("7", "Hearts", 7)]
     game.poker_score_tracker()
 
-    print("\n=== Test 5: Player Two Pair vs Enemy One Pair ===")
+    print("\n=== Test 2.2: Player Two Pair vs Enemy One Pair ===")
     game = DummyPokerDarnel()
     game.player_hand = [("8", "Hearts", 8), ("8", "Clubs", 8), ("3", "Diamonds", 3), ("3", "Hearts", 3), ("5", "Spades", 5)]
     game.enemy_hand = [("Queen", "Hearts", 10), ("Queen", "Diamonds", 10), ("2", "Clubs", 2), ("4", "Spades", 4), ("6", "Diamonds", 6)]
     game.poker_score_tracker()
 
-    print("\n=== Test 6: No Pair for Player, Enemy Has One Pair ===")
+    print("\n=== Test 3.1: Player No Hand, Enemy Has Three of a Kind ===")
     game = DummyPokerDarnel()
     game.player_hand = [("2", "Hearts", 2), ("4", "Spades", 4), ("6", "Clubs", 6), ("8", "Diamonds", 8), ("10", "Hearts", 10)]
-    game.enemy_hand = [("Jack", "Spades", 10), ("Jack", "Diamonds", 10), ("3", "Clubs", 3), ("5", "Hearts", 5), ("7", "Clubs", 7)]
+    game.enemy_hand = [("Jack", "Spades", 10), ("Jack", "Diamonds", 10), ("Jack", "Hearts", 10), ("5", "Hearts", 5), ("7", "Clubs", 7)]
     game.poker_score_tracker()
 
-    print("\n=== Test 7: No Pair for Either ===")
+    print("\n=== Test 4: No Pair for Either ===")
     game = DummyPokerDarnel()
     game.player_hand = [("2", "Hearts", 2), ("4", "Spades", 4), ("6", "Clubs", 6), ("8", "Diamonds", 8), ("10", "Hearts", 10)]
     game.enemy_hand = [("3", "Clubs", 3), ("5", "Spades", 5), ("7", "Diamonds", 7), ("9", "Clubs", 9), ("Queen", "Hearts", 10)]
     game.poker_score_tracker()
+
+    print("\n=== Test 5.1: Player has a Straight ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("3", "Hearts", 3), ("4", "Spades", 4), ("5", "Clubs", 5), ("6", "Diamonds", 6),
+                        ("7", "Hearts", 7)]
+    game.enemy_hand = [("King", "Spades", 13), ("King", "Hearts", 13), ("4", "Clubs", 4), ("8", "Diamonds", 8),
+                       ("2", "Hearts", 2)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 5.2: Enemy has a Straight ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("9", "Hearts", 9), ("9", "Clubs", 9), ("4", "Spades", 4), ("6", "Hearts", 6),
+                        ("8", "Diamonds", 8)]
+    game.enemy_hand = [("5", "Hearts", 5), ("6", "Spades", 6), ("7", "Clubs", 7), ("8", "Hearts", 8),
+                       ("9", "Spades", 9)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 5.3: Both Have Equal Straight (Draw) ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("4", "Clubs", 4), ("5", "Hearts", 5), ("6", "Diamonds", 6), ("7", "Spades", 7),
+                        ("8", "Hearts", 8)]
+    game.enemy_hand = [("4", "Spades", 4), ("5", "Diamonds", 5), ("6", "Clubs", 6), ("7", "Clubs", 7),
+                       ("8", "Diamonds", 8)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 5.4: Player Has Higher Straight ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("8", "Hearts", 8), ("9", "Spades", 9), ("10", "Diamonds", 10), ("Jack", "Hearts", 11),
+                        ("Queen", "Spades", 12)]
+    game.enemy_hand = [("4", "Clubs", 4), ("5", "Hearts", 5), ("6", "Spades", 6), ("7", "Diamonds", 7),
+                       ("8", "Clubs", 8)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 5.5: Enemy Has Higher Straight ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("5", "Clubs", 5), ("6", "Hearts", 6), ("7", "Diamonds", 7), ("8", "Spades", 8),
+                        ("9", "Clubs", 9)]
+    game.enemy_hand = [("9", "Hearts", 9), ("10", "Clubs", 10), ("Jack", "Spades", 11), ("Queen", "Hearts", 12),
+                       ("King", "Diamonds", 13)]
+    game.poker_score_tracker()
+
