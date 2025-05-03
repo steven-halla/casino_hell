@@ -27,6 +27,24 @@ def test_poker_score_tracker():
             player_hand_type = "no_hand"
             enemy_hand_type = "no_hand"
 
+            # ---- 4 of a kind CHECK FIRST ----
+
+
+            player_ranks = [card[0] for card in self.player_hand]
+            player_rank_counts = {rank: player_ranks.count(rank) for rank in set(player_ranks)}
+            if 4 in player_rank_counts.values():
+                player_hand_type = "four_of_a_kind"
+            elif 3 in player_rank_counts.values() and 2 in player_rank_counts.values():
+                player_hand_type = "full_house"
+
+            enemy_ranks = [card[0] for card in self.enemy_hand]
+            enemy_rank_counts = {rank: enemy_ranks.count(rank) for rank in set(enemy_ranks)}
+            if 4 in enemy_rank_counts.values():
+                enemy_hand_type = "four_of_a_kind"
+            elif 3 in enemy_rank_counts.values() and 2 in enemy_rank_counts.values():
+                enemy_hand_type = "full_house"
+
+
             # ---- FULL HOUSE CHECK FIRST ----
             player_ranks = [card[0] for card in self.player_hand]
             player_rank_counts = {rank: player_ranks.count(rank) for rank in set(player_ranks)}
@@ -267,5 +285,45 @@ def test_poker_score_tracker():
                         ("5", "Hearts", 5), ("6", "Spades", 6)]
     game.enemy_hand = [("7", "Clubs", 7), ("8", "Hearts", 8), ("9", "Diamonds", 9),
                        ("10", "Spades", 10), ("Jack", "Clubs", 11)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 8.1: Player has Four of a Kind ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("9", "Hearts", 9), ("9", "Diamonds", 9), ("9", "Spades", 9), ("9", "Clubs", 9),
+                        ("3", "Hearts", 3)]
+    game.enemy_hand = [("4", "Spades", 4), ("5", "Hearts", 5), ("7", "Clubs", 7), ("10", "Diamonds", 10),
+                       ("King", "Hearts", 13)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 8.2: Enemy has Four of a Kind ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("2", "Clubs", 2), ("4", "Diamonds", 4), ("6", "Spades", 6), ("8", "Hearts", 8),
+                        ("10", "Clubs", 10)]
+    game.enemy_hand = [("Queen", "Clubs", 12), ("Queen", "Diamonds", 12), ("Queen", "Hearts", 12),
+                       ("Queen", "Spades", 12), ("2", "Hearts", 2)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 8.3: Both have Four of a Kind ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("6", "Hearts", 6), ("6", "Spades", 6), ("6", "Diamonds", 6), ("6", "Clubs", 6),
+                        ("3", "Diamonds", 3)]
+    game.enemy_hand = [("8", "Clubs", 8), ("8", "Hearts", 8), ("8", "Spades", 8), ("8", "Diamonds", 8),
+                       ("4", "Hearts", 4)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 8.4: Four of a Kind beats Full House ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("Jack", "Hearts", 11), ("Jack", "Spades", 11), ("Jack", "Diamonds", 11), ("Jack", "Clubs", 11),
+                        ("2", "Hearts", 2)]
+    game.enemy_hand = [("10", "Hearts", 10), ("10", "Spades", 10), ("3", "Clubs", 3), ("3", "Diamonds", 3),
+                       ("3", "Spades", 3)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 8.5: No Four of a Kind for Either ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("3", "Hearts", 3), ("3", "Spades", 3), ("3", "Diamonds", 3), ("7", "Clubs", 7),
+                        ("9", "Hearts", 9)]
+    game.enemy_hand = [("8", "Hearts", 8), ("8", "Spades", 8), ("8", "Clubs", 8), ("5", "Diamonds", 5),
+                       ("King", "Hearts", 13)]
     game.poker_score_tracker()
 
