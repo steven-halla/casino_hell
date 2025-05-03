@@ -13,124 +13,116 @@ def test_poker_score_tracker():
             self.enemy_hand: list[tuple[str, str, int]] = []
 
         def poker_score_tracker(self) -> None:
-
             player_values = sorted(card[2] for card in self.player_hand)
             player_suits = sorted(card[1] for card in self.player_hand)
-            print("DEBUG player_values:", player_values)
-
             enemy_values = sorted(card[2] for card in self.enemy_hand)
             enemy_suits = sorted(card[1] for card in self.enemy_hand)
+
+            print("DEBUG player_values:", player_values)
             print("DEBUG enemy_values:", enemy_values)
             print("DEBUG player suit:", player_suits)
             print("DEBUG enemy suits:", enemy_suits)
 
-            player_hand_type = "no_hand"
-            enemy_hand_type = "no_hand"
+            player_hand_type = ""
+            enemy_hand_type = ""
+
+            royal_values = {10, 11, 12, 13, 14}
+
+            # ---- ROYAL FLUSH CHECK ----
+            if not player_hand_type and set(card[2] for card in self.player_hand) == royal_values:
+                suit = self.player_hand[0][1]
+                if all(card[1] == suit for card in self.player_hand):
+                    player_hand_type = "royal_straight_flush"
+            if not enemy_hand_type and set(card[2] for card in self.enemy_hand) == royal_values:
+                suit = self.enemy_hand[0][1]
+                if all(card[1] == suit for card in self.enemy_hand):
+                    enemy_hand_type = "royal_straight_flush"
 
             # ---- STRAIGHT FLUSH CHECK ----
-            player_suits = [card[1] for card in self.player_hand]
-            player_values = sorted(card[2] for card in self.player_hand)
-            player_suit_groups = {}
-            for value, suit in zip(player_values, player_suits):
-                player_suit_groups.setdefault(suit, []).append(value)
+            if not player_hand_type:
+                player_suit_groups = {}
+                for value, suit in ((card[2], card[1]) for card in self.player_hand):
+                    player_suit_groups.setdefault(suit, []).append(value)
+                for suit, values in player_suit_groups.items():
+                    values = sorted(set(values))
+                    consecutive = 1
+                    for i in range(len(values) - 1):
+                        if values[i + 1] == values[i] + 1:
+                            consecutive += 1
+                            if consecutive == 5:
+                                player_hand_type = "straight_flush"
+                                break
+                        else:
+                            consecutive = 1
+                    if player_hand_type:
+                        break
 
-            for suit, values in player_suit_groups.items():
-                values = sorted(set(values))
-                consecutive = 1
-                for i in range(len(values) - 1):
-                    if values[i + 1] == values[i] + 1:
-                        consecutive += 1
-                        if consecutive == 5:
-                            player_hand_type = "straight_flush"
-                            break
-                    else:
-                        consecutive = 1
-                if player_hand_type == "straight_flush":
-                    break
+            if not enemy_hand_type:
+                enemy_suit_groups = {}
+                for value, suit in ((card[2], card[1]) for card in self.enemy_hand):
+                    enemy_suit_groups.setdefault(suit, []).append(value)
+                for suit, values in enemy_suit_groups.items():
+                    values = sorted(set(values))
+                    consecutive = 1
+                    for i in range(len(values) - 1):
+                        if values[i + 1] == values[i] + 1:
+                            consecutive += 1
+                            if consecutive == 5:
+                                enemy_hand_type = "straight_flush"
+                                break
+                        else:
+                            consecutive = 1
+                    if enemy_hand_type:
+                        break
 
-            enemy_suits = [card[1] for card in self.enemy_hand]
-            enemy_values = sorted(card[2] for card in self.enemy_hand)
-            enemy_suit_groups = {}
-            for value, suit in zip(enemy_values, enemy_suits):
-                enemy_suit_groups.setdefault(suit, []).append(value)
-
-            for suit, values in enemy_suit_groups.items():
-                values = sorted(set(values))
-                consecutive = 1
-                for i in range(len(values) - 1):
-                    if values[i + 1] == values[i] + 1:
-                        consecutive += 1
-                        if consecutive == 5:
-                            enemy_hand_type = "straight_flush"
-                            break
-                    else:
-                        consecutive = 1
-                if enemy_hand_type == "straight_flush":
-                    break
-
-            # ---- 4 of a kind CHECK FIRST ----
-
-
+            # ---- FOUR OF A KIND ----
             player_ranks = [card[0] for card in self.player_hand]
             player_rank_counts = {rank: player_ranks.count(rank) for rank in set(player_ranks)}
-            if 4 in player_rank_counts.values():
+            if not player_hand_type and 4 in player_rank_counts.values():
                 player_hand_type = "four_of_a_kind"
-            elif 3 in player_rank_counts.values() and 2 in player_rank_counts.values():
-                player_hand_type = "full_house"
 
             enemy_ranks = [card[0] for card in self.enemy_hand]
             enemy_rank_counts = {rank: enemy_ranks.count(rank) for rank in set(enemy_ranks)}
-            if 4 in enemy_rank_counts.values():
+            if not enemy_hand_type and 4 in enemy_rank_counts.values():
                 enemy_hand_type = "four_of_a_kind"
-            elif 3 in enemy_rank_counts.values() and 2 in enemy_rank_counts.values():
-                enemy_hand_type = "full_house"
 
-
-            # ---- FULL HOUSE CHECK FIRST ----
-            player_ranks = [card[0] for card in self.player_hand]
-            player_rank_counts = {rank: player_ranks.count(rank) for rank in set(player_ranks)}
-            if 3 in player_rank_counts.values() and 2 in player_rank_counts.values():
+            # ---- FULL HOUSE ----
+            if not player_hand_type and 3 in player_rank_counts.values() and 2 in player_rank_counts.values():
                 player_hand_type = "full_house"
-
-            enemy_ranks = [card[0] for card in self.enemy_hand]
-            enemy_rank_counts = {rank: enemy_ranks.count(rank) for rank in set(enemy_ranks)}
-            if 3 in enemy_rank_counts.values() and 2 in enemy_rank_counts.values():
+            if not enemy_hand_type and 3 in enemy_rank_counts.values() and 2 in enemy_rank_counts.values():
                 enemy_hand_type = "full_house"
 
-            # ---- FLUSH CHECK ----
-            player_suits = [card[1] for card in self.player_hand]
-            enemy_suits = [card[1] for card in self.enemy_hand]
-
-            if player_hand_type == "no_hand" and any(player_suits.count(suit) >= 5 for suit in set(player_suits)):
+            # ---- FLUSH ----
+            if not player_hand_type and any(player_suits.count(suit) >= 5 for suit in set(player_suits)):
                 player_hand_type = "flush"
-            if enemy_hand_type == "no_hand" and any(enemy_suits.count(suit) >= 5 for suit in set(enemy_suits)):
+            if not enemy_hand_type and any(enemy_suits.count(suit) >= 5 for suit in set(enemy_suits)):
                 enemy_hand_type = "flush"
 
-            # ---- STRAIGHT CHECK ----
-            consecutive_count = 1
-            for i in range(len(player_values) - 1):
-                if player_values[i + 1] == player_values[i] + 1:
-                    consecutive_count += 1
-                    if consecutive_count == 5:
-                        if player_hand_type == "no_hand":
+            # ---- STRAIGHT ----
+            if not player_hand_type:
+                consecutive = 1
+                for i in range(len(player_values) - 1):
+                    if player_values[i + 1] == player_values[i] + 1:
+                        consecutive += 1
+                        if consecutive == 5:
                             player_hand_type = "straight"
-                        break
-                else:
-                    consecutive_count = 1
+                            break
+                    else:
+                        consecutive = 1
 
-            consecutive_count = 1
-            for i in range(len(enemy_values) - 1):
-                if enemy_values[i + 1] == enemy_values[i] + 1:
-                    consecutive_count += 1
-                    if consecutive_count == 5:
-                        if enemy_hand_type == "no_hand":
+            if not enemy_hand_type:
+                consecutive = 1
+                for i in range(len(enemy_values) - 1):
+                    if enemy_values[i + 1] == enemy_values[i] + 1:
+                        consecutive += 1
+                        if consecutive == 5:
                             enemy_hand_type = "straight"
-                        break
-                else:
-                    consecutive_count = 1
+                            break
+                    else:
+                        consecutive = 1
 
-            # ---- FALLBACK: PAIRS AND TRIPS ----
-            if player_hand_type == "no_hand":
+            # ---- PAIR/TRIPS ----
+            if not player_hand_type:
                 if 3 in player_rank_counts.values():
                     player_hand_type = "three_of_a_kind"
                 elif list(player_rank_counts.values()).count(2) == 2:
@@ -138,13 +130,18 @@ def test_poker_score_tracker():
                 elif 2 in player_rank_counts.values():
                     player_hand_type = "one_pair"
 
-            if enemy_hand_type == "no_hand":
+            if not enemy_hand_type:
                 if 3 in enemy_rank_counts.values():
                     enemy_hand_type = "three_of_a_kind"
                 elif list(enemy_rank_counts.values()).count(2) == 2:
                     enemy_hand_type = "two_pair"
                 elif 2 in enemy_rank_counts.values():
                     enemy_hand_type = "one_pair"
+
+            if not player_hand_type:
+                player_hand_type = "no_hand"
+            if not enemy_hand_type:
+                enemy_hand_type = "no_hand"
 
             print(f"Player has: {player_hand_type.replace('_', ' ').title()}")
             print(f"Enemy has: {enemy_hand_type.replace('_', ' ').title()}")
@@ -396,6 +393,38 @@ def test_poker_score_tracker():
                         ("9", "Clubs", 9)]
     game.enemy_hand = [("2", "Hearts", 2), ("5", "Hearts", 5), ("8", "Hearts", 8), ("10", "Hearts", 10),
                        ("King", "Hearts", 13)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 10.1: Player has Royal Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("10", "Spades", 10), ("Jack", "Spades", 11), ("Queen", "Spades", 12), ("King", "Spades", 13),
+                        ("Ace", "Spades", 14)]
+    game.enemy_hand = [("3", "Clubs", 3), ("5", "Hearts", 5), ("7", "Spades", 7), ("9", "Diamonds", 9),
+                       ("Jack", "Hearts", 11)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 10.2: Enemy has Royal Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("2", "Clubs", 2), ("4", "Diamonds", 4), ("6", "Spades", 6), ("8", "Hearts", 8),
+                        ("10", "Clubs", 10)]
+    game.enemy_hand = [("10", "Hearts", 10), ("Jack", "Hearts", 11), ("Queen", "Hearts", 12), ("King", "Hearts", 13),
+                       ("Ace", "Hearts", 14)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 10.3: Both Have Royal Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("10", "Diamonds", 10), ("Jack", "Diamonds", 11), ("Queen", "Diamonds", 12),
+                        ("King", "Diamonds", 13), ("Ace", "Diamonds", 14)]
+    game.enemy_hand = [("10", "Hearts", 10), ("Jack", "Hearts", 11), ("Queen", "Hearts", 12), ("King", "Hearts", 13),
+                       ("Ace", "Hearts", 14)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 10.4: Royal Flush beats Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("10", "Clubs", 10), ("Jack", "Clubs", 11), ("Queen", "Clubs", 12), ("King", "Clubs", 13),
+                        ("Ace", "Clubs", 14)]
+    game.enemy_hand = [("5", "Spades", 5), ("6", "Spades", 6), ("7", "Spades", 7), ("8", "Spades", 8),
+                       ("9", "Spades", 9)]
     game.poker_score_tracker()
 
 
