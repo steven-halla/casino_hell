@@ -12,6 +12,57 @@ def test_poker_score_tracker():
             self.player_hand: list[tuple[str, str, int]] = []
             self.enemy_hand: list[tuple[str, str, int]] = []
 
+        def get_hand_score(self, hand_type: str) -> int:
+            hand_scores = {
+                "royal_straight_flush": 10,
+                "straight_flush": 9,
+                "four_of_a_kind": 8,
+                "full_house": 7,
+                "flush": 6,
+                "straight": 5,
+                "three_of_a_kind": 4,
+                "two_pair": 3,
+                "one_pair": 2,
+                "no_hand": 1,
+            }
+            return hand_scores.get(hand_type, 1)
+
+        def get_bonus_score_if_tied(self, hand_type: str, hand: list[tuple[str, str, int]]) -> int:
+            bonus_rank_values = {
+                "2": 2, "3": 3, "4": 4, "5": 5, "6": 6,
+                "7": 7, "8": 8, "9": 9, "10": 10,
+                "Jack": 11, "Queen": 12, "King": 13, "Ace": 14,
+            }
+
+            bonus_score = 0
+            rank_counts = {}
+            for rank, _, _ in hand:
+                rank_counts.setdefault(rank, 0)
+                rank_counts[rank] += 1
+
+            if hand_type == "one_pair":
+                for rank, count in rank_counts.items():
+                    if count == 2:
+                        bonus_score += bonus_rank_values[rank]
+            elif hand_type == "two_pair":
+                for rank, count in rank_counts.items():
+                    if count == 2:
+                        bonus_score += bonus_rank_values[rank]
+            elif hand_type == "three_of_a_kind":
+                for rank, count in rank_counts.items():
+                    if count == 3:
+                        bonus_score += bonus_rank_values[rank]
+            elif hand_type == "four_of_a_kind":
+                for rank, count in rank_counts.items():
+                    if count == 4:
+                        bonus_score += bonus_rank_values[rank]
+            elif hand_type in {"full_house", "flush", "straight", "straight_flush", "royal_straight_flush"}:
+                for rank, _, _ in hand:
+                    bonus_score += bonus_rank_values[rank]
+
+            return bonus_score
+
+
         def poker_score_tracker(self) -> None:
             player_values = sorted(card[2] for card in self.player_hand)
             player_suits = sorted(card[1] for card in self.player_hand)
@@ -145,6 +196,18 @@ def test_poker_score_tracker():
 
             print(f"Player has: {player_hand_type.replace('_', ' ').title()}")
             print(f"Enemy has: {enemy_hand_type.replace('_', ' ').title()}")
+            # player_score = self.get_hand_score(player_hand_type)
+            # enemy_score = self.get_hand_score(enemy_hand_type)
+            player_score = self.get_hand_score(player_hand_type)
+            enemy_score = self.get_hand_score(enemy_hand_type)
+
+            if player_hand_type == enemy_hand_type:
+                player_score += self.get_bonus_score_if_tied(player_hand_type, self.player_hand)
+                enemy_score += self.get_bonus_score_if_tied(enemy_hand_type, self.enemy_hand)
+            print(f"Player score: {player_score}")
+            print(f"Enemy score: {enemy_score}")
+
+
 
     # ---- TEST CASES ----
     print("=== Test 1.1: Player Wins with Higher Pair ===")
