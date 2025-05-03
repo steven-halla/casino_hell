@@ -17,31 +17,17 @@ class PokerDarnel(GambleScreen):
         self.player_value_score: int = 0
         self.enemy_hand_score: int = 0
         self.enemy_value_score: int = 0
-        # self.player_hand: list[tuple[str, str, int]] = [
-        #
-        # ]
-        #
-        # self.enemy_hand: list[tuple[str, str, int]] = [
-        #
-        # ]
-        self.player_hand = [
-            ("7", "Hearts", 7),
-            ("7", "Clubs", 7),
-            ("7", "Diamonds", 7),
-            ("2", "Spades", 2),
-            ("9", "Hearts", 9),
+        self.player_hand: list[tuple[str, str, int]] = [
+
         ]
 
-        self.enemy_hand = [
-            ("5", "Spades", 5),
-            ("5", "Hearts", 5),
-            ("5", "Diamonds", 5),
-            ("3", "Clubs", 3),
-            ("Jack", "Spades", 11),
+        self.enemy_hand: list[tuple[str, str, int]] = [
+
         ]
 
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
+    REDRAW_SCREEN: str = "draw_screen"
     FOURTH_ROUND_SHOW: str = "fourth_round_show"
     FOURTH_ROUND_DEAL: str = "fourth_round_deal"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
@@ -61,8 +47,8 @@ class PokerDarnel(GambleScreen):
         super().update(state)
 
         if self.game_state == self.WELCOME_SCREEN:
-            if controller.confirm_button:
-                self.poker_score_tracker()
+            print("welcome screen")
+
 
         elif self.game_state == self.BET_SCREEN:
             print("In bet screen")
@@ -73,6 +59,8 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
+        elif self.game_state == self.REDRAW_SCREEN:
+            print("Dealing cards screen")
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
@@ -107,6 +95,8 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
+        elif self.game_state == self.REDRAW_SCREEN:
+            print("Dealing cards screen")
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
@@ -127,6 +117,7 @@ class PokerDarnel(GambleScreen):
             print("Draw")
 
         pygame.display.flip()
+
 
     def get_hand_score(self, hand_type: str) -> int:
         hand_scores = {
