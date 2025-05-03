@@ -27,6 +27,47 @@ def test_poker_score_tracker():
             player_hand_type = "no_hand"
             enemy_hand_type = "no_hand"
 
+            # ---- STRAIGHT FLUSH CHECK ----
+            player_suits = [card[1] for card in self.player_hand]
+            player_values = sorted(card[2] for card in self.player_hand)
+            player_suit_groups = {}
+            for value, suit in zip(player_values, player_suits):
+                player_suit_groups.setdefault(suit, []).append(value)
+
+            for suit, values in player_suit_groups.items():
+                values = sorted(set(values))
+                consecutive = 1
+                for i in range(len(values) - 1):
+                    if values[i + 1] == values[i] + 1:
+                        consecutive += 1
+                        if consecutive == 5:
+                            player_hand_type = "straight_flush"
+                            break
+                    else:
+                        consecutive = 1
+                if player_hand_type == "straight_flush":
+                    break
+
+            enemy_suits = [card[1] for card in self.enemy_hand]
+            enemy_values = sorted(card[2] for card in self.enemy_hand)
+            enemy_suit_groups = {}
+            for value, suit in zip(enemy_values, enemy_suits):
+                enemy_suit_groups.setdefault(suit, []).append(value)
+
+            for suit, values in enemy_suit_groups.items():
+                values = sorted(set(values))
+                consecutive = 1
+                for i in range(len(values) - 1):
+                    if values[i + 1] == values[i] + 1:
+                        consecutive += 1
+                        if consecutive == 5:
+                            enemy_hand_type = "straight_flush"
+                            break
+                    else:
+                        consecutive = 1
+                if enemy_hand_type == "straight_flush":
+                    break
+
             # ---- 4 of a kind CHECK FIRST ----
 
 
@@ -326,4 +367,37 @@ def test_poker_score_tracker():
     game.enemy_hand = [("8", "Hearts", 8), ("8", "Spades", 8), ("8", "Clubs", 8), ("5", "Diamonds", 5),
                        ("King", "Hearts", 13)]
     game.poker_score_tracker()
+
+    print("\n=== Test 9.1: Player has Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("5", "Hearts", 5), ("6", "Hearts", 6), ("7", "Hearts", 7), ("8", "Hearts", 8),
+                        ("9", "Hearts", 9)]
+    game.enemy_hand = [("2", "Clubs", 2), ("4", "Diamonds", 4), ("6", "Spades", 6), ("9", "Hearts", 9),
+                       ("King", "Spades", 13)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 9.2: Enemy has Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("2", "Clubs", 2), ("4", "Diamonds", 4), ("6", "Spades", 6), ("8", "Hearts", 8),
+                        ("10", "Spades", 10)]
+    game.enemy_hand = [("3", "Clubs", 3), ("4", "Clubs", 4), ("5", "Clubs", 5), ("6", "Clubs", 6), ("7", "Clubs", 7)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 9.3: Both Have Straight Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("5", "Spades", 5), ("6", "Spades", 6), ("7", "Spades", 7), ("8", "Spades", 8),
+                        ("9", "Spades", 9)]
+    game.enemy_hand = [("4", "Clubs", 4), ("5", "Clubs", 5), ("6", "Clubs", 6), ("7", "Clubs", 7), ("8", "Clubs", 8)]
+    game.poker_score_tracker()
+
+    print("\n=== Test 9.4: Straight but Not Flush ===")
+    game = DummyPokerDarnel()
+    game.player_hand = [("5", "Spades", 5), ("6", "Hearts", 6), ("7", "Spades", 7), ("8", "Diamonds", 8),
+                        ("9", "Clubs", 9)]
+    game.enemy_hand = [("2", "Hearts", 2), ("5", "Hearts", 5), ("8", "Hearts", 8), ("10", "Hearts", 10),
+                       ("King", "Hearts", 13)]
+    game.poker_score_tracker()
+
+
+
 

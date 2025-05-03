@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="test working for full houess">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="4 of a kind now works">
       <change beforePath="$PROJECT_DIR$/tests/test_poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_poker_darnel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -386,7 +384,7 @@
       <workItem from="1745426314471" duration="5715000" />
       <workItem from="1745594144601" duration="3391000" />
       <workItem from="1745970071496" duration="9993000" />
-      <workItem from="1746118683308" duration="3896000" />
+      <workItem from="1746118683308" duration="4219000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -731,7 +729,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1407" />
+    <option name="localTasksCounter" value="1408" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -760,7 +758,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed indexes for wheel spin" />
     <MESSAGE value="currently working on wheel fix using this as save point" />
     <MESSAGE value="wheel so far correctly locks on correct slice" />
     <MESSAGE value="fixed wrong cards being drawn now wheel properly aligns with drawn card and the index for the card drwawn is now corrected, start and round reset were setting old values from previous iteration" />
@@ -785,7 +782,8 @@
     <MESSAGE value="test cases built" />
     <MESSAGE value="straights are now updated for test and main class" />
     <MESSAGE value="test working for full houess" />
-    <option name="LAST_COMMIT_MESSAGE" value="test working for full houess" />
+    <MESSAGE value="4 of a kind now works" />
+    <option name="LAST_COMMIT_MESSAGE" value="4 of a kind now works" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
