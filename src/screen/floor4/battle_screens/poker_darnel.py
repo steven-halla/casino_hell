@@ -3,6 +3,7 @@ import pygame
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
 from tests.test_poker_darnel import test_poker_score_tracker
+from types import *
 
 
 class PokerDarnel(GambleScreen):
@@ -143,7 +144,7 @@ class PokerDarnel(GambleScreen):
 
         bonus_score = 0
         rank_counts = {}
-        for rank, _, _ in hand:
+        for rank, suit, value in hand:
             rank_counts.setdefault(rank, 0)
             rank_counts[rank] += 1
 

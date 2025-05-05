@@ -357,5 +357,30 @@ BLuff - Makes enemy fold depending on their hand
 i could also make a bluff mechanic 
 
 
+i can use the below:
+
+use this for pop ups:
+pygame.display.init
+
+this may not work on mac os
+pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+
+if so use this instead:
+pygame.display.set_mode((width, height), pygame.FULLSCREEN)
+pygame.display.set_mode((width, height))  # windowed mode
+
+pygame.display.set_caption
+Set the current window caption
+
+pygame.display.get_num_displays
+Return the number of displays
+
+pygame.display.get_allow_screensaver
+Return whether the screensaver is allowed to run.
+pygame.display.set_allow_screensaver
+Set whether the screensaver may run
+
+
+
 
 
