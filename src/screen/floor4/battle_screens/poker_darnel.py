@@ -10,25 +10,43 @@ class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
         self.money: int = 1000
+        self.enemy_compare_hand: str = ""
+        self.enemy_temp_discard_storage: list = []
+        self.player_hand_type = ""
+        self.enemy_hand_type = ""
         self.player_bet: int = 0
         self.enemy_bet: int = 0
-        self.game_state = self.WELCOME_SCREEN
+        self.game_state = self.ENEMY_REDRAW_SCREEN
         self.deck = Deck()
         self.player_hand_score: int = 0
         self.player_value_score: int = 0
         self.enemy_hand_score: int = 0
         self.enemy_value_score: int = 0
-        self.player_hand: list[tuple[str, str, int]] = [
+        self.enemy_hand_power: int = 0
 
+        self.player_hand = [
+            ("5", "Hearts", 5),
+            ("6", "Spades", 6),
+            ("7", "Clubs", 7),
         ]
 
-        self.enemy_hand: list[tuple[str, str, int]] = [
-
+        self.enemy_hand = [
+            ("9", "Diamonds", 9),
+            ("9", "Hearts", 9),
+            ("2", "Clubs", 2),
         ]
+        # self.player_hand: list[tuple[str, str, int]] = [
+        #
+        # ]
+        #
+        # self.enemy_hand: list[tuple[str, str, int]] = [
+        #
+        # ]
 
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
-    REDRAW_SCREEN: str = "draw_screen"
+    PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
+    ENEMY_REDRAW_SCREEN: str = "enemy_redraw_screen"
     FOURTH_ROUND_SHOW: str = "fourth_round_show"
     FOURTH_ROUND_DEAL: str = "fourth_round_deal"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
@@ -46,6 +64,7 @@ class PokerDarnel(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        #BLUFF command should have a weight that over time grows the more money diff there is
 
         if self.game_state == self.WELCOME_SCREEN:
             print("welcome screen")
@@ -60,8 +79,39 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
-        elif self.game_state == self.REDRAW_SCREEN:
-            print("Dealing cards screen")
+        elif self.game_state == self.PLAYER_REDRAW_SCREEN:
+            print("Player redraw screen")
+        elif self.game_state == self.ENEMY_REDRAW_SCREEN:
+            # print("enemey ")
+            if  state.controller.confirm_button:
+                self.poker_score_tracker()
+                print(f"Enemy hand before checking: {[card[2] for card in self.enemy_hand]}")
+
+                print(f"Enemy hand before checking: {self.enemy_hand}")
+
+                for i, card in enumerate(self.enemy_hand):
+                    print(f"Checking card {card} at index {i}")
+
+                    # Create a temp hand without the current card
+                    temp_hand = self.enemy_hand[:i] + self.enemy_hand[i + 1:]
+                    temp_values = ",".join(str(c[2]) for c in temp_hand)
+                    print(f"Temp hand values after removing card: {temp_hand}")
+                    print(f"Comparing to desired hand values: {self.enemy_compare_hand}")
+
+                    # Compare values only
+                    if temp_values == self.enemy_compare_hand:
+                        print(f"Match found! Discarding card: {card}")
+                        self.enemy_temp_discard_storage.append(card)
+                        del self.enemy_hand[i]
+                        print(f"Enemy hand after discard: {self.enemy_hand}")
+                        print(f"Discard pile: {self.enemy_temp_discard_storage}")
+                        break
+                else:
+                    print("No discardable card found that results in a match.")
+
+
+
+
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
@@ -92,12 +142,14 @@ class PokerDarnel(GambleScreen):
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             print("Magic screen")
         elif self.game_state == self.DEAL_CARDS_SCREEN:
-            print("Dealing cards screen")
+            pass
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
-        elif self.game_state == self.REDRAW_SCREEN:
-            print("Dealing cards screen")
+        elif self.game_state == self.PLAYER_REDRAW_SCREEN:
+            pass
+        elif self.game_state == self.ENEMY_REDRAW_SCREEN:
+            pass
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
         elif self.game_state == self.FOURTH_ROUND_SHOW:
@@ -145,9 +197,11 @@ class PokerDarnel(GambleScreen):
         bonus_score = 0
         rank_counts = {}
         for rank, suit, value in hand:
+            #setDefautl works with DICT data types
             rank_counts.setdefault(rank, 0)
             rank_counts[rank] += 1
 
+        #items() works only on DICT data types
         if hand_type == "one_pair":
             for rank, count in rank_counts.items():
                 if count == 2:
@@ -181,23 +235,23 @@ class PokerDarnel(GambleScreen):
         print("DEBUG player suit:", player_suits)
         print("DEBUG enemy suits:", enemy_suits)
 
-        player_hand_type = ""
-        enemy_hand_type = ""
+        self.player_hand_type = ""
+        self.enemy_hand_type = ""
 
         royal_values = {10, 11, 12, 13, 14}
 
         # ---- ROYAL FLUSH CHECK ----
-        if not player_hand_type and set(card[2] for card in self.player_hand) == royal_values:
+        if not self.player_hand_type and set(card[2] for card in self.player_hand) == royal_values:
             suit = self.player_hand[0][1]
             if all(card[1] == suit for card in self.player_hand):
-                player_hand_type = "royal_straight_flush"
-        if not enemy_hand_type and set(card[2] for card in self.enemy_hand) == royal_values:
+                self.player_hand_type = "royal_straight_flush"
+        if not self.enemy_hand_type and set(card[2] for card in self.enemy_hand) == royal_values:
             suit = self.enemy_hand[0][1]
             if all(card[1] == suit for card in self.enemy_hand):
-                enemy_hand_type = "royal_straight_flush"
+                self.enemy_hand_type = "royal_straight_flush"
 
         # ---- STRAIGHT FLUSH CHECK ----
-        if not player_hand_type:
+        if not self.player_hand_type:
             player_suit_groups = {}
             for value, suit in ((card[2], card[1]) for card in self.player_hand):
                 player_suit_groups.setdefault(suit, []).append(value)
@@ -208,14 +262,14 @@ class PokerDarnel(GambleScreen):
                     if values[i + 1] == values[i] + 1:
                         consecutive += 1
                         if consecutive == 5:
-                            player_hand_type = "straight_flush"
+                            self.player_hand_type = "straight_flush"
                             break
                     else:
                         consecutive = 1
-                if player_hand_type:
+                if self.player_hand_type:
                     break
 
-        if not enemy_hand_type:
+        if not self.enemy_hand_type:
             enemy_suit_groups = {}
             for value, suit in ((card[2], card[1]) for card in self.enemy_hand):
                 enemy_suit_groups.setdefault(suit, []).append(value)
@@ -226,91 +280,91 @@ class PokerDarnel(GambleScreen):
                     if values[i + 1] == values[i] + 1:
                         consecutive += 1
                         if consecutive == 5:
-                            enemy_hand_type = "straight_flush"
+                            self.enemy_hand_type = "straight_flush"
                             break
                     else:
                         consecutive = 1
-                if enemy_hand_type:
+                if self.enemy_hand_type:
                     break
 
         # ---- FOUR OF A KIND ----
         player_ranks = [card[0] for card in self.player_hand]
         player_rank_counts = {rank: player_ranks.count(rank) for rank in set(player_ranks)}
-        if not player_hand_type and 4 in player_rank_counts.values():
-            player_hand_type = "four_of_a_kind"
+        if not self.player_hand_type and 4 in player_rank_counts.values():
+            self.player_hand_type = "four_of_a_kind"
 
         enemy_ranks = [card[0] for card in self.enemy_hand]
         enemy_rank_counts = {rank: enemy_ranks.count(rank) for rank in set(enemy_ranks)}
-        if not enemy_hand_type and 4 in enemy_rank_counts.values():
-            enemy_hand_type = "four_of_a_kind"
+        if not self.enemy_hand_type and 4 in enemy_rank_counts.values():
+            self.enemy_hand_type = "four_of_a_kind"
 
         # ---- FULL HOUSE ----
-        if not player_hand_type and 3 in player_rank_counts.values() and 2 in player_rank_counts.values():
-            player_hand_type = "full_house"
-        if not enemy_hand_type and 3 in enemy_rank_counts.values() and 2 in enemy_rank_counts.values():
-            enemy_hand_type = "full_house"
+        if not self.player_hand_type and 3 in player_rank_counts.values() and 2 in player_rank_counts.values():
+            self.player_hand_type = "full_house"
+        if not self.enemy_hand_type and 3 in enemy_rank_counts.values() and 2 in enemy_rank_counts.values():
+            self.enemy_hand_type = "full_house"
 
         # ---- FLUSH ----
-        if not player_hand_type and any(player_suits.count(suit) >= 5 for suit in set(player_suits)):
-            player_hand_type = "flush"
-        if not enemy_hand_type and any(enemy_suits.count(suit) >= 5 for suit in set(enemy_suits)):
-            enemy_hand_type = "flush"
+        if not self.player_hand_type and any(player_suits.count(suit) >= 5 for suit in set(player_suits)):
+            self.player_hand_type = "flush"
+        if not self.enemy_hand_type and any(enemy_suits.count(suit) >= 5 for suit in set(enemy_suits)):
+            self.enemy_hand_type = "flush"
 
         # ---- STRAIGHT ----
-        if not player_hand_type:
+        if not self.player_hand_type:
             consecutive = 1
             for i in range(len(player_values) - 1):
                 if player_values[i + 1] == player_values[i] + 1:
                     consecutive += 1
                     if consecutive == 5:
-                        player_hand_type = "straight"
+                        self.player_hand_type = "straight"
                         break
                 else:
                     consecutive = 1
 
-        if not enemy_hand_type:
+        if not self.enemy_hand_type:
             consecutive = 1
             for i in range(len(enemy_values) - 1):
                 if enemy_values[i + 1] == enemy_values[i] + 1:
                     consecutive += 1
                     if consecutive == 5:
-                        enemy_hand_type = "straight"
+                        self.enemy_hand_type = "straight"
                         break
                 else:
                     consecutive = 1
 
         # ---- PAIR/TRIPS ----
-        if not player_hand_type:
+        if not self.player_hand_type:
             if 3 in player_rank_counts.values():
-                player_hand_type = "three_of_a_kind"
+                self.player_hand_type = "three_of_a_kind"
             elif list(player_rank_counts.values()).count(2) == 2:
-                player_hand_type = "two_pair"
+                self.player_hand_type = "two_pair"
             elif 2 in player_rank_counts.values():
-                player_hand_type = "one_pair"
+                self.player_hand_type = "one_pair"
 
-        if not enemy_hand_type:
+        if not self.enemy_hand_type:
             if 3 in enemy_rank_counts.values():
-                enemy_hand_type = "three_of_a_kind"
+                self.enemy_hand_type = "three_of_a_kind"
             elif list(enemy_rank_counts.values()).count(2) == 2:
-                enemy_hand_type = "two_pair"
+                self.enemy_hand_type = "two_pair"
             elif 2 in enemy_rank_counts.values():
-                enemy_hand_type = "one_pair"
+                self.enemy_hand_type = "one_pair"
 
-        if not player_hand_type:
-            player_hand_type = "no_hand"
-        if not enemy_hand_type:
-            enemy_hand_type = "no_hand"
+        if not self.player_hand_type:
+            self.player_hand_type = "no_hand"
+        if not self.enemy_hand_type:
+            self.enemy_hand_type = "no_hand"
 
-        print(f"Player has: {player_hand_type.replace('_', ' ').title()}")
-        print(f"Enemy has: {enemy_hand_type.replace('_', ' ').title()}")
-        # player_score = self.get_hand_score(player_hand_type)
-        # enemy_score = self.get_hand_score(enemy_hand_type)
-        player_score = self.get_hand_score(player_hand_type)
-        enemy_score = self.get_hand_score(enemy_hand_type)
+        print(f"Player has: {self.player_hand_type.replace('_', ' ').title()}")
+        print(f"Enemy has: {self.enemy_hand_type.replace('_', ' ').title()}")
+        # player_score = self.get_hand_score(self.player_hand_type)
+        # enemy_score = self.get_hand_score(self.enemy_hand_type)
+        player_score = self.get_hand_score(self.player_hand_type)
+        enemy_score = self.get_hand_score(self.enemy_hand_type)
 
-        if player_hand_type == enemy_hand_type:
-            player_score += self.get_bonus_score_if_tied(player_hand_type, self.player_hand)
-            enemy_score += self.get_bonus_score_if_tied(enemy_hand_type, self.enemy_hand)
+        if self.player_hand_type == self.enemy_hand_type:
+            player_score += self.get_bonus_score_if_tied(self.player_hand_type, self.player_hand)
+            enemy_score += self.get_bonus_score_if_tied(self.enemy_hand_type, self.enemy_hand)
         print(f"Player score: {player_score}")
         print(f"Enemy score: {enemy_score}")
 
