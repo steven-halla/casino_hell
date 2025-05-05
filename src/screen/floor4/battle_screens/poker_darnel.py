@@ -84,30 +84,9 @@ class PokerDarnel(GambleScreen):
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
             # print("enemey ")
             if  state.controller.confirm_button:
-                self.poker_score_tracker()
-                print(f"Enemy hand before checking: {[card[2] for card in self.enemy_hand]}")
+                self.test_recursive_discard_with_type_check()
+                # self.poker_score_tracker()
 
-                print(f"Enemy hand before checking: {self.enemy_hand}")
-
-                for i, card in enumerate(self.enemy_hand):
-                    print(f"Checking card {card} at index {i}")
-
-                    # Create a temp hand without the current card
-                    temp_hand = self.enemy_hand[:i] + self.enemy_hand[i + 1:]
-                    temp_values = ",".join(str(c[2]) for c in temp_hand)
-                    print(f"Temp hand values after removing card: {temp_hand}")
-                    print(f"Comparing to desired hand values: {self.enemy_compare_hand}")
-
-                    # Compare values only
-                    if temp_values == self.enemy_compare_hand:
-                        print(f"Match found! Discarding card: {card}")
-                        self.enemy_temp_discard_storage.append(card)
-                        del self.enemy_hand[i]
-                        print(f"Enemy hand after discard: {self.enemy_hand}")
-                        print(f"Discard pile: {self.enemy_temp_discard_storage}")
-                        break
-                else:
-                    print("No discardable card found that results in a match.")
 
 
 
@@ -368,7 +347,49 @@ class PokerDarnel(GambleScreen):
         print(f"Player score: {player_score}")
         print(f"Enemy score: {enemy_score}")
 
+    def generate_dummy_hand(self, index: int) -> list[tuple[str, str, int]]:
+        dummy_enemy_hands = [
+            [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
+            [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
+            [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
+            [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
+            [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
+        ]
+        return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
+    def test_recursive_discard_with_type_check(self, index: int = 0, limit: int = 5):
+        if index >= limit:
+            print("All tests complete.")
+            return
 
+        original_hand = self.generate_dummy_hand(index)
+        self.enemy_hand = original_hand.copy()
+        self.enemy_temp_discard_storage.clear()
 
+        self.poker_score_tracker()
+        original_type = self.enemy_hand_type
 
+        print(f"\nTest #{index + 1}")
+        print(f"Starting enemy hand: {[c[2] for c in self.enemy_hand]} (Type: {original_type})")
+
+        for i, card in enumerate(original_hand):
+            temp_hand = original_hand[:i] + original_hand[i + 1:]
+            self.enemy_hand = temp_hand.copy()
+
+            self.poker_score_tracker()
+            new_type = self.enemy_hand_type
+
+            if new_type == original_type:
+                print(f"Valid discard: {card}")
+                self.enemy_temp_discard_storage.append(card)
+                self.enemy_hand = temp_hand.copy()
+                print(f"Enemy hand after discard: {[c[2] for c in self.enemy_hand]}")
+                print(f"Discard pile: {[c[2] for c in self.enemy_temp_discard_storage]}")
+                print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
+                break
+        else:
+            self.enemy_hand = original_hand.copy()
+            print("No discardable card found that preserves the hand type.")
+            print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
+
+        self.test_recursive_discard_with_type_check(index + 1, limit)
