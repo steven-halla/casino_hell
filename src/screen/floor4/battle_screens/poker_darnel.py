@@ -84,7 +84,7 @@ class PokerDarnel(GambleScreen):
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
             # print("enemey ")
             if  state.controller.confirm_button:
-                self.test_recursive_discard_with_type_check()
+                self.enemy_discard_logic()
                 # self.poker_score_tracker()
 
 
@@ -349,15 +349,23 @@ class PokerDarnel(GambleScreen):
 
     def generate_dummy_hand(self, index: int) -> list[tuple[str, str, int]]:
         dummy_enemy_hands = [
-            [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
-            [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
-            [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
-            [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
-            [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
+            # [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
+            # [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
+            # [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
+            # [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
+            # [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
+
+            [("9", "Hearts", 9), ("9", "Hearts", 9), ("9", "Hearts", 9)],  # Three of a Kind, all Hearts
+            [("4", "Clubs", 4), ("9", "Clubs", 9), ("7", "Clubs", 7)],  # One Pair, all Clubs
+            [("King", "Spades", 13), ("King", "Spades", 13), ("2", "Spades", 2)],  # One Pair, all Spades
+            [("3", "Diamonds", 3), ("3", "Diamonds", 3), ("3", "Diamonds", 3)],  # Three of a Kind, all Diamonds
+            [("4", "Hearts", 4), ("4", "Hearts", 4), ("10", "Hearts", 10)],
+            # One Pair, all Hearts (second Hearts case)
+
         ]
         return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
-    def test_recursive_discard_with_type_check(self, index: int = 0, limit: int = 5):
+    def enemy_discard_logic(self, index: int = 0, limit: int = 5):
         if index >= limit:
             print("All tests complete.")
             return
@@ -371,6 +379,14 @@ class PokerDarnel(GambleScreen):
 
         print(f"\nTest #{index + 1}")
         print(f"Starting enemy hand: {[c[2] for c in self.enemy_hand]} (Type: {original_type})")
+
+        # Check if all cards are the same suit
+        suits = [card[1] for card in self.enemy_hand]
+        if all(suit == suits[0] for suit in suits):
+            print("All cards are the same suit. No discard will occur.")
+            print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
+            self.enemy_discard_logic(index + 1, limit)
+            return
 
         for i, card in enumerate(original_hand):
             temp_hand = original_hand[:i] + original_hand[i + 1:]
@@ -392,4 +408,4 @@ class PokerDarnel(GambleScreen):
             print("No discardable card found that preserves the hand type.")
             print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
 
-        self.test_recursive_discard_with_type_check(index + 1, limit)
+        self.enemy_discard_logic(index + 1, limit)
