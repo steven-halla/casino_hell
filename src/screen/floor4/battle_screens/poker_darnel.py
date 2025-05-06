@@ -349,17 +349,17 @@ class PokerDarnel(GambleScreen):
 
     def generate_dummy_hand(self, index: int) -> list[tuple[str, str, int]]:
         dummy_enemy_hands = [
-            # [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
-            # [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
-            # [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
-            # [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
-            # [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
+            [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
+            [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
+            [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
+            [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
+            [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
 
-            # [("9", "Hearts", 9), ("9", "Hearts", 9), ("9", "Hearts", 9)],  # Three of a Kind, all Hearts
-            # [("4", "Clubs", 4), ("9", "Clubs", 9), ("7", "Clubs", 7)],  # One Pair, all Clubs
-            # [("King", "Spades", 13), ("King", "Spades", 13), ("2", "Spades", 2)],  # One Pair, all Spades
-            # [("3", "Diamonds", 3), ("3", "Diamonds", 3), ("3", "Diamonds", 3)],  # Three of a Kind, all Diamonds
-            # [("4", "Hearts", 4), ("4", "Hearts", 4), ("10", "Hearts", 10)],
+            [("9", "Hearts", 9), ("9", "Hearts", 9), ("9", "Hearts", 9)],  # Three of a Kind, all Hearts
+            [("4", "Clubs", 4), ("9", "Clubs", 9), ("7", "Clubs", 7)],  # One Pair, all Clubs
+            [("King", "Spades", 13), ("King", "Spades", 13), ("2", "Spades", 2)],  # One Pair, all Spades
+            [("3", "Diamonds", 3), ("3", "Diamonds", 3), ("3", "Diamonds", 3)],  # Three of a Kind, all Diamonds
+            [("4", "Hearts", 4), ("4", "Hearts", 4), ("10", "Hearts", 10)],
             # One Pair, all Hearts (second Hearts case)
 
             [("5", "Hearts", 5), ("8", "Clubs", 8), ("9", "Diamonds", 9)],  # ❌ diff = 2 → discard allowed
@@ -375,7 +375,7 @@ class PokerDarnel(GambleScreen):
         ]
         return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
-    def enemy_discard_logic(self, index: int = 0, limit: int = 5):
+    def enemy_discard_logic(self, index: int = 0, limit: int = 15):
         if index >= limit:
             print("All tests complete.")
             return
