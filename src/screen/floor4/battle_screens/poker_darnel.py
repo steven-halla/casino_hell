@@ -355,11 +355,11 @@ class PokerDarnel(GambleScreen):
             [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
             [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
 
-            [("9", "Hearts", 9), ("9", "Hearts", 9), ("9", "Hearts", 9)],  # Three of a Kind, all Hearts
-            [("4", "Clubs", 4), ("9", "Clubs", 9), ("7", "Clubs", 7)],  # One Pair, all Clubs
-            [("King", "Spades", 13), ("King", "Spades", 13), ("2", "Spades", 2)],  # One Pair, all Spades
-            [("3", "Diamonds", 3), ("3", "Diamonds", 3), ("3", "Diamonds", 3)],  # Three of a Kind, all Diamonds
-            [("4", "Hearts", 4), ("4", "Hearts", 4), ("10", "Hearts", 10)],
+            [("9", "Hearts", 9), ("4", "Spades", 4), ("2", "Clubs", 2)],  # All junk → discard 2, keep high card
+            [("King", "Hearts", 13), ("3", "Spades", 3), ("5", "Clubs", 5)],  # No hand, keep King only
+            [("10", "Hearts", 10), ("2", "Diamonds", 2), ("7", "Clubs", 7)],  # No sequence, no pair, keep 10
+            [("Jack", "Spades", 11), ("3", "Hearts", 3), ("5", "Diamonds", 5)],  # Only high card valuable
+            [("8", "Clubs", 8), ("4", "Diamonds", 4), ("6", "Hearts", 6)],  # Spread too far for straight, no match
             # One Pair, all Hearts (second Hearts case)
 
             [("5", "Hearts", 5), ("8", "Clubs", 8), ("9", "Diamonds", 9)],  # ❌ diff = 2 → discard allowed
@@ -374,6 +374,7 @@ class PokerDarnel(GambleScreen):
 
         ]
         return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
+
 
     def enemy_discard_logic(self, index: int = 0, limit: int = 15):
         if index >= limit:
@@ -397,7 +398,6 @@ class PokerDarnel(GambleScreen):
             self.enemy_discard_logic(index + 1, limit)
             return
 
-        # Check if all cards are the same suit
         suits = [card[1] for card in self.enemy_hand]
         if all(suit == suits[0] for suit in suits):
             print("All cards are the same suit. No discard will occur.")
@@ -405,24 +405,24 @@ class PokerDarnel(GambleScreen):
             self.enemy_discard_logic(index + 1, limit)
             return
 
+        valid_discard_indexes = []
         for i, card in enumerate(original_hand):
             temp_hand = original_hand[:i] + original_hand[i + 1:]
             self.enemy_hand = temp_hand.copy()
-
             self.poker_score_tracker()
-            new_type = self.enemy_hand_type
+            if self.enemy_hand_type == original_type:
+                valid_discard_indexes.append(i)
 
-            if new_type == original_type:
-                print(f"Valid discard: {card}")
-                self.enemy_temp_discard_storage.append(card)
-                self.enemy_hand = temp_hand.copy()
-                print(f"Enemy hand after discard: {[c[2] for c in self.enemy_hand]}")
-                print(f"Discard pile: {[c[2] for c in self.enemy_temp_discard_storage]}")
-                print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
-                break
+        # Apply valid discards safely (max 2)
+        if valid_discard_indexes:
+            for i in sorted(valid_discard_indexes[:2], reverse=True):
+                self.enemy_temp_discard_storage.append(original_hand[i])
+            self.enemy_hand = [card for j, card in enumerate(original_hand) if j not in valid_discard_indexes[:2]]
+            print(f"Valid discards: {[original_hand[i] for i in valid_discard_indexes[:2]]}")
+            print(f"Enemy hand after discard: {[c[2] for c in self.enemy_hand]}")
+            print(f"Discard pile: {[c[2] for c in self.enemy_temp_discard_storage]}")
         else:
-            self.enemy_hand = original_hand.copy()
             print("No discardable card found that preserves the hand type.")
-            print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
 
+        print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
         self.enemy_discard_logic(index + 1, limit)
