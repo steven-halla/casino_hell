@@ -355,12 +355,22 @@ class PokerDarnel(GambleScreen):
             # [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
             # [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
 
-            [("9", "Hearts", 9), ("9", "Hearts", 9), ("9", "Hearts", 9)],  # Three of a Kind, all Hearts
-            [("4", "Clubs", 4), ("9", "Clubs", 9), ("7", "Clubs", 7)],  # One Pair, all Clubs
-            [("King", "Spades", 13), ("King", "Spades", 13), ("2", "Spades", 2)],  # One Pair, all Spades
-            [("3", "Diamonds", 3), ("3", "Diamonds", 3), ("3", "Diamonds", 3)],  # Three of a Kind, all Diamonds
-            [("4", "Hearts", 4), ("4", "Hearts", 4), ("10", "Hearts", 10)],
+            # [("9", "Hearts", 9), ("9", "Hearts", 9), ("9", "Hearts", 9)],  # Three of a Kind, all Hearts
+            # [("4", "Clubs", 4), ("9", "Clubs", 9), ("7", "Clubs", 7)],  # One Pair, all Clubs
+            # [("King", "Spades", 13), ("King", "Spades", 13), ("2", "Spades", 2)],  # One Pair, all Spades
+            # [("3", "Diamonds", 3), ("3", "Diamonds", 3), ("3", "Diamonds", 3)],  # Three of a Kind, all Diamonds
+            # [("4", "Hearts", 4), ("4", "Hearts", 4), ("10", "Hearts", 10)],
             # One Pair, all Hearts (second Hearts case)
+
+            [("5", "Hearts", 5), ("8", "Clubs", 8), ("9", "Diamonds", 9)],  # ❌ diff = 2 → discard allowed
+            [("4", "Spades", 4), ("7", "Hearts", 7), ("9", "Clubs", 9)],  # ❌ 4 too far from 7/9
+            [("6", "Diamonds", 6), ("9", "Spades", 9), ("10", "Hearts", 10)],  # ❌ 6 is far from 9/10
+            [("3", "Hearts", 3), ("6", "Clubs", 6), ("7", "Diamonds", 7)],  # ❌ 3 too far from 6/7
+            [("5", "Spades", 5), ("7", "Hearts", 7), ("8", "Diamonds", 8)]
+            # ✅ 7-8 close, 5 is borderline → prevent discard
+            # ✅ 5-7 close, but Queen invalidates sequence
+
+
 
         ]
         return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
@@ -379,6 +389,13 @@ class PokerDarnel(GambleScreen):
 
         print(f"\nTest #{index + 1}")
         print(f"Starting enemy hand: {[c[2] for c in self.enemy_hand]} (Type: {original_type})")
+
+        values = sorted([card[2] for card in self.enemy_hand])
+        if values[-1] - values[0] <= 3 and min(values) >= 4 and max(values) <= 12:
+            print("Cards are close together and mid-range. Potential for flush or straight. No discard will occur.")
+            print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
+            self.enemy_discard_logic(index + 1, limit)
+            return
 
         # Check if all cards are the same suit
         suits = [card[1] for card in self.enemy_hand]
