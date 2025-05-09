@@ -16,24 +16,26 @@ class PokerDarnel(GambleScreen):
         self.enemy_hand_type = ""
         self.player_bet: int = 0
         self.enemy_bet: int = 0
-        self.game_state = self.ENEMY_REDRAW_SCREEN
+        self.game_state = self.DEAL_CARDS_SCREEN
         self.deck = Deck()
+        self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
+                           for rank, suit, value in self.deck.cards]
+        # Remove duplicate Aces
+        self.deck.cards = [card if card[0] != "Ace" else ("Ace", card[1], 14) for card in self.deck.cards]
+
         self.player_hand_score: int = 0
         self.player_value_score: int = 0
         self.enemy_hand_score: int = 0
         self.enemy_value_score: int = 0
         self.enemy_hand_power: int = 0
+        self.deck.shuffle()
 
         self.player_hand = [
-            ("5", "Hearts", 5),
-            ("6", "Spades", 6),
-            ("7", "Clubs", 7),
+
         ]
 
         self.enemy_hand = [
-            ("9", "Diamonds", 9),
-            ("9", "Hearts", 9),
-            ("2", "Clubs", 2),
+
         ]
         # self.player_hand: list[tuple[str, str, int]] = [
         #
@@ -47,7 +49,8 @@ class PokerDarnel(GambleScreen):
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
     ENEMY_REDRAW_SCREEN: str = "enemy_redraw_screen"
-    FOURTH_ROUND_SHOW: str = "fourth_round_show"
+    ENEMY_DISCARD_SCREEN: str = "enemy_discard_screen"
+    REVEAL_FUTURE_CARDS: str = "reveal_future_cards"
     FOURTH_ROUND_DEAL: str = "fourth_round_deal"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
     FIFTH_ROUND_DEAL: str = "fifth_round_deal"
@@ -68,37 +71,42 @@ class PokerDarnel(GambleScreen):
 
         if self.game_state == self.WELCOME_SCREEN:
             print("welcome screen")
-
-
         elif self.game_state == self.BET_SCREEN:
             print("In bet screen")
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             print("Magic screen")
         elif self.game_state == self.DEAL_CARDS_SCREEN:
-            print("Dealing cards screen")
+            if state.controller.confirm_button:
+
+                self.player_hand = self.deck.player_draw_hand(3)
+                self.enemy_hand = self.deck.enemy_draw_hand(3)
+                print("Player hand:" + str(self.player_hand))
+                print("Enemy hand" + str(self.enemy_hand))
+
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             print("Player redraw screen")
-        elif self.game_state == self.ENEMY_REDRAW_SCREEN:
+        elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             # print("enemey ")
             if  state.controller.confirm_button:
                 self.enemy_discard_logic()
                 # self.poker_score_tracker()
 
-
-
+        elif self.game_state == self.ENEMY_REDRAW_SCREEN:
+            print("Player redraw screen")
 
 
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
-        elif self.game_state == self.FOURTH_ROUND_SHOW:
-            print("showing next cards")
+
+        elif self.game_state == self.REVEAL_FUTURE_CARDS:
+            print("reveal future cards screen")
+
         elif self.game_state == self.FOURTH_ROUND_DEAL:
             print("dealing 4th cards")
-        elif self.game_state == self.FIFTH_ROUND_SHOW:
-            print("showing next cards 5th round")
+
         elif self.game_state == self.FIFTH_ROUND_DEAL:
             print("Dealing final cards")
         elif self.game_state == self.FINAL_RESULTS:
@@ -127,16 +135,19 @@ class PokerDarnel(GambleScreen):
             # 5th round is the same
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             pass
+        elif self.game_state == self.ENEMY_DISCARD_SCREEN:
+            pass
+
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
             pass
         elif self.game_state == self.ACTION_SCREEN:
             print("Action screen")
-        elif self.game_state == self.FOURTH_ROUND_SHOW:
-            print("showing next cards")
+        elif self.game_state == self.REVEAL_FUTURE_CARDS:
+            pass
+
         elif self.game_state == self.FOURTH_ROUND_DEAL:
             print("dealing 4th cards")
-        elif self.game_state == self.FIFTH_ROUND_SHOW:
-            print("showing next cards 5th round")
+
         elif self.game_state == self.FIFTH_ROUND_DEAL:
             print("Dealing final cards")
         elif self.game_state == self.FINAL_RESULTS:
@@ -347,41 +358,41 @@ class PokerDarnel(GambleScreen):
         print(f"Player score: {player_score}")
         print(f"Enemy score: {enemy_score}")
 
-    def generate_dummy_hand(self, index: int) -> list[tuple[str, str, int]]:
-        dummy_enemy_hands = [
-            [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
-            [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
-            [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
-            [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
-            [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
+    ## def #generate_dummy_hand(self, index: int) -> list[tuple[str, str, int]]:#
+    #     #dummy_enemy_hands = [#
+    #         [("9", "Hearts", 9), ("9", "Spades", 9), ("2", "Clubs", 2)],        # One Pair
+    #         [("5", "Diamonds", 5), ("5", "Clubs", 5), ("5", "Hearts", 5)],      # Three of a Kind
+    #         [("10", "Hearts", 10), ("Jack", "Spades", 11), ("Queen", "Clubs", 12)],  # No Hand
+    #         [("2", "Spades", 2), ("2", "Hearts", 2), ("3", "Clubs", 3)],        # Three of a Kind
+    #         [("7", "Diamonds", 7), ("7", "Clubs", 7), ("9", "Hearts", 9)],      # One Pair
+    #
+    #         [("9", "Hearts", 9), ("4", "Spades", 4), ("2", "Clubs", 2)],  # All junk → discard 2, keep high card
+    #         [("King", "Hearts", 13), ("3", "Spades", 3), ("5", "Clubs", 5)],  # No hand, keep King only
+    #         [("10", "Hearts", 10), ("2", "Diamonds", 2), ("7", "Clubs", 7)],  # No sequence, no pair, keep 10
+    #         [("Jack", "Spades", 11), ("3", "Hearts", 3), ("5", "Diamonds", 5)],  # Only high card valuable
+    #         [("8", "Clubs", 8), ("4", "Diamonds", 4), ("6", "Hearts", 6)],  # Spread too far for straight, no match
+    #         # One Pair, all Hearts (second Hearts case)
+    #
+    #         [("5", "Hearts", 5), ("8", "Clubs", 8), ("9", "Diamonds", 9)],  # ❌ diff = 2 → discard allowed
+    #         [("4", "Spades", 4), ("7", "Hearts", 7), ("9", "Clubs", 9)],  # ❌ 4 too far from 7/9
+    #         [("6", "Diamonds", 6), ("9", "Spades", 9), ("10", "Hearts", 10)],  # ❌ 6 is far from 9/10
+    #         [("3", "Hearts", 3), ("6", "Clubs", 6), ("7", "Diamonds", 7)],  # ❌ 3 too far from 6/7
+    #         [("5", "Spades", 5), ("7", "Hearts", 7), ("8", "Diamonds", 8)]
+    #         # ✅ 7-8 close, 5 is borderline → prevent discard
+    #         # ✅ 5-7 close, but Queen invalidates sequence
+    #
+    #
+    #
+    #     ]
+    #     return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
-            [("9", "Hearts", 9), ("4", "Spades", 4), ("2", "Clubs", 2)],  # All junk → discard 2, keep high card
-            [("King", "Hearts", 13), ("3", "Spades", 3), ("5", "Clubs", 5)],  # No hand, keep King only
-            [("10", "Hearts", 10), ("2", "Diamonds", 2), ("7", "Clubs", 7)],  # No sequence, no pair, keep 10
-            [("Jack", "Spades", 11), ("3", "Hearts", 3), ("5", "Diamonds", 5)],  # Only high card valuable
-            [("8", "Clubs", 8), ("4", "Diamonds", 4), ("6", "Hearts", 6)],  # Spread too far for straight, no match
-            # One Pair, all Hearts (second Hearts case)
 
-            [("5", "Hearts", 5), ("8", "Clubs", 8), ("9", "Diamonds", 9)],  # ❌ diff = 2 → discard allowed
-            [("4", "Spades", 4), ("7", "Hearts", 7), ("9", "Clubs", 9)],  # ❌ 4 too far from 7/9
-            [("6", "Diamonds", 6), ("9", "Spades", 9), ("10", "Hearts", 10)],  # ❌ 6 is far from 9/10
-            [("3", "Hearts", 3), ("6", "Clubs", 6), ("7", "Diamonds", 7)],  # ❌ 3 too far from 6/7
-            [("5", "Spades", 5), ("7", "Hearts", 7), ("8", "Diamonds", 8)]
-            # ✅ 7-8 close, 5 is borderline → prevent discard
-            # ✅ 5-7 close, but Queen invalidates sequence
-
-
-
-        ]
-        return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
-
-
-    def enemy_discard_logic(self, index: int = 0, limit: int = 15):
+    def enemy_discard_logic(self, index: int = 0, limit: int = 1):
         if index >= limit:
             print("All tests complete.")
             return
 
-        original_hand = self.generate_dummy_hand(index)
+        original_hand = self.enemy_hand
         self.enemy_hand = original_hand.copy()
         self.enemy_temp_discard_storage.clear()
 

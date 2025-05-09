@@ -1,5 +1,5 @@
 import random
-from typing import List, Tuple
+from typing import List, Tuple, Union, Dict
 
 import pygame
 
@@ -8,21 +8,36 @@ from entity.entity import Entity
 
 class Deck:
     def __init__(self):
-        self.ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
-        self.suits = ['Spades', 'Diamonds', 'Clubs', 'Hearts']
-        self.rank_strings = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7",
+        self.ranks: List[Union[int, str]] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King', 'Ace']
+        self.suits: List[str] = ['Spades', 'Diamonds', 'Clubs', 'Hearts']
+        self.rank_strings: Dict[Union[int, str], str] = {2: "2", 3: "3", 4: "4", 5: "5", 6: "6", 7: "7",
                              8: "8",
                              9: "9", 10: "10", "Jack": "Jack", "Queen": "Queen",
                              "King": "King", "Ace": "Ace"}
-        self.suit_strings = {"Spades": "Spades", "Diamonds": "Diamonds",
+        self.suit_strings: Dict[str] = {"Spades": "Spades", "Diamonds": "Diamonds",
                              "Clubs": "Clubs", "Hearts": "Hearts"}
-        self.rank_values = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9,
-                            10: 10, "Jack": 10, "Queen": 10,
-                            "King": 10, "Ace": 11}
-        self.rank_values_high_low = {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9,
-                            10: 10, "Jack": 11, "Queen": 12,
-                            "King": 13, "Ace": 20}
-        self.rank_order_poker = {
+        self.rank_values: Dict[Union[int, str], int] = {
+            2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7,
+            8: 8, 9: 9, 10: 10,
+            "Jack": 10, "Queen": 10, "King": 10, "Ace": 11
+        }
+        self.rank_values_high_low: Dict[Union[int, str], int] = {
+            2: 2,
+            3: 3,
+            4: 4,
+            5: 5,
+            6: 6,
+            7: 7,
+            8: 8,
+            9: 9,
+            10: 10,
+            "Jack": 11,
+            "Queen": 12,
+            "King": 13,
+            "Ace": 20,
+        }
+
+        self.rank_order_poker: Dict[str, int] = {
             "2": 2,
             "3": 3,
             "4": 4,
@@ -35,16 +50,21 @@ class Deck:
             "Jack": 11,
             "Queen": 12,
             "King": 13,
-            "Ace": 14
+            "Ace": 14,
         }
+
         self.cards = [(self.rank_strings[rank], self.suit_strings[suit],
                        self.rank_values[rank]) for suit in self.suits
                       for rank in self.ranks]
+
+        self.poker_cards = [(self.rank_strings[rank], self.suit_strings[suit],
+                             self.rank_order_poker[str(rank)]) for suit in self.suits
+                            for rank in self.ranks]
         self.isBlackJack = False
-        self.black_jack_counter = 0
+        self.black_jack_counter: int = 0
         self.sprite_size = (67, 95)
-        self.card_width = 68
-        self.card_height = 98
+        self.card_width: int = 68
+        self.card_height: int = 98
 
         self.sprite_sheet = pygame.image.load("./assets/images/playingcards.png")
 

@@ -356,6 +356,8 @@ POKER SPELL:
 BLuff - Makes enemy fold depending on their hand
 i could also make a bluff mechanic 
 
+poker 
+
 
 i can use the below:
 
