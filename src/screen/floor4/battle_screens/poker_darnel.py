@@ -119,32 +119,41 @@ class PokerDarnel(GambleScreen):
                 else:
                     print(f"Card {self.player_redraw_menu_index - 1} selected: {self.player_hand[self.player_redraw_menu_index - 2]}")
 
-            if state.controller.confirm_button and len(self.player_card_garbage_can) <= 1:
+            if state.controller.confirm_button and len(self.player_card_garbage_can) <= 2:
                 if self.player_redraw_menu_index == 0:
                     print("go to play screen and keep your hand")
                 elif self.player_redraw_menu_index == 1:
-                    print("discard cards that are selected")
+                    if len(self.player_hand) >= 1:  # Make sure there's at least 1 card left in hand
+                        print("Current player hand: " + str(self.player_hand))
+                        print("Cards in garbage can: " + str(self.player_card_garbage_can))
+
+                        # Create a new hand without the discarded cards
+                        self.player_hand = [card for card in self.player_hand if card not in self.player_card_garbage_can]
+
+                        print("Player hand after removing discarded cards: " + str(self.player_hand))
+                        print("Moving to draw card screen...")
+
                 elif self.player_redraw_menu_index == 2:
-                    if self.player_hand[0] not in self.player_card_garbage_can:
+                    if len(self.player_card_garbage_can) < 2 and self.player_hand[0] not in self.player_card_garbage_can:
                         print("place card selected is: " + str(self.player_hand[0]))
                         self.player_card_garbage_can.append(self.player_hand[0])
                         print("your trash can contents" + str(self.player_card_garbage_can))
                     else:
-                        print("This card is already in the discard pile")
+                        print("Cannot discard more cards or this card is already in the discard pile")
                 elif self.player_redraw_menu_index == 3:
-                    if self.player_hand[1] not in self.player_card_garbage_can:
+                    if len(self.player_card_garbage_can) < 2 and self.player_hand[1] not in self.player_card_garbage_can:
                         print("place card selected is: " + str(self.player_hand[1]))
                         self.player_card_garbage_can.append(self.player_hand[1])
                         print("your trash can contents" + str(self.player_card_garbage_can))
                     else:
-                        print("This card is already in the discard pile")
+                        print("Cannot discard more cards or this card is already in the discard pile")
                 elif self.player_redraw_menu_index == 4:
-                    if self.player_hand[2] not in self.player_card_garbage_can:
+                    if len(self.player_card_garbage_can) < 2 and self.player_hand[2] not in self.player_card_garbage_can:
                         print("place card selected is: " + str(self.player_hand[2]))
                         self.player_card_garbage_can.append(self.player_hand[2])
                         print("your trash can contents" + str(self.player_card_garbage_can))
                     else:
-                        print("This card is already in the discard pile")
+                        print("Cannot discard more cards or this card is already in the discard pile")
 
 
 
