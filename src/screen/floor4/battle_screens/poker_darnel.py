@@ -16,7 +16,10 @@ class PokerDarnel(GambleScreen):
         self.enemy_hand_type = ""
         self.player_bet: int = 0
         self.enemy_bet: int = 0
-        self.game_state = self.DEAL_CARDS_SCREEN
+        self.player_redraw_menu_index = 0
+        self.player_card_garbage_can = []
+
+        self.game_state = self.PLAYER_REDRAW_SCREEN
         self.deck = Deck()
         self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
                            for rank, suit, value in self.deck.cards]
@@ -31,6 +34,9 @@ class PokerDarnel(GambleScreen):
         self.deck.shuffle()
 
         self.player_hand = [
+            ("Ace", "Hearts", 14),
+            ("King", "Spades", 13),
+            ("Queen", "Diamonds", 12)
 
         ]
 
@@ -87,7 +93,81 @@ class PokerDarnel(GambleScreen):
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
-            print("Player redraw screen")
+            # Initialize index if not already set
+
+
+            if state.controller.up_button:
+                # Move up with wraparound
+                self.player_redraw_menu_index = (self.player_redraw_menu_index - 1) % 5
+                # Print current selection based on index
+                if self.player_redraw_menu_index == 0:
+                    print("Play selected")
+                elif self.player_redraw_menu_index == 1:
+                    print("Redraw selected")
+                else:
+                    print(f"Card {self.player_redraw_menu_index - 1} selected: {self.player_hand[self.player_redraw_menu_index - 2]}")
+
+            elif state.controller.down_button:
+
+                # Move down with wraparound
+                self.player_redraw_menu_index = (self.player_redraw_menu_index + 1) % 5
+                # Print current selection based on index
+                if self.player_redraw_menu_index == 0:
+                    print("Play selected")
+                elif self.player_redraw_menu_index == 1:
+                    print("Redraw selected")
+                else:
+                    print(f"Card {self.player_redraw_menu_index - 1} selected: {self.player_hand[self.player_redraw_menu_index - 2]}")
+
+            if state.controller.confirm_button and len(self.player_card_garbage_can) <= 1:
+                if self.player_redraw_menu_index == 0:
+                    print("go to play screen and keep your hand")
+                elif self.player_redraw_menu_index == 1:
+                    print("discard cards that are selected")
+                elif self.player_redraw_menu_index == 2:
+                    if self.player_hand[0] not in self.player_card_garbage_can:
+                        print("place card selected is: " + str(self.player_hand[0]))
+                        self.player_card_garbage_can.append(self.player_hand[0])
+                        print("your trash can contents" + str(self.player_card_garbage_can))
+                    else:
+                        print("This card is already in the discard pile")
+                elif self.player_redraw_menu_index == 3:
+                    if self.player_hand[1] not in self.player_card_garbage_can:
+                        print("place card selected is: " + str(self.player_hand[1]))
+                        self.player_card_garbage_can.append(self.player_hand[1])
+                        print("your trash can contents" + str(self.player_card_garbage_can))
+                    else:
+                        print("This card is already in the discard pile")
+                elif self.player_redraw_menu_index == 4:
+                    if self.player_hand[2] not in self.player_card_garbage_can:
+                        print("place card selected is: " + str(self.player_hand[2]))
+                        self.player_card_garbage_can.append(self.player_hand[2])
+                        print("your trash can contents" + str(self.player_card_garbage_can))
+                    else:
+                        print("This card is already in the discard pile")
+
+
+
+            elif state.controller.action_and_cancel_button:
+                if self.player_redraw_menu_index == 2 and self.player_hand[0] in self.player_card_garbage_can:
+                    self.player_card_garbage_can.remove(self.player_hand[0])
+                    print(f"Removed first card from discard pile: {self.player_hand[0]}")
+                elif self.player_redraw_menu_index == 3 and self.player_hand[1] in self.player_card_garbage_can:
+                    self.player_card_garbage_can.remove(self.player_hand[1])
+                    print(f"Removed second card from discard pile: {self.player_hand[1]}")
+                elif self.player_redraw_menu_index == 4 and self.player_hand[2] in self.player_card_garbage_can:
+                    self.player_card_garbage_can.remove(self.player_hand[2])
+                    print(f"Removed third card from discard pile: {self.player_hand[2]}")
+
+
+            if state.controller.left_button:
+                print("your trash can contents" + str(self.player_card_garbage_can))
+
+
+
+
+
+
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             # print("enemey ")
             if  state.controller.confirm_button:
