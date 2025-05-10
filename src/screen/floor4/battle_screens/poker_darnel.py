@@ -18,8 +18,10 @@ class PokerDarnel(GambleScreen):
         self.enemy_bet: int = 0
         self.player_redraw_menu_index = 0
         self.player_card_garbage_can = []
+        self.add_player_bet: int = 0
+        self.add_enemy_bet:int = 0
 
-        self.game_state = self.PLAYER_REDRAW_SCREEN
+        self.game_state = self.BET_SCREEN
         self.deck = Deck()
         self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
                            for rank, suit, value in self.deck.cards]
@@ -77,7 +79,33 @@ class PokerDarnel(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             print("welcome screen")
         elif self.game_state == self.BET_SCREEN:
-            print("In bet screen")
+            if state.controller.up_button:
+                if self.add_player_bet + 25 <= 100:  # Check if adding 25 won't exceed max
+                    self.add_player_bet += 25
+                    print(f"Bet increased to: {self.add_player_bet}")
+
+            elif state.controller.down_button:
+                if self.add_player_bet - 25 >= 25:  # Check if subtracting 25 won't go below min
+                    self.add_player_bet -= 25
+                    print(f"Bet decreased to: {self.add_player_bet}")
+
+            # Ensure bet stays within valid range
+            if self.add_player_bet < 25:
+                self.add_player_bet = 25
+            elif self.add_player_bet > 100:
+                self.add_player_bet = 100
+
+            # Ensure bet doesn't exceed player's money
+            if self.add_player_bet > state.player.money:
+                self.add_player_bet = (state.player.money // 25) * 25  # Round down to nearest 25
+                if self.add_player_bet < 25:  # If player has less than minimum bet
+                    self.add_player_bet = 0  # Or handle insufficient funds cas
+
+            if state.controller.confirm_button:
+                self.player_bet += self.add_player_bet
+                print("How much will you add?" + str(self.add_player_bet))
+                print("Your total bet amount" + str(self.player_bet))
+
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             print("Magic screen")
         elif self.game_state == self.DEAL_CARDS_SCREEN:
@@ -168,19 +196,12 @@ class PokerDarnel(GambleScreen):
                     print(f"Removed third card from discard pile: {self.player_hand[2]}")
 
 
-
-
-
-
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             while len(self.player_hand) < 3:
                 drawn_card = self.deck.get_next_card()
                 self.player_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
                 print("your player hand" + str(self.player_hand))
-
-
-
 
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             # print("enemey ")
@@ -189,7 +210,11 @@ class PokerDarnel(GambleScreen):
                 # self.poker_score_tracker()
 
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
-            print("Player redraw screen")
+            while len(self.enemy_hand) < 3:
+                drawn_card = self.deck.get_next_card()
+                self.enemy_hand.append(drawn_card)
+                print(f"Drew card: {drawn_card}")
+                print("your enemy hand" + str(self.enemy_hand))
 
 
         elif self.game_state == self.ACTION_SCREEN:
@@ -219,9 +244,9 @@ class PokerDarnel(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             pass
         elif self.game_state == self.BET_SCREEN:
-            print("In bet screen")
+            pass
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            print("Magic screen")
+            pass
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             pass
             # First we dela out 3 cards, players can fold/hold
@@ -238,23 +263,23 @@ class PokerDarnel(GambleScreen):
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
             pass
         elif self.game_state == self.ACTION_SCREEN:
-            print("Action screen")
+            pass
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             pass
 
         elif self.game_state == self.FOURTH_ROUND_DEAL:
-            print("dealing 4th cards")
+            pass
 
         elif self.game_state == self.FIFTH_ROUND_DEAL:
-            print("Dealing final cards")
+            pass
         elif self.game_state == self.FINAL_RESULTS:
-            print("final resutls")
+            pass
         elif self.game_state == self.PLAYER_WINS:
-            print("Player wins ")
+            pass
         elif self.game_state == self.ENEMY_WINS:
-            print("ENEMY WINS")
+            pass
         elif self.game_state == self.DRAW:
-            print("Draw")
+            pass
 
         pygame.display.flip()
 
