@@ -34,9 +34,7 @@ class PokerDarnel(GambleScreen):
         self.deck.shuffle()
 
         self.player_hand = [
-            ("Ace", "Hearts", 14),
-            ("King", "Spades", 13),
-            ("Queen", "Diamonds", 12)
+            ("Ace", "Hearts", 14)
 
         ]
 
@@ -54,6 +52,7 @@ class PokerDarnel(GambleScreen):
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
+    PLAYER_DISCARD_SCREEN: str = "player_discard_screen"
     ENEMY_REDRAW_SCREEN: str = "enemy_redraw_screen"
     ENEMY_DISCARD_SCREEN: str = "enemy_discard_screen"
     REVEAL_FUTURE_CARDS: str = "reveal_future_cards"
@@ -92,7 +91,7 @@ class PokerDarnel(GambleScreen):
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
-        elif self.game_state == self.PLAYER_REDRAW_SCREEN:
+        elif self.game_state == self.PLAYER_DISCARD_SCREEN:
             # Initialize index if not already set
 
 
@@ -122,7 +121,7 @@ class PokerDarnel(GambleScreen):
             if state.controller.confirm_button and len(self.player_card_garbage_can) <= 2:
                 if self.player_redraw_menu_index == 0:
                     print("go to play screen and keep your hand")
-                elif self.player_redraw_menu_index == 1:
+                elif self.player_redraw_menu_index == 1 and len(self.player_card_garbage_can) > 0:
                     if len(self.player_hand) >= 1:  # Make sure there's at least 1 card left in hand
                         print("Current player hand: " + str(self.player_hand))
                         print("Cards in garbage can: " + str(self.player_card_garbage_can))
@@ -169,10 +168,16 @@ class PokerDarnel(GambleScreen):
                     print(f"Removed third card from discard pile: {self.player_hand[2]}")
 
 
-            if state.controller.left_button:
-                print("your trash can contents" + str(self.player_card_garbage_can))
 
 
+
+
+        elif self.game_state == self.PLAYER_REDRAW_SCREEN:
+            while len(self.player_hand) < 3:
+                drawn_card = self.deck.get_next_card()
+                self.player_hand.append(drawn_card)
+                print(f"Drew card: {drawn_card}")
+                print("your player hand" + str(self.player_hand))
 
 
 
@@ -223,6 +228,9 @@ class PokerDarnel(GambleScreen):
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
+            pass
+
+        elif self.game_state == self.PLAYER_DISCARD_SCREEN:
             pass
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             pass
