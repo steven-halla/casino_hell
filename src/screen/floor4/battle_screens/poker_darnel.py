@@ -4,6 +4,7 @@ from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
 from tests.test_poker_darnel import test_poker_score_tracker
 from types import *
+import random
 
 
 class PokerDarnel(GambleScreen):
@@ -20,8 +21,11 @@ class PokerDarnel(GambleScreen):
         self.player_card_garbage_can = []
         self.add_player_bet: int = 0
         self.add_enemy_bet:int = 0
+        self.action_menu_index: int = 0
+        self.future_cards_container: list = []
 
-        self.game_state = self.BET_SCREEN
+        self.game_state = self.FINAL_RESULTS
+
         self.deck = Deck()
         self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
                            for rank, suit, value in self.deck.cards]
@@ -36,13 +40,24 @@ class PokerDarnel(GambleScreen):
         self.deck.shuffle()
 
         self.player_hand = [
-            ("Ace", "Hearts", 14)
+            ("Ace", "Spades", 14),
+            ("Ace", "Hearts", 14),
+            ("Ace", "Diamonds", 14),
+            ("Ace", "Clubs", 14),
+            ("King", "Hearts", 13)
 
         ]
 
+        # Enemy hand: Full House (Kings over Queens)
         self.enemy_hand = [
+            ("Ace", "Spades", 14),
+            ("Ace", "Hearts", 14),
+            ("Ace", "Diamonds", 14),
+            ("Ace", "Clubs", 14),
+            ("King", "Hearts", 13)
 
         ]
+
         # self.player_hand: list[tuple[str, str, int]] = [
         #
         # ]
@@ -58,7 +73,7 @@ class PokerDarnel(GambleScreen):
     ENEMY_REDRAW_SCREEN: str = "enemy_redraw_screen"
     ENEMY_DISCARD_SCREEN: str = "enemy_discard_screen"
     REVEAL_FUTURE_CARDS: str = "reveal_future_cards"
-    FOURTH_ROUND_DEAL: str = "fourth_round_deal"
+    DRAW_ONE_CARD: str = "draw_one_card"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
     FIFTH_ROUND_DEAL: str = "fifth_round_deal"
     FINAL_RESULTS: str = "final_results"
@@ -98,16 +113,20 @@ class PokerDarnel(GambleScreen):
             # Ensure bet doesn't exceed player's money
             if self.add_player_bet > state.player.money:
                 self.add_player_bet = (state.player.money // 25) * 25  # Round down to nearest 25
-                if self.add_player_bet < 25:  # If player has less than minimum bet
+                if self.add_player_bet < 0:  # If player has less than minimum bet
                     self.add_player_bet = 0  # Or handle insufficient funds cas
 
             if state.controller.confirm_button:
                 self.player_bet += self.add_player_bet
                 print("How much will you add?" + str(self.add_player_bet))
                 print("Your total bet amount" + str(self.player_bet))
+                self.add_player_bet = 0
+
+                if state.controller.confirm_button:
+                    self.game_state = self.ACTION_SCREEN
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            print("Magic screen")
+            print("Magic cast card swap")
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             if state.controller.confirm_button:
 
@@ -121,8 +140,6 @@ class PokerDarnel(GambleScreen):
             # 5th round is the same
         elif self.game_state == self.PLAYER_DISCARD_SCREEN:
             # Initialize index if not already set
-
-
             if state.controller.up_button:
                 # Move up with wraparound
                 self.player_redraw_menu_index = (self.player_redraw_menu_index - 1) % 5
@@ -218,18 +235,91 @@ class PokerDarnel(GambleScreen):
 
 
         elif self.game_state == self.ACTION_SCREEN:
-            print("Action screen")
+            if state.controller.up_button:
+                self.action_menu_index += 1
+                print("the action menu index is: " + str(self.action_menu_index))
+            elif state.controller.down_button:
+                self.action_menu_index -= 1
+                print("the action menu index is: " + str(self.action_menu_index))
+
+            if state.controller.confirm_button:
+                if self.action_menu_index == 0:
+                    if len(self.player_hand) == 3:
+                        self.game_state = self.REVEAL_FUTURE_CARDS
+                    elif len(self.player_hand) < 5:
+                        self.game_state = self.DRAW_ONE_CARD
+                    elif len(self.player_hand) == 6:
+                        self.game_state = self.FINAL_RESULTS
+
+
+                elif self.action_menu_index == 1:
+                    print("time to bluffallo")
+                elif self.action_menu_index == 2:
+                    print("time to cast a spell card swap")
+                elif self.action_menu_index == 3:
+                    print("time to place your bet")
+                    self.game_state = self.BET_SCREEN
+
 
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
-            print("reveal future cards screen")
+            if state.controller.confirm_button:
+                self.reveal_future_cards()
 
-        elif self.game_state == self.FOURTH_ROUND_DEAL:
-            print("dealing 4th cards")
+        elif self.game_state == self.DRAW_ONE_CARD:
 
-        elif self.game_state == self.FIFTH_ROUND_DEAL:
-            print("Dealing final cards")
+            if state.controller.confirm_button:
+
+                drawn_card = self.deck.get_next_card()
+                self.player_hand.append(drawn_card)
+                print(f"Player drew: {drawn_card}")
+
+                # Update player score
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+                # Draw one card for enemy
+                enemy_card = self.deck.get_next_card()
+                self.enemy_hand.append(enemy_card)
+                print(f"Enemy drew: {enemy_card}")
+
+                # Update enemy score
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+
+                # Move to next game state after drawing
+                self.game_state = self.ACTION_SCREEN
+
+
+
+
         elif self.game_state == self.FINAL_RESULTS:
-            print("final resutls")
+            if state.controller.confirm_button:
+                self.poker_score_tracker()
+
+                # Get final scores
+                player_score = self.get_hand_score(self.player_hand_type)
+                enemy_score = self.get_hand_score(self.enemy_hand_type)
+
+                # If hands are the same type, add bonus scores
+                if self.player_hand_type == self.enemy_hand_type:
+                    player_score += self.get_bonus_score_if_tied(self.player_hand_type, self.player_hand)
+                    enemy_score += self.get_bonus_score_if_tied(self.enemy_hand_type, self.enemy_hand)
+
+                # Debug prints
+                print("\nFinal Results:")
+                print("Player's Hand:", self.player_hand)
+                print("Enemy's Hand:", self.enemy_hand)
+                print("\nHand Types:")
+                print(f"Player Hand Type: {self.player_hand_type} (Score: {player_score})")
+                print(f"Enemy Hand Type: {self.enemy_hand_type} (Score: {enemy_score})")
+
+                if player_score > enemy_score:
+                    self.game_state = self.PLAYER_WINS
+                elif player_score < enemy_score:
+                    self.game_state = self.ENEMY_WINS
+                else:
+                    self.game_state = self.DRAW
+
+
+
         elif self.game_state == self.PLAYER_WINS:
             print("Player wins ")
         elif self.game_state == self.ENEMY_WINS:
@@ -267,11 +357,10 @@ class PokerDarnel(GambleScreen):
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             pass
 
-        elif self.game_state == self.FOURTH_ROUND_DEAL:
+        elif self.game_state == self.DRAW_ONE_CARD:
             pass
 
-        elif self.game_state == self.FIFTH_ROUND_DEAL:
-            pass
+
         elif self.game_state == self.FINAL_RESULTS:
             pass
         elif self.game_state == self.PLAYER_WINS:
@@ -508,6 +597,36 @@ class PokerDarnel(GambleScreen):
     #     ]
     #     return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
+    def reveal_future_cards(self):
+        # Print initial top 6 cards
+        print("Initial top 6 cards of deck:")
+        for i in range(min(6, len(self.deck.cards))):
+            print(self.deck.cards[-(i+1)])
+        print("\n")
+
+        # Draw 4 cards and store them
+        self.future_cards_container = self.deck.player_draw_hand(4)
+
+        print("Initial 4 drawn cards:")
+        for card in self.future_cards_container:
+            print(card)
+        print("\n")
+
+        # Shuffle the drawn cards
+        random.shuffle(self.future_cards_container)
+
+        print("4 cards after shuffling:")
+        for card in self.future_cards_container:
+            print(card)
+        print("\n")
+
+        # Place the shuffled cards back on top of the deck
+        for card in reversed(self.future_cards_container):
+            self.deck.cards.append(card)
+
+        print("Top 6 cards after placing shuffled cards on deck:")
+        for i in range(min(6, len(self.deck.cards))):
+            print(self.deck.cards[-(i+1)])
 
     def enemy_discard_logic(self, index: int = 0, limit: int = 1):
         if index >= limit:
