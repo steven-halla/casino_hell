@@ -23,6 +23,7 @@ class Magic(Enum):
     # dice fighter
     BAD_LUCK = "bad luck" # affects enemy attack rolls
     GOOD_LUCK = "good luck" # adds + 3 to luck
+    POKER_CARD_SWAP = "Poker Card Swap"
 
 
 

@@ -2,6 +2,7 @@ import pygame
 
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
+from game_constants.magic import Magic
 from tests.test_poker_darnel import test_poker_score_tracker
 from types import *
 import random
@@ -10,6 +11,7 @@ import random
 class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
+        self.magic_menu_index: int = 0
         self.money: int = 1000
         self.enemy_compare_hand: str = ""
         self.enemy_temp_discard_storage: list = []
@@ -23,8 +25,9 @@ class PokerDarnel(GambleScreen):
         self.add_enemy_bet:int = 0
         self.action_menu_index: int = 0
         self.future_cards_container: list = []
+        self.magic_menu_options: list = []
 
-        self.game_state = self.FINAL_RESULTS
+        self.game_state = self.MAGIC_MENU_SCREEN
 
         self.deck = Deck()
         self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
@@ -66,6 +69,8 @@ class PokerDarnel(GambleScreen):
         #
         # ]
 
+    SWAP_CARDS_SCREEN: str = "swap_cards_screen"
+
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
@@ -83,16 +88,25 @@ class PokerDarnel(GambleScreen):
     ACTION_SCREEN: str = "action_screen"
 
 
+    def start(self):
+        print("mew")
+
+
 
     def update(self, state):
         controller = state.controller
         controller.update()
         state.player.update(state)
         super().update(state)
+
+        if Magic.POKER_CARD_SWAP.value in state.player.magicinventory and Magic.POKER_CARD_SWAP.value not in self.magic_menu_options:
+                self.magic_menu_options.append(Magic.POKER_CARD_SWAP.value)
+                self.magic_menu_options.append("Back")
+
         #BLUFF command should have a weight that over time grows the more money diff there is
 
         if self.game_state == self.WELCOME_SCREEN:
-            print("welcome screen")
+            self.start()
         elif self.game_state == self.BET_SCREEN:
             if state.controller.up_button:
                 if self.add_player_bet + 25 <= 100:  # Check if adding 25 won't exceed max
@@ -126,7 +140,32 @@ class PokerDarnel(GambleScreen):
                     self.game_state = self.ACTION_SCREEN
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
-            print("Magic cast card swap")
+            if state.controller.up_button:
+                self.magic_menu_index = (self.magic_menu_index - 1) % len(self.magic_menu_options)
+                print(f"{self.magic_menu_index}: {self.magic_menu_options[self.magic_menu_index]}")
+
+            elif state.controller.down_button:
+                self.magic_menu_index = (self.magic_menu_index + 1) % len(self.magic_menu_options)
+                print(f"{self.magic_menu_index}: {self.magic_menu_options[self.magic_menu_index]}")
+
+
+            if state.controller.confirm_button:
+                if self.magic_menu_options[self.magic_menu_index] == Magic.POKER_CARD_SWAP.value:
+                    print("cast spell")
+                    self.game_state = self.SWAP_CARDS_SCREEN
+                    self.magic_menu_index = 0
+
+
+
+                elif self.magic_menu_options[self.magic_menu_index] == "Back":
+                    self.game_state = self.ACTION_SCREEN
+                    self.magic_menu_index = 0
+
+
+
+
+        elif self.game_state == self.SWAP_CARDS_SCREEN:
+            print("swapping cards")
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             if state.controller.confirm_button:
 
@@ -256,6 +295,7 @@ class PokerDarnel(GambleScreen):
                     print("time to bluffallo")
                 elif self.action_menu_index == 2:
                     print("time to cast a spell card swap")
+                    self.game_state = self.MAGIC_MENU_SCREEN
                 elif self.action_menu_index == 3:
                     print("time to place your bet")
                     self.game_state = self.BET_SCREEN

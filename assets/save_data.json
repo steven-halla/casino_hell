@@ -44,7 +44,8 @@
         "peek",
         "bad luck",
         "flush deck",
-        "Dice Force"
+        "Dice Force",
+        "Poker Card Swap"
     ],
     "body": 4,
     "mind": 4,
