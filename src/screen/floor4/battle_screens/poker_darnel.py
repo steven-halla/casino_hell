@@ -11,6 +11,10 @@ import random
 class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
+        self.enemy_cards_swap_container = []
+        self.player_cards_swap_container = []
+        self.swap_player_cards: bool = False
+        self.swap_enemy_cards: bool = True
         self.magic_menu_index: int = 0
         self.money: int = 1000
         self.enemy_compare_hand: str = ""
@@ -26,8 +30,11 @@ class PokerDarnel(GambleScreen):
         self.action_menu_index: int = 0
         self.future_cards_container: list = []
         self.magic_menu_options: list = []
+        self.swap_cards_menu_options: list = []
+        self.swap_cards_menu_index: int = 0
 
-        self.game_state = self.MAGIC_MENU_SCREEN
+
+        self.game_state = self.SWAP_CARDS_SCREEN
 
         self.deck = Deck()
         self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
@@ -53,11 +60,11 @@ class PokerDarnel(GambleScreen):
 
         # Enemy hand: Full House (Kings over Queens)
         self.enemy_hand = [
-            ("Ace", "Spades", 14),
-            ("Ace", "Hearts", 14),
-            ("Ace", "Diamonds", 14),
-            ("Ace", "Clubs", 14),
-            ("King", "Hearts", 13)
+            ("10", "Spades", 10),
+            ("10", "Hearts", 10),
+            ("10", "Diamonds", 10),
+            ("7", "Clubs", 7),
+            ("7", "Hearts", 7)
 
         ]
 
@@ -86,10 +93,10 @@ class PokerDarnel(GambleScreen):
     ENEMY_WINS: str = "enemy_wins"
     DRAW: str = "draw"
     ACTION_SCREEN: str = "action_screen"
+    RESET: str = "reset"
 
 
-    def start(self):
-        print("mew")
+
 
 
 
@@ -165,7 +172,67 @@ class PokerDarnel(GambleScreen):
 
 
         elif self.game_state == self.SWAP_CARDS_SCREEN:
-            print("swapping cards")
+
+
+
+            if self.swap_enemy_cards:
+                if state.controller.up_button:
+                    self.swap_cards_menu_index = (self.swap_cards_menu_index + 1) % len(self.enemy_hand)
+                    print(
+                        f"Selected enemy card {self.swap_cards_menu_index}: {self.enemy_hand[self.swap_cards_menu_index]}")
+                elif state.controller.down_button:
+                    self.swap_cards_menu_index = (self.swap_cards_menu_index - 1) % len(self.enemy_hand)
+                    print(
+                        f"Selected enemy card {self.swap_cards_menu_index}: {self.enemy_hand[self.swap_cards_menu_index]}")
+                elif state.controller.confirm_button:
+                    print(f"Before append: {self.enemy_cards_swap_container}")
+                    self.enemy_cards_swap_container.append(self.swap_cards_menu_index)
+                    print(f"After append: {self.enemy_cards_swap_container}")
+                    self.swap_enemy_cards = False
+                    self.swap_player_cards = True
+                    self.swap_cards_menu_index = 0
+
+            elif self.swap_player_cards:
+                if state.controller.action_and_cancel_button:
+                    self.swap_player_cards = False
+                    self.swap_enemy_cards = True
+                    self.enemy_cards_swap_container = []
+                if state.controller.up_button:
+                    self.swap_cards_menu_index = (self.swap_cards_menu_index + 1) % len(self.player_hand)
+                    print(
+                        f"Selected player card {self.swap_cards_menu_index}: {self.player_hand[self.swap_cards_menu_index]}")
+                elif state.controller.down_button:
+                    self.swap_cards_menu_index = (self.swap_cards_menu_index - 1) % len(self.player_hand)
+                    print(
+                        f"Selected player card {self.swap_cards_menu_index}: {self.player_hand[self.swap_cards_menu_index]}")
+                elif state.controller.confirm_button:
+                    print(f"Before append: {self.player_cards_swap_container}")
+                    self.player_cards_swap_container.append(self.swap_cards_menu_index)
+                    print(f"After append: {self.player_cards_swap_container}")
+                    self.swap_player_cards = False
+
+                    # Print hands before swap
+                    print(f"\n--- Before Swap ---")
+                    print(f"Enemy hand: {self.enemy_hand}")
+                    print(f"Player hand: {self.player_hand}")
+
+                    # Do the swap
+                    enemy_index = self.enemy_cards_swap_container[0]
+                    player_index = self.player_cards_swap_container[0]
+                    self.enemy_hand[enemy_index], self.player_hand[player_index] = (
+                        self.player_hand[player_index],
+                        self.enemy_hand[enemy_index],
+                    )
+
+                    # Print hands after swap
+                    print(f"\n--- After Swap ---")
+                    print(f"Enemy hand: {self.enemy_hand}")
+                    print(f"Player hand: {self.player_hand}")
+
+
+
+
+
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             if state.controller.confirm_button:
 
