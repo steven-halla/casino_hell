@@ -257,6 +257,7 @@ class PokerDarnel(GambleScreen):
                     print(f"\n--- After Swap ---")
                     print(f"Enemy hand: {self.enemy_hand}")
                     print(f"Player hand: {self.player_hand}")
+                    self.game_state = self.ACTION_SCREEN
 
 
         elif self.game_state == self.DEAL_CARDS_SCREEN:
