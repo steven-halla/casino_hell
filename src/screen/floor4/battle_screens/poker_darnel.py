@@ -306,6 +306,7 @@ class PokerDarnel(GambleScreen):
 
                         print("Player hand after removing discarded cards: " + str(self.player_hand))
                         print("Moving to draw card screen...")
+                        self.game_state = self.PLAYER_REDRAW_SCREEN
 
                 elif self.player_redraw_menu_index == 2:
                     if len(self.player_card_garbage_can) < 2 and self.player_hand[0] not in self.player_card_garbage_can:
@@ -345,7 +346,7 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             while len(self.player_hand) < 3:
-                drawn_card = self.deck.get_next_card()
+                drawn_card = self.deck.poker_get_next_card()
                 self.player_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
                 print("your player hand" + str(self.player_hand))
