@@ -11,6 +11,9 @@ import random
 class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
+        self.deck = Deck()
+
+        self.last_screen_check_time = pygame.time.get_ticks()
         self.enemy_cards_swap_container = []
         self.player_cards_swap_container = []
         self.swap_player_cards: bool = False
@@ -34,13 +37,20 @@ class PokerDarnel(GambleScreen):
         self.swap_cards_menu_index: int = 0
 
 
-        self.game_state = self.SWAP_CARDS_SCREEN
+        self.game_state = self.WELCOME_SCREEN
 
-        self.deck = Deck()
-        self.deck.cards = [(rank, suit, self.deck.rank_order_poker[str(rank)] if rank == "Ace" else value)
-                           for rank, suit, value in self.deck.cards]
+
+
         # Remove duplicate Aces
-        self.deck.cards = [card if card[0] != "Ace" else ("Ace", card[1], 14) for card in self.deck.cards]
+        # self.deck.cards = [card if card[0] != "Ace" else ("Ace", card[1], 14) for card in self.deck.cards]
+        self.deck.cards = [
+            ("Ace", card[1], 14) if card[0] == "Ace" else
+            ("King", card[1], 13) if card[0] == "King" else
+            ("Queen", card[1], 12) if card[0] == "Queen" else
+            ("Jack", card[1], 11) if card[0] == "Jack" else
+            card
+            for card in self.deck.cards
+        ]
 
         self.player_hand_score: int = 0
         self.player_value_score: int = 0
@@ -48,23 +58,16 @@ class PokerDarnel(GambleScreen):
         self.enemy_value_score: int = 0
         self.enemy_hand_power: int = 0
         self.deck.shuffle()
+        self.enemy_money = 2000
 
         self.player_hand = [
-            ("Ace", "Spades", 14),
-            ("Ace", "Hearts", 14),
-            ("Ace", "Diamonds", 14),
-            ("Ace", "Clubs", 14),
-            ("King", "Hearts", 13)
+
 
         ]
 
         # Enemy hand: Full House (Kings over Queens)
         self.enemy_hand = [
-            ("10", "Spades", 10),
-            ("10", "Hearts", 10),
-            ("10", "Diamonds", 10),
-            ("7", "Clubs", 7),
-            ("7", "Hearts", 7)
+
 
         ]
 
@@ -98,6 +101,21 @@ class PokerDarnel(GambleScreen):
 
 
 
+    def start(self):
+        print("Pew")
+
+    def restart_poker_round(self):
+        self.enemy_cards_swap_container = []
+        self.player_cards_swap_container = []
+        self.swap_player_cards: bool = False
+        self.swap_enemy_cards: bool = True
+        self.magic_menu_index: int = 0
+        self.player_bet: int = 0
+        self.enemy_bet: int = 0
+        self.player_redraw_menu_index = 0
+        self.player_card_garbage_can = []
+        self.add_player_bet: int = 0
+        self.add_enemy_bet: int = 0
 
 
     def update(self, state):
@@ -106,6 +124,11 @@ class PokerDarnel(GambleScreen):
         state.player.update(state)
         super().update(state)
 
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_screen_check_time >= 5000:
+            print(f"Current screen: {self.game_state}")
+            self.last_screen_check_time = current_time
+
         if Magic.POKER_CARD_SWAP.value in state.player.magicinventory and Magic.POKER_CARD_SWAP.value not in self.magic_menu_options:
                 self.magic_menu_options.append(Magic.POKER_CARD_SWAP.value)
                 self.magic_menu_options.append("Back")
@@ -113,7 +136,11 @@ class PokerDarnel(GambleScreen):
         #BLUFF command should have a weight that over time grows the more money diff there is
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.start()
+            # print("Hi welcome to the welcome screen press T to start")
+
+            if state.controller.confirm_button:
+                print("Player money is: " + str(state.player.money))
+                self.game_state = self.DEAL_CARDS_SCREEN
         elif self.game_state == self.BET_SCREEN:
             if state.controller.up_button:
                 if self.add_player_bet + 25 <= 100:  # Check if adding 25 won't exceed max
@@ -167,8 +194,6 @@ class PokerDarnel(GambleScreen):
                 elif self.magic_menu_options[self.magic_menu_index] == "Back":
                     self.game_state = self.ACTION_SCREEN
                     self.magic_menu_index = 0
-
-
 
 
         elif self.game_state == self.SWAP_CARDS_SCREEN:
@@ -230,16 +255,15 @@ class PokerDarnel(GambleScreen):
                     print(f"Player hand: {self.player_hand}")
 
 
-
-
-
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             if state.controller.confirm_button:
 
-                self.player_hand = self.deck.player_draw_hand(3)
-                self.enemy_hand = self.deck.enemy_draw_hand(3)
+                self.player_hand = self.deck.poker_player_draw_hand(3)
+                self.enemy_hand = self.deck.poker_enemy_draw_hand(3)
                 print("Player hand:" + str(self.player_hand))
                 print("Enemy hand" + str(self.enemy_hand))
+
+                self.game_state = self.PLAYER_DISCARD_SCREEN
 
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal

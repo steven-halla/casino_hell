@@ -163,10 +163,17 @@ class Deck:
         # Ensure 'display' is a valid pygame.Surface object
         display.blit(sprite, position)
 
+    def poker_get_next_card(self):
+        card = self.poker_cards.pop()
+        # print("draw card: " + str(card))
+        return card
+
     def get_next_card(self):
         card = self.cards.pop()
         # print("draw card: " + str(card))
         return card
+
+
 
     def shuffle(self):
 
@@ -184,6 +191,22 @@ class Deck:
         for i in range(num_cards):
             hand.append(self.get_next_card())
         return hand
+
+    def poker_player_draw_hand(self, num_cards):
+
+        hand = []
+        for i in range(num_cards):
+            hand.append(self.poker_get_next_card())
+        return hand
+
+    def poker_enemy_draw_hand(self, num_cards):
+
+        hand = []
+        for i in range(num_cards):
+            hand.append(self.poker_get_next_card())
+        return hand
+
+
 
     def enemy_draw_hand(self, num_cards):
         hand = []
