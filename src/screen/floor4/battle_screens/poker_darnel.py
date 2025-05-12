@@ -26,8 +26,8 @@ class PokerDarnel(GambleScreen):
         self.enemy_temp_discard_storage: list = []
         self.player_hand_type = ""
         self.enemy_hand_type = ""
-        self.player_bet: int = 0
-        self.enemy_bet: int = 0
+        self.player_bet: int = 50
+        self.enemy_bet: int = 50
         self.player_redraw_menu_index = 0
         self.player_card_garbage_can = []
         self.add_player_bet: int = 0
@@ -111,8 +111,8 @@ class PokerDarnel(GambleScreen):
         self.swap_player_cards: bool = False
         self.swap_enemy_cards: bool = True
         self.magic_menu_index: int = 0
-        self.player_bet: int = 0
-        self.enemy_bet: int = 0
+        self.player_bet: int = 50
+        self.enemy_bet: int = 50
         self.player_redraw_menu_index = 0
         self.player_card_garbage_can = []
         self.add_player_bet: int = 0
@@ -174,8 +174,8 @@ class PokerDarnel(GambleScreen):
                 print("Your total bet amount" + str(self.player_bet))
                 self.add_player_bet = 0
 
-                if state.controller.confirm_button:
-                    self.game_state = self.ACTION_SCREEN
+
+                self.game_state = self.ACTION_SCREEN
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             if state.controller.up_button:
@@ -377,10 +377,10 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.ACTION_SCREEN:
             if state.controller.up_button:
-                self.action_menu_index = (self.action_menu_index + 1) % 4
+                self.action_menu_index = (self.action_menu_index + 1) % 5
                 print("the action menu index is: " + str(self.action_menu_index))
             elif state.controller.down_button:
-                self.action_menu_index = (self.action_menu_index - 1) % 4
+                self.action_menu_index = (self.action_menu_index - 1) % 5
                 print("the action menu index is: " + str(self.action_menu_index))
 
             if state.controller.confirm_button:
@@ -401,6 +401,16 @@ class PokerDarnel(GambleScreen):
                 elif self.action_menu_index == 3:
                     print("time to place your bet")
                     self.game_state = self.BET_SCREEN
+                elif self.action_menu_index == 4:
+                    print("time to fold")
+                    print("Player money is now: " + str(state.player.money))
+                    state.player.money -= self.player_bet
+                    print("Player money is now: " + str(state.player.money))
+
+                    self.restart_poker_round()
+
+
+                    self.game_state = self.WELCOME_SCREEN
 
 
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
