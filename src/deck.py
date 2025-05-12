@@ -185,6 +185,15 @@ class Deck:
         random.shuffle(self.cards)
         return self.cards
 
+    def poker_cards_shuffle(self):
+        self.poker_cards.clear()
+        self.poker_cards = [(self.rank_strings[rank], self.suit_strings[suit],
+                             self.rank_order_poker[str(rank)]) for suit in self.suits
+                            for rank in self.ranks]
+
+        random.shuffle(self.poker_cards)
+        return self.poker_cards
+
     def player_draw_hand(self, num_cards):
 
         hand = []

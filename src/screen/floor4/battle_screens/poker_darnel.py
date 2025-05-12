@@ -12,6 +12,8 @@ class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
         self.deck = Deck()
+        self.deck.poker_cards_shuffle()
+
 
         self.last_screen_check_time = pygame.time.get_ticks()
         self.enemy_cards_swap_container = []
@@ -57,7 +59,6 @@ class PokerDarnel(GambleScreen):
         self.enemy_hand_score: int = 0
         self.enemy_value_score: int = 0
         self.enemy_hand_power: int = 0
-        self.deck.shuffle()
         self.enemy_money = 2000
 
         self.player_hand = [
@@ -116,6 +117,7 @@ class PokerDarnel(GambleScreen):
         self.player_card_garbage_can = []
         self.add_player_bet: int = 0
         self.add_enemy_bet: int = 0
+        self.deck.poker_cards_shuffle()
 
 
     def update(self, state):
@@ -127,6 +129,8 @@ class PokerDarnel(GambleScreen):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_screen_check_time >= 5000:
             print(f"Current screen: {self.game_state}")
+            print(f"PLAYER HAND: {self.player_hand}")
+            print(f"ENEMY HAND: {self.enemy_hand}")
             self.last_screen_check_time = current_time
 
         if Magic.POKER_CARD_SWAP.value in state.player.magicinventory and Magic.POKER_CARD_SWAP.value not in self.magic_menu_options:
@@ -296,6 +300,7 @@ class PokerDarnel(GambleScreen):
             if state.controller.confirm_button and len(self.player_card_garbage_can) <= 2:
                 if self.player_redraw_menu_index == 0:
                     print("go to play screen and keep your hand")
+                    self.game_state = self.ENEMY_DISCARD_SCREEN
                 elif self.player_redraw_menu_index == 1 and len(self.player_card_garbage_can) > 0:
                     if len(self.player_hand) >= 1:  # Make sure there's at least 1 card left in hand
                         print("Current player hand: " + str(self.player_hand))
@@ -346,20 +351,23 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             while len(self.player_hand) < 3:
-                drawn_card = self.deck.poker_get_next_card()
+                drawn_card = self.deck.poker_poker_get_next_card()
                 self.player_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
                 print("your player hand" + str(self.player_hand))
+                if state.controller.confirm_button:
+                    self.game_state = self.ENEMY_DISCARD_SCREEN
 
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             # print("enemey ")
             if  state.controller.confirm_button:
                 self.enemy_discard_logic()
+                self.game_state = self.ENEMY_REDRAW_SCREEN
                 # self.poker_score_tracker()
 
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
             while len(self.enemy_hand) < 3:
-                drawn_card = self.deck.get_next_card()
+                drawn_card = self.deck.poker_get_next_card()
                 self.enemy_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
                 print("your enemy hand" + str(self.enemy_hand))
@@ -401,7 +409,7 @@ class PokerDarnel(GambleScreen):
 
             if state.controller.confirm_button:
 
-                drawn_card = self.deck.get_next_card()
+                drawn_card = self.deck.poker_get_next_card()
                 self.player_hand.append(drawn_card)
                 print(f"Player drew: {drawn_card}")
 
@@ -409,7 +417,7 @@ class PokerDarnel(GambleScreen):
                 self.player_score = self.deck.compute_hand_value(self.player_hand)
 
                 # Draw one card for enemy
-                enemy_card = self.deck.get_next_card()
+                enemy_card = self.deck.poker_get_next_card()
                 self.enemy_hand.append(enemy_card)
                 print(f"Enemy drew: {enemy_card}")
 
@@ -810,3 +818,4 @@ class PokerDarnel(GambleScreen):
 
         print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
         self.enemy_discard_logic(index + 1, limit)
+
