@@ -371,14 +371,16 @@ class PokerDarnel(GambleScreen):
                 self.enemy_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
                 print("your enemy hand" + str(self.enemy_hand))
+            if state.controller.confirm_button:
+                self.game_state = self.ACTION_SCREEN
 
 
         elif self.game_state == self.ACTION_SCREEN:
             if state.controller.up_button:
-                self.action_menu_index += 1
+                self.action_menu_index = (self.action_menu_index + 1) % 4
                 print("the action menu index is: " + str(self.action_menu_index))
             elif state.controller.down_button:
-                self.action_menu_index -= 1
+                self.action_menu_index = (self.action_menu_index - 1) % 4
                 print("the action menu index is: " + str(self.action_menu_index))
 
             if state.controller.confirm_button:
