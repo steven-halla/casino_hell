@@ -14,6 +14,8 @@ class PokerDarnel(GambleScreen):
         self.deck = Deck()
         self.deck.poker_cards_shuffle()
 
+        self.enemy_pressure: int = 0
+
 
         self.last_screen_check_time = pygame.time.get_ticks()
         self.enemy_cards_swap_container = []
@@ -123,6 +125,10 @@ class PokerDarnel(GambleScreen):
         self.add_player_bet: int = 0
         self.add_enemy_bet: int = 0
         self.enemy_hand_bet_strength:int = 0
+
+        self.enemy_pressure -= 5
+        if self.enemy_pressure < 0:
+            self.enemy_pressure = 0
 
 
     def update(self, state):
@@ -272,13 +278,28 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             if state.controller.confirm_button:
+                lucky_roll = random.randint(1, 100) + (state.player.luck * 5)
+                if lucky_roll >= 90:
 
-                self.player_hand = self.deck.poker_player_draw_hand(3)
-                self.enemy_hand = self.deck.poker_enemy_draw_hand(3)
-                print("Player hand:" + str(self.player_hand))
-                print("Enemy hand" + str(self.enemy_hand))
+                    ace_cards = [c for c in self.deck.poker_cards if c[0] == "Ace"][:2]
+                    for ace_card in ace_cards:
+                        self.deck.poker_cards.remove(ace_card)
+                        self.player_hand.append(ace_card)
+                        print("Appended:", ace_card)
 
-                self.game_state = self.PLAYER_DISCARD_SCREEN
+                    self.player_hand.extend(self.deck.poker_player_draw_hand(1))
+                    self.enemy_hand = self.deck.poker_enemy_draw_hand(3)
+                    print("Player hand:" + str(self.player_hand))
+                    print("Enemy hand" + str(self.enemy_hand))
+                    self.game_state = self.PLAYER_DISCARD_SCREEN
+                else:
+                    self.player_hand.extend(self.deck.poker_player_draw_hand(3))
+                    self.enemy_hand = self.deck.poker_enemy_draw_hand(3)
+                    print("Player hand:" + str(self.player_hand))
+                    print("Enemy hand" + str(self.enemy_hand))
+
+                    self.game_state = self.PLAYER_DISCARD_SCREEN
+
 
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
