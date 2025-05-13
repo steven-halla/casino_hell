@@ -132,13 +132,14 @@ class PokerDarnel(GambleScreen):
         super().update(state)
 
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_screen_check_time >= 7000:
+        if current_time - self.last_screen_check_time >= 8000:
             self.poker_score_tracker()
 
             print(f"Current screen: {self.game_state}")
-            print("ENEMY HAND TYPE: " + str(self.enemy_hand_type))
             print(f"PLAYER HAND: {self.player_hand}")
             print(f"ENEMY HAND: {self.enemy_hand}")
+            print(f"Player bet is : " + str(self.player_bet))
+            print(f"Enemy bet is : " + str(self.enemy_bet))
 
             self.last_screen_check_time = current_time
 
@@ -382,12 +383,36 @@ class PokerDarnel(GambleScreen):
                 print(f"Drew card: {drawn_card}")
                 print("your enemy hand" + str(self.enemy_hand))
             if state.controller.confirm_button:
+                self.enemy_making_bet = True
                 self.game_state = self.ACTION_SCREEN
 
 
         elif self.game_state == self.ACTION_SCREEN:
             if self.enemy_making_bet == True:
-                pass
+                if len(self.enemy_hand) > 5 and self.enemy_hand_bet_strength >= 5:
+                    self.enemy_bet += 100
+                    self.enemy_making_bet = False
+                else:
+                    bluff_roll = random.randint(1, 100)
+                    bluff_roll += self.enemy_hand_bet_strength * 5
+                    bluff_roll = min(bluff_roll, 100)
+
+                    if bluff_roll <= 50:
+                        extra_bet = 0
+                    elif bluff_roll <= 70:
+                        extra_bet = 25
+                    elif bluff_roll <= 80:
+                        extra_bet = 50
+                    elif bluff_roll <= 85:
+                        extra_bet = 75
+                    else:
+                        extra_bet = 100
+
+                    self.enemy_bet += extra_bet
+                    self.enemy_making_bet = False
+
+
+
 
             if state.controller.up_button:
                 self.action_menu_index = (self.action_menu_index + 1) % 5
@@ -398,6 +423,7 @@ class PokerDarnel(GambleScreen):
 
             if state.controller.confirm_button:
                 if self.action_menu_index == 0:
+
                     if len(self.player_hand) == 3:
                         self.game_state = self.REVEAL_FUTURE_CARDS
                     elif len(self.player_hand) < 5:
@@ -453,6 +479,8 @@ class PokerDarnel(GambleScreen):
 
                 # Update enemy score
                 self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                self.enemy_making_bet = True
+
 
                 # Move to next game state after drawing
                 self.game_state = self.ACTION_SCREEN

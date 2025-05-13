@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed reveal cards draging black jack cards and not poker">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="enemy hand strengh is now set for betting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" afterDir="false" />
     </list>
@@ -391,7 +391,7 @@
       <workItem from="1746811945251" duration="5420000" />
       <workItem from="1746842483774" duration="12930000" />
       <workItem from="1746997126680" duration="14739000" />
-      <workItem from="1747153457846" duration="6591000" />
+      <workItem from="1747153457846" duration="7824000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -736,7 +736,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1435" />
+    <option name="localTasksCounter" value="1436" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -765,7 +765,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="royal flush now created, now whebn a hand is filled with a value we do not check the other hands" />
     <MESSAGE value="score fun now updated we have a score fun and a bonus fun for when hands are matching" />
     <MESSAGE value="updated main class from test class" />
     <MESSAGE value="light changes taking out fun call added new screen" />
@@ -790,7 +789,8 @@
     <MESSAGE value="fixed magic screen after spell cast go back to action menu" />
     <MESSAGE value="fixed minor bug wrong var name" />
     <MESSAGE value="fixed reveal cards draging black jack cards and not poker" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed reveal cards draging black jack cards and not poker" />
+    <MESSAGE value="enemy hand strengh is now set for betting" />
+    <option name="LAST_COMMIT_MESSAGE" value="enemy hand strengh is now set for betting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
