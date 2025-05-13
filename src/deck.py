@@ -2,6 +2,7 @@ import random
 from typing import List, Tuple, Union, Dict
 
 import pygame
+from game_constants.equipment import Equipment
 
 from entity.entity import Entity
 
@@ -201,11 +202,18 @@ class Deck:
             hand.append(self.get_next_card())
         return hand
 
-    def poker_player_draw_hand(self, num_cards):
+
+    def poker_player_draw_hand(self, num_cards, state):
 
         hand = []
         for i in range(num_cards):
-            hand.append(self.poker_get_next_card())
+            card = self.poker_get_next_card()
+
+            if Equipment.POKER_BRACELET.value in state.player.equipped_items:
+                while card[0] == "2":
+                    card = self.poker_get_next_card()
+            hand.append(card)
+
         return hand
 
     def poker_enemy_draw_hand(self, num_cards):

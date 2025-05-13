@@ -2,6 +2,7 @@ import pygame
 
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
+from game_constants.equipment import Equipment
 from game_constants.magic import Magic
 from tests.test_poker_darnel import test_poker_score_tracker
 from types import *
@@ -126,7 +127,7 @@ class PokerDarnel(GambleScreen):
         self.add_enemy_bet: int = 0
         self.enemy_hand_bet_strength:int = 0
 
-        self.enemy_pressure -= 5
+        self.enemy_pressure -= 10
         if self.enemy_pressure < 0:
             self.enemy_pressure = 0
 
@@ -136,6 +137,12 @@ class PokerDarnel(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+
+        if Equipment.POKER_BRACELET.value in state.player.equipped_items:
+            for card in self.player_hand:
+                if card[0] == "2":
+                    print("ERROR WITH POKER BRACELET ERROR ERROR ERROR")
+                    break
 
         current_time = pygame.time.get_ticks()
         if current_time - self.last_screen_check_time >= 8000:
@@ -287,13 +294,13 @@ class PokerDarnel(GambleScreen):
                         self.player_hand.append(ace_card)
                         print("Appended:", ace_card)
 
-                    self.player_hand.extend(self.deck.poker_player_draw_hand(1))
+                    self.player_hand.extend(self.deck.poker_player_draw_hand(1,state))
                     self.enemy_hand = self.deck.poker_enemy_draw_hand(3)
                     print("Player hand:" + str(self.player_hand))
                     print("Enemy hand" + str(self.enemy_hand))
                     self.game_state = self.PLAYER_DISCARD_SCREEN
                 else:
-                    self.player_hand.extend(self.deck.poker_player_draw_hand(3))
+                    self.player_hand.extend(self.deck.poker_player_draw_hand(3, state))
                     self.enemy_hand = self.deck.poker_enemy_draw_hand(3)
                     print("Player hand:" + str(self.player_hand))
                     print("Enemy hand" + str(self.enemy_hand))
@@ -384,9 +391,23 @@ class PokerDarnel(GambleScreen):
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             while len(self.player_hand) < 3:
                 drawn_card = self.deck.poker_get_next_card()
+
+                if Equipment.POKER_BRACELET.value in state.player.equipped_items and drawn_card[0] == "2":
+                    while self.deck.poker_cards and self.deck.poker_cards[0][0] == "2":
+                        burned_card = self.deck.poker_cards.pop(0)
+                        print(f"Burned '2' from bottom: {burned_card}")
+                    if self.deck.poker_cards:
+                        drawn_card = self.deck.poker_cards.pop(0)
+                        print(f"Drew from bottom due to bracelet: {drawn_card}")
+
                 self.player_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
-                print("your player hand" + str(self.player_hand))
+                print("Your player hand: " + str(self.player_hand))
+            # while len(self.player_hand) < 3:
+            #     drawn_card = self.deck.poker_get_next_card()
+            #     self.player_hand.append(drawn_card)
+            #     print(f"Drew card: {drawn_card}")
+            #     print("your player hand" + str(self.player_hand))
                 if state.controller.confirm_button:
                     self.game_state = self.ENEMY_DISCARD_SCREEN
 
@@ -478,7 +499,7 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             if state.controller.confirm_button:
-                self.reveal_future_cards()
+                self.reveal_future_cards(state)
                 self.game_state = self.DRAW_ONE_CARD
 
 
@@ -487,6 +508,16 @@ class PokerDarnel(GambleScreen):
             if state.controller.confirm_button:
 
                 drawn_card = self.deck.poker_get_next_card()
+
+                if Equipment.POKER_BRACELET.value in state.player.equipped_items and drawn_card[0] == "2":
+                    # Burn from the bottom until the bottom card is not a "2"
+                    while self.deck.poker_cards and self.deck.poker_cards[0][0] == "2":
+                        burned_card = self.deck.poker_cards.pop(0)
+                        print(f"Burned '2' from bottom: {burned_card}")
+                    # Draw from the bottom instead of top
+                    if self.deck.poker_cards:
+                        drawn_card = self.deck.poker_cards.pop(0)
+                        print(f"Drew from bottom due to bracelet: {drawn_card}")
                 self.player_hand.append(drawn_card)
                 print(f"Player drew: {drawn_card}")
 
@@ -817,7 +848,7 @@ class PokerDarnel(GambleScreen):
     #     ]
     #     return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
-    def reveal_future_cards(self):
+    def reveal_future_cards(self, state):
         # Print initial top 6 cards
         print("Initial top 6 cards of deck:")
         for i in range(min(6, len(self.deck.poker_cards))):
@@ -825,7 +856,7 @@ class PokerDarnel(GambleScreen):
         print("\n")
 
         # Draw 4 cards and store them
-        self.future_cards_container = self.deck.poker_player_draw_hand(4)
+        self.future_cards_container = self.deck.poker_enemy_draw_hand(4)
 
         print("Initial 4 drawn cards:")
         for card in self.future_cards_container:

@@ -23,6 +23,7 @@ class Equipment(Enum):
     SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
     #hi low
     HIGH_LOW_PANTS = "high low pants" # This item gives +1 spread via spirit higher spreads take more HP
+    POKER_BRACELET = "poker bracelet"
 
 
 
