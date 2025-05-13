@@ -42,6 +42,7 @@ class PokerDarnel(GambleScreen):
 
 
         self.game_state = self.WELCOME_SCREEN
+        self.enemy_making_bet: bool = False
 
 
 
@@ -105,10 +106,11 @@ class PokerDarnel(GambleScreen):
 
 
 
-    def start(self):
-        print("Pew")
+    # def start(self):
+    #     print("Pew")
 
     def restart_poker_round(self):
+        self.deck.poker_cards_shuffle()
         self.enemy_cards_swap_container = []
         self.player_cards_swap_container = []
         self.swap_player_cards: bool = False
@@ -120,7 +122,7 @@ class PokerDarnel(GambleScreen):
         self.player_card_garbage_can = []
         self.add_player_bet: int = 0
         self.add_enemy_bet: int = 0
-        self.deck.poker_cards_shuffle()
+        self.enemy_hand_bet_strength:int = 0
 
 
     def update(self, state):
@@ -384,6 +386,9 @@ class PokerDarnel(GambleScreen):
 
 
         elif self.game_state == self.ACTION_SCREEN:
+            if self.enemy_making_bet == True:
+                pass
+
             if state.controller.up_button:
                 self.action_menu_index = (self.action_menu_index + 1) % 5
                 print("the action menu index is: " + str(self.action_menu_index))
@@ -733,6 +738,7 @@ class PokerDarnel(GambleScreen):
             enemy_score += self.get_bonus_score_if_tied(self.enemy_hand_type, self.enemy_hand)
         print(f"Player score: {player_score}")
         print(f"Enemy score: {enemy_score}")
+        self.enemy_hand_bet_strength = enemy_score
 
     ## def #generate_dummy_hand(self, index: int) -> list[tuple[str, str, int]]:#
     #     #dummy_enemy_hands = [#
