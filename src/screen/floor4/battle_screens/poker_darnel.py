@@ -352,7 +352,7 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
             while len(self.player_hand) < 3:
-                drawn_card = self.deck.poker_poker_get_next_card()
+                drawn_card = self.deck.poker_get_next_card()
                 self.player_hand.append(drawn_card)
                 print(f"Drew card: {drawn_card}")
                 print("your player hand" + str(self.player_hand))

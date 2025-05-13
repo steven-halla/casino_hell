@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed betting screeen to go back to aciton">
-      <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" afterDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed magic screen after spell cast go back to action menu">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -264,12 +264,12 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.high_low_diena_screen" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.poker_darnel" />
-      <item itemvalue="Python.high_low_diena_screen" />
-      <item itemvalue="Python tests.Python tests for test_poker_darnel.TestPokerScoreTracker.test_1_1_player_higher_pair" />
       <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest" />
       <item itemvalue="Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome" />
+      <item itemvalue="Python tests.Python tests for test_poker_darnel.TestPokerScoreTracker.test_1_1_player_higher_pair" />
     </list>
     <recent_temporary>
       <list>
@@ -389,7 +389,7 @@
       <workItem from="1746422233373" duration="23116000" />
       <workItem from="1746811945251" duration="5420000" />
       <workItem from="1746842483774" duration="12930000" />
-      <workItem from="1746997126680" duration="13216000" />
+      <workItem from="1746997126680" duration="14739000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -734,7 +734,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1432" />
+    <option name="localTasksCounter" value="1433" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -763,7 +763,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="test working for full houess" />
     <MESSAGE value="4 of a kind now works" />
     <MESSAGE value="straight flush now works" />
     <MESSAGE value="royal flush now created, now whebn a hand is filled with a value we do not check the other hands" />
@@ -788,7 +787,8 @@
     <MESSAGE value="fixed shuffle method" />
     <MESSAGE value="fixed action menu so it no longer goes into infinity" />
     <MESSAGE value="fixed betting screeen to go back to aciton" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed betting screeen to go back to aciton" />
+    <MESSAGE value="fixed magic screen after spell cast go back to action menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed magic screen after spell cast go back to action menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -827,11 +827,6 @@
           <url>file://$PROJECT_DIR$/src/screen/floor4/battle_screens/coin_flip_bonnie_screen.py</url>
           <line>40</line>
           <option name="timeStamp" value="26" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py</url>
-          <line>420</line>
-          <option name="timeStamp" value="33" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
