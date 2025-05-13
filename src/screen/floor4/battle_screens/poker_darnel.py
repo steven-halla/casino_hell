@@ -37,6 +37,8 @@ class PokerDarnel(GambleScreen):
         self.magic_menu_options: list = []
         self.swap_cards_menu_options: list = []
         self.swap_cards_menu_index: int = 0
+        self.enemy_bet_heat: int = 0
+        self.enemy_hand_bet_strength: int = 0
 
 
         self.game_state = self.WELCOME_SCREEN
@@ -98,6 +100,7 @@ class PokerDarnel(GambleScreen):
     DRAW: str = "draw"
     ACTION_SCREEN: str = "action_screen"
     RESET: str = "reset"
+    ENEMY_ACTION_SCREEN: str = "enemy action screen"
 
 
 
@@ -127,10 +130,14 @@ class PokerDarnel(GambleScreen):
         super().update(state)
 
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_screen_check_time >= 5000:
+        if current_time - self.last_screen_check_time >= 7000:
+            self.poker_score_tracker()
+
             print(f"Current screen: {self.game_state}")
+            print("ENEMY HAND TYPE: " + str(self.enemy_hand_type))
             print(f"PLAYER HAND: {self.player_hand}")
             print(f"ENEMY HAND: {self.enemy_hand}")
+
             self.last_screen_check_time = current_time
 
         if Magic.POKER_CARD_SWAP.value in state.player.magicinventory and Magic.POKER_CARD_SWAP.value not in self.magic_menu_options:
@@ -390,7 +397,7 @@ class PokerDarnel(GambleScreen):
                         self.game_state = self.REVEAL_FUTURE_CARDS
                     elif len(self.player_hand) < 5:
                         self.game_state = self.DRAW_ONE_CARD
-                    elif len(self.player_hand) == 6:
+                    elif len(self.player_hand) == 5:
                         self.game_state = self.FINAL_RESULTS
 
 
@@ -413,10 +420,15 @@ class PokerDarnel(GambleScreen):
 
                     self.game_state = self.WELCOME_SCREEN
 
+        elif self.game_state == self.ENEMY_ACTION_SCREEN:
+            pass
+
 
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             if state.controller.confirm_button:
                 self.reveal_future_cards()
+                self.game_state = self.DRAW_ONE_CARD
+
 
         elif self.game_state == self.DRAW_ONE_CARD:
 
@@ -753,12 +765,12 @@ class PokerDarnel(GambleScreen):
     def reveal_future_cards(self):
         # Print initial top 6 cards
         print("Initial top 6 cards of deck:")
-        for i in range(min(6, len(self.deck.cards))):
-            print(self.deck.cards[-(i+1)])
+        for i in range(min(6, len(self.deck.poker_cards))):
+            print(self.deck.poker_cards[-(i+1)])
         print("\n")
 
         # Draw 4 cards and store them
-        self.future_cards_container = self.deck.player_draw_hand(4)
+        self.future_cards_container = self.deck.poker_player_draw_hand(4)
 
         print("Initial 4 drawn cards:")
         for card in self.future_cards_container:
@@ -775,11 +787,11 @@ class PokerDarnel(GambleScreen):
 
         # Place the shuffled cards back on top of the deck
         for card in reversed(self.future_cards_container):
-            self.deck.cards.append(card)
+            self.deck.poker_cards.append(card)
 
         print("Top 6 cards after placing shuffled cards on deck:")
-        for i in range(min(6, len(self.deck.cards))):
-            print(self.deck.cards[-(i+1)])
+        for i in range(min(6, len(self.deck.poker_cards))):
+            print(self.deck.poker_cards[-(i+1)])
 
     def enemy_discard_logic(self, index: int = 0, limit: int = 1):
         if index >= limit:
