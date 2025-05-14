@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="save point-working on HEAT">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="HEAT system integrated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" afterDir="false" />
     </list>
@@ -414,7 +414,7 @@
       <workItem from="1746811945251" duration="5420000" />
       <workItem from="1746842483774" duration="12930000" />
       <workItem from="1746997126680" duration="14739000" />
-      <workItem from="1747153457846" duration="20671000" />
+      <workItem from="1747153457846" duration="21713000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -759,7 +759,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1440" />
+    <option name="localTasksCounter" value="1441" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -788,7 +788,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="discard fun working" />
     <MESSAGE value="Discard AI now works for not getting rid of cards if all the same suit" />
     <MESSAGE value="discard now works for building up for a straight" />
     <MESSAGE value="save point-del two cards start" />
@@ -813,7 +812,8 @@
     <MESSAGE value="lucky strike now givecs doubles aces" />
     <MESSAGE value="new equpemtn item: poker bracelet now we never, as the player,draw a 2" />
     <MESSAGE value="save point-working on HEAT" />
-    <option name="LAST_COMMIT_MESSAGE" value="save point-working on HEAT" />
+    <MESSAGE value="HEAT system integrated" />
+    <option name="LAST_COMMIT_MESSAGE" value="HEAT system integrated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -878,7 +878,7 @@
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/nfeGame$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1703706369250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/casino_hell$bluffalo_fun_test.coverage" NAME="bluffalo_fun_test Coverage Results" MODIFIED="1747253130430" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/poker" />
+    <SUITE FILE_PATH="coverage/casino_hell$bluffalo_fun_test.coverage" NAME="bluffalo_fun_test Coverage Results" MODIFIED="1747253468895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/poker" />
     <SUITE FILE_PATH="coverage/casino_hell$nukeem.coverage" NAME="nukeem Coverage Results" MODIFIED="1728164707576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/_old" />
     <SUITE FILE_PATH="coverage/casino_hell$hungry_starving_hippos.coverage" NAME="hungry_starving_hippos Coverage Results" MODIFIED="1725751052954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$hangry_angry_starving_hippos_test.coverage" NAME="hangry_angry_starving_hippos_test Coverage Results" MODIFIED="1725750182884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />

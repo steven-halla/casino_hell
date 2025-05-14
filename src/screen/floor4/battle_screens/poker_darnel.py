@@ -133,7 +133,6 @@ class PokerDarnel(GambleScreen):
         self.enemy_hand_bet_strength:int = 0
         self.bluffalo_allowed = True
 
-        self.enemy_pressure -= 10
         if self.enemy_pressure < 0:
             self.enemy_pressure = 0
 
@@ -176,7 +175,7 @@ class PokerDarnel(GambleScreen):
                 self.game_state = self.DEAL_CARDS_SCREEN
         elif self.game_state == self.BET_SCREEN:
             if state.controller.up_button:
-                if self.add_player_bet + 25 <= 100:  # Check if adding 25 won't exceed max
+                if self.add_player_bet + 25 <= 50:  # Check if adding 25 won't exceed max
                     self.add_player_bet += 25
                     print(f"Bet increased to: {self.add_player_bet}")
 
@@ -188,8 +187,8 @@ class PokerDarnel(GambleScreen):
             # Ensure bet stays within valid range
             if self.add_player_bet < 25:
                 self.add_player_bet = 25
-            elif self.add_player_bet > 100:
-                self.add_player_bet = 100
+            elif self.add_player_bet > 50:
+                self.add_player_bet = 50
 
             # Ensure bet doesn't exceed player's money
             if self.add_player_bet > state.player.money:
@@ -202,6 +201,36 @@ class PokerDarnel(GambleScreen):
                 print("How much will you add?" + str(self.add_player_bet))
                 print("Your total bet amount" + str(self.player_bet))
                 self.add_player_bet = 0
+
+
+
+
+
+
+        #---------------------enemy logic below
+            if self.enemy_making_bet == True:
+
+                if len(self.enemy_hand) > 5 and self.enemy_hand_bet_strength >= 5:
+                    self.enemy_bet += 50
+                    self.enemy_making_bet = False
+                else:
+                    bluff_roll = random.randint(1, 100)
+                    bluff_roll += self.enemy_hand_bet_strength * 5
+                    bluff_roll = min(bluff_roll, 100)
+
+                    if bluff_roll <= 50:
+                        extra_bet = 0
+                    elif bluff_roll <= 70:
+                        extra_bet = 25
+                    elif bluff_roll <= 80:
+                        extra_bet = 25
+                    elif bluff_roll <= 85:
+                        extra_bet = 50
+                    else:
+                        extra_bet = 50
+
+                    self.enemy_bet += extra_bet
+                    self.enemy_making_bet = False
 
 
                 self.game_state = self.ACTION_SCREEN
@@ -432,41 +461,16 @@ class PokerDarnel(GambleScreen):
                 print("your enemy hand" + str(self.enemy_hand))
             if state.controller.confirm_button:
                 self.enemy_making_bet = True
-                self.game_state = self.ACTION_SCREEN
+                self.game_state = self.BET_SCREEN
 
 
         elif self.game_state == self.ACTION_SCREEN:
-            if self.enemy_making_bet == True:
-                if len(self.enemy_hand) > 5 and self.enemy_hand_bet_strength >= 5:
-                    self.enemy_bet += 100
-                    self.enemy_making_bet = False
-                else:
-                    bluff_roll = random.randint(1, 100)
-                    bluff_roll += self.enemy_hand_bet_strength * 5
-                    bluff_roll = min(bluff_roll, 100)
-
-                    if bluff_roll <= 50:
-                        extra_bet = 0
-                    elif bluff_roll <= 70:
-                        extra_bet = 25
-                    elif bluff_roll <= 80:
-                        extra_bet = 50
-                    elif bluff_roll <= 85:
-                        extra_bet = 75
-                    else:
-                        extra_bet = 100
-
-                    self.enemy_bet += extra_bet
-                    self.enemy_making_bet = False
-
-
-
 
             if state.controller.up_button:
-                self.action_menu_index = (self.action_menu_index + 1) % 5
+                self.action_menu_index = (self.action_menu_index + 1) % 4
                 print("the action menu index is: " + str(self.action_menu_index))
             elif state.controller.down_button:
-                self.action_menu_index = (self.action_menu_index - 1) % 5
+                self.action_menu_index = (self.action_menu_index - 1) % 4
                 print("the action menu index is: " + str(self.action_menu_index))
 
             if state.controller.confirm_button:
@@ -487,18 +491,15 @@ class PokerDarnel(GambleScreen):
                 elif self.action_menu_index == 2:
                     print("time to cast a spell card swap")
                     self.game_state = self.MAGIC_MENU_SCREEN
+
+
                 elif self.action_menu_index == 3:
-                    print("time to place your bet")
-                    self.game_state = self.BET_SCREEN
-                elif self.action_menu_index == 4:
                     print("time to fold")
                     print("Player money is now: " + str(state.player.money))
                     state.player.money -= self.player_bet
                     print("Player money is now: " + str(state.player.money))
 
                     self.restart_poker_round()
-
-
                     self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.BLUFFALO_SCREEN:
@@ -563,11 +564,6 @@ class PokerDarnel(GambleScreen):
 
 
 
-
-
-
-
-
         elif self.game_state == self.ENEMY_ACTION_SCREEN:
             pass
 
@@ -610,7 +606,7 @@ class PokerDarnel(GambleScreen):
 
 
                 # Move to next game state after drawing
-                self.game_state = self.ACTION_SCREEN
+                self.game_state = self.BET_SCREEN
 
 
 
@@ -647,10 +643,41 @@ class PokerDarnel(GambleScreen):
 
         elif self.game_state == self.PLAYER_WINS:
             print("Player wins ")
+            state.player.money += self.enemy_bet
+            self.money -= self.enemy_bet
+            if self.player_bet <= 150:
+                self.enemy_pressure += 10
+            elif self.player_bet <= 250:
+                self.enemy_pressure += 15
+            elif self.player_bet <= 350:
+                self.enemy_pressure += 20
+            else:
+                self.enemy_pressure += 25
+
+
+
+
         elif self.game_state == self.ENEMY_WINS:
             print("ENEMY WINS")
+            state.player.money -= self.enemy_bet
+            self.money += self.enemy_bet
+            if self.player_bet <= 150:
+                self.enemy_pressure -= 10
+            elif self.player_bet <= 250:
+                self.enemy_pressure -= 15
+            elif self.player_bet <= 350:
+                self.enemy_pressure -= 20
+            else:
+                self.enemy_pressure -= 25
+
         elif self.game_state == self.DRAW:
             print("Draw")
+
+
+
+
+
+
 
 
     def draw(self, state):
