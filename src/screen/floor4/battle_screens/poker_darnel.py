@@ -8,8 +8,8 @@ from tests.test_poker_darnel import test_poker_score_tracker
 from types import *
 import random
 
-# New spell: dertect heat
-# this spell lets the player see the heat meter
+# New spell: inflict heat
+# this spell doubles heat increse/decrease
 
 
 class PokerDarnel(GambleScreen):
@@ -45,6 +45,7 @@ class PokerDarnel(GambleScreen):
         self.swap_cards_menu_index: int = 0
         self.enemy_bet_heat: int = 0
         self.enemy_hand_bet_strength: int = 0
+        self.bluffalo_allowed: bool = True
 
 
         self.game_state = self.WELCOME_SCREEN
@@ -108,6 +109,7 @@ class PokerDarnel(GambleScreen):
     ACTION_SCREEN: str = "action_screen"
     RESET: str = "reset"
     ENEMY_ACTION_SCREEN: str = "enemy action screen"
+    BLUFFALO_SCREEN: str = "bluffalo screen"
 
 
 
@@ -129,6 +131,7 @@ class PokerDarnel(GambleScreen):
         self.add_player_bet: int = 0
         self.add_enemy_bet: int = 0
         self.enemy_hand_bet_strength:int = 0
+        self.bluffalo_allowed = True
 
         self.enemy_pressure -= 10
         if self.enemy_pressure < 0:
@@ -469,6 +472,7 @@ class PokerDarnel(GambleScreen):
             if state.controller.confirm_button:
                 if self.action_menu_index == 0:
 
+
                     if len(self.player_hand) == 3:
                         self.game_state = self.REVEAL_FUTURE_CARDS
                     elif len(self.player_hand) < 5:
@@ -477,8 +481,9 @@ class PokerDarnel(GambleScreen):
                         self.game_state = self.FINAL_RESULTS
 
 
-                elif self.action_menu_index == 1:
+                elif self.action_menu_index == 1 and self.bluffalo_allowed == True:
                     print("time to bluffallo")
+                    self.game_state = self.BLUFFALO_SCREEN
                 elif self.action_menu_index == 2:
                     print("time to cast a spell card swap")
                     self.game_state = self.MAGIC_MENU_SCREEN
@@ -495,6 +500,73 @@ class PokerDarnel(GambleScreen):
 
 
                     self.game_state = self.WELCOME_SCREEN
+
+        elif self.game_state == self.BLUFFALO_SCREEN:
+            self.bluffalo_allowed = False
+            card_length = len(self.enemy_hand)  # assuming this exists
+            card_modifier = card_length * 3 # dummy multiplier, tweak later
+            bet_modifier = 0
+            if self.player_bet < 150:
+                bet_modifier += 5
+            elif self.player_bet < 250:
+                bet_modifier += 15
+            elif self.player_bet < 350:
+                bet_modifier += 20
+            else:
+                bet_modifier += 30
+
+            if self.enemy_pressure < 100:
+                if self.enemy_score > 4:
+                    self.game_state = self.ACTION_SCREEN
+                elif self.enemy_score == 3:
+                    # max is 165
+                    # 15 card len  3 min
+                    # 50 random    1 min
+                    # 115 bet       16 min
+                    # 180 max
+                    fold_chance = random.randint(1, 50) + bet_modifier + card_modifier
+                    if fold_chance > 80:
+                        self.game_state = self.PLAYER_WINS
+                    else:
+                        self.enemy_pressure -= 10
+                        self.game_state = self.ACTION_SCREEN
+                elif self.enemy_score < 3:
+                    fold_chance = random.randint(1, 55) + bet_modifier + card_modifier
+                    if fold_chance > 80:
+                        self.game_state = self.PLAYER_WINS
+                    else:
+                        self.enemy_pressure -= 15
+                        self.game_state = self.ACTION_SCREEN
+            elif self.enemy_pressure >= 100:
+                if self.enemy_score > 4:
+                    self.game_state = self.ACTION_SCREEN
+                elif self.enemy_score == 3:
+                    # max is 165
+                    # 15 card len  3 min
+                    # 50 random    1 min
+                    # 115 bet       16 min
+                    # 180 max
+                    fold_chance = random.randint(1, 60) + bet_modifier + card_modifier
+                    if fold_chance > 80:
+                        self.game_state = self.PLAYER_WINS
+                    else:
+                        self.enemy_pressure -= 10
+                        self.game_state = self.ACTION_SCREEN
+                elif self.enemy_score < 3:
+                    fold_chance = random.randint(1, 65) + bet_modifier + card_modifier
+                    if fold_chance > 80:
+                        self.game_state = self.PLAYER_WINS
+                    else:
+                        self.enemy_pressure -= 15
+                        self.game_state = self.ACTION_SCREEN
+
+
+
+
+
+
+
+
 
         elif self.game_state == self.ENEMY_ACTION_SCREEN:
             pass
@@ -932,4 +1004,6 @@ class PokerDarnel(GambleScreen):
 
         print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
         self.enemy_discard_logic(index + 1, limit)
+
+
 
