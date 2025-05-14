@@ -383,6 +383,7 @@ pygame.display.set_allow_screensaver
 Set whether the screensaver may run
 
 
+heat
 
 
 

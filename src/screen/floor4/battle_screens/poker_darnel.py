@@ -8,6 +8,9 @@ from tests.test_poker_darnel import test_poker_score_tracker
 from types import *
 import random
 
+# New spell: dertect heat
+# this spell lets the player see the heat meter
+
 
 class PokerDarnel(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):

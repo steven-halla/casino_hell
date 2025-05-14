@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="lucky strike now givecs doubles aces">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new equpemtn item: poker bracelet now we never, as the player,draw a 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/deck.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/deck.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_constants/equipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/equipment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -409,7 +407,7 @@
       <workItem from="1746811945251" duration="5420000" />
       <workItem from="1746842483774" duration="12930000" />
       <workItem from="1746997126680" duration="14739000" />
-      <workItem from="1747153457846" duration="12846000" />
+      <workItem from="1747153457846" duration="16551000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -754,7 +752,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1438" />
+    <option name="localTasksCounter" value="1439" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -783,7 +781,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="light changes taking out fun call added new screen" />
     <MESSAGE value="made certain var global&#10;created a new compare fun for deleting cards" />
     <MESSAGE value="discard fun working" />
     <MESSAGE value="Discard AI now works for not getting rid of cards if all the same suit" />
@@ -808,7 +805,8 @@
     <MESSAGE value="enemy hand strengh is now set for betting" />
     <MESSAGE value="enemy now has logic for making bets" />
     <MESSAGE value="lucky strike now givecs doubles aces" />
-    <option name="LAST_COMMIT_MESSAGE" value="lucky strike now givecs doubles aces" />
+    <MESSAGE value="new equpemtn item: poker bracelet now we never, as the player,draw a 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="new equpemtn item: poker bracelet now we never, as the player,draw a 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
