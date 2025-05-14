@@ -85,6 +85,7 @@ from screen.floor4.battle_screens.poker_darnel import PokerDarnel
 from screen.floor4.battle_screens.slots_juragan_screen import SlotsJuraganScreen
 from screen.floor4.battle_screens.wheel_of_torture_vanessa_black_screen import WheelOfTortureVanessaBlackScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
+from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -246,6 +247,9 @@ class GameState:
         self.slotsJuraganScreen = SlotsJuraganScreen()
         self.wheelOfTortureVanessaBlackScreen = WheelOfTortureVanessaBlackScreen()
         self.pokerDarnel = PokerDarnel()
+
+#-----------------------Area 5 is below-----------------------------------------#
+        self.coinFlipWantonScreen = CoinFlipWantonScreen()
 
 
 

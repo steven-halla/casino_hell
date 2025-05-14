@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="HEAT system integrated">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/poker_darnel.py" afterDir="false" />
-    </list>
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed betting" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,6 +74,7 @@
     "Python.blackjack.executor": "Run",
     "Python.bluffalo_fun_test.executor": "Run",
     "Python.cindy_long_hair.executor": "Run",
+    "Python.coin_flip_wanton_screen.executor": "Run",
     "Python.constants.executor": "Run",
     "Python.craps_happy_screen.executor": "Debug",
     "Python.fff.executor": "Run",
@@ -131,7 +129,7 @@
       <recent name="$PROJECT_DIR$/src/game_constants" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.bluffalo_fun_test">
+  <component name="RunManager" selected="Python.main">
     <configuration name="bluffalo_fun_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
@@ -155,7 +153,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="high_low_diena_screen" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="coin_flip_wanton_screen" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="casino_hell" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -164,12 +162,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/screen/floor3/battle_screens" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/screen/floor5/battle_screens" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/screen/floor3/battle_screens/high_low_diena_screen.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/screen/floor5/battle_screens/coin_flip_wanton_screen.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -290,18 +288,18 @@
     <list>
       <item itemvalue="Python.main" />
       <item itemvalue="Python.bluffalo_fun_test" />
+      <item itemvalue="Python.coin_flip_wanton_screen" />
       <item itemvalue="Python.poker_bracelet" />
       <item itemvalue="Python.poker_darnel" />
-      <item itemvalue="Python.high_low_diena_screen" />
       <item itemvalue="Python tests.Python tests for test_poker_darnel.TestPokerScoreTracker.test_1_1_player_higher_pair" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.coin_flip_wanton_screen" />
         <item itemvalue="Python.bluffalo_fun_test" />
         <item itemvalue="Python.poker_darnel" />
         <item itemvalue="Python.poker_bracelet" />
         <item itemvalue="Python tests.Python tests for test_poker_darnel.TestPokerScoreTracker.test_1_1_player_higher_pair" />
-        <item itemvalue="Python.high_low_diena_screen" />
       </list>
     </recent_temporary>
   </component>
@@ -414,7 +412,7 @@
       <workItem from="1746811945251" duration="5420000" />
       <workItem from="1746842483774" duration="12930000" />
       <workItem from="1746997126680" duration="14739000" />
-      <workItem from="1747153457846" duration="21713000" />
+      <workItem from="1747153457846" duration="22644000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -759,7 +757,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1441" />
+    <option name="localTasksCounter" value="1442" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -788,7 +786,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Discard AI now works for not getting rid of cards if all the same suit" />
     <MESSAGE value="discard now works for building up for a straight" />
     <MESSAGE value="save point-del two cards start" />
     <MESSAGE value="discard ai works for poker" />
@@ -813,7 +810,8 @@
     <MESSAGE value="new equpemtn item: poker bracelet now we never, as the player,draw a 2" />
     <MESSAGE value="save point-working on HEAT" />
     <MESSAGE value="HEAT system integrated" />
-    <option name="LAST_COMMIT_MESSAGE" value="HEAT system integrated" />
+    <MESSAGE value="fixed betting" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed betting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -876,6 +874,7 @@
     <SUITE FILE_PATH="coverage/casino_hell$poker_bracelet.coverage" NAME="poker_bracelet Coverage Results" MODIFIED="1747171467337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/casino_hell$game.coverage" NAME="game Coverage Results" MODIFIED="1708242630350" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/nfeGame$blackjack.coverage" NAME="blackjack Coverage Results" MODIFIED="1702954989420" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/casino_hell$coin_flip_wanton_screen.coverage" NAME="coin_flip_wanton_screen Coverage Results" MODIFIED="1747255203673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor5/battle_screens" />
     <SUITE FILE_PATH="coverage/nfeGame$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1703706369250" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$constants.coverage" NAME="constants Coverage Results" MODIFIED="1708242645558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/casino_hell$bluffalo_fun_test.coverage" NAME="bluffalo_fun_test Coverage Results" MODIFIED="1747253468895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests/poker" />
