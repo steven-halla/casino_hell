@@ -59,7 +59,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.exp_gain_low: int = 1
         self.result_anchor: bool = False
         self.money: int = 999
-        self.bonnie_magic_points: int = 2
+        self.wanton_magic_points: int = 2
         self.debuff_double_flip: int = 0
         self.even: bool = False
         self.odd: bool = False
@@ -108,8 +108,8 @@ class CoinFlipWantonScreen(GambleScreen):
             ]),
             # if player gets first flip, then we flip one more time.
             #  Heads force only works for first flip not 2nd
-            self.BONNIE_CASTING_SPELL_MESSAGE: MessageBox([
-                f"Gods of darkness and strife,accept this unholy sacrifice and  increase my power times 2...double flip!Ï"
+            self.WANTON_CASTING_SPELL_MESSAGE: MessageBox([
+                f"Poison heads"
             ]),
         }
 
@@ -125,7 +125,7 @@ class CoinFlipWantonScreen(GambleScreen):
     PLAYER_WIN_SCREEN: str = "player_win_screen"
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
-    BONNIE_CASTING_SPELL_SCREEN: str = "BONNIE_CASTING_SPELL_SCREEN"
+    WANTON_CASTING_SPELL_SCREEN: str = "WANTON_CASTING_SPELL_SCREEN"
     LEVEL_UP_MESSAGE: str = "level_up_message"
     ANIMAL_DEFENSE_MESSAGE: str = "animal defense message"
     PLAYER_WIN_MESSAGE: str = "player_win_message"
@@ -140,7 +140,7 @@ class CoinFlipWantonScreen(GambleScreen):
     PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
-    BONNIE_CASTING_SPELL_MESSAGE: str= "BONNIE_CASTING_SPELL_MESSAGE"
+    WANTON_CASTING_SPELL_MESSAGE: str= "WANTON_CASTING_SPELL_MESSAGE"
 
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
@@ -157,7 +157,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.timer_start = None
         self.image_to_display = ""
         self.player_choice = ""
-        self.bonnie_magic_points = 2
+        self.wanton_magic_points = 2
 
     def reset_round(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
@@ -179,8 +179,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.double_flip_chance += 3
         double_flip_randomizer = random.randint(1, 100) + self.double_flip_chance
 
-        if double_flip_randomizer > 90 and self.bonnie_magic_points > 0 and self.debuff_double_flip == 0:
-            self.current_screen = self.BONNIE_CASTING_SPELL_SCREEN
+        if double_flip_randomizer > 90 and self.wanton_magic_points > 0 and self.debuff_double_flip == 0:
+            self.current_screen = self.WANTON_CASTING_SPELL_SCREEN
             self.double_flip_chance = 0
 
 
@@ -190,8 +190,8 @@ class CoinFlipWantonScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.bonnie_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area5RestScreen
+            state.area5RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_BONNIE_DEFEATED)
 
         # switch statement
@@ -201,16 +201,16 @@ class CoinFlipWantonScreen(GambleScreen):
         #         self.battle_messages[self.BET_MESSAGE].reset()
         #         self.update_welcome_screen_logic(controller, state)
         #
-        #     case self.BONNIE_CASTING_SPELL_SCREEN:
-        #         self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].update(state)
+        #     case self.WANTON_CASTING_SPELL_SCREEN:
+        #         self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
         #         self.update_bonnies_casting_spell_screen_helper(state)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
-        elif self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].update(state)
+        elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
             self.update_bonnies_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
@@ -258,8 +258,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.BONNIE_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.BONNIE_CASTING_SPELL_MESSAGE].draw(state)
+        if self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
@@ -566,7 +566,7 @@ class CoinFlipWantonScreen(GambleScreen):
 
     def update_bonnies_casting_spell_screen_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
-            self.bonnie_magic_points -= 1
+            self.wanton_magic_points -= 1
             self.debuff_double_flip += 10
             self.game_state = self.WELCOME_SCREEN
 
