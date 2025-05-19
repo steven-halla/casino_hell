@@ -178,9 +178,12 @@ class CoinFlipWantonScreen(GambleScreen):
             self.debuff_double_flip -= 1
         self.double_flip_chance += 3
         double_flip_randomizer = random.randint(1, 100) + self.double_flip_chance
+        print(f"double flip chance: {self.double_flip_chance}, randomizer: {double_flip_randomizer}")
+
 
         if double_flip_randomizer > 90 and self.wanton_magic_points > 0 and self.debuff_double_flip == 0:
-            self.current_screen = self.WANTON_CASTING_SPELL_SCREEN
+            print("df;sajf;js;fljsa;fj;lsajf;slafjl;sfj;lsjfs;alfjs;lajf;ljjas;kjl")
+            self.game_state = self.WANTON_CASTING_SPELL_SCREEN
             self.double_flip_chance = 0
 
 
@@ -210,6 +213,9 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
+            print("LEerrrrrrrooooooooooooyyyyy JJENNNNKKKINNNNNNSSSSSS")
+
+
             self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
             self.update_bonnies_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
@@ -487,8 +493,9 @@ class CoinFlipWantonScreen(GambleScreen):
         self.result_anchor = False
 
     def update_player_draw_screen_helper(self):
-        self.reset_round()
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round()
+
 
 
     def update_flip_coin(self):
@@ -576,11 +583,12 @@ class CoinFlipWantonScreen(GambleScreen):
             self.game_state = self.RESULTS_SCREEN
 
     def update_player_win_screen_helper(self, state: 'GameState'):
-        self.reset_round()
         state.player.exp += self.exp_gain_high
         state.player.money += self.bet
         self.money -= self.bet
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round()
+
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
 
@@ -591,11 +599,12 @@ class CoinFlipWantonScreen(GambleScreen):
             self.money -= total_gain
             self.game_state = self.WELCOME_SCREEN
     def update_player_lose_message_helper(self, state: 'GameState'):
-        self.reset_round()
         state.player.exp += self.exp_gain_low
         state.player.money -= self.bet
         self.money += self.bet
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round()
+
 
 
     def game_over_screen_level_4(self, state: 'GameState', controller):

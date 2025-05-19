@@ -180,7 +180,7 @@ class CoinFlipBonnieScreen(GambleScreen):
         double_flip_randomizer = random.randint(1, 100) + self.double_flip_chance
 
         if double_flip_randomizer > 90 and self.bonnie_magic_points > 0 and self.debuff_double_flip == 0:
-            self.current_screen = self.BONNIE_CASTING_SPELL_SCREEN
+            self.game_state = self.BONNIE_CASTING_SPELL_SCREEN
             self.double_flip_chance = 0
 
 
@@ -487,8 +487,9 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.result_anchor = False
 
     def update_player_draw_screen_helper(self):
-        self.reset_round()
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round()
+
 
 
     def update_flip_coin(self):
@@ -576,11 +577,12 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.RESULTS_SCREEN
 
     def update_player_win_screen_helper(self, state: 'GameState'):
-        self.reset_round()
         state.player.exp += self.exp_gain_high
         state.player.money += self.bet
         self.money -= self.bet
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round()
+
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
 
@@ -591,11 +593,12 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.money -= total_gain
             self.game_state = self.WELCOME_SCREEN
     def update_player_lose_message_helper(self, state: 'GameState'):
-        self.reset_round()
         state.player.exp += self.exp_gain_low
         state.player.money -= self.bet
         self.money += self.bet
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round()
+
 
 
     def game_over_screen_level_4(self, state: 'GameState', controller):
