@@ -59,7 +59,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.exp_gain_low: int = 1
         self.result_anchor: bool = False
         self.money: int = 999
-        self.wanton_magic_points: int = 2
+        self.wanton_magic_points: int = 3
         self.even: bool = False
         self.odd: bool = False
         self.tri = False
@@ -208,7 +208,7 @@ class CoinFlipWantonScreen(GambleScreen):
         #
         #     case self.WANTON_CASTING_SPELL_SCREEN:
         #         self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
-        #         self.update_bonnies_casting_spell_screen_helper(state)
+        #         self.update_wanton_casting_spell_screen_helper(state)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
@@ -216,7 +216,7 @@ class CoinFlipWantonScreen(GambleScreen):
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
             self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
-            self.update_bonnies_casting_spell_screen_helper(state)
+            self.update_wanton_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.update_bet_screen_helper(state, controller)
@@ -409,87 +409,9 @@ class CoinFlipWantonScreen(GambleScreen):
                 self.game_state = self.PLAYER_LOSE_SCREEN
 
 
-    def update_double_flip_coin(self):
-        # Coin 1 (uses phase-based logic)
-        if self.heads_force_active:
-            self.coin_landed = CoinFlipConstants.HEADS.value
-        else:
-            if not self.even and not self.odd and not self.tri:
-                coin_fate = random.randint(1, 3)
-                print("Coin 1 fate:", coin_fate)
-                if coin_fate == 1:
-                    self.even = True
-                elif coin_fate == 2:
-                    self.odd = True
-                elif coin_fate == 3:
-                    self.tri = True
 
-            if self.even:
-                if self.phase in [1, 2, 5]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [3, 4]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
 
-            elif self.odd:
-                if self.phase in [1, 2, 3, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-                elif self.phase == 4:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
 
-            elif self.tri:
-                if self.phase in [1, 3, 4]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [2, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-
-        # Coin 2 (simple 50/50) → assign to double_coin_landed
-        self.double_coin_landed = random.choice([
-            CoinFlipConstants.HEADS.value,
-            CoinFlipConstants.TAILS.value
-        ])
-
-        self.result_anchor = False
-
-    def update_double_flip_coin(self):
-        # Coin 1 (uses phase-based logic)
-        if self.heads_force_active:
-            self.coin_landed = CoinFlipConstants.HEADS.value
-        else:
-            if not self.even and not self.odd and not self.tri:
-                coin_fate = random.randint(1, 3)
-                print("Coin 1 fate:", coin_fate)
-                if coin_fate == 1:
-                    self.even = True
-                elif coin_fate == 2:
-                    self.odd = True
-                elif coin_fate == 3:
-                    self.tri = True
-
-            if self.even:
-                if self.phase in [1, 2, 5]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [3, 4]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-
-            elif self.odd:
-                if self.phase in [1, 2, 3, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-                elif self.phase == 4:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-
-            elif self.tri:
-                if self.phase in [1, 3, 4]:
-                    self.coin_landed = CoinFlipConstants.HEADS.value
-                elif self.phase in [2, 5]:
-                    self.coin_landed = CoinFlipConstants.TAILS.value
-
-        # Coin 2 (simple 50/50) → assign to double_coin_landed
-        self.double_coin_landed = random.choice([
-            CoinFlipConstants.HEADS.value,
-            CoinFlipConstants.TAILS.value
-        ])
-
-        self.result_anchor = False
 
     def update_player_draw_screen_helper(self):
         self.game_state = self.WELCOME_SCREEN
@@ -570,10 +492,17 @@ class CoinFlipWantonScreen(GambleScreen):
         elif self.bet >= max_bet:
             self.bet = max_bet
 
-    def update_bonnies_casting_spell_screen_helper(self, state: 'GameState'):
+    def update_wanton_casting_spell_screen_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
+            match self.wanton_magic_points:
+                case 3:
+                    self.spirit_bonus = 0
+                case 2:
+                    self.magic_bonus = 0
+                case 1:
+                    state.player.stamina_points -= state.player.body * 50
             self.wanton_magic_points -= 1
-            self.debuff_double_flip += 10
+
             self.game_state = self.WELCOME_SCREEN
 
     def update_coin_flip_screen_helper(self, state: 'GameState'):
