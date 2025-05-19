@@ -60,13 +60,15 @@ class CoinFlipWantonScreen(GambleScreen):
         self.result_anchor: bool = False
         self.money: int = 999
         self.wanton_magic_points: int = 2
-        self.debuff_double_flip: int = 0
         self.even: bool = False
         self.odd: bool = False
         self.tri = False
         self.double_flip_chance: int = 0
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
+        self.spirit_magic_bonus_zero_chance: int = 0
+        self.debuff_magic_equipment_break: int = 0
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -157,7 +159,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.timer_start = None
         self.image_to_display = ""
         self.player_choice = ""
-        self.wanton_magic_points = 2
+        self.wanton_magic_points = 3
 
     def reset_round(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
@@ -174,17 +176,17 @@ class CoinFlipWantonScreen(GambleScreen):
             self.shield_debuff -= 1
         if self.shield_debuff == 0 and self.heads_force_active == False:
             self.magic_lock = False
-        if self.debuff_double_flip > 0:
-            self.debuff_double_flip -= 1
-        self.double_flip_chance += 3
-        double_flip_randomizer = random.randint(1, 100) + self.double_flip_chance
-        print(f"double flip chance: {self.double_flip_chance}, randomizer: {double_flip_randomizer}")
+
+        if self.debuff_magic_equipment_break > 0:
+            self.debuff_magic_equipment_break -= 1
+
+        self.spirit_magic_bonus_zero_chance += 3
+        man_trap_randomizer = random.randint(1, 100) + self.spirit_magic_bonus_zero_chance
 
 
-        if double_flip_randomizer > 90 and self.wanton_magic_points > 0 and self.debuff_double_flip == 0:
-            print("df;sajf;js;fljsa;fj;lsajf;slafjl;sfj;lsjfs;alfjs;lajf;ljjas;kjl")
+        if man_trap_randomizer > 90 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
             self.game_state = self.WANTON_CASTING_SPELL_SCREEN
-            self.double_flip_chance = 0
+            self.spirit_magic_bonus_zero_chance = 0
 
 
     def update(self, state):
@@ -195,7 +197,7 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.money <= self.bonnie_bankrupt:
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_BONNIE_DEFEATED)
+            Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_WANTON_DEFEATED)
 
         # switch statement
         # match self.game_state:
@@ -213,9 +215,6 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
-            print("LEerrrrrrrooooooooooooyyyyy JJENNNNKKKINNNNNNSSSSSS")
-
-
             self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
             self.update_bonnies_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:

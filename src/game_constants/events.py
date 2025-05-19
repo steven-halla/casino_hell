@@ -61,6 +61,11 @@ class Events(Enum):
 
 
 
+    # below is level 5:
+    COIN_FLIP_WANTON_DEFEATED = "coin flip wantan defeated"
+
+
+
 
 
 
