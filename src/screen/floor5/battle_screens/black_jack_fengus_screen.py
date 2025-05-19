@@ -9,7 +9,7 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 
 #There is  a bug on the redraw
-class BlackJackJasmineScreen(GambleScreen):
+class BlackJackFengusScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
         self.enemy_card_y_positions: list[int] = []
@@ -64,8 +64,9 @@ class BlackJackJasmineScreen(GambleScreen):
         self.low_stamina_drain: int = 10
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
-        self.jasmine_magic_points: int = 2
-        self.debuff_brain_rot: int = 0
+        self.fengus_magic_points: int = 3
+        self.debuff_buff_luck_switch: int = 0
+        self.luck_swapping_switch: int = 0
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -114,8 +115,8 @@ class BlackJackJasmineScreen(GambleScreen):
             self.LEVEL_UP_MESSAGE: MessageBox([
                 f"You leveld up!"
             ]),
-            self.JASMINE_CASTING_SPELL: MessageBox([
-                f"Unknown man of the greatest wisdom, let your mind decay and fester in the insanity of an endless void for all eternity...brain rot (Mind and  Spirit reduced to 0) "
+            self.FENGUS_CASTING_SPELL: MessageBox([
+                f"Rays of the goddess, switch yourself away from the choosen adn shine upon me...luck shift(player/enemy lucks switched) "
             ]),
         }
 
@@ -132,7 +133,7 @@ class BlackJackJasmineScreen(GambleScreen):
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
     LEVEL_UP: str = "level_up_message"
-    JASMINE_CASTING_SPELL: str = "JASMINE_CASTING_SPELL"
+    FENGUS_CASTING_SPELL: str = "FENGUS_CASTING_SPELL"
     REVEAL: str = "reveal"
     REDRAW: str = "redraw"
     BACK = "back"
@@ -145,7 +146,7 @@ class BlackJackJasmineScreen(GambleScreen):
     PLAYER_WIN_ACTION_SCREEN: str = "player_win_action_phase"
     ENEMY_WIN_ACTION_SCREEN: str = "enemy_win_action_phase"
     PLAYER_ENEMY_DRAW_ACTION_SCREEN: str = "player_enemy_draw_action_phase"
-    JASMINE_CASTING_SPELL_SCREEN: str = "JASMINE_CASTING_SPELL_screen"
+    FENGUS_CASTING_SPELL_SCREEN: str = "FENGUS_CASTING_SPELL_screen"
 
     def start(self, state: 'GameState'):
         self.deck.shuffle()
@@ -171,12 +172,12 @@ class BlackJackJasmineScreen(GambleScreen):
         self.enemy_card_y_positions = []
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
-        self.debuff_brain_rot += 5
-        double_flip_randomizer = random.randint(1, 100) + self.debuff_brain_rot
+        self.luck_swapping_switch += 5
+        luck_swap_randomizer = random.randint(1, 100) + self.luck_swapping_switch
 
-        if double_flip_randomizer > 90 and self.jasmine_magic_points > 0 and self.debuff_brain_rot == 0:
-            self.game_state = self.JASMINE_CASTING_SPELL_SCREEN
-            self.debuff_brain_rot = 0
+        if luck_swap_randomizer > 90 and self.fengus_magic_points > 0 and self.debuff_buff_luck_switch == 0:
+            self.game_state = self.FENGUS_CASTING_SPELL_SCREEN
+            self.luck_swapping_switch = 0
 
 
 
@@ -193,7 +194,7 @@ class BlackJackJasmineScreen(GambleScreen):
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
-        self.jasmine_magic_points = 2
+        self.fengus_magic_points = 3
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -203,9 +204,9 @@ class BlackJackJasmineScreen(GambleScreen):
 
 
         if self.money <= self.jasmine_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.BLACK_JACK_JASMINE_DEFEATED)
+            state.currentScreen = state.area5RestScreen
+            state.area5RestScreen.start(state)
+            Events.add_level_four_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
@@ -224,10 +225,10 @@ class BlackJackJasmineScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-        elif self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.JASMINE_CASTING_SPELL].update(state)
+        elif self.game_state == self.FENGUS_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.FENGUS_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
-                self.jasmine_magic_points -= 1
+                self.fengus_magic_points -= 1
                 self.debuff_brain_rot += 10
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.LEVEL_UP_SCREEN:
@@ -292,8 +293,8 @@ class BlackJackJasmineScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.JASMINE_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.JASMINE_CASTING_SPELL].draw(state)
+        if self.game_state == self.FENGUS_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.FENGUS_CASTING_SPELL].draw(state)
         elif self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
