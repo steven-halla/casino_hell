@@ -180,11 +180,20 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.debuff_magic_equipment_break > 0:
             self.debuff_magic_equipment_break -= 1
 
-        self.spirit_magic_bonus_zero_chance += 100
-        man_trap_randomizer = random.randint(1, 100) + self.spirit_magic_bonus_zero_chance
+        self.spirit_magic_bonus_zero_chance += 3
+
+        match self.wanton_magic_points:
+            case 3:
+                man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance
+            case 2:
+                man_trap_randomizer = random.randint(1, 80) + self.spirit_magic_bonus_zero_chance
+            case 1:
+                man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance
 
 
-        if man_trap_randomizer > 90 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
+
+
+        if man_trap_randomizer > 100 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
             self.game_state = self.WANTON_CASTING_SPELL_SCREEN
             self.spirit_magic_bonus_zero_chance = 0
 
