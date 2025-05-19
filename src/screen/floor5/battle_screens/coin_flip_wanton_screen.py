@@ -443,21 +443,21 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.heads_force_active == True:
             self.result = CoinFlipConstants.HEADS.value
             #
-        if self.even == False and self.odd == False and self.tri == False:
-            coin_fate = random.randint(1, 3)
-            print("YOur coin fate" + str(coin_fate))
-            if coin_fate == 1:
-                self.even = True
-            elif coin_fate == 2:
-                self.odd = True
-            elif coin_fate == 3:
-                self.tri = True
+            if self.even == False and self.odd == False and self.tri == False:
+                match self.wanton_magic_points:
+                    case 3:
+                        self.even = True
+                    case 2:
+                        self.odd = True
+                    case 1:
+                        self.tri = True
+
 
         if self.even == True and self.heads_force_active == False:
             if self.phase == 1:
                 self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 3:
                 self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 4:
@@ -467,27 +467,34 @@ class CoinFlipWantonScreen(GambleScreen):
 
         elif self.odd == True and self.heads_force_active == False:
             if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
+                                                                                   100) <= 60 else CoinFlipConstants.HEADS.value
             elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value if random.randint(1,
+                                                                                   100) <= 60 else CoinFlipConstants.HEADS.value
             elif self.phase == 3:
                 self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
+                                                                                   100) <= 60 else CoinFlipConstants.TAILS.value
             elif self.phase == 5:
                 self.coin_landed = CoinFlipConstants.TAILS.value
 
         elif self.tri == True and self.heads_force_active == False:
             if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
+                                                                                   100) <= 80 else CoinFlipConstants.TAILS.value
             elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value if random.randint(1,
+                                                                                   100) <= 80 else CoinFlipConstants.TAILS.value
             elif self.phase == 3:
                 self.coin_landed = CoinFlipConstants.HEADS.value
             elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
+                                                                                   100) <= 80 else CoinFlipConstants.TAILS.value
             elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.coin_landed = CoinFlipConstants.TAILS.value if random.randint(1,
+                                                                                   100) <= 80 else CoinFlipConstants.HEADS.value
 
         self.result_anchor = False
 
