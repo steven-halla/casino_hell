@@ -180,7 +180,7 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.debuff_magic_equipment_break > 0:
             self.debuff_magic_equipment_break -= 1
 
-        self.spirit_magic_bonus_zero_chance += 3
+        self.spirit_magic_bonus_zero_chance += 100
         man_trap_randomizer = random.randint(1, 100) + self.spirit_magic_bonus_zero_chance
 
 
@@ -215,7 +215,21 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
         elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
+            match self.wanton_magic_points:
+                case 3:
+                    self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
+                        f"Chains of descent latch onto your spirit... You lose 1 spirit bonus!"
+                    ]
+                case 2:
+                    self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
+                        f"Ancient whispers corrode your thoughts... You lose 1 magic bonus!"
+                    ]
+                case 1:
+                    self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
+                        f"Hell flogs your flesh... You lose HP equal to BODY × 50!"
+                    ]
             self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
+
             self.update_wanton_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
@@ -228,11 +242,8 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.COIN_FLIP_MESSAGE].update(state)
             self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
-            if self.result_anchor == True:
-                if self.debuff_double_flip == 0:
-                    self.update_flip_coin()
-                else:
-                    self.update_double_flip_coin()
+            self.update_flip_coin()
+
             if controller.confirm_button:
                 self.update_flip_coin_logic_helper(controller)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
@@ -277,10 +288,9 @@ class CoinFlipWantonScreen(GambleScreen):
             self.draw_magic_menu_selection_box(state)
         elif self.game_state == self.COIN_FLIP_SCREEN:
             self.battle_messages[self.COIN_FLIP_MESSAGE].draw(state)
-            if self.debuff_double_flip == 0:
-                self.draw_flip_coin(state)
-            else:
-                self.draw_double_flip(state)
+            self.draw_flip_coin(state)
+
+
         elif self.game_state == self.RESULTS_SCREEN:
             self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
@@ -385,28 +395,21 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
             self.game_state = self.PLAYER_WIN_SCREEN
 
-        if self.debuff_double_flip == 0:
-            if self.coin_landed == self.player_choice:
-                self.game_state = self.PLAYER_WIN_SCREEN
-            elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-                # in future we will need a message to display roll chances for player spells
-                shield_chance = self.magic_bonus * 10
-                random_shield = random.randint(1, 100) + shield_chance
-                # Each level should have a different % higher
-                if random_shield > 60:
-                    self.game_state = self.PLAYER_DRAW_SCREEN
-                else:
-                    self.game_state = self.PLAYER_LOSE_SCREEN
-
-            elif self.coin_landed != self.player_choice:
-                self.game_state = self.PLAYER_LOSE_SCREEN
-        else:
-            if self.coin_landed == self.player_choice and self.double_coin_landed == self.player_choice:
-                self.game_state = self.PLAYER_WIN_SCREEN
-            elif (self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice) and self.shield_debuff > 0:
+        if self.coin_landed == self.player_choice:
+            self.game_state = self.PLAYER_WIN_SCREEN
+        elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
+            # in future we will need a message to display roll chances for player spells
+            shield_chance = self.magic_bonus * 10
+            random_shield = random.randint(1, 100) + shield_chance
+            # Each level should have a different % higher
+            if random_shield > 60:
                 self.game_state = self.PLAYER_DRAW_SCREEN
-            elif self.coin_landed != self.player_choice or self.double_coin_landed != self.player_choice:
+            else:
                 self.game_state = self.PLAYER_LOSE_SCREEN
+
+        elif self.coin_landed != self.player_choice:
+            self.game_state = self.PLAYER_LOSE_SCREEN
+
 
 
 
@@ -559,10 +562,9 @@ class CoinFlipWantonScreen(GambleScreen):
 
 
     def draw_coin_results_single_or_double_flip(self, state: 'GameState'):
-        if self.debuff_double_flip == 0:
-            self.draw_results_screen_logic(state)
-        else:
-            self.draw_double_flip_results_screen_logic(state)
+        self.draw_results_screen_logic(state)
+
+
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
