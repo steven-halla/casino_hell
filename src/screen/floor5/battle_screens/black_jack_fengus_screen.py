@@ -26,7 +26,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
         self.money: int = 950
-        self.jasmine_bankrupt: int = 0
+        self.fengus_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
@@ -65,8 +65,11 @@ class BlackJackFengusScreen(GambleScreen):
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
         self.fengus_magic_points: int = 3
-        self.debuff_buff_luck_switch: int = 0
+        self.debuff_buff_luck_switch: int = 10
         self.luck_swapping_switch: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
+        self.luck_bonus: int = 0
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -153,6 +156,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.initialize_music()
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
+        self.luck_bonus: int = state.player.luck * 10
 
     def round_reset(self):
         print("Round Reset")
@@ -165,6 +169,10 @@ class BlackJackFengusScreen(GambleScreen):
             self.redraw_debuff_counter -= 1
         if self.reveal_buff_counter == 0 and self.redraw_debuff_counter == 0:
             self.magic_lock = False
+
+        if self.debuff_buff_luck_switch > 0:
+            self.debuff_buff_luck_switch -= 1
+
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
@@ -203,7 +211,7 @@ class BlackJackFengusScreen(GambleScreen):
         super().update(state)
 
 
-        if self.money <= self.jasmine_bankrupt:
+        if self.money <= self.fengus_bankrupt:
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
@@ -229,7 +237,7 @@ class BlackJackFengusScreen(GambleScreen):
             self.battle_messages[self.FENGUS_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
                 self.fengus_magic_points -= 1
-                self.debuff_brain_rot += 10
+                self.debuff_buff_luck_switch += 10
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0
@@ -397,10 +405,32 @@ class BlackJackFengusScreen(GambleScreen):
         level_1_luck_score = 0
         lucky_strike_threshhold = 75
         initial_hand = 2
-        adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
+        if self.debuff_buff_luck_switch == 0:
+            adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
+        elif self.debuff_buff_luck_switch > 0:
+            adjusted_lucky_roll = 0
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.player_hand = self.deck.player_draw_hand(2)
-            self.enemy_hand = self.deck.enemy_draw_hand(2)
+            if self.debuff_buff_luck_switch == 0:
+                self.enemy_hand = self.deck.enemy_draw_hand(2)
+            elif self.debuff_buff_luck_switch > 0:
+                lucky_enemy_roll = random.randint(1, 100)
+                lucky_enemy_strike = lucky_enemy_roll + (state.player.luck * 5)
+                ace_card = None
+                ten_card = None
+                print("Lucky roll strike is" + str(lucky_enemy_strike))
+                if lucky_enemy_strike >= 100:
+                    for card in self.deck.cards:
+                        if card[0] == "Ace" and ace_card is None:
+                            ace_card = card
+                        elif card[2] == 10 and ten_card is None:
+                            ten_card = card
+                        if ace_card and ten_card:
+                            break
+                    self.enemy_hand = [ace_card, ten_card]
+                else:
+                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
 
@@ -568,12 +598,7 @@ class BlackJackFengusScreen(GambleScreen):
 
     def update_welcome_screen_update_logic(self, state: 'GameState', controller):
 
-        if self.debuff_brain_rot > 0:
-            self.spirit_bonus: int = 0
-            self.magic_bonus: int = 0
-        elif self.debuff_brain_rot == 0:
-            self.spirit_bonus: int = state.player.spirit * 10
-            self.magic_bonus: int = state.player.mind * 10
+
 
         if state.player.money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
