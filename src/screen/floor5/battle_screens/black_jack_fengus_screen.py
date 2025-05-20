@@ -119,7 +119,7 @@ class BlackJackFengusScreen(GambleScreen):
                 f"You leveld up!"
             ]),
             self.FENGUS_CASTING_SPELL: MessageBox([
-                f"Rays of the goddess, switch yourself away from the choosen adn shine upon me...luck shift(player/enemy lucks switched) "
+                f"Rays of the goddess, switch yourself away from the chosen and shine upon me...luck shift(player/enemy lucks switched) "
             ]),
         }
 
