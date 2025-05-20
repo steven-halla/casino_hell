@@ -1022,6 +1022,10 @@ class BlackJackFengusScreen(GambleScreen):
                 and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices):
             self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
 
+        if (self.redraw_debuff_counter <= self.redraw_end_counter
+                and Magic.BLACK_JACK_REDRAW.value in self.player_action_phase_choices):
+            self.player_action_phase_choices.remove(Magic.BLACK_JACK_REDRAW.value)
+
         for idx, choice in enumerate(self.player_action_phase_choices):
             y_position = start_y_right_box + idx * spacing_between_choices
 
