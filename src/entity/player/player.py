@@ -2053,8 +2053,8 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.blackJackFengusScreen
-            state.blackJackFengusScreen.start(state)
+            state.currentScreen = state.crapsWimpletonScreen
+            state.crapsWimpletonScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")

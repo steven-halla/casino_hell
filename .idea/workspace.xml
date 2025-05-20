@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed bug where redraw was not going away after it was supposed to expire">
-      <change beforePath="$PROJECT_DIR$/src/screen/floor5/battle_screens/black_jack_fengus_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor5/battle_screens/black_jack_fengus_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/player/player.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/player/player.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -416,7 +417,7 @@
       <workItem from="1746997126680" duration="14739000" />
       <workItem from="1747153457846" duration="25433000" />
       <workItem from="1747612168180" duration="10743000" />
-      <workItem from="1747756799622" duration="2777000" />
+      <workItem from="1747756799622" duration="3164000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -761,7 +762,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1455" />
+    <option name="localTasksCounter" value="1456" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

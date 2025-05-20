@@ -45,7 +45,8 @@
         "bad luck",
         "flush deck",
         "Dice Force",
-        "Poker Card Swap"
+        "Poker Card Swap",
+        "pig meter"
     ],
     "body": 4,
     "mind": 4,
