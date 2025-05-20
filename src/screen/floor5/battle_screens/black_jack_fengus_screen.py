@@ -16,6 +16,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.player_card_y_positions: list[int] = []
         self.game_state: str = self.WELCOME_SCREEN
         self.deck: Deck() = Deck()
+
         self.player_hand: list[str] = []
         self.enemy_hand: list[str] = []
         self.player_score: int = 0
