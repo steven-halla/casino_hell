@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="changing var names">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="game tested new spell created luck switch">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor4/battle_screens/black_jack_jasmine_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor4/battle_screens/black_jack_jasmine_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor5/battle_screens/black_jack_fengus_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor5/battle_screens/black_jack_fengus_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,59 +64,59 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor": "Run",
-    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor": "Run",
-    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor": "Run",
-    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor": "Run",
-    "Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor": "Run",
-    "Python tests.Python tests for test_poker_darnel.TestPokerScoreTracker.test_1_1_player_higher_pair.executor": "Run",
-    "Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor": "Run",
-    "Python.$AffectedModuleNames$.executor": "Run",
-    "Python.Unnamed.executor": "Run",
-    "Python.blackjack.executor": "Run",
-    "Python.bluffalo_fun_test.executor": "Run",
-    "Python.cindy_long_hair.executor": "Run",
-    "Python.coin_flip_wanton_screen.executor": "Run",
-    "Python.constants.executor": "Run",
-    "Python.craps_happy_screen.executor": "Debug",
-    "Python.fff.executor": "Run",
-    "Python.game.executor": "Run",
-    "Python.game_state.executor": "Run",
-    "Python.hangry_angry_starving_hippos_test.executor": "Run",
-    "Python.high_low_diena_screen.executor": "Run",
-    "Python.hungry_starving_hippos.executor": "Run",
-    "Python.main (1).executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main.py.executor": "Run",
-    "Python.nukeem.executor": "Run",
-    "Python.opposuminacan.executor": "Run",
-    "Python.playground.executor": "Debug",
-    "Python.poker_bracelet.executor": "Run",
-    "Python.poker_darnel.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/stevenhalla/Code/casino_hell/assets/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.editor",
-    "ts.external.directory.path": "/Users/stevenhalla/Applications/PyCharm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests for equipment_to_player_test.EquipmentToPlayerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_all_humans_race_outcome.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_race_progression.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for hangry_angry_starving_hippos_test.HungryStarvingHipposTest.test_winners_list.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests for test_poker_darnel.TestPokerScoreTracker.test_1_1_player_higher_pair.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in hangry_angry_starving_hippos_test.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.$AffectedModuleNames$.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;Python.blackjack.executor&quot;: &quot;Run&quot;,
+    &quot;Python.bluffalo_fun_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.cindy_long_hair.executor&quot;: &quot;Run&quot;,
+    &quot;Python.coin_flip_wanton_screen.executor&quot;: &quot;Run&quot;,
+    &quot;Python.constants.executor&quot;: &quot;Run&quot;,
+    &quot;Python.craps_happy_screen.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.fff.executor&quot;: &quot;Run&quot;,
+    &quot;Python.game.executor&quot;: &quot;Run&quot;,
+    &quot;Python.game_state.executor&quot;: &quot;Run&quot;,
+    &quot;Python.hangry_angry_starving_hippos_test.executor&quot;: &quot;Run&quot;,
+    &quot;Python.high_low_diena_screen.executor&quot;: &quot;Run&quot;,
+    &quot;Python.hungry_starving_hippos.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.nukeem.executor&quot;: &quot;Run&quot;,
+    &quot;Python.opposuminacan.executor&quot;: &quot;Run&quot;,
+    &quot;Python.playground.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.poker_bracelet.executor&quot;: &quot;Run&quot;,
+    &quot;Python.poker_darnel.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/stevenhalla/Code/casino_hell/assets/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/stevenhalla/Applications/PyCharm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "GitIgnore"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;GitIgnore&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/assets/images" />
@@ -415,6 +417,8 @@
       <workItem from="1746842483774" duration="12930000" />
       <workItem from="1746997126680" duration="14739000" />
       <workItem from="1747153457846" duration="25433000" />
+      <workItem from="1747612168180" duration="10743000" />
+      <workItem from="1747756799622" duration="1796000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -759,7 +763,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1444" />
+    <option name="localTasksCounter" value="1453" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -788,15 +792,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="discard ai works for poker" />
-    <MESSAGE value="finished logic for menu index player draw screen can now discard cards and pick what cards to discard" />
-    <MESSAGE value="can now get rid of cards in playe rhand" />
-    <MESSAGE value="redraw method for player is now fin" />
-    <MESSAGE value="bet screen handled" />
-    <MESSAGE value="created code for actoin screen&#10;betting&#10;reveal future cards&#10;and final results" />
-    <MESSAGE value="did logic for magic selection screen" />
-    <MESSAGE value="swap spell now works" />
-    <MESSAGE value="fixed issues with drawing black jack card values" />
     <MESSAGE value="fixed issues with drawing new cards not being of the proper values" />
     <MESSAGE value="fixed shuffle method" />
     <MESSAGE value="fixed action menu so it no longer goes into infinity" />
@@ -813,7 +808,16 @@
     <MESSAGE value="fixed betting" />
     <MESSAGE value="created final con flip class" />
     <MESSAGE value="changing var names" />
-    <option name="LAST_COMMIT_MESSAGE" value="changing var names" />
+    <MESSAGE value="fixed bug with spell casting screen not being set" />
+    <MESSAGE value="fixing game with new magic spell" />
+    <MESSAGE value="uses a match case along with MP to afffect player stats" />
+    <MESSAGE value="new magic spell created" />
+    <MESSAGE value="balance change: now spell is less likely to be cast with each cast" />
+    <MESSAGE value="luck added, parameters fixed" />
+    <MESSAGE value="new params for the way the coin is flipped" />
+    <MESSAGE value="fixed game_state misname bug, creating new black jack spell luck swap" />
+    <MESSAGE value="game tested new spell created luck switch" />
+    <option name="LAST_COMMIT_MESSAGE" value="game tested new spell created luck switch" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -870,7 +874,7 @@
     <SUITE FILE_PATH="coverage/casino_hell$game_state.coverage" NAME="game_state Coverage Results" MODIFIED="1708242608772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1745976951215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/newGameProject$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1670802715482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1747255349811" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1747759236991" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$poker_bracelet.coverage" NAME="poker_bracelet Coverage Results" MODIFIED="1747171467337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />

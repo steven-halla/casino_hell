@@ -65,7 +65,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
         self.fengus_magic_points: int = 3
-        self.debuff_buff_luck_switch: int = 10
+        self.debuff_buff_luck_switch: int = 0
         self.luck_swapping_switch: int = 0
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
@@ -387,6 +387,7 @@ class BlackJackFengusScreen(GambleScreen):
     def update_player_phase_win(self, state, controller) -> None:
 
         if controller.confirm_button:
+            self.reset_black_jack_game()
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_lose(self, state, controller) -> None:
@@ -442,6 +443,7 @@ class BlackJackFengusScreen(GambleScreen):
                             self.player_hand = self.deck.player_draw_hand(initial_hand)
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.critical_hit = True
+                            print("LINE 715 MAYBE THE ERROR IS HERE")
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:

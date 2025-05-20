@@ -529,6 +529,7 @@ class BlackJackJasmineScreen(GambleScreen):
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
             redraw_roll = random.randint(1, 100) + self.magic_bonus
+            print("YOUr redraw chance is here: It doesn't always work!: " + str(redraw_roll))
 
             if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
                     and self.redraw_counter == True and redraw_roll > self.LEVEL_4_PERCENTAGE_CHANCE):
