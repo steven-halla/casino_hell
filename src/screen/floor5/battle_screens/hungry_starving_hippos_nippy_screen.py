@@ -138,7 +138,7 @@ class HungryStarvingHipposNippyScreen(Screen):
 
                     # If stamina reaches 0, reduce speed by 4
                     if self.human_stats[label]['stamina'] == 0 and self.human_stats[label]['speed'] > 4:
-                        self.human_stats[label]['speed'] -= 4
+                        self.human_stats[label]['speed'] = 4
                         print(f"{label}'s speed reduced to {self.human_stats[label]['speed']} due to low stamina.")
 
     def draw_bet_selection(self, state: "GameState") -> None:
