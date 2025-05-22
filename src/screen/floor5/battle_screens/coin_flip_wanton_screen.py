@@ -167,10 +167,6 @@ class CoinFlipWantonScreen(GambleScreen):
 
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
-        lucky_man_roll = random.randint(1, 100) + self.luck_bonus
-        if lucky_man_roll > 100:
-            state.player.stamina_points += 50
-            state.player.focus_points += 25
         self.heads_force_active = False
         self.coin_bottom = False
         self.result_anchor = False
@@ -189,14 +185,15 @@ class CoinFlipWantonScreen(GambleScreen):
             self.debuff_magic_equipment_break -= 1
 
         self.spirit_magic_bonus_zero_chance += 3
+        player_luck_bonus = self.luck_bonus * 4
 
         match self.wanton_magic_points:
             case 3:
-                man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance
+                man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
             case 2:
-                man_trap_randomizer = random.randint(1, 80) + self.spirit_magic_bonus_zero_chance
+                man_trap_randomizer = random.randint(1, 80) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
             case 1:
-                man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance
+                man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
 
 
 

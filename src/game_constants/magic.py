@@ -3,8 +3,9 @@
 from enum import Enum
 
 class Magic(Enum):
-    # coin flip
+    # wheel of torture
     DICE_FORCE = "Dice Force"
+    # coin flip
     HEADS_FORCE = "Force"  # All rolls are heads
     SHIELD = "Shield" # coin flip dedefends bad rolls
     # slots
@@ -23,6 +24,7 @@ class Magic(Enum):
     # dice fighter
     BAD_LUCK = "bad luck" # affects enemy attack rolls
     GOOD_LUCK = "good luck" # adds + 3 to luck
+    #poker
     POKER_CARD_SWAP = "Poker Card Swap"
 
 
