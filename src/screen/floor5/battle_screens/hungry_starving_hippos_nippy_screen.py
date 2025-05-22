@@ -320,7 +320,7 @@ class HungryStarvingHipposNippyScreen(Screen):
                 if self.bet_selection_index > 0:
                     self.bet_selection_index -= 1
 
-            if controller.confirm_button and len(self.human_picks) == 3:
+            if (controller.isAPressed or controller.isAPressedSwitch) and len(self.human_picks) == 3:
                 self.game_state = "human_race"
                 self.initialize_human_position(state)  # Ensure humans are initialized for the race
                 self.start_time = time.time()  # Reset the timer for the race
@@ -354,9 +354,16 @@ class HungryStarvingHipposNippyScreen(Screen):
                 self.initialize_hippo_position()
                 print("No item equipped")
 
-            elif self.hippo is None and current_time - self.start_time >= 15 and Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
-                self.initialize_hippo_position()
-                print("Item is equipped")
+            if self.hippo2 is None and current_time - self.start_time >= 12:
+                initial_x = self.box_bottom_right[0] - self.human_size - 20
+                initial_y = self.box_top_left[1] + (600 // 2) - (self.human_size // 2)
+
+                self.hippo2 = {
+                    "pos": [initial_x, initial_y]
+                }
+                print("Second hippo appeared!")
+
+
 
             # Move the humans
             self.move_human(delta_time)
@@ -630,7 +637,8 @@ class HungryStarvingHipposNippyScreen(Screen):
         if self.hippo:
             state.DISPLAY.blit(scaled_hippo, (self.hippo["pos"][0] - 10, self.hippo["pos"][1] - 10))
 
-
+        if self.hippo2:
+            state.DISPLAY.blit(scaled_hippo, (self.hippo2["pos"][0] - 10, self.hippo2["pos"][1] - 10))
 
 
 
