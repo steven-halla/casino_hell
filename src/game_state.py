@@ -87,7 +87,8 @@ from screen.floor4.battle_screens.wheel_of_torture_vanessa_black_screen import W
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
 from screen.floor5.battle_screens.black_jack_fengus_screen import BlackJackFengusScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
-from screen.floor5.battle_screens.craps_wimpleton import CrapsWimpletonScreen
+from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
+from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -254,6 +255,7 @@ class GameState:
         self.coinFlipWantonScreen = CoinFlipWantonScreen()
         self.blackJackFengusScreen = BlackJackFengusScreen()
         self.crapsWimpletonScreen = CrapsWimpletonScreen()
+        self.hungryStaringHipposNippyScreen = HungryStarvingHipposNippyScreen()
 
 
 

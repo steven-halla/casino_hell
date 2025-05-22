@@ -18,11 +18,12 @@ class Equipment(Enum):
     CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
     DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
     #dice fighter
-    # craps_wrist_watch applies
+    #craps_wrist_watch applies
     #slots
     SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
     #hi low
     HIGH_LOW_PANTS = "high low pants" # This item gives +1 spread via spirit higher spreads take more HP
+    #poker
     POKER_BRACELET = "poker bracelet"
 
 
