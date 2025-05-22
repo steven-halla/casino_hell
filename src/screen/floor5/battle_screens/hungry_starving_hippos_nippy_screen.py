@@ -17,6 +17,7 @@ class HungryStarvingHipposNippyScreen(Screen):
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
         self.commentary = False
         self.comment_to_use = 0
+        self.hippo2_stopping_eating: float = 0
 
         self.sprite_sheet_hippo_facing_right: pygame.Surface = pygame.image.load("./assets/images/hippo_facing_right.png")
 
@@ -372,6 +373,9 @@ class HungryStarvingHipposNippyScreen(Screen):
             if self.hippo:
                 self.move_hippo(delta_time)
                 self.check_collisions()
+            if self.hippo2:
+                self.move_hippo2(delta_time)
+                self.check_collisions_for_hippo2()
 
             if self.commentary:
                 if self.comment_to_use == 1:
@@ -559,7 +563,7 @@ class HungryStarvingHipposNippyScreen(Screen):
 
     def move_hippo(self, delta_time: float) -> None:
         # Check if the hippo is currently eating
-        if time.time() - self.hippo_stopping_eating < 4:
+        if time.time() - self.hippo_stopping_eating < 8:
             return
 
         closest_human = self.find_closest_human()
@@ -640,11 +644,53 @@ class HungryStarvingHipposNippyScreen(Screen):
         if self.hippo2:
             state.DISPLAY.blit(scaled_hippo, (self.hippo2["pos"][0] - 10, self.hippo2["pos"][1] - 10))
 
+    def move_hippo2(self, delta_time: float) -> None:
+        if time.time() - self.hippo2_stopping_eating < 8:
+            return
 
+        label, human_x, human_y = self.find_closest_human_for_hippo2()
+        if label is None:
+            return
 
+        hippo2_x, hippo2_y = self.hippo2["pos"]
 
+        if hippo2_x < human_x:
+            self.hippo2["pos"][0] += 16 * delta_time
+        elif hippo2_x > human_x:
+            self.hippo2["pos"][0] -= 16 * delta_time
 
+        if hippo2_y < human_y:
+            self.hippo2["pos"][1] += 16 * delta_time
+        elif hippo2_y > human_y:
+            self.hippo2["pos"][1] -= 16 * delta_time
 
+    def check_collisions_for_hippo2(self) -> None:
+        hippo2_rect = pygame.Rect(self.hippo2["pos"][0], self.hippo2["pos"][1], self.human_size, self.human_size)
+        for label, data in list(self.humans.items()):
+            rect = pygame.Rect(data["pos"][0], data["pos"][1], self.human_size, self.human_size)
+            if hippo2_rect.colliderect(rect):
+                self.hippo2_stopping_eating = time.time()  # ← Only update on actual collision
+                del self.humans[label]
+                break
 
+    def find_closest_human_for_hippo2(self) -> Tuple[Optional[str], Optional[int], Optional[int]]:
+        if not self.hippo2 or not self.humans:
+            return None, None, None
+
+        hippo2_x, hippo2_y = self.hippo2["pos"]
+        closest_label = None
+        closest_distance = float('inf')
+
+        for label, data in self.humans.items():
+            human_x, human_y = data["pos"]
+            distance = math.hypot(human_x - hippo2_x, human_y - hippo2_y)
+            if distance < closest_distance:
+                closest_distance = distance
+                closest_label = label
+
+        if closest_label:
+            pos = self.humans[closest_label]["pos"]
+            return closest_label, pos[0], pos[1]
+        return None, None, None
 
 
