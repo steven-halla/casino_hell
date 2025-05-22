@@ -355,7 +355,7 @@ class HungryStarvingHipposNippyScreen(Screen):
                 self.initialize_hippo_position()
                 print("No item equipped")
 
-            if self.hippo2 is None and current_time - self.start_time >= 12:
+            if self.hippo2 is None and current_time - self.start_time >= 15:
                 initial_x = self.box_bottom_right[0] - self.human_size - 20
                 initial_y = self.box_top_left[1] + (600 // 2) - (self.human_size // 2)
 
