@@ -604,6 +604,9 @@ class CrapsWimpletonScreen(GambleScreen):
                     elif self.come_out_roll_total == 7:
                         self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                         return
+                    elif self.come_out_roll_total == 11:
+                        self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
+                        return
                     if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items and self.come_out_roll_total == 3:
                         player_advantage = 4
                         self.dice_roll_1 = player_advantage
