@@ -625,8 +625,14 @@ class CrapsWimpletonScreen(GambleScreen):
                     self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                 elif lucky_7_roll < luck_roll_success:
                     self.dice_roll_1 = random.randint(1, 6)
-                    self.dice_roll_2 = random.randint(1, 6)
+                    if self.debuff_weighted_dice == 0:
+                        self.dice_roll_2 = random.randint(1, 6)
+                    elif self.debuff_weighted_dice > 0:
+                        self.dice_roll_2 = self.dice_roll_1
+
+
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
+
                     if self.come_out_roll_total == 2:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
                     elif self.come_out_roll_total == 3:
@@ -919,11 +925,10 @@ class CrapsWimpletonScreen(GambleScreen):
         if self.is_timer_active:
             if self.rolling_dice_timer():
                 self.dice_roll_1 = random.randint(1, 6)
-                state.player.stamina_points -= self.player_stamina_low_cost
-                if self.debuff_weighted_dice > 0 and self.debuff_counter > 0:
-                    self.dice_roll_1 = 3
-                    self.debuff_counter -= 1
                 self.dice_roll_2 = random.randint(1, 6)
+
+                state.player.stamina_points -= self.player_stamina_low_cost
+
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
                 self.is_timer_active = False
                 self.start_time = 0
