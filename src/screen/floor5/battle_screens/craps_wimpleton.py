@@ -548,6 +548,7 @@ class CrapsWimpletonScreen(GambleScreen):
         controller = state.controller
         controller.update()
         nugget_amulet_buff = 10
+
         you_lose_unlucky_roll = 60
         self.battle_messages[self.POWER_METER_MESSAGE].update(state)
         erika_nugget_amulet_protection = 4
@@ -592,7 +593,10 @@ class CrapsWimpletonScreen(GambleScreen):
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
                 elif unlucky_two_roll < you_lose_unlucky_roll:
                     self.dice_roll_1 = random.randint(1, 6)
-                    self.dice_roll_2 = random.randint(1, 6)
+                    if self.debuff_weighted_dice == 0:
+                        self.dice_roll_2 = random.randint(1, 6)
+                    elif self.debuff_weighted_dice > 0:
+                        self.dice_roll_2 = self.dice_roll_1
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
                     if self.come_out_roll_total == 2 or self.come_out_roll_total == 12:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
