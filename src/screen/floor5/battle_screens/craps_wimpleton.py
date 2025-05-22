@@ -85,7 +85,7 @@ class CrapsWimpletonScreen(GambleScreen):
             "./assets/music/8CRodHit.wav")
         self.successful_power_strike_sound_effect.set_volume(0.6)
         self.wimpleton_magic_points: int = 2
-        self.debuff_spirit_drain: int = 0
+        self.debuff_weighted_dice: int = 0
         self.debuff_counter: int = 3
         self.greed_meter: int = 0
         self.greed_bank: bool = False
@@ -194,7 +194,7 @@ class CrapsWimpletonScreen(GambleScreen):
 
         dice_of_deception_random_chance = random.randint(1, 100) + self.hungry_dice_increased_chance
 
-        if self.debuff_spirit_drain == 0 and self.wimpleton_magic_points > 0 and dice_of_deception_random_chance >= 100:
+        if self.debuff_weighted_dice == 0 and self.wimpleton_magic_points > 0 and dice_of_deception_random_chance >= 100:
             self.hungry_dice_increased_chance = 0
             self.game_state = self.WIMPLETON_CASTING_SPELL_SCREEN
 
@@ -218,7 +218,7 @@ class CrapsWimpletonScreen(GambleScreen):
         self.blow_timer_start = 0
         self.debuff_counter = 3
         self.wimpleton_magic_points = 2
-        self.debuff_spirit_drain = 0
+        self.debuff_weighted_dice = 0
         self.greed_meter: int = 0
         self.greed_bank: bool = False
 
@@ -388,7 +388,7 @@ class CrapsWimpletonScreen(GambleScreen):
     def update_naba_casting_spell_helper(self, state):
         if state.controller.confirm_button:
             self.wimpleton_magic_points -= 1
-            self.debuff_spirit_drain = 5
+            self.debuff_weighted_dice = 5
             self.game_state = self.WELCOME_SCREEN
 
     def update_come_out_roll_helper(self, state: 'GameState'):
@@ -920,7 +920,7 @@ class CrapsWimpletonScreen(GambleScreen):
             if self.rolling_dice_timer():
                 self.dice_roll_1 = random.randint(1, 6)
                 state.player.stamina_points -= self.player_stamina_low_cost
-                if self.debuff_spirit_drain > 0 and self.debuff_counter > 0:
+                if self.debuff_weighted_dice > 0 and self.debuff_counter > 0:
                     self.dice_roll_1 = 3
                     self.debuff_counter -= 1
                 self.dice_roll_2 = random.randint(1, 6)
