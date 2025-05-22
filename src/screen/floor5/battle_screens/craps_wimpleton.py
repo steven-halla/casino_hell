@@ -64,6 +64,7 @@ class CrapsWimpletonScreen(GambleScreen):
         self.power_meter_speed: int = 2
         self.reset_power_meter_to_base: int = 2
         self.power_meter_goal: int = 80
+        self.piggy_meter_goal: int = 92
         self.index_stepper: int = 1
         self.counter_stepper: int = 1
         self.blow_counter: int = 0
@@ -88,6 +89,7 @@ class CrapsWimpletonScreen(GambleScreen):
         self.debuff_counter: int = 3
         self.greed_meter: int = 0
         self.greed_bank: bool = False
+        self.hungry_dice_increased_chance:int = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -160,9 +162,7 @@ class CrapsWimpletonScreen(GambleScreen):
             self.magic_screen_choices.append(Magic.GREED_METER.value)
 
     def round_reset(self, state: 'GameState'):
-        if self.debuff_spirit_drain > 0:
-            for i in range(self.bet // 25):
-                state.player.stamina_points -= 3
+
         self.bet = self.bet_minimum
         if self.lucky_seven_buff_counter >= self.lucky_seven_buff_not_active:
             self.lucky_seven_buff_counter -= self.counter_stepper
@@ -190,12 +190,12 @@ class CrapsWimpletonScreen(GambleScreen):
         if self.greed_meter == 0:
             self.magic_lock = False
 
-        hungry_dice_increased_chance: int =+ 3
+        self.hungry_dice_increased_chance += 3
 
-        dice_of_deception_random_chance = random.randint(1, 100) + hungry_dice_increased_chance
+        dice_of_deception_random_chance = random.randint(1, 100) + self.hungry_dice_increased_chance
 
         if self.debuff_spirit_drain == 0 and self.wimpleton_magic_points > 0 and dice_of_deception_random_chance >= 100:
-            hungry_dice_increased_chance = 0
+            self.hungry_dice_increased_chance = 0
             self.game_state = self.WIMPLETON_CASTING_SPELL_SCREEN
 
     def reset_craps_game(self, state: 'GameState'):
@@ -553,9 +553,14 @@ class CrapsWimpletonScreen(GambleScreen):
         erika_nugget_amulet_protection = 4
         power_meter_max = 100
         power_meter_min = 0
-        power_meter_success = 80
+        if self.greed_meter == 0:
+            power_meter_success = 80
+        elif self.greed_meter > 0:
+            power_meter_success = self.piggy_meter_goal
+
+
         player_lucky_7_come_out_roll_reward = 7
-        greed_meter_min = 95
+
 
         self.power_meter_index += self.power_meter_speed
         if self.power_meter_index >= power_meter_max:
@@ -564,9 +569,10 @@ class CrapsWimpletonScreen(GambleScreen):
         if controller.action_and_cancel_button:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
+            print("Your roll is: " + str(self.power_meter_index))
 
             if self.greed_meter > 0:
-                if self.power_meter_index >= greed_meter_min:
+                if self.power_meter_index >= self.piggy_meter_goal:
                     self.greed_bank = True
 
             if self.power_meter_index >= power_meter_success:
@@ -825,7 +831,7 @@ class CrapsWimpletonScreen(GambleScreen):
         meter_y_position = 50
         line_y_start = 50
         line_y_end = 80
-        line_thickness = 5
+        line_thickness = 1
         filled_width = int((power / max_power) * meter_width)
 
         meter_bg_rect = pygame.Rect(meter_x_position, meter_y_position, meter_width, meter_height)
@@ -835,7 +841,11 @@ class CrapsWimpletonScreen(GambleScreen):
         pygame.draw.rect(state.DISPLAY, GREEN, meter_fill_rect)
 
         pygame.draw.rect(state.DISPLAY, WHITE, meter_bg_rect, white_border_width)
-        goal_position = int((self.power_meter_goal / max_power) * meter_width) + meter_x_position
+        if self.greed_meter == 0:
+            goal_position = int((self.power_meter_goal / max_power) * meter_width) + meter_x_position
+        elif self.greed_meter > 0:
+            goal_position = int((self.piggy_meter_goal / max_power) * meter_width) + meter_x_position
+
         pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end),
                          line_thickness)
 
