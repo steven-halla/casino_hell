@@ -387,3 +387,5 @@ heat
 
 
 
+: New idea;
+WIth a high perception instead of uncovering t chest how about we lower shop prices

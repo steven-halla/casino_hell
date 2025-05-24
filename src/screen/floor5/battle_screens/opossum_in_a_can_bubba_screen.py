@@ -42,7 +42,6 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.magic_menu_selector: list[str] = []
         self.shake_cost = 10
         self.buff_poison_bite: int = 0
-        self.poison_damage: int = 0
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "BUbba: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
@@ -74,7 +73,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 "You lost the toss."
             ]),
             self.SILLY_WILLY_CASTING_SPELL_MESSAGE: MessageBox([
-                "Rabies King of the Critter Kingdom, go on ‘n bless all yer furry young’uns with fancy brew...poison bite”"
+                "Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
             ]),
 
         }
@@ -127,8 +126,9 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.money: int = 444
         self.peek_cost: int = 25
         self.buff_peek: bool = False
-        self.poison_chance: int = 0
-        self.silly_willy_magic_points: int = 2
+        self.debuff_double_pick: int = 5
+        self.double_pick_chance: int = 0
+        self.bubba_magic_points: int = 3
 
 
 
@@ -186,8 +186,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.initializeGarbageCans(state)
 
         # staying at end appends this
-        if Events.REFRESH.value in state.player.level_four_npc_state:
-            self.poison_damage = 0
+
 
     def opossum_game_reset(self, state):
         self.shake = False
@@ -195,6 +194,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.magic_lock = False
         self.initializeGarbageCans(state)
         self.player_score = 0
+        self.debuff_double_pick = 0
         self.win_x, self.win_y = None, None
         self.big_win_x, self.big_win_y = None, None
         self.triple_x, self.triple_y = None, None
@@ -205,12 +205,16 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
         self.buff_peek = False
-        self.silly_willy_magic_points: int = 2
+        self.bubba_magic_points: int = 3
 
 
     def opossum_round_reset(self, state):
         self.shake = False
         self.debuff_keen_perception: bool = False
+
+        if self.debuff_double_pick > 0:
+            self.debuff_double_pick -= 1
+
 
         if self.shake == False:
             self.magic_lock = False
@@ -229,15 +233,14 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.pick_tally_screen_index = 0
         self.buff_peek = False
 
-        if self.buff_poison_bite > 0:
-            self.buff_poison_bite -= 1
 
-        self.poison_chance += 3
-        double_flip_randomizer = random.randint(1, 100) + self.poison_chance
 
-        if double_flip_randomizer > 90 and self.silly_willy_magic_points > 0 and self.buff_poison_bite == 0:
+        self.double_pick_chance += 3
+        double_flip_randomizer = random.randint(1, 100) + self.double_pick_chance
+
+        if double_flip_randomizer > 90 and self.bubba_magic_points > 0 and self.buff_poison_bite == 0:
             self.current_screen = self.SILLY_WILLY_CASTING_SPELL_SCREEN
-            self.poison_chance = 0
+            self.double_pick_chance = 0
 
 
 
@@ -260,7 +263,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
             self.battle_messages[self.SILLY_WILLY_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.confirm_button:
-                self.buff_poison_bite += 5
+                self.debuff_double_pick = 5
 
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -288,16 +291,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
             self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
 
             if controller.confirm_button:
-                if self.buff_poison_bite > 0:
-                    # add the opposite of the below to inn keeper level 4
-                    if Events.OPOSSUM_POISON.value not in state.player.level_four_npc_state:
-                        Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_POISON)
-                        if Events.REFRESH in state.player.level_four_npc_state:
-                            state.player.level_four_npc_state.remove(Events.REFRESH)
 
-                    self.poison_damage += 1
-                    if self.poison_damage == state.player.body:
-                        state.player.hp -= 999
+
 
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain_repellant
@@ -597,8 +592,13 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
                 self.reveal_selected_box_content(state)
 
-        elif state.controller.isBPressedSwitch or state.controller.isBPressed:
+        elif state.controller.isBPressedSwitch or state.controller.isBPressed and self.debuff_double_pick == 0:
             self.game_state = self.PICK_TALLY_MENU_SCREEN
+
+        elif (state.controller.isBPressedSwitch or state.controller.isBPressed) and self.debuff_double_pick > 0:
+            non_empty_cans = sum(1 for i in range(1, 9) if getattr(self, f"can{i}") != "")
+            if non_empty_cans % 2 == 0:
+                self.game_state = self.PICK_TALLY_MENU_SCREEN
 
     def reveal_selected_box_content(self, state):
         selected_can_attribute = f'can{self.current_box_index + 1}'
