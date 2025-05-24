@@ -92,7 +92,7 @@ class SlotsBurbadanScreen(GambleScreen):
             self.PLAYER_DRAW_MESSAGE: MessageBox([
                 f"You didn't match 3 in a row."
             ]),
-            self.JURAGAN_CASTING_SPELL_MESSAGE: MessageBox([
+            self.BURBADAN_CASTING_SPELL_MESSAGE: MessageBox([
                 "O charitable one, please spare a coin to a hungry demon...double coin(increaed cost to play)"
             ]),
         }
@@ -151,7 +151,7 @@ class SlotsBurbadanScreen(GambleScreen):
     PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
     ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
     PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
-    JURAGAN_CASTING_SPELL_MESSAGE: str = "brogan casting spell message"
+    BURBADAN_CASTING_SPELL_MESSAGE: str = "brogan casting spell message"
 
 
     def start(self, state: 'GameState'):
@@ -227,7 +227,7 @@ class SlotsBurbadanScreen(GambleScreen):
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
         elif self.game_state == self.BURBADAN_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.JURAGAN_CASTING_SPELL_MESSAGE].draw(state)
+            self.battle_messages[self.BURBADAN_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box_slots(state)
         elif self.game_state == self.BET_SCREEN:
@@ -242,7 +242,7 @@ class SlotsBurbadanScreen(GambleScreen):
 
 
     def update_casting_spell_helper(self, state):
-        self.battle_messages[self.JURAGAN_CASTING_SPELL_MESSAGE].update(state)
+        self.battle_messages[self.BURBADAN_CASTING_SPELL_MESSAGE].update(state)
         if state.controller.confirm_button:
             self.debuff_increased_pay_to_play = 5
             self.burbadan_mp -= 1

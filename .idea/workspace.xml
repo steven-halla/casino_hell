@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new slots screen created" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new spell pay to play increased spell created" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -415,7 +415,7 @@
       <workItem from="1747153457846" duration="25433000" />
       <workItem from="1747612168180" duration="10743000" />
       <workItem from="1747756799622" duration="15088000" />
-      <workItem from="1747923011429" duration="18835000" />
+      <workItem from="1747923011429" duration="19580000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -760,7 +760,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1478" />
+    <option name="localTasksCounter" value="1479" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -789,7 +789,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="new params for the way the coin is flipped" />
     <MESSAGE value="fixed game_state misname bug, creating new black jack spell luck swap" />
     <MESSAGE value="game tested new spell created luck switch" />
     <MESSAGE value="fixed bug where round reset not getting called on player win" />
@@ -814,7 +813,8 @@
     <MESSAGE value="set up items in player inventory, made minor var name changes" />
     <MESSAGE value="new spell double pick" />
     <MESSAGE value="new slots screen created" />
-    <option name="LAST_COMMIT_MESSAGE" value="new slots screen created" />
+    <MESSAGE value="new spell pay to play increased spell created" />
+    <option name="LAST_COMMIT_MESSAGE" value="new spell pay to play increased spell created" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
