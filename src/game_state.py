@@ -90,6 +90,7 @@ from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonS
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
 from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
 from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
+from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -258,6 +259,8 @@ class GameState:
         self.crapsWimpletonScreen = CrapsWimpletonScreen()
         self.hungryStaringHipposNippyScreen = HungryStarvingHipposNippyScreen()
         self.opossumInACanBubbaScreen = OpossumInACanBubbaScreen()
+        self.slotsBurbadanScreen = SlotsBurbadanScreen()
+
 
 
 

@@ -2053,8 +2053,8 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.opossumInACanBubbaScreen
-            state.opossumInACanBubbaScreen.start(state)
+            state.currentScreen = state.slotsBurbadanScreen
+            state.slotsBurbadanScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")
