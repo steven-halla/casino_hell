@@ -208,7 +208,7 @@ class HungryStarvingHipposNippyScreen(Screen):
         # DO NOT ERASE THE BELOW EVER
         # THE BELOW IS WHAT ACTUALLY SETS FOR THE GAME
         self.human_stats = {
-            "A1": {"speed": 10, "stamina": 4, "win_chance": 30},
+            "A1": {"speed": 9, "stamina": 4, "win_chance": 30},
             "B1": {"speed": 6, "stamina": 10, "win_chance": 40},
             "C1": {"speed": 7, "stamina": 6, "win_chance": 20},
             "E1": {"speed": 9, "stamina": 5, "win_chance": 25},
@@ -321,7 +321,7 @@ class HungryStarvingHipposNippyScreen(Screen):
                 if self.bet_selection_index > 0:
                     self.bet_selection_index -= 1
 
-            if (controller.isAPressed or controller.isAPressedSwitch) and len(self.human_picks) == 3:
+            if controller.start_button and len(self.human_picks) == 3:
                 self.game_state = "human_race"
                 self.initialize_human_position(state)  # Ensure humans are initialized for the race
                 self.start_time = time.time()  # Reset the timer for the race
@@ -356,7 +356,7 @@ class HungryStarvingHipposNippyScreen(Screen):
                 print("No item equipped")
 
             if self.hippo2 is None and current_time - self.start_time >= 15:
-                initial_x = self.box_bottom_right[0] - self.human_size - 20
+                initial_x = self.box_bottom_right[0] - self.human_size - 150
                 initial_y = self.box_top_left[1] + (600 // 2) - (self.human_size // 2)
 
                 self.hippo2 = {
