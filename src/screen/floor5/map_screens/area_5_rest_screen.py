@@ -3,11 +3,21 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area5.area_5_rest_screen.black_jack_fengus import BlackJackFengus
+from entity.npc.area5.area_5_rest_screen.coin_flip_wanton import CoinFlipWanton
+from entity.npc.area5.area_5_rest_screen.craps_wimpleton import CrapsWimpleton
+from entity.npc.area5.area_5_rest_screen.hangry_angry_hippos_nippy import HangryAngryHipposNippy
+from entity.npc.area5.area_5_rest_screen.opossum_in_a_can_bubba import OpossumInACanBubba
+from entity.npc.area5.area_5_rest_screen.slots_burbadan import SlotsBurbadan
 
 from entity.player.player import Player
 
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
+from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
+from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
+from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
+from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
 class Area5RestScreen(Screen):
@@ -69,7 +79,12 @@ class Area5RestScreen(Screen):
 
         state.npcs = [
 
+            CoinFlipWanton(16 * 5, 16 * 5),  # fin
             BlackJackFengus(16 * 20, 16 * 5),  # fin
+            CrapsWimpleton(16 * 35, 16 * 5),  # fin
+            HangryAngryHipposNippy(16 * 50, 16 * 5),  # fin
+            OpossumInACanBubba(16 * 5, 16 * 20),  # fin
+            SlotsBurbadan(16 * 20, 16 * 20),  # fin
 
         ]
 

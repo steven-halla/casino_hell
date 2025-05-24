@@ -14,18 +14,18 @@ from game_constants.magic import Magic
 # if you win 500 coins get a coin
 # if you win 500 coins from two games those coins become mega coin.
 # if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class BlackJackFengus(Npc):
+class HangryAngryHipposNippy(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
         # Integrated textbox content into guy_messages
         self.selected_item_index = 0
-        self.black_jack_fengus_messages = {
+        self.hangry_angry_hippos_messages = {
             "welcome_message": NpcTextBox(
-                ["Fengus: Are you sure you want to battle the king of black jack?"],
+                ["Nippy: Are you sure you want to battle the king of HIPPO?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Fengus: How, impossible, nobody has every defeated my double blackjack technique."],
+                ["Nippy: How, impossible, nobody has every defeated my double HIPPO technique."],
                 (50, 450, 700, 130), 36, 500),
 
 
@@ -63,17 +63,17 @@ class BlackJackFengus(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
 
-            if Events.BLACK_JACK_FENGUS_DEFEATED.value in state.player.level_five_npc_state:
-                self.black_jack_fengus_messages["defeated_message"].reset()
+            if Events.HUNGRY_STARVING_HIPPOS_NIPPY_DEFEATED.value in state.player.level_five_npc_state:
+                self.hangry_angry_hippos_messages["defeated_message"].reset()
 
             else:
-                self.black_jack_fengus_messages["welcome_message"].reset()
+                self.hangry_angry_hippos_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.black_jack_fengus_messages["defeated_message"]
-            if Events.BLACK_JACK_FENGUS_DEFEATED.value in state.player.level_five_npc_state
-            else self.black_jack_fengus_messages["welcome_message"]
+            self.hangry_angry_hippos_messages["defeated_message"]
+            if Events.HUNGRY_STARVING_HIPPOS_NIPPY_DEFEATED.value in state.player.level_five_npc_state
+            else self.hangry_angry_hippos_messages["welcome_message"]
         )
         current_message.update(state)
 
@@ -93,7 +93,7 @@ class BlackJackFengus(Npc):
 
 
         # Check if the "T" key is pressed and the flag is not set
-        if (current_message.is_finished() and Events.BLACK_JACK_FENGUS_DEFEATED.value
+        if (current_message.is_finished() and Events.HUNGRY_STARVING_HIPPOS_NIPPY_DEFEATED.value
                 not in state.player.level_five_npc_state
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
@@ -103,8 +103,8 @@ class BlackJackFengus(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.blackJackFengusScreen
-                state.blackJackFengusScreen.start(state)
+                state.currentScreen = state.hungryStaringHipposNippyScreen
+                state.hungryStaringHipposNippyScreen.start(state)
 
 
 
@@ -144,15 +144,15 @@ class BlackJackFengus(Npc):
 
         if self.state == "talking":
             current_message = (
-                self.black_jack_fengus_messages["defeated_message"]
-                if Events.BLACK_JACK_FENGUS_DEFEATED.value in state.player.level_five_npc_state
-                else self.black_jack_fengus_messages["welcome_message"]
+                self.hangry_angry_hippos_messages["defeated_message"]
+                if Events.HUNGRY_STARVING_HIPPOS_NIPPY_DEFEATED.value in state.player.level_five_npc_state
+                else self.hangry_angry_hippos_messages["welcome_message"]
             )
 
             current_message.draw(state)
 
             # Draw the "Yes/No" box only on the last message
-            if (current_message.is_finished() and Events.BLACK_JACK_FENGUS_DEFEATED.value
+            if (current_message.is_finished() and Events.HUNGRY_STARVING_HIPPOS_NIPPY_DEFEATED.value
                     not in state.player.level_five_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100
