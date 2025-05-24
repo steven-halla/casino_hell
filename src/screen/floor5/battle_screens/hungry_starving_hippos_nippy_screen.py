@@ -303,8 +303,8 @@ class HungryStarvingHipposNippyScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         # print(self.human_stats)
-        for label, stats in self.human_stats.items():
-            print(f"{label}: Speed={stats['speed']}, Stamina={stats['stamina']}, Win Chance={stats['win_chance']}")
+        # for label, stats in self.human_stats.items():
+        #     print(f"{label}: Speed={stats['speed']}, Stamina={stats['stamina']}, Win Chance={stats['win_chance']}")
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
