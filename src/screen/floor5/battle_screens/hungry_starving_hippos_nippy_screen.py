@@ -377,6 +377,8 @@ class HungryStarvingHipposNippyScreen(Screen):
                 self.move_hippo2(delta_time)
                 self.check_collisions_for_hippo2()
 
+
+
             if self.commentary:
                 if self.comment_to_use == 1:
                     self.battle_messages["hippo_message_1"].update(state)
@@ -638,11 +640,21 @@ class HungryStarvingHipposNippyScreen(Screen):
 
         scaled_hippo = pygame.transform.scale(flipped_surface, (hippo_width, hippo_height))
 
+        # if self.hippo:
+        #     state.DISPLAY.blit(scaled_hippo, (self.hippo["pos"][0] - 10, self.hippo["pos"][1] - 10))
+        #
+        # if self.hippo2:
+        #     state.DISPLAY.blit(scaled_hippo, (self.hippo2["pos"][0] - 10, self.hippo2["pos"][1] - 10))
+
         if self.hippo:
-            state.DISPLAY.blit(scaled_hippo, (self.hippo["pos"][0] - 10, self.hippo["pos"][1] - 10))
+            x = round(self.hippo["pos"][0]) - 10
+            y = round(self.hippo["pos"][1]) - 10
+            state.DISPLAY.blit(scaled_hippo, (x, y))
 
         if self.hippo2:
-            state.DISPLAY.blit(scaled_hippo, (self.hippo2["pos"][0] - 10, self.hippo2["pos"][1] - 10))
+            x2 = round(self.hippo2["pos"][0]) - 10
+            y2 = round(self.hippo2["pos"][1]) - 10
+            state.DISPLAY.blit(scaled_hippo, (x2, y2))
 
     def move_hippo2(self, delta_time: float) -> None:
         if time.time() - self.hippo2_stopping_eating < 8:

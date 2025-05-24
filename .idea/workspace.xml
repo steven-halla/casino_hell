@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="hippo timer better balance">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="changed speed stamina depletion">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor5/battle_screens/hungry_starving_hippos_nippy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor5/battle_screens/hungry_starving_hippos_nippy_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -418,7 +417,7 @@
       <workItem from="1747153457846" duration="25433000" />
       <workItem from="1747612168180" duration="10743000" />
       <workItem from="1747756799622" duration="15088000" />
-      <workItem from="1747923011429" duration="5384000" />
+      <workItem from="1747923011429" duration="13514000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -763,7 +762,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1469" />
+    <option name="localTasksCounter" value="1470" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -792,7 +791,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="created final con flip class" />
     <MESSAGE value="changing var names" />
     <MESSAGE value="fixed bug with spell casting screen not being set" />
     <MESSAGE value="fixing game with new magic spell" />
@@ -817,7 +815,8 @@
     <MESSAGE value="a 2nd hippo now appears" />
     <MESSAGE value="both hippos work" />
     <MESSAGE value="hippo timer better balance" />
-    <option name="LAST_COMMIT_MESSAGE" value="hippo timer better balance" />
+    <MESSAGE value="changed speed stamina depletion" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed speed stamina depletion" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
