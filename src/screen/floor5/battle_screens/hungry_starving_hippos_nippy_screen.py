@@ -17,6 +17,7 @@ class HungryStarvingHipposNippyScreen(Screen):
         self.font = pygame.font.Font(None, 36)  # Initialize the font with size 36
         self.commentary = False
         self.comment_to_use = 0
+
         self.hippo2_stopping_eating: float = 0
 
         self.sprite_sheet_hippo_facing_right: pygame.Surface = pygame.image.load("./assets/images/hippo_facing_right.png")
@@ -222,17 +223,31 @@ class HungryStarvingHipposNippyScreen(Screen):
         }
 
 
-        if state.player.luck == 1:
+
+
+        if Equipment.BACKWARDS_WATCH.value in state.player.equipped_items:
             for label in self.human_stats:
-                self.human_stats[label]["speed"] += 1  # Increase speed by 1
-        elif state.player.luck == 2:
-            for label in self.human_stats:
-                self.human_stats[label]["speed"] += 1  # Increase speed by 1
-                self.human_stats[label]["stamina"] += 1  # Increase stamina by 1
-        elif state.player.luck == 3:
-            for label in self.human_stats:
-                self.human_stats[label]["speed"] += 2  # Increase speed by 1
-                self.human_stats[label]["stamina"] += 2  # Increase stamina by 1
+                if label not in self.human_picks:
+                    self.human_stats[label]["speed"] -= 1
+                    self.human_stats[label]["stamina"] -= 1
+
+
+        for label in self.human_picks:
+            if label in self.human_stats:
+                if state.player.luck == 1:
+                    self.human_stats[label]["speed"] += 1
+                elif state.player.luck == 2:
+                    self.human_stats[label]["speed"] += 1
+                    self.human_stats[label]["stamina"] += 1
+                elif state.player.luck == 3:
+                    self.human_stats[label]["speed"] += 2
+                    self.human_stats[label]["stamina"] += 1
+                elif state.player.luck == 4:
+                    self.human_stats[label]["speed"] += 2
+                    self.human_stats[label]["stamina"] += 2
+                elif state.player.luck == 5:
+                    self.human_stats[label]["speed"] += 3
+                    self.human_stats[label]["stamina"] += 3
 
         # Assign positions and sttats to each human
         for i, label in enumerate(labels):
@@ -288,7 +303,8 @@ class HungryStarvingHipposNippyScreen(Screen):
 
     def update(self, state: "GameState") -> None:
         # print(self.human_stats)
-        print(self.game_state)
+        for label, stats in self.human_stats.items():
+            print(f"{label}: Speed={stats['speed']}, Stamina={stats['stamina']}, Win Chance={stats['win_chance']}")
         pygame.mixer.music.stop()
         if state.controller.isQPressed:
             state.currentScreen = state.mainScreen
@@ -351,11 +367,24 @@ class HungryStarvingHipposNippyScreen(Screen):
             self.human_stamina()
 
             # Initialize hippo position after 10 seconds
-            if self.hippo is None and current_time - self.start_time >= 10 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
+            if self.hippo is None and current_time - self.start_time >= 10 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.equipped_items:
                 self.initialize_hippo_position()
                 print("No item equipped")
 
-            if self.hippo2 is None and current_time - self.start_time >= 15:
+            if self.hippo2 is None and current_time - self.start_time >= 15 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.equipped_items:
+                initial_x = self.box_bottom_right[0] - self.human_size - 150
+                initial_y = self.box_top_left[1] + (600 // 2) - (self.human_size // 2)
+
+                self.hippo2 = {
+                    "pos": [initial_x, initial_y]
+                }
+                print("Second hippo appeared!")
+
+            if self.hippo is None and current_time - self.start_time >= 13 and Equipment.HIPPO_HOUR_GLASS.value in state.player.equipped_items:
+                self.initialize_hippo_position()
+                print("No item equipped")
+
+            if self.hippo2 is None and current_time - self.start_time >= 18 and Equipment.HIPPO_HOUR_GLASS.value in state.player.equipped_items:
                 initial_x = self.box_bottom_right[0] - self.human_size - 150
                 initial_y = self.box_top_left[1] + (600 // 2) - (self.human_size // 2)
 

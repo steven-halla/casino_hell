@@ -11,6 +11,7 @@ class Equipment(Enum):
     VARMENT_HAT = "varment hat"# on a loss % chance to get gold back
     # hangry angry hippos
     HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception  at level 3 spirit add + 1 second
+    BACKWARDS_WATCH = "backwards watch" # This items slows non selected humans
     #black jack
     BLACK_JACK_HAT = "Black Hat"  # protects from busts
     SIR_LEOPOLD_AMULET = "sir leopold amulet" #companion item for stealing enemy aces
