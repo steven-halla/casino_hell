@@ -75,7 +75,7 @@ class BlackJackFengusScreen(GambleScreen):
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "Jasmine: This is the welcome screen"
+                "FEngus: This is the welcome screen"
             ]),
             self.BET_MESSAGE: MessageBox([
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to Exit."

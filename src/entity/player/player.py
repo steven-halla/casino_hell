@@ -95,6 +95,7 @@ class Player(Entity):
         self.level_two_npc_state = []
         self.level_three_npc_state = []
         self.level_four_npc_state = []
+        self.level_five_npc_state = []
         self.leveling_up = False
 
         self.stamina_increase_from_level = 20
@@ -182,6 +183,7 @@ class Player(Entity):
             "leveltwonpcstate": self.level_two_npc_state,
             "levelthreenpcstate": self.level_three_npc_state,
             "levelfournpcstate": self.level_four_npc_state,
+            "levelfivenpcstate": self.level_five_npc_state,
             "slots_vest": self.slots_vest,
 
             "cutscene1": state.restScreen.barscene1,
@@ -1973,6 +1975,7 @@ class Player(Entity):
             state.player.level_two_npc_state = player_data['leveltwonpcstate']
             state.player.level_three_npc_state = player_data['levelthreenpcstate']
             state.player.level_four_npc_state = player_data['levelfournpcstate']
+            state.player.level_five_npc_state = player_data['levelfivenpcstate']
             state.player.slots_vest = player_data['slots_vest']
 
             state.player.level = player_data['level']
@@ -2053,8 +2056,8 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.slotsBurbadanScreen
-            state.slotsBurbadanScreen.start(state)
+            state.currentScreen = state.area5RestScreen
+            state.area5RestScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")

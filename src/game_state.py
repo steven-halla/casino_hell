@@ -91,6 +91,7 @@ from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonSc
 from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
 from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
+from screen.floor5.map_screens.area_5_rest_screen import Area5RestScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -173,6 +174,7 @@ class GameState:
         self.area2RestScreen = Area2RestScreen()
         self.area3RestScreen = Area3RestScreen()
         self.area4RestScreen = Area4RestScreen()
+        self.area5RestScreen = Area5RestScreen()
         self.area2GamblingScreen = Area2GamblingScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
