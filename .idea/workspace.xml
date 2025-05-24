@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new 2nd hippo position">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new item added so non picks slow down">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_constants/equipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/equipment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor5/battle_screens/hungry_starving_hippos_nippy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor5/battle_screens/hungry_starving_hippos_nippy_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -421,7 +417,7 @@
       <workItem from="1747153457846" duration="25433000" />
       <workItem from="1747612168180" duration="10743000" />
       <workItem from="1747756799622" duration="15088000" />
-      <workItem from="1747923011429" duration="15707000" />
+      <workItem from="1747923011429" duration="16488000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -766,7 +762,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1472" />
+    <option name="localTasksCounter" value="1474" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -795,7 +791,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixing game with new magic spell" />
     <MESSAGE value="uses a match case along with MP to afffect player stats" />
     <MESSAGE value="new magic spell created" />
     <MESSAGE value="balance change: now spell is less likely to be cast with each cast" />
@@ -820,7 +815,8 @@
     <MESSAGE value="changed speed stamina depletion" />
     <MESSAGE value="pixel jitters are gone" />
     <MESSAGE value="new 2nd hippo position" />
-    <option name="LAST_COMMIT_MESSAGE" value="new 2nd hippo position" />
+    <MESSAGE value="new item added so non picks slow down" />
+    <option name="LAST_COMMIT_MESSAGE" value="new item added so non picks slow down" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -877,7 +873,7 @@
     <SUITE FILE_PATH="coverage/casino_hell$game_state.coverage" NAME="game_state Coverage Results" MODIFIED="1708242608772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1745976951215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/newGameProject$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1670802715482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1748053431421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1748054258194" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$poker_bracelet.coverage" NAME="poker_bracelet Coverage Results" MODIFIED="1747171467337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />

@@ -18,7 +18,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
         self.bet: int = 300
-        self.dealer_name = "Silly Willy"
+        self.dealer_name = "Bubba"
         self.silly_willy_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
         self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
