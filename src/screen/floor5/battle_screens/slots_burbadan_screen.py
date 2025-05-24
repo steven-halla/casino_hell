@@ -32,6 +32,7 @@ class SlotsBurbadanScreen(GambleScreen):
         self.exp_gain_no_match: int = 5
         self.bet = 100
         self.exp_gain_high: int = 50
+        self.increased_coin_chance: int = 0
 
 
         self.bet_screen_choices: list[str] = ["Back"]
@@ -61,8 +62,8 @@ class SlotsBurbadanScreen(GambleScreen):
         self.jack_pot:int = 0
         self.lucky_strike:int = 0
         self.secret_item_found:bool = False
-        self.debuff_equipment_break: int = 0
-        self.juragan_mp: int = 3
+        self.debuff_increased_pay_to_play: int = 0
+        self.burbadan_mp: int = 3
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
 
@@ -92,7 +93,7 @@ class SlotsBurbadanScreen(GambleScreen):
                 f"You didn't match 3 in a row."
             ]),
             self.JURAGAN_CASTING_SPELL_MESSAGE: MessageBox([
-                "pet giant moth, fest to your hearts content...equipment break"
+                "O charitable one, please spare a coin to a hungry demon...double coin(increaed cost to play)"
             ]),
         }
 
@@ -136,7 +137,7 @@ class SlotsBurbadanScreen(GambleScreen):
 
 
     SPIN_SCREEN: str = "spin_screen"
-    JURAGAN_CASTING_SPELL_SCREEN: str = "brogan casting spell screen"
+    BURBADAN_CASTING_SPELL_SCREEN: str = "brogan casting spell screen"
     RESULT_SCREEN: str = "result_screen"
     BACK: str = "Back"
     PLAYER_WIN_MESSAGE: str = "player_win_message"
@@ -165,17 +166,23 @@ class SlotsBurbadanScreen(GambleScreen):
         self.slot_hack_debuff = 0
         self.rib_stalker = 0
         self.lucky_strike = 0
-        self.debuff_equipment_break = 0
+        self.debuff_increased_pay_to_play = 0
 
     def reset_slots_juragan_round(self):
         if self.rib_stalker > 0:
             self.rib_stalker -= 1
         if self.lucky_strike > 0:
             self.lucky_strike -= 1
-        if self.debuff_equipment_break > 0:
-            self.debuff_equipment_break -= 1
+        if self.debuff_increased_pay_to_play > 0:
+            self.debuff_increased_pay_to_play -= 1
         if self.slot_hack_debuff > 0:
             self.slot_hack_debuff -= 1
+        self.increased_coin_chance += 3
+        increased_coin_randomizer = random.randint(1, 100) + self.increased_coin_chance
+
+        if increased_coin_randomizer > 90 and self.burbadan_mp > 0:
+            self.current_screen = self.BURBADAN_CASTING_SPELL_SCREEN
+            self.increased_coin_chance = 0
 
     def update(self, state):
         super().update(state)
@@ -193,7 +200,7 @@ class SlotsBurbadanScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_helper(state)
-        elif self.game_state == self.JURAGAN_CASTING_SPELL_SCREEN:
+        elif self.game_state == self.BURBADAN_CASTING_SPELL_SCREEN:
             self.update_casting_spell_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu_helper(state)
@@ -219,7 +226,7 @@ class SlotsBurbadanScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
-        elif self.game_state == self.JURAGAN_CASTING_SPELL_SCREEN:
+        elif self.game_state == self.BURBADAN_CASTING_SPELL_SCREEN:
             self.battle_messages[self.JURAGAN_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box_slots(state)
@@ -237,8 +244,8 @@ class SlotsBurbadanScreen(GambleScreen):
     def update_casting_spell_helper(self, state):
         self.battle_messages[self.JURAGAN_CASTING_SPELL_MESSAGE].update(state)
         if state.controller.confirm_button:
-            self.debuff_equipment_break = 5
-            self.juragan_mp -= 1
+            self.debuff_increased_pay_to_play = 5
+            self.burbadan_mp -= 1
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -283,7 +290,7 @@ class SlotsBurbadanScreen(GambleScreen):
                 if controller.isTPressed or controller.isAPressedSwitch:
                     controller.isTPressed = False
                     controller.isAPressedSwitch = False
-                    if self.debuff_equipment_break > 0:
+                    if self.debuff_increased_pay_to_play > 0:
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
@@ -298,9 +305,9 @@ class SlotsBurbadanScreen(GambleScreen):
                         self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
-            elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items and self.debuff_equipment_break == 0:
+            elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items and self.debuff_increased_pay_to_play == 0:
                 if controller.confirm_button:
-                    if self.debuff_equipment_break > 0:
+                    if self.debuff_increased_pay_to_play > 0:
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
@@ -332,8 +339,8 @@ class SlotsBurbadanScreen(GambleScreen):
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
-                if self.juragan_mp > 0 and self.debuff_equipment_break == 0:
-                    self.game_state = self.JURAGAN_CASTING_SPELL_SCREEN
+                if self.burbadan_mp > 0 and self.debuff_increased_pay_to_play == 0:
+                    self.game_state = self.BURBADAN_CASTING_SPELL_SCREEN
                 else:
                     self.game_state = self.WELCOME_SCREEN
 
@@ -409,7 +416,7 @@ class SlotsBurbadanScreen(GambleScreen):
             self.jack_pot = 500
 
             if controller.confirm_button:
-                if Equipment.SLOTS_SHOES.value in state.player.equipped_items and self.debuff_equipment_break == 0:
+                if Equipment.SLOTS_SHOES.value in state.player.equipped_items and self.debuff_increased_pay_to_play == 0:
                     state.player.stamina_points += 100
                     state.player.focus_points += 50
 
@@ -508,9 +515,17 @@ class SlotsBurbadanScreen(GambleScreen):
             controller.isBPressed = False
             controller.isBPressedSwitch = False
             self.game_state = self.WELCOME_SCREEN
-        min_bet = 100
-        bet_step = 50
-        max_bet = 150
+
+        if self.debuff_increased_pay_to_play == 0:
+            min_bet = 100
+            bet_step = 50
+            max_bet = 150
+        elif self.debuff_increased_pay_to_play > 0:
+            min_bet = 200
+            bet_step = 100
+            max_bet = 300
+
+
         if controller.isUpPressed or controller.isUpPressedSwitch:
             controller.isUpPressed = False
             controller.isUpPressedSwitch = False
@@ -785,19 +800,11 @@ class SlotsBurbadanScreen(GambleScreen):
             range(95, 101): "lucky_seven",
         }
 
-        if self.debuff_equipment_break > 0:
-            slot_mapping = {
-                range(1, 25): "bomb",
-                range(25, 40): "dice",
-                range(40, 55): "coin",
-                range(55, 60): "cherry",
-                range(60, 70): "spin",
-                range(70, 101): "crown",
-            }
+
 
 
         # rib demon stalker
-        elif self.rib_stalker > 0:
+        if self.rib_stalker > 0:
             slot_mapping = {
                 range(1, 15): "bomb",
                 range(15, 25): "dice",
@@ -817,7 +824,21 @@ class SlotsBurbadanScreen(GambleScreen):
                 range(80, 101): "lucky_seven",
             }
 
-        elif self.bet > 100 and self.rib_stalker == 0 and self.lucky_strike == 0:
+        elif self.bet > 199 and self.rib_stalker == 0 and self.lucky_strike == 0 and self.debuff_increased_pay_to_play == 0:
+            slot_mapping = {
+                range(1, 7): "bomb",
+                range(7, 15): "dice",
+                range(15, 27): "coin",
+                range(27, 37): "cherry",
+                range(37, 45): "spin",
+                range(45, 55): "crown",
+                range(55, 66): "dice_six",
+                range(66, 75): "diamond",
+                range(75, 95): "chest",
+                range(95, 101): "lucky_seven",
+            }
+
+        elif self.bet > 299 and self.rib_stalker == 0 and self.lucky_strike == 0 and self.debuff_increased_pay_to_play > 0:
             slot_mapping = {
                 range(1, 7): "bomb",
                 range(7, 15): "dice",
@@ -857,7 +878,7 @@ class SlotsBurbadanScreen(GambleScreen):
                 slots.append("bomb")  # Or any default symbol you prefer
 
         if symbol_priority[slots[0]] == 0 and self.rib_stalker > 0:
-            if self.debuff_equipment_break > 0:
+            if self.debuff_increased_pay_to_play > 0:
                 spell_modifier = 5
             else:
                 spell_modifier = 0
