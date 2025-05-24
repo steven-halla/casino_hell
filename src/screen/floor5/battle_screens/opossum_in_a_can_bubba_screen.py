@@ -19,7 +19,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
         super().__init__(screenName)
         self.bet: int = 300
         self.dealer_name = "Bubba"
-        self.silly_willy_bankrupt = 0
+        self.bubba_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
         self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
@@ -45,7 +45,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.poison_damage: int = 0
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "Silly Willy: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
+                "BUbba: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
             ]),
 
             self.PICK_TALLY_MENU_MESSAGE: MessageBox([
@@ -242,7 +242,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
 
     def update(self, state):
-        if self.money <= self.silly_willy_bankrupt:
+        if self.money <= self.bubba_bankrupt:
             Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_SILLY_WILLY_DEFEATED)
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
