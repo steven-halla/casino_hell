@@ -892,8 +892,7 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
                 f"Grats you leveled up to level {state.player.level}!",
                 f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
-                f"Max focus increased by {state.player.focus_increase_from_level} points!",
-                ""
+                f"Max focus increased by {state.player.focus_increase_from_level} points!"
             ]
             self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
             self.level_up_message_initialized = True  # 💥 This fixes the loop
