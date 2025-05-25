@@ -44,7 +44,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.magic_screen_index: int = 0
         self.magic_menu_selector: list[str] = []
         self.shake_cost: int = 10
-        self.peak_points: int = 0
+        self.peek_points: int = 0
         self.buff_poison_bite: int = 0
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -245,12 +245,17 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
         self.buff_peek = False
+        if self.peek_points > 0:
+            self.peek_points -= 1
+            if self.peek_points > 0:
+                self.buff_peek = True
+
 
 
 
         self.double_pick_chance += 3
 
-        match self.fengus_magic_points:
+        match self.bubba_magic_points:
             case 3:
                 double_flip_randomizer = random.randint(1, 90) + self.double_pick_chance
             case 2:
@@ -397,6 +402,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.draw_triple_win_message(state)
         self.draw_lucky_star_message(state)
 
+        print("Your peak points are line 405: " + str(self.peek_points))
+        print("Your peak buff state: " + str(self.buff_peek))
 
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -543,11 +550,18 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 self.spell_sound.play()  # Play the sound effect once
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
-            elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value and state.player.focus_points >= self.peek_cost:
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value and state.player.focus_points >= self.peek_cost and self.peek_points == 0:
                 state.player.focus_points -= self.peek_cost
                 self.buff_peek = True
                 self.spell_sound.play()  # Play the sound effect once
                 self.magic_lock = True
+                if state.player.mind < 3:
+                    self.peek_points = 1
+                elif state.player.mind == 3 or state.player.mind == 4:
+                    self.peek_points = 2
+                elif state.player.mind == 5:
+                    self.peek_points = 3
+
                 self.game_state = self.WELCOME_SCREEN
 
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
@@ -606,6 +620,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 # Call the function to reveal the selected box content
                 state.controller.isTPressed = False
                 state.controller.isAPressedSwitch = False
+                self.buff_peek = False
+
 
             else:
                 print("jfdklsjf;salkfj;saf")
