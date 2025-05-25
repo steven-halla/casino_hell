@@ -195,7 +195,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.enemy_card_y_positions = []
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
-        self.luck_swapping_switch += 5
+        self.luck_swapping_switch += 3
 
         match self.fengus_magic_points:
             case 3:
@@ -231,8 +231,6 @@ class BlackJackFengusScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
-        state.player.stamina_points -=10
-        print(self.game_state)
 
 
         if self.money <= self.fengus_bankrupt:
