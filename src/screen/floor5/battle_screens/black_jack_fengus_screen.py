@@ -231,7 +231,7 @@ class BlackJackFengusScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
-        print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
+        # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
 
 
         if self.money <= self.fengus_bankrupt:
@@ -426,6 +426,9 @@ class BlackJackFengusScreen(GambleScreen):
     def update_player_phase_win(self, state, controller) -> None:
 
         if controller.confirm_button:
+            state.player.money += self.bet
+            self.money -= self.bet
+            state.player.exp += self.low_exp
             self.round_reset()
             self.game_state = self.WELCOME_SCREEN
 
