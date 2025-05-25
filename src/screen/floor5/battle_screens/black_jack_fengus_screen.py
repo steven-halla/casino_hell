@@ -44,7 +44,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.player_action_phase_force_redraw_index: int = 2
         self.redraw_counter = True
         self.player_action_phase_choices: list[str] = ["Stand", "Draw"]
-        self.magic_screen_choices: list[str] = [Magic.REVEAL.value, "back"]
+        self.magic_screen_choices: list[str] = []
         self.redraw_debuff_counter: int = 0
         self.redraw_end_counter: int = 0
         self.redraw_start_counter: int = 10
@@ -124,6 +124,9 @@ class BlackJackFengusScreen(GambleScreen):
             self.FENGUS_CASTING_SPELL: MessageBox([
                 f"Rays of the goddess, switch yourself away from the chosen and shine upon me...luck shift(player/enemy lucks switched) "
             ]),
+            self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE: MessageBox([
+                f"You ran out of Stamina, go rest your Hero."
+            ]),
         }
 
     PLAYER_ACTION_MESSAGE: str = "player_action_message"
@@ -159,8 +162,16 @@ class BlackJackFengusScreen(GambleScreen):
         self.initialize_music()
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
-        self.luck_bonus: int = state.player.luck * 10
-        state.player.exp += 200
+        self.luck_bonus: int = state.player.luck * 5
+
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
+            self.magic_screen_choices.append(Magic.BLACK_JACK_REDRAW.value)
+
+        if Magic.REVEAL.value in state.player.magicinventory and Magic.REVEAL.value not in self.magic_screen_choices:
+            self.magic_screen_choices.append(Magic.REVEAL.value)
+
+        if self.BACK not in self.magic_screen_choices:
+            self.magic_screen_choices.append(self.BACK)
 
     def round_reset(self):
         print("Round Reset")
@@ -185,9 +196,16 @@ class BlackJackFengusScreen(GambleScreen):
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
         self.luck_swapping_switch += 5
-        luck_swap_randomizer = random.randint(1, 100) + self.luck_swapping_switch
 
-        if luck_swap_randomizer > 90 and self.fengus_magic_points > 0 and self.debuff_buff_luck_switch == 0:
+        match self.fengus_magic_points:
+            case 3:
+                luck_swap_randomizer = random.randint(1, 90) + self.luck_swapping_switch
+            case 2:
+                luck_swap_randomizer = random.randint(1, 70) + self.luck_swapping_switch
+            case 1:
+                luck_swap_randomizer = random.randint(1, 50) + self.luck_swapping_switch
+
+        if luck_swap_randomizer > 100 and self.fengus_magic_points > 0 and self.debuff_buff_luck_switch == 0:
             self.game_state = self.FENGUS_CASTING_SPELL_SCREEN
             self.luck_swapping_switch = 0
 
@@ -213,12 +231,14 @@ class BlackJackFengusScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        state.player.stamina_points -=10
+        print(self.game_state)
 
 
         if self.money <= self.fengus_bankrupt:
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
+            Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
@@ -235,6 +255,9 @@ class BlackJackFengusScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
+            if state.player.stamina_points <= 0:
+
+                self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
             self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.FENGUS_CASTING_SPELL_SCREEN:
@@ -296,7 +319,16 @@ class BlackJackFengusScreen(GambleScreen):
             self.update_player_phase_draw(state, controller)
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.game_over_screen_level_4(state, controller)
+            self.game_over_screen_level_5(state, controller)
+        elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
+
+            self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
+            if self.battle_messages[
+                self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
+                state.player.money -= 100
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
+                state.player.canMove = True
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -368,6 +400,9 @@ class BlackJackFengusScreen(GambleScreen):
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
 
+        elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
+            self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].draw(state)
+
         pygame.display.flip()
 
     def update_bet_screen_helper(self, controller):
@@ -411,7 +446,7 @@ class BlackJackFengusScreen(GambleScreen):
         lucky_strike_threshhold = 75
         initial_hand = 2
         if self.debuff_buff_luck_switch == 0:
-            adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
+            adjusted_lucky_roll = lucky_roll + self.luck_bonus
         elif self.debuff_buff_luck_switch > 0:
             adjusted_lucky_roll = 0
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
@@ -420,7 +455,7 @@ class BlackJackFengusScreen(GambleScreen):
                 self.enemy_hand = self.deck.enemy_draw_hand(2)
             elif self.debuff_buff_luck_switch > 0:
                 lucky_enemy_roll = random.randint(1, 100)
-                lucky_enemy_strike = lucky_enemy_roll + (state.player.luck * 5)
+                lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
                 ace_card = None
                 ten_card = None
                 print("Lucky roll strike is" + str(lucky_enemy_strike))
@@ -609,9 +644,7 @@ class BlackJackFengusScreen(GambleScreen):
         if state.player.money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
-        elif state.player.stamina_points <= 0:
-            self.game_state = self.GAME_OVER_SCREEN
-            return
+
 
         if controller.confirm_button:
             if self.welcome_screen_index == self.welcome_screen_play_index:
@@ -629,19 +662,7 @@ class BlackJackFengusScreen(GambleScreen):
     def initialize_music(self):
         pass
 
-    def game_over_screen_level_4(self, state: 'GameState', controller):
-        no_money_game_over = 0
-        no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
-            if controller.confirm_button:
-                state.currentScreen = state.gameOverScreen
-                state.gameOverScreen.start(state)
-        elif state.player.stamina_points <= no_stamina_game_over:
-            if controller.confirm_button:
-                self.reset_black_jack_game()
-                state.player.money -= 100
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+
 
     def animate_face_down_card(self, state, card_index):
         initial_y_position = 0
@@ -989,9 +1010,9 @@ class BlackJackFengusScreen(GambleScreen):
         black_box_y = start_y_right_box - border_width
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        if (Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory
-                and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices):
-            self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
+        # if (Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory
+        #         and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices):
+        #     self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
 
         for idx, choice in enumerate(self.magic_screen_choices):
             y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
