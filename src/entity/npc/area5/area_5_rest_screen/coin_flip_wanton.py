@@ -22,7 +22,7 @@ class CoinFlipWanton(Npc):
         self.selected_item_index = 0
         self.coin_flip_wanton_messages = {
             "welcome_message": NpcTextBox(
-                ["Wanton: Are you sure you want to battle the king of COIN FLIP?"],
+                ["Wanton: Are you sure you want to battle the king of COIN FLIP?","I'ts groove yeah"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["Wanton: How, impossible, nobody has every defeated my double flip technique."],

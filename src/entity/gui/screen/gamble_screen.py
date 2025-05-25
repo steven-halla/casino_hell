@@ -142,7 +142,6 @@ class GambleScreen:
             self.bet = self.money
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
-        print("jf;dasjf;lajsfjslafjlsajflajf;jdasfk")
 
         if self.level_up_checker_sound == True:
             self.music_file_level_up.play()  # Play the sound effect once

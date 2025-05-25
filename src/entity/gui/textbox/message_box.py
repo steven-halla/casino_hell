@@ -32,14 +32,14 @@ class MessageBox(Entity):
             self.characters_to_display += 1
 
         # Handle button press to see the next message.
-        # if controller.isTPressed or controller.isAPressedSwitch and \
-        #         pygame.time.get_ticks() - self.time > self.delay and \
-        #         self.message_index < len(self.messages) - 1:
-        #     state.controller.isTPressed = False
-        #     state.controller.isTPressed = False
-        #     self.time = pygame.time.get_ticks()
-        #     self.message_index += 1
-        #     self.characters_to_display = 0
+        if controller.isTPressed or controller.isAPressedSwitch and \
+                pygame.time.get_ticks() - self.time > self.delay and \
+                self.message_index < len(self.messages) - 1:
+            state.controller.isTPressed = False
+            state.controller.isTPressed = False
+            self.time = pygame.time.get_ticks()
+            self.message_index += 1
+            self.characters_to_display = 0
 
 
     def draw(self, state: "GameState"):
