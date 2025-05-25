@@ -231,6 +231,7 @@ class BlackJackFengusScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
 
 
         if self.money <= self.fengus_bankrupt:
@@ -489,26 +490,20 @@ class BlackJackFengusScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
 
     def update_magic_menu(self, state: "GameState"):
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-            if self.magic_menu_index == 0:
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
-                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-            elif self.magic_menu_index == 1:
-                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-            elif self.magic_menu_index == 2:
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
-        elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
-            if self.magic_menu_index == 0:
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
-            elif self.magic_menu_index == 1:
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+        selected_choice = self.magic_screen_choices[self.magic_menu_index]
+
+        if selected_choice == Magic.REVEAL.value:
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif selected_choice == Magic.BLACK_JACK_REDRAW.value:
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif selected_choice == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
 
         controller = state.controller
 
@@ -974,18 +969,14 @@ class BlackJackFengusScreen(GambleScreen):
                                                              hero_name_y_position))
 
     def draw_magic_menu_selection_box(self, state):
-        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-            if self.magic_menu_index == 0:
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
-            elif self.magic_menu_index == 1:
-                self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
-            elif self.magic_menu_index == 2:
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
-        elif Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
-            if self.magic_menu_index == 0:
-                self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
-            elif self.magic_menu_index == 1:
-                self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        selected_choice = self.magic_screen_choices[self.magic_menu_index]
+
+        if selected_choice == Magic.REVEAL.value:
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+        elif selected_choice == Magic.BLACK_JACK_REDRAW.value:
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+        elif selected_choice == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
         choice_spacing = 40
         text_x_offset = 60
         text_y_offset = 15
