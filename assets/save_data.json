@@ -1,6 +1,6 @@
 {
-    "level": 1,
-    "exp": 0,
+    "level": 4,
+    "exp": 900,
     "stamina_points": 390,
     "max_stamina_points": 390,
     "focus_points": 200,
@@ -25,6 +25,9 @@
         "varment hat"
     ],
     "npcitems": [
+        "level 2 token",
+        "level 3 token",
+        "level 4 token"
 
     ],
     "magicinventory": [
@@ -42,12 +45,12 @@
         "Poker Card Swap",
         "pig meter"
     ],
-    "body": 4,
-    "mind": 4,
-    "spirit": 4,
-    "perception": 4,
+    "body": 1,
+    "mind": 1,
+    "spirit": 1,
+    "perception": 1,
     "baseperception": 1,
-    "luck": 4,
+    "luck": 1,
     "money": 5555,
     "rabies": false,
     "immunity": true,
