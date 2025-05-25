@@ -28,6 +28,9 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.stamina_drain: int = 50
         self.stamina_drain_repellant: int = 25
         self.pick_index: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
+        self.luck_bonus: int = 0
         self.magic_index: int = 1
         self.quit_index: int = 2
         self.blit_message_x: int = 65
@@ -40,7 +43,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.current_box_index: int = 0  # Index of the currently green box
         self.magic_screen_index: int = 0
         self.magic_menu_selector: list[str] = []
-        self.shake_cost = 10
+        self.shake_cost: int = 10
+        self.peak_points: int = 0
         self.buff_poison_bite: int = 0
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -72,7 +76,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
             self.PLAYER_LOSE_MESSAGE: MessageBox([
                 "You lost the toss."
             ]),
-            self.SILLY_WILLY_CASTING_SPELL_MESSAGE: MessageBox([
+            self.BUBBA_CASTING_SPELL_MESSAGE: MessageBox([
                 "Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
             ]),
 
@@ -111,6 +115,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.can7: str = ""
         self.can8: str = ""
         self.shake: bool = False
+        self.buff_peek_amount: int = 0
 
         self.win_x, self.win_y = None, None
         self.big_win_x, self.big_win_y = None, None
@@ -138,7 +143,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
     # TALLY_SCREEN:str = "tally_screen"
     PLAYER_LOSE_SCREEN:str = "player_lose_screen"
     PLAYER_WIN_SCREEN:str = "player_win_screen"
-    SILLY_WILLY_CASTING_SPELL_SCREEN: str = "SILLY_WILLY_CASTING_SPELL_SCREEN"
+    BUBBA_CASTING_SPELL_SCREEN: str = "BUBBA_CASTING_SPELL_SCREEN"
 
 
     PLAYER_WIN_MESSAGE: str = "player_win_message"
@@ -148,7 +153,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
     PICK_SELECTION_MESSAGE: str = "pick_selection_message"
-    SILLY_WILLY_CASTING_SPELL_MESSAGE: str = "SILLY_WILLY_CASTING_SPELL_MESSAGE"
+    BUBBA_CASTING_SPELL_MESSAGE: str = "BUBBA_CASTING_SPELL_MESSAGE"
     BACK: str = "Back"
 
 
@@ -184,6 +189,12 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
     def start(self, state: 'GameState'):
         self.initializeGarbageCans(state)
+        self.spirit_bonus: int = state.player.spirit * 10
+        self.magic_bonus: int = state.player.mind * 10
+        self.luck_bonus: int = state.player.luck * 5
+        self.opossum_game_reset(state)
+        self.buff_peek_amount: int = 0
+
 
         # staying at end appends this
 
@@ -212,6 +223,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.shake = False
         self.debuff_keen_perception: bool = False
 
+
+
         if self.debuff_double_pick > 0:
             self.debuff_double_pick -= 1
 
@@ -236,10 +249,17 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
 
         self.double_pick_chance += 3
-        double_flip_randomizer = random.randint(1, 100) + self.double_pick_chance
 
-        if double_flip_randomizer > 90 and self.bubba_magic_points > 0 and self.buff_poison_bite == 0:
-            self.current_screen = self.SILLY_WILLY_CASTING_SPELL_SCREEN
+        match self.fengus_magic_points:
+            case 3:
+                double_flip_randomizer = random.randint(1, 90) + self.double_pick_chance
+            case 2:
+                double_flip_randomizer = random.randint(1, 70) + self.double_pick_chance
+            case 1:
+                double_flip_randomizer = random.randint(1, 50) + self.double_pick_chance
+
+        if double_flip_randomizer > 90 and self.bubba_magic_points > 0 and self.debuff_double_pick == 0:
+            self.current_screen = self.BUBBA_CASTING_SPELL_SCREEN
             self.double_pick_chance = 0
 
 
@@ -259,9 +279,9 @@ class OpossumInACanBubbaScreen(GambleScreen):
             self.update_welcome_screen_logic(controller, state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
 
-        elif self.game_state == self.SILLY_WILLY_CASTING_SPELL_SCREEN:
+        elif self.game_state == self.BUBBA_CASTING_SPELL_SCREEN:
 
-            self.battle_messages[self.SILLY_WILLY_CASTING_SPELL_MESSAGE].update(state)
+            self.battle_messages[self.BUBBA_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.confirm_button:
                 self.debuff_double_pick = 5
 
@@ -339,7 +359,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 self.opossum_round_reset(state)
 
                 if self.money < 750  == False:
-                    self.game_state = self.SILLY_WILLY_CASTING_SPELL_SCREEN
+                    self.game_state = self.BUBBA_CASTING_SPELL_SCREEN
                 else:
                     self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
@@ -386,9 +406,9 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
-        elif self.game_state == self.SILLY_WILLY_CASTING_SPELL_SCREEN:
+        elif self.game_state == self.BUBBA_CASTING_SPELL_SCREEN:
 
-            self.battle_messages[self.SILLY_WILLY_CASTING_SPELL_MESSAGE].draw(state)
+            self.battle_messages[self.BUBBA_CASTING_SPELL_MESSAGE].draw(state)
 
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.draw_magic_menu_selection_box(state)
@@ -544,7 +564,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 self.current_box_index = (self.current_box_index + 1) % 8
                 _last_box_move_time[0] = current_time
                 current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-                # print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
+                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
 
                 while current_can_content == "":
                     # print("DEBUG: Empty can encountered, incrementing index")
@@ -559,7 +579,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 self.current_box_index = (self.current_box_index - 1) % 8
                 _last_box_move_time[0] = current_time
                 current_can_content = getattr(self, f'can{self.current_box_index + 1}')
-                # print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
+                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
 
                 while current_can_content == "":
                     # print("DEBUG: Empty can encountered, decrementing index")
@@ -573,11 +593,13 @@ class OpossumInACanBubbaScreen(GambleScreen):
             # Check for 'T' key press
         if state.controller.isTPressed or state.controller.isAPressedSwitch:
             if self.buff_peek:
+
                 selected_can_index = self.current_box_index + 1  # since can1 to can8 are 1-indexed
                 peeked_value = getattr(self, f"can{selected_can_index}")
                 print(f"You peeked into can {selected_can_index} and saw: {peeked_value}")
                 self.battle_messages[self.PICK_SELECTION_MESSAGE].messages = [f"The can contains a: {peeked_value}"]
-                self.buff_peek = False
+
+
 
             # print(self.game_state)
 
@@ -760,26 +782,58 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 # Determine the content of the current trash can
                 current_can_content = getattr(self, f'can{len(self.positions)}')
                 # Apply the shaking effect if debuff is active
-                if self.debuff_keen_perception == True:
+                if self.debuff_keen_perception:
                     shake_effect = (0, 0)  # Default to no shake
+                    time_since_last_shake = current_time % shake_interval
 
-                    # Check and apply shake for "lose" cans
-                    if current_can_content == 'lose' and not shaken_lose:
-                        shaken_lose = True
+                    should_shake = False
+
+                    # Original shake logic
+                    # if current_can_content == 'lose' and not shaken_lose:
+                    #     shaken_lose = True
+                    #     should_shake = True
+                    #
+                    # elif current_can_content == 'X3_star' and not shaken_x3_star:
+                    #     shaken_x3_star = True
+                    #     should_shake = True
+
+                    # MIND-based enhancements
+                    if self.debuff_keen_perception:
+                        shake_effect = (0, 0)  # Default to no shake
                         time_since_last_shake = current_time % shake_interval
-                        if time_since_last_shake < shake_duration:
+                        should_shake = False
+
+                        if state.player.mind < 3:
+                            if current_can_content == 'X3_star' and not shaken_x3_star:
+                                shaken_x3_star = True
+                                should_shake = True
+                            elif current_can_content == 'lose' and not shaken_lose:
+                                shaken_lose = True
+                                should_shake = True
+                            elif current_can_content == 'win':
+                                should_shake = True
+
+                        elif state.player.mind in [3, 4]:
+                            if current_can_content == 'X3_star' and not shaken_x3_star:
+                                shaken_x3_star = True
+                                should_shake = True
+                            elif current_can_content == 'lose' and not shaken_lose:
+                                shaken_lose = True
+                                should_shake = True
+                            elif current_can_content == 'win':
+                                should_shake = True
+
+                        elif state.player.mind == 5:
+                            if current_can_content == 'X3_star':
+                                should_shake = True
+                            else:
+                                should_shake = False  # override all else
+
+                        if should_shake and time_since_last_shake < shake_duration:
                             shake_effect = random.randint(-2, 2), random.randint(-2, 2)
 
-                    # Check and apply shake for "X3_star" cans
-                    elif current_can_content == 'X3_star' and not shaken_x3_star:
-                        shaken_x3_star = True
-                        time_since_last_shake = current_time % shake_interval
-                        if time_since_last_shake < shake_duration:
-                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
-
-                    # Apply the shake effect to the position
-                    x += shake_effect[0]
-                    y += shake_effect[1]
+                        x += shake_effect[0]
+                        y += shake_effect[1]
 
                 # Draw the scaled_sprite (trash can) at each position with potential shake effect
                 if current_can_content:
