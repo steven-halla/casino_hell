@@ -25,21 +25,20 @@ class MessageBox(Entity):
 
     def update(self, state: "GameState"):
         controller = state.controller
-        # print("Moooglllerjejrje;jrljrewljr;wjarl;ewjrew")
 
         # Show characters of text one at a time, not the whole message.
         if self.characters_to_display < len(self.messages[self.message_index]):
             self.characters_to_display += 1
 
         # Handle button press to see the next message.
-        if controller.isTPressed or controller.isAPressedSwitch and \
-                pygame.time.get_ticks() - self.time > self.delay and \
-                self.message_index < len(self.messages) - 1:
-            state.controller.isTPressed = False
-            state.controller.isTPressed = False
-            self.time = pygame.time.get_ticks()
-            self.message_index += 1
-            self.characters_to_display = 0
+        # if controller.isTPressed or controller.isAPressedSwitch and \
+        #         pygame.time.get_ticks() - self.time > self.delay and \
+        #         self.message_index < len(self.messages) - 1:
+        #     state.controller.isTPressed = False
+        #     state.controller.isTPressed = False
+        #     self.time = pygame.time.get_ticks()
+        #     self.message_index += 1
+        #     self.characters_to_display = 0
 
 
     def draw(self, state: "GameState"):
@@ -73,10 +72,4 @@ class MessageBox(Entity):
         self.characters_to_display = 0  # Start displaying the message from the first character
         self.time = pygame.time.get_ticks()
 
-    def set_external_message(self, messages: list[str]):
-        """Safely replaces the message list and resets the box for external use."""
-        self.messages = messages
-        self.message_index = 0
-        self.characters_to_display = 0
-        self.time = pygame.time.get_ticks()
 

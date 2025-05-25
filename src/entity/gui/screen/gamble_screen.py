@@ -141,234 +141,234 @@ class GambleScreen:
             print("Resetting Money")
             self.bet = self.money
 
-    def handle_level_up(self, state: 'GameState', controller) -> None:
-
-        if self.level_up_checker_sound == True:
-            self.music_file_level_up.play()  # Play the sound effect once
-            self.level_up_checker_sound = False
-
-        if state.player.stat_point_increase == False:
-            if not self.level_up_message_initialized:
-                self.battle_messages[self.LEVEL_UP_MESSAGE].set_external_message([
-                    f"Grats you leveled up to level {state.player.level}!",
-                    f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
-                    f"Max focus increased by {state.player.focus_increase_from_level} points!",
-                    ""
-                ])
-                self.level_up_message_initialized = True
-            self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
-            if self.battle_messages[self.LEVEL_UP_MESSAGE].is_finished():
-                state.player.leveling_up = False
-                self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-                self.game_state = self.WELCOME_SCREEN
-                self.level_up_checker_sound = True
-
-        elif state.player.stat_point_increase == True:
-            selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
-            print(selected_stat)
-
-            self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
-                f"Grats you leveled up to level {state.player.level}!",
-                f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
-                f"Max focus increased by {state.player.focus_increase_from_level} points!",
-                f"You gained a stat point, please allocate, stat points at this level max at 2."
-            ]
-
-            self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
-
-            if (self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index
-                    and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished()):
-                if controller.isUpPressed or controller.isUpPressedSwitch:
-                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index
-                                                         - self.move_index_by_1) % len(self.level_screen_stats)
-                    controller.isUpPressed = False
-                    controller.isUpPressedSwitch = False
-                elif controller.isDownPressed or controller.isDownPressedSwitch:
-                    self.level_up_stat_increase_index = (self.level_up_stat_increase_index
-                                                         + self.move_index_by_1) % len(self.level_screen_stats)
-                    controller.isDownPressed = False
-                    controller.isDownPressedSwitch = False
-
-                selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
-
-                if (selected_stat == self.PLAYER_STAT_BODY and state.controller.isTPressed
-                        or state.controller.isAPressedSwitch and state.player.body <  self.game_level_2_stat_max):
-                    state.player.body += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-
-                    state.player.max_stamina_points += state.player.level_2_body_stamina_increase
-                    state.player.stamina_points += state.player.level_2_body_stamina_increase
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-
-                    self.level_up_checker_sound = True
-
-                    self.game_state = self.WELCOME_SCREEN
-
-
-                elif (selected_stat == self.PLAYER_STAT_MIND and state.controller.isTPressed
-                      or state.controller.isAPressedSwitch and state.player.mind < self.game_level_2_stat_max):
-                    state.player.mind += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-                    Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-                    state.player.max_focus_points += state.player.level_2_mind_focus_increase
-                    state.player.focus_points += state.player.level_2_mind_focus_increase
-                    self.level_up_checker_sound = True
-                    self.game_state = self.WELCOME_SCREEN
-
-
-                elif (selected_stat == self.PLAYER_STAT_SPIRIT and state.controller.isTPressed
-                      or state.controller.isAPressedSwitch and state.player.spirit < self.game_level_2_stat_max):
-                    state.player.spirit += self.stat_modifier
-                    print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-
-                    self.level_up_checker_sound = True
-
-                    self.game_state = self.WELCOME_SCREEN
-
-
-                elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
-                      or state.controller.isAPressedSwitch and state.player.perception < self.game_level_2_stat_max):
-                    state.player.perception += self.stat_modifier
-                    print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-                    self.level_up_checker_sound = True
-                    self.game_state = self.WELCOME_SCREEN
-                    # state.player.base_perception += 1
-
-
-                elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
-                      or state.controller.isAPressedSwitch and state.player.perception < 3 and \
-                        Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items):
-                    state.player.perception += self.stat_modifier
-                    print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-                    self.level_up_checker_sound = True
-                    self.game_state = self.WELCOME_SCREEN
-
-                elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
-                      or state.controller.isAPressedSwitch and state.player.luck < self.game_level_2_stat_max):
-                    state.player.luck += self.stat_modifier
-                    print(f"Player {selected_stat} is noww: {getattr(state.player, selected_stat.lower())}")
-
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-                    self.level_up_checker_sound = True
-                    self.game_state = self.WELCOME_SCREEN
-
-                elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
-                      or state.controller.isAPressedSwitch and state.player.luck < 3
-                      and state.player.enhanced_luck == True):
-                    state.player.luck += self.stat_modifier
-                    print(f"Player {selected_stat} is nowww: {getattr(state.player, selected_stat.lower())}")
-                    print("moooooooofsoadfdjsa;f;dlsjfjsa;fks")
-
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
-                    state.player.leveling_up = False
-                    self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
-                    self.level_up_checker_sound = True
-                    self.game_state = self.WELCOME_SCREEN
+    # def handle_level_up(self, state: 'GameState', controller) -> None:
+    #
+    #     if self.level_up_checker_sound == True:
+    #         self.music_file_level_up.play()  # Play the sound effect once
+    #         self.level_up_checker_sound = False
+    #
+    #     if state.player.stat_point_increase == False:
+    #         if not self.level_up_message_initialized:
+    #             self.battle_messages[self.LEVEL_UP_MESSAGE].update_message([
+    #                 f"Grats you leveled up to level {state.player.level}!",
+    #                 f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
+    #                 f"Max focus increased by {state.player.focus_increase_from_level} points!",
+    #                 ""
+    #             ])
+    #             self.level_up_message_initialized = True
+    #         self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
+    #         if self.battle_messages[self.LEVEL_UP_MESSAGE].is_finished():
+    #             state.player.leveling_up = False
+    #             self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #             self.game_state = self.WELCOME_SCREEN
+    #             self.level_up_checker_sound = True
+    #
+    #     elif state.player.stat_point_increase == True:
+    #         selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
+    #         print(selected_stat)
+    #
+    #         self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
+    #             f"Grats you leveled up to level {state.player.level}!",
+    #             f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
+    #             f"Max focus increased by {state.player.focus_increase_from_level} points!",
+    #             f"You gained a stat point, please allocate, stat points at this level max at 2."
+    #         ]
+    #
+    #         self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
+    #
+    #         if (self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index
+    #                 and self.battle_messages[self.LEVEL_UP_MESSAGE].current_message_finished()):
+    #             if controller.isUpPressed or controller.isUpPressedSwitch:
+    #                 self.level_up_stat_increase_index = (self.level_up_stat_increase_index
+    #                                                      - self.move_index_by_1) % len(self.level_screen_stats)
+    #                 controller.isUpPressed = False
+    #                 controller.isUpPressedSwitch = False
+    #             elif controller.isDownPressed or controller.isDownPressedSwitch:
+    #                 self.level_up_stat_increase_index = (self.level_up_stat_increase_index
+    #                                                      + self.move_index_by_1) % len(self.level_screen_stats)
+    #                 controller.isDownPressed = False
+    #                 controller.isDownPressedSwitch = False
+    #
+    #             selected_stat = self.level_screen_stats[self.level_up_stat_increase_index]
+    #
+    #             if (selected_stat == self.PLAYER_STAT_BODY and state.controller.isTPressed
+    #                     or state.controller.isAPressedSwitch and state.player.body <  self.game_level_2_stat_max):
+    #                 state.player.body += self.stat_modifier
+    #                 print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #
+    #                 state.player.max_stamina_points += state.player.level_2_body_stamina_increase
+    #                 state.player.stamina_points += state.player.level_2_body_stamina_increase
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #
+    #                 self.level_up_checker_sound = True
+    #
+    #                 self.game_state = self.WELCOME_SCREEN
+    #
+    #
+    #             elif (selected_stat == self.PLAYER_STAT_MIND and state.controller.isTPressed
+    #                   or state.controller.isAPressedSwitch and state.player.mind < self.game_level_2_stat_max):
+    #                 state.player.mind += self.stat_modifier
+    #                 print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #                 Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #                 state.player.max_focus_points += state.player.level_2_mind_focus_increase
+    #                 state.player.focus_points += state.player.level_2_mind_focus_increase
+    #                 self.level_up_checker_sound = True
+    #                 self.game_state = self.WELCOME_SCREEN
+    #
+    #
+    #             elif (selected_stat == self.PLAYER_STAT_SPIRIT and state.controller.isTPressed
+    #                   or state.controller.isAPressedSwitch and state.player.spirit < self.game_level_2_stat_max):
+    #                 state.player.spirit += self.stat_modifier
+    #                 print(f"Player {selected_stat} is now: {getattr(state.player, selected_stat.lower())}")
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #
+    #                 self.level_up_checker_sound = True
+    #
+    #                 self.game_state = self.WELCOME_SCREEN
+    #
+    #
+    #             elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
+    #                   or state.controller.isAPressedSwitch and state.player.perception < self.game_level_2_stat_max):
+    #                 state.player.perception += self.stat_modifier
+    #                 print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #                 self.level_up_checker_sound = True
+    #                 self.game_state = self.WELCOME_SCREEN
+    #                 # state.player.base_perception += 1
+    #
+    #
+    #             elif (selected_stat == self.PLAYER_STAT_PERCEPTION and state.controller.isTPressed
+    #                   or state.controller.isAPressedSwitch and state.player.perception < 3 and \
+    #                     Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items):
+    #                 state.player.perception += self.stat_modifier
+    #                 print(f"Player {selected_stat} is cow: {getattr(state.player, selected_stat.lower())}")
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #                 self.level_up_checker_sound = True
+    #                 self.game_state = self.WELCOME_SCREEN
+    #
+    #             elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
+    #                   or state.controller.isAPressedSwitch and state.player.luck < self.game_level_2_stat_max):
+    #                 state.player.luck += self.stat_modifier
+    #                 print(f"Player {selected_stat} is noww: {getattr(state.player, selected_stat.lower())}")
+    #
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #                 self.level_up_checker_sound = True
+    #                 self.game_state = self.WELCOME_SCREEN
+    #
+    #             elif (selected_stat == self.PLAYER_STAT_LUCK and state.controller.isTPressed
+    #                   or state.controller.isAPressedSwitch and state.player.luck < 3
+    #                   and state.player.enhanced_luck == True):
+    #                 state.player.luck += self.stat_modifier
+    #                 print(f"Player {selected_stat} is nowww: {getattr(state.player, selected_stat.lower())}")
+    #                 print("moooooooofsoadfdjsa;f;dlsjfjsa;fks")
+    #
+    #                 state.controller.isTPressed = False
+    #                 state.controller.isAPressedSwitch = False
+    #                 state.player.leveling_up = False
+    #                 self.battle_messages[self.LEVEL_UP_MESSAGE].reset()
+    #                 self.level_up_checker_sound = True
+    #                 self.game_state = self.WELCOME_SCREEN
 
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
 
-    def draw_level_up(self, state: 'GameState') -> None:
-        do_not_show_ehanced_luck = 1
-        do_not_show_ehanced_perception = 1
-
-        if state.player.stat_point_increase and self.game_state == "level_up_screen":
-            if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index:
-                black_box_height = 261 - 50  # Adjust height
-                black_box_width = 240 - 10  # Adjust width to match the left box
-                border_width = 5
-                start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-                start_y_right_box = 200  # Adjust vertical alignment
-
-                black_box = pygame.Surface((black_box_width, black_box_height))
-                black_box.fill(BLACK)
-
-                white_thickness = 2
-
-                white_border = pygame.Surface(
-                    (black_box_width + white_thickness * border_width, black_box_height + white_thickness * border_width)
-                )
-                white_border.fill(WHITE)
-                white_border.blit(black_box, (border_width, border_width))
-
-                black_box_x = start_x_right_box - border_width
-                black_box_y = start_y_right_box - border_width
-
-                state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-                x_offset = 60
-                y_offset = 15
-                stat_y_padding = 40
-                for idx, choice in enumerate(self.level_screen_stats):
-                    y_position = start_y_right_box + idx * stat_y_padding  # Adjust spacing between choices
-                    state.DISPLAY.blit(
-                        self.font.render(choice, True, WHITE),
-                        (start_x_right_box + x_offset, y_position + y_offset)
-                    )
-
-                arrow_x_offset = 12
-                arrow_y_positions = [12, 52, 92, 132, 172]
-                arrow_y = start_y_right_box + arrow_y_positions[self.level_up_stat_increase_index]
-                state.DISPLAY.blit(
-                    self.font.render("->", True, WHITE),
-                    (start_x_right_box + arrow_x_offset, arrow_y)
-                )
-
-                current_stat_x_offset = 30
-                stats_x_position = start_x_right_box + black_box_width - current_stat_x_offset
-
-                perception = state.player.perception
-                luck = state.player.luck
-
-                if state.player.enhanced_luck:
-                    luck -= do_not_show_ehanced_luck
-
-                if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    perception -= do_not_show_ehanced_perception
-
-                current_stats = [
-                    state.player.body,
-                    state.player.mind,
-                    state.player.spirit,
-                    perception,  # Adjusted perception
-                    luck  # Adjusted luck
-                ]
-
-                stat_spacing = 40
-                stat_y_offset = 15
-
-                # Display the stats numbers only
-                for idx, stat_value in enumerate(current_stats):
-                    y_position = start_y_right_box + idx * stat_spacing
-                    state.DISPLAY.blit(
-                        self.font.render(f"{stat_value}", True, WHITE),
-                        (stats_x_position, y_position + stat_y_offset)
-                    )
-
-        self.battle_messages[self.LEVEL_UP_MESSAGE].draw(state)
+    # def draw_level_up(self, state: 'GameState') -> None:
+    #     do_not_show_ehanced_luck = 1
+    #     do_not_show_ehanced_perception = 1
+    #
+    #     if state.player.stat_point_increase and self.game_state == "level_up_screen":
+    #         if self.battle_messages[self.LEVEL_UP_MESSAGE].message_index == self.battle_message_level_up_last_index:
+    #             black_box_height = 261 - 50  # Adjust height
+    #             black_box_width = 240 - 10  # Adjust width to match the left box
+    #             border_width = 5
+    #             start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+    #             start_y_right_box = 200  # Adjust vertical alignment
+    #
+    #             black_box = pygame.Surface((black_box_width, black_box_height))
+    #             black_box.fill(BLACK)
+    #
+    #             white_thickness = 2
+    #
+    #             white_border = pygame.Surface(
+    #                 (black_box_width + white_thickness * border_width, black_box_height + white_thickness * border_width)
+    #             )
+    #             white_border.fill(WHITE)
+    #             white_border.blit(black_box, (border_width, border_width))
+    #
+    #             black_box_x = start_x_right_box - border_width
+    #             black_box_y = start_y_right_box - border_width
+    #
+    #             state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+    #
+    #             x_offset = 60
+    #             y_offset = 15
+    #             stat_y_padding = 40
+    #             for idx, choice in enumerate(self.level_screen_stats):
+    #                 y_position = start_y_right_box + idx * stat_y_padding  # Adjust spacing between choices
+    #                 state.DISPLAY.blit(
+    #                     self.font.render(choice, True, WHITE),
+    #                     (start_x_right_box + x_offset, y_position + y_offset)
+    #                 )
+    #
+    #             arrow_x_offset = 12
+    #             arrow_y_positions = [12, 52, 92, 132, 172]
+    #             arrow_y = start_y_right_box + arrow_y_positions[self.level_up_stat_increase_index]
+    #             state.DISPLAY.blit(
+    #                 self.font.render("->", True, WHITE),
+    #                 (start_x_right_box + arrow_x_offset, arrow_y)
+    #             )
+    #
+    #             current_stat_x_offset = 30
+    #             stats_x_position = start_x_right_box + black_box_width - current_stat_x_offset
+    #
+    #             perception = state.player.perception
+    #             luck = state.player.luck
+    #
+    #             if state.player.enhanced_luck:
+    #                 luck -= do_not_show_ehanced_luck
+    #
+    #             if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
+    #                 perception -= do_not_show_ehanced_perception
+    #
+    #             current_stats = [
+    #                 state.player.body,
+    #                 state.player.mind,
+    #                 state.player.spirit,
+    #                 perception,  # Adjusted perception
+    #                 luck  # Adjusted luck
+    #             ]
+    #
+    #             stat_spacing = 40
+    #             stat_y_offset = 15
+    #
+    #             # Display the stats numbers only
+    #             for idx, stat_value in enumerate(current_stats):
+    #                 y_position = start_y_right_box + idx * stat_spacing
+    #                 state.DISPLAY.blit(
+    #                     self.font.render(f"{stat_value}", True, WHITE),
+    #                     (stats_x_position, y_position + stat_y_offset)
+    #                 )
+    #
+    #     self.battle_messages[self.LEVEL_UP_MESSAGE].draw(state)
 
     def draw_menu_selection_box(self, state: "GameState"):
         # Define local variables for dimensions and positions
