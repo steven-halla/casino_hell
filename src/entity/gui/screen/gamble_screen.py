@@ -54,7 +54,7 @@ class GambleScreen:
 
     WELCOME_MESSAGE = "welcome_message"
     LEVEL_UP_MESSAGE = "level_up_message"
-
+    PLAYER_ZERO_STAMINA_SCREEN = "player zero stamina screen"
     MAGIC = "Magic"
     LOCKED = "Locked"
     MONEY_HEADER = "Money"
@@ -64,6 +64,8 @@ class GambleScreen:
     MP_HEADER = "MP"
     HERO_HEADER = "Hero"
     LOCKED_DOWN_HEADER = "Locked Down"
+    GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE = "game over screen zero stamina message"
+    GAME_OVER_ZERO_STAMINA_SCREEN = "game over  zero staimina screen"
 
     PLAYER_STAT_BODY = "Body"
     PLAYER_STAT_MIND = "Mind"
@@ -297,6 +299,28 @@ class GambleScreen:
                         self.level_up_checker_sound = True
                         self.game_state = self.WELCOME_SCREEN
 
+
+    def game_over_screen_level_4(self, state: 'GameState', controller):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+        elif state.player.stamina_points <= no_stamina_game_over:
+            if controller.confirm_button:
+                state.player.money -= 100
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+
+    def game_over_screen_level_5(self, state: 'GameState', controller):
+        no_money_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+
+
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
 
@@ -481,6 +505,8 @@ class GambleScreen:
         black_box_y = screen_height - black_box_height - vertical_padding - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
 
 
 

@@ -10,6 +10,7 @@ from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from screen.floor1.map_screens.game_over_screen import GameOverScreen
 
 
 class CoinFlipWantonScreen(GambleScreen):
@@ -56,8 +57,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.shield_debuff: int = 0
         self.heads_force_cost: int = 50
         self.heads_force_active: bool = False
-        self.exp_gain_high: int = 100
-        self.exp_gain_low: int = 100
+        self.exp_gain_high: int = 50
+        self.exp_gain_low: int = 25
         self.result_anchor: bool = False
         self.money: int = 999
         self.wanton_magic_points: int = 3
@@ -115,6 +116,9 @@ class CoinFlipWantonScreen(GambleScreen):
             self.WANTON_CASTING_SPELL_MESSAGE: MessageBox([
                 f"Poison heads"
             ]),
+            self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE: MessageBox([
+                f"You ran out of Stamina, go rest your Hero."
+            ]),
         }
 
     # dont draw the coin if its a draw, or maybe draw a bird or animal in its place that "stole/ate
@@ -151,23 +155,31 @@ class CoinFlipWantonScreen(GambleScreen):
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind
         self.luck_bonus: int = state.player.luck
-        state.player.exp += 200
+        self.reset_coin_flip_game()
+
     def reset_coin_flip_game(self):
-        self.battle_messages[self.WELCOME_MESSAGE].reset()
-        self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
-        self.phase = 1
-        self.welcome_screen_index = 0
-        self.shield_debuff = 0
-        self.heads_force_active = False
-        self.coin_bottom = False
-        self.result_anchor = False
-        self.timer_start = None
-        self.image_to_display = ""
-        self.player_choice = ""
-        self.wanton_magic_points = 3
+            for message in self.battle_messages.values(): message.reset()
+            self.phase = 1
+            self.welcome_screen_index = 0
+            self.shield_debuff = 0
+            self.heads_force_active = False
+            self.coin_bottom = False
+            self.result_anchor = False
+            self.timer_start = None
+            self.image_to_display = ""
+            self.player_choice = ""
+            self.wanton_magic_points = 3
 
     def reset_round(self, state):
         print("CURRENT EXP OF PLAYER IS: " + str(state.player.exp))
+
+
+        if state.player.money <= 0:
+            self.game_state = GameOverScreen
+            state.player.canMove = True
+
+
+
 
 
         self.battle_messages[self.WELCOME_MESSAGE].reset()
@@ -207,6 +219,9 @@ class CoinFlipWantonScreen(GambleScreen):
 
         if man_trap_randomizer > 100 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
             self.game_state = self.WANTON_CASTING_SPELL_SCREEN
+            self.even = False
+            self.odd = False
+            self.tri = False
             self.spirit_magic_bonus_zero_chance = 0
 
 
@@ -219,11 +234,14 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.money <= self.wanton_bankrupt:
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
+            state.player.canMove = True
             #------------------------------------Check other files for below_____________________________
             Events.add_level_five_event_to_player(state.player, Events.COIN_FLIP_WANTON_DEFEATED)
 
 
         if self.game_state == self.WELCOME_SCREEN:
+            if state.player.stamina_points <= 0:
+                self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
@@ -285,7 +303,20 @@ class CoinFlipWantonScreen(GambleScreen):
             if controller.confirm_button:
                 self.update_player_draw_screen_helper(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.game_over_screen_level_4(state, controller)
+            self.game_over_screen_level_5(state, controller)
+
+        elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
+            print("jfd;sljf;lsjalflasfjlsjf;asjfl;sjfl;j;flj;salfjld;sajfl;sajflk;sjaf")
+
+            self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
+            if self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
+                state.player.money -= 100
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
+                state.player.canMove = True
+
+
+
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -327,6 +358,8 @@ class CoinFlipWantonScreen(GambleScreen):
             self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
+        elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
+            self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].draw(state)
         pygame.display.flip()
 
 
@@ -426,8 +459,11 @@ class CoinFlipWantonScreen(GambleScreen):
             random_shield = random.randint(1, 100) + shield_chance
             # Each level should have a different % higher
             if random_shield > 60:
+                print("SHIELD ROLL IS: " + str(random_shield))
                 self.game_state = self.PLAYER_DRAW_SCREEN
             else:
+                print("SHIELD ROLL IS: " + str(random_shield))
+
                 self.game_state = self.PLAYER_LOSE_SCREEN
 
         elif self.coin_landed != self.player_choice:
@@ -511,7 +547,7 @@ class CoinFlipWantonScreen(GambleScreen):
             self.game_state = self.WELCOME_SCREEN
         min_bet = 50
         if Equipment.COIN_FLIP_GLOVES.value in state.player.equipped_items:
-            max_bet = 200 + (self.spirit_bonus * 40)
+            max_bet = 200 + (self.spirit_bonus * 50)
         else:
             max_bet = 200
         if controller.up_button:
@@ -547,8 +583,9 @@ class CoinFlipWantonScreen(GambleScreen):
         state.player.exp += self.exp_gain_high
         state.player.money += self.bet
         self.money -= self.bet
-        self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
+
+        self.game_state = self.WELCOME_SCREEN
 
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
@@ -558,6 +595,8 @@ class CoinFlipWantonScreen(GambleScreen):
             total_gain = self.bet + (self.spirit_bonus * 20)
             state.player.money += total_gain
             self.money -= total_gain
+            self.reset_round(state)
+
             self.game_state = self.WELCOME_SCREEN
     def update_player_lose_message_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_low
@@ -568,19 +607,7 @@ class CoinFlipWantonScreen(GambleScreen):
 
 
 
-    def game_over_screen_level_4(self, state: 'GameState', controller):
-        no_money_game_over = 0
-        no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
-            if controller.confirm_button:
-                state.currentScreen = state.gameOverScreen
-                state.gameOverScreen.start(state)
-        elif state.player.stamina_points <= no_stamina_game_over:
-            if controller.confirm_button:
-                self.reset_coin_flip_game()
-                state.player.money -= 100
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+
 
     def draw_game_over_screen_helper(self, state: 'Gamestate'):
         no_money_game_over = 0
