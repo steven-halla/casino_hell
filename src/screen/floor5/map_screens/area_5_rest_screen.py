@@ -82,7 +82,7 @@ class Area5RestScreen(Screen):
             CoinFlipWanton(16 * 5, 16 * 5),  # fin
             BlackJackFengus(16 * 20, 16 * 5),  # fin
             CrapsWimpleton(16 * 35, 16 * 5),  # fin
-            HangryAngryHipposNippy(16 * 50, 16 * 5),  # fin
+            HangryAngryHipposNippy(16 * 35, 16 * 20),  # fin
             OpossumInACanBubba(16 * 5, 16 * 20),  # fin
             SlotsBurbadan(16 * 20, 16 * 20),  # fin
 

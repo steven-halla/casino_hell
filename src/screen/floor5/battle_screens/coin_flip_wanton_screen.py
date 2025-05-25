@@ -22,6 +22,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.timer_start:bool = None
         self.coin_bottom:bool = False
         self.blit_message_x: int = 65
+        self.level_up_message_initialized = False
         self.blit_message_y: int = 460
         self.sprite_sheet = pygame.image.load("./assets/images/coin_flipping_alpha.png").convert_alpha()
         self.game_state: str = self.WELCOME_SCREEN
@@ -46,7 +47,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.player_choice:str = ""
         self.coin_landed:str = CoinFlipConstants.HEADS.value
         self.double_coin_landed:str = CoinFlipConstants.HEADS.value
-        self.bonnie_bankrupt: int = 0
+        self.wanton_bankrupt: int = 0
         self.magic_lock = False
         self.low_stamina_drain: int = 10
         self.index_stepper: int = 1
@@ -55,8 +56,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.shield_debuff: int = 0
         self.heads_force_cost: int = 50
         self.heads_force_active: bool = False
-        self.exp_gain_high: int = 1
-        self.exp_gain_low: int = 1
+        self.exp_gain_high: int = 100
+        self.exp_gain_low: int = 100
         self.result_anchor: bool = False
         self.money: int = 999
         self.wanton_magic_points: int = 3
@@ -130,6 +131,7 @@ class CoinFlipWantonScreen(GambleScreen):
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
     WANTON_CASTING_SPELL_SCREEN: str = "WANTON_CASTING_SPELL_SCREEN"
     LEVEL_UP_MESSAGE: str = "level_up_message"
+    LEVEL_UP_SCREEN: str = "level_up_screen"
     ANIMAL_DEFENSE_MESSAGE: str = "animal defense message"
     PLAYER_WIN_MESSAGE: str = "player_win_message"
     CHOOSE_SIDE_MESSAGE: str = "choose_side_message"
@@ -149,6 +151,7 @@ class CoinFlipWantonScreen(GambleScreen):
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind
         self.luck_bonus: int = state.player.luck
+        state.player.exp += 200
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()
@@ -164,6 +167,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.wanton_magic_points = 3
 
     def reset_round(self, state):
+        print("CURRENT EXP OF PLAYER IS: " + str(state.player.exp))
+
 
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
@@ -184,6 +189,8 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.debuff_magic_equipment_break > 0:
             self.debuff_magic_equipment_break -= 1
 
+        # ------------------------------------Check other files for below_____________________________
+
         self.spirit_magic_bonus_zero_chance += 3
         player_luck_bonus = self.luck_bonus * 4
 
@@ -191,9 +198,9 @@ class CoinFlipWantonScreen(GambleScreen):
             case 3:
                 man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
             case 2:
-                man_trap_randomizer = random.randint(1, 80) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
-            case 1:
                 man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
+            case 1:
+                man_trap_randomizer = random.randint(1, 50) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
 
 
 
@@ -208,26 +215,24 @@ class CoinFlipWantonScreen(GambleScreen):
         controller = state.controller
         controller.update()
         state.player.update(state)
-        if self.money <= self.bonnie_bankrupt:
+        if self.money <= self.wanton_bankrupt:
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_WANTON_DEFEATED)
+            #------------------------------------Check other files for below_____________________________
+            Events.add_level_five_event_to_player(state.player, Events.COIN_FLIP_WANTON_DEFEATED)
 
-        # switch statement
-        # match self.game_state:
-        #     case self.WELCOME_SCREEN:
-        #         self.battle_messages[self.WELCOME_MESSAGE].update(state)
-        #         self.battle_messages[self.BET_MESSAGE].reset()
-        #         self.update_welcome_screen_logic(controller, state)
-        #
-        #     case self.WANTON_CASTING_SPELL_SCREEN:
-        #         self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
-        #         self.update_wanton_casting_spell_screen_helper(state)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+
+            self.handle_level_up(state, state.controller)
+
         elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
             match self.wanton_magic_points:
                 case 3:
@@ -294,6 +299,9 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
         elif self.game_state == self.CHOOSE_SIDE_SCREEN:

@@ -158,6 +158,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck * 10
+        state.player.exp += 200
 
     def round_reset(self):
         print("Round Reset")

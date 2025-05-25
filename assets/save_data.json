@@ -1,6 +1,6 @@
 {
-    "level": 8,
-    "exp": 2832,
+    "level": 1,
+    "exp": 0,
     "stamina_points": 390,
     "max_stamina_points": 390,
     "focus_points": 200,
@@ -25,13 +25,7 @@
         "varment hat"
     ],
     "npcitems": [
-        "level 2 token",
-        "level 3 token",
-        "level 4 token",
-        "level 5 token",
-        "level 6 token",
-        "level 7 token",
-        "level 8 token"
+
     ],
     "magicinventory": [
         "reveal",

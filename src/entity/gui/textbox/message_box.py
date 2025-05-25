@@ -25,6 +25,7 @@ class MessageBox(Entity):
 
     def update(self, state: "GameState"):
         controller = state.controller
+        # print("Moooglllerjejrje;jrljrewljr;wjarl;ewjrew")
 
         # Show characters of text one at a time, not the whole message.
         if self.characters_to_display < len(self.messages[self.message_index]):
@@ -72,4 +73,10 @@ class MessageBox(Entity):
         self.characters_to_display = 0  # Start displaying the message from the first character
         self.time = pygame.time.get_ticks()
 
+    def set_external_message(self, messages: list[str]):
+        """Safely replaces the message list and resets the box for external use."""
+        self.messages = messages
+        self.message_index = 0
+        self.characters_to_display = 0
+        self.time = pygame.time.get_ticks()
 

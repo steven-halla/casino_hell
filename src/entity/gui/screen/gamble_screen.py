@@ -31,7 +31,7 @@ class GambleScreen:
         self.enemy_bankrupt = 0
         self.player_bankrupt = 0
         self.player_stamina_depleted = 0
-        self.level_up_checker_sound:bool = True
+        self.level_up_checker_sound:bool = False
         self.music_file_level_up: pygame.mixer.Sound \
             = pygame.mixer.Sound("./assets/music/levelup.mp3")
         self.music_level_up_volume: float = 0.3  # Adjust as needed
@@ -41,6 +41,7 @@ class GambleScreen:
         self.stat_modifier = 1
         self.game_level_2_stat_max = 2
         self.battle_message_level_up_last_index = 3
+
 
 
     WELCOME_SCREEN = "welcome_screen"
@@ -127,6 +128,9 @@ class GambleScreen:
             self.welcome_screen_logic(state)
 
 
+
+
+
         # if state.musicOn == True:
         #     if self.mucic_on == True:
         #         self.stop_music()
@@ -138,18 +142,21 @@ class GambleScreen:
             self.bet = self.money
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
+        print("jf;dasjf;lajsfjslafjlsajflajf;jdasfk")
 
         if self.level_up_checker_sound == True:
             self.music_file_level_up.play()  # Play the sound effect once
             self.level_up_checker_sound = False
 
         if state.player.stat_point_increase == False:
-            self.battle_messages[self.LEVEL_UP_SCREEN].messages = [
-                f"Grats you leveled up to level {state.player.level}!",
-                f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
-                f"Max focus increased by {state.player.focus_increase_from_level} points!",
-                ""
-            ]
+            if not self.level_up_message_initialized:
+                self.battle_messages[self.LEVEL_UP_MESSAGE].set_external_message([
+                    f"Grats you leveled up to level {state.player.level}!",
+                    f"Max Stamina increased by {state.player.stamina_increase_from_level} points!",
+                    f"Max focus increased by {state.player.focus_increase_from_level} points!",
+                    ""
+                ])
+                self.level_up_message_initialized = True
             self.battle_messages[self.LEVEL_UP_MESSAGE].update(state)
             if self.battle_messages[self.LEVEL_UP_MESSAGE].is_finished():
                 state.player.leveling_up = False
