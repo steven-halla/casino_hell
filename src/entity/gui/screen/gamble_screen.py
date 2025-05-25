@@ -146,9 +146,9 @@ class GambleScreen:
 
     def handle_level_up(self, state: 'GameState', controller) -> None:
         if not self.level_up_message_initialized:
-            if self.level_up_checker_sound:
-                self.music_file_level_up.play()
-                self.level_up_checker_sound = False
+            # if self.level_up_checker_sound:
+            #     self.music_file_level_up.play()
+            #     self.level_up_checker_sound = False
 
             self.battle_messages[self.LEVEL_UP_MESSAGE].messages = [
                 f"Grats you leveled up to level {state.player.level}!",

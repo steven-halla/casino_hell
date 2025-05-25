@@ -171,7 +171,6 @@ class CoinFlipWantonScreen(GambleScreen):
             self.wanton_magic_points = 3
 
     def reset_round(self, state):
-        print("CURRENT EXP OF PLAYER IS: " + str(state.player.exp))
 
 
         if state.player.money <= 0:
@@ -215,7 +214,8 @@ class CoinFlipWantonScreen(GambleScreen):
                 man_trap_randomizer = random.randint(1, 50) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
 
 
-
+        print("The magic spell chance is: " + str(man_trap_randomizer))
+        print("The magic spell bonus penalty: " + str(self.spirit_magic_bonus_zero_chance))
 
         if man_trap_randomizer > 100 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
             self.game_state = self.WANTON_CASTING_SPELL_SCREEN
