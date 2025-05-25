@@ -231,7 +231,7 @@ class BlackJackFengusScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
-        # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
+        print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
 
 
         if self.money <= self.fengus_bankrupt:
@@ -325,6 +325,7 @@ class BlackJackFengusScreen(GambleScreen):
             if self.battle_messages[
                 self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
+                self.reset_black_jack_game()
                 state.currentScreen = state.area5RestScreen
                 state.area5RestScreen.start(state)
                 state.player.canMove = True
@@ -425,7 +426,7 @@ class BlackJackFengusScreen(GambleScreen):
     def update_player_phase_win(self, state, controller) -> None:
 
         if controller.confirm_button:
-            self.reset_black_jack_game()
+            self.round_reset()
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_phase_lose(self, state, controller) -> None:
@@ -648,8 +649,10 @@ class BlackJackFengusScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                self.reset_black_jack_game()
+
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
                 state.player.canMove = True
 
     def initialize_music(self):
