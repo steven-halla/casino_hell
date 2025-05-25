@@ -449,14 +449,14 @@ class CoinFlipWantonScreen(GambleScreen):
         if self.heads_force_active == True:
             self.result = CoinFlipConstants.HEADS.value
             #
-            if self.even == False and self.odd == False and self.tri == False:
-                match self.wanton_magic_points:
-                    case 3:
-                        self.even = True
-                    case 2:
-                        self.odd = True
-                    case 1:
-                        self.tri = True
+        if self.even == False and self.odd == False and self.tri == False:
+            match self.wanton_magic_points:
+                case 3:
+                    self.even = True
+                case 2:
+                    self.odd = True
+                case 1:
+                    self.tri = True
 
 
         if self.even == True and self.heads_force_active == False:
