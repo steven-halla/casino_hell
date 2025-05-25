@@ -157,6 +157,16 @@ class CoinFlipWantonScreen(GambleScreen):
         self.luck_bonus: int = state.player.luck
         self.reset_coin_flip_game()
 
+
+        if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.HEADS_FORCE.value)
+
+        if Magic.SHIELD.value in state.player.magicinventory and Magic.SHIELD.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.SHIELD.value)
+
+        if self.BACK not in self.magic_menu_selector:
+            self.magic_menu_selector.append(self.BACK)
+
     def reset_coin_flip_game(self):
             for message in self.battle_messages.values(): message.reset()
             self.phase = 1
@@ -172,14 +182,8 @@ class CoinFlipWantonScreen(GambleScreen):
 
     def reset_round(self, state):
 
-
         if state.player.money <= 0:
             self.game_state = GameOverScreen
-            state.player.canMove = True
-
-
-
-
 
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
@@ -441,8 +445,9 @@ class CoinFlipWantonScreen(GambleScreen):
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
             self.reset_coin_flip_game()
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area5RestScreen
+            state.area5RestScreen.start(state)
+            state.player.canMove = True
 
     def update_flip_coin_logic_helper(self,controller):
         if self.heads_force_active == True:
@@ -652,14 +657,14 @@ class CoinFlipWantonScreen(GambleScreen):
         elif Magic.HEADS_FORCE.value in state.player.magicinventory or Magic.SHIELD.value in state.player.magicinventory:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 
-        if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
-            self.magic_menu_selector.append(Magic.HEADS_FORCE.value)
-
-        if Magic.SHIELD.value in state.player.magicinventory and Magic.SHIELD.value not in self.magic_menu_selector:
-            self.magic_menu_selector.append(Magic.SHIELD.value)
-
-        if self.BACK not in self.magic_menu_selector:
-            self.magic_menu_selector.append(self.BACK)
+        # if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
+        #     self.magic_menu_selector.append(Magic.HEADS_FORCE.value)
+        #
+        # if Magic.SHIELD.value in state.player.magicinventory and Magic.SHIELD.value not in self.magic_menu_selector:
+        #     self.magic_menu_selector.append(Magic.SHIELD.value)
+        #
+        # if self.BACK not in self.magic_menu_selector:
+        #     self.magic_menu_selector.append(self.BACK)
 
         if self.magic_lock == True:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
