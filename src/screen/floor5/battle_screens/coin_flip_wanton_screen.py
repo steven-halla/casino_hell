@@ -56,8 +56,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.shield_debuff: int = 0
         self.heads_force_cost: int = 50
         self.heads_force_active: bool = False
-        self.exp_gain_high: int = 20
-        self.exp_gain_low: int = 10
+        self.exp_gain_high: int = 100
+        self.exp_gain_low: int = 100
         self.result_anchor: bool = False
         self.money: int = 999
         self.wanton_magic_points: int = 3
