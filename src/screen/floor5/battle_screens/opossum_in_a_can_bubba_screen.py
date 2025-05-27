@@ -404,8 +404,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.draw_triple_win_message(state)
         self.draw_lucky_star_message(state)
 
-        print("Your peak points are line 405: " + str(self.peek_points))
-        print("Your peak buff state: " + str(self.buff_peek))
+        # print("Your peak points are line 405: " + str(self.peek_points))
+        # print("Your peak buff state: " + str(self.buff_peek))
 
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -838,8 +838,7 @@ class OpossumInACanBubbaScreen(GambleScreen):
                             elif current_can_content == 'lose' and not shaken_lose:
                                 shaken_lose = True
                                 should_shake = True
-                            elif current_can_content == 'win':
-                                should_shake = True
+
 
                         elif state.player.mind == 5:
                             if current_can_content == 'X3_star':
