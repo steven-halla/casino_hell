@@ -50,7 +50,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.redraw_start_counter: int = 10
         self.reveal_debuff_counter: int = 0
         self.reveal_end_counter: int = 0
-        self.reveal_start_counter: int = 10
+        self.reveal_start_counter: int = 5
         self.magic_menu_index: int = 0
         self.magic_menu_reveal_index: int = 0
         self.redraw_magic_menu_index: int = 1
@@ -536,7 +536,7 @@ class BlackJackFengusScreen(GambleScreen):
             elif (Magic.REVEAL.value in self.magic_screen_choices
                   and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value)):
                 if state.player.focus_points >= self.reveal_cast_cost:
-                    self.reveal_buff_counter = self.reveal_start_counter
+                    self.reveal_buff_counter = self.reveal_start_counter + state.player.mind
                     self.spell_sound.play()
                     state.player.focus_points -= self.reveal_cast_cost
                     self.magic_lock = True

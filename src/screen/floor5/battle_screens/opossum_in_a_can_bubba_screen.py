@@ -216,12 +216,14 @@ class OpossumInACanBubbaScreen(GambleScreen):
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
         self.pick_tally_screen_index = 0
         self.buff_peek = False
+        [box.reset() for box in self.battle_messages.values()]
         self.bubba_magic_points: int = 3
 
 
     def opossum_round_reset(self, state):
         self.shake = False
         self.debuff_keen_perception: bool = False
+        [box.reset() for box in self.battle_messages.values()]
 
 
 

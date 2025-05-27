@@ -71,6 +71,8 @@ class CoinFlipWantonScreen(GambleScreen):
         self.luck_bonus: int = 0
         self.spirit_magic_bonus_zero_chance: int = 0
         self.debuff_magic_equipment_break: int = 0
+        self.heads_force_randomizer: int = 0
+        self.heads_force_randomizer_success_rate: int = 60
 
 
 
@@ -153,7 +155,7 @@ class CoinFlipWantonScreen(GambleScreen):
 
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
-        self.magic_bonus: int = state.player.mind
+        self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck
         self.reset_coin_flip_game()
 
@@ -414,15 +416,8 @@ class CoinFlipWantonScreen(GambleScreen):
         if controller.confirm_button:
             if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value and state.player.focus_points >= self.shield_cost:
                 state.player.focus_points -= self.shield_cost
-                duration_bonus = self.magic_bonus // 2
 
-                if duration_bonus < 2:
-                    duration_bonus = 0
-                elif duration_bonus < 4:
-                    duration_bonus = 1
-                elif duration_bonus >= 4:
-                    duration_bonus = 2
-                self.shield_debuff = 3 + duration_bonus
+                self.shield_debuff = 3
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
@@ -451,19 +446,33 @@ class CoinFlipWantonScreen(GambleScreen):
 
     def update_flip_coin_logic_helper(self,controller):
         if self.heads_force_active == True:
-            self.coin_landed = CoinFlipConstants.HEADS.value
+            heads_force_modifer = self.magic_bonus
+            self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
+
+            print("Heads force is: " + str(self.heads_force_randomizer))
+
+            if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+            else:
+                self.heads_force_active = False
+                self.coin_landed = CoinFlipConstants.TAILS.value
 
         if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
-            self.game_state = self.PLAYER_WIN_SCREEN
+            if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
+                self.game_state = self.PLAYER_WIN_SCREEN
+            else:
+                self.heads_force_active = False
+
+                self.game_state = self.PLAYER_LOSE_SCREEN
 
         if self.coin_landed == self.player_choice:
             self.game_state = self.PLAYER_WIN_SCREEN
         elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
             # in future we will need a message to display roll chances for player spells
-            shield_chance = self.magic_bonus * 10
+            shield_chance = self.magic_bonus
             random_shield = random.randint(1, 100) + shield_chance
             # Each level should have a different % higher
-            if random_shield > 60:
+            if random_shield > 75:
                 print("SHIELD ROLL IS: " + str(random_shield))
                 self.game_state = self.PLAYER_DRAW_SCREEN
             else:
@@ -807,30 +816,6 @@ class CoinFlipWantonScreen(GambleScreen):
             (start_x_right_box + arrow_x_offset, arrow_y_position)
         )
 
-    def draw_double_flip_results_screen_logic(self, state):
-        # Determine images based on coin results
-        image1 = self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
-        image2 = self.heads_image if self.double_coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
-
-        if self.heads_force_active:
-            image1 = self.heads_image  # force override for coin 1
-
-        # Center Y position and coin 1 X center
-        screen_center_x = state.DISPLAY.get_width() // 2
-        screen_center_y = state.DISPLAY.get_height() // 2
-        coin_spacing = 200
-
-        # Coin 1 placement
-        image1_rect = image1.get_rect()
-        image1_rect.center = (screen_center_x - coin_spacing // 2, screen_center_y)
-
-        # Coin 2 placement (200px to the right of Coin 1)
-        image2_rect = image2.get_rect()
-        image2_rect.center = (screen_center_x + coin_spacing // 2, screen_center_y)
-
-        # Draw both coins
-        state.DISPLAY.blit(image1, image1_rect)
-        state.DISPLAY.blit(image2, image2_rect)
 
     def draw_results_screen_logic(self, state):
         self.image_to_display = (
@@ -839,8 +824,11 @@ class CoinFlipWantonScreen(GambleScreen):
             else self.tails_image
         )
 
-        if self.heads_force_active == True:
+        if self.heads_force_active == True and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
             self.image_to_display = self.heads_image
+        else:
+            self.image_to_display = self.tails_image
+
 
         image_rect = self.image_to_display.get_rect()
         image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
