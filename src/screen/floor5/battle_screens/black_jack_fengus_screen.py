@@ -158,11 +158,13 @@ class BlackJackFengusScreen(GambleScreen):
     FENGUS_CASTING_SPELL_SCREEN: str = "FENGUS_CASTING_SPELL_screen"
 
     def start(self, state: 'GameState'):
+        self.reset_black_jack_game()
         self.deck.shuffle()
         self.initialize_music()
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck * 5
+        self.welcome_screen_index = 0
 
         if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
             self.magic_screen_choices.append(Magic.BLACK_JACK_REDRAW.value)
@@ -325,7 +327,6 @@ class BlackJackFengusScreen(GambleScreen):
             if self.battle_messages[
                 self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                self.reset_black_jack_game()
                 state.currentScreen = state.area5RestScreen
                 state.area5RestScreen.start(state)
                 state.player.canMove = True
@@ -652,7 +653,6 @@ class BlackJackFengusScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
-                self.reset_black_jack_game()
 
                 state.currentScreen = state.area5RestScreen
                 state.area5RestScreen.start(state)

@@ -154,10 +154,13 @@ class CoinFlipWantonScreen(GambleScreen):
     WANTON_CASTING_SPELL_MESSAGE: str= "WANTON_CASTING_SPELL_MESSAGE"
 
     def start(self, state: 'GameState'):
+        self.reset_coin_flip_game()
+        self.welcome_screen_index = 0
+
+
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck
-        self.reset_coin_flip_game()
 
 
         if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
@@ -168,6 +171,8 @@ class CoinFlipWantonScreen(GambleScreen):
 
         if self.BACK not in self.magic_menu_selector:
             self.magic_menu_selector.append(self.BACK)
+
+
 
     def reset_coin_flip_game(self):
             for message in self.battle_messages.values(): message.reset()
@@ -439,7 +444,6 @@ class CoinFlipWantonScreen(GambleScreen):
         elif self.welcome_screen_index == self.bet_index and controller.confirm_button :
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
-            self.reset_coin_flip_game()
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
             state.player.canMove = True

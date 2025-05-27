@@ -188,13 +188,25 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
 
     def start(self, state: 'GameState'):
+        self.opossum_game_reset(state)
+        self.welcome_screen_index = 0
+
+
+
         self.initializeGarbageCans(state)
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck * 5
-        self.opossum_game_reset(state)
         self.buff_peek_amount: int = 0
 
+        if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
+            self.magic_menu_selector.insert(1, Magic.PEEK.value)
+
+        if Magic.SHAKE.value in state.player.magicinventory and Magic.SHAKE.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.SHAKE.value)
+
+        if self.BACK not in self.magic_menu_selector:
+            self.magic_menu_selector.append(self.BACK)
 
         # staying at end appends this
 
@@ -944,12 +956,12 @@ class OpossumInACanBubbaScreen(GambleScreen):
                 self.money += self.bet
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
-                if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
-                    self.magic_menu_selector.insert(1, Magic.PEEK.value)
+
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.quit_index:
-                state.currentScreen = state.area3RestScreen
-                state.area3RestScreen.start(state)
+                state.player.canMove = True
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
@@ -985,11 +997,9 @@ class OpossumInACanBubbaScreen(GambleScreen):
         elif Magic.SHAKE.value in state.player.magicinventory:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
 
-        if Magic.SHAKE.value in state.player.magicinventory and Magic.SHAKE.value not in self.magic_menu_selector:
-            self.magic_menu_selector.append(Magic.SHAKE.value)
 
-        if self.BACK not in self.magic_menu_selector:
-            self.magic_menu_selector.append(self.BACK)
+
+
 
         if self.magic_lock == True:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
