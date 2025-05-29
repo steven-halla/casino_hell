@@ -171,19 +171,27 @@ class Area1IntroScreen(Screen):
         if state.player.hide_player == False:
             state.player.draw(state)
 
-        if state.controller.isPPressed or state.controller.isXPressedSwitch:
-            state.player.canMove = False
-            state.player.draw_player_stats(state)
+        # Enter the menu ONCE when pressing start (P)
+        # Only enter the menu if currently not in one
+        # Only enter menu if not already in any screen
+        if state.player.current_screen == "" and state.controller.start_button:
             state.player.current_screen = "main_menu_screen"
+            state.player.canMove = False
 
-            if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
-                if state.controller.isPPressed or state.controller.isXPressedSwitch:
-                    state.player.canMove = True
-                    state.player.menu_paused = False
+        # If in any menu-related screen, just draw the player menu logic
+        if state.player.current_screen.endswith("_screen"):
+            state.player.draw_player_stats(state)
 
-                    state.controller.isPPressed = False
-                    state.controller.isXPressedSwitch = False
-                    return
+
+
+            # if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
+            #     if state.controller.isPPressed or state.controller.isXPressedSwitch:
+            #         state.player.canMove = True
+            #         state.player.menu_paused = False
+            #
+            #         state.controller.isPPressed = False
+            #         state.controller.isXPressedSwitch = False
+            #         return
 
         # Update the display
         pygame.display.update()

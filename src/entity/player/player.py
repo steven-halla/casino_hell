@@ -105,7 +105,7 @@ class Player(Entity):
         self.menu_paused = False
         self.player_status = "Normal"
 
-        self.current_screen = "main_menu_screen"
+        self.current_screen = ""
         self.item_index = 0
 
         self.items_equipped = []
@@ -672,6 +672,10 @@ class Player(Entity):
 
 
         if self.current_screen == "main_menu_screen":
+
+            if state.controller.action_and_cancel_button:
+                self.current_screen = ""
+                state.player.canMove = True
 
             # Get the dimensions of the display
             screen_width = state.DISPLAY.get_width()
