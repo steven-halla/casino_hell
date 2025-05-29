@@ -1,0 +1,59 @@
+
+5 screens:
+1 Coin flip starter
+1 coin flip,
+1 black jack,
+1 opossum in a can
+1 boss screen
+
+Gmae Flow:
+
+start screen :
+have 4 NPC
+2 to give advice
+1 to give quest
+
+1 for coin flip starter
+
+
+REst screen:
+Inn keeper
+3 NPC
+
+Bar:
+this is closed unitl you get sir leopold
+
+Shop:
+This is closed until you get 100G GOLD
+
+Chili screen:
+4 NPCs
+
+Gamble Screen:
+1 NPC
+3 game NPC
+
+Boss Screen:
+1 NPC -horse
+1 Boss NPC
+
+Magic spells:
+Mind: Coin flip spell
+Quest: Get 1000 points in opossum in a can. -Shake spell
+Store - buy reveal spell
+
+Quest:
+1-defeat first coin flip  guy
+2-get 1000 points in opposum in a can for shaek spell
+3-Get a black jack
+
+The following are optional:
+Hedge Maze -Enemies are static but can face differetn directions
+Opossum virus - Story element of hero getting debeffued
+
+
+NPC types;
+Chat
+Battle
+Quest
+Shop

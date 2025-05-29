@@ -154,8 +154,8 @@ class StartLoadScreen(Screen):
             if selected_option == "No":
                 # Actions to take if "Yes" was selected and the timer has elapsed
                 state.start_new_game_entry_point = True
-                state.currentScreen = state.startScreen
-                state.startScreen.start(state)
+                state.currentScreen = state.area1IntroScreen
+                state.area1IntroScreen.start(state)
                 print("Transitioning to start screen after delay")
             elif selected_option == "Yes":
                 # Actions to take if "No" was selected and the timer has elapsed
