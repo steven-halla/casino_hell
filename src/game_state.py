@@ -134,9 +134,6 @@ class GameState:
         self.sir_leopold_companion = False
 
 
-        #---------------------------Below is area 1
-        self.area1IntroScreen = Area1IntroScreen()
-
 
         #----------------------------There is old code below may need to delete some
 
@@ -159,7 +156,6 @@ class GameState:
         self.winGameScreen = WinScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
-        self.coinFlipTedScreen = CoinFlipTedScreen()
         self.coinFlipFredScreen = CoinFlipFredScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
 
@@ -240,6 +236,12 @@ class GameState:
         self.area_2_rest_area_to_rib_demon_maze_point2 = False
         self.area_2_rest_area_to_rib_demon_maze_point3 = False
         self.area_2_rest_area_to_boss_point = False
+
+
+#---------------------------Below is area 1
+        self.area1IntroScreen = Area1IntroScreen()
+        self.coinFlipTedScreen = CoinFlipTedScreen()
+
 
 
 #-----------------area 3 is beloew-----------------------#
