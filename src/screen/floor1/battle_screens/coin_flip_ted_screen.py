@@ -81,7 +81,7 @@ class CoinFlipTedScreen(GambleScreen):
                 "TED: It's been a while since I last had a decent challenge."
             ]),
             self.BET_MESSAGE: MessageBox([
-                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to go back."
+                "Min bet of 25, max of 100. Press up and down keys to increase/decrease bet. Press B to go back."
             ]),
             self.MAGIC_MENU_SHIELD_DESCRIPTION: MessageBox([
                 "The animals of hell are on your side. Defends against bad flips."

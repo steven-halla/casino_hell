@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
+from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area5.area_5_rest_screen.black_jack_fengus import BlackJackFengus
@@ -94,6 +95,7 @@ class Area1IntroScreen(Screen):
             AnnaQuest(16 * 5, 16 * 5),  # fin
             MikeTalk(16 * 5, 16 * 20),
             PatrickTalk(16 * 5, 16 * 35),
+            CoinFlipTed(16 * 25, 16 * 35),
 
         ]
 

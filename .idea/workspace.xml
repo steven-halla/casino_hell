@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated coin flip">
-      <change beforePath="$PROJECT_DIR$/src/game_constants/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/npc/area1/area_1_start_screen/coin_flip_ted.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/entity/npc/area1/area_1_start_screen/coin_flip_ted.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/area_1_intro_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/area_1_intro_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -422,7 +424,7 @@
       <workItem from="1748123120193" duration="13910000" />
       <workItem from="1748532089101" duration="224000" />
       <workItem from="1748532345526" duration="59000" />
-      <workItem from="1748532457839" duration="7478000" />
+      <workItem from="1748532457839" duration="8436000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -767,7 +769,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1498" />
+    <option name="localTasksCounter" value="1499" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -878,7 +880,7 @@
     <SUITE FILE_PATH="coverage/casino_hell$game_state.coverage" NAME="game_state Coverage Results" MODIFIED="1708242608772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1745976951215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/newGameProject$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1670802715482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1748544577112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1748546852191" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$poker_bracelet.coverage" NAME="poker_bracelet Coverage Results" MODIFIED="1747171467337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />

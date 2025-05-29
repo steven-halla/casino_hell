@@ -106,7 +106,11 @@ class CoinFlipTed(Npc):
                 state.currentScreen = state.coinFlipTedScreen
                 state.coinFlipTedScreen.start(state)
 
-
+            elif selected_option == "No":
+                self.state = "waiting"
+                state.player.canMove = True
+                self.menu_index = 0
+                self.arrow_index = 0
 
             # Reset the flag when the "T" key is released
             if not state.controller.confirm_button:
