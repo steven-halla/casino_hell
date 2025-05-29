@@ -39,6 +39,7 @@ class Events(Enum):
     #
     #below is for level 1
     COIN_FLIP_TED_DEFEATED = "COIN_FLIP_TED_DEFEATED"
+    LEVEL_1_INN_KEY = "LEVEL_1_INN_KEY"
 
     # below is for level 3
     CRAPS_JUNPON_DEFEATED = "junpon defeated"

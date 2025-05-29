@@ -39,12 +39,12 @@ class Player(Entity):
         self.max_stamina_points = 160 + self.stamina_increase
         self.focus_points = 100
         self.max_focus_points = 10
-        self.items = ["sir leopold's paw"]
+        self.items = []
 
         self.equipped_items = []
 
         self.npc_items = []
-        self.magicinventory = ["shield", "shake","reveal",  ]
+        self.magicinventory = [ ]
         self.companions = []
         self.canMove = True
         self.level3janetreward = False
@@ -1191,21 +1191,28 @@ class Player(Entity):
                     # print(f"Selected slot {self.items_equipped_index} is empty.")
 
         elif self.current_screen == "quest_items_screen":
+
             if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
-                self.quest_items_index = (self.quest_items_index - 1) % len(self.quest_items)
+                # self.quest_items_index = (self.quest_items_index - 1) % len(self.quest_items)
+                if self.quest_items:
+                    self.quest_items_index = (self.quest_items_index + 1) % len(self.quest_items)
+
                 state.controller.isUpPressed = False
                 state.controller.isUpPressedSwitch = False
-                print(self.quest_items[self.quest_items_index])  # Print the item at the current index
+                # print(self.quest_items[self.quest_items_index])  # Print the item at the current index
 
             elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
-                self.quest_items_index = (self.quest_items_index + 1) % len(self.quest_items)
+                # self.quest_items_index = (self.quest_items_index + 1) % len(self.quest_items)
+                # self.magic_inventory_index = (self.magic_inventory_index - 1) % len(self.magicinventory)
+                if self.quest_items:
+                    self.quest_items_index = (self.quest_items_index + 1) % len(self.quest_items)
                 state.controller.isDownPressed = False
                 state.controller.isDownPressedSwitch = False
-                print(self.quest_items[self.quest_items_index])  # Print the item at the current index
+                # print(self.quest_items[self.quest_items_index])  # Print the item at the current index
 
             self.quest_item_screen(state)
             self.show_quest_items_description(state)
@@ -1221,18 +1228,22 @@ class Player(Entity):
             if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
-                self.magic_inventory_index = (self.magic_inventory_index - 1) % len(self.magicinventory)
+                # self.magic_inventory_index = (self.magic_inventory_index - 1) % len(self.magicinventory)
+                if self.magicinventory:
+                    self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
                 state.controller.isUpPressed = False
                 state.controller.isUpPressedSwitch = False
-                print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
+                # print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
 
             elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
                 self.menu_movement_sound.play()  # Play the sound effect once
 
-                self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
+                # self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
+                if self.magicinventory:
+                    self.magic_inventory_index = (self.magic_inventory_index + 1) % len(self.magicinventory)
                 state.controller.isDownPressed = False
                 state.controller.isDownPressedSwitch = False
-                print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
+                # print(self.magicinventory[self.magic_inventory_index])  # Print the item at the current index
 
             # First, render the magic inventory screen
             self.magic_inventory_screen(state)
@@ -1859,6 +1870,8 @@ class Player(Entity):
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def show_magic_description(self, state):
+        if not self.magicinventory or self.magicinventory >= len(self.magicinventory):
+            return
         # Define descriptions for each item
         descriptions = {
             "reveal": "Black Jack: Reveals score of enemy hand.",
@@ -1892,6 +1905,11 @@ class Player(Entity):
         state.DISPLAY.blit(description_surface, (text_box_x + text_x, text_box_y + text_y))
 
     def show_quest_items_description(self, state):
+
+        if not self.quest_items or self.quest_items_index >= len(self.quest_items):
+            return  # Avoid accessing out of range
+
+        current_item = self.quest_items[self.quest_items_index]
         # Define descriptions for each item
         descriptions = {
             "contract": "Your Contract is Unique, you read some of it.",
@@ -1908,6 +1926,7 @@ class Player(Entity):
 
 
         }
+
 
         # Get the item name based on the current index
         current_item = self.quest_items[self.quest_items_index]

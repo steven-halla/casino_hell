@@ -22,10 +22,10 @@ class AnnaQuest(Npc):
         self.selected_item_index = 0
         self.anna_quest_messages = {
             "welcome_message": NpcTextBox(
-                ["Anna: Hi Hero, I see that you're new here."],
+                ["Anna: Hi Hero, I see that you're new here. I have a quest for you: defeat coin flip ted and I'll give you the key as well as a new magic spell."],
                 (50, 450, 700, 130), 36, 500),
             "quest_complete_message": NpcTextBox(
-                ["Anna: Thank you for defeating that cheating rotten bastard. You have given us all hope."],
+                ["Anna: Thank you for defeating that cheating rotten bastard. You have given us all hope.Here is your badge and magic spell. Heads Force"],
                 (50, 450, 700, 130), 36, 500),
 
 
@@ -76,6 +76,11 @@ class AnnaQuest(Npc):
             else self.anna_quest_messages["welcome_message"]
         )
         current_message.update(state)
+
+        if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state:
+            if Magic.SHIELD.value not in state.player.magicinventory:
+                state.player.magicinventory.append(Magic.SHIELD.value)
+                state.player.level_one_npc_state.append(Events.LEVEL_1_INN_KEY.value)
 
         # Lock the player in place while talking
         state.player.canMove = False

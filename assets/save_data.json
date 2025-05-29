@@ -29,19 +29,7 @@
 
     ],
     "magicinventory": [
-        "reveal",
-        "Shield",
-        "shake",
-        "Triple D",
-        "HACK",
-        "Force",
-        "redraw",
-        "peek",
-        "bad luck",
-        "flush deck",
-        "Dice Force",
-        "Poker Card Swap",
-        "pig meter"
+
     ],
     "body": 1,
     "mind": 3,
@@ -53,8 +41,8 @@
     "rabies": false,
     "immunity": true,
     "quest_items": [
-        "contract",
-        "SLOTS_VEST_FOUND"
+        "contract"
+
     ],
     "level3reward": false,
     "food": 1,
