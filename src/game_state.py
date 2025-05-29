@@ -177,6 +177,7 @@ class GameState:
 # below are the screen for player menu
         self.equipmentScreen = EquipmentScreen()
 
+
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
         self.area2RestScreen = Area2RestScreen()

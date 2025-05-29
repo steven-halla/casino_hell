@@ -92,6 +92,9 @@ class Player(Entity):
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
 
+
+        self.level_one_npc_state = []
+
         self.level_two_npc_state = []
         self.level_three_npc_state = []
         self.level_four_npc_state = []
@@ -181,6 +184,7 @@ class Player(Entity):
             "food": self.food,
             "days": self.days,
             "leveltwonpcstate": self.level_two_npc_state,
+            "levelonenpcstate": self.level_one_npc_state,
             "levelthreenpcstate": self.level_three_npc_state,
             "levelfournpcstate": self.level_four_npc_state,
             "levelfivenpcstate": self.level_five_npc_state,
@@ -1978,6 +1982,7 @@ class Player(Entity):
             # Update player's stats with the loaded data
             state.player.level_two_npc_state = player_data['leveltwonpcstate']
             state.player.level_three_npc_state = player_data['levelthreenpcstate']
+            state.player.level_one_npc_state = player_data['levelonenpcstate']
             state.player.level_four_npc_state = player_data['levelfournpcstate']
             state.player.level_five_npc_state = player_data['levelfivenpcstate']
             state.player.slots_vest = player_data['slots_vest']

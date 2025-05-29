@@ -389,3 +389,12 @@ heat
 
 : New idea;
 WIth a high perception instead of uncovering t chest how about we lower shop prices
+ The below code has menus working
+
+      if state.player.current_screen == "" and state.controller.start_button:
+            state.player.current_screen = "main_menu_screen"
+            state.player.canMove = False
+
+        # If in any menu-related screen, just draw the player menu logic
+        if state.player.current_screen.endswith("_screen"):
+            state.player.draw_player_stats(state)

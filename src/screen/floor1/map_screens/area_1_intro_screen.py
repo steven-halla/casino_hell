@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
+from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area5.area_5_rest_screen.black_jack_fengus import BlackJackFengus
 from entity.npc.area5.area_5_rest_screen.coin_flip_wanton import CoinFlipWanton
 from entity.npc.area5.area_5_rest_screen.craps_wimpleton import CrapsWimpleton
@@ -90,6 +91,7 @@ class Area1IntroScreen(Screen):
         state.npcs = [
 
             AnnaQuest(16 * 5, 16 * 5),  # fin
+            MikeTalk(16 * 5, 16 * 20),
 
         ]
 
