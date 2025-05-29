@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new NPCS">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" />
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated coin flip">
+      <change beforePath="$PROJECT_DIR$/src/game_constants/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/coin_flip_ted_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -423,7 +422,7 @@
       <workItem from="1748123120193" duration="13910000" />
       <workItem from="1748532089101" duration="224000" />
       <workItem from="1748532345526" duration="59000" />
-      <workItem from="1748532457839" duration="7010000" />
+      <workItem from="1748532457839" duration="7478000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -768,7 +767,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1497" />
+    <option name="localTasksCounter" value="1498" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -797,7 +796,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="pixel jitters are gone" />
     <MESSAGE value="new 2nd hippo position" />
     <MESSAGE value="new item added so non picks slow down" />
     <MESSAGE value="bubba screen initted" />
@@ -822,7 +820,8 @@
     <MESSAGE value="fixed it to where now MENU screen can be accssed right and proper AREA 1 INTRO SCREEN HAS THIS LOGIC and PLAYER DRAW PLAYER STATS FUN" />
     <MESSAGE value="have to reapply lost logic such as save state 1, new npcs new area" />
     <MESSAGE value="new NPCS" />
-    <option name="LAST_COMMIT_MESSAGE" value="new NPCS" />
+    <MESSAGE value="updated coin flip" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated coin flip" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
