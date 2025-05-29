@@ -1030,15 +1030,27 @@ class Player(Entity):
 
             # the below doesnt' handle 4 and higher perceptiont his will be an issue going forward
             # Adjust equipped_items length based on perception
-            if self.perception >= 5 and len(self.equipped_items) == 4:
-                self.equipped_items.append(None)  # Add a fifth slot when perception is 5 or higher
-            elif self.perception >= 3 and len(self.equipped_items) == 3:
-                self.equipped_items.append(None)  # Add a fourth slot when perception is 3 or higher
-            elif self.perception < 3 and len(self.equipped_items) > 3:
-                self.equipped_items = self.equipped_items[:3]  # Reduce to 3 slots if perception is below 3
-            elif self.perception < 5 and len(self.equipped_items) > 4:
-                self.equipped_items = self.equipped_items[:4]  # Reduce to 4 slots if perception is below 5
+            # if self.perception >= 5 and len(self.equipped_items) == 4:
+            #     self.equipped_items.append(None)  # Add a fifth slot when perception is 5 or higher
+            # elif self.perception >= 3 and len(self.equipped_items) == 3:
+            #     self.equipped_items.append(None)  # Add a fourth slot when perception is 3 or higher
+            # elif self.perception < 3 and len(self.equipped_items) > 3:
+            #     self.equipped_items = self.equipped_items[:3]  # Reduce to 3 slots if perception is below 3
+            # elif self.perception < 5 and len(self.equipped_items) > 4:
+            #     self.equipped_items = self.equipped_items[:4]  # Reduce to 4 slots if perception is below 5
             # Limit equipped items to 3 slots if perception is less than 3
+            if self.perception < 3:
+                self.equipped_items = self.equipped_items[:2]
+                while len(self.equipped_items) < 2:
+                    self.equipped_items.append(None)
+            elif self.perception in [3, 4]:
+                self.equipped_items = self.equipped_items[:3]
+                while len(self.equipped_items) < 3:
+                    self.equipped_items.append(None)
+            elif self.perception >= 5:
+                self.equipped_items = self.equipped_items[:4]
+                while len(self.equipped_items) < 4:
+                    self.equipped_items.append(None)
 
             # print(f"Adjusted length of equipped_items: {len(self.equipped_items)}")
 
@@ -1950,6 +1962,8 @@ class Player(Entity):
         # Blit the description text onto the existing text box
         state.DISPLAY.blit(description_surface, (text_box_x + text_x, text_box_y + text_y))
     def show_item_description(self, state):
+
+
         # Define descriptions for each item
         descriptions = {
             "sir leopold's paw": "Black Jack: Sir Leopold can steal aces on initial draw.",
@@ -1963,6 +1977,11 @@ class Player(Entity):
         }
 
         # Get the item name based on the current index
+        # current_item = self.items[self.item_index]
+
+        if not self.items or self.item_index >= len(self.items):
+            return  # Nothing to display
+
         current_item = self.items[self.item_index]
 
         # Get the description for the current item
