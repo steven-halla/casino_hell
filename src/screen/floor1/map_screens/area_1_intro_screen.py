@@ -174,6 +174,7 @@ class Area1IntroScreen(Screen):
         if state.controller.isPPressed or state.controller.isXPressedSwitch:
             state.player.canMove = False
             state.player.draw_player_stats(state)
+            state.player.current_screen = "main_menu_screen"
 
             if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
                 if state.controller.isPPressed or state.controller.isXPressedSwitch:
