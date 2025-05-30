@@ -24,7 +24,7 @@ from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumIn
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
-class Area1IntroScreen(Screen):
+class Area1RestScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -64,15 +64,11 @@ class Area1IntroScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
-        if state.start_new_game_entry_point == True:
+        if state.start_area_to_rest_area_entry_point == True:
             player_start_x = 16 * 33
             player_start_y = 16 * 26
             state.player.setPosition(player_start_x, player_start_y)
-        elif state.rest_area_to_start_area_entry_point == True:
-            player_start_x = 16 * 33  # Desired X coordinate
-            player_start_y = 16 * 4  # Desired Y coordinate
-            state.player.setPosition(player_start_x, player_start_y)
-            state.rest_area_to_start_area_entry_point = False
+
 
         state.treasurechests = []
         self.stop_music()

@@ -22,7 +22,7 @@ class Player(Entity):
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
         self.controller_speed_increaser = 2
-        self.money = 1000
+        self.money = 800
         self.current_frame_index = 0
         self.exp = 0
         self.inn_badge = False
@@ -30,18 +30,16 @@ class Player(Entity):
         self.body = 0
         self.mind = 0
         self.spirit = 0
-        self.luck = 1
+        self.luck = 0
         self.food = 0
-        self.perception = 2
-        self.stamina_points = 160
+        self.perception = 0
+        self.stamina_points = 100
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False
         self.max_stamina_points = 160 + self.stamina_increase
-        self.focus_points = 100
+        self.focus_points = 50
         self.max_focus_points = 10
-        self.items = [ "HEALTHY GLOVES",
-        "craps wrist watch",
-        "coin flip gloves","Nuggie Amulet"]
+        self.items = []
 
         self.equipped_items = []
 

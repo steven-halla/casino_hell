@@ -57,8 +57,8 @@ class CoinFlipTedScreen(GambleScreen):
         self.shield_debuff: int = 0
         self.heads_force_cost: int = 50
         self.heads_force_active: bool = False
-        self.exp_gain_high: int = 50
-        self.exp_gain_low: int = 25
+        self.exp_gain_high: int = 20
+        self.exp_gain_low: int = 10
         self.result_anchor: bool = False
         self.money: int = 300
         self.wanton_magic_points: int = 0

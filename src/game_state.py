@@ -19,6 +19,7 @@ from screen.floor1.battle_screens.demon_boss_screen import DemonBossScreen
 from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
 from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
 from screen.floor1.map_screens.area_1_intro_screen import Area1IntroScreen
+from screen.floor1.map_screens.area_1_rest_screen import Area1RestScreen
 from screen.floor1.map_screens.barcutscene1 import BarCutScene1Screen
 from screen.floor1.map_screens.barcutscene2 import BarCutScene2Screen
 from screen.floor1.map_screens.boss_screen import BossScreen
@@ -240,6 +241,7 @@ class GameState:
 
 #---------------------------Below is area 1
         self.area1IntroScreen = Area1IntroScreen()
+        self.area1RestScreen = Area1RestScreen()
         self.coinFlipTedScreen = CoinFlipTedScreen()
 
 
