@@ -1762,6 +1762,23 @@ class Player(Entity):
         spacing = 10  # Spacing between items
 
         if self.looking_at_items == True:
+            # Always draw equipped item slots and their contents
+            item_y_start = 30
+            equipped_item_margin = 300
+            items = ["item 1", "item 2"]
+            if self.perception >= 3:
+                items.append("PERCEPTION 3")
+            if self.perception >= 5:
+                items.append("PERCEPTION 5")
+
+            item_y = item_y_start
+            for index, slot in enumerate(items):
+                slot_surface = font.render(slot, True, item_color)
+                main_box.blit(slot_surface, (50, item_y))
+                if index < len(self.equipped_items) and self.equipped_items[index]:
+                    equipped_item_surface = font.render(self.equipped_items[index], True, item_color)
+                    main_box.blit(equipped_item_surface, (equipped_item_margin, item_y))
+                item_y += slot_surface.get_height() + 10
             # Check the length of self.equipped_items
             # print(f"Length of equipped_items: {len(self.equipped_items)}")
             # print(f"Current items_equipped_index: {self.items_equipped_index}")
