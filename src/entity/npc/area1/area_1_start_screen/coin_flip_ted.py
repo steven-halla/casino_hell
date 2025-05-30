@@ -128,23 +128,14 @@ class CoinFlipTed(Npc):
             # Unlock the player to allow movement
             state.player.canMove = True
 
-    def draw(self, state):
-
-
-        sprite_rect = pygame.Rect(7, 6, 16.4, 24)
-
-        # Get the subsurface for the area you want
-        sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
+    def draw(self, state, only_dialog=False):
+        if not only_dialog:
+            sprite_rect = pygame.Rect(7, 6, 16.4, 24)
+            sprite = self.character_sprite_image.subsurface(sprite_rect)
+            scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
+            sprite_x = self.collision.x + state.camera.x - 20
+            sprite_y = self.collision.y + state.camera.y - 10
+            state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
             current_message = (
@@ -152,10 +143,8 @@ class CoinFlipTed(Npc):
                 if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state
                 else self.coin_flip_wanton_messages["welcome_message"]
             )
-
             current_message.draw(state)
 
-            # Draw the "Yes/No" box only on the last message
             if (current_message.is_finished() and Events.COIN_FLIP_TED_DEFEATED.value
                     not in state.player.level_one_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
@@ -168,28 +157,24 @@ class CoinFlipTed(Npc):
 
                 bet_box = pygame.Surface((bet_box_width, bet_box_height))
                 bet_box.fill((0, 0, 0))
-                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height
-                                               + 2 * border_width))
+                white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
                 white_border.fill((255, 255, 255))
                 white_border.blit(bet_box, (border_width, border_width))
 
-                # Calculate text positions
                 text_x = bet_box_x + 50 + border_width
                 text_y_yes = bet_box_y + 20
                 text_y_no = text_y_yes + 40
-                # Draw the box on the screen
+
                 state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
 
-                # Draw the text on the screen (over the box)
-                state.DISPLAY.blit(self.font.render(f"Yes ", True,
-                                                    (255, 255, 255)), (text_x, text_y_yes))
-                state.DISPLAY.blit(self.font.render(f"No ", True,
-                                                    (255, 255, 255)), (text_x, text_y_yes + 40))
-                arrow_x = text_x - 30  # Adjust the position of the arrow based on your preference
-                arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
+                state.DISPLAY.blit(self.font.render("Yes", True, (255, 255, 255)), (text_x, text_y_yes))
+                state.DISPLAY.blit(self.font.render("No", True, (255, 255, 255)), (text_x, text_y_no))
 
-                # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-                # Here's a simple example using a triangle:
-                pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                    [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10),
-                                     (arrow_x + 10, arrow_y + 10)])
+                arrow_x = text_x - 30
+                arrow_y = text_y_yes + self.arrow_index * 40
+
+                pygame.draw.polygon(state.DISPLAY, (255, 255, 255), [
+                    (arrow_x, arrow_y),
+                    (arrow_x - 10, arrow_y + 10),
+                    (arrow_x + 10, arrow_y + 10)
+                ])

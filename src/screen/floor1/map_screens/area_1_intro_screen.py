@@ -167,11 +167,19 @@ class Area1IntroScreen(Screen):
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
+        # 1. Draw all NPCs normally
         for npc in state.npcs:
-            npc.draw(state)
+            npc.draw(state)  # Not skipping any
+
+        # 2. Then draw only the dialog box for the talking one
+        for npc in state.npcs:
+            if npc.state == "talking":
+                npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)
+
+
 
         state.obstacle.draw(state)
         if state.player.hide_player == False:

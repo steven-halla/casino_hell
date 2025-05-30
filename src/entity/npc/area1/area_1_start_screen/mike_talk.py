@@ -103,29 +103,21 @@ class MikeTalk(Npc):
             # Unlock the player to allow movement
             state.player.canMove = True
 
-    def draw(self, state):
+    def draw(self, state, only_dialog=False):
+        if not only_dialog:
+            # Draw the NPC sprite
+            sprite_rect = pygame.Rect(7, 6, 16.4, 24)
+            sprite = self.character_sprite_image.subsurface(sprite_rect)
+            scaled_sprite = pygame.transform.scale(sprite, (50, 50))
+            sprite_x = self.collision.x + state.camera.x - 20
+            sprite_y = self.collision.y + state.camera.y - 10
+            state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-
-        sprite_rect = pygame.Rect(7, 6, 16.4, 24)
-
-        # Get the subsurface for the area you want
-        sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
-        sprite_x = self.collision.x + state.camera.x - 20
-        sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
-        state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
-
+        # Always check dialog state
         if self.state == "talking":
             current_message = (
                 self.mike_talk_messages["defeated_message"]
                 if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state
                 else self.mike_talk_messages["welcome_message"]
             )
-
             current_message.draw(state)
