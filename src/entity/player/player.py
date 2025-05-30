@@ -39,7 +39,9 @@ class Player(Entity):
         self.max_stamina_points = 160 + self.stamina_increase
         self.focus_points = 100
         self.max_focus_points = 10
-        self.items = []
+        self.items = [ "HEALTHY GLOVES",
+        "craps wrist watch",
+        "coin flip gloves","Nuggie Amulet"]
 
         self.equipped_items = []
 
@@ -1039,18 +1041,25 @@ class Player(Entity):
             # elif self.perception < 5 and len(self.equipped_items) > 4:
             #     self.equipped_items = self.equipped_items[:4]  # Reduce to 4 slots if perception is below 5
             # Limit equipped items to 3 slots if perception is less than 3
+            # if self.perception < 3:
+            #     self.equipped_items = self.equipped_items[:2]
+            #     while len(self.equipped_items) < 2:
+            #         self.equipped_items.append(None)
+            # elif self.perception in [3, 4]:
+            #     self.equipped_items = self.equipped_items[:3]
+            #     while len(self.equipped_items) < 3:
+            #         self.equipped_items.append(None)
+            # elif self.perception >= 5:
+            #     self.equipped_items = self.equipped_items[:4]
+            #     while len(self.equipped_items) < 4:
+            #         self.equipped_items.append(None)
+            # Determine the maximum equipped item index based on perception level
             if self.perception < 3:
-                self.equipped_items = self.equipped_items[:2]
-                while len(self.equipped_items) < 2:
-                    self.equipped_items.append(None)
-            elif self.perception in [3, 4]:
-                self.equipped_items = self.equipped_items[:3]
-                while len(self.equipped_items) < 3:
-                    self.equipped_items.append(None)
+                max_index = 1  # Only slots 0 and 1
+            elif self.perception == 3 or self.perception == 4:
+                max_index = 2  # Slots 0, 1, 2
             elif self.perception >= 5:
-                self.equipped_items = self.equipped_items[:4]
-                while len(self.equipped_items) < 4:
-                    self.equipped_items.append(None)
+                max_index = 3  # Slots 0, 1, 2, 3
 
             # print(f"Adjusted length of equipped_items: {len(self.equipped_items)}")
 
@@ -1081,13 +1090,13 @@ class Player(Entity):
                     if self.items[self.item_index] in self.equipped_items:
                         print("Item is already equipped, skipping this item.")
 
-                    elif (self.items[self.item_index] == "sir leopold's paw" or self.items[self.item_index] == Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value) and self.items_equipped_index > 0:
-                        print(f"{self.items[self.item_index]} can only be equipped in the 0th slot! Skipping.")
+                    # elif (self.items[self.item_index] == "sir leopold's paw" or self.items[self.item_index] == Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value) and self.items_equipped_index > 0:
+                    #     print(f"{self.items[self.item_index]} can only be equipped in the 0th slot! Skipping.")
 
 
                     # New elif to prevent non-companion items from being equipped in the companion slot (0th index)
-                    elif self.items_equipped_index == 0 and self.items[self.item_index] not in ["sir leopold's paw", Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value]:
-                        print(f"{self.items[self.item_index]} cannot be equipped in the companion slot! Skipping.")
+                    # elif self.items_equipped_index == 0 and self.items[self.item_index] not in ["sir leopold's paw", Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value]:
+                    #     print(f"{self.items[self.item_index]} cannot be equipped in the companion slot! Skipping.")
 
                     else:
 
@@ -1141,6 +1150,7 @@ class Player(Entity):
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.item_index = (self.item_index - 1) % len(self.items)
+
                     state.controller.isUpPressed = False
                     state.controller.isUpPressedSwitch = False
                     print(self.items[self.item_index])  # Print the item at the current index
@@ -1170,11 +1180,17 @@ class Player(Entity):
                     self.looking_at_items = True
                 # Determine the maximum index based on perception level
                 if self.perception < 3:
-                    max_index = 2  # Can only access up to the 2nd slot (index 0 and 1)
-                elif self.perception == 3 or self.perception == 4:
-                    max_index = 3  # Can access up to the 3rd slot (index 0, 1, 2)
-                elif self.perception >= 5:
-                    max_index = 4  # Can access all slots (index 0, 1, 2, 3, 4)
+                    self.equipped_items = self.equipped_items[:2]
+                    while len(self.equipped_items) < 2:
+                        self.equipped_items.append(None)
+                elif self.perception in (3, 4):
+                    self.equipped_items = self.equipped_items[:3]
+                    while len(self.equipped_items) < 3:
+                        self.equipped_items.append(None)
+                else:  # perception >= 5
+                    self.equipped_items = self.equipped_items[:4]
+                    while len(self.equipped_items) < 4:
+                        self.equipped_items.append(None)
 
                 # Handle up/down navigation for equipped items based on max_index
                 if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
@@ -1763,7 +1779,12 @@ class Player(Entity):
             item_y_start = 30  # The starting y-position for the equipped items in the top box
 
             # Define the items, including the level-based slots
-            items = ["companion item", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
+            # items = ["item 1", "item 2", "PERCEPTION 3", "PERCEPTION 5"]
+            items = ["item 1", "item 2"]
+            if self.perception >= 3:
+                items.append("PERCEPTION 3")
+            if self.perception >= 5:
+                items.append("PERCEPTION 5")
 
             # Starting y position for the first item (adjust as needed for vertical alignment)
             equipped_y_start = 30  # Start at the same y-position as the arrow, or any other position
@@ -1794,7 +1815,8 @@ class Player(Entity):
                 max_index = 4  # Can access up to the 4th index (index 0, 1, 2, 3, and 4)
 
             # Ensure that the items_equipped_index does not exceed the max_index
-            self.items_equipped_index = min(self.items_equipped_index, max_index)
+            # self.items_equipped_index = min(self.items_equipped_index, max_index)
+            self.items_equipped_index = max(0, min(self.items_equipped_index, max_index))
 
             # Calculate the y-position for the arrow based on the current equipped item index
             arrow_y_position = item_y_start + self.items_equipped_index * (font.get_height() + spacing)
@@ -1814,7 +1836,12 @@ class Player(Entity):
         #######################
 
         # Define the items to display in Box 2
-        items = ["companion item ", "item 1", "item 2", "LEVEL 3", "LEVEL 5"]
+        # items = ["item 1", "item 2", "PERCEPTION 3", "PERCEPTION 5"]
+        items = ["item 1", "item 2"]
+        if self.perception >= 3:
+            items.append("PERCEPTION 3")
+        if self.perception >= 5:
+            items.append("PERCEPTION 5")
 
         # Starting y position for the first item (adjust as needed for vertical alignment)
         item_y_start = 30  # Start at the same y-position as the arrow, or any other position
