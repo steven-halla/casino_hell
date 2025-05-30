@@ -238,6 +238,7 @@ class CoinFlipTedScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
+        print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -449,6 +450,7 @@ class CoinFlipTedScreen(GambleScreen):
             state.player.canMove = True
 
     def update_flip_coin_logic_helper(self,controller):
+
         if self.heads_force_active == True:
             heads_force_modifer = self.magic_bonus
             self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
@@ -461,32 +463,30 @@ class CoinFlipTedScreen(GambleScreen):
                 self.heads_force_active = False
                 self.coin_landed = CoinFlipConstants.TAILS.value
 
+
         if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
             if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
                 self.game_state = self.PLAYER_WIN_SCREEN
+                return
             else:
                 self.heads_force_active = False
-
                 self.game_state = self.PLAYER_LOSE_SCREEN
+                return
 
         if self.coin_landed == self.player_choice:
             self.game_state = self.PLAYER_WIN_SCREEN
+            return
         elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-            # in future we will need a message to display roll chances for player spells
             shield_chance = self.magic_bonus
             random_shield = random.randint(1, 100) + shield_chance
-            # Each level should have a different % higher
+            print("SHIELD ROLL IS: " + str(random_shield))
             if random_shield > 75:
-                print("SHIELD ROLL IS: " + str(random_shield))
                 self.game_state = self.PLAYER_DRAW_SCREEN
             else:
-                print("SHIELD ROLL IS: " + str(random_shield))
-
                 self.game_state = self.PLAYER_LOSE_SCREEN
-
-        elif self.coin_landed != self.player_choice:
+            return
+        else:
             self.game_state = self.PLAYER_LOSE_SCREEN
-
 
 
 
@@ -505,8 +505,7 @@ class CoinFlipTedScreen(GambleScreen):
             #
 
 
-
-        if self.even == True and self.heads_force_active == False:
+        if self.heads_force_active == False:
             if self.phase == 1:
                 self.coin_landed = CoinFlipConstants.TAILS.value
             elif self.phase == 2:
@@ -791,10 +790,12 @@ class CoinFlipTedScreen(GambleScreen):
             else self.tails_image
         )
 
-        if self.heads_force_active == True and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
+        if self.heads_force_active and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
             self.image_to_display = self.heads_image
         else:
-            self.image_to_display = self.tails_image
+            self.image_to_display = (
+                self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
+            )
 
 
         image_rect = self.image_to_display.get_rect()
