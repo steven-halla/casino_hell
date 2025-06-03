@@ -64,14 +64,14 @@ class AnnaQuest(Npc):
 
 
             if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state:
-                self.anna_quest_messages["defeated_message"].reset()
+                self.anna_quest_messages["quest_complete_message"].reset()
 
             else:
                 self.anna_quest_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
         current_message = (
-            self.anna_quest_messages["defeated_message"]
+            self.anna_quest_messages["quest_complete_message"]
             if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state
             else self.anna_quest_messages["welcome_message"]
         )
@@ -121,7 +121,7 @@ class AnnaQuest(Npc):
         # Draw textbox only if talking
         if self.state == "talking":
             current_message = (
-                self.anna_quest_messages["defeated_message"]
+                self.anna_quest_messages["quest_complete_message"]
                 if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state
                 else self.anna_quest_messages["welcome_message"]
             )

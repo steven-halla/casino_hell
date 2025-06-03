@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
+from entity.npc.area1.area_1_start_screen.area_1_intro_to_rest_door import Area1IntroToRestDoor
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
@@ -96,6 +97,7 @@ class Area1IntroScreen(Screen):
             MikeTalk(16 * 5, 16 * 20),
             PatrickTalk(16 * 5, 16 * 35),
             CoinFlipTed(16 * 25, 16 * 35),
+            Area1IntroToRestDoor(16 * 45, 16 * 35)
 
         ]
 

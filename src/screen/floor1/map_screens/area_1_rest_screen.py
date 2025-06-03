@@ -68,6 +68,8 @@ class Area1RestScreen(Screen):
             player_start_x = 16 * 33
             player_start_y = 16 * 26
             state.player.setPosition(player_start_x, player_start_y)
+        state.player.canMove = True
+        print(state.player.canMove)
 
 
         state.treasurechests = []
@@ -88,15 +90,18 @@ class Area1RestScreen(Screen):
 
         state.npcs = [
 
-            AnnaQuest(16 * 5, 16 * 5),  # fin
-            MikeTalk(16 * 5, 16 * 20),
-            PatrickTalk(16 * 5, 16 * 35),
-            CoinFlipTed(16 * 25, 16 * 35),
+            # AnnaQuest(16 * 5, 16 * 5),  # fin
+            # MikeTalk(16 * 5, 16 * 20),
+            # PatrickTalk(16 * 5, 16 * 35),
+            # CoinFlipTed(16 * 25, 16 * 35),
+
 
         ]
 
     def update(self, state: "GameState"):
         # In your update() function (or in a function that’s called every frame):
+        print(state.player.canMove)
+
 
 
         controller = state.controller

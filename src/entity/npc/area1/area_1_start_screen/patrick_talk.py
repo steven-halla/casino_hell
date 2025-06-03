@@ -24,7 +24,7 @@ class PatrickTalk(Npc):
             "welcome_message": NpcTextBox(
                 ["Patrick: I hate cake."],
                 (50, 450, 700, 130), 36, 500),
-            "quest_complete_message": NpcTextBox(
+            "defeated_message": NpcTextBox(
                 ["patrick: Thank you for defeating that cheating rotten bastard. You have given us all hope."],
                 (50, 450, 700, 130), 36, 500),
 

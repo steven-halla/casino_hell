@@ -58,7 +58,7 @@ class Area1IntroToRestDoor(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
 
-            if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state:
+            if Events.LEVEL_1_INN_KEY.value in state.player.level_one_npc_state:
                 pass
             else:
                 self.mike_talk_messages["welcome_message"].reset()
@@ -67,30 +67,23 @@ class Area1IntroToRestDoor(Npc):
 
 
 
-        if Events.COIN_FLIP_TED_DEFEATED.value not in state.player.level_one_npc_state:
+        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
             current_message = self.mike_talk_messages["welcome_message"]
             current_message.update(state)
 
-        else:
+        elif Events.LEVEL_1_INN_KEY.value in  state.player.level_one_npc_state:
+            state.player.canMove = True
+
             state.start_area_to_rest_area_entry_point = True
 
             state.currentScreen = state.area1RestScreen
             state.area1RestScreen.start(state)
-            state.player.canMove = True
 
         # Lock the player in place while talking
-        state.player.canMove = False
-
-        # Check for keypresses only once per frame
-        if current_message.is_finished() and current_message.message_at_end():
-
-            if state.controller.up_button:
-                self.arrow_index = (self.arrow_index - 1) % len(self.choices)
+        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
+            state.player.canMove = False
 
 
-
-            elif state.controller.down_button:
-                self.arrow_index = (self.arrow_index + 1) % len(self.choices)
 
 
         if state.controller.confirm_button and current_message.is_finished():
@@ -117,6 +110,6 @@ class Area1IntroToRestDoor(Npc):
         # Always check dialog state
         if self.state == "talking":
 
-            if Events.COIN_FLIP_TED_DEFEATED.value not in state.player.level_one_npc_state:
+            if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
                 current_message = self.mike_talk_messages["welcome_message"]
-            current_message.draw(state)
+                current_message.draw(state)
