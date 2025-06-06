@@ -24,6 +24,7 @@ from screen.floor1.map_screens.area_1_gambling_screen import Area1GamblingScreen
 from screen.floor1.map_screens.area_1_intro_screen import Area1IntroScreen
 from screen.floor1.map_screens.area_1_maze_screen import Area1MazeScreen
 from screen.floor1.map_screens.area_1_rest_screen import Area1RestScreen
+from screen.floor1.map_screens.area_1_shop_screen import Area1ShopScreen
 from screen.floor1.map_screens.barcutscene1 import BarCutScene1Screen
 from screen.floor1.map_screens.barcutscene2 import BarCutScene2Screen
 from screen.floor1.map_screens.boss_screen import BossScreen
@@ -253,6 +254,7 @@ class GameState:
         self.area1MazeScreen = Area1MazeScreen()
         self.area1BossScreen = Area1BossScreen()
         self.area1BarScreen = Area1BarScreen()
+        self.area1ShopScreen = Area1ShopScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
 
