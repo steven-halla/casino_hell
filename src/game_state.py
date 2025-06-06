@@ -255,6 +255,7 @@ class GameState:
         self.area1BossScreen = Area1BossScreen()
         self.area1BarScreen = Area1BarScreen()
         self.area1ShopScreen = Area1ShopScreen()
+        self.area1BossScreen = Area1BossScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
 
