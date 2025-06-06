@@ -2,7 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_boss_door import Area1GamblingToBossDoor
+from entity.npc.area1.area_1_boss_screen.area_1_boss_to_gambling_door import Area1BossToGamblingDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_maze_door import Area1GamblingToMazeDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import Area1GamblingToRestDoor
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
@@ -30,7 +30,7 @@ from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumIn
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
-class Area1GamblingScreen(Screen):
+class Area1BossScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -93,9 +93,8 @@ class Area1GamblingScreen(Screen):
 
         state.npcs = [
 
-            Area1GamblingToRestDoor(16 * 30, 16 * 25),
-            Area1GamblingToMazeDoor(16 * 45, 16 * 40),
-            Area1GamblingToBossDoor(16 * 15, 16 * 25),
+            Area1BossToGamblingDoor(16 * 30, 16 * 25),
+            # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
         ]
 
