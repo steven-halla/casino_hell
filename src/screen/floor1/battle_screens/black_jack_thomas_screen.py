@@ -1,1490 +1,1081 @@
 import pygame
-
-from constants import DISPLAY
-from entity.gui.textbox.npc_text_box import NpcTextBox
-from entity.gui.textbox.text_box import TextBox
-from screen.examples.screen import Screen
+import random
+from constants import WHITE, RED, DISPLAY, BLACK
 from deck import Deck
-from entity.gui.textbox.bordered_box import BorderedBox
-import random  # Make sure to import the random module at the beginning of your script
+from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
+from game_constants.equipment import Equipment
+from game_constants.events import Events
+from game_constants.magic import Magic
 
-# if a player has 3 cards, then an ace value is equal to one
-# ace should be set that if a value is less than 10, then at least one of them should be
-# set to 11
-# need to set up test cases for many up to having 4 aces in hand
+#There is  a bug on the redraw
+class BlackJackThomasScreen(GambleScreen):
+    def __init__(self, screenName: str = "Black Jack") -> None:
+        super().__init__(screenName)
+        self.enemy_card_y_positions: list[int] = []
+        self.player_card_y_positions: list[int] = []
+        self.game_state: str = self.WELCOME_SCREEN
+        self.deck: Deck() = Deck()
+        self.level_up_message_initialized = False
 
-# betting is also broken, a black jack should net X 2 winnings
 
-class BlackJackThomasScreen(Screen):
-    def __init__(self):
-        Screen.__init__(self, " Black Jack Game")
-
-        self.deck = Deck()
-        self.font = pygame.font.Font(None, 36)
-        self.black_ace = False  # this is our boss level when talk to NPC set to true set false if game is set to quit
-        self.ace_up_sleeve_jack = False
-        self.ace_up_sleeve_jack_cheat_mode = False
-        self.first_message_display = ""
-        self.second_message_display = ""
-        self.third_message_display = ""
-        self.game_state = "welcome_screen"
-        self.bet = 10
-        self.cheater_bob_money = 500
-        self.sir_leopold_ace_attack = pygame.mixer.Sound("./assets/music/startloadaccept.wav")  # Adjust the path as needed
-        self.sir_leopold_ace_attack.set_volume(0.6)
-        self.player_score = 0
-        self.enemy_score = 0
-        # self.player_cards_list = []
-        # self.enemy_cards_list = []
-        self.player_hand = []
-        self.enemy_hand = []
-        self.choices = ["Ready", "Draw", "Redraw"]
-        self.current_index = 0
-        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
-        self.welcome_screen_index = 0
-        self.magic_menu_selector = ["Reveal", "Back"]
-        self.magic_menu_index = 0
-        self.ace_value = 1
-        self.bust_protection = False
-        self.avatar_of_luck_card_redraw_counter = 3
-        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.player_hand: list[str] = []
+        self.enemy_hand: list[str] = []
+        self.player_score: int = 0
+        self.enemy_score: int = 0
+        self.ace_detected_time = None
+        self.ace_effect_triggered = False
+        self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
+        self.lucky_strike.set_volume(0.6)
+        self.bet: int = 100
+        self.blackJackThomasMoney: int = 950
+        self.fengus_bankrupt: int = 0
+        self.reveal_buff_counter: int = 0
+        self.reveal_start_duration: int = 7
+        self.reveal_end_not_active: int = 0
+        self.magic_lock: bool = False
+        self.dealer_name: str = "jasmine"
+        self.lock_down_inactive: int = 0
+        self.initial_hand: int = 2
+        self.hedge_hog_time: bool = False
+        self.player_action_phase_index: int = 0
+        self.player_action_phase_play_index: int = 0
+        self.player_action_phase_draw_index: int = 1
+        self.player_action_phase_force_redraw_index: int = 2
+        self.redraw_counter = True
+        self.player_action_phase_choices: list[str] = ["Stand", "Draw"]
+        self.magic_screen_choices: list[str] = []
+        self.redraw_debuff_counter: int = 0
+        self.redraw_end_counter: int = 0
+        self.redraw_start_counter: int = 10
+        self.reveal_debuff_counter: int = 0
+        self.reveal_end_counter: int = 0
+        self.reveal_start_counter: int = 5
+        self.magic_menu_index: int = 0
+        self.magic_menu_reveal_index: int = 0
+        self.redraw_magic_menu_index: int = 1
+        self.back_magic_menu_index: int = 2
+        self.index_stepper: int = 1
+        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-
-        self.testing_low = False
-
-        self.player_black_jack_win = False
-        self.enemy_black_jack_win = False
-        self.black_jack_draw = False
-
-        self.current_speaker = ""
-        self.npc_speaking = False
-        self.hero_speaking = False
-        self.music_loop = True
-
-        self.despair = False
-        # self.despair = True
-        self.black_jack_thomas_defeated = False
-
-        self.hero_losing_text_state = False
-        self.hero_winning_text_state = False
-        self.player_status = ""
-        self.enemy_status = ""
-
-        self.black_jack_bluff_counter = 0
-        self.reveal_hand = 11
-        self.magic_lock = False
-        self.luck_of_jack = 7
-        self.avatar_of_luck = False
-        self.redraw_lock = False
-        self.next_draw_time = pygame.time.get_ticks() + 2000  # Set initial delay for first draw
+        self.reveal_cast_cost: int = 50
+        self.redraw_cast_cost: int = 30
+        self.low_exp: int = 10
+        self.med_exp: int = 20
+        self.high_exp: int = 30
+        self.critical_multiplier: int = 2
+        self.low_stamina_drain: int = 10
+        self.med_stamina_drain: int = 20
+        self.high_stamina_drain: int = 30
+        self.fengus_magic_points: int = 0
+        self.debuff_buff_luck_switch: int = 0
+        self.luck_swapping_switch: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
+        self.luck_bonus: int = 0
 
 
-        self.music_file = "./assets/music/black_jack_screen.mp3"
-        self.music_volume = 0.5  # Adjust as needed
-        self.initialize_music()
-        self.music_on = True
-
-
-        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
-        self.menu_movement_sound.set_volume(0.2)
-        self.flip_timer = pygame.time.get_ticks() + 2000
-        self.pause_timer = 0
-
-
-        # maybe include a self.turn_counter = 0 that can be +1 in our welcome screen in conjection with our reveal spell
-        # incldue a double bet spell that is CHR based that player gets for free maybe4
-
-        self.locked_text = self.font.render("Locked", True, (255, 255, 255))
-
-        self.messages = {
-            "welcome_screen": ["Thomas: Press T key for all commands.",
-
-                               "You look pretty fresh to me.","" ],
-            "hero_intro_text": [
-                "am I in trouble?",
-
-                "I can press up and down to select. Play to start, quit to leave, or magic for an advantage", ""],
-
-            "bet_intro_text": [
-                "Thomas: Min Bet is 10 and Max Bet is 100. The more you bet the more your  stamina is drained."],
-
-            "hero_losing_text": [
-                "Hero: This isn't good, I'll need to get serious if I want to make a comeback.",
-                "Maybe I should lower my bet until I get the hang of my enemy.",
-                ""],
-            "enemy_winning_text": [
-                "Cheater Bob: HA HA HA! You really stepped in it now!",
-                "Do you know what happens when people lose all of their coins?",
-                "I bet you have no idea what this place really is.", ""],
-            "hero_losing_confused_text": [
-                "Hero: Doesn't matter to me much what kind of place this is. I always go where there is gambling.",
-                "This guy really means business....I need to focus, and regain my composure.",
-                "Why doesn't he hit on 16??? It's like he's afraid to bust for some reason.",
-                ""],
-
-            "enemy_losing_text": [
-                "Cheater Bob: How is this possible? I'm....Cheater Bob...I'm not supposed to lose.",
-                "Your Cheating! There is no way I'd lose to an amateur like you!",
-                ""],
-            "hero_winning_text": [
-                "Hero: I never cheat Cheater Bob. I'm just that good. Why are you sweating so much for?",
-                "Care to tell me why your so worried? It's not like their going to kill you or anything.",
-                "I can now use my bluff attack.",
-                "If I use it I won't be able to use any other magic till this match is over.",
-                "Should I use it now or wait a little bit till I'm closer to dealing a final blow?",
-                ""],
-            "enemy_losing_confused_text": [
-                "Cheater Bob: There are some fates worse than death, 'hero'.",
-                ".......",
-                "If you take all my coins, and if the boss doesn't give me replacement coins..........",
-                "NO!!! I won't end up like the others....I won't have you make a fool out of me.....",
-                ""],
-
-            "final_strike_text": [
-                "Hero: You don't have a lot of coins left. I'll bet you the rest that my next hand will be a black jack.",
-                "Of course, if you happen to win you'll be back in the game, sounds pretty nice of me right?",
-                "",
-                ],
-            "enemy_bluffed_text": [
-                "Cheater Bob: Do you Realize the odds of that happening?",
-                " Why would you take such a bet for?",
-                "It doesn't make any sense.",
-                ""],
-
-            "hero_bluffing_text": [
-                "Hero: Well it's simple really, based on the card positions, and the way you shuffled. ",
-                "I can pretty easily tell where each card landed in the deck.",
-                "Simply put, I'm not doing a random bet, or a bluff, when you deal out the cards, I will get a black jack. It's all about my intellect and high perception.",
-                ""],
-            "enemy_falling_for_bluff_text": [
-                "Cheater Bob: That's bull crap, there's no way you have that much perception.  ",
-                "I'll take your bet, and then I'll tell everyone how much of a fool you are.",
-                "I'll teach you to underestimate me!", ""],
-
-            "enemy_crying_text": ["Cheater Bob: Impossible...how did you????",
-                                  ""],
-            "hero_reveal_text": [
-                "Hero: To be honest, it was all a bluff, you were right all along.",
-                "However, I never bet against myself, and because of that lady luck is always on my side.",
-                "You lost,not because I cheated, but  because you didnt' believe in yourself and gave in to despair.",
-                ""],
-
-            "bluff_magic_explain": [
-                "Casts Bluff on the enemy. When the enemy seems desperate this will be unlocked. Enemy less likely to hit due to fear of a bust. Magic Lock Permanent .25MP"],
-            "reveal_magic_explain": [
-                "Based on muscle twitches of enemy plus the way they shuffle cards, you can tell what score they have.Protects you from busts. Magic lock 10 turns.25MP"],
-            "avatar_magic_explain": [
-                "Your faith is so strong that lady luck herself blesses you. Allows up to 3 redraws per turn.Deck is not reshuffled and cards are burned.Magic lock 5 turns 25MP"],
-            "back_magic_explain": ["Back to previous gui"],
-            "player_no_money_explain": [
-                "HOoooo boooooy your in for it now, hope you enjoy your new form.",
-                "You can feel darkness start to surround you....."],
-            "player_no_stamina_explain": [
-                "Everything is getting dizzy and dark, you feel yourself passing out from a lack of stamina..(-100 golds)",
-                ],
-
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "Thomas: This is the welcome screen"
+            ]),
+            self.BET_MESSAGE: MessageBox([
+                "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to Exit."
+            ]),
+            self.MAGIC_MENU_REVEAL_DESCRIPTION: MessageBox([
+                "You can feel the print of the face down card."
+            ]),
+            self.MAGIC_MENU_REDRAW_DESCRIPTION: MessageBox([
+                "Sir Leopold replaces face up card with a new card, once per turn.."
+            ]),
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
+            self.DRAW_CARD_MESSAGE: MessageBox([
+                "drawing your cards now"
+            ]),
+            self.PLAYER_BLACK_JACK_MESSAGE: MessageBox([
+                "You got a black jack you win"
+            ]),
+            self.ENEMY_BLACK_JACK_MESSAGE: MessageBox([
+                "Enemy got a black jack you lose"
+            ]),
+            self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: MessageBox([
+                f"It's a DRAW! You win 0 gold and win {self.low_exp} experience points"
+            ]),
+            self.PLAYER_ACTION_MESSAGE: MessageBox([
+                "Time for action"
+            ]),
+            self.PLAYER_WIN_ACTION_MESSAGE: MessageBox([
+                "you win"
+            ]),
+            self.ENEMY_WIN_ACTION_MESSAGE: MessageBox([
+                "you lose"
+            ]),
+            self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE: MessageBox([
+                f"It's a DRAW! You win 0 gold and win {self.low_exp} experience points"
+            ]),
+            self.LEVEL_UP_SCREEN: MessageBox([
+                f"You leveld up!"
+            ]),
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                f"You leveld up!"
+            ]),
+            self.FENGUS_CASTING_SPELL: MessageBox([
+                f"Rays of the goddess, switch yourself away from the chosen and shine upon me...luck shift(player/enemy lucks switched) "
+            ]),
+            self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE: MessageBox([
+                f"You ran out of Stamina, go rest your Hero."
+            ]),
         }
 
-        self.welcome_screen_text_box = TextBox(self.messages["welcome_screen"],
-                                               (50, 450, 50, 45), 30, 500)
-        self.welcome_screen_text_box_hero = TextBox(
-            self.messages["hero_intro_text"], (50, 450, 50, 45), 30, 500)
+    PLAYER_ACTION_MESSAGE: str = "player_action_message"
+    PLAYER_BLACK_JACK_MESSAGE: str = "player_black_jack_message"
+    ENEMY_BLACK_JACK_MESSAGE: str = "enemy_black_jack_message"
+    PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE: str = "player_enemy_draw_jack_message"
+    DRAW_CARD_MESSAGE: str = "draw card message"
+    MAGIC_MENU_REVEAL_DESCRIPTION: str = "magic_menu_reveal_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    MAGIC_MENU_REDRAW_DESCRIPTION: str = "magic_menu_redraw_description"
+    BET_MESSAGE: str = "bet_message"
+    PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
+    ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
+    PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+    LEVEL_UP: str = "level_up_message"
+    FENGUS_CASTING_SPELL: str = "FENGUS_CASTING_SPELL"
+    REVEAL: str = "reveal"
+    REDRAW: str = "redraw"
+    BACK = "back"
+    PLAYER_ACTION_SCREEN: str = "player_action_screen"
+    LEVEL_UP_SCREEN = "level_up_screen"
+    DRAW_CARD_SCREEN: str = "draw card screen"
+    PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN: str = "player_enemy_draw_jack_screen "
+    PLAYER_BLACK_JACK_SCREEN: str = "player_black_jack_screen"
+    ENEMY_BLACK_JACK_SCREEN: str = "enemy_black_jack_screen"
+    PLAYER_WIN_ACTION_SCREEN: str = "player_win_action_phase"
+    ENEMY_WIN_ACTION_SCREEN: str = "enemy_win_action_phase"
+    PLAYER_ENEMY_DRAW_ACTION_SCREEN: str = "player_enemy_draw_action_phase"
+    FENGUS_CASTING_SPELL_SCREEN: str = "FENGUS_CASTING_SPELL_screen"
 
-        self.bet_screen_text = TextBox(self.messages["bet_intro_text"],
-                                       (50, 450, 50, 45), 30, 500)
-        self.hero_losing_money_text = TextBox(self.messages["hero_losing_text"],
-                                              (50, 450, 50, 45), 30, 500)
-        self.enemy_losing_money_text = TextBox(
-            self.messages["enemy_losing_text"], (50, 450, 50, 45), 30, 500)
+    def start(self, state: 'GameState'):
+        self.reset_black_jack_game()
+        self.deck.shuffle()
+        self.initialize_music()
+        self.spirit_bonus: int = state.player.spirit * 10
+        self.magic_bonus: int = state.player.mind * 10
+        self.luck_bonus: int = state.player.luck * 5
+        self.welcome_screen_index = 0
 
-        self.enemy_winning_money_text = TextBox(
-            self.messages["enemy_winning_text"], (50, 450, 50, 45), 30, 500)
-        self.hero_winning_money_text = TextBox(
-            self.messages["hero_winning_text"], (50, 450, 50, 45), 30, 500)
+        if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
+            self.magic_screen_choices.append(Magic.BLACK_JACK_REDRAW.value)
 
-        self.hero_losing_confused_money_text = TextBox(
-            self.messages["hero_losing_confused_text"], (50, 450, 50, 45), 30,
-            500)
-        self.enemy_losing_confused_money_text = TextBox(
-            self.messages["enemy_losing_confused_text"], (50, 450, 50, 45), 30,
-            500)
+        if Magic.REVEAL.value in state.player.magicinventory and Magic.REVEAL.value not in self.magic_screen_choices:
+            self.magic_screen_choices.append(Magic.REVEAL.value)
 
-        self.final_strike_text_component = TextBox(
-            self.messages["final_strike_text"], (50, 450, 50, 45), 30, 500)
-        self.enemy_bluffed_text_component = TextBox(
-            self.messages["enemy_bluffed_text"], (50, 450, 50, 45), 30, 500)
+        if self.BACK not in self.magic_screen_choices:
+            self.magic_screen_choices.append(self.BACK)
 
-        self.hero_bluffing_text_component = TextBox(
-            self.messages["hero_bluffing_text"], (50, 450, 50, 45), 30, 500)
-        self.enemy_falling_for_bluff_text_component = TextBox(
-            self.messages["enemy_falling_for_bluff_text"], (50, 450, 50, 45),
-            30, 500)
+    def round_reset(self):
+        print("Round Reset")
+        self.deck.shuffle()
+        self.player_hand.clear()
+        self.enemy_hand.clear()
+        if self.reveal_buff_counter > 0:
+            self.reveal_buff_counter -= 1
+        if self.redraw_debuff_counter > 0:
+            self.redraw_debuff_counter -= 1
+        if self.reveal_buff_counter == 0 and self.redraw_debuff_counter == 0:
+            self.magic_lock = False
 
-        self.enemy_crying_text_component = TextBox(
-            self.messages["enemy_crying_text"], (50, 450, 50, 45), 30, 500)
-        self.hero_reveal_text_component = TextBox(
-            self.messages["hero_reveal_text"], (50, 450, 50, 45), 30, 500)
+        if self.debuff_buff_luck_switch > 0:
+            self.debuff_buff_luck_switch -= 1
 
-        self.bluff_magic_explain_component = TextBox(
-            self.messages["bluff_magic_explain"], (50, 450, 50, 45), 30, 500)
-        self.reveal_magic_explain_component = TextBox(
-            self.messages["reveal_magic_explain"], (50, 450, 50, 45), 30, 500)
-        self.avatar_magic_explain_component = TextBox(
-            self.messages["avatar_magic_explain"], (50, 450, 50, 45), 30, 500)
-        self.back_magic_explain_component = TextBox(
-            self.messages["back_magic_explain"], (50, 450, 50, 45), 30, 500)
-        self.player_no_money = TextBox(
-            self.messages["player_no_money_explain"], (50, 450, 50, 45), 30, 500)
-        self.player_no_stamina = TextBox(
-            self.messages["player_no_stamina_explain"], (50, 450, 50, 45), 30, 500)
+        self.ace_effect_triggered = False
+        self.hedge_hog_time: bool = False
+        self.redraw_counter = True
+        self.player_card_y_positions = []
+        self.enemy_card_y_positions = []
+        self.player_card_x_positions = []
+        self.enemy_card_x_positions = []
+        self.luck_swapping_switch += 3
 
-        # self.bordered_text_box = BorderedTextBox(self.messages["list2"], (230, 200, 250, 45), 30, 500)
-        self.main_bordered_box = BorderedBox((25, 425, 745, 150))
+        match self.fengus_magic_points:
+            case 3:
+                luck_swap_randomizer = random.randint(1, 90) + self.luck_swapping_switch
+            case 2:
+                luck_swap_randomizer = random.randint(1, 70) + self.luck_swapping_switch
+            case 1:
+                luck_swap_randomizer = random.randint(1, 50) + self.luck_swapping_switch
 
-        self.defeated_textbox = TextBox(
-            [
-                "Thomas: You may have beat me for now, but there are others. Word is going around that you want to face Chinrog.",
-
-                "He's going to eat you for breakfast, you should just forget your hero antics and move on.",
-            ""],
-            (50, 450, 50, 45), 30, 500)
-
-        self.reveal_debuff = False
-        self.reveal_debuff_counter = 0
-
-        self.exp_gain = 0
-
-
-
-
-    pygame.init()
-    def stop_music(self):
-        pygame.mixer.music.stop()
-
-    def initialize_music(self):
-        # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
-
-    def place_bet(self, state: "GameState"):
-        if state.controller.isUpPressed:
-            self.bet += 10
-            self.menu_movement_sound.play()  # Play the sound effect once
-
-            pygame.time.delay(100)
-            state.controller.isUpPressed = False
-
-        elif state.controller.isDownPressed:
-            self.bet -= 10
-            self.menu_movement_sound.play()  # Play the sound effect once
-
-            pygame.time.delay(100)
-            state.controller.isDownPressed = False
-
-        if self.bet < 10:
-            self.bet = 10
-
-        if self.bet > 100:
-            self.bet = 100
-
-        if self.bet > self.cheater_bob_money:
-            self.bet = self.cheater_bob_money
-
-        if self.bet > state.player.money:
-            self.bet = state.player.money
-
-    def update(self, state: "GameState"):
+        if luck_swap_randomizer > 100 and self.fengus_magic_points > 0 and self.debuff_buff_luck_switch == 0:
+            self.game_state = self.FENGUS_CASTING_SPELL_SCREEN
+            self.luck_swapping_switch = 0
 
 
-        if state.musicOn == True:
-            if self.music_on == True:
 
-                self.stop_music()
-                self.initialize_music()
-                self.music_on = False
-        state.player.canMove = False
+    def reset_black_jack_game(self):
+        self.player_card_y_positions = []
+        self.enemy_card_y_positions = []
+        self.player_card_x_positions = []
+        self.enemy_card_x_positions = []
+        self.deck.shuffle()
+        self.player_hand.clear()
+        self.enemy_hand.clear()
+        self.reveal_buff_counter = 0
+        self.redraw_debuff_counter = 0
+        self.ace_effect_triggered = False
+        self.hedge_hog_time: bool = False
+        self.redraw_counter = True
+        self.fengus_magic_points = 3
 
-
+    def update(self, state: 'GameState'):
         controller = state.controller
         controller.update()
         state.player.update(state)
-
-        if self.cheater_bob_money < 10:
-            self.black_jack_thomas_defeated = True
-            self.game_state = "defeated"
-
-        if self.game_state == "defeated":
-            print("enemy defeated")
-            self.defeated_textbox.update(state)
-
-
-
-        if self.game_state == "welcome_screen":
-
-            if state.player.stamina_points < 1:
-                print("time to leave")
-            if self.cheater_bob_money < 10:
-                print("time to be gone wit you")
-                self.black_jack_thomas_defeated = True
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
-
-            self.welcome_screen_text_box.update(state)
-
-            self.npc_speaking = True
-            self.hero_speaking = False
-            self.food_luck = False
-
-
-            self.redraw_lock = False
-            self.ace_up_sleeve_jack_cheat_mode = False
-            self.bust_protection = False
-            self.avatar_of_luck_card_redraw_counter = 3
-            self.current_index = 0
-            self.enemy_score = 0
-
-
-
-            if self.welcome_screen_text_box.is_finished() and self.welcome_screen_text_box.current_message_finished():
-
-                self.npc_speaking = False
-                self.hero_speaking = True
-                # self.welcome_screen_text_box_hero.update(state)
-
-                # if self.welcome_screen_text_box_hero.is_finished():
-
-                if controller.isUpPressed:
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    if not hasattr(self, "welcome_screen_index"):
-                        self.welcome_screen_index = len(
-                            self.welcome_screen_choices) - 1
-                    else:
-                        self.welcome_screen_index -= 1
-                    self.welcome_screen_index %= len(
-                        self.welcome_screen_choices)
-                    controller.isUpPressed = False
-
-                elif controller.isDownPressed:
-                    self.menu_movement_sound.play()
-                    if not hasattr(self, "welcome_screen_index"):
-                        self.welcome_screen_index = len(
-                            self.welcome_screen_choices) + 1
-                    else:
-                        self.welcome_screen_index += 1
-
-                    self.welcome_screen_index %= len(
-                        self.welcome_screen_choices)
-                    controller.isDownPressed = False
-
-        elif self.game_state == "hero_is_desperate_state":
-            self.npc_speaking = False
-            self.hero_speaking = True
-            self.hero_losing_money_text.update(state)
-
-            self.hero_losing_text_state = True
-
-            if self.hero_losing_money_text.is_finished():
-                self.npc_speaking = True
-                self.hero_speaking = False
-                self.enemy_winning_money_text.update(state)
-                if self.enemy_winning_money_text.is_finished():
-                    self.npc_speaking = False
-                    self.hero_speaking = True
-                    self.hero_losing_confused_money_text.update(state)
-                    if self.hero_losing_confused_money_text.is_finished():
-                        self.game_state = "welcome_screen"
-
-        elif self.game_state == "enemy_is_desperate_state":
-            self.npc_speaking = True
-            self.hero_speaking = False
-            self.enemy_losing_money_text.update(state)
-
-            self.hero_winning_text_state = True
-
-            if self.enemy_losing_money_text.is_finished():
-                self.npc_speaking = False
-                self.hero_speaking = True
-                self.hero_winning_money_text.update(state)
-                if self.hero_winning_money_text.is_finished():
-                    self.npc_speaking = True
-                    self.hero_speaking = False
-                    self.enemy_losing_confused_money_text.update(state)
-                    if self.enemy_losing_confused_money_text.is_finished():
-                        self.game_state = "welcome_screen"
-
-        elif self.game_state == "bet_phase":
-
-            self.bet_screen_text.update(state)
-
-            self.npc_speaking = True
-            self.hero_speaking = False
-
-            self.third_message_display = " "
-            self.place_bet(state)
-            if self.bet_screen_text.current_message_finished():
-
-                if controller.isTPressed:
-                    if self.bet > 70:
-                        state.player.stamina_points -= 3
-                        print("-3")
-                    elif self.bet < 30:
-
-                        state.player.stamina_points -= 1
-
-                        print("-1")
-                    elif self.bet < 70 or self.bet > 20:
-                        state.player.stamina_points -= 2
-                        print("-2")
-
-                    pygame.time.wait(300)
-                    self.game_state = "draw_phase"
-                    controller.isTPressed = False
-
-        elif self.game_state == "draw_phase":
-
-            self.first_message_display = ""
-            self.second_message_display = ""
-            self.thrid_message_display = ""
-            self.black_jack_counter = 0
-            self.player_black_jack_win = False
-            self.enemy_black_jack_win = False
-            self.black_jack_draw = False
-            self.player_hand = self.deck.player_draw_hand(2)
-            print("Player hand is" + str(self.player_hand))
-            self.player_score = self.deck.compute_hand_value(self.player_hand)
-            print("Player score is: " + str(self.player_score))
-            if self.player_score > 20:
-                self.player_black_jack_win = True
-
-            if self.testing_low == True:
-                while self.player_score > 10:
-                    self.player_score = 0
-                    self.player_hand = []
-                    self.player_hand = self.deck.player_draw_hand(2)
-                    print("Player hand is" + str(self.player_hand))
-                    self.player_score = self.deck.compute_hand_value(self.player_hand)
-
-            print("YOur black jack player detecter is :  " + str(self.player_black_jack_win))
-            print("YOur black jack enemy detecter is :  " + str(self.enemy_black_jack_win))
-
-            # Check if the player has an ACE in their hand
-
-
-            aces_to_remove = [
-                ('Ace', 'Hearts', 11),
-                ('Ace', 'Spades', 11),
-                ('Ace', 'Diamonds', 11),
-                ('Ace', 'Clubs', 11),
-                ('Ace', 'Hearts', 1),
-                ('Ace', 'Spades', 1),
-                ('Ace', 'Diamonds', 1),
-                ('Ace', 'Clubs', 1),
-            ]
-
-            self.enemy_hand = self.deck.enemy_draw_hand(2)
-            print("Enemy hand is" + str(self.enemy_hand))
-            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-            print("enemy score is: " + str(self.enemy_score))
-            if self.enemy_score > 20:
-                self.enemy_black_jack_win = True
-            if self.food_luck == True:
-                while self.enemy_score > 15:
-                    print("Redrawing hand, score too high: " + str(self.enemy_score))
-                    # Empty the enemy_hand array
-                    self.enemy_hand = []
-                    # Draw a new hand
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    print("New enemy hand is: " + str(self.enemy_hand))
-                    # Compute the score of the new hand
-                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                    print("New enemy score is: " + str(self.enemy_score))
-            elif self.food_luck == False:
-                while self.enemy_score > 16 and self.enemy_score < 21:
-                    print("Redrawing hand, score too high: " + str(self.enemy_score))
-                    # Empty the enemy_hand array
-                    self.enemy_hand = []
-                    # Draw a new hand
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    # Compute the score of the new hand
-                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                    print("New enemy hand is: " + str(self.enemy_hand))
-                    print("New enemy score is: " + str(self.enemy_score))
-
-                    # Check if the new score is exactly 21, and if so, redraw
-                    if self.enemy_score == 21:
-                        print("Score is 21, redrawing to avoid giving the enemy a 21.")
-                        # Redraw logic here (similar to above, you might want to loop back or redraw immediately)
-                        self.enemy_hand = []
-                        self.enemy_hand = self.deck.enemy_draw_hand(2)
-                        self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                        print("After redrawing to avoid 21, new enemy hand is: " + str(self.enemy_hand))
-                        print("After redrawing to avoid 21, new enemy score is: " + str(self.enemy_score))
-
-
-            if "sir leopold's paw" in state.player.items:
-                roll = random.randint(1, 100)  # Get a random number between 1 and 100
-                if roll >= 30:  # Check if the roll is less than or equal to 30
-                    self.enemy_black_jack_win = False
-
-                    for card in self.enemy_hand:
-                        if card in aces_to_remove:
-                            self.enemy_hand.remove(card)
-                            print(f"Hedgehog swiped an Ace! Removed card: {card}")
-                            print("Your roll is: " + str(roll))
-                            self.sir_leopold_ace_attack.play()  # Play the sound effect once
-                            self.enemy_hand += self.deck.enemy_draw_hand(1)
-                            break
-
-            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-            print(self.player_black_jack_win)
-
-            if self.black_ace == True:
-                if self.enemy_score < 7:
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
-                    print("Enemy hand is" + str(self.enemy_hand))
-                    print("You get the sense the enemy is somewhat lucky")
-                    self.enemy_score = self.deck.compute_hand_value(
-                        self.enemy_hand)
-                    print("enemy score is: " + str(self.enemy_score))
-                    if self.black_jack_counter > 0:
-                        print("Enemy black jack win set to true")
-
-                        self.enemy_black_jack_win = True
-                    elif self.black_jack_counter == 0:
-                        self.enemy_black_jack_win = False
-
-                    print(self.player_black_jack_win)
-
-            if self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-                self.black_jack_draw = True
-                self.thrid_message_display = "Its a draw"
-                print("Its a draw 548")
-                self.game_state = "results_screen"
-
-            elif self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-
-                print("its time for you to have double winnings")
-                # state.player.money += self.bet
-                # state.player.money += self.bet
-                # self.cheater_bob_money -= self.bet
-                # self.cheater_bob_money -= self.bet
-                self.game_state = "results_screen"
-            elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                print("THE ENEMY HAS A BLAK Jack SORRRYYYYYY")
-                # state.player.money -= self.bet
-                # state.player.money -= self.bet
-                # self.cheater_bob_money += self.bet
-                # self.cheater_bob_money += self.bet
-
-                self.game_state = "results_screen"
-
-            else:
-                self.game_state = "menu_screen"
-
-
-
-        elif self.game_state == "player_draw_one_card":
-            self.player_hand += self.deck.player_draw_hand(1)
-            self.deck.compute_hand_value(self.player_hand)
-            self.player_score = self.deck.compute_hand_value(self.player_hand)
-
-            if self.player_score > 10:
-                print("hi greater than 10")
-                self.deck.rank_values["Ace"] = 1
-
-            print("Player hand is now" + str(self.player_hand))
-            print("Player score is now" + str(self.player_score))
-
-
-            if self.player_score > 21:
-                state.player.money -= self.bet
-                self.cheater_bob_money += self.bet
-                state.player.stamina_points -= 5
-                print("Going to bust a giant busttttttttter")
-
-
-                state.player.exp += 5
-                self.first_message_display = f"You lose -5 HP."
-                self.second_message_display = f"You busted and went over 21! You gain 5 exp and lose {self.bet} "
-
-            if self.bust_protection == True:
-                self.game_state = "results_screen"
-            else:
-                self.game_state = "menu_screen"
-
-        elif self.game_state == "enemy_draw_one_card":
-            print("this is the start of enemy draw one card")
-            current_time = pygame.time.get_ticks()
-
-            while self.enemy_score < 13:  # this is 15 in order to make game a little easier
-                print("thi sis our while loop")
-
-
-
-                self.enemy_hand += self.deck.enemy_draw_hand(1)
-                self.deck.compute_hand_value(self.enemy_hand)
-                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print("enemy hand is now" + str(self.enemy_hand))
-                print("enemy score is now" + str(self.enemy_score))
-                self.game_state = "results_screen"
-
-                if self.enemy_score > 21:
-                    print("if the enemy is going to bust")
-                    state.player.money += self.bet
-                    self.cheater_bob_money -= self.bet
-                    print("enemy bust")
-                    state.player.exp += 12
-                    self.first_message_display = f"You gain 12 exp and lose {self.bet} gold "
-
-                    self.second_message_display = "enemy bust player wins"
-                    self.game_state = "results_screen"
-
-            if self.enemy_score > 12 and self.enemy_score < 22:
-                print("stay here")
-                self.game_state = "results_screen"
-
-        elif self.game_state == "enemy_despair_draw_one_card":
-            print("enemy is in despair")
-            while self.enemy_score < 14:  # this is 15 in order to make game a little easier
-                print("this is our despair loop")
-
-                self.enemy_hand += self.deck.enemy_draw_hand(1)
-                self.deck.compute_hand_value(self.enemy_hand)
-                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-                print("enemy hand is now" + str(self.enemy_hand))
-                print("enemy score is now" + str(self.enemy_score))
-                self.game_state = "results_screen"
-
-                if self.enemy_score > 21:
-                    print("if the enemy is going to bust")
-                    state.player.money += self.bet
-                    self.cheater_bob_money -= self.bet
-                    print("enemy bust")
-                    self.second_message_display = "enemy bust player wins"
-                    self.game_state = "results_screen"
-
-            if self.enemy_score > 14 and self.enemy_score < 22:
-                print("stay here")
-                self.game_state = "results_screen"
-
-
-
-
-        elif self.game_state == "menu_screen":
-
-            if self.player_score > 21:
-                self.message_display = "You bust and lose."
-                # state.player.money -= self.bet
-                # self.cheater_bob_money += self.bet
-                self.game_state = "results_screen"
-
-            if controller.isUpPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) - 1
-                else:
-                    self.current_index -= 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isUpPressed = False
-
-            if controller.isDownPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
-                if not hasattr(self, "current_index"):
-                    self.current_index = len(self.choices) + 1
-                else:
-                    self.current_index += 1
-                self.current_index %= len(self.choices)
-                print(self.choices[self.current_index])
-                controller.isDownPressed = False
-
-            if self.current_index == 2 and state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
-                print("Redrawing your hand")
-                self.player_hand = self.deck.player_draw_hand(
-                    2)  # no need to call self.player_hand.clear() befoe this, as we are already overriding it here
-                print("Player hand is" + str(self.player_hand))
-                print("Enemy hand is" + str(self.enemy_hand))
-                print("player card list is " + str(self.player_hand))
-                print("enemy card list is " + str(self.enemy_hand))
-                self.player_score = self.deck.compute_hand_value(
-                    self.player_hand)
-                self.avatar_of_luck_card_redraw_counter -= 1
-
-                if self.avatar_of_luck_card_redraw_counter < 1:
-                    self.redraw_lock = True
-
-                self.game_state = "menu_screen"
-                state.controller.isTPressed = False
-
-                # 534534543535353525532535353354
-
-        elif self.game_state == "magic_menu":
-
-            self.message_display = "Pick a magic spell and wreck havic. Press K to cast"
-
-            if controller.isUpPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) - 1
-                else:
-                    self.magic_menu_index -= 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isUpPressed = False
-
-            elif controller.isDownPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                # channel3 = pygame.mixer.Channel(3)
-                # sound3 = pygame.mixer.Sound("audio/Fotstep_Carpet_Right_3.mp3")
-                # channel3.play(sound3)
-                if not hasattr(self, "magic_menu_index"):
-                    self.magic_menu_index = len(self.magic_menu_selector) + 1
-                else:
-                    self.magic_menu_index += 1
-                self.magic_menu_index %= len(self.magic_menu_selector)
-                controller.isDownPressed = False
-
-
-            if self.magic_menu_index == 0:
-                self.reveal_magic_explain_component.update(state)
-
-                if controller.isTPressed:
-                    # channel3 = pygame.mixer.Channel(3)
-                    # sound3 = pygame.mixer.Sound("audio/SynthChime5.mp3")
-                    # channel3.play(sound3)
-                    if state.player.focus_points >= 10:
-
-                        state.player.focus_points -= 10
-                        self.spell_sound.play()  # Play the sound effect once
-
-
-                        self.reveal_hand = 10
-                        self.reveal_debuff = True
-                        self.reveal_debuff_counter = 10
-                        self.magic_lock = True
-                        self.player_status = "Focus"
-                        self.enemy_status = "Reveal"
-                        self.isTPressed = False
-
-                        print("You cast reveal")
-                        self.game_state = "welcome_screen"
-
-
-                    elif state.player.focus_points < 10:
-                        self.third_message_display = "Sorry but you dont have enough focus points to cast"
-
-
-            elif self.magic_menu_index == 1:
-                self.back_magic_explain_component.update(state)
-
-                if controller.isTPressed:
-                    print(str(controller.isTPressed))
-                    controller.isTPressed = False
-                    print(str(controller.isTPressed))
-
-
-                    self.game_state = "welcome_screen"
-                    self.isTPressed = False
-                    print(str(controller.isTPressed))
-
-
-
-        elif self.game_state == "results_screen":
-
-            if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-                if self.bet <= 50:
-                    self.first_message_display = f"Gain 10 exp and win {self.bet * 2} gold "
-
-                else:
-                    self.first_message_display = f"Gain 25 exp and win {self.bet * 2} gold "
-
-
-                self.second_message_display = "You win with a black jack press T when ready"
-                print("<<<<????????????>>>>" + str(state.player.exp))
-
-
-
-
-            elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-                if self.bet <= 50:
-
-                    self.first_message_display = f"You gain 10 exp, 0 gold, you lose 5 HP. "
-
-                else:
-                    self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
-
-                self.second_message_display = "It's a draw press T when ready"
-                print("nd;>>>>>>>>>>>>>>;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
-
-            elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                if self.bet <= 50:
-
-                    self.first_message_display = f"You gain 10 exp and lose {self.bet * 2} gold and -15 HP."
-                else:
-
-                    self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold and -25 HP."
-                self.second_message_display = "Enemy gets blackjack you lose "
-                print("nd;asasasasasasasss;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
-
-            elif self.player_score > self.enemy_score and self.player_score < 22:
-
-                if self.bet <= 50:
-                    self.first_message_display = f"You gain 5 exp and {self.bet} gold "
-                else:
-                    self.first_message_display = f"You gain 10 exp and {self.bet} gold "
-
-                self.second_message_display = "You win player press T when ready"
-
-
-
-
-
-            elif self.player_score < self.enemy_score and self.enemy_score < 22:
-
-                if self.bet <= 50:
-
-                    self.first_message_display = f"You gain 3 exp and lose {self.bet} gold and -4 HP"
-
-                else:
-
-                    self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
-
-                self.second_message_display = "You lose player press T when ready"
-
-
-
-
-
-            elif self.player_score == self.enemy_score:
-                if self.bet <= 50:
-
-                    self.first_message_display = f"You gain 8 exp and 0 gold, and lose -2 HP "
-
-                else:
-
-                    self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
-
-                self.second_message_display = "It's a draw nobody wins press T when Ready"
-                print("LINE 873 nd;3434343434343;aaaaaaaaaaaaa;fnlsnfsanf;" + str(state.player.exp))
-
-            if controller.isTPressed:
-
-                if self.player_black_jack_win == True and self.enemy_black_jack_win == False:
-
-                    if self.bet <= 50:
-                        state.player.exp += 10
-                        self.first_message_display = f"You land a critical!!! Gain 10 exp and win {self.bet * 2} gold "
-
-                    else:
-                        self.first_message_display = f"You land a critical!!! Gain 25 exp and win {self.bet * 2} gold "
-
-                        state.player.exp += 25
-
-                    self.second_message_display = "You win player press T when ready"
-                    if self.bet * 2 < self.cheater_bob_money:
-                        state.player.money += self.bet * 2
-                        self.cheater_bob_money -= self.bet * 2
-                    else:
-                        state.player.money += self.cheater_bob_money
-                        self.cheater_bob_money = 0
-                    print("LINE 891 nd;-0101010101010101010;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
-                elif self.player_black_jack_win == True and self.enemy_black_jack_win == True:
-                    if self.bet <= 50:
-                        state.player.exp += 10
-                        state.player.stamina_points -= 5
-                        self.first_message_display = f"You gain 10 exp, 0 gold, you lose 5 HP. "
-
-                    else:
-                        self.first_message_display = f"You gain 20 exp, 0 gold, you lose 10 HP. "
-
-                        state.player.exp += 20
-                        state.player.stamina_points -= 10
-
-
-
-
-                    self.second_message_display = "You tie player press T when ready"
-                    print("LINE 912 nd;LLLLLLLLLLlllll;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
-                elif self.player_black_jack_win == False and self.enemy_black_jack_win == True:
-                    if self.bet <= 50:
-                        state.player.exp += 10
-                        state.player.stamina_points -= 15
-                        self.first_message_display = f"You gain 10 exp and lose {self.bet * 2} gold."
-                        self.thrid_message_display = f"You Lose 25 HP "
-
-
-
-                    else:
-                        state.player.exp += 15
-                        state.player.stamina_points -= 25
-                        self.first_message_display = f"You gain 15 exp and lose {self.bet * 2} gold."
-                        self.thrid_message_display = f"You Lose 25 HP "
-
-
-                    self.second_message_display = "Enemy deals a CRITICAL HIT!!! "
-                    state.player.money -= self.bet * 2
-                    self.cheater_bob_money += self.bet * 2
-                    print("LINE 936 nd;3434343434343;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-                elif self.player_score > self.enemy_score and self.player_score < 22:
-                    if self.bet <= 50:
-                        state.player.exp += 5
-                        self.first_message_display = f"You gain 5 exp and {self.bet} gold "
-                    else:
-                        state.player.exp += 10
-                        self.first_message_display = f"You gain 10 exp and {self.bet} gold "
-
-                    self.second_message_display = "You win player press T when ready"
-
-                    state.player.money += self.bet
-                    self.cheater_bob_money -= self.bet
-
-                    print("LINE 952 nd;lsnjfl;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-                elif self.player_score < self.enemy_score and self.enemy_score < 22:
-                    if self.bet <= 50:
-                        state.player.exp += 3
-                        state.player.stamina_points -= 4
-                        self.first_message_display = f"You gain 3 exp and lose {self.bet} gold and -4 HP"
-
-                    else:
-                        state.player.exp += 5
-                        state.player.stamina_points -= 8
-                        self.first_message_display = f"You gain 5 exp and lose {self.bet} gold and -8 HP"
-
-                    self.second_message_display = "You lose player press T when ready"
-                    state.player.money -= self.bet
-                    self.cheater_bob_money += self.bet
-                    print("LINE 970 nd;bbbbbababab;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
-                elif self.player_score == self.enemy_score:
-
-                    if self.bet <= 50:
-                        state.player.exp += 4
-                        state.player.stamina_points -= 2
-                        self.first_message_display = f"You gain 8 exp and 0 gold, and lose -2 HP "
-
-                    else:
-                        state.player.exp += 8
-                        state.player.stamina_points -= 4
-                        self.first_message_display = f"You gain 8 exp and 0 gold, and lose -4 HP "
-
-                    self.second_message_display = "It's a draw nobody wins press T when Ready"
-
-                    print("LINE 989 adffdfeafe;snalfnsal;fnlsnfsanf;" + str(state.player.exp))
-
-
-
-
-                if self.reveal_hand < 11:
-                    self.reveal_hand -= 1
-
-                if self.reveal_hand == 0:
-                    print("Magic time")
-                    self.reveal_hand = 11
-                    self.magic_lock = False
-
-                if self.luck_of_jack < 7:
-                    self.luck_of_jack -= 1
-
-                if self.luck_of_jack == 0:
-                    print("Magic time")
-                    self.luck_of_jack = 6
-                    self.avatar_of_luck = False
-                    self.magic_lock = False
-
-                pygame.time.wait(300)
-                print("Hey there going to the welcome_screen")
-
-                self.game_state = "welcome_screen"
-                controller.isTPressed = False
-
-    def hand_to_str(self, hand) -> str:
-        msg = ""
-        i = 0
-        for card in hand:
-            if i > 0:
-                msg += ", "
-            msg += card[0] + " " + card[1]
-            i += 1
-        return msg
-
-    def draw(self, state: "GameState"):
-        # change to dealer image
-        # character_image = pygame.image.load("images/128by128.png")
-        # hero_image = pygame.image.load("images/hero.png")
-
-        state.DISPLAY.fill((0, 0, 51))
-
-        black_box = pygame.Surface((200 - 10, 180 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 235))
-
-        black_box = pygame.Surface((200 - 10, 45 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 195))
-
-        if state.player.money < 100:
-            text_color = (255, 0, 0)  # Red color
-        else:
-            text_color = (255, 255, 255)  # White color
-
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 250))
-
-        # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
-        #                               (255, 255, 255)), (37, 250))
-        if state.player.stamina_points < 20:
-            text_color = (255, 0, 0)  # Red color
-        else:
-            text_color = (255, 255, 255)  # White color
-
-        state.DISPLAY.blit(
-            self.font.render(f"HP: {state.player.stamina_points}", True,
-                             text_color), (37, 290))
-
-        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
-                                      (255, 255, 255)), (37, 330))
-        state.DISPLAY.blit(
-            self.font.render(f"Bet: {self.bet}", True, (255, 255, 255)),
-            (37, 370))
-
-        state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
-                     (37, 205))
-
-        black_box = pygame.Surface((200 - 10, 110 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 20))
-
-        black_box = pygame.Surface((200 - 10, 130 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 130 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 60))
-
-        state.DISPLAY.blit(self.font.render(f"Money: {self.cheater_bob_money}", True,
-                                      (255, 255, 255)), (37, 70))
-        state.DISPLAY.blit(self.font.render(f"Status: {self.enemy_status}", True,
-                                      (255, 255, 255)), (37, 110))
-
-        if self.reveal_hand < 11:
-            state.DISPLAY.blit(self.font.render(f"Score: {self.enemy_score}", True,
-                                          (255, 255, 255)),
-                         (37, 150))
-        elif self.reveal_hand > 10:
-            state.DISPLAY.blit(self.font.render(f"Score:", True, (255, 255, 255)),
-                         (37, 150))
-
-        state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
-                     (37, 30))
-
-        self.main_bordered_box.draw(state)
-        # state.DISPLAY.blit(character_image, (633, 15))
-        state.DISPLAY.blit(self.font.render(f"Cheater Bob", True, (255, 255, 255)),
-                     (625, 145))
-
-        # self.face_down_card((0,0))
-
-        if self.game_state == "welcome_screen":
-
-            if state.player.money < 1:
-                self.game_state = "game_over_no_money"
-            elif state.player.stamina_points < 1:
-                self.game_state = "game_over_no_stamina"
-            #
-            black_box = pygame.Surface((160 - 10, 180 - 10))
-            black_box.fill((0, 0, 0))
-            border_width = 5
-            white_border = pygame.Surface(
-                (160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(black_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border, (620, 235))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.welcome_screen_choices[0]}", True,
-                                 (255, 255, 255)),
-                (687, 260))
-
-            if self.magic_lock == False:
-
-                state.DISPLAY.blit(
-                    self.font.render(f"{self.welcome_screen_choices[1]}", True,
-                                     (255, 255, 255)),
-                    (687, 310))
-            elif self.magic_lock == True:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (680, 310))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.welcome_screen_choices[2]}", True,
-                                 (255, 255, 255)),
-                (687, 360))
-
-            if self.welcome_screen_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 255))
-
-                if state.controller.isTPressed and self.welcome_screen_text_box.is_finished():
-                    self.deck.shuffle()
-
-                    self.game_state = "bet_phase"
-                    state.controller.isTPressed = False
-
-
-
-            elif self.welcome_screen_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 305))
-                if state.controller.isTPressed and self.magic_lock == False:
-                    pygame.time.wait(300)
-                    self.game_state = "magic_menu"
-                    self.isTPressed = False
-
-
-
-            elif self.welcome_screen_index == 2:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 355))
-                if state.controller.isTPressed:
-                    print("Quit")
-                    state.player.canMove = True
-                    self.music_on = True
-                    self.reveal_hand = 11
-                    self.magic_lock = False
-
-                    state.currentScreen = state.gamblingAreaScreen
-                    state.gamblingAreaScreen.start(state)
-                    state.controller.isTPressed = False
-
-            self.welcome_screen_text_box.draw(state)
-            # self.welcome_screen_text_box_hero.draw(state)
-            # self.bordered_text_box.draw(state)
-
-        elif self.game_state == "defeated":
-            print("enemy defeated")
-            self.defeated_textbox.draw(state)
-            if self.defeated_textbox.message_index == 2:
-                print("moogles")
+        super().update(state)
+        # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
+
+
+        if self.money <= self.fengus_bankrupt:
+            state.currentScreen = state.area5RestScreen
+            state.area5RestScreen.start(state)
+            Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
+
+        try:
+            if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
+                self.magic_lock = True
+
+            elif self.reveal_buff_counter == self.reveal_end_not_active or self.redraw_debuff_counter == self.redraw_end_counter:
+                self.magic_lock = False
+
+        except AttributeError:
+            print("AttributeError: lucky_seven_buff_counter does not exist")
+            self.magic_lock = False
+        except TypeError:
+            print("TypeError: lucky_seven_buff_counter is not of the expected type")
+            self.magic_lock = False
+
+        if self.game_state == self.WELCOME_SCREEN:
+            if state.player.stamina_points <= 0:
+
+                self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
+            self.update_welcome_screen_update_logic(state, controller)
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+        elif self.game_state == self.FENGUS_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.FENGUS_CASTING_SPELL].update(state)
+            if state.controller.confirm_button:
+                self.fengus_magic_points -= 1
+                self.debuff_buff_luck_switch += 10
+                self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+            self.handle_level_up(state, state.controller)
+        elif self.game_state == self.BET_SCREEN:
+            self.update_bet_screen_helper(controller)
+            self.battle_messages[self.BET_MESSAGE].update(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.update_magic_menu(state)
+
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.update_draw_card_screen_logic(state)
+            self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
+            if state.controller.confirm_button:
+                self.round_reset()
+                state.player.exp += self.low_exp
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} "
+                                                                             f"money and gain {self.med_exp} experience points!"]
+            if state.controller.confirm_button:
+                self.round_reset()
+                state.player.exp += self.med_exp
+                state.player.money += self.bet * self.critical_multiplier
+                self.money -= self.bet * self.critical_multiplier
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
+        elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
+            if state.controller.confirm_button:
+                self.round_reset()
+                state.player.money -= self.bet * self.critical_multiplier
+                self.money += self.bet * self.critical_multiplier
+                state.player.exp += self.high_exp
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_ACTION_SCREEN:
+            self.update_player_action_logic(state, controller)
+            self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp}   experience points!"]
+            self.update_player_phase_win(state, controller)
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].messages = [f"You LOSE! You LOSE {self.bet} money and gain {self.low_exp}  experience points!"]
+            self.update_player_phase_lose(state, controller)
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
+            self.update_player_phase_draw(state, controller)
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            self.game_over_screen_level_5(state, controller)
+        elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
+
+            self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
+            if self.battle_messages[
+                self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
+                state.player.money -= 100
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
                 state.player.canMove = True
 
-                state.currentScreen = state.gamblingAreaScreen
-                state.gamblingAreaScreen.start(state)
+    def draw(self, state: 'GameState'):
+        super().draw(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
+        self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
+
+        if self.game_state == self.FENGUS_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.FENGUS_CASTING_SPELL].draw(state)
+        elif self.game_state == self.WELCOME_SCREEN:
+            self.draw_menu_selection_box(state)
+            self.draw_welcome_screen_box_info(state)
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
+        elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].draw(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box(state)
+
+        elif self.game_state == self.DRAW_CARD_SCREEN:
+            self.draw_draw_card_screen(state)
+            self.battle_messages[self.DRAW_CARD_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
+            self.draw_reveal_draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
+            self.draw_reveal_draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].draw(state)
+        elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
+            self.draw_reveal_draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_ACTION_SCREEN:
+            self.draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.draw_menu_selection_box(state)
+            self.draw_player_action_right_menu(state)
+            self.battle_messages[self.PLAYER_ACTION_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
+            self.draw_reveal_draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].draw(state)
+        elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
+            self.draw_reveal_draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].draw(state)
+        elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
+            self.draw_reveal_draw_hands(
+                player_hand=self.player_hand,
+                enemy_hand=self.enemy_hand,
+            )
+            self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].draw(state)
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            self.draw_game_over_screen_helper(state)
+
+        elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
+            self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].draw(state)
 
-        elif self.game_state == "hero_is_desperate_state":
-            self.hero_losing_money_text.draw(state)
-            self.enemy_winning_money_text.draw(state)
-            self.hero_losing_confused_money_text.draw(state)
-
-
-        elif self.game_state == "enemy_is_desperate_state":
-            self.enemy_losing_money_text.draw(state)
-            self.hero_winning_money_text.draw(state)
-            self.enemy_losing_confused_money_text.draw(state)
-
-
-        elif self.game_state == "bet_phase":
-            self.bet_screen_text.draw(state)
-
-            # self.current_speaker = "cheater bob"
-
-            # state.DISPLAY.blit(character_image, (23, 245))
-            # state.DISPLAY.blit(self.font.render(f"{self.current_speaker}", True, (255, 255, 255)), (155, 350))
-
-            state.DISPLAY.blit(self.font.render(f"Your Current bet:{self.bet}", True,
-                                          (255, 255, 255)), (50, 530))
-            state.DISPLAY.blit(self.font.render(f"v", True, (255, 255, 255)),
-                         (260, 550))
-            state.DISPLAY.blit(self.font.render(f"^", True, (255, 255, 255)),
-                         (257, 510))
-
-
-        elif self.game_state == "menu_screen":
-            player_card_x = 235
-            player_card_y = 195
-            enemy_card_x = 235
-            enemy_card_y = 15
-
-            for i, card in enumerate(self.player_hand):
-                if i == 4:  # Adjust for the 5th card, moving to the second row
-                    player_card_y = 305
-                    player_card_x = 235  # Start position for the second row
-                if len(self.player_hand) > 5 and i == 5:
-                    # For the 6th card and beyond, increment player_card_x normally
-                    player_card_y = 305
-                    player_card_x = 300  # Start position for the second row
-
-
-                self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
-
-                player_card_x += 75
-
-                # pygame.display.update()
-
-            # pygame.display.update()
-
-            for index, card in enumerate(self.enemy_hand):
-                if index == 0:
-                    self.deck.draw_card_face_down((enemy_card_x, enemy_card_y), state.DISPLAY)
-                else:
-                    self.deck.draw_card_face_up(card[1], card[0], (enemy_card_x, enemy_card_y), state.DISPLAY)
-                enemy_card_x += 75
-
-            black_box = pygame.Surface((160 - 10, 180 - 10))
-            black_box.fill((0, 0, 0))
-            border_width = 5
-            white_border = pygame.Surface(
-                (160 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(black_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border, (620, 235))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.choices[0]}", True, (255, 255, 255)),
-                (674, 260))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.choices[1]}", True, (255, 255, 255)),
-                (674, 310))
-
-            if self.avatar_of_luck == True and self.redraw_lock == False:
-                state.DISPLAY.blit(self.font.render("Redraw", True, (255, 255, 255)),
-                             (687, 360))
-
-            elif self.avatar_of_luck == False or self.redraw_lock == True:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (674, 360))
-            else:
-                state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)),
-                             (674, 360))
-
-            if self.current_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 255))
-                if state.controller.isTPressed:
-                    pygame.time.wait(300)
-
-                    print("code is broke right here")
-                    if self.despair == False:
-                        self.game_state = "enemy_draw_one_card"
-                    elif self.despair == True:
-                        self.game_state = "enemy_despair_draw_one_card"
-                    state.controller.isTPressed = False
-
-
-            elif self.current_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 305))
-                if state.controller.isTPressed:
-                    pygame.time.wait(300)
-                    print("Time to draw a card")
-                    self.game_state = "player_draw_one_card"
-                    self.isTPressed = False
-
-
-
-            elif self.current_index == 2:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (637, 355))
-
-                if state.controller.isTPressed and self.avatar_of_luck == True and self.redraw_lock == False:
-                    pygame.display.update()
-                    self.game_state = "menu_screen"
-
-
-
-        elif self.game_state == "magic_menu":
-
-
-            black_box = pygame.Surface((255, 215))
-            black_box_width = 160
-            black_box_height = 110
-            border_width = 5
-
-            # Calculate the size of the white border based on the black box size and border width
-            white_border_width = black_box_width + 2 * border_width
-            white_border_height = black_box_height + 2 * border_width
-
-            # Create the black box
-            black_box = pygame.Surface((black_box_width, black_box_height))
-            black_box.fill((0, 0, 0))
-
-            # Create the white border
-            white_border = pygame.Surface((white_border_width, white_border_height))
-            white_border.fill((255, 255, 255))
-
-            # Blit the black box onto the white border, positioned by the border width
-            white_border.blit(black_box, (border_width, border_width))
-
-            # Determine the position on the screen
-            position_x = 620 - 10  # Adjust the position as needed
-            position_y = 300 - 5   # Adjust the position as needed
-
-            # Blit the white-bordered black box onto the display
-            state.DISPLAY.blit(white_border, (position_x, position_y))
-
-
-            # Use the provided position variables
-            position_x = 620 - 20  # Adjust the position as needed
-            position_y = 300  # Adjust the position as needed
-
-            # Now, position the menu items relative to these coordinates
-            if self.magic_menu_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (position_x + 20, position_y + 10))  # Adjust offsets as needed
-
-                self.reveal_magic_explain_component.draw(state)
-
-            elif self.magic_menu_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render(f"->", True, (255, 255, 255)),
-                    (position_x + 20, position_y + 60))  # Adjust offsets as needed
-
-                self.back_magic_explain_component.draw(state)
-
-            # Position the magic menu selectors relative to the black box
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[0]}", True, (255, 255, 255)),
-                (position_x + 60, position_y + 15))  # Adjust offsets as needed
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.magic_menu_selector[1]}", True, (255, 255, 255)),
-                (position_x + 60, position_y + 65))  # Adjust offsets as needed
-
-
-
-
-        elif self.game_state == "game_over_no_money":
-
-            self.player_no_money.update(state)
-            self.player_no_money.draw(state)
-            if self.player_no_money.is_finished():
-                if state.controller.isTPressed:
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-
-
-        elif self.game_state == "game_over_no_stamina":
-            self.player_no_stamina.update(state)
-            self.player_no_stamina.draw(state)
-            if self.player_no_stamina.is_finished():
-                if state.controller.isTPressed:
-                    state.player.money -= 100
-                    if state.player.money < 1:
-                        state.currentScreen = state.gameOverScreen
-                        state.gameOverScreen.start(state)
-                    else:
-                        self.game_state = "welcome_screen"
-
-                        state.player.canMove = True
-                        state.start_area_to_rest_area_entry_point = True
-
-                        state.currentScreen = state.restScreen
-                        state.restScreen.start(state)
-                        state.player.stamina_points = 1
-
-            if state.player.money < 1:
-                self.game_state = "game_over_no_money"
-            elif state.player.stamina_points < 1:
-                self.game_state = "game_over_no_stamina"
-
-
-        elif self.game_state == "results_screen":
-            player_card_x = 235
-            player_card_y = 195
-            enemy_card_x = 235
-            enemy_card_y = 15
-
-            for i, card in enumerate(self.player_hand):
-                if i > 3:
-                    player_card_y = 305
-                    player_card_x = 235
-                self.deck.draw_card_face_up(card[1], card[0], (player_card_x, player_card_y), DISPLAY)
-
-                player_card_x += 75
-
-                # pygame.display.update()
-
-            # pygame.display.update()
-
-            for index, card in enumerate(self.enemy_hand):
-                self.deck.draw_card_face_up(card[1], card[0], (enemy_card_x, enemy_card_y), DISPLAY)
-
-                enemy_card_x += 75
-
-            state.DISPLAY.blit(self.font.render(f"{self.current_speaker}", True,
-                                          (255, 255, 255)), (155, 350))
-
-            state.DISPLAY.blit(
-                self.font.render(f"{self.second_message_display}", True,
-                                 (255, 255, 255)), (45, 450))
-            state.DISPLAY.blit(self.font.render(f"{self.first_message_display}", True,
-                                          (255, 255, 255)), (45, 500))
         pygame.display.flip()
+
+    def update_bet_screen_helper(self, controller):
+        min_bet = 50
+        max_bet = 200
+        if controller.up_button:
+            self.menu_movement_sound.play()
+            self.bet += min_bet
+        elif controller.down_button:
+            self.menu_movement_sound.play()
+            self.bet -= min_bet
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+
+        if controller.action_and_cancel_button:
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_player_phase_win(self, state, controller) -> None:
+
+        if controller.confirm_button:
+            state.player.money += self.bet
+            self.money -= self.bet
+            state.player.exp += self.low_exp
+            self.round_reset()
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_player_phase_lose(self, state, controller) -> None:
+        if controller.confirm_button:
+            self.round_reset()
+            state.player.money -= self.bet
+            self.money += self.bet
+            state.player.exp += self.low_exp
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_draw_card_screen_logic(self, state: 'GameState'):
+        luck_muliplier = 5
+        lucky_roll = random.randint(1, 100)
+        player_bad_score_min_range = 12
+        player_bad_score_max_range = 17
+        level_1_luck_score = 0
+        lucky_strike_threshhold = 75
+        initial_hand = 2
+        if self.debuff_buff_luck_switch == 0:
+            adjusted_lucky_roll = lucky_roll + self.luck_bonus
+        elif self.debuff_buff_luck_switch > 0:
+            adjusted_lucky_roll = 0
+        if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
+            self.player_hand = self.deck.player_draw_hand(2)
+            if self.debuff_buff_luck_switch == 0:
+                self.enemy_hand = self.deck.enemy_draw_hand(2)
+            elif self.debuff_buff_luck_switch > 0:
+                lucky_enemy_roll = random.randint(1, 100)
+                lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
+                ace_card = None
+                ten_card = None
+                print("Lucky roll strike is" + str(lucky_enemy_strike))
+                if lucky_enemy_strike >= 100:
+                    for card in self.deck.cards:
+                        if card[0] == "Ace" and ace_card is None:
+                            ace_card = card
+                        elif card[2] == 10 and ten_card is None:
+                            ten_card = card
+                        if ace_card and ten_card:
+                            break
+                    self.enemy_hand = [ace_card, ten_card]
+                else:
+                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+
+            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+            if state.player.luck > level_1_luck_score:
+                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                    if adjusted_lucky_roll >= lucky_strike_threshhold:
+                        self.lucky_strike.play()
+                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                            self.player_hand = self.deck.player_draw_hand(initial_hand)
+                            self.player_score = self.deck.compute_hand_value(self.player_hand)
+                            self.critical_hit = True
+                            print("LINE 715 MAYBE THE ERROR IS HERE")
+
+    def update_player_phase_draw(self, state, controller) -> None:
+        if controller.confirm_button:
+            self.round_reset()
+            state.player.exp += self.low_exp
+            self.game_state = self.WELCOME_SCREEN
+
+    def update_magic_menu(self, state: "GameState"):
+        selected_choice = self.magic_screen_choices[self.magic_menu_index]
+
+        if selected_choice == Magic.REVEAL.value:
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif selected_choice == Magic.BLACK_JACK_REDRAW.value:
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif selected_choice == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].reset()
+
+        controller = state.controller
+
+        if controller.action_and_cancel_button:
+            self.game_state = self.WELCOME_SCREEN
+            self.magic_menu_index = 0
+
+        if controller.up_button:
+            self.menu_movement_sound.play()
+            self.magic_menu_index = (self.magic_menu_index - self.index_stepper) % len(self.magic_screen_choices)
+        elif controller.down_button:
+            self.menu_movement_sound.play()
+            self.magic_menu_index = (self.magic_menu_index + self.index_stepper) % len(self.magic_screen_choices)
+
+        if controller.confirm_button:
+            if (Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices
+                    and self.magic_menu_index
+                    == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value)):
+                if state.player.focus_points >= self.redraw_cast_cost:
+                    self.redraw_debuff_counter = self.redraw_start_counter
+                    self.spell_sound.play()
+                    state.player.focus_points -= self.redraw_cast_cost
+                    self.magic_lock = True
+                    self.magic_menu_index = 0
+                    self.game_state = self.WELCOME_SCREEN
+            elif (Magic.REVEAL.value in self.magic_screen_choices
+                  and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value)):
+                if state.player.focus_points >= self.reveal_cast_cost:
+                    self.reveal_buff_counter = self.reveal_start_counter + state.player.mind
+                    self.spell_sound.play()
+                    state.player.focus_points -= self.reveal_cast_cost
+                    self.magic_lock = True
+                    self.magic_menu_index = 0
+                    self.game_state = self.WELCOME_SCREEN
+
+            elif self.magic_screen_choices[self.magic_menu_index] == "back":
+                self.magic_menu_index = 0
+                self.game_state = self.WELCOME_SCREEN
+
+
+
+    def update_player_action_logic(self, state: "GameState", controller):
+        card_max = 3
+        max_before_bust = 21
+
+        if controller.up_button:
+            self.menu_movement_sound.play()
+            self.player_action_phase_index = (self.player_action_phase_index
+                                              - self.move_index_by_1) % len(self.player_action_phase_choices)
+        elif controller.down_button:
+            self.menu_movement_sound.play()
+            self.player_action_phase_index = (self.player_action_phase_index
+                                              + self.move_index_by_1) % len(self.player_action_phase_choices)
+        elif state.controller.confirm_button:
+            if self.player_action_phase_index == self.player_action_phase_play_index:
+                state.player.stamina_points -= self.low_stamina_drain
+                while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
+                    if self.enemy_score < self.player_score:
+                        self.animate_face_down_card(state, len(self.enemy_hand))
+                    else:
+                        break
+                if self.player_score == self.enemy_score:
+                    self.game_state = self.PLAYER_ENEMY_DRAW_ACTION_SCREEN
+                elif self.enemy_score > max_before_bust:
+                    self.game_state = self.PLAYER_WIN_ACTION_SCREEN
+                elif self.enemy_score > self.player_score:
+                    self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+                elif self.enemy_score < self.player_score:
+                    self.game_state = self.PLAYER_WIN_ACTION_SCREEN
+
+            if (self.player_action_phase_index == self.player_action_phase_draw_index
+                    and len(self.player_hand) <= card_max):
+                self.animate_face_down_card_player(state, len(self.player_hand))
+                if self.player_score > max_before_bust:
+                    if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
+                        if self.player_score > max_before_bust:
+                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+                    elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
+
+                        lucky_roll = random.randint(1, 100) + self.spirit_bonus
+
+                        if lucky_roll >= self.LEVEL_4_PERCENTAGE_CHANCE:
+                            self.player_hand.pop()
+                            self.player_score = self.deck.compute_hand_value(self.player_hand)
+                            self.lucky_strike.play()
+
+                        else:
+                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+
+            redraw_roll = random.randint(1, 100) + self.magic_bonus
+
+            if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
+                    and self.redraw_counter == True and redraw_roll > self.LEVEL_4_PERCENTAGE_CHANCE):
+                self.enemy_hand.pop(1)
+                new_card = self.deck.enemy_draw_hand(1)[0]
+                self.enemy_hand.insert(1, new_card)
+                self.redraw_counter = False
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            if redraw_roll < self.LEVEL_4_PERCENTAGE_CHANCE:
+                self.redraw_counter = False
+
+
+    def animate_face_down_card_player(self, state, card_index):
+        initial_y_position = 0
+        target_y_position = 300
+        x_position = 250 + card_index * 75
+        card_speed = 5
+
+        while initial_y_position < target_y_position:
+            self.draw(state)
+            initial_y_position += card_speed
+            if initial_y_position >= target_y_position:
+                initial_y_position = target_y_position
+                break
+
+            self.deck.draw_card_face_down((x_position, initial_y_position), state.DISPLAY)
+            pygame.display.flip()
+            pygame.time.delay(30)
+
+        new_card = self.deck.player_draw_hand(1)[0]
+
+        self.deck.draw_card_face_up(new_card[1], new_card[0],
+                                    (x_position, target_y_position), state.DISPLAY)
+        self.player_hand.append(new_card)
+        self.player_score = self.deck.compute_hand_value(self.player_hand)
+
+    def update_welcome_screen_update_logic(self, state: 'GameState', controller):
+
+
+
+        if state.player.money <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
+
+
+        if controller.confirm_button:
+            if self.welcome_screen_index == self.welcome_screen_play_index:
+                self.game_state = self.DRAW_CARD_SCREEN
+            elif (self.welcome_screen_index == self.welcome_screen_magic_index
+                  and self.magic_lock == False):
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_bet_index:
+                self.game_state = self.BET_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_quit_index:
+
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
+                state.player.canMove = True
+
+    def initialize_music(self):
+        pass
+
+
+
+    def animate_face_down_card(self, state, card_index):
+        initial_y_position = 0
+        target_y_position = 50
+        x_position = 250 + card_index * 75
+        card_speed = 3
+
+        while initial_y_position < target_y_position:
+            self.draw(state)
+            initial_y_position += card_speed
+
+            if initial_y_position >= target_y_position:
+                initial_y_position = target_y_position
+                break  # Exit the loop when the card reaches its target
+
+            self.deck.draw_card_face_down((x_position, initial_y_position), state.DISPLAY)
+            pygame.display.flip()
+            pygame.time.delay(30)
+
+        new_card = self.deck.enemy_draw_hand(1)[0]  # Get the single card drawn
+        self.deck.draw_card_face_up(new_card[1], new_card[0], (x_position,
+                                                               target_y_position), state.DISPLAY)
+        pygame.display.flip()
+        self.enemy_hand.append(new_card)
+        self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+
+    def draw_reveal_draw_hands(self, player_hand: list, enemy_hand: list):
+        initial_x_position = 250
+        player_target_y_position = 300
+        enemy_target_y_position = 50
+        move_card_x = 75
+        deck = self.deck
+        display = DISPLAY
+
+        for i, card in enumerate(player_hand):
+            player_x_position = initial_x_position + i * move_card_x
+            player_y_position = player_target_y_position
+            deck.draw_card_face_up(card[1], card[0], (player_x_position, player_y_position), display)
+
+        for i, card in enumerate(enemy_hand):
+            enemy_x_position = initial_x_position + i * move_card_x
+            enemy_y_position = enemy_target_y_position
+            deck.draw_card_face_up(card[1], card[0], (enemy_x_position, enemy_y_position), display)
+
+    def draw_hands(self, player_hand: list, enemy_hand: list):
+        initial_x_position = 250
+        player_target_y_position = 300
+        enemy_target_y_position = 50
+        move_card_x = 75
+        flip_y_position = 145
+        deck = self.deck
+        display = DISPLAY
+
+        for i, card in enumerate(player_hand):
+            player_x_position = initial_x_position + i * move_card_x
+            player_y_position = player_target_y_position
+
+            if i == 1 and player_y_position >= flip_y_position:
+                deck.draw_card_face_up(card[1], card[0], (player_x_position,
+                                                          player_y_position), display)
+            else:
+                deck.draw_card_face_up(card[1], card[0], (player_x_position,
+                                                          player_y_position), display)
+
+        for i, card in enumerate(enemy_hand):
+            enemy_x_position = initial_x_position + i * move_card_x
+            enemy_y_position = enemy_target_y_position
+
+            if i == 0:
+                deck.draw_card_face_down((enemy_x_position, enemy_y_position), display)
+            else:
+                deck.draw_card_face_up(card[1], card[0], (enemy_x_position, enemy_y_position), display)
+
+
+
+    def draw_draw_card_screen(self, state: 'GameState'):
+        card_one = 0
+        card_two = 1
+        initial_x_position = 250
+        initial_y_position = 1
+        player_target_y_position = 300
+        enemy_target_y_position = 50
+        move_card_x = 75
+        card_speed = 3
+        flip_y_position = 145
+
+        if len(self.player_hand) == card_one or len(self.enemy_hand) == card_one:
+            print("Error: player_hand or enemy_hand is empty.")
+            return
+
+        if (not hasattr(self, 'player_card_y_positions') or len(self.player_card_y_positions)
+                != len(self.player_hand)):
+            self.player_card_y_positions = [initial_y_position] * len(self.player_hand)
+            self.player_card_x_positions = [initial_x_position + i * move_card_x
+                                            for i in range(len(self.player_hand))]
+
+        if (not hasattr(self, 'enemy_card_y_positions') or len(self.enemy_card_y_positions)
+                != len(self.enemy_hand)):
+            self.enemy_card_y_positions = [initial_y_position] * len(self.enemy_hand)
+            self.enemy_card_x_positions = [initial_x_position + i * move_card_x
+                                           for i in range(len(self.enemy_hand))]
+
+        all_player_cards_dealt = True
+        for i, card in enumerate(self.player_hand):
+            if self.player_card_y_positions[i] < player_target_y_position:
+                self.player_card_y_positions[i] += card_speed
+                if self.player_card_y_positions[i] > player_target_y_position:
+                    self.player_card_y_positions[i] = player_target_y_position
+
+                if i == 1 and self.player_card_y_positions[i] >= flip_y_position:
+                    self.deck.draw_card_face_up(card[1], card[0],
+                                                (self.player_card_x_positions[i],
+                                                 self.player_card_y_positions[i]), DISPLAY)
+                else:
+                    self.deck.draw_card_face_down((self.player_card_x_positions[i],
+                                                   self.player_card_y_positions[i]), DISPLAY)
+
+                all_player_cards_dealt = False
+                return
+
+            self.deck.draw_card_face_up(card[card_two], card[card_one], (self.player_card_x_positions[i], self.player_card_y_positions[i]), DISPLAY)
+
+        if all_player_cards_dealt:
+            for i, card in enumerate(self.enemy_hand):
+                if self.enemy_card_y_positions[i] < enemy_target_y_position:
+                    self.enemy_card_y_positions[i] += card_speed
+                    if self.enemy_card_y_positions[i] > enemy_target_y_position:
+                        self.enemy_card_y_positions[i] = enemy_target_y_position
+
+                    self.deck.draw_card_face_down((self.enemy_card_x_positions[i], self.enemy_card_y_positions[i]), DISPLAY)
+                    return
+
+                if i == card_one:
+                    self.deck.draw_card_face_down((self.enemy_card_x_positions[i],
+                                                   self.enemy_card_y_positions[i]), DISPLAY)
+                else:
+                    self.deck.draw_card_face_up(card[card_two], card[card_one],
+                                                (self.enemy_card_x_positions[i],
+                                                 self.enemy_card_y_positions[i]), DISPLAY)
+
+        for i, card in enumerate(self.player_hand):
+            self.deck.draw_card_face_up(card[card_two], card[card_one],
+                                        (self.player_card_x_positions[i],
+                                         self.player_card_y_positions[i]), DISPLAY)
+
+        for i, card in enumerate(self.enemy_hand):
+            if i == 0:
+                self.deck.draw_card_face_down((self.enemy_card_x_positions[i],
+                                               self.enemy_card_y_positions[i]), DISPLAY)
+            else:
+                self.deck.draw_card_face_up(card[card_two], card[card_one],
+                                            (self.enemy_card_x_positions[i],
+                                             self.enemy_card_y_positions[i]), DISPLAY)
+
+        # level 5 remove this and put in update no idea why its in draw
+        sir_leopold_steal_roll = random.randint(1, 100) + self.spirit_bonus
+        if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items and sir_leopold_steal_roll > self.LEVEL_4_PERCENTAGE_CHANCE:
+            if (len(self.enemy_hand) > 1 and self.enemy_hand[1][0]
+                    == "Ace" and not self.ace_effect_triggered):
+                if self.ace_detected_time is None:
+                    self.ace_detected_time = pygame.time.get_ticks()
+
+            if self.ace_detected_time is not None:
+                current_time = pygame.time.get_ticks()
+                elapsed_time = current_time - self.ace_detected_time
+                if elapsed_time >= 1200:
+                    self.enemy_hand.pop(1)
+                    new_card = self.deck.enemy_draw_hand(1)[0]
+                    self.enemy_hand.insert(1, new_card)
+                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+
+                    self.ace_effect_triggered = True
+                    self.ace_detected_time = None
+                else:
+                    return
+
+        if self.player_score == 21 and self.enemy_score == 21:
+            self.game_state = self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN
+            return
+
+        self.hedge_hog_time = True
+
+        if self.player_score == 21 and self.hedge_hog_time:
+            self.game_state = self.PLAYER_BLACK_JACK_SCREEN
+            return
+
+        if self.enemy_score == 21 and self.hedge_hog_time:
+
+            self.game_state = self.ENEMY_BLACK_JACK_SCREEN
+            return
+
+        else:
+            self.game_state = self.PLAYER_ACTION_SCREEN
+
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
+
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        if Magic.REVEAL.value not in state.player.magicinventory:
+            self.magic_lock = True
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif Magic.REVEAL.value in state.player.magicinventory:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+                 + arrow_y_coordinate_padding_play)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+                 + arrow_y_coordinate_padding_magic)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+                 + arrow_y_coordinate_padding_bet)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box
+                 + arrow_y_coordinate_padding_quit)
+            )
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
+        enemy_name_y_position = 33
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+        score_header = "Score"
+
+        state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE),
+                           (player_enemy_box_info_x_position, enemy_name_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}",
+                                            True, WHITE),
+                           (player_enemy_box_info_x_position, enemy_money_y_position))
+        if (self.reveal_buff_counter == self.reveal_end_not_active and self.redraw_debuff_counter
+                == self.reveal_end_counter):
+            state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE),
+                               (player_enemy_box_info_x_position, enemy_status_y_position))
+        elif self.reveal_buff_counter > self.reveal_end_not_active:
+            state.DISPLAY.blit(self.font.render(f"{self.REVEAL}: {self.reveal_buff_counter} ",
+                                                True, WHITE), (player_enemy_box_info_x_position,
+                                                               enemy_status_y_position))
+            state.DISPLAY.blit(self.font.render(f" {score_header}: {self.enemy_score} ",
+                                                True, WHITE),
+                               (player_enemy_box_info_x_position_score, score_y_position))
+
+        elif self.redraw_debuff_counter > self.redraw_end_counter:
+            state.DISPLAY.blit(self.font.render(f"{self.REDRAW}:"
+                                                f" {self.redraw_debuff_counter} ",
+                                                True, WHITE), (player_enemy_box_info_x_position,
+                                                               enemy_status_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}",
+                                            True, WHITE),
+                           (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}",
+                                            True, WHITE), (player_enemy_box_info_x_position,
+                                                           player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}",
+                                            True, WHITE), (player_enemy_box_info_x_position,
+                                                           hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: "
+                                            f"{state.player.focus_points}",
+                                            True, WHITE), (player_enemy_box_info_x_position,
+                                                           hero_focus_y_position))
+
+        if self.lock_down <= self.lock_down_inactive:
+            state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}",
+                                                True, WHITE), (player_enemy_box_info_x_position,
+                                                               hero_name_y_position))
+        elif self.lock_down > self.lock_down_inactive:
+            state.DISPLAY.blit(self.font.render(f"{self.LOCKED_DOWN_HEADER}:{self.lock_down}",
+                                                True, RED), (player_enemy_box_info_x_position,
+                                                             hero_name_y_position))
+
+    def draw_magic_menu_selection_box(self, state):
+        selected_choice = self.magic_screen_choices[self.magic_menu_index]
+
+        if selected_choice == Magic.REVEAL.value:
+            self.battle_messages[self.MAGIC_MENU_REVEAL_DESCRIPTION].draw(state)
+        elif selected_choice == Magic.BLACK_JACK_REDRAW.value:
+            self.battle_messages[self.MAGIC_MENU_REDRAW_DESCRIPTION].draw(state)
+        elif selected_choice == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        # if (Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory
+        #         and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices):
+        #     self.magic_screen_choices.insert(1, Magic.BLACK_JACK_REDRAW.value)
+
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use dynamic spacing
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        arrow_y_coordinate = start_y_right_box + self.magic_menu_index * choice_spacing
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_coordinate + text_y_offset)  # Align arrow with the text
+        )
+
+    def draw_player_action_right_menu(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_center = 10
+        player_hand_max = 4
+        draw_option = 1
+
+
+        if (self.redraw_debuff_counter > self.redraw_end_counter
+                and Magic.BLACK_JACK_REDRAW.value not in self.player_action_phase_choices):
+            self.player_action_phase_choices.insert(2, Magic.BLACK_JACK_REDRAW.value)
+
+        if (self.redraw_debuff_counter <= self.redraw_end_counter
+                and Magic.BLACK_JACK_REDRAW.value in self.player_action_phase_choices):
+            self.player_action_phase_choices.remove(Magic.BLACK_JACK_REDRAW.value)
+
+        for idx, choice in enumerate(self.player_action_phase_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+
+            if choice == Magic.BLACK_JACK_REDRAW.value and self.redraw_counter == False:
+                rendered_choice = self.font.render(choice, True, RED)
+            else:
+                rendered_choice = self.font.render(choice, True, WHITE)
+
+            if (choice == self.player_action_phase_choices[draw_option]
+                    and len(self.player_hand) == player_hand_max):
+                rendered_draw = self.font.render(choice, True, RED)
+            else:
+                rendered_draw = self.font.render(choice, True, WHITE)
+
+            state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+            state.DISPLAY.blit(rendered_draw, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+
+        arrow_y_coordinate = arrow_center + start_y_right_box + self.player_action_phase_index * spacing_between_choices
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
+        )
+
+    def draw_game_over_screen_helper(self, state: 'Gamestate'):
+        self.blit_message_x: int = 65
+        self.blit_message_y: int = 460
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        elif state.player.stamina_points <= no_stamina_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+

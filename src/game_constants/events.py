@@ -36,9 +36,15 @@ class Events(Enum):
     SPIRIT_TWO_ALICE_QUEST = "Alice Invite"
     SPIRIT_TWO_ALICE_QUEST_FINISHED = "SPIRIT_TWO_ALICE_QUEST_FINISHED"
 
-    #
+
+
+
+    #------------------------------------------------------------------
     #below is for level 1
     COIN_FLIP_TED_DEFEATED = "COIN_FLIP_TED_DEFEATED"
+    COIN_FLIP_FRED_DEFEATED = "COIN_FLIP_FRED_DEFEATED"
+    OPOSSUM_IN_A_CAN_SALLY_DEFEATED = "OPOSSUM_IN_A_CAN_SALLY_DEFEATED"
+    BLACK_JACK_THOMAS_DEFEATED = "BLACK_JACK_THOMAS_DEFEATED"
     LEVEL_1_INN_KEY = "LEVEL_1_INN_KEY"
 
     # below is for level 3

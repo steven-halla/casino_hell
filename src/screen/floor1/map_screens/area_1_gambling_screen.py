@@ -5,6 +5,9 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_boss_door import Area1GamblingToBossDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_maze_door import Area1GamblingToMazeDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import Area1GamblingToRestDoor
+from entity.npc.area1.area_1_gamble_screen.black_jack_thomas import BlackJackThomas
+from entity.npc.area1.area_1_gamble_screen.coin_flip_fred import CoinFlipFred
+from entity.npc.area1.area_1_gamble_screen.opossum_in_a_can_sally import OpossumInACanSally
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
 from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
@@ -23,6 +26,7 @@ from entity.player.player import Player
 
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
 from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
@@ -96,6 +100,10 @@ class Area1GamblingScreen(Screen):
             Area1GamblingToRestDoor(16 * 30, 16 * 25),
             Area1GamblingToMazeDoor(16 * 45, 16 * 40),
             Area1GamblingToBossDoor(16 * 15, 16 * 25),
+            CoinFlipFred(16 * 5, 16* 5),
+            OpossumInACanSally(16 * 15, 16 * 5),
+            BlackJackThomas(16 * 25, 16 * 5),
+
 
         ]
 
