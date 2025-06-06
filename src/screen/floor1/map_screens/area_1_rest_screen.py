@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
 from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
@@ -31,16 +32,13 @@ class Area1RestScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.chili_pit_flag = False
         self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
         # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
-        self.powerpotiongotten = False
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
         self.player = Player(333, 555)
-        self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
         self.clock = pygame.time.Clock()  # Initialize the clock
@@ -72,7 +70,6 @@ class Area1RestScreen(Screen):
             player_start_y = 16 * 26
             state.player.setPosition(player_start_x, player_start_y)
         state.player.canMove = True
-        print(state.player.canMove)
 
 
         state.treasurechests = []
@@ -96,6 +93,7 @@ class Area1RestScreen(Screen):
             Area1InnKeeper(16 * 5, 16 * 5),  # fin
             CodyTalk(16 * 5, 16 * 20),
             Area1RestToIntroDoor(16 * 45, 16 * 40),
+            Area1RestToGamblingDoor(16 * 45, 16 * 30),
             # PatrickTalk(16 * 5, 16 * 35),
             # CoinFlipTed(16 * 25, 16 * 35),
 
@@ -104,7 +102,6 @@ class Area1RestScreen(Screen):
 
     def update(self, state: "GameState"):
         # In your update() function (or in a function that’s called every frame):
-        print(state.player.canMove)
 
 
 

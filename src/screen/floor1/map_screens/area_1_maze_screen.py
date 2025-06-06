@@ -3,8 +3,10 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
+from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
-from entity.npc.area1.area_1_start_screen.area_1_intro_to_rest_door import Area1IntroToRestDoor
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
@@ -26,11 +28,10 @@ from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumIn
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
-class Area1IntroScreen(Screen):
+class Area1MazeScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.chili_pit_flag = False
         self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
         # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
@@ -64,15 +65,12 @@ class Area1IntroScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
-        if state.start_new_game_entry_point == True:
+        if state.start_area_to_rest_area_entry_point == True:
             player_start_x = 16 * 33
             player_start_y = 16 * 26
             state.player.setPosition(player_start_x, player_start_y)
-        elif state.rest_area_to_start_area_entry_point == True:
-            player_start_x = 16 * 33  # Desired X coordinate
-            player_start_y = 16 * 4  # Desired Y coordinate
-            state.player.setPosition(player_start_x, player_start_y)
-            state.rest_area_to_start_area_entry_point = False
+        state.player.canMove = True
+
 
         state.treasurechests = []
         self.stop_music()
@@ -92,17 +90,19 @@ class Area1IntroScreen(Screen):
 
         state.npcs = [
 
-            AnnaQuest(16 * 5, 16 * 5),  # fin
-            MikeTalk(16 * 5, 16 * 20),
-            PatrickTalk(16 * 5, 16 * 35),
-            CoinFlipTed(16 * 25, 16 * 35),
-            Area1IntroToRestDoor(16 * 45, 16 * 35),
-            Area1InnKeeper(16 * 55, 16 * 35)
+            # Area1InnKeeper(16 * 5, 16 * 5),  # fin
+            # CodyTalk(16 * 5, 16 * 20),
+            # Area1RestToIntroDoor(16 * 45, 16 * 40),
+            # Area1RestToGamblingDoor(16 * 45, 16 * 30),
+            # PatrickTalk(16 * 5, 16 * 35),
+            # CoinFlipTed(16 * 25, 16 * 35),
+
 
         ]
 
     def update(self, state: "GameState"):
         # In your update() function (or in a function that’s called every frame):
+
 
 
         controller = state.controller
