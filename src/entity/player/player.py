@@ -141,6 +141,8 @@ class Player(Entity):
 
         self.slots_vest = False
 
+        self.current_stage = 1
+
 
 
 
@@ -159,6 +161,7 @@ class Player(Entity):
 
     def to_dict(self, state: "GameState") -> dict:
         return {
+            "current_stage": self.current_stage,
             "level": self.level,
             "exp": self.exp,
             "stamina_points": self.stamina_points,
@@ -2067,6 +2070,8 @@ class Player(Entity):
             state.player.level_five_npc_state = player_data['levelfivenpcstate']
             state.player.slots_vest = player_data['slots_vest']
 
+            state.player.current_stage = player_data['current_stage']
+
             state.player.level = player_data['level']
             state.player.exp = player_data['exp']
             state.player.stamina_points = player_data['stamina_points']
@@ -2145,8 +2150,25 @@ class Player(Entity):
 
             # Switch to the restScreen
             # state.currentScreen = state.restScreen
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
+            match self.current_stage:
+                case 1:
+                    state.currentScreen = state.area1RestScreen
+                    state.area1RestScreen.start(state)
+                case 2:
+                    state.currentScreen = state.area2RestScreen
+                    state.area2RestScreen.start(state)
+                case 3:
+                    state.currentScreen = state.area3RestScreen
+                    state.area3RestScreen.start(state)
+                case 4:
+                    state.currentScreen = state.area4RestScreen
+                    state.area4RestScreen.start(state)
+                case 5:
+                    state.currentScreen = state.area5RestScreen
+                    state.area5RestScreen.start(state)
+
+            # state.currentScreen = state.area5RestScreen
+            # state.area5RestScreen.start(state)
             # ... more stats as needed
 
             print("Game loaded successfully.")

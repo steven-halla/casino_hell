@@ -122,7 +122,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.exp_gain_high = 25
         self.exp_gain_low = 10
         self.exp_gain_medium = 20
-        self.money: int = 444
+        self.billybobMoney: int = 444
         self.peek_cost: int = 25
         self.buff_peek = False
         self.opossum_lock: bool = False

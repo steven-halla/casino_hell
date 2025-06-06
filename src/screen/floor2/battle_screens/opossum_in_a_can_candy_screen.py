@@ -16,7 +16,7 @@ class OpossumInACanCandyScreen(BattleScreen):
         self.third_message_display = ""
         self.debuff_keen_perception = False
         # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.sallyOpossumMoney = 1000
+        self.candyOpossumMoney = 1000
         self.money_minimum = 500
         self.quest_coins_needed = 500
         self.quest_money = -250

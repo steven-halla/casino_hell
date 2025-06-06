@@ -1,95 +1,57 @@
 {
     "level": 1,
+    "current_stage": 1,
     "exp": 0,
-    "stamina_points": 390,
-    "max_stamina_points": 390,
-    "focus_points": 200,
-    "max_focus_points": 200,
-    "companions": [
-        "sir leopold"
-    ],
-    "items": [
-        "sir leopold's paw",
-        "opossum repellent",
-        "coin flip glasses",
-        "Black Hat",
-        "Cool Shades",
-        "Nuggie Amulet",
-        "HEALTHY GLOVES",
-        "craps wrist watch",
-        "coin flip gloves"
-    ],
-    "equipped_items": [
-        "sir leopold's paw",
-        "Black Hat",
-        "coin flip gloves"
-    ],
-    "npcitems": [
-
-
-    ],
-    "magicinventory": [
-
-    ],
-    "body": 1,
-    "mind": 3,
-    "spirit": 1,
-    "perception": 1,
+    "stamina_points": 160,
+    "max_stamina_points": 160,
+    "focus_points": 10,
+    "max_focus_points": 10,
+    "companions": [],
+    "items": [],
+    "equipped_items": [],
+    "npcitems": [],
+    "magicinventory": [],
+    "body": 0,
+    "mind": 0,
+    "spirit": 0,
+    "perception": 0,
     "baseperception": 1,
-    "luck": 1,
-    "money": 5555,
+    "luck": 0,
+    "money": 700,
     "rabies": false,
-    "immunity": true,
-    "quest_items": [
-        "contract"
-
-    ],
+    "immunity": false,
+    "quest_items": [],
     "level3reward": false,
-    "food": 1,
-    "days": 10,
+    "food": 0,
+    "days": 1,
     "leveltwonpcstate": [],
     "levelonenpcstate": [],
-    "levelthreenpcstate": [
-
-    ],
-      "levelfournpcstate": [
-
-    ],
-      "levelfivenpcstate": [
-
-    ],
-
+    "levelthreenpcstate": [],
+    "levelfournpcstate": [],
+    "levelfivenpcstate": [],
     "slots_vest": false,
-    "cutscene1": true,
-    "cutscene2": true,
+    "cutscene1": false,
+    "cutscene2": false,
     "quest1complete": false,
-
-    "coinfliptedmoney": 300,
-    "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 0,
-    "coinflipdextermoney": 0,
-    "coinflipbonniemoney": 1000,
-
-    "opossumnellymoney": 0,
-    "opossumsallymoney": 0,
-    "opossuminacancandymoney": 0,
-    "opossuminacanbillybobmoney": 0,
-
-    "blackjackthomasmoney": 0,
-    "blackjackrumblebillmoney": 0,
-    "blackjackmackmoney": 0,
-    "blackjackalbertmoney": 0,
-
+    "coinfliptedmoney": 100,
+    "coinflipfredmoney": 1000,
+    "coinflipbetteymoney": 1000,
+    "coinflipdextermoney": 999,
+    "coinflipbonniemoney": 999,
+    "opossumnellymoney": 500,
+    "opossumsallymoney": 1000,
+    "opossuminacancandymoney": 1000,
+    "opossuminacanbillybobmoney": 444,
+    "blackjackthomasmoney": 500,
+    "blackjackrumblebillmoney": 900,
+    "blackjackmackmoney": 800,
+    "blackjackalbertmoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-
-    "slotsrippasnappamoney": 0,
-    "slotsbroganmoney": 0,
-
-    "crapscrappymoney": 0,
-    "crapsjunponmoney": 0,
-
-    "dicefightersirsiegfriedmoney": 0,
-
-    "highlowdienamoney": 0
+    "slotsrippasnappamoney": 1000,
+    "slotsbroganmoney": 1000,
+    "crapscrappymoney": 1000,
+    "crapsjunponmoney": 1000,
+    "dicefightersirsiegfriedmoney": 1000,
+    "highlowdienamoney": 1000
 }

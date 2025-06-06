@@ -24,7 +24,7 @@ class CoinFlipScreen(Screen):
         self.choice_sequence = True
         self.bet = 0
         self.font = pygame.font.Font(None, 36)
-        self.coinFlipTedMoney = 10
+        # self.coinFlipTedMoney = 10
         self.coinFlipTedDefeated = False
         self.win_exp = False
         self.lose_exp = False

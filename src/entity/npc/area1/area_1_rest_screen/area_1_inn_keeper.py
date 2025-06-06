@@ -9,8 +9,8 @@ from game_constants.events import Events
 class Area1InnKeeper(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
-        self.sleep_sound = pygame.mixear.Sound("./assets/music/02WhiteMagic.wav")  # Adjust the path as needed
-        self.sleep_sound.set_volume(0.3)
+        # self.sleep_sound = pygame.mixear.Sound("./assets/music/02WhiteMagic.wav")  # Adjust the path as needed
+        # self.sleep_sound.set_volume(0.3)
         self.selected_item_index = 0
         self.flipping_ted_messages = {
             "welcome_message": NpcTextBox(
@@ -99,7 +99,7 @@ class Area1InnKeeper(Npc):
                     state.player.quest_items.remove(Events.QUEST_1_BADGE.value)
 
 
-                self.sleep_sound.play()  # Play the sound effect once
+                # self.sleep_sound.play()  # Play the sound effect once
 
                 state.player.money -= 100
                 if state.player.enhanced_luck == True:
