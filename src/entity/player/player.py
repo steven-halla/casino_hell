@@ -1927,7 +1927,10 @@ class Player(Entity):
         pygame.draw.rect(state.DISPLAY, (255, 255, 255), pygame.Rect(box3_x, box3_y, box3_width, box3_height), border_thickness, border_radius=7)
 
     def show_magic_description(self, state):
-        if not self.magicinventory or self.magicinventory >= len(self.magicinventory):
+        # if not self.magicinventory or self.magicinventory >= len(self.magicinventory):
+        #     return
+
+        if not self.magicinventory or self.magic_inventory_index >= len(self.magicinventory):
             return
         # Define descriptions for each item
         descriptions = {
@@ -1965,6 +1968,8 @@ class Player(Entity):
 
         if not self.quest_items or self.quest_items_index >= len(self.quest_items):
             return  # Avoid accessing out of range
+
+
 
         current_item = self.quest_items[self.quest_items_index]
         # Define descriptions for each item
