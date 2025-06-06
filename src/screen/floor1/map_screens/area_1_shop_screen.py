@@ -9,6 +9,7 @@ from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import A
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
 from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
+from entity.npc.area1.area_1_shop_screen.area_1_shop_keeper import Area1ShopKeeper
 from entity.npc.area1.area_1_shop_screen.area_1_shop_to_rest_door import Area1ShopToRestDoor
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
@@ -96,6 +97,7 @@ class Area1ShopScreen(Screen):
         state.npcs = [
 
             Area1ShopToRestDoor(16 * 30, 16 * 25),
+            Area1ShopKeeper(16 * 11, 16 * 5),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
         ]
@@ -174,9 +176,9 @@ class Area1ShopScreen(Screen):
             npc.draw(state)  # Not skipping any
 
         # 2. Then draw only the dialog box for the talking one
-        for npc in state.npcs:
-            if npc.state == "talking":
-                npc.draw(state, only_dialog=True)
+        # for npc in state.npcs:
+        #     if npc.state == "talking":
+        #         npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)

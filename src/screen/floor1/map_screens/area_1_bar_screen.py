@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_bar_screen.area_1_bar_to_rest_door import Area1BarToRestDoor
+from entity.npc.area1.area_1_bar_screen.area_1_barkeep import Area1BarKeep
 from entity.npc.area1.area_1_boss_screen.area_1_boss_to_gambling_door import Area1BossToGamblingDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_maze_door import Area1GamblingToMazeDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import Area1GamblingToRestDoor
@@ -96,6 +97,7 @@ class Area1BarScreen(Screen):
 
             Area1BarToRestDoor(16 * 30, 16 * 25),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
+            Area1BarKeep(16 * 4, 16 * 5),
 
         ]
 
@@ -173,9 +175,9 @@ class Area1BarScreen(Screen):
             npc.draw(state)  # Not skipping any
 
         # 2. Then draw only the dialog box for the talking one
-        for npc in state.npcs:
-            if npc.state == "talking":
-                npc.draw(state, only_dialog=True)
+        # for npc in state.npcs:
+        #     if npc.state == "talking":
+        #         npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)
