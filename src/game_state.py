@@ -18,6 +18,7 @@ from screen.floor1.battle_screens.coin_flip_ted_screen import CoinFlipTedScreen
 from screen.floor1.battle_screens.demon_boss_screen import DemonBossScreen
 from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
 from screen.floor1.battle_screens.opossum_in_a_can_nelly_screen import OpossumInACanNellyScreen
+from screen.floor1.map_screens.area_1_bar_screen import Area1BarScreen
 from screen.floor1.map_screens.area_1_boss_screen import Area1BossScreen
 from screen.floor1.map_screens.area_1_gambling_screen import Area1GamblingScreen
 from screen.floor1.map_screens.area_1_intro_screen import Area1IntroScreen
@@ -251,6 +252,7 @@ class GameState:
         self.area1GamblingScreen = Area1GamblingScreen()
         self.area1MazeScreen = Area1MazeScreen()
         self.area1BossScreen = Area1BossScreen()
+        self.area1BarScreen = Area1BarScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
 

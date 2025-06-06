@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="new area + npcs + doors">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game_state.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_state.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/map_screens/area_1_gambling_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/map_screens/area_1_gambling_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -427,7 +425,7 @@
       <workItem from="1748634074224" duration="3302000" />
       <workItem from="1748961348423" duration="3737000" />
       <workItem from="1749173732722" duration="3231000" />
-      <workItem from="1749228540449" duration="5204000" />
+      <workItem from="1749228540449" duration="5573000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -772,7 +770,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1512" />
+    <option name="localTasksCounter" value="1513" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
