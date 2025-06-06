@@ -5,7 +5,7 @@ import time  # Import the time module
 from constants import PLAYER_OFFSET, BLUEBLACK
 from cut_scene_manager.cut_scene_movement import CutSceneMovement
 from entity.gui.textbox.npc_text_box import NpcTextBox
-from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
+from entity.npc.area2trash.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
 from entity.npc.battle_screen.Guy import Guy
 
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog
@@ -65,7 +65,7 @@ class Area2BarCutScene2(Screen):
                     "Sir Leopold: Why are you talking like that for, it's weird even for me.",
                     "Hero: You're free to join us still, but lets all agree to not eat each other.",
                     "Erika: Oh you two are the worst, fine I'll still join you. I'll even give you this amulet.",
-               
+
                     "It's the best companion item you can have, with a spirit of 2 you can equip it.",
                     "Most of the people should have new things to say, you may end up learning something new!"
 

@@ -1,10 +1,10 @@
 import math
 import pygame
 
-from entity.npc.area2.area_2_rib_demon_maze_screen.switch_1 import Switch1
-from entity.npc.area2.area_2_rib_demon_maze_screen.switch_2 import Switch2
-from entity.npc.area2.area_2_rib_demon_maze_screen.switch_4 import Switch4
-from entity.npc.area2.area_2_rib_demon_maze_screen.switch_5 import Switch5
+from entity.npc.area2trash.area_2_rib_demon_maze_screen.switch_1 import Switch1
+from entity.npc.area2trash.area_2_rib_demon_maze_screen.switch_2 import Switch2
+from entity.npc.area2trash.area_2_rib_demon_maze_screen.switch_4 import Switch4
+from entity.npc.area2trash.area_2_rib_demon_maze_screen.switch_5 import Switch5
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
 

@@ -5,7 +5,7 @@ import time  # Import the time module
 from constants import PLAYER_OFFSET, BLUEBLACK
 from cut_scene_manager.cut_scene_movement import CutSceneMovement
 from entity.gui.textbox.npc_text_box import NpcTextBox
-from entity.npc.area2.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
+from entity.npc.area2trash.area_2_nugget_screen.erika_chicken_girl import ErikaChickenGirl
 from entity.npc.battle_screen.Guy import Guy
 
 from entity.npc.chilli_screen.sir_leopold_the_hedgehog import SirLeopoldTheHedgeHog

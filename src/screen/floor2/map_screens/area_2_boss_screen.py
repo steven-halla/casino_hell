@@ -2,16 +2,16 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK, BLACK
-from entity.npc.area2.area_2_boss_screen.erika_boss import ErikaBoss
-from entity.npc.area2.area_2_boss_screen.erika_chicken_form import ErikaChickenForm
-from entity.npc.area2.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
-from entity.npc.area2.area_2_gambling_screen.black_jack_mack import BlackJackMack
-from entity.npc.area2.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
-from entity.npc.area2.area_2_gambling_screen.happy_craps import CrapsHappy
-from entity.npc.area2.area_2_gambling_screen.lunky import Lunky
-from entity.npc.area2.area_2_gambling_screen.nibblet import Nibblet
-from entity.npc.area2.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
-from entity.npc.area2.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
+from entity.npc.area2trash.area_2_boss_screen.erika_boss import ErikaBoss
+from entity.npc.area2trash.area_2_boss_screen.erika_chicken_form import ErikaChickenForm
+from entity.npc.area2trash.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
+from entity.npc.area2trash.area_2_gambling_screen.black_jack_mack import BlackJackMack
+from entity.npc.area2trash.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
+from entity.npc.area2trash.area_2_gambling_screen.happy_craps import CrapsHappy
+from entity.npc.area2trash.area_2_gambling_screen.lunky import Lunky
+from entity.npc.area2trash.area_2_gambling_screen.nibblet import Nibblet
+from entity.npc.area2trash.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
+from entity.npc.area2trash.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
 
 from entity.player.player import Player
 from screen.examples.screen import Screen
