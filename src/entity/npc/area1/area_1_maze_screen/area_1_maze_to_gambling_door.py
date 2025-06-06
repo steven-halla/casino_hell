@@ -14,7 +14,7 @@ from game_constants.magic import Magic
 # if you win 500 coins get a coin
 # if you win 500 coins from two games those coins become mega coin.
 # if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class Area1GamblingToMazeDoor(Npc):
+class Area1MazeToGamblingDoor(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -74,10 +74,10 @@ class Area1GamblingToMazeDoor(Npc):
         elif Events.LEVEL_1_INN_KEY.value in  state.player.level_one_npc_state:
             state.player.canMove = True
 
-            state.maze_area_to_gambling_area_entry_point = True
+            state.rest_area_to_gambling_area_entry_point = True
 
-            state.currentScreen = state.area1MazeScreen
-            state.area1MazeScreen.start(state)
+            state.currentScreen = state.area1GamblingScreen
+            state.area1GamblingScreen.start(state)
 
         # Lock the player in place while talking
         if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:

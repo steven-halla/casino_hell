@@ -93,7 +93,7 @@ class Area1GamblingScreen(Screen):
         state.npcs = [
 
             Area1GamblingToRestDoor(16 * 30, 16 * 25),
-            Area1GamblingToMazeDoor(16 * 45, 16 * 25),
+            Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
         ]
 

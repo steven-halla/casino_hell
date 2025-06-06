@@ -2,6 +2,10 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.area1.area_1_maze_screen.area_1_maze_to_gambling_door import Area1MazeToGamblingDoor
+from entity.npc.area1.area_1_maze_screen.hedge_knight_talk import HedgeKnightTalk
+from entity.npc.area1.area_1_maze_screen.hedge_maze_talk import HedgeMazeTalk
+from entity.npc.area1.area_1_maze_screen.hedge_stock_talk import HedgeStockTalk
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
@@ -92,11 +96,13 @@ class Area1MazeScreen(Screen):
 
             # Area1InnKeeper(16 * 5, 16 * 5),  # fin
             # CodyTalk(16 * 5, 16 * 20),
-            # Area1RestToIntroDoor(16 * 45, 16 * 40),
+            Area1MazeToGamblingDoor(16 * 45, 16 * 40),
             # Area1RestToGamblingDoor(16 * 45, 16 * 30),
             # PatrickTalk(16 * 5, 16 * 35),
             # CoinFlipTed(16 * 25, 16 * 35),
-
+            HedgeKnightTalk(16 * 10, 16 * 30),
+            HedgeMazeTalk(16 * 25, 16 * 30),
+            HedgeStockTalk(16 * 40, 16 * 30),
 
         ]
 
