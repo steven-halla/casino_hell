@@ -61,6 +61,7 @@ from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import Slot
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_1 import Area2BarCutScene1
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_2 import Area2BarCutScene2
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_3 import Area2BarCutScene3
+from screen.floor2.map_screens.area_2_bar_screen import Area2BarScreen
 from screen.floor2.map_screens.area_2_boss_screen import Area2BossScreen
 from screen.floor2.map_screens.area_2_boss_screen_after_reveal import Area2BossAfterRevealScreen
 from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
@@ -69,6 +70,7 @@ from screen.floor2.map_screens.area_2_rest_screen import Area2RestScreen
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen import Area2RibDemonMazeScreen
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen2 import Area2RibDemonMazeScreen2
 from screen.floor2.map_screens.area_2_rib_demon_maze_screen3 import Area2RibDemonMazeScreen3
+from screen.floor2.map_screens.area_2_shop_screen import Area2ShopScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlbertScreen
 from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
@@ -260,6 +262,11 @@ class GameState:
         self.coinFlipTedScreen = CoinFlipTedScreen()
 
 
+
+
+#-----------------------Below is AREA 2
+        self.area2ShopScreen = Area2ShopScreen()
+        self.area2BarScreen = Area2BarScreen()
 
 
 

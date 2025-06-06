@@ -2,19 +2,21 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_boss_door import Area1GamblingToBossDoor
+from entity.npc.area1.area_1_bar_screen.area_1_bar_to_rest_door import Area1BarToRestDoor
+from entity.npc.area1.area_1_boss_screen.area_1_boss_to_gambling_door import Area1BossToGamblingDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_maze_door import Area1GamblingToMazeDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import Area1GamblingToRestDoor
-from entity.npc.area1.area_1_gamble_screen.black_jack_thomas import BlackJackThomas
-from entity.npc.area1.area_1_gamble_screen.coin_flip_fred import CoinFlipFred
-from entity.npc.area1.area_1_gamble_screen.opossum_in_a_can_sally import OpossumInACanSally
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
 from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
+from entity.npc.area1.area_1_shop_screen.area_1_shop_keeper import Area1ShopKeeper
+from entity.npc.area1.area_1_shop_screen.area_1_shop_to_rest_door import Area1ShopToRestDoor
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
+from entity.npc.area2.area_2_shop_screen.area_2_shop_keeper import Area2ShopKeeper
+from entity.npc.area2.area_2_shop_screen.area_2_shop_to_rest_door import Area2ShopToRestDoor
 from entity.npc.area5.area_5_rest_screen.black_jack_fengus import BlackJackFengus
 from entity.npc.area5.area_5_rest_screen.coin_flip_wanton import CoinFlipWanton
 from entity.npc.area5.area_5_rest_screen.craps_wimpleton import CrapsWimpleton
@@ -26,7 +28,6 @@ from entity.player.player import Player
 
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-from screen.floor1.battle_screens.opossum_in_a_can_sally_screen import OpossumInACanSallyScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
 from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
@@ -34,7 +35,7 @@ from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumIn
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
-class Area1GamblingScreen(Screen):
+class Area2ShopScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -97,13 +98,9 @@ class Area1GamblingScreen(Screen):
 
         state.npcs = [
 
-            Area1GamblingToRestDoor(16 * 30, 16 * 25),
+            Area2ShopToRestDoor(16 * 30, 16 * 25),
+            Area2ShopKeeper(16 * 11, 16 * 5),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
-            Area1GamblingToBossDoor(16 * 15, 16 * 25),
-            CoinFlipFred(16 * 5, 16* 5),
-            OpossumInACanSally(16 * 15, 16 * 5),
-            BlackJackThomas(16 * 25, 16 * 5),
-
 
         ]
 
@@ -181,9 +178,9 @@ class Area1GamblingScreen(Screen):
             npc.draw(state)  # Not skipping any
 
         # 2. Then draw only the dialog box for the talking one
-        for npc in state.npcs:
-            if npc.state == "talking":
-                npc.draw(state, only_dialog=True)
+        # for npc in state.npcs:
+        #     if npc.state == "talking":
+        #         npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)
