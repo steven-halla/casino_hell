@@ -28,7 +28,7 @@ class BlackJackJaredScreen(Screen):
         self.game_state = "welcome_screen"
         self.bet = 10
 
-        self.cheater_bob_money = 300
+        self.cheater_bob_money = 1000
         self.blackJackToken = False
         self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)

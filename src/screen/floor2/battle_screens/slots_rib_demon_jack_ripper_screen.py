@@ -1,1447 +1,1055 @@
-import pygame
 import random
-from entity.gui.screen.battle_screen import BattleScreen
-from entity.gui.textbox.text_box import TextBox
+from typing import Dict, Tuple, List, Optional
+
+import pygame
+
+from constants import WHITE, BLACK, RED
+from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
-from globalclasses.exp_gain import ExpGain
-from globalclasses.game_over import GameOver
-from globalclasses.money_balancer import MoneyBalancer
-from screen.examples.screen import Screen
-from screen.floor2.map_screens.area_2_gambling_screen import Area2GamblingScreen
-from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 
+# spell: rib lock on : roll 6 times, take 25 damage per successful hit
+# i still need to make a new speical item
 
-
-class SlotsRippaSnappaScreen(BattleScreen):
-    def __init__(self) -> None:
-        super().__init__("Casino Slots Screen")
-
-        self.game_over = GameOver()  # Initialize GameOver
-
-
-        self.three_zeros: bool = False
-        self.three_ones: bool  = False
-        self.three_twos: bool  = False
-        self.three_threes: bool  = False
-        self.three_fours: bool  = False
-        self.three_fives: bool  = False
-        self.three_sixes: bool  = False
-        self.three_sevens: bool  = False
-        self.three_eights: bool  = False
-        self.three_nines: bool  = False
-        self.secret_item = False
-
-        self.lock_down: int = 0
-
-
-
-
-        self.no_matches = True
-
-        self.resolve_penalty = False
-
-        self.slot1: list[int] = [0, 0, 0]
-        self.slot2: list[int] = [0, 0, 0]
-        self.slot3: list[int] = [0, 0, 0]
-        self.slot_positions1: list[int] = [-50, 0, 50]
-        self.slot_positions2: list[int] = [-50, 0, 50]
-        self.slot_positions3: list[int] = [-50, 0, 50]
-        self.last_update_time: int = pygame.time.get_ticks()
-        self.spin_delay: int = 44
-        self.spinning: bool = False
-        self.stopping: bool = False
-        self.stop_start_time: int = 0
-        self.stopping_first: bool = False
-        self.stopping_second: bool = False
-        self.magic_lock = False
-
-
-        self.exp_gain = ExpGain()  # Initialize ExpGain without specifying experience points
-
-
-
-        self.magic_screen_choices: list[str] = [ "Back"]
-        self.welcome_screen_index: int = 0
-        self.magic_screen_index: int = 0
-
-        #maybe replace Bet with Rules?
-        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
-        self.level_screen_stats: list[str] = ["Body", "Mind", "Spirit", "Perception", "Luck"]
-        self.level_up_stat_increase_index: int = 0
-
-        self.go_to_results: bool = False
-
-        self.new_font: pygame.font.Font = pygame.font.Font(None, 36)
-        self.game_state: str = "welcome_screen"
-        self.bet: int = 50
+class SlotsRippaSnappaScreen(GambleScreen):
+    def __init__(self, screenName: str = "Slots") -> None:
+        super().__init__(screenName)
+        self.game_state: str = self.WELCOME_SCREEN
+        self.slots: List[str] = []  # Initialize slots as an empty list
+        self.dealer_name: str = "Burbadan"
+        self.slot_images_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/slots_images_trans.png")
+        self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
+        self.spell_sound.set_volume(0.3)
+        self.magic_screen_choices: list[str] = []
+        self.hack_cost:int = 75
         self.money: int = 1000
-        self.font: pygame.font.Font = pygame.font.Font(None, 36)
-        self.battle_messages: dict[str, TextBox] = {
-            "welcome_message": TextBox(
-                [""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
-            "spin_message": TextBox(
-                ["Press the A key to start the spin."],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
-            "magic_message": TextBox(
-                ["Casts a spell"],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
+        self.slot_hack_active: int = 5
+        self.slot_hack_inactive: int = 0
+        self.slot_hack_debuff: int = 0
+        self.exp_gain_low:int = 10
+        self.exp_gain_no_match: int = 5
+        self.bet = 100
+        self.exp_gain_high: int = 50
+        self.increased_coin_chance: int = 0
 
-            "bet_message": TextBox(
-                ["Min Bet of 50, Bet of 60 increases chances for super secret item!"],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
 
-            "results_message": TextBox(
-                ["Your spinssss is {0} {1} {2}", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
+        self.bet_screen_choices: list[str] = ["Back"]
+        self.spin_screen_index: int = 0
+        self.magic_screen_index: int = 1
+        self.bet_screen_index: int = 2
+        self.quit_index: int = 3
+        self.magic_index = 0
+        pygame.mixer.music.stop()
+        self.magic_lock: bool = False
+        self.blit_message_x: int = 65
+        self.blit_message_y: int = 460
+        self.juragan_bankrupt: int = 0
+        self.player_stamina_low_cost: int = 12
+        self.player_stamina_high_cost: int = 50  # useing higher bet option
+        self.player_stamina_med_cost: int = 25
+        self.lock_down_inactive: int = 0
+        self.index_stepper:int = 1
+        self.spin_results_generated:bool = False  # Initialize the flag
+        self.slot_3_magnet:bool = False
+        self.slot_2_magnet:bool = False
+        self.no_match: bool = False
+        self.player_coin_high_drain:int = 300
+        self.player_coin_low_drain:int = 150
+        self.player_coin_med_drain:int = 75
+        self.rib_stalker: int = 0
+        self.jack_pot:int = 0
+        self.lucky_strike:int = 0
+        self.secret_item_found:bool = False
+        self.debuff_increased_pay_to_play: int = 0
+        self.rippasnappa_mp: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
 
-            "game_over_no_stamina_message": TextBox(
-                ["Hero: Crap I can't...keep...going...(You ran out of stamina", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "Juragan: Kee kee kee, you have some tasty looking ribs."
+            ]),
 
-            "game_over_no_money_message": TextBox(
-                ["You ran out of money game over, enjoy eternity in rib demon hell", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
+            self.BET_MESSAGE: MessageBox([
+                "Increase your bet by +50, increase chance for item! Dont' forget to rest to 100 if you get a lucky strike."
+            ]),
+            self.MAGIC_MENU_HACK_DESCRIPTION: MessageBox([
+                "Attach a string to a coin."
+            ]),
 
-        "game_over_low_stamina_message": TextBox(
-                ["Hero: I'm too tired to keep gambling i need to rest)", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
 
-            "game_over_low_money_message": TextBox(
-                ["I don't have enough money to keep playing time to leave", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
-
-            "you_win": TextBox(
-                ["Rib Demon: well looks like I lost...", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
-
-            "level_up": TextBox(
-                [f"Grats you levels up. ", "", "", "", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
-
+            self.PLAYER_WIN_MESSAGE: MessageBox([
+                "You won the toss!!!"
+            ]),
+            self.PLAYER_LOSE_MESSAGE: MessageBox([
+                "You lost the toss."
+            ]),
+            self.PLAYER_DRAW_MESSAGE: MessageBox([
+                f"You didn't match 3 in a row."
+            ]),
+            self.RIPPASNAPPA_CASTING_SPELL_MESSAGE: MessageBox([
+                "O charitable one, please spare a coin to a hungry demon...double coin(increaed cost to play)"
+            ]),
         }
 
-        self.hide_numbers: bool = True
+        self.slot_images: Dict[str, pygame.Surface] = {
+            "bomb": self.slot_images_sprite_sheet.subsurface(pygame.Rect(450, 100, 50, 52)),
+            "lucky_seven": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 30, 60, 52)),
+            "dice": self.slot_images_sprite_sheet.subsurface(pygame.Rect(350, 100, 50, 52)),
+            "coin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(95, 160, 58, 50)),
+            "diamond": self.slot_images_sprite_sheet.subsurface(pygame.Rect(30, 170, 75, 52)),
+            "crown": self.slot_images_sprite_sheet.subsurface(pygame.Rect(25, 280, 80, 52)),
+            "chest": self.slot_images_sprite_sheet.subsurface(pygame.Rect(300, 280, 75, 52)),
+            "cherry": self.slot_images_sprite_sheet.subsurface(pygame.Rect(120, 215, 75, 52)),
+            "dice_six": self.slot_images_sprite_sheet.subsurface(pygame.Rect(400, 215, 50, 52)),
+            "spin": self.slot_images_sprite_sheet.subsurface(pygame.Rect(40, 110, 52, 52)),
+        }
 
-        self.money_balancer = MoneyBalancer(self.money)
-        self.game_over = GameOver()  # Initialize GameOver
+        self.slot_image_keys: List[str] = list(self.slot_images.keys())
+        self.slot_positions1: List[int] = [-50, 0, 50]
+        self.slot_positions2: List[int] = [-50, 0, 50]
+        self.slot_positions3: List[int] = [-50, 0, 50]
+        self.slot1: List[int] = [0, 0, 0]
+        self.slot2: List[int] = [0, 0, 0]
+        self.slot3: List[int] = [0, 0, 0]
+        self.grid_positions: List[Tuple[int, int]] = []
+        self.reel_surfaces: List[pygame.Surface] = []
+        self.reel_symbol_names: List[List[str]] = []
 
-        self.game_over_message = []  # Initialize game_over_message
+        for _ in range(3):
+            reel_surface, symbol_names = self.create_reel_surface()
+            self.reel_surfaces.append(reel_surface)
+            self.reel_symbol_names.append(symbol_names)
 
-        self.slot_hack = 0
-        self.rib_demon_attack_damage = 50
+        self.reel_positions: List[float] = [0.0, 0.0, 0.0]
+        self.spinning: bool = False
+        self.initial_spin_speed: float = 400.0
+        self.spin_start_time: Optional[int] = None
+        self.last_update_time: int = pygame.time.get_ticks()
+        self.reel_spinning: List[bool] = [False, False, False]
+        self.reel_stop_times: List[Optional[int]] = [None, None, None]
+        self.spin_speed: float = 400.0
+
+
+    SPIN_SCREEN: str = "spin_screen"
+    RIPPASNAPP_CASTING_SPELL_SCREEN: str = "brogan casting spell screen"
+    RESULT_SCREEN: str = "result_screen"
+    BACK: str = "Back"
+    PLAYER_WIN_MESSAGE: str = "player_win_message"
+    CHOOSE_SIDE_MESSAGE: str = "choose_side_message"
+    PLAYER_LOSE_MESSAGE: str = "player_lose_message"
+    PLAYER_DRAW_MESSAGE: str = "player_draw_message"
+    COIN_FLIP_MESSAGE: str = "coin_flip_message"
+    MAGIC_MENU_HACK_DESCRIPTION: str = "magic_menu_hack_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    BET_MESSAGE: str = "bet_message"
+    PLAYER_WIN_ACTION_MESSAGE: str = "player_win_action_message"
+    ENEMY_WIN_ACTION_MESSAGE: str = "enemy_win_action_message"
+    PLAYER_ENEMY_DRAW_ACTION_MESSAGE: str = "player_enemy_draw_action_message"
+    RIPPASNAPPA_CASTING_SPELL_MESSAGE: str = "brogan casting spell message"
+
+
+    def start(self, state: 'GameState'):
+        if Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED.value in state.player.level_three_npc_state:
+            self.secret_item_found = True
+
+        self.spirit_bonus = state.player.spirit * 10
+        self.magic_bonus = state.player.mind * 10
+
+
+    def reset_juragan_slots_game(self):
+        self.slot_hack_debuff = 0
+        self.rib_stalker = 0
         self.lucky_strike = 0
-        self.hack_cast_cost = 50
-
-        self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
-        self.spell_sound.set_volume(0.3)
-
-        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
-        self.menu_movement_sound.set_volume(0.2)
-
-        # self.music_file = "./assets/music/coin_flip_screen.mp3"
-        # self.music_volume = 0.5  # Adjust as needed
-        # self.initialize_music()
-        self.music_on = True
-
-        self.music_file = "./assets/music/slots_music.mp3"
-        self.music_volume = 0.5  # Adjust as needed
-        pygame.mixer.music.stop()
-
-    def start(self, state: 'GameState') -> None:
-        self.initialize_music()
-
-    def print_current_slots(self) -> None:
-        visible_slots = [self.slot1[0], self.slot2[0], self.slot3[0]]
-
-    def generate_numbers(self, state) -> None:
-        # Generate the first slot number based on a 1-100 range
-        generated_values1 = [random.randint(1, 100) for _ in range(3)]
-        print(f"Generated values for slot1: {generated_values1}")
-
-        # Map the generated values to slot numbers 0-9
-        def map_to_slot_number(value: int) -> int:
-            if self.lock_down == 0 and self.lucky_strike == 0 and self.bet < 60:
-                print("self.lockdown == 0 and self.luck_strike == 0 and self.bet < 60")
-                slot_mapping = {
-                            range(1, 7): 0,  # lose a rib
-                            range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                            range(15, 27): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                            range(27, 42): 3,  # add 100 coins
-                            range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
-                            range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
-                            range(66, 76): 6,  # add 200 coins
-                            range(76, 85): 7,  # lucky spin better % for jackpot
-                            range(85, 95): 8,  # get special item or 50 coins
-                            range(95, 101): 9,  # jackpot
-                }
-
-            elif self.lock_down > 0 and self.lucky_strike == 0:
-                print("elif self.lock_down > 0 and self.lucky_strike == 0:")
-                slot_mapping = {
-                    range(1, 19): 0,  # lose a rib
-                    range(19, 24): 1,  # lost 50 extra coins from your state.player.money
-                    range(24, 33): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(33, 51): 3,  # add 100 coins
-                    range(51, 62): 4,  # gain 10 hp 10 mp 100 coins
-                    range(62, 101): 5,  # gain 20 hp 20 mp 125 coins
-
-                }
-
-            elif self.lucky_strike == 0 and self.bet > 50:
-                print("Lucky strike == 0 and self.bet > 50")
-                slot_mapping = {
-                    range(1, 7): 0,  # lose a rib
-                    range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                    range(15, 27): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(27, 42): 3,  # add 100 coins
-                    range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
-                    range(53, 60): 5,  # gain 20 hp 20 mp 125 coins
-                    range(60, 67): 6,  # add 200 coins
-                    range(67, 76): 7,  # lucky spin better % for jackpot
-                    range(76, 92): 8,  # get special item or 50 coins
-                    range(92, 101): 9,  # jackpot
-                }
-
-
-
-
-
-            elif self.lucky_strike > 0 and self.bet > 50:
-                print("elif self.lucky_strike > 0 and self.bet > 50:")
-                slot_mapping = {
-
-                    range(1, 30): 3,  # add 100 coins
-                    range(30, 40): 4,  # gain 10 hp 10 mp 100 coins
-                    range(40, 50): 5,  # gain 20 hp 20 mp 125 coins
-                    range(50, 55): 6,  # add 200 coins
-                    range(55, 85): 8,  # get special item or 50 coins
-                    range(85, 101): 9,  # jackpot
-                }
-
-            elif self.lucky_strike > 0:
-                print("elif self.lucky_strike > 0:")
-                slot_mapping = {
-
-                    range(1, 30): 3,  # add 100 coins
-                    range(30, 40): 4,  # gain 10 hp 10 mp 100 coins
-                    range(40, 50): 5,  # gain 20 hp 20 mp 125 coins
-                    range(50, 60): 6,  # add 200 coins
-                    range(60, 85): 8,  # get special item or 50 coins
-                    range(85, 101): 9,  # jackpot
-                }
-
-            else:
-                print("else default just in case")
-                slot_mapping = {
-                    range(1, 7): 0,  # lose a rib
-                    range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-                    range(15, 24): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-                    range(24, 42): 3,  # add 100 coins
-                    range(42, 54): 4,  # gain 10 hp 10 mp 100 coins
-                    range(54, 66): 5,  # gain 20 hp 20 mp 125 coins
-                    range(66, 76): 6,  # add 200 coins
-                    range(76, 85): 7,  # lucky spin better % for jackpot
-                    range(85, 95): 8,  # get special item or 50 coins
-                    range(95, 101): 9,  # jackpot
-                }
-
-            # for key in slot_mapping:
-            #     print(f"Range {key}: {slot_mapping[key]}")
-
-            for key in slot_mapping:
-                if value in key:
-                    return slot_mapping[key]
-            return 0  # Default value in case something goes wrong
-
-        self.slot1 = [map_to_slot_number(value) for value in generated_values1]
-
-        generated_value2 = random.randint(1, 100)
-        if self.lock_down > 0:
-            if self.slot1[0] <= 2:
-                generated_value2 += 20
-                print(generated_value2)
-        print(generated_value2)
-        # Assuming generated_value2 is defined earlier in your code
-        for luck in range(state.player.luck):
-            if self.slot1[0] > 2:
-                generated_value2 += 2
-                print(generated_value2)
-
-
-        if generated_value2 >= 40:  # 50% chance to match slot1
-            self.slot2[0] = self.slot1[0]
-        else:
-            self.slot2[0] = map_to_slot_number(generated_value2)
-
-        # Generate the third slot number based on a 1-100 roll
-        generated_value3 = random.randint(1, 100)
-        if self.lock_down > 0:
-            if self.slot1[0] <= 2:
-                generated_value3 += 20
-                print(generated_value3)
-        print(generated_value3)
-
-        for luck in range(state.player.luck):
-            if self.slot1[0] > 2:
-                generated_value3 += 2
-                print(generated_value3)
-
-
-        # print(f"Generated value for slot3 position 0: {generated_value3}")
-        if generated_value3 >= 60:  # 75% chance to match slot1
-            self.slot3[0] = self.slot1[0]
-        else:
-            self.slot3[0] = map_to_slot_number(generated_value3)
-        # for testing
-        # self.slot1[0] = 8
-        # self.slot2[0] = 8
-        # self.slot3[0] = 8
-
-
-
-
-            # Check if all three slots are 0 and print "hi zeros"
-        if self.slot1[0] == 0 and self.slot2[0] == 0 and self.slot3[0] == 0:
-            print("hi zeros")
-            self.three_zeros = True
-            self.no_matches = False
-
-        if self.slot1[0] == 1 and self.slot2[0] == 1 and self.slot3[0] == 1:
-            print("hi ones")
-            self.three_ones = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 2 and self.slot2[0] == 2 and self.slot3[0] == 2:
-            print("hi twos")
-            self.three_twos = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 3 and self.slot2[0] == 3 and self.slot3[0] == 3:
-            print("hi threes")
-            self.three_threes = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 4 and self.slot2[0] == 4 and self.slot3[0] == 4:
-            print("hi fours")
-            self.three_fours = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 5 and self.slot2[0] == 5 and self.slot3[0] == 5:
-            print("hi fives")
-            self.three_fives = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 6 and self.slot2[0] == 6 and self.slot3[0] == 6:
-            print("hi sixes")
-            self.three_sixes = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 7 and self.slot2[0] == 7 and self.slot3[0] == 7:
-            print("hi sevens")
-            self.three_sevens = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 8 and self.slot2[0] == 8 and self.slot3[0] == 8:
-            print("hi eights")
-            self.three_eights = True
-            self.no_matches = False
-
-
-        if self.slot1[0] == 9 and self.slot2[0] == 9 and self.slot3[0] == 9:
-            print("hi nines")
-            self.three_nines = True
-            self.no_matches = False
-
-
-        # print(f"Mapped slot3 values: {self.slot3}")
-
-    # Ensure to call this method within your logic where needed
-
-    def handle_spinning(self, state: "GameState", current_time: int) -> None:
-        if self.spinning:
-            if current_time - self.last_update_time > self.spin_delay:
-                self.last_update_time = current_time  # this and the line above control the speed of spinning slots (spin_delay mainly)
-                for i in range(3):  # the positions of the slots (top middle bottom)
-                    if not self.stopping_first:
-                        self.slot_positions1[i] += 10
-                        if self.slot_positions1[i] >= 100:  # this block handles the position of spinning slots as they stop
-                            self.slot_positions1[i] = -50  # sets it in the middle
-                    if not self.stopping_second:
-                        self.slot_positions2[i] += 10
-                        if self.slot_positions2[i] >= 100:
-                            self.slot_positions2[i] = -50
-                    self.slot_positions3[i] += 10
-                    if self.slot_positions3[i] >= 100:
-                        self.slot_positions3[i] = -50
-
-            if self.stopping:
-                if not self.stopping_first:
-                    if current_time - self.stop_start_time >= 2000:  # the time is in milliseconds, so 2 seconds
-                        self.stopping_first = True
-                        self.slot_positions1 = [0, 50, 100]
-                elif not self.stopping_second:
-                    if current_time - self.stop_start_time >= 3500:  # this stops 1.5 seconds after slot 1 stops
-                        self.stopping_second = True
-                        self.slot_positions2 = [0, 50, 100]
-                elif current_time - self.stop_start_time >= 5000:  # this stops 3 seconds after slot 1 stops / 1.5 after slot 2
-                    self.spinning = False
-                    self.stopping = False  # this ensures the slots remain stopped
-                    print("Spinning stopped.")
-                    self.slot_positions3 = [0, 50, 100]
-                    self.print_current_slots()
-                    self.go_to_results = True
-                    # self.test() this is to test spin % out of 10000
-
-        if state.controller.isQPressed:
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-            return
-
-
-
-        if state.controller.isAPressed and self.game_state == "spin_screen":
-            self.a_key_pressed = True
-            if not self.spinning:
-                self.spinning = True
-                self.stopping = False
-                self.stopping_first = False
-                self.stopping_second = False
-                self.spin_delay = 70
-                print("Spinning started.")
-                self.generate_numbers(state)  # Call the method to generate new numbers
-            else:
-                self.stopping = True
-                self.stop_start_time = current_time
-                print("Stopping initiated.")
-
-    def stop_music(self):
-        pygame.mixer.music.stop()
-
-    def initialize_music(self):
-        # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
-    def update(self, state: "GameState") -> None:
-        if state.musicOn == True:
-            if self.music_on == True:
-                print("djslfjldsjfj;as")
-                self.stop_music()
-                self.initialize_music()
-                self.music_on = False
-
-        state.player.canMove = False
-        if self.secret_item == True:
-            self.bet = 50
-
-        if Events.MC_NUGGET_FIRST_QUEST_COMPLETE.value in state.player.level_two_npc_state:
-            self.secret_item = True
-
-
-        current_time: int = pygame.time.get_ticks()  # local variable
-        if state.controller.isBPressed:
-            self.hide_numbers = not self.hide_numbers
-
-        self.handle_spinning(state, current_time)  # Call the new method here
-
+        self.debuff_increased_pay_to_play = 0
+
+    def reset_slots_juragan_round(self):
+        if self.rib_stalker > 0:
+            self.rib_stalker -= 1
+        if self.lucky_strike > 0:
+            self.lucky_strike -= 1
+        if self.debuff_increased_pay_to_play > 0:
+            self.debuff_increased_pay_to_play -= 1
+        if self.slot_hack_debuff > 0:
+            self.slot_hack_debuff -= 1
+        self.increased_coin_chance += 3
+        increased_coin_randomizer = random.randint(1, 100) + self.increased_coin_chance
+
+        if increased_coin_randomizer > 90 and self.rippasnappa_mp > 0:
+            self.current_screen = self.RIPPASNAPP_CASTING_SPELL_SCREEN
+            self.increased_coin_chance = 0
+
+    def update(self, state):
+        super().update(state)
         controller = state.controller
         controller.update()
-
-
-
-
-
-        if self.game_state == "welcome_screen":
-            self.music_volume = 0.5  # Adjust as needed
-            pygame.mixer.music.set_volume(self.music_volume)
-
-
-            state.player.update(state)
-
-            if state.controller.isEPressed:
-                state.player.leveling_up = False
-
-
-
-            if state.player.leveling_up == True:
-                self.game_state = "level_up_screen"
-
-
-            # if "Lucky Shoes" in state.player.items:
-            #     self.bet = 50
-            self.no_matches = True
-
-            self.three_zeros = False
-            self.three_ones = False
-            self.three_twos = False
-            self.three_threes = False
-            self.three_fours = False
-            self.three_fives = False
-            self.three_sixes = False
-            self.three_sevens = False
-            self.three_eights = False
-            self.three_nines = False
-
-            self.go_to_results = False
-            self.battle_messages["welcome_message"].update(state)
-            
-            
-            if self.money < 1:
-                self.battle_messages["you_win"].update(state)
-                if self.battle_messages["you_win"].message_index == 1:
-                    Events.add_event_to_player(state.player, Events.SLOTS_RIPPA_SNAPPA_DEFEATED)
-                    state.player.canMove = True
-
-                    state.currentScreen = state.area2GamblingScreen
-                    state.area2GamblingScreen.start(state)
-
-
-
-            if state.player.stamina_points < 1:
-
-                self.lock_down = False
-                self.slot_hack = 0
-                self.battle_messages["game_over_no_stamina_message"].update(state)
-                if self.battle_messages["game_over_no_stamina_message"].message_index == 1:
-                    state.player.canMove = True
-
-                    state.currentScreen = state.area2GamblingScreen
-                    state.area2GamblingScreen.start(state)
-
-                    self.reset()
-
-            # elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-            #     self.battle_messages["game_over_low_stamina_message"].update(state)
-            #     if self.battle_messages["game_over_low_stamina_message"].message_index == 1:
-            #         state.currentScreen = Area2GamblingScreen()
-            #         self.reset()
-
-
-
-            elif state.player.money < 50 and state.player.money > 0:
-                self.battle_messages["game_over_low_money_message"].update(state)
-                if self.battle_messages["game_over_low_money_message"].message_index == 1:
-                    state.player.canMove = True
-
-                    state.currentScreen = state.area2GamblingScreen
-                    state.area2GamblingScreen.start(state)
-
-                    self.reset()
-
-
-            elif state.player.money <= 0:
-                state.player.canMove = True
-
-                self.battle_messages["game_over_no_money_message"].update(state)
-                if self.battle_messages["game_over_no_money_message"].message_index == 1:
-                    state.currentScreen = GameOver()
-
-            if controller.isUpPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
-                controller.isUpPressed = False
-            elif controller.isDownPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
-                controller.isDownPressed = False
-
-            if self.welcome_screen_index == 0 and controller.isTPressed:
-                self.game_state = "spin_screen"
-
-                state.player.stamina_points -= 10
-                if self.slot_hack == 0:
-                    state.player.money -= self.bet
-                    self.money += self.bet
-
-                controller.isTPressed = False
-            elif self.welcome_screen_index == 1 and controller.isTPressed and self.slot_hack == 0 and Magic.SLOTS_HACK.value in state.player.magicinventory:
-                self.magic_screen_index = 0
-                # controller.isTPressed = False
-
-                self.battle_messages["magic_message"].reset()
-                self.game_state = "magic_screen"
-            elif (self.welcome_screen_index == 2 and controller.isTPressed \
-                  and Events.MC_NUGGET_QUEST_1_REWARD not in state.player.level_two_npc_state) and self.secret_item == False:
-                self.battle_messages["bet_message"].reset()
-                self.game_state = "bet_screen"
-                controller.isTPressed = False
-            elif self.welcome_screen_index == 3 and controller.isTPressed and self.lock_down == 0:
-                state.player.canMove = True
-
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
-                self.welcome_screen_index = 0
-                self.reset()
-
-                controller.isTPressed = False
-
-        elif self.game_state == "level_up_screen":
-            self.music_volume = 0  # Adjust as needed
-            pygame.mixer.music.set_volume(self.music_volume)
-            self.handle_level_up(state, state.controller)
-
-
-        elif self.game_state == "magic_screen":
-            if self.magic_screen_index == 0:
-                self.battle_messages["magic_message"].messages = [f"Put a string on a coin"]
-            elif self.magic_screen_index == 1:
-                self.battle_messages["magic_message"].messages = [f"Go back to main menu."]
-            self.battle_messages["results_message"].update(state)
-            self.battle_messages["magic_message"].update(state)
-            if controller.isUpPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-
-                self.magic_screen_index = (self.magic_screen_index - 1) % len(self.magic_screen_choices)
-                controller.isUpPressed = False
-            elif controller.isDownPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.magic_screen_index = (self.magic_screen_index + 1) % len(self.magic_screen_choices)
-                controller.isDownPressed = False
-            if self.magic_screen_index == 0 and controller.isTPressed and state.player.focus_points >= self.hack_cast_cost:
-                print("hi there line 618")
-                self.spell_sound.play()  # Play the sound effect once
-
-                self.slot_hack += 5
-                state.player.focus_points -= self.hack_cast_cost
-                self.game_state = "welcome_screen"
-                controller.isTPressed = False
-
-                print(self.slot_hack)
-            elif self.magic_screen_index == 1 and controller.isTPressed:
-                self.battle_messages["magic_message"].update(state)
-                self.game_state = "welcome_screen"
-                controller.isTPressed = False
-
-        if self.game_state == "bet_screen":
-            self.battle_messages["bet_message"].update(state)
-            if controller.isUpPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.bet += 10
-                if self.bet > 60:
-                    self.bet = 60
-                controller.isUpPressed = False
-            elif controller.isDownPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.bet -= 10
-                if self.bet < 50:
-                    self.bet = 50
-                controller.isDownPressed = False
-            elif controller.isBPressed:
-                self.game_state = "welcome_screen"
-                controller.isBPressed = False
-
-        if self.game_state == "spin_screen":
-            self.battle_messages["spin_message"].update(state)
-            if self.go_to_results:
-                self.game_state = "results_screen"
-
-
-
-
-
-
-
-
-
-
-        if self.game_state == "results_screen":
-
-            if self.no_matches == True:
-                # Assuming you want to display the amount of experience gained
-                exp_amount = 7  # This should be the amount of exp gained
-                self.battle_messages["results_message"].messages = [
-                    f"No Matches! Your spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you gain {exp_amount} exp", ""
-                ]
-
-                # self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    self.exp_gain.gain_exp(state, exp_amount)  # Use the exp_amount variable
-                    self.resolve_penalty = True
-
-                self.battle_messages["results_message"].update(state)
-
-
-
-            elif self.three_zeros == True:
-                if Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
-                    self.rib_demon_attack_damage = 25
-
-                self.battle_messages["results_message"].messages = [
-                    f"You fail  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and take {self.rib_demon_attack_damage} damage and gain 50 exp", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
-                        state.player.stamina_points -= 50
-                    elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items:
-                        state.player.stamina_points -= 25
-                    self.exp_gain.gain_exp(state, 50)  # Adjust the amount of experience points as needed
-
-                    self.resolve_penalty = True
-
-            elif self.three_ones == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You fail,  spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} and you lose 100 gold and gain 20 exp", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    state.player.money -= 100
-                    self.exp_gain.gain_exp(state, 25)  # Adjust the amount of experience points as needed
-
-                    self.money += 100
-                    self.resolve_penalty = True
-
-            elif self.three_twos == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You fail, spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Your locked in, your ribs are now tingling with fear,  and gain 25 exp ", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    print("player lock")
-                    self.exp_gain.gain_exp(state, 25)  # Adjust the amount of experience points as needed
-
-                    self.resolve_penalty = True
-                    self.lock_down = 5
-                    self.lucky_strike = 0
-
-            elif self.three_threes == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You win!  Spin is {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You win 150 Coins! and 10 exp", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-
-                    self.resolve_penalty = True
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    self.exp_gain.gain_exp(state, 10)  # Adjust the amount of experience points as needed
-
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 150
-
-                    # Adjust player and enemy money
-                    if self.money > 99:
-                        state.player.money += jackpot_amount
-
-                    self.money -= jackpot_amount
-
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
-
-                    print("now its time for a lucky strike")
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-
-
-
-            elif self.three_fours == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You win, spin of {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 150 money and 15 exp!", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-
-                    self.resolve_penalty = True
-                    self.exp_gain.gain_exp(state, 15)  # Adjust the amount of experience points as needed
-
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 150
-
-                    # Adjust player and enemy money
-                    if self.money > 99:
-                        state.player.money += jackpot_amount
-
-                    self.money -= jackpot_amount
-
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
-
-                    print("now its time for a lucky strike")
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-                    if state.player.stamina_points < state.player.max_stamina_points:
-                        state.player.stamina_points += 10
-                        if state.player.stamina_points > state.player.max_stamina_points:
-                            state.player.stamina_points = state.player.max_stamina_points
-                    if state.player.focus_points < state.player.max_focus_points:
-                        state.player.focus_points += 5
-                        if state.player.focus_points > state.player.max_focus_points:
-                            state.player.focus_points = state.player.max_focus_points
-
-
-            elif self.three_fives == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 150 gold and +15 exp", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-
-                    self.resolve_penalty = True
-                    self.exp_gain.gain_exp(state, 15)  # Adjust the amount of experience points as needed
-
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 150
-
-                    # Adjust player and enemy money
-                    if self.money > 99:
-                        state.player.money += jackpot_amount
-
-                    self.money -= jackpot_amount
-
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
-
-                    print("now its time for a lucky strike")
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-                    state.player.exp += 50
-
-
-            elif self.three_sixes == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You gain 300 gold and 30 exp", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    self.resolve_penalty = True
-                    self.exp_gain.gain_exp(state, 30)  # Adjust the amount of experience points as needed
-
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 300
-
-                    # Adjust player and enemy money
-                    if self.money > 249:
-                        state.player.money += jackpot_amount
-
-                    self.money -= jackpot_amount
-
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
-
-                    print("now its time for a lucky strike")
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-
-
-            elif self.three_sevens == True:
-                self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} Lucky 7s increased chance of jack pot and 50 exp gained + 100 coins!", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    self.resolve_penalty = True
-                    self.exp_gain.gain_exp(state, 50)  # Adjust the amount of experience points as needed
-
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 100
-
-                    # Adjust player and enemy money
-                    if self.money > 49:
-                        state.player.money += jackpot_amount
-
-                    self.money -= jackpot_amount
-
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
-
-                    print("now its time for a lucky strike")
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-
-
-
-
-                    self.lucky_strike += 6
-                    print("now its time for a lucky strike")
-
-
-            elif self.three_eights == True:
-
-                if Events.MC_NUGGET_QUEST_1_REWARD.value not in state.player.level_two_npc_state:
-                    Events.add_event_to_player(state.player, Events.MC_NUGGET_FIRST_QUEST_COMPLETE)
-
-                    self.battle_messages["results_message"].messages = [
-                        f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} grats you got the super secret item!! + 25 exp", ""
-                    ]
-
-                    self.battle_messages["results_message"].update(state)
-
-                elif Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state and self.secret_item == True:
-                    self.battle_messages["results_message"].messages = [
-                        f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} too bad for you there is only 1 item.!", ""
-                    ]
-
-                    self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    self.secret_item = True
-                    self.exp_gain.gain_exp(state, 25)  # Adjust the amount of experience points as needed
-
-                    state.player.money += 100
-                    self.money -= 100
-
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 100
-
-                    # Adjust player and enemy money
-                    if self.money > 49:
-                        state.player.money += jackpot_amount
-
-                    self.money -= jackpot_amount
-
-                    # Print values after jackpot logic
-                    print(f"After Jackpot - Player Money: {state.player.money}")
-                    print(f"After Jackpot - Enemy Money: {self.money}")
-
-                    print("now its time for a lucky strike")
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-
-                    self.resolve_penalty = True
-
-            elif self.three_nines:
-                self.battle_messages["results_message"].messages = [
-                    f"You got {self.slot1[0]} {self.slot2[0]} {self.slot3[0]} You got the JACK POT!!!! gain 100 exp, 500 coins and some hp /mp back!", ""
-                ]
-
-                self.battle_messages["results_message"].update(state)
-
-                if self.resolve_penalty == False:
-                    self.resolve_penalty = True
-                    self.exp_gain.gain_exp(state, 100)  # Adjust the amount of experience points as needed
-
-
-                    # Capture the initial enemy money before adjustment
-                    initial_enemy_money = self.money
-                    print(f"Initial Player Money: {state.player.money}")
-                    print(f"Initial Enemy Money: {initial_enemy_money}")
-
-                    # The amount to add or subtract
-                    jackpot_amount = 500
-
-                    # Adjust player and enemy money
-                    if self.money > 499:
-                        state.player.money += jackpot_amount
-
-
-                    self.money -= jackpot_amount
-
-
-
-                    # Use MoneyBalancer to ensure enemy's money does not go below zero
-                    self.money_balancer.money = self.money
-                    self.money_balancer.balance_money(state, initial_enemy_money)
-
-                    # Update the enemy's money after balancing
-                    self.money = self.money_balancer.money
-
-                    if state.player.stamina_points < state.player.max_stamina_points:
-                        state.player.stamina_points += 30
-                        if state.player.stamina_points > state.player.max_stamina_points:
-                            state.player.stamina_points = state.player.max_stamina_points
-                    if state.player.focus_points < state.player.max_focus_points:
-                        state.player.focus_points += 30
-                        if state.player.focus_points > state.player.max_focus_points:
-                            state.player.focus_points = state.player.max_focus_points
-
-
-            if self.battle_messages["results_message"].message_index == 1:
-                self.battle_messages["welcome_message"].reset()
-                self.battle_messages["results_message"].reset()
-                self.resolve_penalty = False
-                if self.lucky_strike > 0:
-                    self.lucky_strike -= 1
-                if self.lock_down > 0:
-                    self.lock_down -= 1
-
-                if self.slot_hack > 0:
-                    self.slot_hack -= 1
-
-                self.game_state = "welcome_screen"
-                if self.secret_item == True and Events.MC_NUGGET_QUEST_1_REWARD.value not in state.player.level_two_npc_state:
-                    state.player.level_two_npc_state.append(Events.MC_NUGGET_QUEST_1_REWARD.value)
-                print(str(state.player.items))
-
-    def draw(self, state: "GameState") -> None:
-        state.DISPLAY.fill((0, 0, 51))
-        if not self.hide_numbers:
-            self.draw_mask_box(state)
-
-        black_box = pygame.Surface((200 - 10, 180 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 180 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 235))
-
-        black_box = pygame.Surface((200 - 10, 45 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 195))
-
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, (255, 255, 255)), (37, 250))
-        state.DISPLAY.blit(self.font.render(f"HP: {state.player.stamina_points}", True, (255, 255, 255)), (37, 290))
-        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True, (255, 255, 255)), (37, 330))
-        if self.lucky_strike > 0:
-            state.DISPLAY.blit(self.font.render(f"Lucky {self.lucky_strike}", True, (255, 255, 255)), (37, 205))
-
-        elif self.lock_down < 1:
-            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)), (37, 205))
-        elif self.lock_down > 0:
-            state.DISPLAY.blit(self.font.render(f"Locked Down:{self.lock_down}", True, (255, 0, 0)), (37, 205))
-
-
-        #
-        # self.draw_hero_info_boxes(state)
-
-        self.draw_grid_box(state)
-        if self.slot_hack == 0:
-            self.draw_enemy_info_box(state)
-        elif self.slot_hack > 0:
-            self.draw_enemy_info_box_debuff(state)
-
-
-        if self.hide_numbers:
-            self.draw_mask_box(state)
-
+        state.player.update(state)
+
+        if self.money <= self.juragan_bankrupt:
+            state.currentScreen = state.area4RestScreen
+            state.area4RestScreen.start(state)
+            Events.add_level_four_event_to_player(state.player, Events.SLOTS_BROGAN_DEFEATED)
+
+        if self.game_state == self.WELCOME_SCREEN:
+            self.spin_results_generated = False
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+            self.battle_messages[self.BET_MESSAGE].reset()
+            self.update_welcome_screen_helper(state)
+        elif self.game_state == self.RIPPASNAPP_CASTING_SPELL_SCREEN:
+            self.update_casting_spell_helper(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.update_magic_menu_helper(state)
+        elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].update(state)
+            self.update_bet_screen_helper(controller)
+        elif self.game_state == self.SPIN_SCREEN:
+            self.update_spin_reels_helper(controller, state)
+        elif self.game_state == self.RESULT_SCREEN:
+            self.update_result_helper(controller, state)
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            self.game_over_screen_level_4(controller, state)
+
+    def draw(self, state):
+        super().draw(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
         self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
+        self.draw_grid_box(state)
 
-
-
-        if self.game_state == "welcome_screen":
-            self.battle_messages["welcome_message"].draw(state)
-
-
-            if self.money < 1:
-                self.battle_messages["you_win"].draw(state)
-
-
-            if state.player.stamina_points < 1:
-                self.battle_messages["game_over_no_stamina_message"].draw(state)
-
-            elif state.player.money <= 0:
-                self.battle_messages["game_over_no_money_message"].draw(state)
-
-
-            elif state.player.stamina_points <= 10 and state.player.stamina_points > 0:
-                self.battle_messages["game_over_low_stamina_message"].draw(state)
-
-
-
-            elif state.player.money < 50 and state.player.money > 0:
-                self.battle_messages["game_over_low_money_message"].draw(state)
-
-
-
-
-            black_box_height = 221 - 50  # Adjust height
-            black_box_width = 200 - 10  # Adjust width to match the left box
-            border_width = 5
-            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-            start_y_right_box = 240  # Adjust vertical alignment
-
-            # Create the black box
-            black_box = pygame.Surface((black_box_width, black_box_height))
-            black_box.fill((0, 0, 0))
-
-            # Create a white border
-            white_border = pygame.Surface(
-                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
-            )
-            white_border.fill((255, 255, 255))
-            white_border.blit(black_box, (border_width, border_width))
-
-            # Determine the position of the white-bordered box
-            black_box_x = start_x_right_box - border_width
-            black_box_y = start_y_right_box - border_width
-
-            # Blit the white-bordered box onto the display
-            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-            # Draw the menu options
-            for idx, choice in enumerate(self.welcome_screen_choices):
-                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
-                state.DISPLAY.blit(
-                    self.font.render(choice, True, (255, 255, 255)),
-                    (start_x_right_box + 60, y_position + 15)
-                )
-            if Magic.SLOTS_HACK.value not in state.player.magicinventory:
-                self.magic_lock = True
-                self.welcome_screen_choices[1] = "Locked"
-
-            # if self.slot_hack > 0:
-            #     self.magic_lock = True
-            #     self.welcome_screen_choices[1] = "Locked"
-
-            if self.lock_down == 0 and Magic.SLOTS_HACK.value in state.player.magicinventory:
-                self.welcome_screen_choices[1] = "Magic"
-
-            if self.slot_hack > 0:
-                self.magic_lock = True
-
-                self.welcome_screen_choices[1] = "Locked"
-
-            if Magic.SLOTS_HACK.value not in state.player.magicinventory:
-                self.welcome_screen_choices[1] = "Locked"
-
-            if self.secret_item == True:
-                self.welcome_screen_choices[2] = "Locked"
-
-
-            if self.lock_down > 0:
-
-                self.welcome_screen_choices[3] = "Locked"
-
-            if self.lock_down == 0:
-                self.welcome_screen_choices[3] = "Quit"
-
-            if self.welcome_screen_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 12)
-                )
-            elif self.welcome_screen_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 52)
-                )
-            elif self.welcome_screen_index == 2:
-                state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 92)
-                )
-            elif self.welcome_screen_index == 3:
-                state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 132)
-                )
-
-        elif self.game_state == "level_up_screen":
-            self.draw_level_up(state)
-
-
-
-
-        elif self.game_state == "magic_screen":
-            self.battle_messages["magic_message"].draw(state)
-
-            black_box_height = 221 - 50  # Adjust height
-            black_box_width = 200 - 10  # Adjust width to match the left box
-            border_width = 5
-            start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
-            start_y_right_box = 240  # Adjust vertical alignment
-
-            # Create the black box
-            black_box = pygame.Surface((black_box_width, black_box_height))
-            black_box.fill((0, 0, 0))
-
-            # Create a white border
-            white_border = pygame.Surface(
-                (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
-            )
-            white_border.fill((255, 255, 255))
-            white_border.blit(black_box, (border_width, border_width))
-
-            # Determine the position of the white-bordered box
-            black_box_x = start_x_right_box - border_width
-            black_box_y = start_y_right_box - border_width
-
-            # Blit the white-bordered box onto the display
-            state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-            # Draw the menu options
-            for idx, choice in enumerate(self.magic_screen_choices):
-                y_position = start_y_right_box + idx * 40  # Adjust spacing between choices
-                state.DISPLAY.blit(
-                    self.font.render(choice, True, (255, 255, 255)),
-                    (start_x_right_box + 60, y_position + 15)
-                )
-            if Magic.SLOTS_HACK.value in state.player.magicinventory and Magic.SLOTS_HACK.value not in self.magic_screen_choices:
-                # Insert Magic.SLOTS_HACK as the new 0th element and shift other elements up
-                self.magic_screen_choices.insert(0, Magic.SLOTS_HACK.value)
-
-            if self.magic_screen_index == 0:
-                state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 12)
-                )
-            elif self.magic_screen_index == 1:
-                state.DISPLAY.blit(
-                    self.font.render("->", True, (255, 255, 255)),
-                    (start_x_right_box + 12, start_y_right_box + 52)
-                )
-
-        elif self.game_state == "bet_screen":
-            self.battle_messages["bet_message"].draw(state)
-
-        elif self.game_state == "spin_screen":
-            self.battle_messages["spin_message"].draw(state)
-
-        elif self.game_state == "results_screen":
-            self.battle_messages["results_message"].draw(state)
-
+        if self.game_state == self.WELCOME_SCREEN:
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+            self.draw_menu_selection_box(state)
+            self.draw_welcome_screen_box_info(state)
+        elif self.game_state == self.RIPPASNAPP_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.RIPPASNAPPA_CASTING_SPELL_MESSAGE].draw(state)
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box_slots(state)
+        elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].draw(state)
+        elif self.game_state == self.SPIN_SCREEN:
+            pass
+        elif self.game_state == self.RESULT_SCREEN:
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            self.draw_game_over(state)
         pygame.display.flip()
+
+
+    def update_casting_spell_helper(self, state):
+        self.battle_messages[self.RIPPASNAPPA_CASTING_SPELL_MESSAGE].update(state)
+        if state.controller.confirm_button:
+            self.debuff_increased_pay_to_play = 5
+            self.rippasnappa_mp -= 1
+            self.game_state = self.WELCOME_SCREEN
+
+
+
+    def update_magic_menu_helper(self, state):
+        if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
+            self.battle_messages[self.MAGIC_MENU_HACK_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_screen_choices[self.magic_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+            self.battle_messages[self.MAGIC_MENU_HACK_DESCRIPTION].reset()
+
+        controller = state.controller
+
+        if controller.up_button:
+            self.menu_movement_sound.play()
+            self.magic_index = (self.magic_index - self.index_stepper) % len(self.magic_screen_choices)
+        elif controller.down_button:
+            self.menu_movement_sound.play()
+            self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
+
+        if controller.confirm_button:
+            if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
+                state.player.focus_points -= self.hack_cost
+                self.slot_hack_debuff = 5
+                self.spell_sound.play()
+                self.magic_lock = True
+                self.magic_index = 0
+                self.game_state = self.WELCOME_SCREEN
+            if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points < self.hack_cost:
+                print("Nope")
+            elif self.magic_screen_choices[self.magic_screen_index] == self.BACK:
+                self.magic_index = 0
+                self.game_state = self.WELCOME_SCREEN
+    def update_result_helper(self, controller, state):
+        self.jack_pot = 0
+
+        if self.slots == ["bomb", "bomb", "bomb"]:
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
+
+            if Events.SLOTS_VEST_FOUND.value not in state.player.quest_items:
+                if controller.isTPressed or controller.isAPressedSwitch:
+                    controller.isTPressed = False
+                    controller.isAPressedSwitch = False
+                    if self.debuff_increased_pay_to_play > 0:
+                        state.player.stamina_points -= self.player_stamina_high_cost
+                        state.player.stamina_points -= self.player_stamina_high_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_juragan_round()
+                        self.game_state = self.WELCOME_SCREEN
+                    else:
+                        state.player.stamina_points -= self.player_stamina_high_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_juragan_round()
+                        self.game_state = self.WELCOME_SCREEN
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
+            elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items and self.debuff_increased_pay_to_play == 0:
+                if controller.confirm_button:
+                    if self.debuff_increased_pay_to_play > 0:
+                        state.player.stamina_points -= self.player_stamina_low_cost
+                        state.player.stamina_points -= self.player_stamina_low_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_juragan_round()
+                        self.game_state = self.WELCOME_SCREEN
+                    else:
+                        state.player.stamina_points -= self.player_stamina_low_cost
+                        state.player.money -= self.player_coin_high_drain
+                        state.player.exp += self.exp_gain_high
+                        self.reset_slots_juragan_round()
+                        self.game_state = self.WELCOME_SCREEN
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_med_cost} HP and {self.player_coin_high_drain} money. Gain {self.exp_gain_high} exp"]
+
+        elif self.slots == ["dice", "dice", "dice"]:
+            if controller.confirm_button:
+                state.player.stamina_points -= self.player_stamina_low_cost
+                state.player.money -= self.player_coin_low_drain
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_low} exp"]
+
+        elif self.slots == ["coin", "coin", "coin"]:
+            if controller.confirm_button:
+                state.player.stamina_points -= self.player_stamina_low_cost
+                state.player.money -= self.player_coin_med_drain
+                self.rib_stalker = 5
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                if self.rippasnappa_mp > 0 and self.debuff_increased_pay_to_play == 0:
+                    self.game_state = self.RIPPASNAPP_CASTING_SPELL_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
+
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
+
+        elif self.slots == ["cherry", "cherry", "cherry"]:
+            self.jack_pot = 50
+            if controller.confirm_button:
+                state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
+        elif self.slots == ["spin", "spin", "spin"]:
+            self.jack_pot = 100
+
+            if controller.confirm_button:
+                state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
+        elif self.slots == ["crown", "crown", "crown"]:
+            self.jack_pot = 150
+            if controller.confirm_button:
+                state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+        elif self.slots == ["dice_six", "dice_six", "dice_six"]:
+            if controller.isTPressed or controller.isAPressedSwitch:
+                controller.isTPressed = False
+                controller.isAPressedSwitch = False
+                self.lucky_strike += 6
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"Lucky Strike activated, time to get that money! Gain {self.exp_gain_low} exp"]
+
+        elif self.slots == ["diamond", "diamond", "diamond"]:
+            self.jack_pot = 250
+            if controller.confirm_button:
+                state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_low
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
+
+        elif self.slots == ["chest", "chest", "chest"]:
+            self.jack_pot = 200
+            if self.secret_item_found == True:
+                if controller.confirm_button:
+                    state.player.money += self.jack_pot
+                    state.player.exp += self.exp_gain_low
+                    self.reset_slots_juragan_round()
+                    self.game_state = self.WELCOME_SCREEN
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
+
+            elif self.secret_item_found == False:
+                if controller.confirm_button:
+                    state.player.exp += self.exp_gain_high
+                    Events.add_level_four_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+                    self.secret_item_found = True
+                    self.reset_slots_juragan_round()
+                    self.game_state = self.WELCOME_SCREEN
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
+
+        elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
+            self.jack_pot = 500
+
+            if controller.confirm_button:
+                if Equipment.SLOTS_SHOES.value in state.player.equipped_items and self.debuff_increased_pay_to_play == 0:
+                    state.player.stamina_points += 100
+                    state.player.focus_points += 50
+
+                state.player.money += self.jack_pot
+                state.player.exp += self.exp_gain_high
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
+
+        elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
+            if controller.confirm_button:
+                state.player.exp += self.exp_gain_no_match
+                self.reset_slots_juragan_round()
+                self.game_state = self.WELCOME_SCREEN
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"No matches.  Gain {self.exp_gain_no_match} exp"]
+        self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
+
+    def update_welcome_screen_helper(self, state: "GameState") -> None:
+        controller = state.controller
+        controller.update()
+        if state.controller.confirm_button:
+            if self.welcome_screen_index == self.welcome_screen_play_index:
+                self.game_state = self.SPIN_SCREEN
+                if self.slot_hack_debuff == self.slot_hack_inactive:
+                    state.player.stamina_points -= self.player_stamina_med_cost
+                    state.player.money -= self.bet
+                elif self.slot_hack_debuff > self.slot_hack_inactive:
+                    state.player.stamina_points -= self.player_stamina_med_cost
+                    if self.bet > 100:
+                        state.player.money -= 50
+
+            elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_bet_index:
+                self.game_state = self.BET_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+
+    def update_spin_reels_helper(self, controller, state):
+        # Get current time once at the beginning
+        current_time = pygame.time.get_ticks()
+
+        # Only start spinning if reels aren't spinning and results haven't been generated
+        if not any(self.reel_spinning) and not self.spin_results_generated:
+            # Generate the spin results before starting the spin
+            self.slots = self.generate_numbers(state)  # Generate symbols
+
+            # Calculate target positions for each reel based on the generated symbols
+            self.calculate_target_positions(self.slots)
+
+            # Start spinning all reels
+            self.reel_spinning = [True, True, True]
+            self.spin_start_time = current_time  # Record the time when spinning started
+            self.last_update_time = current_time  # Reset last update time
+
+            # Set stop times for each reel
+            self.reel_stop_times = [
+                current_time + 3000,  # Reel 0 stops after 3 seconds
+                current_time + 4000,  # Reel 1 stops after 4 seconds
+                current_time + 5000  # Reel 2 stops after 5 seconds
+            ]
+
+        # Calculate delta_time before updating self.last_update_time
+        delta_time = (current_time - self.last_update_time) / 1000.0  # Convert milliseconds to seconds
+        self.last_update_time = current_time  # Update after calculating delta_time
+
+        # Update reel positions and check for stopping
+        for i in range(3):  # For each reel
+            if self.reel_spinning[i]:
+                # Update the reel's position
+                self.reel_positions[i] = (self.reel_positions[i] - self.spin_speed * delta_time) % self.reel_surfaces[i].get_height()
+
+                # Check if it's time to stop this reel
+                if current_time >= self.reel_stop_times[i]:
+                    # Stop the reel at the target position
+                    self.reel_spinning[i] = False
+                    self.reel_positions[i] = self.target_positions[i]
+
+        # Update overall spinning state
+        self.spinning = any(self.reel_spinning)
+
+        # Check if all reels have stopped
+        if not any(self.reel_spinning) and not self.spin_results_generated:
+            # All reels have stopped, proceed with any outcome logic
+            self.spin_results_generated = True  # Set the flag to prevent re-running this block
+
+        # Prevent another spin from being triggered automatically
+        if not any(self.reel_spinning):
+            self.spinning = False  # Reels have stopped, no new spin will start
+            self.game_state = self.RESULT_SCREEN
+
+    def update_bet_screen_helper(self, controller):
+        print(self.bet)
+        if controller.isBPressed or controller.isBPressedSwitch:
+            controller.isBPressed = False
+            controller.isBPressedSwitch = False
+            self.game_state = self.WELCOME_SCREEN
+
+        if self.debuff_increased_pay_to_play == 0:
+            min_bet = 100
+            bet_step = 50
+            max_bet = 150
+        elif self.debuff_increased_pay_to_play > 0:
+            min_bet = 200
+            bet_step = 100
+            max_bet = 300
+
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet += bet_step
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+
+            self.menu_movement_sound.play()  # Play the sound effect once
+            self.bet -= bet_step
+
+        if self.bet <= min_bet:
+            self.bet = min_bet
+        elif self.bet >= max_bet:
+            self.bet = max_bet
+
+    def update_welcome_screen_logic(self, controller):
+        if controller.isTPressed or controller.isAPressedSwitch:
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+            if self.welcome_screen_index == self.spin_screen_index:
+                self.game_state = self.SPIN_SCREEN
+            elif self.welcome_screen_index == self.magic_screen_index and self.magic_lock == False:
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.bet_screen_index:
+                self.game_state = self.BET_SCREEN
+            elif self.welcome_screen_index == self.quit_index:
+                print("this will come later")
+
+    def game_over_screen_level_4(self, controller, state):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            if controller.confirm_button:
+                state.currentScreen = state.gameOverScreen
+                state.gameOverScreen.start(state)
+        elif state.player.stamina_points <= no_stamina_game_over:
+            if controller.confirm_button:
+                state.player.money -= 100
+                self.reset_juragan_slots_game()
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
+
 
     def draw_grid_box(self, state: "GameState") -> None:
         screen_width, screen_height = state.DISPLAY.get_size()
-        box_size = 50
+        box_width, box_height = 80, 80
         line_thickness = 2
-        start_x1 = (screen_width - box_size * 3 - line_thickness * 2) // 2  # Adjust for three columns
-        start_y = (screen_height - box_size) // 2
-        black_color = (0, 0, 0)
-        white_color = (255, 255, 255)
+        grid_columns = 3
+        total_grid_width = box_width * grid_columns + line_thickness * (grid_columns - 1)
 
-        font = pygame.font.Font(None, 36)
-
-        # Draw first column
-        for i, pos in enumerate(self.slot_positions1):
-            box_x = start_x1
-            box_y = start_y + pos
-            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
-            number_text = font.render(str(self.slot1[i]), True, white_color)
-            text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
-            state.DISPLAY.blit(number_text, text_rect)
-
-        # Draw second column
-        for i, pos in enumerate(self.slot_positions2):
-            box_x = start_x1 + box_size + line_thickness
-            box_y = start_y + pos
-            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
-            number_text = font.render(str(self.slot2[i]), True, white_color)
-            text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
-            state.DISPLAY.blit(number_text, text_rect)
-
-        # Draw third column
-        for i, pos in enumerate(self.slot_positions3):
-            box_x = start_x1 + (box_size + line_thickness) * 2
-            box_y = start_y + pos
-            pygame.draw.rect(state.DISPLAY, black_color, (box_x, box_y, box_size, box_size))
-            number_text = font.render(str(self.slot3[i]), True, white_color)
-            text_rect = number_text.get_rect(center=(box_x + box_size // 2, box_y + box_size // 2))
-            state.DISPLAY.blit(number_text, text_rect)
-
-        # Draw the white lines
-        for start_x in [start_x1, start_x1 + box_size + line_thickness, start_x1 + (box_size + line_thickness) * 2]:
-            y = start_y - line_thickness // 2
-            pygame.draw.line(state.DISPLAY, white_color, (start_x, y), (start_x + box_size, y), line_thickness)
-            y = start_y + box_size + line_thickness // 2
-            pygame.draw.line(state.DISPLAY, white_color, (start_x, y), (start_x + box_size, y), line_thickness)
-            x = start_x - line_thickness // 2
-            pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
-            x = start_x + box_size + line_thickness // 2
-            pygame.draw.line(state.DISPLAY, white_color, (x, start_y), (x, start_y + box_size), line_thickness)
-
-    def draw_mask_box(self, state: "GameState") -> None:
-        screen_width, screen_height = state.DISPLAY.get_size()
-        box_size = 50
-        line_thickness = 2
-        total_grid_width = box_size * 3 + line_thickness * 2
         start_x = (screen_width - total_grid_width) // 2
-        start_y = (screen_height - box_size) // 2
+        start_y = (screen_height - box_height) // 2
 
-        mask_box_top = pygame.Surface((total_grid_width, start_y))
-        mask_box_bottom = pygame.Surface((total_grid_width, screen_height - (start_y + box_size)))
-        mask_box_top.fill((0, 0, 51))
-        mask_box_bottom.fill((0, 0, 51))
+        for i in range(3):  # For each reel
+            reel_surface = self.reel_surfaces[i]
+            reel_height = reel_surface.get_height()
 
-        state.DISPLAY.blit(mask_box_top, (start_x, 0))
-        state.DISPLAY.blit(mask_box_bottom, (start_x, start_y + box_size + line_thickness))
+            reel_y_pos = self.reel_positions[i] % reel_height
+            rect = pygame.Rect(0, reel_y_pos, box_width, box_height)
 
-    def draw_bottom_black_box(self, state: "GameState") -> None:
-        black_box_height = 130
-        black_box_width = 700
+            if reel_y_pos + box_height > reel_height:
+                upper_part_height = reel_height - reel_y_pos
+                lower_part_height = box_height - upper_part_height
+
+                upper_part = reel_surface.subsurface(pygame.Rect(0, reel_y_pos, box_width, upper_part_height))
+                lower_part = reel_surface.subsurface(pygame.Rect(0, 0, box_width, lower_part_height))
+
+                combined_surface = pygame.Surface((box_width, box_height)).convert_alpha()
+                combined_surface.blit(upper_part, (0, 0))
+                combined_surface.blit(lower_part, (0, upper_part_height))
+            else:
+                combined_surface = reel_surface.subsurface(rect)
+
+            box_x = start_x + i * (box_width + line_thickness)
+            box_y = start_y
+
+            state.DISPLAY.blit(combined_surface, (box_x, box_y))
+
+            pygame.draw.rect(state.DISPLAY, WHITE, (box_x, box_y , box_width, box_height), line_thickness)
+
+    def draw_magic_menu_selection_box(self, state):
+        if self.magic_screen_choices[self.magic_screen_index] == Magic.SLOTS_HACK.value:
+            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
+            pass
+
+        elif self.magic_screen_choices[self.magic_screen_index] == self.BACK:
+            pass
+            # self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
         border_width = 5
-
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
         black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill((0, 0, 0))
+        black_box.fill(BLACK)
 
-        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
 
-        screen_width, screen_height = state.DISPLAY.get_size()
-        black_box_x = (screen_width - black_box_width) // 2 - border_width
-        black_box_y = screen_height - black_box_height - 20 - border_width
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-    def reset(self):
-        self.lock_down = 0
-        self.lucky_strike = 0
-        self.magic_lock = False
-        self.slot_hack = 0
-        self.game_state: str = "welcome_screen"
-        self.bet: int = 50
-        self.welcome_screen_index = 0
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
 
-    # def test(self) -> None:
-    #     match_counts = {i: 0 for i in range(10)}
-    #     no_match_count = 0
-    #
-    #     for _ in range(10000):
-    #         self.generate_numbers()
-    #         if self.slot1[0] == self.slot2[0] == self.slot3[0]:
-    #             match_counts[self.slot1[0]] += 1
-    #         else:
-    #             no_match_count += 1
-    #
-    #     for number in range(10):
-    #         print(f"Matches for number {number}: {match_counts[number]} times")
-    #     print(f"No matches: {no_match_count} times")
-    #
-    # def map_to_slot_number(self, value: int) -> int:
-    #     slot_mapping = {
-    #         range(1, 7): 0,  # lose a rib
-    #         range(7, 15): 1,  # lost 50 extra coins from your state.player.money
-    #         range(15, 21): 2,  # unlucky spin cannot exit out of game + 10% to lose a rib -rib lock status
-    #         range(21, 45): 3,  # add 100 coins
-    #         range(45, 57): 4,  # gain 10 hp 10 mp 100 coins
-    #         range(57, 72): 5,  # gain 20 hp 20 mp 125 coins
-    #         range(72, 80): 6,  # add 200 coins
-    #         range(80, 87): 7,  # lucky spin better % for jackpot
-    #         range(87, 95): 8,  # get special item or 50 coins
-    #         range(95, 101): 9,  # jackpot
-    #     }
-    #     for key in slot_mapping:
-    #         if value in key:
-    #             return slot_mapping[key]
-    #     return 0  # Default value in case something goes wrong
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.magic_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+
+
+
+
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
+
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices  # Adjust spacing between choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        if Magic.SLOTS_HACK.value not in state.player.magicinventory:
+            self.magic_lock = True
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif Magic.SLOTS_HACK.value in state.player.magicinventory:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if Magic.SLOTS_HACK.value in state.player.magicinventory and Magic.SLOTS_HACK.value not in self.magic_screen_choices:
+            self.magic_screen_choices.append(Magic.SLOTS_HACK.value)
+
+
+        if self.BACK not in self.magic_screen_choices:
+            self.magic_screen_choices.append(self.BACK)
+
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
+            )
+
+    def draw_slot_images(self, state):
+        sprite_data = {
+            "bomb": ((10, 20), (450, 100, 50, 52)),
+            "lucky_seven": ((100, 20), (300, 30, 60, 60)),
+            "dice": ((181, 20), (350, 100, 50, 52)),
+            "coin": ((240, 20), (20, 30, 75, 52)),
+            "diamond": ((320, 20), (20, 170, 75, 52)),
+            "crown": ((400, 20), (15, 275, 80, 52)),
+            "chest": ((500, 20), (300, 275, 75, 58)),
+            "cherry": ((20, 80), (120, 210, 75, 58)),
+            "dice_6": ((120, 80), (400, 210, 50, 58)),
+            "spin": ((200, 80), (40, 110, 52, 58)),
+        }
+
+        # Loop through the dictionary and blit each sprite
+        for name, (blit_coords, sprite_rect) in sprite_data.items():
+            sprite = self.slot_images_sprite_sheet.subsurface(pygame.Rect(*sprite_rect))
+            state.DISPLAY.blit(sprite, blit_coords)
+
+    def update_reels(self):
+        for i in range(3):
+            self.reel_positions[i] = (self.reel_positions[i] + 1) % len(self.slot_image_keys)
+
+    def adjust_reels_to_results(self, slots: List[str]):
+        symbol_height = 70  # Height of each symbol image
+        for i in range(3):  # For each reel
+            symbol_name = slots[i]
+            # Find the index of the symbol on the reel
+            if symbol_name in self.reel_symbol_names[i]:
+                symbol_index = self.reel_symbol_names[i].index(symbol_name)
+                # Calculate the reel position to align the symbol in the display
+                self.reel_positions[i] = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
+                # Adjust so the symbol is centered in the display
+                self.reel_positions[i] -= (symbol_height / 2 + 90)
+                self.reel_positions[i] %= self.reel_surfaces[i].get_height()
+            else:
+                print(f"Symbol {symbol_name} not found on reel {i + 1}")
+
+    def calculate_target_positions(self, slots: List[str]):
+        symbol_height = 80  # Height of each symbol image
+        self.target_positions = [0.0, 0.0, 0.0]  # Initialize target positions for each reel
+        for i in range(3):  # For each reel
+            symbol_name = slots[i]
+            # Find the index of the symbol on the reel
+            if symbol_name in self.reel_symbol_names[i]:
+                symbol_index = self.reel_symbol_names[i].index(symbol_name)
+                # Calculate the target position to align the symbol in the display
+                target_position = (symbol_index * symbol_height) % self.reel_surfaces[i].get_height()
+                # Adjust so the symbol is centered in the display
+                target_position -= (symbol_height / 2 - 40)
+                target_position %= self.reel_surfaces[i].get_height()
+                self.target_positions[i] = target_position
+            else:
+                print(f"Symbol {symbol_name} not found on reel {i + 1}")
+                self.target_positions[i] = 0  # Default to position 0 if symbol not found
+
+    def generate_numbers(self, state) -> List[str]:
+        # Generate random values for each slot
+        generated_values = [random.randint(1, 100) for _ in range(3)]
+        # generated_values = [15, 15, 15]
+        # print(f"[TEST] Forced generated values: {generated_values}")
+
+
+
+
+
+        #default
+        slot_mapping = {
+            range(1, 7): "bomb",
+            range(7, 15): "dice",
+            range(15, 27): "coin",
+            range(27, 42): "cherry",
+            range(42, 54): "spin",
+            range(54, 66): "crown",
+            range(66, 76): "dice_six",
+            range(76, 85): "diamond",
+            range(85, 95): "chest",
+            range(95, 101): "lucky_seven",
+        }
+
+
+
+
+        # rib demon stalker
+        if self.rib_stalker > 0:
+            slot_mapping = {
+                range(1, 15): "bomb",
+                range(15, 25): "dice",
+                range(25, 35): "coin",
+                range(27, 42): "cherry",
+                range(42, 54): "spin",
+                range(54, 101): "crown",
+            }
+        elif self.lucky_strike > 0:
+            slot_mapping = {
+                range(1, 30): "cherry",
+                range(30, 40): "spin",
+                range(40, 50): "crown",
+                range(50, 60): "dice_six",
+                range(60, 70): "diamond",
+                range(70, 80): "chest",
+                range(80, 101): "lucky_seven",
+            }
+
+        elif self.bet > 199 and self.rib_stalker == 0 and self.lucky_strike == 0 and self.debuff_increased_pay_to_play == 0:
+            slot_mapping = {
+                range(1, 7): "bomb",
+                range(7, 15): "dice",
+                range(15, 27): "coin",
+                range(27, 37): "cherry",
+                range(37, 45): "spin",
+                range(45, 55): "crown",
+                range(55, 66): "dice_six",
+                range(66, 75): "diamond",
+                range(75, 95): "chest",
+                range(95, 101): "lucky_seven",
+            }
+
+        elif self.bet > 299 and self.rib_stalker == 0 and self.lucky_strike == 0 and self.debuff_increased_pay_to_play > 0:
+            slot_mapping = {
+                range(1, 7): "bomb",
+                range(7, 15): "dice",
+                range(15, 27): "coin",
+                range(27, 37): "cherry",
+                range(37, 45): "spin",
+                range(45, 55): "crown",
+                range(55, 66): "dice_six",
+                range(66, 75): "diamond",
+                range(75, 95): "chest",
+                range(95, 101): "lucky_seven",
+            }
+
+        # Define a priority mapping for slot symbols
+        symbol_priority = {
+            "bomb": 1,
+            "dice": 2,
+            "coin": 3,
+            "cherry": 4,
+            "spin": 5,
+            "crown": 6,
+            "dice_six": 7,
+            "diamond": 8,
+            "chest": 9,
+            "lucky_seven": 10
+        }
+
+        print(slot_mapping)
+        slots = []
+        for value in generated_values:
+            for key in slot_mapping:
+                if value in key:
+                    slots.append(slot_mapping[key])
+                    break
+            else:
+                # Default symbol in case no range matches
+                slots.append("bomb")  # Or any default symbol you prefer
+
+        if symbol_priority[slots[0]] == 0 and self.rib_stalker > 0:
+            if self.debuff_increased_pay_to_play > 0:
+                spell_modifier = 5
+            else:
+                spell_modifier = 0
+
+            if random.randint(1, 100) <= (50 + spell_modifier):   # Adjusted chance
+                print("Im ribbing active")
+                self.slot_2_magnet = True
+                slots[1] = slots[0]  # Match slot 2 to slot 1
+            else:
+                self.slot_2_magnet = False
+
+            if random.randint(1, 100) <= (75 + spell_modifier):
+                print("Im ribbing active")
+                self.slot_3_magnet = True
+                slots[2] = slots[0]  # Match slot 3 to slot 1
+            else:
+                self.slot_3_magnet = False
+
+
+        slot_2_luck_bonus = 0
+
+        print(f"Slot results: {slots}")
+        if symbol_priority[slots[0]] > 3:  # Use symbol's priority for comparison
+            for luck in range(state.player.luck):
+                slot_2_luck_bonus += 2
+
+        if random.randint(1, 100) <= 50 + slot_2_luck_bonus:  # Adjusted chance
+            print("Im active")
+            self.slot_2_magnet = True
+            slots[1] = slots[0]  # Match slot 2 to slot 1
+        else:
+            self.slot_2_magnet = False
+
+        print(f"Slot results: {slots}")
+
+        slot_3_luck_bonus = 0
+
+        if symbol_priority[slots[0]] > 2:  # Same logic for slot 3
+            for luck in range(state.player.luck):
+                slot_3_luck_bonus += 2
+
+        if random.randint(1, 100) <= 40 + slot_3_luck_bonus:
+            print("Im active")
+            self.slot_3_magnet = True
+            slots[2] = slots[0]  # Match slot 3 to slot 1
+        else:
+            self.slot_3_magnet = False
+
+        print(f"Slot results: {slots}")
+
+        return slots  # Return the list of symbols
+
+    def create_reel_surface(self) -> Tuple[pygame.Surface, List[str]]:
+        # Use the same order of images for all reels
+        image_keys = self.slot_image_keys.copy()
+        # Optionally shuffle if desired
+        # random.shuffle(image_keys)
+
+        # Calculate the total height of the reel surface
+        box_width, box_height = 80, 80  # Same as in draw_grid_box
+        reel_height = box_height * len(image_keys)
+
+        # Create the reel surface
+        reel_surface = pygame.Surface((box_width, reel_height)).convert_alpha()
+        reel_surface.fill((0, 0, 0, 0))  # Transparent background
+
+        # Blit each image onto the reel surface
+        for idx, key in enumerate(image_keys):
+            image = self.slot_images[key]
+            resized_image = pygame.transform.scale(image, (box_width, box_height))
+            reel_surface.blit(resized_image, (0, idx * box_height))
+
+        return reel_surface, image_keys  # Return the surface and the list of symbols
+
+
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        enemy_name_y_position = 33
+        enemy_money_y_position = 70
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+
+        if self.lucky_strike > 0:
+            state.DISPLAY.blit(self.font.render(f"LuckyStrike: {self.lucky_strike}", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position))
+        else:
+            state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        if self.slot_hack_debuff > 0:
+            state.DISPLAY.blit(self.font.render(f"Hacked: {self.slot_hack_debuff}", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position + 122))
+        else:
+            state.DISPLAY.blit(self.font.render(f"", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position + 122))
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+        if self.rib_stalker == 0:
+            state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
+        elif self.rib_stalker > 0:
+            state.DISPLAY.blit(self.font.render(f"Stalker: {self.rib_stalker}", True, RED), (player_enemy_box_info_x_position, hero_name_y_position))
+
+    def draw_game_over(self, state):
+        no_money_game_over = 0
+        no_stamina_game_over = 0
+        if state.player.money <= no_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        elif state.player.stamina_points <= no_stamina_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+
+    def draw_magic_menu_selection_box_slots(self, state):
+        if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value:
+            self.battle_messages[self.MAGIC_MENU_HACK_DESCRIPTION].draw(state)
+        elif self.magic_screen_choices[self.magic_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        black_box_height = 221 - 50
+        black_box_width = 200 - 10
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        arrow_y_position = start_y_right_box + (self.magic_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

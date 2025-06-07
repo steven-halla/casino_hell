@@ -28,13 +28,13 @@ class BlackJackThomasScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.blackJackThomasMoney: int = 950
-        self.fengus_bankrupt: int = 0
+        self.blackJackThomasMoney: int = 1000
+        self.thomas_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
         self.magic_lock: bool = False
-        self.dealer_name: str = "jasmine"
+        self.dealer_name: str = "thomas"
         self.lock_down_inactive: int = 0
         self.initial_hand: int = 2
         self.hedge_hog_time: bool = False
@@ -236,7 +236,7 @@ class BlackJackThomasScreen(GambleScreen):
         # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
 
 
-        if self.money <= self.fengus_bankrupt:
+        if self.money <= self.thomas_bankrupt:
             state.currentScreen = state.area5RestScreen
             state.area5RestScreen.start(state)
             Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)

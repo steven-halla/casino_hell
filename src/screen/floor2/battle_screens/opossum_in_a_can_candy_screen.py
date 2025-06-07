@@ -3,300 +3,174 @@ from typing import List
 
 import pygame
 
-from entity.gui.screen.battle_screen import BattleScreen
-from entity.gui.textbox.text_box import TextBox
+from constants import WHITE, BLACK, RED
+from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
-from screen.examples.screen import Screen
+from game_constants.magic import Magic
+
+# opssoum shuffle - reshuffles the cans
+# opossum guilty shoes- if score is above 750 and you lose , retain 200 points
 
 
-
-class OpossumInACanCandyScreen(BattleScreen):
-    def __init__(self):
-        super().__init__("Opossum in a can screen")
-        self.third_message_display = ""
-        self.debuff_keen_perception = False
-        # we can set this as a variable that can get toggled on and off depending on who you are playing aginst
-        self.candyOpossumMoney = 1000
-        self.money_minimum = 500
-        self.quest_coins_needed = 500
-        self.quest_money = -250
-
-
-        self.opossumBite = False
-
+class OpossumInACanCandyScreen(GambleScreen):
+    def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
+        super().__init__(screenName)
+        self.bet: int = 300
+        self.dealer_name = "Bubba"
+        self.bubba_bankrupt = 0
+        self.game_state:str = self.WELCOME_SCREEN
         self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound.set_volume(0.2)
+        self.stamina_drain: int = 50
+        self.stamina_drain_repellant: int = 25
+        self.pick_index: int = 0
+        self.spirit_bonus: int = 0
+        self.magic_bonus: int = 0
+        self.luck_bonus: int = 0
+        self.magic_index: int = 1
+        self.quit_index: int = 2
+        self.blit_message_x: int = 65
+        self.blit_message_y: int = 460
+        self.pick_screen_index: int = 0
+        self.tally_index:int = 1
+        self.debuff_keen_perception: bool = False
+        self.player_score: int = 0
+        self.pick_tally_screen_index: int = 0
+        self.current_box_index: int = 0  # Index of the currently green box
+        self.magic_screen_index: int = 0
+        self.magic_menu_selector: list[str] = []
+        self.shake_cost: int = 10
+        self.peek_points: int = 0
+        self.buff_poison_bite: int = 0
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "BUbba: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
+            ]),
 
-        self.sallyOpossumIsDefeated = False
-        self.magic_points = 1
+            self.PICK_TALLY_MENU_MESSAGE: MessageBox([
+                "Pick to go to trash can selection, tally to end round and turn in points.Score must be higher than 0 to tally."
+            ]),
 
-        self.opossum_coin = False
+
+            self.MAGIC_MENU_SHAKE_DESCRIPTION: MessageBox([
+                "Shakes the can, reveals 1 opossum and 1 lucky star."
+            ]),
+            self.MAGIC_MENU_PEEK_DESCRIPTION: MessageBox([
+                "Ask the dealer very nicelyto get a quick peek in can."
+            ]),
+            self.PICK_SELECTION_MESSAGE: MessageBox([
+                "Shakes the can, reveals 1 opossum and 1 lucky star."
+            ]),
+
+            self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
+                "go back to previous menu"
+            ]),
+
+            self.PLAYER_WIN_MESSAGE: MessageBox([
+                "You won the toss!!!"
+            ]),
+            self.PLAYER_LOSE_MESSAGE: MessageBox([
+                "You lost the toss."
+            ]),
+            self.CANDY_CASTING_SPELL_MESSAGE: MessageBox([
+                "Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
+            ]),
+
+        }
 
 
-        self.opossum_font = pygame.font.Font(None, 36)
-        self.font = pygame.font.Font(None, 36)
-        self.player_score = 0
-        self.opossum_index = 0
-        self.five_hundred_points = False
-        self.magic_menu_selector_index = 0
-        self.game_state = "welcome_opposum"
-        self.winner_or_looser: List[str] = ["win", "win",
-                                            "big win", "big win", "lose",
+        self.magic_lock: bool = False
+        self.welcome_screen_choices: list[str] = ["Play", "Magic",  "Quit"]
+        self.pick_screen_choices: list[str] = ["Pick", "Tally"]
+        self.index_stepper = 1
+        self.positions = []  # Initialize positions list to store trash can positions
+
+        self.trash_sprite_image = pygame.image.load("./assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
+        self.opossum_sprite_image = pygame.image.load("./assets/images/opossum_redone2.png")
+        self.hand_sprite_image = pygame.image.load("./assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
+        self.winner_or_looser: List[str] = ["win", "med win",
+                                            "big win", "high win", "lose",
                                             "lucky_star",
                                             "X3_star", "lose",
 
-                                    ]
-        self.winner_or_looser_lucky: List[str] = ["win", "win",
-                                            "big win", "big win", "win",
-                                            "lucky_star",
-                                            "X3_star", "win",
-
                                             ]
+        self.winner_or_looser_lucky: List[str] = ["high win", "win",
+                                                  "big win", "super win", "med win",
+                                                  "lucky_star",
+                                                  "X3_star", "lose",
 
-        # person of caution drowning in a swamp of putrid decay, purge yourself of purity and become one with the rot...poison of bravery
-        self.battle_messages = {
-            "welcome_message": TextBox(
-                ["Candy here, good luck to you", "Welcome to Opossum in a can !", "No take backs on your bet, I had to set up the cans after all", ""],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "pick_message": TextBox(
-                ["Press Left/Right keys to select, T to select, B to go back. Tally when your ready."],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "play_again_or_leave_message": TextBox(
-                ["Would you like to play again or leave? "],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "rapid_opossum_message": TextBox(
-                ["Oh no you got bite!!! Wrong Trash can!!!! ", ""],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "opossum_defeated_message": TextBox(
-                ["You disgusting trash, take this gift, you deserve it. ", "You open the present  and get bit by a rapid opossum;)", "The doctor's medicine is missing, I'll throw you in a cage real soon.", ""],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "real_opossum_defeated_message": TextBox(
-                ["How could my sexy Opossums lose like that?", "",
-    ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "hero_defeated_stamina_message": TextBox(
-                ["if i gamble anymore i'll pass out right in front of the dealer", ""],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "hero_defeated_money_message": TextBox(
-                ["i need more money to play i should leave ", ""],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "lose_message": TextBox(
-                ["Something poppped out!!! ", "Oh no you just got bit...you better go see a doctor you feel sick", "chompy", ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
+                                                  ]
+        self.result: str = ""
 
-            "immune_lose_message": TextBox(
-                ["chompy! You Gain 15 exp"],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
+        self.can1: str = ""
+        self.can2: str = ""
+        self.can3: str = ""
+        self.can4: str = ""
+        self.can5: str = ""
+        self.can6: str = ""
+        self.can7: str = ""
+        self.can8: str = ""
+        self.shake: bool = False
+        self.buff_peek_amount: int = 0
 
-            "tally_message": TextBox(
-                [ "", "" ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-
-            "game_over_no_money": TextBox(
-                ["This is what happens when you try to be the hero. You deserve everything your about to get. "
-
-                 ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "game_over_no_stamina": TextBox(
-                ["Chomp",
-                    "Hero: Oh crap, everything is dizzy and spinning, I need to sleep.(-100 golds) "
-
-                 ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "less_than_150_money": TextBox(
-                ["Chomp",
-                 "Sally: You disgusting piece of crap get out of here till you get more money. Go on Git! ", ""
-
-                 ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "magic_description_reveal": TextBox(
-                [
-                 "reveal: Your perception is increased. You can now detect subtle shakings of the trash cans. 1 can is X3 star, the other is 1 of 2 rabid opossums"
-                 ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "magic_description_back": TextBox(
-                [
-                    "back: go back to previous menu"
-                ],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-            "player_debuff_magic_poison_message": TextBox(
-                ["Candy: Person of caution drowning in a swamp of putrid decay, purge yourself of purity and become one with the rot...poison of despair.", ""],
-                (45, 460, 700, 130),  # Position and size
-                36,  # Font size
-                500  # Delay
-            ),
-
-            "level_up": TextBox(
-                [f"Grats you levels up. ", "", "", "", ""],
-                (65, 460, 700, 130),
-                36,
-                500
-            ),
-
-            # You can add more game state keys and TextBox instances here
-        }
-        self.result = ""
-        self.bet = 200
-        self.insurance = 200
-        self.X3 = False
-        self.trash_can_pick = ""
-        self.magic_menu_opossum_index = 0
-        self.initialized_message = False  # Add this line to initialize the flag
-
-        self.game_state = "welcome_screen"
-
-        self.box_color = (255, 0, 0)  # Initially red
-
-        self.rabiesStaminaChecker = False
-
-        self.has_opossum_insurance = True
-
-        self.choices = ["Grab", "Magic", "Quit"]
-        self.choices_index = 0
-
-        self.bet_or_flee = ["bet", "flee"]
-        self.bet_or_flee_index = 0
-        self.menu_selector = ["grab", "magic", "tally"]
-
-
-        self.magic_menu_selector = ["Back"]
-        self.magic_menu_index = 0
-
-        self.talley_checker = False
+        self.win_x, self.win_y = None, None
+        self.big_win_x, self.big_win_y = None, None
+        self.triple_x, self.triple_y = None, None
+        self.lucky_star_x, self.lucky_star_y = None, None
+        self.super_win_x, self.super_win_y = None, None
+        self.high_win_x, self.high_win_y = None, None
+        self.med_win_x, self.med_win_y = None, None
+        self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+        self.exp_gain_high: int = 25
+        self.exp_gain_low: int = 10
+        self.exp_gain_medium: int = 20
+        self.money: int = 444
+        self.peek_cost: int = 25
+        self.buff_peek: bool = False
+        self.debuff_double_pick: int = 5
+        self.double_pick_chance: int = 0
+        self.candy_magic_points: int = 1
 
 
 
 
-        self.play_again_or_quit = ["Play Again", "Quit"]
-
-        self.play_again_or_quit_index = 0
-
-
-        self.total_winnings = 0
-
-        self.green_box_index = 0  # Index of the currently green box
-        self.can1 = ""
-        self.can2 = ""
-        self.can3 = ""
-        self.can4 = ""
-        self.can5 = ""
-        self.can6 = ""
-        self.can7 = ""
-        self.can8 = ""
-
-        self.fill_cans = True
-        self.shake = False
-
-        self.trash_sprite_image = pygame.image.load("./assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
-        self.hand_sprite_image = pygame.image.load("./assets/images/GameCube - Mario Party 4 - Character Hands (1).png").convert_alpha()
+    PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
+    PICK_SCREEN:str = "pick_screen"
+    # TALLY_SCREEN:str = "tally_screen"
+    PLAYER_LOSE_SCREEN:str = "player_lose_screen"
+    PLAYER_WIN_SCREEN:str = "player_win_screen"
+    CANDY_CASTING_SPELL_SCREEN: str = "CANDY_CASTING_SPELL_SCREEN"
 
 
-        self.tally_money_once = True
+    PLAYER_WIN_MESSAGE: str = "player_win_message"
+    PLAYER_LOSE_MESSAGE: str = "player_lose_message"
+    MAGIC_MENU_SHAKE_DESCRIPTION: str = "magic_menu_force_description"
+    MAGIC_MENU_PEEK_DESCRIPTION: str = "magic_menu_peek_description"
+    MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
+    PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
+    PICK_SELECTION_MESSAGE: str = "pick_selection_message"
+    CANDY_CASTING_SPELL_MESSAGE: str = "CANDY_CASTING_SPELL_MESSAGE"
+    BACK: str = "Back"
 
-        self.music_file = "./assets/music/opossum_in_a_can_screen.mp3"
-        self.music_volume = 0.5  # Adjust as needed
-        # self.initialize_music()
-        self.music_on = True
-
-
-        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
-        self.menu_movement_sound.set_volume(0.2)
-        self.player_debuff_poison = 0
-        self.exp_gain = 15
-        self.entry_cost = 250
-        self.level_anchor = False
-
-    def start(self, state: 'GameState') -> None:
-        self.initialize_music()
-
-    def reset(self):
-        self.player_debuff_poison = 0
-        self.choices_index = 0
-        self.magic_points = 1
-
-
-
-
-    def stop_music(self):
-        pygame.mixer.music.stop()
-
-    def initialize_music(self):
-        # Initialize the mixer
-        pygame.mixer.init()
-
-        # Load the music file
-        pygame.mixer.music.load(self.music_file)
-
-        # Set the volume for the music (0.0 to 1.0)
-        pygame.mixer.music.set_volume(self.music_volume)
-
-        # Play the music, -1 means the music will loop indefinitely
-        pygame.mixer.music.play(-1)
 
     def initializeGarbageCans(self, state):
         self.trash_can_pick = ""
         self.result = ""
-
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
         lucky_draw = random.randint(0, 100)
         print("your lucky draw is: " + str(lucky_draw))
 
         for luck in range(state.player.luck):
-            lucky_draw += 5
+            lucky_draw += 4
         print("your lucky draw is: " + str(lucky_draw))
         if lucky_draw > 90:
             shuffled_items = random.sample(self.winner_or_looser_lucky, len(self.winner_or_looser_lucky))
 
         self.can1 = shuffled_items[0]
-        # print("Can 1 contains:", self.can1)
 
         self.can2 = shuffled_items[1]
 
@@ -312,19 +186,474 @@ class OpossumInACanCandyScreen(BattleScreen):
 
         self.can8 = shuffled_items[7]
 
-    def refresh(self):
-        self.bet = 20
-        self.debuff_keen_perception = False
 
-        self.has_opossum_insurance = True
-        self.insurance = 200
-        self.total_winnings = 0
-        self.tally_money_once = True
+    def start(self, state: 'GameState'):
+        self.opossum_game_reset(state)
+        self.welcome_screen_index = 0
+
+
+
+        self.initializeGarbageCans(state)
+        self.spirit_bonus: int = state.player.spirit * 10
+        self.magic_bonus: int = state.player.mind * 10
+        self.luck_bonus: int = state.player.luck * 5
+        self.buff_peek_amount: int = 0
+
+        if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
+            self.magic_menu_selector.insert(1, Magic.PEEK.value)
+
+        if Magic.SHAKE.value in state.player.magicinventory and Magic.SHAKE.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.SHAKE.value)
+
+        if self.BACK not in self.magic_menu_selector:
+            self.magic_menu_selector.append(self.BACK)
+
+        # staying at end appends this
+
+
+    def opossum_game_reset(self, state):
+        self.shake = False
+        self.debuff_keen_perception: bool = False
+        self.magic_lock = False
+        self.initializeGarbageCans(state)
         self.player_score = 0
-        self.talley_checker = False
+        self.debuff_double_pick = 0
+        self.win_x, self.win_y = None, None
+        self.big_win_x, self.big_win_y = None, None
+        self.triple_x, self.triple_y = None, None
+        self.lucky_star_x, self.lucky_star_y = None, None
+        self.super_win_x, self.super_win_y = None, None
+        self.high_win_x, self.high_win_y = None, None
+        self.med_win_x, self.med_win_y = None, None
+        self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+        self.pick_tally_screen_index = 0
+        self.buff_peek = False
+        [box.reset() for box in self.battle_messages.values()]
+        self.candy_magic_points: int = 3
+
+
+    def opossum_round_reset(self, state):
+        self.shake = False
+        self.debuff_keen_perception: bool = False
+        [box.reset() for box in self.battle_messages.values()]
+
+
+
+        if self.debuff_double_pick > 0:
+            self.debuff_double_pick -= 1
+
+
+        if self.shake == False:
+            self.magic_lock = False
+        self.initializeGarbageCans(state)
+        self.player_score = 0
+        # Reset all win-related positions to None
+        # Reset all win-related positions to None
+        self.win_x, self.win_y = None, None
+        self.big_win_x, self.big_win_y = None, None
+        self.triple_x, self.triple_y = None, None
+        self.lucky_star_x, self.lucky_star_y = None, None
+        self.super_win_x, self.super_win_y = None, None
+        self.high_win_x, self.high_win_y = None, None
+        self.med_win_x, self.med_win_y = None, None
+        self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
+        self.pick_tally_screen_index = 0
+        self.buff_peek = False
+        if self.peek_points > 0:
+            self.peek_points -= 1
+            if self.peek_points > 0:
+                self.buff_peek = True
+
+
+
+
+        self.double_pick_chance += 3
+
+        match self.candy_magic_points:
+            case 3:
+                double_flip_randomizer = random.randint(1, 90) + self.double_pick_chance
+            case 2:
+                double_flip_randomizer = random.randint(1, 70) + self.double_pick_chance
+            case 1:
+                double_flip_randomizer = random.randint(1, 50) + self.double_pick_chance
+
+        if double_flip_randomizer > 90 and self.candy_magic_points > 0 and self.debuff_double_pick == 0:
+            self.current_screen = self.CANDY_CASTING_SPELL_SCREEN
+            self.double_pick_chance = 0
+
+
+
+    def update(self, state):
+        if self.money <= self.bubba_bankrupt:
+            Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_SILLY_WILLY_DEFEATED)
+            state.currentScreen = state.area4RestScreen
+            state.area4RestScreen.start(state)
+
+        super().update(state)
+        controller = state.controller
+        controller.update()
+        state.player.update(state)
+
+        if self.game_state == self.WELCOME_SCREEN:
+            self.update_welcome_screen_logic(controller, state)
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
+        elif self.game_state == self.CANDY_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.CANDY_CASTING_SPELL_MESSAGE].update(state)
+            if state.controller.confirm_button:
+                self.debuff_double_pick = 5
+
+                self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+
+            self.update_magic_menu_selection_box(controller, state)
+
+        elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
+
+
+            self.battle_messages[self.PICK_TALLY_MENU_MESSAGE].update(state)
+
+            self.update_pick_tally_menu_screen_logic(controller)
+
+            # self.battle_messages[self.PICK_MESSAGE].update(state)
+        elif self.game_state == self.PICK_SCREEN:
+            self.update_pick_screen(controller, state)
+            self.battle_messages[self.PICK_SELECTION_MESSAGE].update(state)
+
+
+        elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
+                self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The repellant scares him off before too much damage is taking. You take 25 damage, and gain {self.exp_gain_high}:   experience points and 0 money."]
+            elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
+                self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The hungry opossum deals 50 damage, you gain {self.exp_gain_high}:   experience points and 0 money."]
+            self.battle_messages[self.PLAYER_LOSE_MESSAGE].update(state)
+
+            if controller.confirm_button:
+
+
+
+                if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
+                    state.player.stamina_points -= self.stamina_drain_repellant
+                elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
+                    state.player.stamina_points -= self.stamina_drain
+
+                if Equipment.VARMENT_HAT.value in state.player.equipped_items:
+                    money_chance_additive = state.player.spirit * 5
+
+                    money_gain_randomizer = random.randint(1, 100) + money_chance_additive
+
+                    if money_gain_randomizer > 99:
+                        state.player.money += 200
+
+                state.player.exp += self.exp_gain_high
+                self.opossum_round_reset(state)
+                self.game_state = self.WELCOME_SCREEN
+
+        elif self.game_state == self.PLAYER_WIN_SCREEN:
+            if self.player_score > self.money:
+                self.player_score = self.money
+            if self.player_score < 750:
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gain {self.player_score}: money and gain {self.exp_gain_low}:   experience points!"]
+            elif self.player_score > 750:
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gain {self.player_score}: money and gain {self.exp_gain_medium}:   experience points!"]
+
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
+            if controller.isTPressed or controller.isAPressedSwitch:
+                if self.player_score < 750:
+                    state.player.exp += self.exp_gain_low
+                elif self.player_score > 750:
+                    state.player.exp += self.exp_gain_medium
+
+                controller.isTPressed = False
+                controller.isAPressedSwitch = False
+
+                if self.player_score > self.money:
+                    self.player_score = self.money
+
+                state.player.money += self.player_score
+                self.money -= self.player_score
+                if self.money < 0:
+                    self.money = 0
+                self.opossum_round_reset(state)
+
+                if self.money < 750  == False:
+                    self.game_state = self.CANDY_CASTING_SPELL_SCREEN
+                else:
+                    self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+
+            if state.player.money <= no_money_game_over:
+                if controller.isTPressed or controller.isAPressedSwitch:
+                    controller.isTPressed = False
+                    controller.isAPressedSwitch = False
+                    state.currentScreen = state.gameOverScreen
+                    state.gameOverScreen.start(state)
+            elif state.player.stamina_points <= no_stamina_game_over:
+                if controller.isTPressed or controller.isAPressedSwitch:
+                    controller.isTPressed = False
+                    controller.isAPressedSwitch = False
+                    self.opossum_round_reset(state)
+                    state.player.money -= 100
+                    state.currentScreen = state.area3RestScreen
+                    state.area3RestScreen.start(state)
+
+
+    def draw(self, state):
+        super().draw(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_enemy_info_box(state)
+        self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
+        self.draw_opossum_sprite_image(state)
+        self.draw_win_message(state)
+        self.draw_big_win_message(state)
+        self.draw_med_win_message(state)
+        self.draw_high_win_message(state)
+        self.draw_super_win_message(state)
+        self.draw_triple_win_message(state)
+        self.draw_lucky_star_message(state)
+
+        # print("Your peak points are line 405: " + str(self.peek_points))
+        # print("Your peak buff state: " + str(self.buff_peek))
+
+
+        if self.game_state == self.WELCOME_SCREEN:
+
+            self.draw_menu_selection_box(state)
+            self.draw_welcome_screen_box_info(state)
+
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
+        elif self.game_state == self.CANDY_CASTING_SPELL_SCREEN:
+
+            self.battle_messages[self.CANDY_CASTING_SPELL_MESSAGE].draw(state)
+
+        elif self.game_state == self.MAGIC_MENU_SCREEN:
+            self.draw_magic_menu_selection_box(state)
+
+        elif self.game_state == self.PICK_TALLY_MENU_SCREEN:
+            self.draw_pick_tally_menu_logic(state)
+            self.battle_messages[self.PICK_TALLY_MENU_MESSAGE].draw(state)
+
+            # self.battle_messages[self.PICK_MESSAGE].draw(state)
+
+        elif self.game_state == self.PICK_SCREEN:
+            self.battle_messages[self.PICK_SELECTION_MESSAGE].draw(state)
+
+            self.draw_pick_screen(state)
+
+        elif self.game_state == self.PLAYER_LOSE_SCREEN:
+            self.battle_messages[self.PLAYER_LOSE_MESSAGE].draw(state)
+
+        elif self.game_state == self.PLAYER_WIN_SCREEN:
+            self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
+
+        elif self.game_state == self.GAME_OVER_SCREEN:
+            no_money_game_over = 0
+            no_stamina_game_over = 0
+            if state.player.money <= no_money_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+            elif state.player.stamina <= no_stamina_game_over:
+                state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
+
+        pygame.display.flip()
+
+    def draw_magic_menu_selection_box(self, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value:
+            self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].draw(state)
+
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value:
+            self.battle_messages[self.MAGIC_MENU_PEEK_DESCRIPTION].draw(state)
+
+
+
+        #
+        #
+        # elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value:
+        #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].draw(state)
+        #
+        #
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].draw(state)
+
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
+
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+        for idx, choice in enumerate(self.magic_menu_selector):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.magic_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def update_magic_menu_selection_box(self, controller, state):
+        if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value:
+            self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].update(state)
+            #
+            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value:
+            self.battle_messages[self.MAGIC_MENU_PEEK_DESCRIPTION].update(state)
+            #
+            # self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].reset()
+        elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+            self.battle_messages[self.MAGIC_MENU_SHAKE_DESCRIPTION].reset()
+            #
+            # self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+            self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+        # elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+        #     self.battle_messages[self.MAGIC_MENU_BACK_DESCRIPTION].update(state)
+        #
+        #     self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].reset()
+        #     self.battle_messages[self.MAGIC_MENU_FORCE_DESCRIPTION].reset()
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index - self.index_stepper) % len(self.magic_menu_selector)
+            print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.magic_screen_index = (self.magic_screen_index + self.index_stepper) % len(self.magic_menu_selector)
+            print(f"Current Magic Menu Selector: {self.magic_menu_selector[self.magic_screen_index]}")
+
+        if controller.isTPressed or controller.isAPressedSwitch:
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+            if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value and state.player.focus_points >= self.shake_cost:
+                state.player.focus_points -= self.shake_cost
+                self.debuff_keen_perception = True
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                self.game_state = self.WELCOME_SCREEN
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.PEEK.value and state.player.focus_points >= self.peek_cost and self.peek_points == 0:
+                state.player.focus_points -= self.peek_cost
+                self.buff_peek = True
+                self.spell_sound.play()  # Play the sound effect once
+                self.magic_lock = True
+                if state.player.mind < 3:
+                    self.peek_points = 1
+                elif state.player.mind == 3 or state.player.mind == 4:
+                    self.peek_points = 2
+                elif state.player.mind == 5:
+                    self.peek_points = 3
+
+                self.game_state = self.WELCOME_SCREEN
+
+            elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
+                self.game_state = self.WELCOME_SCREEN
+
+    def update_pick_screen(self, controller, state, _last_box_move_time=[0]):
+        current_time = pygame.time.get_ticks()
+        cooldown = 300  # milliseconds
+
+        # print(f"DEBUG: current_time = {current_time}, last_box_move_time = {_last_box_move_time[0]}")
+
+        if current_time - _last_box_move_time[0] >= cooldown:
+            if state.controller.isRightPressed or state.controller.isRightPressedSwitch:
+                self.current_box_index = (self.current_box_index + 1) % 8
+                _last_box_move_time[0] = current_time
+                current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
+
+                while current_can_content == "":
+                    # print("DEBUG: Empty can encountered, incrementing index")
+                    self.current_box_index = (self.current_box_index + 1) % 8
+                    current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                    # print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
+
+                self.menu_movement_sound.play()
+                # print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
+
+            elif state.controller.isLeftPressed or state.controller.isLeftPressedSwitch:
+                self.current_box_index = (self.current_box_index - 1) % 8
+                _last_box_move_time[0] = current_time
+                current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                print(f"DEBUG: Moved to index {self.current_box_index}, initial content: {current_can_content}")
+
+                while current_can_content == "":
+                    # print("DEBUG: Empty can encountered, decrementing index")
+                    self.current_box_index = (self.current_box_index - 1) % 8
+                    current_can_content = getattr(self, f'can{self.current_box_index + 1}')
+                    # print(f"DEBUG: New index is {self.current_box_index}, content: {current_can_content}")
+
+                self.menu_movement_sound.play()
+                # print(f"DEBUG: Final box index: {self.current_box_index}, Content: {current_can_content}")
+
+            # Check for 'T' key press
+        if state.controller.isTPressed or state.controller.isAPressedSwitch:
+            if self.buff_peek:
+
+                selected_can_index = self.current_box_index + 1  # since can1 to can8 are 1-indexed
+                peeked_value = getattr(self, f"can{selected_can_index}")
+                print(f"You peeked into can {selected_can_index} and saw: {peeked_value}")
+                self.battle_messages[self.PICK_SELECTION_MESSAGE].messages = [f"The can contains a: {peeked_value}"]
+
+
+
+            # print(self.game_state)
+
+                # Call the function to reveal the selected box content
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+                self.buff_peek = False
+
+
+            else:
+                print("jfdklsjf;salkfj;saf")
+                state.controller.isTPressed = False
+                state.controller.isAPressedSwitch = False
+
+                self.reveal_selected_box_content(state)
+
+        elif state.controller.isBPressedSwitch or state.controller.isBPressed and self.debuff_double_pick == 0:
+            self.game_state = self.PICK_TALLY_MENU_SCREEN
+
+        elif (state.controller.isBPressedSwitch or state.controller.isBPressed) and self.debuff_double_pick > 0:
+            non_empty_cans = sum(1 for i in range(1, 9) if getattr(self, f"can{i}") != "")
+            if non_empty_cans % 2 == 0:
+                self.game_state = self.PICK_TALLY_MENU_SCREEN
 
     def reveal_selected_box_content(self, state):
-        selected_can_attribute = f'can{self.green_box_index + 1}'
+        selected_can_attribute = f'can{self.current_box_index + 1}'
         selected_box_content = getattr(self, selected_can_attribute)
         # print(f"Selected box content: {selected_box_content}")
 
@@ -332,564 +661,128 @@ class OpossumInACanCandyScreen(BattleScreen):
             self.trash_can_pick = "win"
             self.player_score += 60
             self.result = "+60"
+            self.win_x, self.win_y = self.positions[self.current_box_index]  # Store the position
+            # Reset or do not set the win coordinates for other outcomes
+
+        if selected_box_content == "med win":
+            self.trash_can_pick = "med win"
+            self.player_score += 70
+            self.result = "+70"
+            self.med_win_x, self.med_win_y = self.positions[self.current_box_index]  # Store the position
+            # Reset or do not set the win coordinates for other outcomes
+
+        if selected_box_content == "high win":
+            self.trash_can_pick = "med win"
+            self.player_score += 80
+            self.result = "+80"
+            self.high_win_x, self.high_win_y = self.positions[self.current_box_index]  # Store the position
+            # Reset or do not set the win coordinates for other outcomes
+
+        if selected_box_content == "super win":
+            self.trash_can_pick = "super win"
+            self.player_score += 100
+            self.result = "+100"
+            self.super_win_x, self.super_win_y = self.positions[self.current_box_index]  # Store the position
+            # Reset or do not set the win coordinates for other outcomes
+
 
         if selected_box_content == "big win":
             self.trash_can_pick = "win"
             self.player_score += 120
             self.result = "+120"
+            self.big_win_x, self.big_win_y = self.positions[self.current_box_index]  # Store the position
 
         if selected_box_content == "X3_star":
             self.trash_can_pick = "X3_star"
             self.result = "X3"
 
             self.player_score *= 3
+            self.triple_x, self.triple_y = self.positions[self.current_box_index]  # Store the position
+
 
         if selected_box_content == "lucky_star":
             self.trash_can_pick = "lucky_star"
             self.player_score += 250
             self.result = "+250"
+            self.lucky_star_x, self.lucky_star_y = self.positions[self.current_box_index]  # Store the position
+
 
         if selected_box_content == "lose":
             self.result = "lose"
 
             self.trash_can_pick = "lose"
             self.debuff_keen_perception = False
-            self.exp_gain = 15
-            state.player.exp += 35
-
-            # if self.battle_messages["tally_message"].message_index == 1 and state.player.money < 1:
-            #     print("No money ")
-            #     self.game_state = "game_over_no_money"
-            #
-            # if self.battle_messages["tally_message"].message_index == 1 and state.player.stamina < 1:
-            #     self.game_state = "game_over_no_stamina"
-
-
             self.player_score = 0
-            if "opossum repellent" in state.player.equipped_items:
-                state.player.stamina_points -= 25
-            elif "opossum repellent" not in state.player.equipped_items:
-                state.player.stamina_points -= 50
+
+            self.trash_can_x, self.trash_can_y = self.positions[self.current_box_index]
+            self.game_state = self.PLAYER_LOSE_SCREEN
+            print(self.game_state)
 
 
-
-            self.refresh()
-            self.initializeGarbageCans(state)
-            self.game_state = "immune_lose_screen"
-
+            # self.opossum_round_reset(state)
+            # self.game_state = self.PLAYER_LOSE_SCREEN
 
         # Remove the item from the can (set it to an empty string)
         setattr(self, selected_can_attribute, "")
 
-    def update(self, state: "GameState"):
-        state.player.canMove = False
+    def draw_triple_win_message(self, state):
+        if self.triple_x is not None and self.triple_y is not None:
+            font = pygame.font.Font(None, 50)
+            triple_win_message = font.render("*3", True, WHITE)
+            state.DISPLAY.blit(triple_win_message, (self.triple_x + 59, self.triple_y + 28))
+
+    def draw_super_win_message(self, state):
+        if self.super_win_x is not None and self.super_win_y is not None:
+            font = pygame.font.Font(None, 50)
+            super_win_message = font.render("+100", True, WHITE)
+            state.DISPLAY.blit(super_win_message, (self.super_win_x + 33, self.super_win_y + 28))
+
+    def draw_high_win_message(self, state):
+        if self.high_win_x is not None and self.high_win_y is not None:
+            font = pygame.font.Font(None, 50)
+            high_win_message = font.render("+80", True, WHITE)
+            state.DISPLAY.blit(high_win_message, (self.high_win_x + 43, self.high_win_y + 28))
+
+    def draw_med_win_message(self, state):
+        if self.med_win_x is not None and self.med_win_y is not None:
+            font = pygame.font.Font(None, 50)
+            med_win_message = font.render("+70", True, WHITE)
+            state.DISPLAY.blit(med_win_message, (self.med_win_x + 43, self.med_win_y + 28))
+
+    def draw_big_win_message(self, state):
+        if self.big_win_x is not None and self.big_win_y is not None:
+            font = pygame.font.Font(None, 50)
+            big_win_message = font.render("+120", True, WHITE)
+            state.DISPLAY.blit(big_win_message, (self.big_win_x + 33, self.big_win_y + 28))
+
+    def draw_win_message(self, state):
+        if self.win_x is not None and self.win_y is not None:
+            font = pygame.font.Font(None, 50)
+            win_message = font.render("+60", True, WHITE)
+            state.DISPLAY.blit(win_message, (self.win_x + 44, self.win_y + 28))
+
+    def draw_lucky_star_message(self, state):
+        if self.lucky_star_x is not None and self.lucky_star_y is not None:
+            font = pygame.font.Font(None, 50)
+            lucky_star_message = font.render("+250", True, WHITE)
+            state.DISPLAY.blit(lucky_star_message, (self.lucky_star_x + 33, self.lucky_star_y + 28))
+
+
+    def draw_opossum_sprite_image(self, state):
+        if self.result == "lose" and hasattr(self, 'trash_can_x') and hasattr(self, 'trash_can_y'):
+            sprite_rect = pygame.Rect(1, 145, 48, 44)
+            opossum_sprite = self.opossum_sprite_image.subsurface(sprite_rect)
+            scaled_opossum_sprite = pygame.transform.scale(opossum_sprite, (99, 99))
+            state.DISPLAY.blit(scaled_opossum_sprite, (self.trash_can_x + 30, self.trash_can_y - 30))
+
+    def draw_pick_screen(self, state):
+        # self.result = "lose"
+        #
+        # self.trash_can_pick = "lose"
 
-        if self.sallyOpossumMoney == 0:
-            self.sallyOpossumIsDefeated = True
-            Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
 
-
-        # if state.controller.is1Pressed:
-        #     self.quest_money -= 250
-        #     state.controller.is1Pressed = False
-
-
-        if state.musicOn == True:
-            if self.music_on == True:
-                self.stop_music()
-                self.initialize_music()
-                self.music_on = False
-        # print("Sally is defeated?" + str(self.sallyOpossumIsDefeated))
-
-        if self.fill_cans == True:
-            self.initializeGarbageCans(state)
-            self.fill_cans = False
-            state.player.money -= self.entry_cost
-            self.sallyOpossumMoney += self.entry_cost
-
-
-        if state.controller.isQPressed:
-            # Transition to the main screen
-            self.music_on = True
-
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-            return
-
-
-        if "shake" in state.player.magicinventory and "shake" not in self.magic_menu_selector:
-            self.magic_menu_selector.append("shake")
-            return
-
-
-        if self.game_state == "tally_screen":
-
-
-
-
-            if self.player_score >= 0 and self.talley_checker == False:
-                # state.player.stamina_points -= 3
-
-                if self.player_score == 0:
-                    state.player.exp += 1
-                    self.exp_gain = 1
-
-                if self.player_score < 1000 and self.player_score != 0:
-                    state.player.exp += 25
-                    self.exp_gain = 10
-
-                self.talley_checker = True
-
-                if self.player_score > 999:
-                    self.exp_gain = 50
-                    state.player.exp += 50
-
-                return
-
-            if self.sallyOpossumMoney < 0:
-                self.sallyOpossumMoney = 0
-                self.sallyOpossumIsDefeated = True
-                Events.add_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
-
-
-            while self.tally_money_once == True:
-                if self.player_score <= self.sallyOpossumMoney:
-
-                    self.total_winnings = self.player_score
-                    state.player.money += self.player_score
-                    self.sallyOpossumMoney -= self.player_score
-                    self.quest_money += self.player_score
-
-
-                elif self.player_score > self.sallyOpossumMoney:
-
-                    self.total_winnings = self.sallyOpossumMoney
-                    state.player.money += self.total_winnings
-                    self.quest_money += self.total_winnings
-                    self.sallyOpossumMoney = 0
-
-                self.tally_money_once = False
-
-            self.battle_messages["tally_message"].update(state)
-
-
-
-            if self.sallyOpossumMoney < 1 and self.battle_messages["tally_message"].message_index == 1:
-                # print("Nelly opposum money is at: " + str(self.nellyOpossumMoney))
-                self.sallyOpossumIsDefeated = True
-                self.game_state = "real_opossum_defeated_screen"
-
-            elif self.battle_messages["tally_message"].message_index == 1:
-
-                if state.player.money < self.entry_cost:
-                    if self.sallyOpossumMoney <= self.money_minimum and self.quest_money >= self.quest_coins_needed and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                        Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                        Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
-
-
-                    self.game_state = "no_money_you_leave"
-                    self.quest_money = 0
-                else:
-
-                    self.game_state = "play_again_or_leave_screen"
-
-        if self.game_state == "no_money_you_leave":
-            self.battle_messages["less_than_150_money"].update(state)
-            if self.battle_messages["less_than_150_money"].is_finished():
-                state.player.canMove = True
-
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
-
-        if self.game_state == "welcome_screen":
-
-
-
-
-            self.battle_messages["welcome_message"].update(state)
-
-            if self.battle_messages["welcome_message"].message_index == 3:
-                self.game_state = "menu_screen"
-
-
-        elif self.game_state == "level_up_screen":
-            self.music_volume = 0  # Adjust as needed
-            pygame.mixer.music.set_volume(self.music_volume)
-            self.handle_level_up(state, state.controller)
-
-
-
-        if self.game_state == "menu_screen":
-            # state.player.update(state)
-
-
-
-
-            if "shake" in self.magic_menu_selector:
-                if state.controller.isUpPressed:
-                    self.opossum_index -= 1
-                    self.menu_movement_sound.play()  # Play the sound effect once
-                    if self.opossum_index < 0:
-                        self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
-                        print(str(self.opossum_index))
-
-                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-                elif state.controller.isDownPressed:
-                    self.opossum_index += 1
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    if self.opossum_index >= len(self.menu_selector):
-                        self.opossum_index = 0  # Wrap around to the first item
-                        print(str(self.opossum_index))
-
-                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-            elif "shake" not in self.magic_menu_selector:
-                if state.controller.isUpPressed:
-                    self.opossum_index -= 2
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    if self.opossum_index < 0:
-                        self.opossum_index = len(self.menu_selector) - 1  # Wrap around to the last item
-                        print(str(self.opossum_index))
-
-                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-                elif state.controller.isDownPressed:
-                    self.opossum_index += 2
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    if self.opossum_index >= len(self.menu_selector):
-                        self.opossum_index = 0  # Wrap around to the first item
-
-                    pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-        if self.game_state == "pick_screen":
-            self.battle_messages["pick_message"].update(state)
-
-            if self.battle_messages["pick_message"].current_message_finished():
-
-
-                if state.controller.isBPressed:
-                    self.game_state = "menu_screen"
-
-                key_press_threshold = 80  # Example threshold, adjust as needed
-
-
-                time_since_right_pressed = state.controller.timeSinceKeyPressed(pygame.K_RIGHT)
-                time_since_left_pressed = state.controller.timeSinceKeyPressed(pygame.K_LEFT)
-                # print(f"Time since right key pressed: {time_since_right_pressed}")
-
-
-                # Check if enough time has passed since the last right key press
-                if state.controller.isRightPressed and time_since_right_pressed >= key_press_threshold:
-                    # Initially move to the next box
-                    self.green_box_index = (self.green_box_index + 1) % 8
-                    current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-
-                    # Continue moving right if the can is empty
-                    while current_can_content == "":
-                        self.green_box_index = (self.green_box_index + 1) % 8
-                        current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-
-                    self.menu_movement_sound.play()  # Play the sound effect once for the valid move
-                    print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
-                    state.controller.keyPressedTimes[pygame.K_RIGHT] = pygame.time.get_ticks()
-
-                elif state.controller.isLeftPressed and time_since_left_pressed >= key_press_threshold:
-                    # Initially move to the previous box
-                    self.green_box_index = (self.green_box_index - 1 + 8) % 8  # Adding 8 before modulo for negative index handling
-                    current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-
-                    # Continue moving left if the can is empty
-                    while current_can_content == "":
-                        self.green_box_index = (self.green_box_index - 1 + 8) % 8  # Ensure the index wraps correctly
-                        current_can_content = getattr(self, f'can{self.green_box_index + 1}')
-
-                    self.menu_movement_sound.play()  # Play the sound effect once for the valid move
-                    print(f"Current green box index: {self.green_box_index}, Content: {current_can_content}")
-                    state.controller.keyPressedTimes[pygame.K_LEFT] = pygame.time.get_ticks()
-
-                # Check for 'T' key press
-                if state.controller.isTPressed:
-                    # print(self.game_state)
-
-                    # Call the function to reveal the selected box content
-                    state.controller.isTPressed = False
-
-                    self.reveal_selected_box_content(state)
-
-                self.battle_messages["pick_message"].update(state)
-
-        if self.game_state == "immune_lose_screen":
-
-            if self.talley_checker == False:
-                self.talley_checker = True
-
-            self.battle_messages["immune_lose_message"].update(state)
-
-
-
-            if state.player.money < 1:
-                self.game_state = "game_over_no_money"
-
-            elif state.player.stamina_points < 1:
-                self.game_state = "game_over_no_stamina"
-
-            elif state.player.money < self.entry_cost:
-                self.game_state = "no_money_you_leave"
-
-            # state.currentScreen = state.gamblingAreaScreen
-                # state.gamblingAreaScreen.start(state)
-            elif state.player.stamina_points > 0:
-                if state.controller.isTPressed == True:
-                    state.controller.isTPressed = False
-
-
-
-        if self.game_state == "lose_screen":
-            if state.player.money < 1:
-                self.game_state = "game_over_no_money"
-            # this handles our EXP
-            print("Your before total exp is: " + str(state.player.exp))
-            if self.talley_checker == False:
-                self.talley_checker = True
-                return
-            # print("you gained: " + str(100) + "exp")
-            # print("Your after total exp is: " + str(state.player.exp))
-            #
-            # print(str(self.battle_messages["lose_message"].message_index))
-
-
-            # Reset the message index every time you enter the lose_screen
-            if not self.initialized_message:
-                self.battle_messages["lose_message"].message_index = 0
-                self.initialized_message = True  # Set the flag to True to avoid resetting again
-
-            # Print the current message index for debugging
-            # print(f"Current 'lose_message' index: {self.battle_messages['lose_message'].message_index}")
-
-            # Update the lose message after resetting the index
-            self.battle_messages["lose_message"].update(state)
-
-
-
-
-
-
-            # Perform actions based on the message_index
-            if self.battle_messages["lose_message"].message_index == 2:
-                state.player.hasRabies = True
-
-                self.initializeGarbageCans(state)
-                self.initialized_message = False
-
-                if state.player.hasRabies == True and state.player.rabiesImmunity == False:
-                    state.player.stamina_points = 1
-                    self.music_on = True
-
-                    state.currentScreen = state.area2GamblingScreen
-                    state.area2GamblingScreen.start(state)
-
-                self.game_state = "play_again_or_leave_screen"
-
-            # Reset the flag when you leave the lose_screen state to ensure the message will be reset next time you enter
-
-        if self.game_state == "magic_menu_screen":
-            if state.controller.isUpPressed:
-                self.magic_menu_opossum_index -= 1
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                if self.magic_menu_opossum_index < 0:
-                    self.magic_menu_opossum_index = len(self.magic_menu_selector) - 1  # Wrap around to the last item
-                    # print(str(self.magic_menu_opossum_index))
-
-                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-            elif state.controller.isDownPressed:
-                self.magic_menu_opossum_index += 1
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                if self.magic_menu_opossum_index >= len(self.magic_menu_selector):
-                    self.magic_menu_opossum_index = 0  # Wrap around to the first item
-                    # print(str(self.magic_menu_opossum_index))
-
-                # print(self.magic_menu_selector[self.magicindex])  # Print the current menu item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-
-
-        if self.game_state == "play_again_or_leave_screen":
-            self.music_volume = 0.5  # Adjust as needed
-            pygame.mixer.music.set_volume(self.music_volume)
-            self.level_anchor = False
-
-            if state.player.leveling_up == True:
-                self.game_state = "level_up_screen"
-
-            if self.game_state == "level_up_screen":
-                self.level_anchor = True
-                self.handle_level_up(state, state.controller)
-            self.rabiesStaminaChecker = False
-
-            self.battle_messages["play_again_or_leave_message"].update(state)
-
-            if state.controller.isUpPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.play_again_or_quit_index -= 1
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                if self.play_again_or_quit_index < 0:
-                    self.play_again_or_quit_index = len(self.play_again_or_quit) - 1  # Wrap around to the last item
-                pygame.time.delay(200)  # Add a small delay to avoid rapid button presses
-            elif state.controller.isDownPressed:
-                self.menu_movement_sound.play()  # Play the sound effect once
-
-                self.play_again_or_quit_index += 1
-                if self.play_again_or_quit_index >= len(self.play_again_or_quit):
-                    self.play_again_or_quit_index = 0  # Wrap around to the first item
-                pygame.time.delay(200)
-
-            if state.controller.isTPressed:
-                if self.play_again_or_quit_index == 0 and state.player.leveling_up == False:
-
-                    self.debuff_keen_perception = False
-
-                    self.refresh()
-
-
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    state.controller.isTPressed = False  # Reset the button state
-                    self.battle_messages["tally_message"].message_index = 0
-                    state.player.money -= self.entry_cost
-                    self.sallyOpossumMoney += self.entry_cost
-                    self.quest_money -= self.entry_cost
-                    self.initializeGarbageCans(state)
-                    if self.magic_points > 0 and self.sallyOpossumMoney < 1000:
-                        self.game_state = "spell_casting_poison"
-                    else:
-                        if self.player_debuff_poison > 0:
-                            self.player_debuff_poison -= 1
-                        if state.player.focus_points > 0:
-                            state.player.focus_points -= 10
-                            if state.player.focus_points < 0:
-                                state.player.focus_points = 0
-                        print("Poison counter at: "+ str(self.player_debuff_poison))
-
-                        self.game_state = "menu_screen"
-
-
-                elif self.play_again_or_quit_index == 1:
-
-                    if self.player_debuff_poison == 0:
-                        self.music_on = True
-                        self.debuff_keen_perception = False
-                        self.play_again_or_quit_index = 0
-                        if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                            print("You got the 500")
-                            Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                            Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
-
-                        self.quest_money = 0
-                        self.game_state = "welcome_screen"
-                        state.player.canMove = True
-
-                        state.currentScreen = state.area2GamblingScreen
-                        state.area2GamblingScreen.start(state)
-
-
-        if self.game_state == "spell_casting_poison":
-            self.battle_messages["player_debuff_magic_poison_message"].update(state)
-            if self.battle_messages["player_debuff_magic_poison_message"].message_index == 1:
-                self.player_debuff_poison += 5
-                self.spell_sound.play()
-
-                self.magic_points -= 1
-                self.game_state = "menu_screen"
-
-        if self.game_state == "opossum_defeated_screen":
-            state.player.canMove = True
-
-            self.opossumBite = True
-            state.player.hasRabies = True
-            state.player.stamina_points = 1
-            self.battle_messages["opossum_defeated_message"].update(state)
-            if self.battle_messages["opossum_defeated_message"].message_index == 3:
-                # Change the game state to "bet"
-                self.music_on = True
-                if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                    print("You got the 500")
-                    Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                    Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
-
-        if self.game_state == "real_opossum_defeated_screen":
-            state.player.canMove = True
-
-            self.opossumBite = True
-            self.battle_messages["real_opossum_defeated_message"].update(state)
-            if self.battle_messages["real_opossum_defeated_message"].message_index == 1:
-                self.music_on = True
-                # Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                    print("You got the 500")
-                    Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                    Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
-
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
-
-
-
-        if self.game_state == "hero_defeated_stamina_screen":
-            state.player.canMove = True
-
-            self.battle_messages["hero_defeated_stamina_message"].update(state)
-            if self.battle_messages["hero_defeated_stamina_message"].message_index == 1:
-                self.music_on = True
-                if self.quest_money >= 500 and Events.QUEST_1_COIN.value not in state.player.level_two_npc_state:
-                    print("You got the 500")
-                    Events.add_event_to_player(state.player, Events.QUEST_1_COIN)
-                    Events.add_item_to_player(state.player, Events.QUEST_1_COIN)
-                print("Hi")
-                state.currentScreen = state.area2RestScreen
-                state.area2RestScreen.start(state)
-                state.player.stamina_points = 1
-
-
-
-        if self.game_state == "hero_defeated_money_screen":
-            self.battle_messages["hero_defeated_money_message"].update(state)
-            if self.battle_messages["hero_defeated_money_message"].message_index == 1:
-                # Change the game state to "bet"
-                self.music_on = True
-
-                state.currentScreen = state.gameOverScreen
-                state.gameOverScreen.start(state)
-
-
-
-
-            # if self.battle_messages["defeat_message"].message_index == 2:
-            #
-            #     self.game_state = "pick_screen"
-
-
-
-        controller = state.controller
-        controller.update()
-        state.player.update(state)
-        print(self.game_state)
-
-
-
-    def draw(self, state: "GameState"):
-        state.DISPLAY.fill((0, 0, 51))
         current_time = pygame.time.get_ticks()
+
 
         shake_duration = 1000  # 1 second in milliseconds
         shake_interval = 3000  # 3 seconds in milliseconds
@@ -907,40 +800,69 @@ class OpossumInACanCandyScreen(BattleScreen):
         shaken_x3_star = False
 
         # Calculate positions for the trash cans
-        positions = []
+        self.positions = []  # Recalculate the positions every time the screen is drawn
         for row in range(2):
             for col in range(4):
-                x = col * (box_size + margin) + margin + 222
-                y = row * (box_size + margin) + margin + 111
-                positions.append((x, y))
+                if len(self.positions) < 8:  # Ensure only 8 positions are created
+                    x = col * (box_size + margin) + margin + 190
+                    y = row * (box_size + margin) + margin + 50
+                    self.positions.append((x, y))
 
                 # Determine the content of the current trash can
-                current_can_content = getattr(self, f'can{len(positions)}')
-
-
-
+                # Determine the content of the current trash can
+                current_can_content = getattr(self, f'can{len(self.positions)}')
                 # Apply the shaking effect if debuff is active
-                if self.debuff_keen_perception == True:
+                if self.debuff_keen_perception:
                     shake_effect = (0, 0)  # Default to no shake
+                    time_since_last_shake = current_time % shake_interval
 
-                    # Check and apply shake for "lose" cans
-                    if current_can_content == 'lose' and not shaken_lose:
-                        shaken_lose = True
+                    should_shake = False
+
+                    # Original shake logic
+                    # if current_can_content == 'lose' and not shaken_lose:
+                    #     shaken_lose = True
+                    #     should_shake = True
+                    #
+                    # elif current_can_content == 'X3_star' and not shaken_x3_star:
+                    #     shaken_x3_star = True
+                    #     should_shake = True
+
+                    # MIND-based enhancements
+                    if self.debuff_keen_perception:
+                        shake_effect = (0, 0)  # Default to no shake
                         time_since_last_shake = current_time % shake_interval
-                        if time_since_last_shake < shake_duration:
+                        should_shake = False
+
+                        if state.player.mind < 3:
+                            if current_can_content == 'X3_star' and not shaken_x3_star:
+                                shaken_x3_star = True
+                                should_shake = True
+                            elif current_can_content == 'lose' and not shaken_lose:
+                                shaken_lose = True
+                                should_shake = True
+                            elif current_can_content == 'win':
+                                should_shake = True
+
+                        elif state.player.mind in [3, 4]:
+                            if current_can_content == 'X3_star' and not shaken_x3_star:
+                                shaken_x3_star = True
+                                should_shake = True
+                            elif current_can_content == 'lose' and not shaken_lose:
+                                shaken_lose = True
+                                should_shake = True
+
+
+                        elif state.player.mind == 5:
+                            if current_can_content == 'X3_star':
+                                should_shake = True
+                            else:
+                                should_shake = False  # override all else
+
+                        if should_shake and time_since_last_shake < shake_duration:
                             shake_effect = random.randint(-2, 2), random.randint(-2, 2)
 
-                    # Check and apply shake for "X3_star" cans
-                    elif current_can_content == 'X3_star' and not shaken_x3_star:
-                        shaken_x3_star = True
-                        time_since_last_shake = current_time % shake_interval
-                        if time_since_last_shake < shake_duration:
-                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
-
-                    # Apply the shake effect to the position
-                    x += shake_effect[0]
-                    y += shake_effect[1]
-
+                        x += shake_effect[0]
+                        y += shake_effect[1]
 
                 # Draw the scaled_sprite (trash can) at each position with potential shake effect
                 if current_can_content:
@@ -950,440 +872,190 @@ class OpossumInACanCandyScreen(BattleScreen):
         hand_sprite = self.hand_sprite_image.subsurface(hand_sprite_rect)
         scaled_hand_sprite = pygame.transform.scale(hand_sprite, (33, 33))
 
-        if 0 <= self.green_box_index < len(positions):
-            hand_x, hand_y = positions[self.green_box_index]
+        if 0 <= self.current_box_index < len(self.positions):
+            hand_x, hand_y = self.positions[self.current_box_index]
             hand_y += 82  # 10 pixels below the top-left of the selected trash can
             hand_x += 54  # 10 pixels below the top-left of the selected trash can
             state.DISPLAY.blit(scaled_hand_sprite, (hand_x, hand_y))
+            # print(f"Selected trash can position: x = {hand_x}, y = {hand_y}")
 
 
 
-        #this box is for hero info
-        box_width = 200 - 10
-        box_height = 180 - 10
-        new_box_height = box_height + 40
-        black_box = pygame.Surface((box_width, new_box_height))
-        black_box.fill((0, 0, 0))
+    def draw_pick_tally_menu_logic(self, state):
+        # self.battle_messages[self.CHOOSE_SIDE_MESSAGE].draw(state)
+
+        choice_spacing = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        arrow_x_offset = 12
+        arrow_y_offset_triple_dice = 12
+        arrow_y_offset_back = 52
+        black_box_height = 221 - 50  # Adjust height
+        black_box_width = 200 - 10  # Adjust width to match the left box
         border_width = 5
-        white_border = pygame.Surface((box_width + 2 * border_width, new_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 235 - 40))
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - 25
+        start_y_right_box = 240  # Adjust vertical alignment
 
-        # Box for hero name
-        black_box = pygame.Surface((200 - 10, 45 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 45 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 195 - 40))  # Moved up by 40 pixels
-        if state.player.money < 300:
-            text_color = (255, 0, 0)  # Red color
-        else:
-            text_color = (255, 255, 255)  # White color
-
-        state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True, text_color), (37, 210))
-
-        # state.DISPLAY.blit(self.font.render(f"Money: {state.player.money}", True,
-        #                               (255, 255, 255)), (37, 250))
-        if state.player.stamina_points < 51:
-            text_color = (255, 0, 0)  # Red color
-        else:
-            text_color = (255, 255, 255)  # White color
-
-        state.DISPLAY.blit(
-            self.font.render(f"HP: {state.player.stamina_points}", True,
-                             text_color), (37, 250))
-
-        state.DISPLAY.blit(self.font.render(f"MP: {state.player.focus_points}", True,
-                                            (255, 255, 255)), (37, 330 - 40))
-        state.DISPLAY.blit(
-            self.font.render(f"result: {self.result}", True, (255, 255, 255)),
-            (37, 370 - 40))
-        #refrain
-
-        state.DISPLAY.blit(self.font.render(f"Score: {self.player_score} ", True, (255, 255, 255)), (37, 370))
-
-
-        if self.player_debuff_poison < 1:
-            state.DISPLAY.blit(self.font.render(f"Hero", True, (255, 255, 255)),
-                               (37, 205 - 40))
-        else:
-            state.DISPLAY.blit(self.font.render(f"Poison: {self.player_debuff_poison}", True, (255, 0, 0)),
-                               (37, 205 - 40))
-
-        #the below is for enemy boxes
-        # holds enemy name
-        black_box = pygame.Surface((200 - 10, 110 - 10))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface(
-            (200 - 10 + 2 * border_width, 110 - 10 + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 20))
-        state.DISPLAY.blit(self.font.render("Candy", True, (255, 255, 255)), (37, 33))
-        # state.DISPLAY.blit(self.font.render(f"Exp: {state.player.exp}", True, (255, 255, 255)), (37, 33))
-        box_width = 200 - 10
-        box_height = 130 - 10
-        new_box_height = box_height - 40
-        black_box = pygame.Surface((box_width, new_box_height))
-        black_box.fill((0, 0, 0))
-        border_width = 5
-        white_border = pygame.Surface((box_width + 2 * border_width, new_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
-        white_border.blit(black_box, (border_width, border_width))
-        state.DISPLAY.blit(white_border, (25, 60))
-
-        state.DISPLAY.blit(self.font.render(f"Money: {self.sallyOpossumMoney}", True,
-                                            (255, 255, 255)), (37, 70))
-
-
-        # state.DISPLAY.blit(self.font.render(f"Status: normal", True,
-        #                                         (255, 255, 255)), (37, 110))
-        state.DISPLAY.blit(self.font.render(f"Exp: {state.player.exp}", True,
-                                            (255, 255, 255)), (37, 110))
-
-
-        #this creates the text box for our below messages
-        black_box_height = 130
-        black_box_width = 740
-        border_width = 5
         black_box = pygame.Surface((black_box_width, black_box_height))
-        black_box.fill((0, 0, 0))
-        white_border = pygame.Surface((black_box_width + 2 * border_width, black_box_height + 2 * border_width))
-        white_border.fill((255, 255, 255))
+        black_box.fill(BLACK)
+
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
         white_border.blit(black_box, (border_width, border_width))
-        screen_width, screen_height = state.DISPLAY.get_size()
-        black_box_x = (screen_width - black_box_width) // 2 - border_width
-        black_box_y = screen_height - black_box_height - 20 - border_width
+
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
 
-        # print(str(self.game_state))
-
-        if self.game_state == "welcome_screen":
-            # self.battle_messages["welcome_message"].update(state)
+        for idx, choice in enumerate(self.pick_screen_choices):
+            y_position = start_y_right_box + idx * choice_spacing  # Use the defined spacing variable
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)  # Use the defined offsets
+            )
+
+        # Draw the arrow at the current magic screen index position
+        arrow_y_position = start_y_right_box + (self.pick_tally_screen_index * choice_spacing) + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_offset, arrow_y_position)  # Use the arrow offsets
+        )
+
+    def update_pick_tally_menu_screen_logic(self, controller):
+        if controller.isTPressed or controller.isAPressedSwitch:
+            print(";fdjfl;jsalfjsafjsf;ljsa")
+            print(self.pick_screen_index)
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+
+            if self.pick_tally_screen_index == self.pick_index:
+                self.game_state = self.PICK_SCREEN
+            elif self.pick_tally_screen_index == self.tally_index and self.player_score > 0:
+                self.game_state = self.PLAYER_WIN_SCREEN
+
+        if controller.isUpPressed or controller.isUpPressedSwitch:
+            controller.isUpPressed = False
+            controller.isUpPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.pick_tally_screen_index = (self.pick_tally_screen_index - self.index_stepper) % len(self.pick_screen_choices)
+        elif controller.isDownPressed or controller.isDownPressedSwitch:
+            controller.isDownPressed = False
+            controller.isDownPressedSwitch = False
+            self.menu_movement_sound.play()
+            self.pick_tally_screen_index = (self.pick_tally_screen_index + self.index_stepper) % len(self.pick_screen_choices)
+
+
+    def update_welcome_screen_logic(self, controller, state):
+        if controller.isTPressed or controller.isAPressedSwitch:
+            controller.isTPressed = False
+            controller.isAPressedSwitch = False
+            if self.welcome_screen_index == self.pick_index:
+                self.money += self.bet
+                self.game_state = self.PICK_TALLY_MENU_SCREEN
+            elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
+
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.quit_index:
+                state.player.canMove = True
+                state.currentScreen = state.area5RestScreen
+                state.area5RestScreen.start(state)
+
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+
+        arrow_y_coordinate_padding_quit = 92
+
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            display_text = choice
+            text_color = WHITE
+
+            state.DISPLAY.blit(
+                self.font.render(display_text, True, text_color),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+
+
+        if Magic.SHAKE.value not in state.player.magicinventory:
+            self.magic_lock = True
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif Magic.SHAKE.value in state.player.magicinventory:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+
+
+
+
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
+            )
+
+        elif self.welcome_screen_index == self.quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
+            )
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        player_enemy_box_info_x_position_score = 28
+        score_y_position = 150
+        enemy_name_y_position = 33
+        phase_y_position = 108
+        choice_y_position = 148
+        enemy_money_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+        score_header = "Score"
+
+        if self.debuff_keen_perception == True:
+            state.DISPLAY.blit(self.font.render(f"Shake: 1", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position))
+        elif self.debuff_keen_perception == False:
+            state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
+
+
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f" Score: {self.player_score}", True, WHITE), (player_enemy_box_info_x_position - 7, choice_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
+
+        state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
 
-            self.battle_messages["welcome_message"].draw(state)
-
-        if self.game_state == "level_up_screen":
-            self.draw_level_up(state)
 
-        if self.game_state == "tally_screen":
-            # self.battle_messages["welcome_message"].update(state)
 
-            self.battle_messages["tally_message"].draw(state)
-            if self.battle_messages["tally_message"].message_index == 0:
-                # print("These are your total winnings: " + str(self.total_winnings))
-                # print("part 2: " + str(self.player_score))
-                # print("total winnings are part 2: " + str(self.total_winnings))
 
-                state.DISPLAY.blit(self.font.render(f"Time to tally you up. Your winnings are:{self.total_winnings} and {self.exp_gain} exp.", True,
-                                                    (255, 255, 255)), (45, 460))
 
-        if self.game_state == "menu_screen":
-            bet_box_width = 150
-            # Increase the bet box height by an additional 40 pixels
-            bet_box_height = 100 + 40   # Increased height by 40 pixels initially and 40 more now
-            border_width = 5
 
-            screen_width, screen_height = state.DISPLAY.get_size()
-            bet_box_x = screen_width - bet_box_width - border_width - 30
-            # Adjust the Y position of the bet box to accommodate the increased height
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
-
-            bet_box = pygame.Surface((bet_box_width, bet_box_height))
-            bet_box.fill((0, 0, 0))
-            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(bet_box, (border_width, border_width))
-
-            # Calculate text positions - you might want to adjust these further if needed
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20
-            text_y_no = text_y_yes + 40  # Consider adjusting this if needed due to the taller box
-            # Draw the box on the screen
-            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
-
-            # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render(f"Grab ", True, (255, 255, 255)), (text_x, text_y_yes))
-
-            if "shake" in self.magic_menu_selector:
-                if self.debuff_keen_perception == False:
-                    state.DISPLAY.blit(self.font.render(f"Magic ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-                elif self.debuff_keen_perception == True:
-                    state.DISPLAY.blit(self.font.render("Locked", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-
-            elif "shake" not in self.magic_menu_selector:
-                if self.debuff_keen_perception == False:
-                    state.DISPLAY.blit(self.font.render(f" ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-
-            state.DISPLAY.blit(self.font.render(f"tally ", True, (255, 255, 255)), (text_x, text_y_yes + 80))
-
-            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
-            arrow_y = text_y_yes + self.opossum_index * 40  # Adjust based on the item's height
-            # Set the initial arrow position to "Yes"
-
-            # Draw the arrow next to the selected option
-            # state.DISPLAY.blit(self.font.render(">", True, (255, 255, 255)), (arrow_x, arrow_y))
-            # arrow_x = text_x - 40  # Adjust the position of the arrow based on your preference
-            # arrow_y = text_y_yes + self.arrow_index * 40  # Adjust based on the item's height
-            #
-            # # Draw the arrow using pygame's drawing functions (e.g., pygame.draw.polygon)
-            # Here's a simple example using a triangle:
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
-            if state.controller.isTPressed:
-                if self.opossum_index == 0:
-                    state.controller.isTPressed = False
-
-                    self.game_state = "pick_screen"
-
-                    # print(str(self.game_state))
-                elif self.opossum_index == 1 and self.debuff_keen_perception == False:
-                    state.controller.isTPressed = False
-                    self.game_state = "magic_menu_screen"
-                elif self.opossum_index == 2:
-                    # state.player.money += self.player_score
-                    # self.sallyOpossumMoney -= self.player_score
-                    state.controller.isTPressed = False
-                    # self.refresh()
-                    self.initializeGarbageCans(state)
-                    self.game_state = "tally_screen"
-
-        if self.game_state == "spell_casting_poison":
-            self.battle_messages["player_debuff_magic_poison_message"].draw(state)
-
-
-
-
-        if self.game_state == "pick_screen":
-
-
-            # self.battle_messages["welcome_message"].update(state)
-            if self.battle_messages["pick_message"].message_index == 1:
-                state.DISPLAY.blit(self.font.render(f"Your pick equals :{self.trash_can_pick}", True,
-                                                    (255, 255, 255)), (70, 460))
-
-
-                    # if state.controller.isTPressed:
-                    #     state.controller.isTPressed = False  # Reset the button state
-                    #
-                    #     self.game_state = "play_again_or_leave_screen"
-
-
-            self.battle_messages["pick_message"].draw(state)
-
-
-
-
-        if self.game_state == "magic_menu_screen":
-
-            bet_box_width = 150  # Width for both boxes
-            top_box_height = 50  # Height for top box
-            bet_box_height = 100 + 40 - 50  # Height for bottom box, now 50 pixels shorter
-            border_width = 5
-
-            # Screen dimensions
-            screen_width, screen_height = state.DISPLAY.get_size()
-
-            # Positions for the top and bottom boxes
-            new_box_x = screen_width - bet_box_width - border_width - 30  # X position for both top and bottom boxes
-            magic_box_y = 320 - 40
-            new_box_y = magic_box_y - top_box_height - border_width + 50  # Adjusted Y position for top box
-
-            # Create the top box (black box with white border but no bottom border)
-            black_box_top = pygame.Surface((bet_box_width, top_box_height))
-            black_box_top.fill((0, 0, 0))
-            white_border_top = pygame.Surface((bet_box_width + 2 * border_width, top_box_height + border_width))
-            white_border_top.fill((255, 255, 255))
-            white_border_top.blit(black_box_top, (border_width, border_width))
-            state.DISPLAY.blit(white_border_top, (new_box_x, new_box_y))
-
-            # Adjusted bottom box positions
-            bet_box_x = new_box_x  # Aligning with the top box
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60 + 50 - 40  # Raised by 40 pixels, accounting for borders
-
-            # Create the bottom box (now shorter)
-            bottom_box = pygame.Surface((bet_box_width, bet_box_height))
-            bottom_box.fill((0, 0, 0))
-            white_border_bottom = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border_bottom.fill((255, 255, 255))
-            white_border_bottom.blit(bottom_box, (border_width, border_width))
-            state.DISPLAY.blit(white_border_bottom, (bet_box_x, bet_box_y))
-
-            # Adjust text and arrow positions relative to the bottom box
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20  # Adjusted back to the original position
-            text_y_no = text_y_yes + 40
-            # Adjust arrow positions relative to the bottom box
-            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_yes + self.magic_menu_selector_index * 40  # Arrow position adjusted based on selected menu item
-
-            # Draw text
-            # Draw text
-            if "shake" in self.magic_menu_selector:
-                state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[1]} ", True, (255, 255, 255)), (text_x, text_y_yes))
-            else:
-                state.DISPLAY.blit(self.font.render(" ", True, (255, 255, 255)), (text_x, text_y_yes))
-
-            state.DISPLAY.blit(self.font.render(f"{self.magic_menu_selector[0]} ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            # Y position for "Shield" text, using self.magic_menu_selector[1]
-            text_y_shield = text_y_yes  # Assuming "Shield" is rendered at this position
-
-            # Draw the arrow on the same Y coordinate as "Shield"
-            # Adjust arrow_x if necessary to position it correctly relative to the "Shield" text
-            arrow_x = text_x - 20  # Arrow position adjusted to the left of the text
-            arrow_y = text_y_shield + self.magic_menu_opossum_index * 40  # Update arrow Y position based on selected item
-            # print(str(self.magic_menu_selector))
-            # Draw the arrow using pygame's drawing functions
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
-            magic_text = self.font.render("Magic", True, (255, 255, 255))  # Render "Magic" in white color
-            text_margin = 44 # Margin from the left edge of the top box for the text
-
-            # Position for the "Magic" text inside the top box
-            magic_text_x = new_box_x + text_margin
-            magic_text_y = new_box_y + (top_box_height - magic_text.get_height()) // 2  # Vertically center inside the top box
-
-            # Blit the "Magic" text onto the screen
-            state.DISPLAY.blit(magic_text, (magic_text_x, magic_text_y))
-            # print(str(self.debuff_keen_perception))
-            if self.magic_menu_opossum_index == 0:
-                self.battle_messages["magic_description_reveal"].update(state)
-                self.battle_messages["magic_description_reveal"].draw(state)
-            elif self.magic_menu_opossum_index == 1:
-                self.battle_messages["magic_description_back"].update(state)
-                self.battle_messages["magic_description_back"].draw(state)
-            if state.controller.isTPressed:
-                if self.magic_menu_opossum_index == 0:
-                    if state.player.focus_points > 0:
-                        self.debuff_keen_perception = True
-                        self.spell_sound.play()  # Play the sound effect once
-
-                        state.player.focus_points -= 10
-                        self.game_state = "menu_screen"
-                        state.controller.isTPressed = False  # Reset the button state
-
-                elif self.magic_menu_opossum_index == 1:
-                    state.controller.isTPressed = False  # Reset the button state
-
-                    self.game_state = "menu_screen"
-
-
-            #     elif self.magicindex == 1:
-            #         print(str(self.magic_menu_selector[1]))
-            #         self.game_state = "heads_tails_choose_screen"
-            #         state.controller.isTPressed = False  # Reset the button state
-
-        if self.game_state == "immune_lose_screen":
-            # self.battle_messages["welcome_message"].update(state)
-
-            self.battle_messages["immune_lose_message"].draw(state)
-
-            if state.controller.isTPressed:
-                state.controller.isTPressed = False
-                self.game_state = "play_again_or_leave_screen"
-
-        if self.game_state == "lose_screen":
-            # self.battle_messages["welcome_message"].update(state)
-
-            self.battle_messages["lose_message"].draw(state)
-
-
-        if self.game_state == "play_again_or_leave_screen":
-            self.battle_messages["play_again_or_leave_message"].draw(state)
-            self.tally_money_once = True
-
-            bet_box_width = 150
-            bet_box_height = 100
-            border_width = 5
-
-            screen_width, screen_height = state.DISPLAY.get_size()
-            bet_box_x = screen_width - bet_box_width - border_width - 30
-            bet_box_y = screen_height - 130 - bet_box_height - border_width - 60
-
-            bet_box = pygame.Surface((bet_box_width, bet_box_height))
-            bet_box.fill((0, 0, 0))
-            white_border = pygame.Surface((bet_box_width + 2 * border_width, bet_box_height + 2 * border_width))
-            white_border.fill((255, 255, 255))
-            white_border.blit(bet_box, (border_width, border_width))
-
-            # Calculate text positions
-            text_x = bet_box_x + 40 + border_width
-            text_y_yes = bet_box_y + 20
-            text_y_no = text_y_yes + 40
-            # Draw the box on the screen
-            state.DISPLAY.blit(white_border, (bet_box_x, bet_box_y))
-            print(self.player_debuff_poison)
-
-            # Draw the text on the screen (over the box)
-            state.DISPLAY.blit(self.font.render(f"Play", True, (255, 255, 255)), (text_x, text_y_yes))
-            if self.player_debuff_poison == 0:
-                state.DISPLAY.blit(self.font.render(f"Leave ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-            elif self.player_debuff_poison > 0:
-                state.DISPLAY.blit(self.font.render(f"Locked ", True, (255, 255, 255)), (text_x, text_y_yes + 40))
-
-            arrow_x = text_x + 20 - 40  # Adjust the arrow position to the left of the text
-            arrow_y = text_y_yes + self.play_again_or_quit_index * 40  # Adjust based on the item's height
-
-            pygame.draw.polygon(state.DISPLAY, (255, 255, 255),
-                                [(arrow_x, arrow_y), (arrow_x - 10, arrow_y + 10), (arrow_x + 10, arrow_y + 10)])
-
-        if self.game_state == "opossum_defeated_screen":
-            if state.player.exp < 100:
-                state.player.exp = 100
-            self.battle_messages["opossum_defeated_message"].draw(state)
-
-        if self.game_state == "real_opossum_defeated_screen":
-            self.battle_messages["real_opossum_defeated_message"].draw(state)
-
-
-        if self.game_state == "hero_defeated_stamina_screen":
-            self.lock_down = False
-            self.player_debuff_poison = 0
-            self.magic_points = 1
-            self.shake = False
-            self.battle_messages["hero_defeated_stamina_message"].draw(state)
-
-        if self.game_state == "hero_defeated_money_screen":
-            self.battle_messages["hero_defeated_stamina_screen"].draw(state)
-
-        if self.game_state == "no_money_you_leave":
-            self.battle_messages["less_than_150_money"].draw(state)
-
-        if self.game_state == "game_over_no_money":
-            self.battle_messages["less_than_150_money"].draw(state)
-            self.battle_messages["game_over_no_money"].update(state)
-            self.battle_messages["game_over_no_money"].draw(state)
-            if self.battle_messages["game_over_no_money"].is_finished():
-                if state.controller.isTPressed:
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-
-        if self.game_state == "game_over_no_stamina":
-            self.battle_messages["game_over_no_stamina"].update(state)
-            self.battle_messages["game_over_no_stamina"].draw(state)
-            if self.battle_messages["game_over_no_stamina"].is_finished():
-                if state.controller.isTPressed:
-                    state.player.money -= 100
-                    if state.player.money < 1:
-                        state.currentScreen = state.gameOverScreen
-                        state.gameOverScreen.start(state)
-                    else:
-                        self.game_state = "welcome_screen"
-                        state.player.canMove = True
-                        state.start_area_to_rest_area_entry_point = True
-                        self.magic_points = 1
-                        self.player_debuff_poison = 0
-                        self.initializeGarbageCans(state)
-
-                        state.currentScreen = state.area2RestScreen
-                        state.area2RestScreen.start(state)
-                        state.player.stamina_points = 1
-
-        pygame.display.flip()

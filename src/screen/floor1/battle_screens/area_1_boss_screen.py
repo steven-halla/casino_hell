@@ -60,9 +60,9 @@ class Area1BossScreen(GambleScreen):
         self.spell_sound.set_volume(0.3)
         self.reveal_cast_cost: int = 50
         self.redraw_cast_cost: int = 30
-        self.low_exp: int = 10
-        self.med_exp: int = 20
-        self.high_exp: int = 30
+        self.low_exp: int = 0
+        self.med_exp: int = 0
+        self.high_exp: int = 0
         self.critical_multiplier: int = 2
         self.low_stamina_drain: int = 10
         self.med_stamina_drain: int = 20
@@ -242,9 +242,9 @@ class Area1BossScreen(GambleScreen):
 
 
         if self.money <= self.fengus_bankrupt:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
-            Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
+            state.currentScreen = state.area2RestScreen
+            state.area2estScreen.start(state)
+            Events.add_level_one_event_to_player(state.player, Events.LEVEL_1_BOSS_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:

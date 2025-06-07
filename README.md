@@ -398,3 +398,16 @@ WIth a high perception instead of uncovering t chest how about we lower shop pri
         # If in any menu-related screen, just draw the player menu logic
         if state.player.current_screen.endswith("_screen"):
             state.player.draw_player_stats(state)
+
+
+we are in the mid stretch
+
+BAR UPDATAE:
+for body  1 allow player to raise a stat of thier choice perhaps?
+also allow an exp option
+for player have update using EVENTS of boss defeated for exp caps
+
+QUest: 
+maybe you cant defeat an enemy without first completing quesst. 
+could be that if you "beat the enemy" They are giving fake monies? '
+I could also do "pracrice for quest?"
