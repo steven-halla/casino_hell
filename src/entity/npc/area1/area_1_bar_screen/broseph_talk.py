@@ -73,11 +73,11 @@ class BrosephTalk(Npc):
 
         # Lock the player in place while talking
         state.player.canMove = False
-        if state.player.money > 1999:
+        if state.player.money > 2000:
             state.player.perception = 1
             print("Here is your pereception booster")
         else:
-            state.player.perception = 0
+            print("no")
 
 
         # Check for keypresses only once per frame

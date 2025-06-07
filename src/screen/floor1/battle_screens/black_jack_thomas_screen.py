@@ -28,7 +28,7 @@ class BlackJackThomasScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.blackJackThomasMoney: int = 1000
+        self.blackJackThomasMoney: int = 300
         self.thomas_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -60,9 +60,9 @@ class BlackJackThomasScreen(GambleScreen):
         self.spell_sound.set_volume(0.3)
         self.reveal_cast_cost: int = 50
         self.redraw_cast_cost: int = 30
-        self.low_exp: int = 10
-        self.med_exp: int = 20
-        self.high_exp: int = 30
+        self.low_exp: int = 5
+        self.med_exp: int = 10
+        self.high_exp: int = 15
         self.critical_multiplier: int = 2
         self.low_stamina_drain: int = 10
         self.med_stamina_drain: int = 20

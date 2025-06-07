@@ -125,10 +125,10 @@ class OpossumInACanSallyScreen(GambleScreen):
         self.high_win_x, self.high_win_y = None, None
         self.med_win_x, self.med_win_y = None, None
         self.trash_can_x, self.trash_can_y = None, None  # For the opossum image
-        self.exp_gain_high: int = 25
-        self.exp_gain_low: int = 10
-        self.exp_gain_medium: int = 20
-        self.sallyOpossumMoney: int = 444
+        self.exp_gain_high: int = 30
+        self.exp_gain_low: int = 15
+        self.exp_gain_medium: int = 10
+        self.sallyOpossumMoney: int = 300
         self.peek_cost: int = 25
         self.buff_peek: bool = False
         self.debuff_double_pick: int = 0

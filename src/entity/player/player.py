@@ -22,7 +22,7 @@ class Player(Entity):
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
         self.controller_speed_increaser = 2
-        self.money = 1000
+        self.money = 3000
         self.current_frame_index = 0
         self.exp = 0
         self.inn_badge = False
