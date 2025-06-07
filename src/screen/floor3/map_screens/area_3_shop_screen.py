@@ -40,7 +40,7 @@ class Area3ShopScreen(Screen):
     def __init__(self):
         super().__init__("Casino MainScreen")
         self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_3_final_map.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
         # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
         self.y_down_move = False
