@@ -414,3 +414,12 @@ I could also do "pracrice for quest?"
 
 
 I need to have enemies for building EXP/getting quest that dont expire
+
+stats level 1:
+
+defeat coinflip ted - gets 1 ,mind point
+eat at the bar - get 1 body point
+earn level 3 - get 1 spirit point
+get 2000 coins - get 1 perception point
+fight boss- get 1 luck point
+

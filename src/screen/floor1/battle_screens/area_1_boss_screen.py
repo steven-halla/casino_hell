@@ -160,6 +160,7 @@ class Area1BossScreen(GambleScreen):
     FENGUS_CASTING_SPELL_SCREEN: str = "FENGUS_CASTING_SPELL_screen"
 
     def start(self, state: 'GameState'):
+        state.player.luck += 1
 
         # CReate a new SPell casting screen start for the boss
         self.reset_black_jack_game()
