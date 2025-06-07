@@ -67,21 +67,16 @@ class Area1RestToShopDoor(Npc):
 
 
 
-        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-            current_message = self.mike_talk_messages["welcome_message"]
-            current_message.update(state)
+        current_message = self.mike_talk_messages["welcome_message"]
+        current_message.update(state)
 
-        elif Events.LEVEL_1_INN_KEY.value in  state.player.level_one_npc_state:
-            state.player.canMove = True
+        state.player.canMove = True
 
-            state.rest_area_to_start_area_entry_point = True
+        state.rest_area_to_start_area_entry_point = True
 
-            state.currentScreen = state.area1ShopScreen
-            state.area1ShopScreen.start(state)
+        state.currentScreen = state.area1ShopScreen
+        state.area1ShopScreen.start(state)
 
-        # Lock the player in place while talking
-        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-            state.player.canMove = False
 
 
 
