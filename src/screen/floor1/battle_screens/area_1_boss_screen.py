@@ -29,7 +29,7 @@ class Area1BossScreen(GambleScreen):
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
         self.money: int = 666
-        self.fengus_bankrupt: int = 0
+        self.boss_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
@@ -160,6 +160,8 @@ class Area1BossScreen(GambleScreen):
     FENGUS_CASTING_SPELL_SCREEN: str = "FENGUS_CASTING_SPELL_screen"
 
     def start(self, state: 'GameState'):
+
+        # CReate a new SPell casting screen start for the boss
         self.reset_black_jack_game()
         self.deck.shuffle()
         self.initialize_music()
@@ -179,8 +181,7 @@ class Area1BossScreen(GambleScreen):
 
     def round_reset(self):
         print("Round Reset")
-        self.money -= 5
-        self.player_money -= 10
+        self.player_money -= 5
 
         self.deck.shuffle()
         self.player_hand.clear()
@@ -241,7 +242,7 @@ class Area1BossScreen(GambleScreen):
         # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
 
 
-        if self.money <= self.fengus_bankrupt:
+        if self.money <= self.boss_bankrupt:
             state.currentScreen = state.area2RestScreen
             state.area2estScreen.start(state)
             Events.add_level_one_event_to_player(state.player, Events.LEVEL_1_BOSS_DEFEATED)
@@ -412,8 +413,8 @@ class Area1BossScreen(GambleScreen):
         pygame.display.flip()
 
     def update_bet_screen_helper(self, controller):
-        min_bet = 50
-        max_bet = 200
+        min_bet = 25
+        max_bet = 100
         if controller.up_button:
             self.menu_movement_sound.play()
             self.bet += min_bet
@@ -425,6 +426,12 @@ class Area1BossScreen(GambleScreen):
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
+
+        if self.bet > self.money:
+            self.bet = self.money
+
+        if self.bet > self.player_money:
+            self.bet = self.player_money
 
         if controller.action_and_cancel_button:
             self.game_state = self.WELCOME_SCREEN
@@ -452,46 +459,51 @@ class Area1BossScreen(GambleScreen):
         player_bad_score_min_range = 12
         player_bad_score_max_range = 17
         level_1_luck_score = 0
-        lucky_strike_threshhold = 75
+        lucky_strike_threshhold = 70
         initial_hand = 2
-        if self.debuff_buff_luck_switch == 0:
-            adjusted_lucky_roll = lucky_roll + self.luck_bonus
-        elif self.debuff_buff_luck_switch > 0:
-            adjusted_lucky_roll = 0
+        adjusted_lucky_roll = random.randint(1, 100) + (state.player.luck * 5)
+
+        # if self.debuff_buff_luck_switch == 0:
+        #     adjusted_lucky_roll = lucky_roll + self.luck_bonus
+        # elif self.debuff_buff_luck_switch > 0:
+        #     adjusted_lucky_roll = 0
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.player_hand = self.deck.player_draw_hand(2)
-            if self.debuff_buff_luck_switch == 0:
-                self.enemy_hand = self.deck.enemy_draw_hand(2)
-            elif self.debuff_buff_luck_switch > 0:
-                lucky_enemy_roll = random.randint(1, 100)
-                lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
-                ace_card = None
-                ten_card = None
-                print("Lucky roll strike is" + str(lucky_enemy_strike))
-                if lucky_enemy_strike >= 100:
-                    for card in self.deck.cards:
-                        if card[0] == "Ace" and ace_card is None:
-                            ace_card = card
-                        elif card[2] == 10 and ten_card is None:
-                            ten_card = card
-                        if ace_card and ten_card:
-                            break
-                    self.enemy_hand = [ace_card, ten_card]
-                else:
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+            # if self.debuff_buff_luck_switch == 0:
+            self.enemy_hand = self.deck.enemy_draw_hand(2)
+            # elif self.debuff_buff_luck_switch > 0:
+            #     lucky_enemy_roll = random.randint(1, 100)
+            #     lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
+            #     ace_card = None
+            #     ten_card = None
+            #     print("Lucky roll strike is" + str(lucky_enemy_strike))
+            #     if lucky_enemy_strike >= 100:
+            #         for card in self.deck.cards:
+            #             if card[0] == "Ace" and ace_card is None:
+            #                 ace_card = card
+            #             elif card[2] == 10 and ten_card is None:
+            #                 ten_card = card
+            #             if ace_card and ten_card:
+            #                 break
+            #         self.enemy_hand = [ace_card, ten_card]
+            #     else:
+            #         self.enemy_hand = self.deck.enemy_draw_hand(2)
 
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
 
-            if state.player.luck > level_1_luck_score:
-                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                    if adjusted_lucky_roll >= lucky_strike_threshhold:
-                        self.lucky_strike.play()
-                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                            self.player_hand = self.deck.player_draw_hand(initial_hand)
-                            self.player_score = self.deck.compute_hand_value(self.player_hand)
-                            self.critical_hit = True
-                            print("LINE 715 MAYBE THE ERROR IS HERE")
+        #     if state.player.luck > level_1_luck_score:
+        # if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+
+            if adjusted_lucky_roll >= lucky_strike_threshhold:
+                self.lucky_strike.play()
+                attempts = 0
+                max_attempts = 3
+                while (
+                        player_bad_score_min_range < self.player_score < player_bad_score_max_range and attempts < max_attempts):
+                    self.player_hand = self.deck.player_draw_hand(initial_hand)
+                    self.player_score = self.deck.compute_hand_value(self.player_hand)
+                    attempts += 1
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:

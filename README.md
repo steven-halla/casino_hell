@@ -411,3 +411,6 @@ QUest:
 maybe you cant defeat an enemy without first completing quesst. 
 could be that if you "beat the enemy" They are giving fake monies? '
 I could also do "pracrice for quest?"
+
+
+I need to have enemies for building EXP/getting quest that dont expire

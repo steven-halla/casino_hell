@@ -22,7 +22,7 @@ class Player(Entity):
         self.color: Tuple[int, int, int] = RED
         self.walk_speed = 3.5
         self.controller_speed_increaser = 2
-        self.money = 800
+        self.money = 1000
         self.current_frame_index = 0
         self.exp = 0
         self.inn_badge = False
@@ -36,9 +36,9 @@ class Player(Entity):
         self.stamina_points = 100
         self.stamina_increase = self.body * 1 * self.level
         self.stamina_guard = False
-        self.max_stamina_points = 160 + self.stamina_increase
+        self.max_stamina_points = 100
         self.focus_points = 50
-        self.max_focus_points = 10
+        self.max_focus_points = 50
         self.items = []
 
         self.equipped_items = []
@@ -118,7 +118,7 @@ class Player(Entity):
         self.looking_at_items = False
 
         self.index_setter = 0
-        self.quest_items = []
+        self.quest_items = ["contract"]
 
         self.magic_inventory_index = 0
 
@@ -237,6 +237,10 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
 
+        if self.current_stage == 1:
+            if self.exp > 300:
+                self.exp = 300
+
 
         # if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
         #     self.perception = self.base_perception + self.perception_boost_item
@@ -266,12 +270,18 @@ class Player(Entity):
         if self.exp >= 100 and self.level2checker == False and "level 2 token" not in state.player.npc_items:
             print("grats you leveld up to level 2")
             self.level += 1
+            state.player.stamina_points += 20
+            state.player.max_stamina_points += 20
+            state.player.focus_points += 10
+            state.player.max_focus_points += 10
 
-            if self.spirit < 1:
-                self.max_stamina_points += 10 + (self.stamina_increase)
-                self.max_focus_points += 10
-                self.spirit += 1
-                state.player.npc_items.append("level 2 token")
+
+
+            # if self.spirit < 1:
+            #     self.max_stamina_points += 10 + (self.stamina_increase)
+            #     self.max_focus_points += 10
+            #     self.spirit += 1
+            #     state.player.npc_items.append("level 2 token")
 
             self.level2checker = True
             self.leveling_up = True
@@ -279,12 +289,16 @@ class Player(Entity):
 
         if self.exp >= 300 and self.level3checker == False and "level 3 token" not in state.player.npc_items:
             print("grats you leveld up to level 3")
+            state.player.stamina_points += 10
+            state.player.max_stamina_points += 10
+            state.player.focus_points += 5
+            state.player.max_focus_points += 5
             # if "shield" not in self.magicinventory:
-            if "shield" not in state.player.magicinventory:
-                self.magicinventory.append("shield")
-                self.max_stamina_points += 10
-                self.max_focus_points += 10
-                state.player.npc_items.append("level 3 token")
+            # if "shield" not in state.player.magicinventory:
+            #     self.magicinventory.append("shield")
+            #     self.max_stamina_points += 10
+            #     self.max_focus_points += 10
+            #     state.player.npc_items.append("level 3 token")
 
             self.level3checker = True
             self.leveling_up = True

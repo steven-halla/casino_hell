@@ -237,9 +237,9 @@ class BlackJackThomasScreen(GambleScreen):
 
 
         if self.money <= self.thomas_bankrupt:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
-            Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
+            state.currentScreen = state.area1RestScreen
+            state.area1RestScreen.start(state)
+            Events.add_level_one_event_to_player(state.player, Events.BLACK_JACK_THOMAS_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
@@ -272,7 +272,7 @@ class BlackJackThomasScreen(GambleScreen):
             pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
         elif self.game_state == self.BET_SCREEN:
-            self.update_bet_screen_helper(controller)
+            self.update_bet_screen_helper(controller, state)
             self.battle_messages[self.BET_MESSAGE].update(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state)
@@ -327,8 +327,8 @@ class BlackJackThomasScreen(GambleScreen):
             if self.battle_messages[
                 self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area1RestScreen
+                state.area1RestScreen.start(state)
                 state.player.canMove = True
 
     def draw(self, state: 'GameState'):
@@ -406,7 +406,7 @@ class BlackJackThomasScreen(GambleScreen):
 
         pygame.display.flip()
 
-    def update_bet_screen_helper(self, controller):
+    def update_bet_screen_helper(self, controller,state):
         min_bet = 50
         max_bet = 200
         if controller.up_button:
@@ -420,6 +420,12 @@ class BlackJackThomasScreen(GambleScreen):
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
+
+        if self.bet > self.money:
+            self.bet = self.money
+
+        if self.bet > state.player.money:
+            self.bet = state.player.money
 
         if controller.action_and_cancel_button:
             self.game_state = self.WELCOME_SCREEN
@@ -449,44 +455,51 @@ class BlackJackThomasScreen(GambleScreen):
         level_1_luck_score = 0
         lucky_strike_threshhold = 75
         initial_hand = 2
-        if self.debuff_buff_luck_switch == 0:
-            adjusted_lucky_roll = lucky_roll + self.luck_bonus
-        elif self.debuff_buff_luck_switch > 0:
-            adjusted_lucky_roll = 0
+        # if self.debuff_buff_luck_switch == 0:
+        #     adjusted_lucky_roll = lucky_roll + self.luck_bonus
+        # elif self.debuff_buff_luck_switch > 0:
+        #     adjusted_lucky_roll = 0
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.player_hand = self.deck.player_draw_hand(2)
-            if self.debuff_buff_luck_switch == 0:
-                self.enemy_hand = self.deck.enemy_draw_hand(2)
-            elif self.debuff_buff_luck_switch > 0:
-                lucky_enemy_roll = random.randint(1, 100)
-                lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
-                ace_card = None
-                ten_card = None
-                print("Lucky roll strike is" + str(lucky_enemy_strike))
-                if lucky_enemy_strike >= 100:
-                    for card in self.deck.cards:
-                        if card[0] == "Ace" and ace_card is None:
-                            ace_card = card
-                        elif card[2] == 10 and ten_card is None:
-                            ten_card = card
-                        if ace_card and ten_card:
-                            break
-                    self.enemy_hand = [ace_card, ten_card]
-                else:
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+            # if self.debuff_buff_luck_switch == 0:
+            self.enemy_hand = self.deck.enemy_draw_hand(2)
+            # elif self.debuff_buff_luck_switch > 0:
+            #     lucky_enemy_roll = random.randint(1, 100)
+            #     lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
+            #     ace_card = None
+            #     ten_card = None
+            #     print("Lucky roll strike is" + str(lucky_enemy_strike))
+            #     if lucky_enemy_strike >= 100:
+            #         for card in self.deck.cards:
+            #             if card[0] == "Ace" and ace_card is None:
+            #                 ace_card = card
+            #             elif card[2] == 10 and ten_card is None:
+            #                 ten_card = card
+            #             if ace_card and ten_card:
+            #                 break
+            #         self.enemy_hand = [ace_card, ten_card]
+            #     else:
+            #         self.enemy_hand = self.deck.enemy_draw_hand(2)
 
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
+            attempts = 0
+            max_attempts = 3
+            while (
+                    player_bad_score_min_range < self.player_score < player_bad_score_max_range and attempts < max_attempts):
+                self.player_hand = self.deck.player_draw_hand(initial_hand)
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
+                attempts += 1
 
-            if state.player.luck > level_1_luck_score:
-                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                    if adjusted_lucky_roll >= lucky_strike_threshhold:
-                        self.lucky_strike.play()
-                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                            self.player_hand = self.deck.player_draw_hand(initial_hand)
-                            self.player_score = self.deck.compute_hand_value(self.player_hand)
-                            self.critical_hit = True
-                            print("LINE 715 MAYBE THE ERROR IS HERE")
+            # if state.player.luck > level_1_luck_score:
+            #     if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+            #         if adjusted_lucky_roll >= lucky_strike_threshhold:
+            #             self.lucky_strike.play()
+            #             while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+            #                 self.player_hand = self.deck.player_draw_hand(initial_hand)
+            #                 self.player_score = self.deck.compute_hand_value(self.player_hand)
+            #                 self.critical_hit = True
+            #                 print("LINE 715 MAYBE THE ERROR IS HERE")
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:
@@ -588,14 +601,19 @@ class BlackJackThomasScreen(GambleScreen):
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
                     elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
 
-                        lucky_roll = random.randint(1, 100) + self.spirit_bonus
+                        lucky_roll = random.randint(1, 100) + (self.spirit_bonus * 5)
+                        #hat chance + 10% per floor
+                        hat_chance = 60
 
-                        if lucky_roll >= self.LEVEL_4_PERCENTAGE_CHANCE:
+                        if lucky_roll >= hat_chance:
                             self.player_hand.pop()
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.lucky_strike.play()
+                            print("You protected against a bust even though it feels good")
 
                         else:
+                            print("busting makes me feel good, hat failed.")
+
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
             redraw_roll = random.randint(1, 100) + self.magic_bonus
@@ -654,8 +672,8 @@ class BlackJackThomasScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
 
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area1RestScreen
+                state.area1RestScreen.start(state)
                 state.player.canMove = True
 
     def initialize_music(self):
@@ -1078,4 +1096,3 @@ class BlackJackThomasScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
         elif state.player.stamina_points <= no_stamina_game_over:
             state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
-
