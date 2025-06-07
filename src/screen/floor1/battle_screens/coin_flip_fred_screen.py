@@ -158,8 +158,8 @@ class CoinFlipFredScreen(GambleScreen):
         self.welcome_screen_index = 0
 
 
-        self.spirit_bonus: int = state.player.spirit
-        self.magic_bonus: int = state.player.mind * 10
+        self.spirit_bonus: int = state.player.spirit * 20
+        self.magic_bonus: int = state.player.mind * 5
         self.luck_bonus: int = state.player.luck
 
 
@@ -185,7 +185,7 @@ class CoinFlipFredScreen(GambleScreen):
             self.timer_start = None
             self.image_to_display = ""
             self.player_choice = ""
-            self.wanton_magic_points = 3
+            # self.wanton_magic_points = 3
 
     def reset_round(self, state):
 
@@ -244,11 +244,11 @@ class CoinFlipFredScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.coinFlipTedMoney <= self.wanton_bankrupt:
-            state.currentScreen = state.area1IntroScreen
-            state.area1IntroScreen.start(state)
+            state.currentScreen = state.area1GamblingScreen
+            state.area1GamblingScreen.start(state)
             state.player.canMove = True
             #------------------------------------Check other files for below_____________________________
-            Events.add_level_one_event_to_player(state.player, Events.COIN_FLIP_TED_DEFEATED)
+            Events.add_level_one_event_to_player(state.player, Events.COIN_FLIP_FRED_DEFEATED)
 
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -323,8 +323,8 @@ class CoinFlipFredScreen(GambleScreen):
             self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
             if self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                state.currentScreen = state.area1IntroScreen
-                state.area1IntroScreen.start(state)
+                state.currentScreen = state.area1GamblingScreen
+                state.area1GamblingScreen.start(state)
                 state.player.canMove = True
 
 
@@ -445,9 +445,10 @@ class CoinFlipFredScreen(GambleScreen):
         elif self.welcome_screen_index == self.bet_index and controller.confirm_button :
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
-            state.currentScreen = state.area1IntroScreen
-            state.area1IntroScreen.start(state)
+            state.currentScreen = state.area1GamblingScreen
+            state.area1GamblingScreen.start(state)
             state.player.canMove = True
+            self.welcome_screen_index = 0
 
     def update_flip_coin_logic_helper(self,controller):
 
@@ -480,7 +481,7 @@ class CoinFlipFredScreen(GambleScreen):
             shield_chance = self.magic_bonus
             random_shield = random.randint(1, 100) + shield_chance
             print("SHIELD ROLL IS: " + str(random_shield))
-            if random_shield > 75:
+            if random_shield > 30:
                 self.game_state = self.PLAYER_DRAW_SCREEN
             else:
                 self.game_state = self.PLAYER_LOSE_SCREEN
@@ -541,6 +542,13 @@ class CoinFlipFredScreen(GambleScreen):
         elif self.bet >= max_bet:
             self.bet = max_bet
 
+        if self.bet > self.coinFlipFredMoney:
+            self.bet = self.coinFlipFredMoney
+
+        if self.bet > state.player.money:
+            self.bet = state.player.money
+
+
     def update_wanton_casting_spell_screen_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
             match self.wanton_magic_points:
@@ -572,7 +580,7 @@ class CoinFlipFredScreen(GambleScreen):
 
             if self.coinFlipTedMoney < 0:
                 self.coinFlipTedMoney = 0
-            total_gain = self.bet + (self.spirit_bonus * 20)
+            total_gain = self.bet + self.spirit_bonus
             state.player.money += total_gain
             self.coinFlipTedMoney -= total_gain
             self.reset_round(state)

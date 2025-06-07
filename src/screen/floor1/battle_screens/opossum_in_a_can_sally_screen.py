@@ -17,7 +17,7 @@ from game_constants.magic import Magic
 class OpossumInACanSallyScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
-        self.bet: int = 300
+        self.bet: int = 150
         self.dealer_name = "Sally"
         self.sally_bunkrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
@@ -26,7 +26,7 @@ class OpossumInACanSallyScreen(GambleScreen):
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.stamina_drain: int = 50
-        self.stamina_drain_repellant: int = 25
+        self.stamina_drain_repellant: int = 0
         self.pick_index: int = 0
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
@@ -161,14 +161,14 @@ class OpossumInACanSallyScreen(GambleScreen):
         self.trash_can_pick = ""
         self.result = ""
         shuffled_items = random.sample(self.winner_or_looser, len(self.winner_or_looser))
-        lucky_draw = random.randint(0, 100)
-        print("your lucky draw is: " + str(lucky_draw))
+        # lucky_draw = random.randint(0, 100)
+        # print("your lucky draw is: " + str(lucky_draw))
 
-        for luck in range(state.player.luck):
-            lucky_draw += 4
-        print("your lucky draw is: " + str(lucky_draw))
-        if lucky_draw > 90:
-            shuffled_items = random.sample(self.winner_or_looser_lucky, len(self.winner_or_looser_lucky))
+        # for luck in range(state.player.luck):
+        #     lucky_draw += 4
+        # print("your lucky draw is: " + str(lucky_draw))
+        # if lucky_draw > 90:
+        #     shuffled_items = random.sample(self.winner_or_looser_lucky, len(self.winner_or_looser_lucky))
 
         self.can1 = shuffled_items[0]
 
@@ -190,6 +190,7 @@ class OpossumInACanSallyScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.opossum_game_reset(state)
         self.welcome_screen_index = 0
+        self.stamina_drain_repellant = 5 * state.player.spirit
 
 
 
@@ -229,7 +230,7 @@ class OpossumInACanSallyScreen(GambleScreen):
         self.pick_tally_screen_index = 0
         self.buff_peek = False
         [box.reset() for box in self.battle_messages.values()]
-        self.bubba_magic_points: int = 3
+        # self.bubba_magic_points: int = 3
 
 
     def opossum_round_reset(self, state):
@@ -267,27 +268,27 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
 
-        self.double_pick_chance += 3
-
-        match self.bubba_magic_points:
-            case 3:
-                double_flip_randomizer = random.randint(1, 90) + self.double_pick_chance
-            case 2:
-                double_flip_randomizer = random.randint(1, 70) + self.double_pick_chance
-            case 1:
-                double_flip_randomizer = random.randint(1, 50) + self.double_pick_chance
-
-        if double_flip_randomizer > 90 and self.bubba_magic_points > 0 and self.debuff_double_pick == 0:
-            self.current_screen = self.BUBBA_CASTING_SPELL_SCREEN
-            self.double_pick_chance = 0
+        # self.double_pick_chance += 3
+        #
+        # match self.bubba_magic_points:
+        #     case 3:
+        #         double_flip_randomizer = random.randint(1, 90) + self.double_pick_chance
+        #     case 2:
+        #         double_flip_randomizer = random.randint(1, 70) + self.double_pick_chance
+        #     case 1:
+        #         double_flip_randomizer = random.randint(1, 50) + self.double_pick_chance
+        #
+        # if double_flip_randomizer > 90 and self.bubba_magic_points > 0 and self.debuff_double_pick == 0:
+        #     self.current_screen = self.BUBBA_CASTING_SPELL_SCREEN
+        #     self.double_pick_chance = 0
 
 
 
     def update(self, state):
         if self.sallyOpossumMoney <= self.sally_bunkrupt:
-            Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_SILLY_WILLY_DEFEATED)
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            Events.add_level_one_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_SALLY_DEFEATED)
+            state.currentScreen = state.area1GamblingScreen
+            state.area1GamblingScreen.start(state)
 
         super().update(state)
         controller = state.controller
@@ -323,6 +324,7 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_LOSE_SCREEN:
+
             if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
                 self.battle_messages[self.PLAYER_LOSE_MESSAGE].messages = [f"The repellant scares him off before too much damage is taking. You take 25 damage, and gain {self.exp_gain_high}:   experience points and 0 money."]
             elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
@@ -377,10 +379,10 @@ class OpossumInACanSallyScreen(GambleScreen):
                     self.sallyOpossumMoney = 0
                 self.opossum_round_reset(state)
 
-                if self.sallyOpossumMoney < 750  == False:
-                    self.game_state = self.BUBBA_CASTING_SPELL_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
+                # if self.sallyOpossumMoney < 750  == False:
+                #     self.game_state = self.BUBBA_CASTING_SPELL_SCREEN
+                # else:
+                self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
@@ -397,8 +399,8 @@ class OpossumInACanSallyScreen(GambleScreen):
                     controller.isAPressedSwitch = False
                     self.opossum_round_reset(state)
                     state.player.money -= 100
-                    state.currentScreen = state.area3RestScreen
-                    state.area3RestScreen.start(state)
+                    state.currentScreen = state.area1RestScreen
+                    state.area1RestScreen.start(state)
 
 
     def draw(self, state):
@@ -954,14 +956,15 @@ class OpossumInACanSallyScreen(GambleScreen):
             controller.isAPressedSwitch = False
             if self.welcome_screen_index == self.pick_index:
                 self.sallyOpossumMoney += self.bet
+                state.player.money -= self.bet
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
 
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.quit_index:
                 state.player.canMove = True
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area1RestScreen
+                state.area1RestScreen.start(state)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10

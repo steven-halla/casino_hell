@@ -232,7 +232,7 @@ class Area1BossScreen(GambleScreen):
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
-        self.fengus_magic_points = 3
+        # self.fengus_magic_points = 3
 
     def update(self, state: 'GameState'):
         controller = state.controller

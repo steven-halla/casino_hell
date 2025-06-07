@@ -421,8 +421,8 @@ class BlackJackThomasScreen(GambleScreen):
         elif self.bet >= max_bet:
             self.bet = max_bet
 
-        if self.bet > self.money:
-            self.bet = self.money
+        if self.bet > self.blackJackThomasMoney:
+            self.bet = self.blackJackThomasMoney
 
         if self.bet > state.player.money:
             self.bet = state.player.money
