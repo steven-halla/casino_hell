@@ -54,6 +54,7 @@ class Area1ShopKeeper(Npc):
         self.textbox.show_shop_menu = True
 
 
+
     def update(self, state: "GameState"):
 
 
