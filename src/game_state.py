@@ -6,7 +6,7 @@ import json
 
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
-from entity.npc.area4.area_4_rest_screen.black_jack_jasmine import BlackJackJasmine
+from entity.npc.area4.area_4_rest_screen_trash.black_jack_jasmine import BlackJackJasmine
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet

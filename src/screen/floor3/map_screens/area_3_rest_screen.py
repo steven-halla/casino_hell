@@ -29,16 +29,16 @@ from entity.npc.area2trash.area_2_rest_screen.johnathon import Johnathon
 from entity.npc.area2trash.area_2_rest_screen.karn import Karn
 from entity.npc.area2trash.area_2_rest_screen.natasha import Natasha
 from entity.npc.area2trash.area_2_rest_screen.paul import Paul
-from entity.npc.area3.area_3_rest_screen.area_3_shop_keeper import Area3ShopKeeper
-from entity.npc.area3.area_3_rest_screen.black_jack_albert import BlackJackAlbert
-from entity.npc.area3.area_3_rest_screen.coin_flip_dexter import CoinFlipDexter
-from entity.npc.area3.area_3_rest_screen.craps_junpon import CrapsJunpon
-from entity.npc.area3.area_3_rest_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
-from entity.npc.area3.area_3_rest_screen.high_low_diena import HighLowDiena
-from entity.npc.area3.area_3_rest_screen.hungry_starving_hippos_hippy import HungryStarvingHipposHippy
-from entity.npc.area3.area_3_rest_screen.magic_man_level_3 import MagicManLevel3
-from entity.npc.area3.area_3_rest_screen.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
-from entity.npc.area3.area_3_rest_screen.slots_brogan import SlotsBrogan
+from entity.npc.area3.area_3_rest_screen_trash.area_3_shop_keeper import Area3ShopKeeper
+from entity.npc.area3.area_3_rest_screen_trash.black_jack_albert import BlackJackAlbert
+from entity.npc.area3.area_3_rest_screen_trash.coin_flip_dexter import CoinFlipDexter
+from entity.npc.area3.area_3_rest_screen_trash.craps_junpon import CrapsJunpon
+from entity.npc.area3.area_3_rest_screen_trash.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
+from entity.npc.area3.area_3_rest_screen_trash.high_low_diena import HighLowDiena
+from entity.npc.area3.area_3_rest_screen_trash.hungry_starving_hippos_hippy import HungryStarvingHipposHippy
+from entity.npc.area3.area_3_rest_screen_trash.magic_man_level_3 import MagicManLevel3
+from entity.npc.area3.area_3_rest_screen_trash.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
+from entity.npc.area3.area_3_rest_screen_trash.slots_brogan import SlotsBrogan
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost

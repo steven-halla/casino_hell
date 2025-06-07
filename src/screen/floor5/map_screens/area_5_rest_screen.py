@@ -2,12 +2,12 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area5.area_5_rest_screen.black_jack_fengus import BlackJackFengus
-from entity.npc.area5.area_5_rest_screen.coin_flip_wanton import CoinFlipWanton
-from entity.npc.area5.area_5_rest_screen.craps_wimpleton import CrapsWimpleton
-from entity.npc.area5.area_5_rest_screen.hangry_angry_hippos_nippy import HangryAngryHipposNippy
-from entity.npc.area5.area_5_rest_screen.opossum_in_a_can_bubba import OpossumInACanBubba
-from entity.npc.area5.area_5_rest_screen.slots_burbadan import SlotsBurbadan
+from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
+from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
+from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
+from entity.npc.area5.area_5_rest_screen_trash.hangry_angry_hippos_nippy import HangryAngryHipposNippy
+from entity.npc.area5.area_5_rest_screen_trash.opossum_in_a_can_bubba import OpossumInACanBubba
+from entity.npc.area5.area_5_rest_screen_trash.slots_burbadan import SlotsBurbadan
 
 from entity.player.player import Player
 
