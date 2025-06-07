@@ -2,66 +2,49 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area2trash.area_2_gambling_screen.lunky import Lunky
-from entity.npc.area2trash.area_2_gambling_screen.nibblet import Nibblet
-from entity.npc.area2trash.area_2_rest_screen.Amber import Amber
-from entity.npc.area2trash.area_2_rest_screen.April import April
-from entity.npc.area2trash.area_2_rest_screen.JanetP import JanetP
-from entity.npc.area2trash.area_2_rest_screen.Lurger import Lurger
-from entity.npc.area2trash.area_2_rest_screen.NatNat import NatNat
-from entity.npc.area2trash.area_2_rest_screen.Natalie import Natalie
-from entity.npc.area2trash.area_2_rest_screen.Samantha import Samantha
-from entity.npc.area2trash.area_2_rest_screen.Sasquatch import Sasquatch
-from entity.npc.area2trash.area_2_rest_screen.Stew import Stew
-from entity.npc.area2trash.area_2_rest_screen.TommyBoy import TommyBoy
-from entity.npc.area2trash.area_2_rest_screen.alex import Alex
-from entity.npc.area2trash.area_2_rest_screen.alice import Alice
-from entity.npc.area2trash.area_2_rest_screen.area_2_bar_keep import Area2BarKeep
-from entity.npc.area2trash.area_2_rest_screen.area_2_inn_keeper import Area2InnKeeper
-from entity.npc.area2trash.area_2_rest_screen.area_2_rest_to_boss_area import Area2RestToBossArea
-from entity.npc.area2trash.area_2_rest_screen.area_2_rest_to_gambling_area import Area2RestToGamblingArea
-from entity.npc.area2trash.area_2_rest_screen.area_2_rest_to_nugget_area import Area2RestToNuggetArea
-from entity.npc.area2trash.area_2_rest_screen.area_2_rest_to_rib_demon_maze_area import Area2RestToRibDemonMazeArea
-from entity.npc.area2trash.area_2_rest_screen.area_2_shop_keeper import Area2ShopKeeper
-from entity.npc.area2trash.area_2_rest_screen.clara import Clara
-from entity.npc.area2trash.area_2_rest_screen.jasper import Jasper
-from entity.npc.area2trash.area_2_rest_screen.johnathon import Johnathon
-from entity.npc.area2trash.area_2_rest_screen.karn import Karn
-from entity.npc.area2trash.area_2_rest_screen.natasha import Natasha
-from entity.npc.area2trash.area_2_rest_screen.paul import Paul
-from entity.npc.area3.area_3_rest_screen_trash.area_3_shop_keeper import Area3ShopKeeper
-from entity.npc.area3.area_3_rest_screen_trash.black_jack_albert import BlackJackAlbert
-from entity.npc.area3.area_3_rest_screen_trash.coin_flip_dexter import CoinFlipDexter
-from entity.npc.area3.area_3_rest_screen_trash.craps_junpon import CrapsJunpon
-from entity.npc.area3.area_3_rest_screen_trash.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
-from entity.npc.area3.area_3_rest_screen_trash.high_low_diena import HighLowDiena
-from entity.npc.area3.area_3_rest_screen_trash.hungry_starving_hippos_hippy import HungryStarvingHipposHippy
-from entity.npc.area3.area_3_rest_screen_trash.magic_man_level_3 import MagicManLevel3
-from entity.npc.area3.area_3_rest_screen_trash.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
-from entity.npc.area3.area_3_rest_screen_trash.slots_brogan import SlotsBrogan
+from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_bar_door import Area1RestToBarDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_shop_door import Area1RestToShopDoor
+from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
+from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
+from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
+from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
+from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
+from entity.npc.area3.area_3_rest_screen.area_3_inn_keeper import Area3InnKeeper
+from entity.npc.area3.area_3_rest_screen.area_3_rest_to_bar_door import Area3RestToBarDoor
+from entity.npc.area3.area_3_rest_screen.area_3_rest_to_gambling_door import Area3RestToGamblingDoor
+from entity.npc.area3.area_3_rest_screen.area_3_rest_to_shop_door import Area3RestToShopDoor
+from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
+from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
+from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
+from entity.npc.area5.area_5_rest_screen_trash.hangry_angry_hippos_nippy import HangryAngryHipposNippy
+from entity.npc.area5.area_5_rest_screen_trash.opossum_in_a_can_bubba import OpossumInACanBubba
+from entity.npc.area5.area_5_rest_screen_trash.slots_burbadan import SlotsBurbadan
 
 from entity.player.player import Player
-from entity.treasurechests.area_2_focus_boost import Area2FocusBoost
-from entity.treasurechests.area_2_money_bag import Area2MoneyBag
-from game_constants.events import Events
-from game_constants.treasure import Treasure
+
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
+from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
+from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
+from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
+from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
+
 
 class Area3RestScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_3_final_map.tmx")
         # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
-        self.powerpotiongotten = False
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
         self.player = Player(333, 555)
-        self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
         self.clock = pygame.time.Clock()  # Initialize the clock
@@ -88,6 +71,12 @@ class Area3RestScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
+        if state.start_area_to_rest_area_entry_point == True:
+            player_start_x = 16 * 33
+            player_start_y = 16 * 26
+            state.player.setPosition(player_start_x, player_start_y)
+        state.player.canMove = True
+
 
         state.treasurechests = []
         self.stop_music()
@@ -99,40 +88,29 @@ class Area3RestScreen(Screen):
         # if (state.player.perception >= 1
         #         and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
         #     state.treasurechests = [
-        #         Area2MoneyBag(16 * 97, 14 * 55),
+        #         Area3MoneyBag(16 * 97, 14 * 55),
         #     ]
         #
         # if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
-        #     state.treasurechests.append(Area2FocusBoost(16 * 111, 14 * 111))
+        #     state.treasurechests.append(Area3FocusBoost(16 * 111, 14 * 111))
 
         state.npcs = [
-            # below are for geting into games and such
-            BlackJackAlbert(16 * 5, 16 * 15),
-            CoinFlipDexter(16 * 20, 16 * 15),
-            DiceFighterSirSiegfried(16 * 35, 16 * 15),
-            CrapsJunpon(16 * 35, 16 * 35),
-            OpossumInACanBillyBob(16 * 20, 16 * 35),
-            SlotsBrogan(16 * 5, 16 * 35),
-            HungryStarvingHipposHippy(16 * 5, 16 * 50),
-            HighLowDiena(16 * 50, 16 * 35),
 
-            # below are shops and such
-            Area2InnKeeper(16 * 25, 16 * 50),  # fin
-            Area3ShopKeeper(16 * 35, 16 * 5),  # fin
-            MagicManLevel3(16 * 25, 16 * 5),  # fin
+            Area3InnKeeper(16 * 5, 16 * 5),  # fin
+            # CodyTalk(16 * 5, 16 * 20),
+            Area3RestToGamblingDoor(16 * 5, 16 * 40),
+            Area3RestToBarDoor(16 * 25, 16 * 40),
+            Area3RestToShopDoor(16 * 45, 16 * 40),
+            # PatrickTalk(16 * 5, 16 * 35),
+            # CoinFlipTed(16 * 25, 16 * 35),
 
 
         ]
 
     def update(self, state: "GameState"):
-        # In your update() function (or in a function that’s called every frame):
-        if "magic_man_level_3_vanished" not in state.player.level_three_npc_state:
-            # If MagicManLevel3 isn’t already in the npcs list, add it.
-            if not any(isinstance(npc, MagicManLevel3) for npc in state.npcs):
-                state.npcs.append(MagicManLevel3(16 * 20, 16 * 5))
-        else:
-            # If the vanish flag is set, remove any MagicManLevel3 from the list.
-            state.npcs = [npc for npc in state.npcs if not isinstance(npc, MagicManLevel3)]
+        # In your update() function (or in a function that's called every frame):
+
+
 
         controller = state.controller
         player = state.player
@@ -146,11 +124,6 @@ class Area3RestScreen(Screen):
 
         for treasurechest in state.treasurechests:
             treasurechest.update(state)
-
-
-        if controller.isExitPressed:
-            state.isRunning = False
-
 
         player.update(state)
 
@@ -203,28 +176,45 @@ class Area3RestScreen(Screen):
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
+        # 1. Draw all NPCs normally
         for npc in state.npcs:
-            npc.draw(state)
+            npc.draw(state)  # Not skipping any
+
+        # 2. Then draw only the dialog box for the talking one
+        for npc in state.npcs:
+            if npc.state == "talking":
+                npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)
+
+
 
         state.obstacle.draw(state)
         if state.player.hide_player == False:
             state.player.draw(state)
 
-        if state.controller.isPPressed or state.controller.isXPressedSwitch:
+        # Enter the menu ONCE when pressing start (P)
+        # Only enter the menu if currently not in one
+        # Only enter menu if not already in any screen
+        if state.player.current_screen == "" and state.controller.start_button:
+            state.player.current_screen = "main_menu_screen"
             state.player.canMove = False
+
+        # If in any menu-related screen, just draw the player menu logic
+        if state.player.current_screen.endswith("_screen"):
             state.player.draw_player_stats(state)
 
-            if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
-                if state.controller.isPPressed or state.controller.isXPressedSwitch:
-                    state.player.canMove = True
-                    state.player.menu_paused = False
 
-                    state.controller.isPPressed = False
-                    state.controller.isXPressedSwitch = False
-                    return
+
+            # if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
+            #     if state.controller.isPPressed or state.controller.isXPressedSwitch:
+            #         state.player.canMove = True
+            #         state.player.menu_paused = False
+            #
+            #         state.controller.isPPressed = False
+            #         state.controller.isXPressedSwitch = False
+            #         return
 
         # Update the display
         pygame.display.update()
