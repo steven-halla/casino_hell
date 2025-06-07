@@ -2,49 +2,58 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
-from entity.npc.area2trash.area_2_gambling_screen.area_2_gambling_to_rest_area import Area2GamblingToRestArea
-from entity.npc.area2trash.area_2_gambling_screen.black_jack_mack import BlackJackMack
-from entity.npc.area2trash.area_2_gambling_screen.coin_flip_betty import CoinFlipBetty
-from entity.npc.area2trash.area_2_gambling_screen.happy_craps import CrapsHappy
-from entity.npc.area2trash.area_2_gambling_screen.lunky import Lunky
-from entity.npc.area2trash.area_2_gambling_screen.nibblet import Nibblet
-from entity.npc.area2trash.area_2_gambling_screen.slots_rippa_snappa import SlotsRippaSnappa
-from entity.npc.area2trash.area_2_gambling_screen.opossum_in_a_can_candy import OpossumInACanCandy
-from entity.npc.area2trash.area_2_rest_screen.Natalie import Natalie
 
+from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_bar_door import Area1RestToBarDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
+from entity.npc.area1.area_1_rest_screen.area_1_rest_to_shop_door import Area1RestToShopDoor
+from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
+from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
+from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
+from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
+from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
+from entity.npc.area2.area_2_gamble_screen.area_2_gambling_to_rest_door import Area2GamblingToRestDoor
+from entity.npc.area2.area_2_rest_screen.area_2_inn_keeper import Area2InnKeeper
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_bar_door import Area2RestToBarDoor
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_door import Area2RestToGamblingDoor
+from entity.npc.area2.area_2_rest_screen.area_2_rest_to_shop_door import Area2RestToShopDoor
+from entity.npc.area5.area_5_rest_screen.black_jack_fengus import BlackJackFengus
+from entity.npc.area5.area_5_rest_screen.coin_flip_wanton import CoinFlipWanton
+from entity.npc.area5.area_5_rest_screen.craps_wimpleton import CrapsWimpleton
+from entity.npc.area5.area_5_rest_screen.hangry_angry_hippos_nippy import HangryAngryHipposNippy
+from entity.npc.area5.area_5_rest_screen.opossum_in_a_can_bubba import OpossumInACanBubba
+from entity.npc.area5.area_5_rest_screen.slots_burbadan import SlotsBurbadan
 from entity.player.player import Player
-from entity.treasurechests.bbqsauce import BBQSauce
-from game_constants.events import Events
+from entity.npc.area2.area_2_gamble_screen.area_2_gambling_to_boss_door import Area2GamblingToBossDoor
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-
+from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
+from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
+from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
+from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
+from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
 class Area2GamblingScreen(Screen):
-
+# WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
-        self.chili_pit_flag = False
-        self.tiled_map = pytmx.load_pygame("./assets/map/gambling_area_level_2.tmx")
+        self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
+        # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
-        self.powerpotiongotten = False
         self.y_down_move = False
         self.x_left_move = False
         self.x_right_move = False
         self.player = Player(333, 555)
-        self.hedge_hog_counter = 0
         move_player_down_flag = False
         self.npcs = []  # Initialize the NPCs list as empty
-
-
-
         self.clock = pygame.time.Clock()  # Initialize the clock
+        self.music_file = "./assets/music/relax_screen.mp3"
 
-        self.music_file = "./assets/music/town_music.mp3"
         self.music_volume = 0.5  # Adjust as needed
         self.initialize_music()
-
-
+        self.shop_lock = False
 
     def stop_music(self):
         pygame.mixer.music.stop()
@@ -63,89 +72,39 @@ class Area2GamblingScreen(Screen):
         pygame.mixer.music.play(-1)
 
     def start(self, state: "GameState"):
-        print("jdfsajf;dsjfjsa;jlsajf;asfj;sjfljas;fjlksajfl;kajs;klfjdslf;ldjsa")
-        self.stop_music()
-
-
-        state.treasurechests = [
-
-
-        ]
-
-        print("this is for our start area")
-        print(str(state.area_2_rest_area_to_gambling_point))
-
-        if (Events.QUEST_1_COIN.value in state.player.level_two_npc_state and
-                Events.QUEST_1_BADGE.value in state.player.level_two_npc_state and
-                Events.QUEST_1_COMPLETE.value not in state.player.level_two_npc_state):
-            print("yoyoyo")
-            state.player.level_two_npc_state.append(Events.QUEST_1_COMPLETE.value)
-
-        # state.area_2_gambling_area_to_rest_point = True
-
-        if state.area_2_gambling_area_to_rest_point == True:
-            print("hdshfa;ljflksja;f")
-            player_start_x = 16 * 37  # Desired X coordinate
-            player_start_y = 16 * 34  # Desired Y coordinate
+        if state.start_area_to_rest_area_entry_point == True:
+            player_start_x = 16 * 33
+            player_start_y = 16 * 26
             state.player.setPosition(player_start_x, player_start_y)
-            state.area_2_gambling_area_to_rest_point = False
+        state.player.canMove = True
 
 
-
-
+        state.treasurechests = []
         self.stop_music()
-        if state.musicOn == True:
-            self.initialize_music()
+        # if state.musicOn:
+        #     self.initialize_music()
         super().start(state)
         state.npcs.clear()
 
-        # Check if a player instance already exists
-        # if not hasattr(state, 'player') or state.player is None:
-        #     player_start_x = 300
-        #     player_start_y = 200
-        #     state.player = Player(player_start_x, player_start_y)
-
-
-        # Check the value of state.player.body
-        print("Level 2 npc state :" + str(state.player.level_two_npc_state))
-
-
-        if (Events.MC_NUGGET_QUEST_1_REWARD.value in state.player.level_two_npc_state
-                and state.player.perception >= 2
-                and Events.MC_NUGGET_SECOND_QUEST_COMPLETE.value not in state.player.level_two_npc_state):
-            print("ydddle")
-
-
-            state.treasurechests = [
-
-                BBQSauce(16 * 55, 14 * 42),
-
-            ]
-
-        # state.npcs = []
-
+        # if (state.player.perception >= 1
+        #         and Treasure.FIVE_HUNDRED_GOLD.value not in state.player.level_two_npc_state):
+        #     state.treasurechests = [
+        #         Area2MoneyBag(16 * 97, 14 * 55),
+        #     ]
+        #
+        # if state.player.perception >= 2 and Treasure.FOCUS_BOOST.value not in state.player.level_two_npc_state:
+        #     state.treasurechests.append(Area2FocusBoost(16 * 111, 14 * 111))
 
         state.npcs = [
-            BlackJackMack(16 * 110, 16 * 7),
 
-            OpossumInACanCandy(16 * 9, 16 * 9),
+            Area2GamblingToRestDoor(16 * 5, 16 * 40),
+            Area2GamblingToBossDoor(16 * 15, 16 * 40),
 
-            CoinFlipBetty(16 * 36, 16 * 6),
-
-            SlotsRippaSnappa(16 * 61, 16 * 7),
-
-            CrapsHappy(16 * 81, 16 * 5),
-
-            Nibblet(16 * 20, 16 * 31),
-            Lunky(16 * 60, 16 * 28),
-            Area2GamblingToRestArea(16 * 36, 16 * 39)
 
         ]
 
     def update(self, state: "GameState"):
-        # delta_time = self.clock.tick(60)  # 60 FPS cap
-        # fps = 1000 / delta_time
-        # print(fps)
+        # In your update() function (or in a function that’s called every frame):
 
 
 
@@ -154,75 +113,17 @@ class Area2GamblingScreen(Screen):
         obstacle = state.obstacle
         controller.update()
 
-
-        #the below speeds up text speech
-        # for npc in state.npcs:
-        #     npc.update(state)
-        #     if isinstance(npc, Nurgle) and npc.to_be_deleted:
-        #         state.npcs.remove(npc)
-
         for npc in state.npcs:
             npc.update(state)
 
-
-
         state.treasurechests = [chest for chest in state.treasurechests if not chest.remove]
 
-
-        for treasurechests in state.treasurechests:
-            treasurechests.update(state)
-
-
-
-
-
-
-        if controller.isExitPressed is True:
-            state.isRunning = False
-
-
-
-
-        #
-        # if state.coinFlipTedScreen.coinFlipTedDefeated == True and state.cindy_long_hair.coinFlipTedReward == True:
-        #     coinMonicle = "coin monicle"
-        #     state.player.items.append(coinMonicle)
-
-        if controller.isUpPressed:
-
-            self.y_up_move = True
-
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-
-        elif controller.isDownPressed:
-            self.y_down_move = True
-            self.y_up_move = False
-            self.x_left_move = False
-            self.x_right_move = False
-
-        elif controller.isLeftPressed:
-            self.x_left_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_right_move = False
-
-        elif controller.isRightPressed:
-            self.x_right_move = True
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-
-        else:
-            self.y_up_move = False
-            self.y_down_move = False
-            self.x_left_move = False
-            self.x_right_move = False
+        for treasurechest in state.treasurechests:
+            treasurechest.update(state)
 
         player.update(state)
 
-        # check map for collision
+        # Check map for collision
         if self.tiled_map.layers:
             tile_rect = Rectangle(0, 0, 16, 16)
             collision_layer = self.tiled_map.get_layer_by_name("collision")
@@ -236,21 +137,11 @@ class Area2GamblingScreen(Screen):
                     if demon.collision.isOverlap(tile_rect):
                         demon.undoLastMove()
 
-
         state.camera.x = PLAYER_OFFSET[0] - state.player.collision.x
         state.camera.y = PLAYER_OFFSET[1] - state.player.collision.y
 
-
-
     def draw(self, state: "GameState"):
-
         state.DISPLAY.fill(BLUEBLACK)
-        # state.DISPLAY.blit(state.FONT.render(
-        #     f"player money: {state.player.money}",
-        #     True, (255, 255, 255)), (333, 333))
-        # state.DISPLAY.blit(state.FONT.render(
-        #     f"player stamina points: {state.player.stamina_points}",
-        #     True, (255, 255, 255)), (333, 388))
 
         if self.tiled_map.layers:
             tile_width = self.tiled_map.tilewidth
@@ -265,7 +156,7 @@ class Area2GamblingScreen(Screen):
                 pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (
-                tile_width * 1.3, tile_height * 1.3))
+                    tile_width * 1.3, tile_height * 1.3))
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
@@ -277,35 +168,49 @@ class Area2GamblingScreen(Screen):
                 pos_y = y * tile_height + state.camera.y
 
                 scaled_image = pygame.transform.scale(image, (
-                tile_width * 1.3, tile_height * 1.3))
+                    tile_width * 1.3, tile_height * 1.3))
 
                 state.DISPLAY.blit(scaled_image, (pos_x, pos_y))
 
-
-
+        # 1. Draw all NPCs normally
         for npc in state.npcs:
-            npc.draw(state)
+            npc.draw(state)  # Not skipping any
 
+        # 2. Then draw only the dialog box for the talking one
+        for npc in state.npcs:
+            if npc.state == "talking":
+                npc.draw(state, only_dialog=True)
 
-        for treasurechests in state.treasurechests:
-            treasurechests.draw(state)
+        for treasurechest in state.treasurechests:
+            treasurechest.draw(state)
 
 
 
         state.obstacle.draw(state)
+        if state.player.hide_player == False:
+            state.player.draw(state)
 
-        state.player.draw(state)
+        # Enter the menu ONCE when pressing start (P)
+        # Only enter the menu if currently not in one
+        # Only enter menu if not already in any screen
+        if state.player.current_screen == "" and state.controller.start_button:
+            state.player.current_screen = "main_menu_screen"
+            state.player.canMove = False
 
-
-
-        if state.controller.isPPressed == True:
-
+        # If in any menu-related screen, just draw the player menu logic
+        if state.player.current_screen.endswith("_screen"):
             state.player.draw_player_stats(state)
 
-            if state.controller.isBPressed == True:
-                if state.controller.isPPressed:
-                    state.controller.isPPressed = False
-                    return
+
+
+            # if state.controller.isBPressed or state.controller.isBPressedSwitch and state.player.current_screen == "main_menu_screen":
+            #     if state.controller.isPPressed or state.controller.isXPressedSwitch:
+            #         state.player.canMove = True
+            #         state.player.menu_paused = False
+            #
+            #         state.controller.isPPressed = False
+            #         state.controller.isXPressedSwitch = False
+            #         return
 
         # Update the display
         pygame.display.update()
