@@ -2,6 +2,7 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_bar_door import Area1RestToBarDoor
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
@@ -12,6 +13,7 @@ from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
+from entity.npc.area4.area_4_gamble_screen.area_4_gambling_to_rest_door import Area4GamblingToRestDoor
 from entity.npc.area4.area_4_rest_screen.area_4_inn_keeper import Area4InnKeeper
 from entity.npc.area4.area_4_rest_screen.area_4_rest_to_bar_door import Area4RestToBarDoor
 from entity.npc.area4.area_4_rest_screen.area_4_rest_to_gambling_door import Area4RestToGamblingDoor
@@ -22,9 +24,8 @@ from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpl
 from entity.npc.area5.area_5_rest_screen_trash.hangry_angry_hippos_nippy import HangryAngryHipposNippy
 from entity.npc.area5.area_5_rest_screen_trash.opossum_in_a_can_bubba import OpossumInACanBubba
 from entity.npc.area5.area_5_rest_screen_trash.slots_burbadan import SlotsBurbadan
-
 from entity.player.player import Player
-
+from entity.npc.area4.area_4_gamble_screen.area_4_gambling_to_boss_door import Area4GamblingToBossDoor
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
@@ -34,7 +35,7 @@ from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumIn
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
-class Area4RestScreen(Screen):
+class Area4GamblingScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
@@ -96,13 +97,8 @@ class Area4RestScreen(Screen):
 
         state.npcs = [
 
-            Area4InnKeeper(16 * 5, 16 * 5),  # fin
-            # CodyTalk(16 * 5, 16 * 20),
-            Area4RestToGamblingDoor(16 * 5, 16 * 40),
-            Area4RestToBarDoor(16 * 25, 16 * 40),
-            Area4RestToShopDoor(16 * 45, 16 * 40),
-            # PatrickTalk(16 * 5, 16 * 35),
-            # CoinFlipTed(16 * 25, 16 * 35),
+            Area4GamblingToRestDoor(16 * 5, 16 * 40),
+            Area4GamblingToBossDoor(16 * 15, 16 * 40),
 
 
         ]

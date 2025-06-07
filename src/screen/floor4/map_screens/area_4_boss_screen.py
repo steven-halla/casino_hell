@@ -2,20 +2,17 @@ import pygame
 import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
+from entity.npc.area1.area_1_boss_screen.area_1_boss_to_gambling_door import Area1BossToGamblingDoor
+from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_maze_door import Area1GamblingToMazeDoor
+from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import Area1GamblingToRestDoor
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_bar_door import Area1RestToBarDoor
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
 from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_shop_door import Area1RestToShopDoor
 from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
 from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
-from entity.npc.area4.area_4_rest_screen.area_4_inn_keeper import Area4InnKeeper
-from entity.npc.area4.area_4_rest_screen.area_4_rest_to_bar_door import Area4RestToBarDoor
-from entity.npc.area4.area_4_rest_screen.area_4_rest_to_gambling_door import Area4RestToGamblingDoor
-from entity.npc.area4.area_4_rest_screen.area_4_rest_to_shop_door import Area4RestToShopDoor
+from entity.npc.area4.area_4_boss_screen.area_4_boss_to_gambling_screen import Area4BossToGamblingDoor
 from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
 from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
 from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
@@ -34,10 +31,11 @@ from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumIn
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
-class Area4RestScreen(Screen):
+class Area4BossScreen(Screen):
 # WHAT IF I CALL START AFTER EXITING A SCREEN TO CALL IMPORTANT FUNS WHILE NOT ALWAYS USING UPDATE
     def __init__(self):
         super().__init__("Casino MainScreen")
+        self.chili_pit_flag = False
         self.tiled_map = pytmx.load_pygame("./assets/map/rest_area_2_final_map.tmx")
         # self.tiled_map = pytmx.load_pygame("./assets/map/restarea.tmx")
         self.y_up_move = False
@@ -96,14 +94,8 @@ class Area4RestScreen(Screen):
 
         state.npcs = [
 
-            Area4InnKeeper(16 * 5, 16 * 5),  # fin
-            # CodyTalk(16 * 5, 16 * 20),
-            Area4RestToGamblingDoor(16 * 5, 16 * 40),
-            Area4RestToBarDoor(16 * 25, 16 * 40),
-            Area4RestToShopDoor(16 * 45, 16 * 40),
-            # PatrickTalk(16 * 5, 16 * 35),
-            # CoinFlipTed(16 * 25, 16 * 35),
-
+            Area4BossToGamblingDoor(16 * 30, 16 * 25),
+            # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
         ]
 
