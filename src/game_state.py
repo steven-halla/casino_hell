@@ -164,19 +164,17 @@ class GameState:
         self.winGameScreen = WinScreen()
 
         self.coinFlipScreen = CoinFlipScreen()
-        self.coinFlipFredScreen = CoinFlipFredScreen()
         self.coinFlipSandyScreen = CoinFlipSandyScreen()
 
         # self.opossumInACanScreen = OpossumInACanScreen()
         self.opossumInACanNellyScreen = OpossumInACanNellyScreen()
-        self.opossumInACanSallyScreen = OpossumInACanSallyScreen()
         self.opossumInACanIchiScreen = OpossumInACanIchiScreen()
+        self.blackJackDemonBossScreen = DemonBossScreen()
+
 
         self.blackJackScreen = BlackJackScreen()
-        self.blackJackThomasScreen = BlackJackThomasScreen()
         self.blackJackRumbleBillScreen = BlackJackRumbleBillScreen()
         self.blackJackJaredScreen = BlackJackJaredScreen()
-        self.blackJackDemonBossScreen = DemonBossScreen()
 
 # below are the screen for player menu
         self.equipmentScreen = EquipmentScreen()
@@ -184,16 +182,13 @@ class GameState:
 
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
-        self.area2RestScreen = Area2RestScreen()
         self.area3RestScreen = Area3RestScreen()
         self.area4RestScreen = Area4RestScreen()
         self.area5RestScreen = Area5RestScreen()
-        self.area2GamblingScreen = Area2GamblingScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
         self.area2RibDemonMazeScreen2 = Area2RibDemonMazeScreen2()
         self.area2RibDemonMazeScreen3 = Area2RibDemonMazeScreen3()
-        self.area2BossScreen = Area2BossScreen()
         self.area2BossAfterRevealScreen = Area2BossAfterRevealScreen()
 
 
@@ -248,18 +243,25 @@ class GameState:
         self.area_2_rest_area_to_rib_demon_maze_point3 = False
         self.area_2_rest_area_to_boss_point = False
 
+        self.area1MazeScreen = Area1MazeScreen()
 
 #---------------------------Below is area 1
         self.area1IntroScreen = Area1IntroScreen()
         self.area1RestScreen = Area1RestScreen()
         self.area1GamblingScreen = Area1GamblingScreen()
-        self.area1MazeScreen = Area1MazeScreen()
         self.area1BossScreen = Area1BossScreen()
         self.area1BarScreen = Area1BarScreen()
         self.area1ShopScreen = Area1ShopScreen()
-        self.area1BossScreen = Area1BossScreen()
 
         self.coinFlipTedScreen = CoinFlipTedScreen()
+        self.coinFlipFredScreen = CoinFlipFredScreen()
+        self.opossumInACanSallyScreen = OpossumInACanSallyScreen()
+        self.blackJackThomasScreen = BlackJackThomasScreen()
+        self.area1BossScreen = Area1BossScreen()
+
+
+
+
 
 
 
@@ -267,6 +269,12 @@ class GameState:
 #-----------------------Below is AREA 2
         self.area2ShopScreen = Area2ShopScreen()
         self.area2BarScreen = Area2BarScreen()
+        self.area2RestScreen = Area2RestScreen()
+        self.area2BossScreen = Area2BossScreen()
+        self.area2GamblingScreen = Area2GamblingScreen()
+
+
+
 
 
 

@@ -57,31 +57,24 @@ class Area2RestToBarDoor(Npc):
             self.state = "talking"
             self.state_start_time = pygame.time.get_ticks()
 
-
-            if Events.LEVEL_1_INN_KEY.value in state.player.level_one_npc_state:
-                pass
-            else:
-                self.mike_talk_messages["welcome_message"].reset()
+            self.mike_talk_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
 
 
 
-        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-            current_message = self.mike_talk_messages["welcome_message"]
-            current_message.update(state)
+        current_message = self.mike_talk_messages["welcome_message"]
+        current_message.update(state)
 
-        elif Events.LEVEL_1_INN_KEY.value in  state.player.level_one_npc_state:
-            state.player.canMove = True
+        state.player.canMove = True
 
-            state.maze_area_to_gambling_area_entry_point = True
+        state.maze_area_to_gambling_area_entry_point = True
 
-            state.currentScreen = state.area2BarScreen
-            state.area2BarScreen.start(state)
+        state.currentScreen = state.area2BarScreen
+        state.area2BarScreen.start(state)
 
         # Lock the player in place while talking
-        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-            state.player.canMove = False
+        state.player.canMove = False
 
 
 
@@ -110,6 +103,5 @@ class Area2RestToBarDoor(Npc):
         # Always check dialog state
         if self.state == "talking":
 
-            if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-                current_message = self.mike_talk_messages["welcome_message"]
-                current_message.draw(state)
+            current_message = self.mike_talk_messages["welcome_message"]
+            current_message.draw(state)
