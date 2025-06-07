@@ -26,14 +26,23 @@ class Area1BarKeep(Npc):
         self.input_time = pygame.time.get_ticks()
 
         self.state = "waiting"
-        self.shop_items = ["Hoppy Brew", "Carrion Nachos"]
-        self.shop_costs = ["200", "200"]
+        self.all_items = ["Hoppy Brew", "Carrion Nachos"]
+        self.all_costs = ["200", "200"]
+        self.shop_items = []
+        self.shop_costs = []
         self.selected_item_index = 0
         self.character_sprite_image = pygame.image.load(
             "./assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
         self.selected_money_index = 0
 
     def show_shop(self, state: "GameState"):
+        self.shop_items = [self.all_items[0]]
+        self.shop_costs = [self.all_costs[0]]
+
+        if state.player.body == 0:
+            self.shop_items.append(self.all_items[1])
+            self.shop_costs.append(self.all_costs[1])
+
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
 
@@ -60,35 +69,21 @@ class Area1BarKeep(Npc):
                         state.player.focus_points = state.player.max_focus_points
                     state.player.food -= 1
 
-                    if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
-                        state.currentScreen = state.area2BarCutScene1
-                        state.area2BarCutScene1.start(state)
 
-                    elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
-                        state.currentScreen = state.area2BarCutScene2
-                        state.area2BarCutScene2.start(state)
-                        state.player.companions.append("erika")
-
-                    elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
-                        state.currentScreen = state.area2BarCutScene3
-                        state.area2BarCutScene3.start(state)
 
                 elif self.selected_item_index == 1:
                     self.buy_sound.play()
                     state.player.money -= 200
-                    state.player.luck += 1
-                    state.player.enhanced_luck = True
                     state.player.food -= 1
+                    state.player.body += 1  # ✅ Grant +1 body permanently
 
                     if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
                         state.currentScreen = state.area2BarCutScene1
                         state.area2BarCutScene1.start(state)
-
                     elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
                         state.currentScreen = state.area2BarCutScene2
                         state.area2BarCutScene2.start(state)
                         state.player.companions.append("erika")
-
                     elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
                         state.currentScreen = state.area2BarCutScene3
                         state.area2BarCutScene3.start(state)
@@ -108,7 +103,6 @@ class Area1BarKeep(Npc):
                     if self.selected_item_index > 0:
                         self.selected_item_index -= 1
                         self.selected_money_index -= 1
-
                 elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
                     self.input_time = pygame.time.get_ticks()
                     self.menu_movement_sound.play()
@@ -155,6 +149,6 @@ class Area1BarKeep(Npc):
             if self.selected_item_index == 0:
                 state.DISPLAY.blit(self.font.render("Made from the vomit of hopping gluttons.", True, (255, 255, 255)), (70, 460))
                 state.DISPLAY.blit(self.font.render("Restores 150 HP and 75 Magic.", True, (255, 255, 255)), (70, 510))
-            elif self.selected_item_index == 1:
+            elif len(self.shop_items) > 1 and self.selected_item_index == 1:
                 state.DISPLAY.blit(self.font.render("Nachos with extra maggots.", True, (255, 255, 255)), (70, 460))
-                state.DISPLAY.blit(self.font.render("Adds +1 luck till next rest.", True, (255, 255, 255)), (70, 510))
+                state.DISPLAY.blit(self.font.render("Adds +1 body permanently.", True, (255, 255, 255)), (70, 510))

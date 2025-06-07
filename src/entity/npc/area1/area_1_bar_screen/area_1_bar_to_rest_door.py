@@ -67,21 +67,17 @@ class Area1BarToRestDoor(Npc):
 
 
 
-        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-            current_message = self.mike_talk_messages["welcome_message"]
-            current_message.update(state)
+        current_message = self.mike_talk_messages["welcome_message"]
+        current_message.update(state)
 
-        elif Events.LEVEL_1_INN_KEY.value in  state.player.level_one_npc_state:
-            state.player.canMove = True
+        state.player.canMove = True
 
-            state.maze_area_to_gambling_area_entry_point = True
+        state.maze_area_to_gambling_area_entry_point = True
 
-            state.currentScreen = state.area1RestScreen
-            state.area1RestScreen.start(state)
+        state.currentScreen = state.area1RestScreen
+        state.area1RestScreen.start(state)
 
-        # Lock the player in place while talking
-        if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-            state.player.canMove = False
+
 
 
 
@@ -110,6 +106,5 @@ class Area1BarToRestDoor(Npc):
         # Always check dialog state
         if self.state == "talking":
 
-            if Events.LEVEL_1_INN_KEY.value not in state.player.level_one_npc_state:
-                current_message = self.mike_talk_messages["welcome_message"]
-                current_message.draw(state)
+            current_message = self.mike_talk_messages["welcome_message"]
+            current_message.draw(state)
