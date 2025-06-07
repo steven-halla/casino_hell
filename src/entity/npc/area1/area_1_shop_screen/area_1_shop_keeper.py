@@ -34,9 +34,9 @@ class Area1ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value, Equipment.CRAPS_WRIST_WATCH.value, Equipment.STAT_POTION_AREA_3.value, Equipment.CHEFS_HAT.value, Equipment.MP_BRACELET.value,Equipment.MEDIUM_VEST.value ]
+        self.shop_items = [Equipment.BLACK_JACK_HAT.value, Equipment.OPOSSUM_REPELLENT.value, Magic.REVEAL.value ]
 
-        self.shop_costs = ["1200", "1000", "1000", "1000", "1000","1500"]
+        self.shop_costs = ["500", "500", "500"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -59,79 +59,7 @@ class Area1ShopKeeper(Npc):
 
 
 
-        stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
-        # print(self.stat_point_increase)
 
-        if self.stat_point_increase == True:
-            state.area2RestScreen.shop_lock = True
-            if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
-                self.input_time = pygame.time.get_ticks()
-                self.stat_point_increase_index = (self.stat_point_increase_index - 1) % len(stats)
-                state.controller.isUpPressed = False
-                print(self.stat_point_increase_index)
-
-            elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
-                self.input_time = pygame.time.get_ticks()
-                self.stat_point_increase_index = (self.stat_point_increase_index + 1) % len(stats)
-                state.controller.isDownPressed = False
-                print(self.stat_point_increase_index)
-
-
-            # Handle selection confirmation (e.g., with 'T' press)
-            if (state.controller.isTPressed or state.controller.isAPressedSwitch) and pygame.time.get_ticks() - self.input_time > 400:
-                selected_stat = stats[self.stat_point_increase_index]
-                print(f"Player selected: {selected_stat}")
-                # Handle the logic for applying the stat point increase
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
-
-                if self.stat_point_increase_index == 0 and state.player.body < 3:
-                    state.player.body += 1
-                    state.player.max_stamina_points += state.player.level_2_body_stamina_increase
-                    state.player.stamina_points += state.player.level_2_body_stamina_increase
-
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 1 and state.player.mind < 3:
-                    state.player.mind += 1
-                    state.player.max_focus_points += state.player.level_2_mind_focus_increase
-                    state.player.focus_points += state.player.level_2_mind_focus_increase
-                    Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
-
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 2 and state.player.spirit < 3:
-                    state.player.spirit += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 3 and state.player.perception < 3 and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
-                    state.player.perception += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 3 and state.player.perception < 4 and Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    state.player.perception += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 4 and state.player.luck < 3 and state.player.enhanced_luck == False:
-                    state.player.luck += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 4 and state.player.luck < 4 and state.player.enhanced_luck == True:
-                    state.player.luck += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
 
         if self.state == "waiting":
             self.update_waiting(state)
@@ -140,22 +68,16 @@ class Area1ShopKeeper(Npc):
 
             state.player.hide_player = True
 
-            if Equipment.COIN_SAVE_AREA_3.value in state.player.level_three_npc_state:
+            if Equipment.BLACK_JACK_HAT.value in state.player.items:
                 self.shop_items[0] = "sold out"
 
-            if Equipment.CRAPS_WRIST_WATCH.value in state.player.level_three_npc_state:
+            if Equipment.OPOSSUM_REPELLENT.value in state.player.items:
                 self.shop_items[1] = "sold out"
 
-            if Equipment.STAT_POTION_AREA_3.value in state.player.level_three_npc_state:
+            if Magic.REVEAL.value in state.player.magicinventory:
                 self.shop_items[2] = "sold out"
 
-            if Equipment.CHEFS_HAT.value in state.player.level_three_npc_state:
-                self.shop_items[3] = "sold out"
 
-            if Equipment.MP_BRACELET.value in state.player.level_three_npc_state:
-                self.shop_items[4] = "sold out"
-            if Equipment.MEDIUM_VEST.value in state.player.level_three_npc_state:
-                self.shop_items[5] = "sold out"
 
 
 
@@ -178,64 +100,36 @@ class Area1ShopKeeper(Npc):
 
                     # For each shop item, define its cost and check the new minimum condition.
                     if self.selected_item_index == 0:
-                        print("Yes")
-                        cost = 1200
-                        if state.player.money - cost < 500 or Equipment.COIN_SAVE_AREA_3.value in state.player.level_three_npc_state:
-                            self.cant_buy_sound.play()  # Not enough money left or already purchased
-                        else:
-                            self.buy_sound.play()
-                            if state.player.enhanced_luck:
-                                state.player.luck -= 1
-                            Equipment.COIN_SAVE_AREA_3.add_shop_items_to_player_inventory(state.player, Equipment.COIN_SAVE_AREA_3)
-                            state.player.money -= cost
-                            state.save_game(state.player, state)
-                            if state.player.enhanced_luck:
-                                state.player.luck += 1
-
-                    elif self.selected_item_index == 1:
-                        cost = 1000
-                        if state.player.money - cost < 500 or Equipment.CRAPS_WRIST_WATCH.value in state.player.level_three_npc_state:
+                        cost = 500
+                        if state.player.money - cost < 800 or Equipment.BLACK_JACK_HAT.value in state.player.level_one_npc_state:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Equipment.CRAPS_WRIST_WATCH.add_equipment_to_player_level_3(state.player, Equipment.CRAPS_WRIST_WATCH)
+                            Equipment.BLACK_JACK_HAT.add_equipment_to_player_level_1(state.player,
+                                                                                        Equipment.BLACK_JACK_HAT)
+                            state.player.money -= cost
+
+                    elif self.selected_item_index == 1:
+                        cost = 500
+                        if state.player.money - cost < 800 or Equipment.OPOSSUM_REPELLENT.value in state.player.level_one_npc_state:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            Equipment.OPOSSUM_REPELLENT.add_equipment_to_player_level_1(state.player, Equipment.OPOSSUM_REPELLENT)
                             state.player.money -= cost
 
                     elif self.selected_item_index == 2:
-                        cost = 1000
-                        if state.player.money - cost < 500 or Equipment.CHEFS_HAT.value in state.player.level_three_npc_state:
+                        cost = 500
+                        if state.player.money - cost < 800 or Magic.REVEAL.value in state.player.magicinventory:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Equipment.CHEFS_HAT.add_equipment_to_player_level_3(state.player, Equipment.HEALTHY_GLOVES)
+                            state.player.magicinventory.append(Magic.REVEAL.value)
                             state.player.money -= cost
 
-                    elif self.selected_item_index == 3:
-                        cost = 1000
-                        if state.player.money - cost < 500 or Events.STAT_POTION_AREA_3.value in state.player.level_three_npc_state:
-                            self.cant_buy_sound.play()
-                        else:
-                            self.buy_sound.play()
-                            Equipment.STAT_POTION_AREA_3.add_shop_items_to_player_inventory(state.player, Equipment.STAT_POTION_AREA_3)
-                            state.player.money -= cost
-                            self.stat_point_increase = True
 
-                    elif self.selected_item_index == 4:
-                        cost = 1000
-                        if state.player.money - cost < 500 or Equipment.MP_BRACELET.value in state.player.level_three_npc_state:
-                            self.cant_buy_sound.play()
-                        else:
-                            Equipment.MP_BRACELET.add_equipment_to_player_level_3(state.player, Equipment.BOSS_KEY)
-                            state.player.money -= cost
-                            self.buy_sound.play()
-                    elif self.selected_item_index == 5:
-                        cost = 1500
-                        if state.player.money - cost < 500 or Equipment.MEDIUM_VEST.value in state.player.level_three_npc_state:
-                            self.cant_buy_sound.play()
-                        else:
-                            Equipment.MEDIUM_VEST.add_equipment_to_player_level_3(state.player, Equipment.MEDIUM_VEST)
-                            state.player.money -= cost
-                            self.buy_sound.play()
+
+
 
                 # else:
                 #     print("dsjfl;dsjlafj;jflsajf;j;fja;fkjsda;fjls;ajfl;sjafl;sjal;fjasl;jf;asjf;ls")
@@ -354,65 +248,44 @@ class Area1ShopKeeper(Npc):
             self.textbox.draw(state)
             if self.state == "talking":
 
-                if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value not in state.player.level_two_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"There is only 1 of these on this floor so use it wisely.", True,
+                if self.selected_item_index == 0 and Equipment.BLACK_JACK_HAT.value not in state.player.level_one_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Protects from busts in Black Jack.", True,
                                                         (255, 255, 255)), (70, 460))
-                    state.DISPLAY.blit(self.font.render(f"Saves your game.", True,
+                    state.DISPLAY.blit(self.font.render(f"A stylish hat that brings luck to card games.", True,
                                                         (255, 255, 255)), (70, 510))
-                if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Save Coin is Sold out!", True,
+                if self.selected_item_index == 0 and Equipment.BLACK_JACK_HAT.value in state.player.level_one_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Black Hat is Sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
 
 
-                if self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value not in state.player.quest_items:
-                    state.DISPLAY.blit(self.font.render(f"Increases chance of all swimmers winning ", True,
+                if self.selected_item_index == 1 and Equipment.OPOSSUM_REPELLENT.value not in state.player.level_one_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"More spirit = more damage reduction", True,
                                                         (255, 255, 255)), (70, 460))
 
 
-                    state.DISPLAY.blit(self.font.render(f" This will be always on once bought. ", True,
-                                                        (255, 255, 255)), (70, 510))
-
-                elif self.selected_item_index == 1 and Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
-                    state.DISPLAY.blit(self.font.render(f"Hippo Hour Glass is sold out! ", True,
-                                                        (255, 255, 255)), (70, 460))
-
-
-
-                if self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value not in state.player.level_two_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Increases stamina by a total of 30 points when equipped! ", True,
-                                                        (255, 255, 255)), (70, 460))
-
-
-                    state.DISPLAY.blit(self.font.render(f"The earlier you buy this the better.", True,
+                    state.DISPLAY.blit(self.font.render(f"Keeps those pesky opossums at bay.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Healthy gloves is sold out! ", True,
+                elif self.selected_item_index == 1 and Equipment.OPOSSUM_REPELLENT.value in state.player.level_one_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Opossum Repellent is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 3 and Events.STAT_POTION_AREA_2.value not in state.player.level_two_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Adds a stat point of your choice (cannot go past 2). ", True,
+
+
+                if self.selected_item_index == 2 and Magic.REVEAL.value not in state.player.magicinventory:
+                    state.DISPLAY.blit(self.font.render(f"Shows how many points enemy has in card games.", True,
                                                         (255, 255, 255)), (70, 460))
 
-                    state.DISPLAY.blit(self.font.render(f"There are only 4 stat points on this level plan carefully ", True,
+
+                    state.DISPLAY.blit(self.font.render(f"A magical spell that reveals hidden information.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 3 and Events.STAT_POTION_AREA_2.value in state.player.level_two_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Stat Potion is sold out! ", True,
+                elif self.selected_item_index == 2 and Magic.REVEAL.value in state.player.magicinventory:
+                    state.DISPLAY.blit(self.font.render(f"Reveal spell is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 4 and Equipment.BOSS_KEY.value not in state.player.quest_items:
-                    state.DISPLAY.blit(self.font.render(f"The key to allow you to go to boss room. ", True,
-                                                        (255, 255, 255)), (70, 460))
 
-                    state.DISPLAY.blit(self.font.render(f"Once you enter boss room there is no turning back. ", True,
-                                                        (255, 255, 255)), (70, 510))
-
-                elif self.selected_item_index == 4 and Equipment.BOSS_KEY.value in state.player.quest_items:
-                    state.DISPLAY.blit(self.font.render(f"Boss Key is sold out! Good luck! ", True,
-                                                        (255, 255, 255)), (70, 460))
-                # Handle drawing the shop interaction text
 
                 if self.stat_point_increase == True:
                     # Draw a box on the far right end of the screen, 260 pixels wide and 260 pixels high

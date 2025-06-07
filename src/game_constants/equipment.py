@@ -78,6 +78,19 @@ class Equipment(Enum):
             player.items.append(equipment.value)
             player.level_three_npc_state.append(equipment.value)
 
+
+    @staticmethod
+    def add_equipment_to_player_level_1(player, equipment):
+        if equipment.value not in player.items:
+            player.items.append(equipment.value)
+            player.level_one_npc_state.append(equipment.value)
+
+    @staticmethod
+    def add_magic_to_player_level_1(player, magic):
+        if magic.value not in player.magicinventory:
+            player.magicinventory.append(magic.value)
+            player.level_one_npc_state.append(magic.value)
+
     @staticmethod
     def add_potion_to_player(player, equipment):
         if equipment.value not in player.items:
