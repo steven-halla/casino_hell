@@ -407,8 +407,8 @@ class BlackJackThomasScreen(GambleScreen):
         pygame.display.flip()
 
     def update_bet_screen_helper(self, controller,state):
-        min_bet = 50
-        max_bet = 200
+        min_bet = 25
+        max_bet = 100
         if controller.up_button:
             self.menu_movement_sound.play()
             self.bet += min_bet

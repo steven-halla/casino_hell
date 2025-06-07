@@ -605,14 +605,20 @@ class Area1BossScreen(GambleScreen):
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
                     elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
 
-                        lucky_roll = random.randint(1, 100) + self.spirit_bonus
+                        lucky_roll = random.randint(1, 100) + (self.spirit_bonus * 5)
+                        hat_chance = 70
 
-                        if lucky_roll >= self.LEVEL_4_PERCENTAGE_CHANCE:
+
+                        if lucky_roll >= hat_chance:
                             self.player_hand.pop()
                             self.player_score = self.deck.compute_hand_value(self.player_hand)
                             self.lucky_strike.play()
+                            print("busting doesn't make me feel good")
+
 
                         else:
+                            print("busting makes me feel good")
+
                             self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
             redraw_roll = random.randint(1, 100) + self.magic_bonus
