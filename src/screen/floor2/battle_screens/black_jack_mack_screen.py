@@ -28,7 +28,7 @@ class BlackJackMackScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.money: int = 950
+        self.money: int = 200
         self.fengus_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -77,7 +77,7 @@ class BlackJackMackScreen(GambleScreen):
         self.player_stamina_drain_high: int = 5
         self.player_debuff_double_draw: int = 0
         self.double_draw_duration_expired: int = 0
-        self.double_draw_turns_inflicted: int = 2
+        self.double_draw_turns_inflicted: int = 7
         self.draw_one_card: int = 1
 
 
@@ -220,7 +220,7 @@ class BlackJackMackScreen(GambleScreen):
 
         print(luck_swap_randomizer)
 
-        if luck_swap_randomizer > 1 and self.mack_magic_points > 0 and self.player_debuff_double_draw == 0:
+        if luck_swap_randomizer > 100 and self.mack_magic_points > 0 and self.player_debuff_double_draw == 0:
             self.game_state = self.MACK_CASTING_SPELL_SCREEN
             print("yeah boy ")
 
@@ -288,7 +288,7 @@ class BlackJackMackScreen(GambleScreen):
             pygame.mixer.music.set_volume(self.music_volume)
             self.handle_level_up(state, state.controller)
         elif self.game_state == self.BET_SCREEN:
-            self.update_bet_screen_helper(controller)
+            self.update_bet_screen_helper(controller,state)
             self.battle_messages[self.BET_MESSAGE].update(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             self.update_magic_menu(state)
@@ -429,9 +429,9 @@ class BlackJackMackScreen(GambleScreen):
 
         pygame.display.flip()
 
-    def update_bet_screen_helper(self, controller):
+    def update_bet_screen_helper(self, controller,state):
         min_bet = 50
-        max_bet = 200
+        max_bet = 150
         if controller.up_button:
             self.menu_movement_sound.play()
             self.bet += min_bet
@@ -443,6 +443,12 @@ class BlackJackMackScreen(GambleScreen):
             self.bet = min_bet
         elif self.bet >= max_bet:
             self.bet = max_bet
+
+        if self.bet > self.money:
+            self.bet = self.money
+
+        if self.bet > state.player.money:
+            self.bet = state.player.money
 
         if controller.action_and_cancel_button:
             self.game_state = self.WELCOME_SCREEN
