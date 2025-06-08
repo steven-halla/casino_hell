@@ -46,6 +46,8 @@ class OpossumInACanCandyScreen(GambleScreen):
         self.shake_cost: int = 10
         self.peek_points: int = 0
         self.buff_poison_bite: int = 0
+        self.player_debuff_poison: int = 0
+
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "Candy: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
@@ -132,11 +134,8 @@ class OpossumInACanCandyScreen(GambleScreen):
         self.peek_cost: int = 25
         self.buff_peek: bool = False
         self.debuff_double_pick: int = 5
-        self.double_pick_chance: int = 0
+        self.poison_chance: int = 0
         self.candy_magic_points: int = 1
-
-
-
 
     PICK_TALLY_MENU_SCREEN:str = "pick_tally_menu_screen"
     PICK_SCREEN:str = "pick_screen"
@@ -264,23 +263,30 @@ class OpossumInACanCandyScreen(GambleScreen):
             if self.peek_points > 0:
                 self.buff_peek = True
 
+        
+        if self.player_debuff_poison > 0:
+            self.player_debuff_poison -= 1
+        
+        if self.player_debuff_poison > 0:
+            state.player.focus_points -= 10
 
 
 
-        self.double_pick_chance += 3
-        double_flip_randomizer = 0
+
+        self.poison_chance += 3
+        inflict_poison_randomizer = 0
 
         match self.candy_magic_points:
             case 3:
-                double_flip_randomizer = random.randint(1, 90) + self.double_pick_chance
+                inflict_poison_randomizer = random.randint(1, 90) + self.poison_chance
             case 2:
-                double_flip_randomizer = random.randint(1, 70) + self.double_pick_chance
+                inflict_poison_randomizer = random.randint(1, 70) + self.poison_chance
             case 1:
-                double_flip_randomizer = random.randint(1, 80) + self.double_pick_chance
+                inflict_poison_randomizer = random.randint(1, 80) + self.poison_chance
 
-        if double_flip_randomizer > 90 and self.candy_magic_points > 0 and self.debuff_double_pick == 0:
+        if inflict_poison_randomizer > 90 and self.candy_magic_points > 0 and self.player_debuff_poison == 0:
             self.current_screen = self.CANDY_CASTING_SPELL_SCREEN
-            self.double_pick_chance = 0
+            self.poison_chance = 0
 
 
 
@@ -303,7 +309,7 @@ class OpossumInACanCandyScreen(GambleScreen):
 
             self.battle_messages[self.CANDY_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.confirm_button:
-                self.debuff_double_pick = 5
+                self.player_debuff_poison = 5
 
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.MAGIC_MENU_SCREEN:

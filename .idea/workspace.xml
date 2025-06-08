@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="updated area 2 black jack screen">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="minor fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor1/battle_screens/area_1_boss_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor1/battle_screens/area_1_boss_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/black_jack_mack_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/black_jack_mack_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/coin_flip_betty_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/coin_flip_betty_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/craps_happy_screen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor2/battle_screens/opossum_in_a_can_candy_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor2/battle_screens/opossum_in_a_can_candy_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -433,7 +430,7 @@
       <workItem from="1749228540449" duration="15453000" />
       <workItem from="1749255272311" duration="7530000" />
       <workItem from="1749312172389" duration="26904000" />
-      <workItem from="1749394822426" duration="7945000" />
+      <workItem from="1749394822426" duration="9906000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -778,7 +775,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1559" />
+    <option name="localTasksCounter" value="1560" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -807,7 +804,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="area 4 complete" />
     <MESSAGE value="area 5 complete" />
     <MESSAGE value="area 3 map files created" />
     <MESSAGE value="ara 3 updated" />
@@ -832,7 +828,8 @@
     <MESSAGE value="balance changes inn keeper now updates your current level" />
     <MESSAGE value="creating new NPCS for level 2" />
     <MESSAGE value="updated area 2 black jack screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated area 2 black jack screen" />
+    <MESSAGE value="minor fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

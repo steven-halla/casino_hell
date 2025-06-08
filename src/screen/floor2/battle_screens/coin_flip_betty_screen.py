@@ -69,8 +69,8 @@ class CoinFlipBettyScreen(GambleScreen):
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
         self.luck_bonus: int = 0
-        self.spirit_magic_bonus_zero_chance: int = 0
-        self.debuff_magic_equipment_break: int = 0
+        self.silence_bonus_chance: int = 0
+        self.debuff_silence: int = 0
         self.heads_force_randomizer: int = 0
         self.heads_force_randomizer_success_rate: int = 60
 
@@ -209,34 +209,38 @@ class CoinFlipBettyScreen(GambleScreen):
         if self.shield_debuff == 0 and self.heads_force_active == False:
             self.magic_lock = False
 
-        if self.debuff_magic_equipment_break > 0:
-            self.debuff_magic_equipment_break -= 1
+        if self.debuff_silence > 0:
+            self.debuff_silence -= 1
+
+        if self.debuff_silence > 0:
+            self.shield_debuff = 0
+            self.magic_lock = True
+
+
 
         # ------------------------------------Check other files for below_____________________________
 
-        self.spirit_magic_bonus_zero_chance += 3
+        self.silence_bonus_chance += 3
         player_luck_bonus = self.luck_bonus * 4
-        
-        man_trap_randomizer = 0
+
+        silence_randomizer = 0
 
         match self.betty_magic_points:
             case 3:
-                man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
+                silence_randomizer = random.randint(1, 90) + self.silence_bonus_chance - player_luck_bonus
             case 2:
-                man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
+                silence_randomizer = random.randint(1, 70) + self.silence_bonus_chance - player_luck_bonus
             case 1:
-                man_trap_randomizer = random.randint(1, 80) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
+                silence_randomizer = random.randint(1, 80) + self.silence_bonus_chance - player_luck_bonus
 
 
-        print("The magic spell chance is: " + str(man_trap_randomizer))
-        print("The magic spell bonus penalty: " + str(self.spirit_magic_bonus_zero_chance))
+        print("The magic spell chance is: " + str(silence_randomizer))
+        print("The magic spell bonus penalty: " + str(self.silence_bonus_chance))
 
-        if man_trap_randomizer > 100 and self.betty_magic_points > 0 and self.debuff_magic_equipment_break == 0:
+        if silence_randomizer > 100 and self.betty_magic_points > 0 and self.debuff_silence == 0:
             self.game_state = self.BETTY_CASTING_SPELL_SCREEN
-            self.even = False
-            self.odd = False
-            self.tri = False
-            self.spirit_magic_bonus_zero_chance = 0
+
+            self.silence_bonus_chance = 0
 
 
     def update(self, state):
@@ -267,19 +271,20 @@ class CoinFlipBettyScreen(GambleScreen):
             self.handle_level_up(state, state.controller)
 
         elif self.game_state == self.BETTY_CASTING_SPELL_SCREEN:
-            match self.betty_magic_points:
-                case 3:
-                    self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
-                        f"Chains of descent latch onto your spirit... You lose 1 spirit bonus!"
-                    ]
-                case 2:
-                    self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
-                        f"Ancient whispers corrode your thoughts... You lose 1 magic bonus!"
-                    ]
-                case 1:
-                    self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
-                        f"No daylight kid....you lose your luck bonus"
-                    ]
+            # match self.betty_magic_points:
+            #     case 3:
+            #         self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
+            #             f"Chains of descent latch onto your spirit... You lose 1 spirit bonus!"
+            #         ]
+            #     case 2:
+            #         self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
+            #             f"Ancient whispers corrode your thoughts... You lose 1 magic bonus!"
+            #         ]
+            #     case 1:
+            #         self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
+            #             f"No daylight kid....you lose your luck bonus"
+            #         ]
+
             self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].update(state)
 
             self.update_BETTY_CASTING_SPELL_SCREEN_helper(state)
