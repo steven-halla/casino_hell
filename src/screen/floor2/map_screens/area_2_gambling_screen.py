@@ -14,6 +14,11 @@ from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area2.area_2_gamble_screen.area_2_gambling_to_rest_door import Area2GamblingToRestDoor
+from entity.npc.area2.area_2_gamble_screen.black_jack_mack import BlackJackMack
+from entity.npc.area2.area_2_gamble_screen.coin_clip_betty import CoinFlipBetty
+from entity.npc.area2.area_2_gamble_screen.craps_happy import CrapsHappy
+from entity.npc.area2.area_2_gamble_screen.opossum_in_a_can_candy import OpossumInACanCandy
+from entity.npc.area2.area_2_gamble_screen.slots_rippasnapp import SlotsRippaSnappa
 from entity.npc.area2.area_2_rest_screen.area_2_inn_keeper import Area2InnKeeper
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_bar_door import Area2RestToBarDoor
 from entity.npc.area2.area_2_rest_screen.area_2_rest_to_gambling_door import Area2RestToGamblingDoor
@@ -99,9 +104,12 @@ class Area2GamblingScreen(Screen):
 
             Area2GamblingToRestDoor(16 * 5, 16 * 40),
             Area2GamblingToBossDoor(16 * 15, 16 * 40),
-
-
-
+            BlackJackMack(16 * 5, 16 * 5),
+            CoinFlipBetty(16 * 15, 16 * 5),
+            CrapsHappy(16 * 25, 16 * 5),
+            HangryAngryHipposNippy(16 * 5, 16 * 15),
+            OpossumInACanCandy(16 * 15, 16 * 15),
+            SlotsRippaSnappa(16 * 25, 16 * 15),
 
         ]
 

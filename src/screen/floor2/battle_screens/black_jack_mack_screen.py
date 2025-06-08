@@ -58,7 +58,7 @@ class BlackJackMackScreen(GambleScreen):
         self.index_stepper: int = 1
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.reveal_cast_cost: int = 50
+        self.reveal_cast_cost: int = 40
         self.redraw_cast_cost: int = 30
         self.low_exp: int = 10
         self.med_exp: int = 20
@@ -73,6 +73,8 @@ class BlackJackMackScreen(GambleScreen):
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
         self.luck_bonus: int = 0
+        self.player_stamina_drain_low: int = 3
+        self.player_stamina_drain_high: int = 5
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -199,6 +201,9 @@ class BlackJackMackScreen(GambleScreen):
         self.enemy_card_x_positions = []
         self.luck_swapping_switch += 3
 
+
+        luck_swap_randomizer = 0
+
         match self.mack_magic_points:
             case 3:
                 luck_swap_randomizer = random.randint(1, 90) + self.luck_swapping_switch
@@ -283,6 +288,7 @@ class BlackJackMackScreen(GambleScreen):
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
             if state.controller.confirm_button:
                 self.round_reset()
+                state.player.stamina_points -= self.player_stamina_drain_low
                 state.player.exp += self.low_exp
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
@@ -291,6 +297,7 @@ class BlackJackMackScreen(GambleScreen):
                                                                              f"money and gain {self.med_exp} experience points!"]
             if state.controller.confirm_button:
                 self.round_reset()
+                state.player.stamina_points -= self.player_stamina_drain_low
                 state.player.exp += self.med_exp
                 state.player.money += self.bet * self.critical_multiplier
                 self.money -= self.bet * self.critical_multiplier
@@ -300,6 +307,7 @@ class BlackJackMackScreen(GambleScreen):
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
             if state.controller.confirm_button:
                 self.round_reset()
+                state.player.stamina_points -= self.player_stamina_drain_high
                 state.player.money -= self.bet * self.critical_multiplier
                 self.money += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
@@ -429,6 +437,7 @@ class BlackJackMackScreen(GambleScreen):
         if controller.confirm_button:
             state.player.money += self.bet
             self.money -= self.bet
+            state.player.stamina_points -= self.player_stamina_drain_low
             state.player.exp += self.low_exp
             self.round_reset()
             self.game_state = self.WELCOME_SCREEN
@@ -436,6 +445,7 @@ class BlackJackMackScreen(GambleScreen):
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.confirm_button:
             self.round_reset()
+            state.player.stamina_points -= self.player_stamina_drain_high
             state.player.money -= self.bet
             self.money += self.bet
             state.player.exp += self.low_exp
@@ -491,7 +501,9 @@ class BlackJackMackScreen(GambleScreen):
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:
             self.round_reset()
+
             state.player.exp += self.low_exp
+            state.player.stamina_points -= self.player_stamina_drain_low
             self.game_state = self.WELCOME_SCREEN
 
     def update_magic_menu(self, state: "GameState"):
@@ -564,7 +576,7 @@ class BlackJackMackScreen(GambleScreen):
                                               + self.move_index_by_1) % len(self.player_action_phase_choices)
         elif state.controller.confirm_button:
             if self.player_action_phase_index == self.player_action_phase_play_index:
-                state.player.stamina_points -= self.low_stamina_drain
+                state.player.stamina_points -= 0
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
                     if self.enemy_score < self.player_score:
                         self.animate_face_down_card(state, len(self.enemy_hand))
@@ -1078,4 +1090,3 @@ class BlackJackMackScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
         elif state.player.stamina_points <= no_stamina_game_over:
             state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
-

@@ -14,7 +14,7 @@ from game_constants.magic import Magic
 # if you win 500 coins get a coin
 # if you win 500 coins from two games those coins become mega coin.
 # if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class BlackJackThomas(Npc):
+class BlackJackMack(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
