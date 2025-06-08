@@ -331,10 +331,8 @@ class OpossumInACanBubbaScreen(GambleScreen):
 
             if controller.confirm_button:
 
-
-
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
-                    state.player.stamina_points -= self.stamina_drain_repellant
+                    state.player.stamina_points -= self.stamina_drain - self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
 

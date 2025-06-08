@@ -26,7 +26,7 @@ class OpossumInACanSallyScreen(GambleScreen):
         self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
         self.menu_movement_sound.set_volume(0.2)
         self.stamina_drain: int = 50
-        self.stamina_drain_repellant: int = 0
+        self.stamina_drain_repellant: int = 25
         self.pick_index: int = 0
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
@@ -347,7 +347,7 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
-                    state.player.stamina_points -= self.stamina_drain_repellant
+                    state.player.stamina_points -= self.stamina_drain - self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
 
@@ -981,8 +981,8 @@ class OpossumInACanSallyScreen(GambleScreen):
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.quit_index:
                 state.player.canMove = True
-                state.currentScreen = state.area1RestScreen
-                state.area1RestScreen.start(state)
+                state.currentScreen = state.area1GamblingScreen
+                state.area1GamblingScreen.start(state)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10

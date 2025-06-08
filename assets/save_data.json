@@ -1,11 +1,11 @@
 {
     "current_stage": 1,
-    "level": 1,
-    "exp": 99,
-    "stamina_points": 100,
-    "max_stamina_points": 100,
-    "focus_points": 50,
-    "max_focus_points": 50,
+    "level": 2,
+    "exp": 234,
+    "stamina_points": 120,
+    "max_stamina_points": 120,
+    "focus_points": 60,
+    "max_focus_points": 60,
     "companions": [],
     "items": [
         "Black Hat",
@@ -23,7 +23,7 @@
     "perception": 0,
     "baseperception": 1,
     "luck": 0,
-    "money": 1600,
+    "money": 1800,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -31,14 +31,15 @@
     ],
     "level3reward": false,
     "food": 0,
-    "days": 3,
+    "days": 4,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
         "LEVEL_1_INN_KEY",
         "Black Hat",
         "opossum repellent",
-        "BLACK_JACK_THOMAS_DEFEATED"
+        "BLACK_JACK_THOMAS_DEFEATED",
+        "OPOSSUM_IN_A_CAN_SALLY_DEFEATED"
     ],
     "levelthreenpcstate": [],
     "levelfournpcstate": [],
@@ -53,7 +54,7 @@
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
-    "opossumsallymoney": 300,
+    "opossumsallymoney": 0,
     "opossuminacancandymoney": 444,
     "opossuminacanbillybobmoney": 444,
     "blackjackthomasmoney": 0,
