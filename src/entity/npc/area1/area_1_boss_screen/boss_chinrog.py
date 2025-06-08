@@ -14,7 +14,7 @@ from game_constants.magic import Magic
 # if you win 500 coins get a coin
 # if you win 500 coins from two games those coins become mega coin.
 # if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class CoinFlipFred(Npc):
+class BossChinrog(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -103,8 +103,8 @@ class CoinFlipFred(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.coinFlipFredScreen
-                state.coinFlipFredScreen.start(state)
+                state.currentScreen = state.area1BossChinrogScreen
+                state.area1BossChinrogScreen.start(state)
 
             elif selected_option == "No":
                 self.state = "waiting"

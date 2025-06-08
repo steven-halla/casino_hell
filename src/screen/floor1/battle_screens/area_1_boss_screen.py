@@ -9,7 +9,7 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 
 #There is  a bug on the redraw
-class Area1BossScreen(GambleScreen):
+class Area1BossChinrogScreen(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
         self.enemy_card_y_positions: list[int] = []
@@ -205,18 +205,9 @@ class Area1BossScreen(GambleScreen):
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
         self.luck_swapping_switch += 3
+        self.player_stamina_drain_low: int = 3
+        self.player_stamina_drain_high: int = 5
 
-        match self.fengus_magic_points:
-            case 3:
-                luck_swap_randomizer = random.randint(1, 90) + self.luck_swapping_switch
-            case 2:
-                luck_swap_randomizer = random.randint(1, 70) + self.luck_swapping_switch
-            case 1:
-                luck_swap_randomizer = random.randint(1, 50) + self.luck_swapping_switch
-
-        if luck_swap_randomizer > 100 and self.fengus_magic_points > 0 and self.debuff_buff_luck_switch == 0:
-            self.game_state = self.FENGUS_CASTING_SPELL_SCREEN
-            self.luck_swapping_switch = 0
 
 
 
@@ -291,6 +282,7 @@ class Area1BossScreen(GambleScreen):
             if state.controller.confirm_button:
                 self.round_reset()
                 state.player.exp += self.low_exp
+                state.player.stamina_points -= self.player_stamina_drain_low
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
@@ -298,6 +290,7 @@ class Area1BossScreen(GambleScreen):
                                                                              f"money and gain {self.med_exp} experience points!"]
             if state.controller.confirm_button:
                 self.round_reset()
+                state.player.stamina_points -= self.player_stamina_drain_low
                 state.player.exp += self.med_exp
                 self.player_money += self.bet * self.critical_multiplier
                 self.money -= self.bet * self.critical_multiplier
@@ -307,6 +300,7 @@ class Area1BossScreen(GambleScreen):
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
             if state.controller.confirm_button:
                 self.round_reset()
+                state.player.stamina_points -= self.player_stamina_drain_high
                 self.player_money -= self.bet * self.critical_multiplier
                 self.money += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
@@ -442,6 +436,7 @@ class Area1BossScreen(GambleScreen):
         if controller.confirm_button:
             self.player_money += self.bet
             self.money -= self.bet
+            state.player.stamina_points -= self.player_stamina_drain_low
             state.player.exp += self.low_exp
             self.round_reset()
             self.game_state = self.WELCOME_SCREEN
@@ -449,6 +444,7 @@ class Area1BossScreen(GambleScreen):
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.confirm_button:
             self.round_reset()
+            state.player.stamina_points -= self.player_stamina_drain_high
             self.player_money -= self.bet
             self.money += self.bet
             state.player.exp += self.low_exp
@@ -510,6 +506,7 @@ class Area1BossScreen(GambleScreen):
         if controller.confirm_button:
             self.round_reset()
             state.player.exp += self.low_exp
+            state.player.stamina_points -= self.player_stamina_drain_low
             self.game_state = self.WELCOME_SCREEN
 
     def update_magic_menu(self, state: "GameState"):

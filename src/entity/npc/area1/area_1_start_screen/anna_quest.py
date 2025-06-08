@@ -80,6 +80,7 @@ class AnnaQuest(Npc):
         if Events.COIN_FLIP_TED_DEFEATED.value in state.player.level_one_npc_state:
             if Magic.SHIELD.value not in state.player.magicinventory:
                 state.player.mind = 1
+                state.player.quest_items.append(Events.LEVEL_1_INN_KEY.value)
                 state.player.magicinventory.append(Magic.SHIELD.value)
                 state.player.level_one_npc_state.append(Events.LEVEL_1_INN_KEY.value)
 

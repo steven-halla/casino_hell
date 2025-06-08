@@ -97,6 +97,7 @@ class Area3BossScreen(Screen):
             Area3BossToGamblingDoor(16 * 30, 16 * 25),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
+
         ]
 
     def update(self, state: "GameState"):

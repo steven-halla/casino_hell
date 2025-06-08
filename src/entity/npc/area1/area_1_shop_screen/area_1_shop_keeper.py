@@ -136,6 +136,8 @@ class Area1ShopKeeper(Npc):
                         if state.player.money < cost or Events.LEVEL_1_BOSS_KEY.value in state.player.level_one_npc_state or state.player.perception != 1 or state.player.body != 1 or state.player.spirit != 1:
                             self.cant_buy_sound.play()
                         else:
+                            state.player.quest_items.append(Events.LEVEL_1_BOSS_KEY.value)
+
                             self.buy_sound.play()
                             Events.add_level_one_event_to_player(state.player, Events.LEVEL_1_BOSS_KEY)
                             state.player.money -= cost

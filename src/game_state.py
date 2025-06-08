@@ -10,6 +10,7 @@ from entity.npc.area4.area_4_rest_screen_trash.black_jack_jasmine import BlackJa
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
+from screen.floor1.battle_screens.area_1_boss_screen import Area1BossChinrogScreen
 from screen.floor1.battle_screens.black_jack_jared_screen import BlackJackJaredScreen
 from screen.floor1.battle_screens.black_jack_rumble_bill_screen import BlackJackRumbleBillScreen
 from screen.examples.black_jack_screen import BlackJackScreen
@@ -257,7 +258,7 @@ class GameState:
         self.coinFlipFredScreen = CoinFlipFredScreen()
         self.opossumInACanSallyScreen = OpossumInACanSallyScreen()
         self.blackJackThomasScreen = BlackJackThomasScreen()
-        self.area1BossScreen = Area1BossScreen()
+        self.area1BossChinrogScreen = Area1BossChinrogScreen()
 
 
 

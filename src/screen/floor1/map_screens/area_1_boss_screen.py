@@ -3,6 +3,7 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 from entity.npc.area1.area_1_boss_screen.area_1_boss_to_gambling_door import Area1BossToGamblingDoor
+from entity.npc.area1.area_1_boss_screen.boss_chinrog import BossChinrog
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_maze_door import Area1GamblingToMazeDoor
 from entity.npc.area1.area_1_gamble_screen.area_1_gambling_to_rest_door import Area1GamblingToRestDoor
 from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
@@ -94,6 +95,7 @@ class Area1BossScreen(Screen):
         state.npcs = [
 
             Area1BossToGamblingDoor(16 * 30, 16 * 25),
+            BossChinrog(16 * 50, 16 * 25),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
         ]
