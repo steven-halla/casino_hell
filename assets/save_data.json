@@ -2,17 +2,20 @@
     "current_stage": 1,
     "level": 3,
     "exp": 300,
-    "stamina_points": 170,
-    "max_stamina_points": 170,
-    "focus_points": 85,
-    "max_focus_points": 85,
+    "stamina_points": 200,
+    "max_stamina_points": 200,
+    "focus_points": 100,
+    "max_focus_points": 100,
     "companions": [],
     "items": [
         "Black Hat",
         "opossum repellent"
     ],
     "equipped_items": [],
-    "npcitems": [],
+    "npcitems": [
+        "level 2 token",
+        "level 3 token"
+    ],
     "magicinventory": [
         "reveal",
         "Shield"
@@ -23,7 +26,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 0,
-    "money": 3200,
+    "money": 3100,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -31,7 +34,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 6,
+    "days": 7,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",

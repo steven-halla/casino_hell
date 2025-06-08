@@ -31,7 +31,7 @@ class Player(Entity):
         self.mind = 0
         self.spirit = 0
         self.luck = 0
-        self.food = 0
+        self.food = 1
         self.perception = 0
         self.stamina_points = 100
         self.stamina_increase = self.body * 1 * self.level
@@ -281,7 +281,7 @@ class Player(Entity):
             #     self.max_stamina_points += 10 + (self.stamina_increase)
             #     self.max_focus_points += 10
             #     self.spirit += 1
-            #     state.player.npc_items.append("level 2 token")
+            state.player.npc_items.append("level 2 token")
 
             self.level2checker = True
             self.leveling_up = True
@@ -298,7 +298,7 @@ class Player(Entity):
             #     self.magicinventory.append("shield")
             #     self.max_stamina_points += 10
             #     self.max_focus_points += 10
-            #     state.player.npc_items.append("level 3 token")
+            state.player.npc_items.append("level 3 token")
 
             self.level3checker = True
             self.leveling_up = True
