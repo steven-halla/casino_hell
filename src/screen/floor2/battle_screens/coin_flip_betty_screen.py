@@ -250,11 +250,13 @@ class CoinFlipBettyScreen(GambleScreen):
         if silence_randomizer > 1 and self.betty_magic_points > 0 and self.debuff_silence == 0:
             self.game_state = self.BETTY_CASTING_SPELL_SCREEN
 
+
             self.silence_bonus_chance = 0
 
 
     def update(self, state):
         super().update(state)
+        # print("debuf silence : " + str(self.debuff_silence))
         # print("is heads force active?: " + str(self.heads_force_active))
 
 
@@ -609,9 +611,10 @@ class CoinFlipBettyScreen(GambleScreen):
         if state.controller.confirm_button:
 
             self.betty_magic_points -= 1
-            self.debuff_silence += 7
-            if self.debuff_silence > 0:
-                self.debuff_silence = 0
+            self.debuff_silence += 3
+            self.shield_debuff = 0
+
+            self.magic_lock = True
 
             self.game_state = self.WELCOME_SCREEN
 
