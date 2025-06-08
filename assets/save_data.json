@@ -1,10 +1,10 @@
 {
-    "current_stage": 1,
+    "current_stage": 2,
     "level": 3,
     "exp": 300,
-    "stamina_points": 250,
+    "stamina_points": 200,
     "max_stamina_points": 200,
-    "focus_points": 125,
+    "focus_points": 100,
     "max_focus_points": 100,
     "companions": [],
     "items": [
@@ -28,8 +28,8 @@
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
-    "luck": 0,
-    "money": 3000,
+    "luck": 1,
+    "money": 2900,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -37,7 +37,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 8,
+    "days": 9,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -47,7 +47,8 @@
         "BLACK_JACK_THOMAS_DEFEATED",
         "OPOSSUM_IN_A_CAN_SALLY_DEFEATED",
         "COIN_FLIP_FRED_DEFEATED",
-        "LEVEL_1_INN_KEY"
+        "LEVEL_1_INN_KEY",
+        "LEVEL_1_BOSS_DEFEATED"
     ],
     "levelthreenpcstate": [],
     "levelfournpcstate": [],

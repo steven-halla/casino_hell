@@ -28,7 +28,7 @@ class Area1BossChinrogScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.money: int = 666
+        self.money: int = 200
         self.boss_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -237,7 +237,7 @@ class Area1BossChinrogScreen(GambleScreen):
 
         if self.money <= self.boss_bankrupt:
             state.currentScreen = state.area2RestScreen
-            state.area2estScreen.start(state)
+            state.area2RestScreen.start(state)
             Events.add_level_one_event_to_player(state.player, Events.LEVEL_1_BOSS_DEFEATED)
 
         try:

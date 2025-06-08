@@ -101,6 +101,8 @@ class Area2GamblingScreen(Screen):
             Area2GamblingToBossDoor(16 * 15, 16 * 40),
 
 
+
+
         ]
 
     def update(self, state: "GameState"):

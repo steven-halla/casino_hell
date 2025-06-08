@@ -150,6 +150,8 @@ class Area1InnKeeper(Npc):
                     self.state_start_time = pygame.time.get_ticks()
                     state.player.canMove = True
                     print("nice")
+                    state.player.current_stage = 2
+
                     print(str(state.player.hasRabies))
 
                     if state.player.hasRabies == True:
