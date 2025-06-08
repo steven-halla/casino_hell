@@ -75,6 +75,10 @@ class BlackJackMackScreen(GambleScreen):
         self.luck_bonus: int = 0
         self.player_stamina_drain_low: int = 3
         self.player_stamina_drain_high: int = 5
+        self.player_debuff_double_draw: int = 0
+        self.double_draw_duration_expired: int = 0
+        self.double_draw_turns_inflicted: int = 7
+        self.draw_one_card: int = 1
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -228,6 +232,7 @@ class BlackJackMackScreen(GambleScreen):
         self.enemy_hand.clear()
         self.reveal_buff_counter = 0
         self.redraw_debuff_counter = 0
+        self.player_debuff_double_draw = 0
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
@@ -271,6 +276,7 @@ class BlackJackMackScreen(GambleScreen):
             if state.controller.confirm_button:
                 self.mack_magic_points -= 1
                 self.debuff_buff_luck_switch += 10
+                self.player_debuff_double_draw = self.double_draw_turns_inflicted
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0
@@ -647,6 +653,30 @@ class BlackJackMackScreen(GambleScreen):
         self.player_hand.append(new_card)
         self.player_score = self.deck.compute_hand_value(self.player_hand)
 
+        # If double draw is active, draw a second card
+        if self.player_debuff_double_draw > self.double_draw_duration_expired:
+            # Animate the second card
+            x_position = 250 + (card_index + 1) * 75
+            initial_y_position = 0
+
+            while initial_y_position < target_y_position:
+                self.draw(state)
+                initial_y_position += card_speed
+                if initial_y_position >= target_y_position:
+                    initial_y_position = target_y_position
+                    break
+
+                self.deck.draw_card_face_down((x_position, initial_y_position), state.DISPLAY)
+                pygame.display.flip()
+                pygame.time.delay(30)
+
+            # Draw the second card
+            second_card = self.deck.player_draw_hand(1)[0]
+            self.deck.draw_card_face_up(second_card[1], second_card[0],
+                                      (x_position, target_y_position), state.DISPLAY)
+            self.player_hand.append(second_card)
+            self.player_score = self.deck.compute_hand_value(self.player_hand)
+
     def update_welcome_screen_update_logic(self, state: 'GameState', controller):
 
 
@@ -947,7 +977,7 @@ class BlackJackMackScreen(GambleScreen):
                                             True, WHITE),
                            (player_enemy_box_info_x_position, enemy_money_y_position))
         if (self.reveal_buff_counter == self.reveal_end_not_active and self.redraw_debuff_counter
-                == self.reveal_end_counter):
+                == self.reveal_end_counter and self.player_debuff_double_draw == self.double_draw_duration_expired):
             state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE),
                                (player_enemy_box_info_x_position, enemy_status_y_position))
         elif self.reveal_buff_counter > self.reveal_end_not_active:
@@ -963,6 +993,11 @@ class BlackJackMackScreen(GambleScreen):
                                                 f" {self.redraw_debuff_counter} ",
                                                 True, WHITE), (player_enemy_box_info_x_position,
                                                                enemy_status_y_position))
+
+        elif self.player_debuff_double_draw > self.double_draw_duration_expired:
+            state.DISPLAY.blit(self.font.render(f"D. Draw: {self.player_debuff_double_draw}",
+                                                True, RED), (player_enemy_box_info_x_position,
+                                                             enemy_status_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}",
                                             True, WHITE),
                            (player_enemy_box_info_x_position, bet_y_position))
