@@ -187,6 +187,8 @@ class CoinFlipBettyScreen(GambleScreen):
             self.image_to_display = ""
             self.player_choice = ""
             self.betty_magic_points = 1
+            self.odd = False
+            self.even = False
 
     def reset_round(self, state):
 
@@ -216,7 +218,8 @@ class CoinFlipBettyScreen(GambleScreen):
             self.shield_debuff = 0
             self.magic_lock = True
 
-
+        self.odd = False
+        self.even = False
 
         # ------------------------------------Check other files for below_____________________________
 
@@ -506,65 +509,58 @@ class CoinFlipBettyScreen(GambleScreen):
         self.reset_round(state)
 
 
-
     def update_flip_coin(self):
         if self.heads_force_active == True:
             self.result = CoinFlipConstants.HEADS.value
             #
-        if self.even == False and self.odd == False and self.tri == False:
-            match self.betty_magic_points:
-                case 3:
-                    self.even = True
-                case 2:
-                    self.odd = True
-                case 1:
-                    self.tri = True
 
+        # if self.heads_force_active == False:
+        #     if self.phase == 1:
+        #         self.coin_landed = CoinFlipConstants.HEADS.value
+        #     elif self.phase == 2:
+        #         self.coin_landed = CoinFlipConstants.HEADS.value
+        #     elif self.phase == 3:
+        #         self.coin_landed = CoinFlipConstants.TAILS.value
+        #     elif self.phase == 4:
+        #         self.coin_landed = CoinFlipConstants.HEADS.value
+        #     elif self.phase == 5:
+        #         self.coin_landed = CoinFlipConstants.TAILS.value
+
+        if self.even == False and self.odd == False:
+            coin_fate = random.randint(1, 2)
+            if coin_fate == 1:
+                self.even = True
+            elif coin_fate == 2:
+                self.odd = True
+
+        # I could give sound indicator to let player know which state is active
+        #npc: the dealer has a tell he makes a strange noise before flipping
 
         if self.even == True and self.heads_force_active == False:
+
             if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 3:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.result = CoinFlipConstants.HEADS.value
 
         elif self.odd == True and self.heads_force_active == False:
             if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
-                                                                                   100) <= 60 else CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value if random.randint(1,
-                                                                                   100) <= 60 else CoinFlipConstants.HEADS.value
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 3:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
-                                                                                   100) <= 60 else CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.result = CoinFlipConstants.TAILS.value
 
-        elif self.tri == True and self.heads_force_active == False:
-            if self.phase == 1:
-                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
-                                                                                   100) <= 80 else CoinFlipConstants.TAILS.value
-            elif self.phase == 2:
-                self.coin_landed = CoinFlipConstants.TAILS.value if random.randint(1,
-                                                                                   100) <= 80 else CoinFlipConstants.HEADS.value
-            elif self.phase == 3:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            elif self.phase == 4:
-                self.coin_landed = CoinFlipConstants.HEADS.value if random.randint(1,
-                                                                                   100) <= 80 else CoinFlipConstants.TAILS.value
-            elif self.phase == 5:
-                self.coin_landed = CoinFlipConstants.TAILS.value if random.randint(1,
-                                                                                   100) <= 80 else CoinFlipConstants.HEADS.value
-
-        self.result_anchor = False
 
     def update_bet_screen_helper(self,state,  controller):
         if controller.action_and_cancel_button:
@@ -598,6 +594,8 @@ class CoinFlipBettyScreen(GambleScreen):
 
             self.betty_magic_points -= 1
             self.debuff_silence += 7
+            if self.debuff_silence > 0:
+                self.debuff_silence = 0
 
             self.game_state = self.WELCOME_SCREEN
 

@@ -245,19 +245,19 @@ class CoinFlipFredScreen(GambleScreen):
             self.handle_level_up(state, state.controller)
 
         elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
-            match self.wanton_magic_points:
-                case 3:
-                    self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
-                        f"Chains of descent latch onto your spirit... You lose 1 spirit bonus!"
-                    ]
-                case 2:
-                    self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
-                        f"Ancient whispers corrode your thoughts... You lose 1 magic bonus!"
-                    ]
-                case 1:
-                    self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
-                        f"No daylight kid....you lose your luck bonus"
-                    ]
+            # match self.wanton_magic_points:
+            #     case 3:
+            #         self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
+            #             f"Chains of descent latch onto your spirit... You lose 1 spirit bonus!"
+            #         ]
+            #     case 2:
+            #         self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
+            #             f"Ancient whispers corrode your thoughts... You lose 1 magic bonus!"
+            #         ]
+            #     case 1:
+            #         self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].messages = [
+            #             f"No daylight kid....you lose your luck bonus"
+            #         ]
             self.battle_messages[self.WANTON_CASTING_SPELL_MESSAGE].update(state)
 
             self.update_wanton_casting_spell_screen_helper(state)
