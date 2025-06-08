@@ -34,7 +34,7 @@ class Area1BossChinrogScreen(GambleScreen):
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
         self.magic_lock: bool = False
-        self.dealer_name: str = "jasmine"
+        self.dealer_name: str = "Chinrog"
         self.lock_down_inactive: int = 0
         self.initial_hand: int = 2
         self.hedge_hog_time: bool = False
@@ -58,7 +58,7 @@ class Area1BossChinrogScreen(GambleScreen):
         self.index_stepper: int = 1
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.reveal_cast_cost: int = 50
+        self.reveal_cast_cost: int = 40
         self.redraw_cast_cost: int = 30
         self.low_exp: int = 0
         self.med_exp: int = 0
@@ -75,6 +75,8 @@ class Area1BossChinrogScreen(GambleScreen):
         self.luck_bonus: int = 0
         self.player_money: int = 666
         self.demon_money: int = 666
+        self.player_stamina_drain_low: int = 3
+        self.player_stamina_drain_high: int = 5
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -205,8 +207,7 @@ class Area1BossChinrogScreen(GambleScreen):
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
         self.luck_swapping_switch += 3
-        self.player_stamina_drain_low: int = 3
-        self.player_stamina_drain_high: int = 5
+
 
 
 
@@ -501,6 +502,8 @@ class Area1BossChinrogScreen(GambleScreen):
                     self.player_hand = self.deck.player_draw_hand(initial_hand)
                     self.player_score = self.deck.compute_hand_value(self.player_hand)
                     attempts += 1
+                    print("Line 504 we got the lucky one")
+
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:

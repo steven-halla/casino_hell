@@ -58,7 +58,7 @@ class BlackJackThomasScreen(GambleScreen):
         self.index_stepper: int = 1
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
-        self.reveal_cast_cost: int = 50
+        self.reveal_cast_cost: int = 40
         self.redraw_cast_cost: int = 30
         self.low_exp: int = 5
         self.med_exp: int = 10
