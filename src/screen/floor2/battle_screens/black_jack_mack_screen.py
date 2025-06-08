@@ -193,6 +193,9 @@ class BlackJackMackScreen(GambleScreen):
         if self.reveal_buff_counter == 0 and self.redraw_debuff_counter == 0:
             self.magic_lock = False
 
+        if self.player_debuff_double_draw > 0:
+            self.player_debuff_double_draw -= 1
+
 
 
         self.ace_effect_triggered = False
@@ -215,8 +218,12 @@ class BlackJackMackScreen(GambleScreen):
             case 1:
                 luck_swap_randomizer = random.randint(1, 80) + self.luck_swapping_switch
 
+        print(luck_swap_randomizer)
+
         if luck_swap_randomizer > 1 and self.mack_magic_points > 0 and self.player_debuff_double_draw == 0:
             self.game_state = self.MACK_CASTING_SPELL_SCREEN
+            print("yeah boy ")
+
             self.luck_swapping_switch = 0
 
 
@@ -271,6 +278,7 @@ class BlackJackMackScreen(GambleScreen):
             self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.MACK_CASTING_SPELL_SCREEN:
+            print("Line 279")
             self.battle_messages[self.MACK_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
                 self.mack_magic_points -= 1
@@ -291,31 +299,35 @@ class BlackJackMackScreen(GambleScreen):
             self.battle_messages[self.DRAW_CARD_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
             if state.controller.confirm_button:
-                self.round_reset()
+
                 state.player.stamina_points -= self.player_stamina_drain_low
                 state.player.exp += self.low_exp
                 self.game_state = self.WELCOME_SCREEN
+                self.round_reset()
+
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} "
                                                                              f"money and gain {self.med_exp} experience points!"]
             if state.controller.confirm_button:
-                self.round_reset()
                 state.player.stamina_points -= self.player_stamina_drain_low
                 state.player.exp += self.med_exp
                 state.player.money += self.bet * self.critical_multiplier
                 self.money -= self.bet * self.critical_multiplier
                 self.game_state = self.WELCOME_SCREEN
+                self.round_reset()
+
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
             if state.controller.confirm_button:
-                self.round_reset()
                 state.player.stamina_points -= self.player_stamina_drain_high
                 state.player.money -= self.bet * self.critical_multiplier
                 self.money += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
                 self.game_state = self.WELCOME_SCREEN
+                self.round_reset()
+
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ACTION_SCREEN:
             self.update_player_action_logic(state, controller)
@@ -443,17 +455,17 @@ class BlackJackMackScreen(GambleScreen):
             self.money -= self.bet
             state.player.stamina_points -= self.player_stamina_drain_low
             state.player.exp += self.low_exp
-            self.round_reset()
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset()
 
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.confirm_button:
-            self.round_reset()
             state.player.stamina_points -= self.player_stamina_drain_high
             state.player.money -= self.bet
             self.money += self.bet
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset()
 
     def update_draw_card_screen_logic(self, state: 'GameState'):
         luck_muliplier = 5
@@ -463,52 +475,59 @@ class BlackJackMackScreen(GambleScreen):
         level_1_luck_score = 0
         lucky_strike_threshhold = 75
         initial_hand = 2
-        if self.debuff_ddraw == 0:
-            adjusted_lucky_roll = lucky_roll + self.luck_bonus
-        elif self.debuff_ddraw > 0:
-            adjusted_lucky_roll = 0
+        # if self.debuff_buff_luck_switch == 0:
+        #     adjusted_lucky_roll = lucky_roll + self.luck_bonus
+        # elif self.debuff_buff_luck_switch > 0:
+        #     adjusted_lucky_roll = 0
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.player_hand = self.deck.player_draw_hand(2)
-            if self.debuff_ddraw == 0:
-                self.enemy_hand = self.deck.enemy_draw_hand(2)
-            elif self.debuff_ddraw > 0:
-                lucky_enemy_roll = random.randint(1, 100)
-                lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
-                ace_card = None
-                ten_card = None
-                print("Lucky roll strike is" + str(lucky_enemy_strike))
-                if lucky_enemy_strike >= 100:
-                    for card in self.deck.cards:
-                        if card[0] == "Ace" and ace_card is None:
-                            ace_card = card
-                        elif card[2] == 10 and ten_card is None:
-                            ten_card = card
-                        if ace_card and ten_card:
-                            break
-                    self.enemy_hand = [ace_card, ten_card]
-                else:
-                    self.enemy_hand = self.deck.enemy_draw_hand(2)
+            # if self.debuff_buff_luck_switch == 0:
+            self.enemy_hand = self.deck.enemy_draw_hand(2)
+            # elif self.debuff_buff_luck_switch > 0:
+            #     lucky_enemy_roll = random.randint(1, 100)
+            #     lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
+            #     ace_card = None
+            #     ten_card = None
+            #     print("Lucky roll strike is" + str(lucky_enemy_strike))
+            #     if lucky_enemy_strike >= 100:
+            #         for card in self.deck.cards:
+            #             if card[0] == "Ace" and ace_card is None:
+            #                 ace_card = card
+            #             elif card[2] == 10 and ten_card is None:
+            #                 ten_card = card
+            #             if ace_card and ten_card:
+            #                 break
+            #         self.enemy_hand = [ace_card, ten_card]
+            #     else:
+            #         self.enemy_hand = self.deck.enemy_draw_hand(2)
 
             self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
             self.player_score = self.deck.compute_hand_value(self.player_hand)
+            attempts = 0
+            max_attempts = 3
+            while (
+                    player_bad_score_min_range < self.player_score < player_bad_score_max_range and attempts < max_attempts):
+                self.player_hand = self.deck.player_draw_hand(initial_hand)
+                self.player_score = self.deck.compute_hand_value(self.player_hand)
+                attempts += 1
 
-            if state.player.luck > level_1_luck_score:
-                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                    if adjusted_lucky_roll >= lucky_strike_threshhold:
-                        self.lucky_strike.play()
-                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-                            self.player_hand = self.deck.player_draw_hand(initial_hand)
-                            self.player_score = self.deck.compute_hand_value(self.player_hand)
-                            self.critical_hit = True
-                            print("LINE 715 MAYBE THE ERROR IS HERE")
+            # if state.player.luck > level_1_luck_score:
+            #     if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+            #         if adjusted_lucky_roll >= lucky_strike_threshhold:
+            #             self.lucky_strike.play()
+            #             while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+            #                 self.player_hand = self.deck.player_draw_hand(initial_hand)
+            #                 self.player_score = self.deck.compute_hand_value(self.player_hand)
+            #                 self.critical_hit = True
+            #                 print("LINE 715 MAYBE THE ERROR IS HERE")
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:
-            self.round_reset()
 
             state.player.exp += self.low_exp
             state.player.stamina_points -= self.player_stamina_drain_low
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset()
 
     def update_magic_menu(self, state: "GameState"):
         selected_choice = self.magic_screen_choices[self.magic_menu_index]
