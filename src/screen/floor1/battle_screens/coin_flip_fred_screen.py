@@ -213,27 +213,7 @@ class CoinFlipFredScreen(GambleScreen):
 
         # ------------------------------------Check other files for below_____________________________
 
-        self.spirit_magic_bonus_zero_chance += 3
-        player_luck_bonus = self.luck_bonus * 4
 
-        match self.wanton_magic_points:
-            case 3:
-                man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
-            case 2:
-                man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
-            case 1:
-                man_trap_randomizer = random.randint(1, 50) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
-
-
-        print("The magic spell chance is: " + str(man_trap_randomizer))
-        print("The magic spell bonus penalty: " + str(self.spirit_magic_bonus_zero_chance))
-
-        if man_trap_randomizer > 100 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
-            self.game_state = self.WANTON_CASTING_SPELL_SCREEN
-            self.even = False
-            self.odd = False
-            self.tri = False
-            self.spirit_magic_bonus_zero_chance = 0
 
 
     def update(self, state):
@@ -243,7 +223,7 @@ class CoinFlipFredScreen(GambleScreen):
         controller = state.controller
         controller.update()
         state.player.update(state)
-        if self.coinFlipTedMoney <= self.wanton_bankrupt:
+        if self.coinFlipFredMoney <= self.wanton_bankrupt:
             state.currentScreen = state.area1GamblingScreen
             state.area1GamblingScreen.start(state)
             state.player.canMove = True
@@ -570,7 +550,7 @@ class CoinFlipFredScreen(GambleScreen):
     def update_player_win_screen_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_high
         state.player.money += self.bet
-        self.coinFlipTedMoney -= self.bet
+        self.coinFlipFredMoney -= self.bet
         self.reset_round(state)
 
         self.game_state = self.WELCOME_SCREEN
@@ -578,18 +558,18 @@ class CoinFlipFredScreen(GambleScreen):
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
 
-            if self.coinFlipTedMoney < 0:
-                self.coinFlipTedMoney = 0
+            if self.coinFlipFredMoney < 0:
+                self.coinFlipFredMoney = 0
             total_gain = self.bet + self.spirit_bonus
             state.player.money += total_gain
-            self.coinFlipTedMoney -= total_gain
+            self.coinFlipFredMoney -= total_gain
             self.reset_round(state)
 
             self.game_state = self.WELCOME_SCREEN
     def update_player_lose_message_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_low
         state.player.money -= self.bet
-        self.coinFlipTedMoney += self.bet
+        self.coinFlipFredMoney += self.bet
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
 
@@ -870,7 +850,7 @@ class CoinFlipFredScreen(GambleScreen):
         elif self.shield_debuff > self.shield_debuff_inactive:
             state.DISPLAY.blit(self.font.render(f"Shield: {self.shield_debuff}", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position))
 
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.coinFlipTedMoney}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.coinFlipFredMoney}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
         state.DISPLAY.blit(self.font.render(f" Phase: {self.phase}", True, WHITE), (player_enemy_box_info_x_position - 7, phase_y_position))
         state.DISPLAY.blit(self.font.render(f" Choice: {self.player_choice}", True, WHITE), (player_enemy_box_info_x_position - 7, choice_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))

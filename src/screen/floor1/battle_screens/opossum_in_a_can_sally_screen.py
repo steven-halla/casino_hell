@@ -80,6 +80,9 @@ class OpossumInACanSallyScreen(GambleScreen):
                 "Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
             ]),
 
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                "Congratulations! You leveled up!"
+            ]),
         }
 
 
@@ -88,6 +91,7 @@ class OpossumInACanSallyScreen(GambleScreen):
         self.pick_screen_choices: list[str] = ["Pick", "Tally"]
         self.index_stepper = 1
         self.positions = []  # Initialize positions list to store trash can positions
+        self.level_up_message_initialized: bool = False
 
         self.trash_sprite_image = pygame.image.load("./assets/images/PC Computer - The Sims - Galvanized Trash Can (2).png").convert_alpha()
         self.opossum_sprite_image = pygame.image.load("./assets/images/opossum_redone2.png")
@@ -144,6 +148,7 @@ class OpossumInACanSallyScreen(GambleScreen):
     PLAYER_LOSE_SCREEN:str = "player_lose_screen"
     PLAYER_WIN_SCREEN:str = "player_win_screen"
     BUBBA_CASTING_SPELL_SCREEN: str = "BUBBA_CASTING_SPELL_SCREEN"
+    LEVEL_UP_SCREEN: str = "level_up_screen"
 
 
     PLAYER_WIN_MESSAGE: str = "player_win_message"
@@ -154,6 +159,7 @@ class OpossumInACanSallyScreen(GambleScreen):
     PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
     PICK_SELECTION_MESSAGE: str = "pick_selection_message"
     BUBBA_CASTING_SPELL_MESSAGE: str = "BUBBA_CASTING_SPELL_MESSAGE"
+    LEVEL_UP_MESSAGE: str = "level_up_message"
     BACK: str = "Back"
 
 
@@ -295,7 +301,12 @@ class OpossumInACanSallyScreen(GambleScreen):
         controller.update()
         state.player.update(state)
 
-        if self.game_state == self.WELCOME_SCREEN:
+        if self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+            self.handle_level_up(state, state.controller)
+
+        elif self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic(controller, state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
 
@@ -428,6 +439,9 @@ class OpossumInACanSallyScreen(GambleScreen):
             self.draw_welcome_screen_box_info(state)
 
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
 
         elif self.game_state == self.BUBBA_CASTING_SPELL_SCREEN:
 
@@ -951,6 +965,10 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
     def update_welcome_screen_logic(self, controller, state):
+        if state.player.leveling_up:
+            self.game_state = self.LEVEL_UP_SCREEN
+            return
+
         if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False
             controller.isAPressedSwitch = False
@@ -1056,9 +1074,3 @@ class OpossumInACanSallyScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-
-
-
-
-
-
