@@ -68,7 +68,7 @@ class BlackJackMackScreen(GambleScreen):
         self.med_stamina_drain: int = 20
         self.high_stamina_drain: int = 30
         self.mack_magic_points: int = 1
-        self.debuff_buff_luck_switch: int = 0
+        self.debuff_ddraw: int = 0
         self.luck_swapping_switch: int = 0
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
@@ -83,7 +83,7 @@ class BlackJackMackScreen(GambleScreen):
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "FEngus: This is the welcome screen"
+                "Mack: This is the welcome screen"
             ]),
             self.BET_MESSAGE: MessageBox([
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to Exit."
@@ -193,8 +193,7 @@ class BlackJackMackScreen(GambleScreen):
         if self.reveal_buff_counter == 0 and self.redraw_debuff_counter == 0:
             self.magic_lock = False
 
-        if self.debuff_buff_luck_switch > 0:
-            self.debuff_buff_luck_switch -= 1
+
 
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
@@ -216,7 +215,7 @@ class BlackJackMackScreen(GambleScreen):
             case 1:
                 luck_swap_randomizer = random.randint(1, 80) + self.luck_swapping_switch
 
-        if luck_swap_randomizer > 100 and self.mack_magic_points > 0 and self.debuff_buff_luck_switch == 0:
+        if luck_swap_randomizer > 1 and self.mack_magic_points > 0 and self.player_debuff_double_draw == 0:
             self.game_state = self.MACK_CASTING_SPELL_SCREEN
             self.luck_swapping_switch = 0
 
@@ -275,7 +274,6 @@ class BlackJackMackScreen(GambleScreen):
             self.battle_messages[self.MACK_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
                 self.mack_magic_points -= 1
-                self.debuff_buff_luck_switch += 10
                 self.player_debuff_double_draw = self.double_draw_turns_inflicted
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.LEVEL_UP_SCREEN:
@@ -465,15 +463,15 @@ class BlackJackMackScreen(GambleScreen):
         level_1_luck_score = 0
         lucky_strike_threshhold = 75
         initial_hand = 2
-        if self.debuff_buff_luck_switch == 0:
+        if self.debuff_ddraw == 0:
             adjusted_lucky_roll = lucky_roll + self.luck_bonus
-        elif self.debuff_buff_luck_switch > 0:
+        elif self.debuff_ddraw > 0:
             adjusted_lucky_roll = 0
         if len(self.player_hand) == 0 and len(self.enemy_hand) == 0:
             self.player_hand = self.deck.player_draw_hand(2)
-            if self.debuff_buff_luck_switch == 0:
+            if self.debuff_ddraw == 0:
                 self.enemy_hand = self.deck.enemy_draw_hand(2)
-            elif self.debuff_buff_luck_switch > 0:
+            elif self.debuff_ddraw > 0:
                 lucky_enemy_roll = random.randint(1, 100)
                 lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
                 ace_card = None
