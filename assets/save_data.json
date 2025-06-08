@@ -1,17 +1,21 @@
 {
     "current_stage": 1,
     "level": 1,
-    "exp": 20,
+    "exp": 70,
     "stamina_points": 100,
     "max_stamina_points": 100,
     "focus_points": 50,
     "max_focus_points": 50,
     "companions": [],
-    "items": [],
+    "items": [
+        "Black Hat",
+        "opossum repellent"
+    ],
     "equipped_items": [],
     "npcitems": [],
     "magicinventory": [
-        "Shield"
+        "Shield",
+        "reveal"
     ],
     "body": 0,
     "mind": 0,
@@ -19,7 +23,7 @@
     "perception": 0,
     "baseperception": 1,
     "luck": 0,
-    "money": 3000,
+    "money": 1600,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -27,11 +31,14 @@
     ],
     "level3reward": false,
     "food": 0,
-    "days": 1,
+    "days": 3,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
-        "LEVEL_1_INN_KEY"
+        "LEVEL_1_INN_KEY",
+        "Black Hat",
+        "opossum repellent",
+        "BLACK_JACK_THOMAS_DEFEATED"
     ],
     "levelthreenpcstate": [],
     "levelfournpcstate": [],
@@ -42,14 +49,14 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 300,
-    "coinflipbetteymoney": 999,
+    "coinflipbetteymoney": 300,
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 300,
     "opossuminacancandymoney": 444,
     "opossuminacanbillybobmoney": 444,
-    "blackjackthomasmoney": 300,
+    "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 900,
     "blackjackmackmoney": 950,
     "blackjackalbertmoney": 950,

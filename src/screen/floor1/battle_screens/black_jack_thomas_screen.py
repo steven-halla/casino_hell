@@ -233,12 +233,13 @@ class BlackJackThomasScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        # print(self.blackJackThomasMoney)
         # print("YOur redraw counter is set at: " + str(self.redraw_debuff_counter))
 
 
-        if self.money <= self.thomas_bankrupt:
-            state.currentScreen = state.area1RestScreen
-            state.area1RestScreen.start(state)
+        if self.blackJackThomasMoney <= self.thomas_bankrupt:
+            state.currentScreen = state.area1GamblingScreen
+            state.area1GamblingScreen.start(state)
             Events.add_level_one_event_to_player(state.player, Events.BLACK_JACK_THOMAS_DEFEATED)
 
         try:
@@ -293,7 +294,7 @@ class BlackJackThomasScreen(GambleScreen):
                 self.round_reset()
                 state.player.exp += self.med_exp
                 state.player.money += self.bet * self.critical_multiplier
-                self.money -= self.bet * self.critical_multiplier
+                self.blackJackThomasMoney -= self.bet * self.critical_multiplier
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
@@ -301,7 +302,7 @@ class BlackJackThomasScreen(GambleScreen):
             if state.controller.confirm_button:
                 self.round_reset()
                 state.player.money -= self.bet * self.critical_multiplier
-                self.money += self.bet * self.critical_multiplier
+                self.blackJackThomasMoney += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
@@ -434,7 +435,7 @@ class BlackJackThomasScreen(GambleScreen):
 
         if controller.confirm_button:
             state.player.money += self.bet
-            self.money -= self.bet
+            self.blackJackThomasMoney -= self.bet
             state.player.exp += self.low_exp
             self.round_reset()
             self.game_state = self.WELCOME_SCREEN
@@ -443,7 +444,7 @@ class BlackJackThomasScreen(GambleScreen):
         if controller.confirm_button:
             self.round_reset()
             state.player.money -= self.bet
-            self.money += self.bet
+            self.blackJackThomasMoney += self.bet
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
@@ -949,7 +950,7 @@ class BlackJackThomasScreen(GambleScreen):
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE),
                            (player_enemy_box_info_x_position, enemy_name_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}",
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.blackJackThomasMoney}",
                                             True, WHITE),
                            (player_enemy_box_info_x_position, enemy_money_y_position))
         if (self.reveal_buff_counter == self.reveal_end_not_active and self.redraw_debuff_counter
