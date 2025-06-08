@@ -411,7 +411,7 @@ class Area1BossChinrogScreen(GambleScreen):
 
     def update_bet_screen_helper(self, controller):
         min_bet = 25
-        max_bet = 100
+        max_bet = 150
         if controller.up_button:
             self.menu_movement_sound.play()
             self.bet += min_bet

@@ -84,7 +84,6 @@ class CrapsHappyScreen(GambleScreen):
         self.successful_power_strike_sound_effect: pygame.mixer.Sound = pygame.mixer.Sound(
             "./assets/music/8CRodHit.wav")
         self.successful_power_strike_sound_effect.set_volume(0.6)
-        self.wimpleton_magic_points: int = 0
         self.debuff_weighted_dice: int = 0
         self.debuff_counter: int = 3
         self.greed_meter: int = 0
@@ -125,7 +124,7 @@ class CrapsHappyScreen(GambleScreen):
             self.BLOW_POINT_ROLL_MESSAGE: MessageBox([
                 f"Hold A key and rock d pad"
             ]),
-            self.WIMPLETON_CASTING_SPELL_MESSAGE: MessageBox([
+            self.HAPPY_CASTING_SPELL_MESSAGE: MessageBox([
                 f"Starving animals of eternal hunger, casts your misery upon the unworthy...weighted dice(all dice totals -1)"
             ]),
         }
@@ -141,7 +140,7 @@ class CrapsHappyScreen(GambleScreen):
     POINT_ROLL_ROLLED_DICE_MESSAGE: str = "point_roll_roll_rolled_dice_message"
     BLOW_POINT_ROLL_MESSAGE: str = "blow_point_roll_message"
     BET_MESSAGE: str = "bet_message"
-    WIMPLETON_CASTING_SPELL_MESSAGE: str = "WIMPLETON_CASTING_SPELL_MESSAGE"
+    HAPPY_CASTING_SPELL_MESSAGE: str = "HAPPY_CASTING_SPELL_MESSAGE"
     TRIPLE_DICE: str = "Triple Dice"
     PLAYER_WIN_COME_OUT_SCREEN: str = "player_win_come_out_screen"
     PLAYER_LOSE_COME_OUT_SCREEN: str = "player_lose_come_out_screen"
@@ -152,7 +151,7 @@ class CrapsHappyScreen(GambleScreen):
     PLAYER_WIN_POINT_ROLL_SCREEN: str = "player_win_point_roll_screen"
     PLAYER_LOSE_POINT_ROLL_SCREEN: str = "player_lose_point_roll_screen"
     BLOW_POINT_ROLL_SCREEN: str = "blow_point_roll_screen"
-    WIMPLETON_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
+    HAPPY_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
 
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
@@ -190,13 +189,7 @@ class CrapsHappyScreen(GambleScreen):
         if self.greed_meter == 0:
             self.magic_lock = False
 
-        self.hungry_dice_increased_chance += 3
 
-        dice_of_deception_random_chance = random.randint(1, 100) + self.hungry_dice_increased_chance
-
-        if self.debuff_weighted_dice == 0 and self.wimpleton_magic_points > 0 and dice_of_deception_random_chance >= 100:
-            self.hungry_dice_increased_chance = 0
-            self.game_state = self.WIMPLETON_CASTING_SPELL_SCREEN
 
     def reset_craps_game(self, state: 'GameState'):
         self.welcome_screen_quit_index = self.welcome_screen_play_index
@@ -217,7 +210,6 @@ class CrapsHappyScreen(GambleScreen):
         self.blow_sound_checker = True
         self.blow_timer_start = 0
         self.debuff_counter = 3
-        self.wimpleton_magic_points = 2
         self.debuff_weighted_dice = 0
         self.greed_meter: int = 0
         self.greed_bank: bool = False
@@ -229,7 +221,7 @@ class CrapsHappyScreen(GambleScreen):
         super().update(state)
 
         if self.money <= self.naba_bankrupt:
-            Events.add_event_to_player(state.player, Events.CRAPS_NABA_DEFEATED)
+            Events.add_level_two_event_to_player(state.player, Events.CRAPS_HAPPY_DEFEATED)
 
         try:
             if self.lucky_seven_buff_counter > self.lucky_seven_buff_not_active:
@@ -246,8 +238,8 @@ class CrapsHappyScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-        elif self.game_state == self.WIMPLETON_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.WIMPLETON_CASTING_SPELL_MESSAGE].update(state)
+        elif self.game_state == self.HAPPY_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.HAPPY_CASTING_SPELL_MESSAGE].update(state)
             self.update_naba_casting_spell_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
@@ -280,8 +272,8 @@ class CrapsHappyScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.WIMPLETON_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.WIMPLETON_CASTING_SPELL_MESSAGE].draw(state)
+        if self.game_state == self.HAPPY_CASTING_SPELL_SCREEN:
+            self.battle_messages[self.HAPPY_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.WELCOME_SCREEN:
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
@@ -387,7 +379,7 @@ class CrapsHappyScreen(GambleScreen):
 
     def update_naba_casting_spell_helper(self, state):
         if state.controller.confirm_button:
-            self.wimpleton_magic_points -= 1
+            self.happy_magic_points -= 1
             self.debuff_weighted_dice = 5
             self.game_state = self.WELCOME_SCREEN
 

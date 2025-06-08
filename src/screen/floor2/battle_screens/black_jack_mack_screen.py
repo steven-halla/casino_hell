@@ -210,7 +210,7 @@ class BlackJackMackScreen(GambleScreen):
             case 2:
                 luck_swap_randomizer = random.randint(1, 70) + self.luck_swapping_switch
             case 1:
-                luck_swap_randomizer = random.randint(1, 50) + self.luck_swapping_switch
+                luck_swap_randomizer = random.randint(1, 80) + self.luck_swapping_switch
 
         if luck_swap_randomizer > 100 and self.mack_magic_points > 0 and self.debuff_buff_luck_switch == 0:
             self.game_state = self.MACK_CASTING_SPELL_SCREEN
@@ -242,9 +242,9 @@ class BlackJackMackScreen(GambleScreen):
 
 
         if self.money <= self.fengus_bankrupt:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
-            Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
+            state.currentScreen = state.area2GamblingScreen
+            state.area2GamblingScreen.start(state)
+            Events.add_level_two_event_to_player(state.player, Events.BLACK_JACK_MACK_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:

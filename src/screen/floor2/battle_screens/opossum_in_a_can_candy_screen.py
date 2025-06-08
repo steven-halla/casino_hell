@@ -18,8 +18,8 @@ class OpossumInACanCandyScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
         self.bet: int = 300
-        self.dealer_name = "Bubba"
-        self.bubba_bankrupt = 0
+        self.dealer_name = "Candy"
+        self.candy_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
         self.spell_sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
@@ -48,7 +48,7 @@ class OpossumInACanCandyScreen(GambleScreen):
         self.buff_poison_bite: int = 0
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "BUbba: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
+                "Candy: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
             ]),
 
             self.PICK_TALLY_MENU_MESSAGE: MessageBox([
@@ -77,7 +77,7 @@ class OpossumInACanCandyScreen(GambleScreen):
                 "You lost the toss."
             ]),
             self.CANDY_CASTING_SPELL_MESSAGE: MessageBox([
-                "Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
+                "Candy:Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
             ]),
 
         }
@@ -268,6 +268,7 @@ class OpossumInACanCandyScreen(GambleScreen):
 
 
         self.double_pick_chance += 3
+        double_flip_randomizer = 0
 
         match self.candy_magic_points:
             case 3:
@@ -275,7 +276,7 @@ class OpossumInACanCandyScreen(GambleScreen):
             case 2:
                 double_flip_randomizer = random.randint(1, 70) + self.double_pick_chance
             case 1:
-                double_flip_randomizer = random.randint(1, 50) + self.double_pick_chance
+                double_flip_randomizer = random.randint(1, 80) + self.double_pick_chance
 
         if double_flip_randomizer > 90 and self.candy_magic_points > 0 and self.debuff_double_pick == 0:
             self.current_screen = self.CANDY_CASTING_SPELL_SCREEN
@@ -284,7 +285,7 @@ class OpossumInACanCandyScreen(GambleScreen):
 
 
     def update(self, state):
-        if self.candyOpossumMoney <= self.bubba_bankrupt:
+        if self.candyOpossumMoney <= self.candy_bankrupt:
             Events.add_level_two_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)

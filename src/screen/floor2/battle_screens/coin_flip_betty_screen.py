@@ -60,7 +60,7 @@ class CoinFlipBettyScreen(GambleScreen):
         self.exp_gain_high: int = 50
         self.exp_gain_low: int = 25
         self.result_anchor: bool = False
-        self.money: int = 999
+        self.money: int = 300
         self.betty_magic_points: int = 1
         self.even: bool = False
         self.odd: bool = False
@@ -136,7 +136,7 @@ class CoinFlipBettyScreen(GambleScreen):
     PLAYER_WIN_SCREEN: str = "player_win_screen"
     PLAYER_LOSE_SCREEN: str = "player_lose_screen"
     PLAYER_DRAW_SCREEN: str = "player_draw_screen"
-    WANTON_CASTING_SPELL_SCREEN: str = "WANTON_CASTING_SPELL_SCREEN"
+    BETTY_CASTING_SPELL_SCREEN: str = "BETTY_CASTING_SPELL_SCREEN"
     LEVEL_UP_MESSAGE: str = "level_up_message"
     LEVEL_UP_SCREEN: str = "level_up_screen"
     ANIMAL_DEFENSE_MESSAGE: str = "animal defense message"
@@ -216,6 +216,8 @@ class CoinFlipBettyScreen(GambleScreen):
 
         self.spirit_magic_bonus_zero_chance += 3
         player_luck_bonus = self.luck_bonus * 4
+        
+        man_trap_randomizer = 0
 
         match self.betty_magic_points:
             case 3:
@@ -223,14 +225,14 @@ class CoinFlipBettyScreen(GambleScreen):
             case 2:
                 man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
             case 1:
-                man_trap_randomizer = random.randint(1, 50) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
+                man_trap_randomizer = random.randint(1, 80) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
 
 
         print("The magic spell chance is: " + str(man_trap_randomizer))
         print("The magic spell bonus penalty: " + str(self.spirit_magic_bonus_zero_chance))
 
         if man_trap_randomizer > 100 and self.betty_magic_points > 0 and self.debuff_magic_equipment_break == 0:
-            self.game_state = self.WANTON_CASTING_SPELL_SCREEN
+            self.game_state = self.BETTY_CASTING_SPELL_SCREEN
             self.even = False
             self.odd = False
             self.tri = False
@@ -244,11 +246,11 @@ class CoinFlipBettyScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.wanton_bankrupt:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
+            state.currentScreen = state.area2GamblingScreen
+            state.area2GamblingScreen.start(state)
             state.player.canMove = True
             #------------------------------------Check other files for below_____________________________
-            Events.add_level_five_event_to_player(state.player, Events.COIN_FLIP_WANTON_DEFEATED)
+            Events.add_level_two_event_to_player(state.player, Events.COIN_FLIP_BETTY_DEFEATED)
 
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -264,7 +266,7 @@ class CoinFlipBettyScreen(GambleScreen):
 
             self.handle_level_up(state, state.controller)
 
-        elif self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
+        elif self.game_state == self.BETTY_CASTING_SPELL_SCREEN:
             match self.betty_magic_points:
                 case 3:
                     self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].messages = [
@@ -280,7 +282,7 @@ class CoinFlipBettyScreen(GambleScreen):
                     ]
             self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].update(state)
 
-            self.update_wanton_casting_spell_screen_helper(state)
+            self.update_BETTY_CASTING_SPELL_SCREEN_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.update_bet_screen_helper(state, controller)
@@ -337,7 +339,7 @@ class CoinFlipBettyScreen(GambleScreen):
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
 
-        if self.game_state == self.WANTON_CASTING_SPELL_SCREEN:
+        if self.game_state == self.BETTY_CASTING_SPELL_SCREEN:
             self.battle_messages[self.BETTY_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.WELCOME_SCREEN:
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
@@ -580,7 +582,13 @@ class CoinFlipBettyScreen(GambleScreen):
         elif self.bet >= max_bet:
             self.bet = max_bet
 
-    def update_wanton_casting_spell_screen_helper(self, state: 'GameState'):
+        if self.bet > self.money:
+            self.bet = self.money
+
+        if self.bet > state.player.money:
+            self.bet = state.player.money
+
+    def update_BETTY_CASTING_SPELL_SCREEN_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
             match self.betty_magic_points:
                 case 3:
