@@ -190,6 +190,9 @@ class CoinFlipBettyScreen(GambleScreen):
             self.betty_magic_points = 1
             self.odd = False
             self.even = False
+            # Reset coin result variables to ensure the coin display is updated from the start
+            self.coin_landed = CoinFlipConstants.HEADS.value
+            self.result = CoinFlipConstants.HEADS.value
 
     def reset_round(self, state):
 
@@ -204,6 +207,9 @@ class CoinFlipBettyScreen(GambleScreen):
         self.image_to_display = ""
         self.player_choice = ""
         self.timer_start = None
+        # Reset coin result variables to ensure the coin display is updated for each round
+        self.coin_landed = CoinFlipConstants.HEADS.value
+        self.result = CoinFlipConstants.HEADS.value
         self.phase += 1
         if self.phase > 5:
             self.phase = 1
@@ -305,7 +311,8 @@ class CoinFlipBettyScreen(GambleScreen):
             self.battle_messages[self.COIN_FLIP_MESSAGE].update(state)
             self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
-            self.update_flip_coin()
+            # We've already determined the result in update_choose_side_logic
+            # so we don't need to call update_flip_coin again
 
             if controller.confirm_button:
                 self.update_flip_coin_logic_helper(controller)
@@ -331,7 +338,6 @@ class CoinFlipBettyScreen(GambleScreen):
             self.game_over_screen_level_5(state, controller)
 
         elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
-            print("jfd;sljf;lsjalflasfjlsjf;asjfl;sjfl;j;flj;salfjld;sajfl;sajflk;sjaf")
 
             self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
             if self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
@@ -371,6 +377,8 @@ class CoinFlipBettyScreen(GambleScreen):
 
 
         elif self.game_state == self.RESULTS_SCREEN:
+            print("j;dsafj;lsajflkjs;alfjdlsakjf;lsjafl;sajfl;js;fjdas")
+
             self.draw_coin_results_single_or_double_flip(state)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
@@ -402,9 +410,13 @@ class CoinFlipBettyScreen(GambleScreen):
 
             if self.headstailsindex == 0:
                 self.player_choice = CoinFlipConstants.HEADS.value
+                # Determine the result before starting the animation
+                self.update_flip_coin()
                 self.game_state = self.COIN_FLIP_SCREEN
             elif self.headstailsindex == 1:
                 self.player_choice = CoinFlipConstants.TAILS.value
+                # Determine the result before starting the animation
+                self.update_flip_coin()
                 self.game_state = self.COIN_FLIP_SCREEN
             elif self.headstailsindex == 2:
                 self.headstailsindex = 0
@@ -462,25 +474,20 @@ class CoinFlipBettyScreen(GambleScreen):
             state.player.canMove = True
 
     def update_flip_coin_logic_helper(self,controller):
-        if self.heads_force_active == True:
-            heads_force_modifer = self.magic_bonus
-            self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
+        # We now handle the heads_force_active logic in update_flip_coin
+        # so we don't need to repeat it here
 
-            print("Heads force is: " + str(self.heads_force_randomizer))
-
-            if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-            else:
-                self.heads_force_active = False
-                self.coin_landed = CoinFlipConstants.TAILS.value
+        # Set coin_landed to result for consistency
+        self.coin_landed = self.result
 
         if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
             if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
                 self.game_state = self.PLAYER_WIN_SCREEN
+                return
             else:
                 self.heads_force_active = False
-
                 self.game_state = self.PLAYER_LOSE_SCREEN
+                return
 
         if self.coin_landed == self.player_choice:
             self.game_state = self.PLAYER_WIN_SCREEN
@@ -494,9 +501,7 @@ class CoinFlipBettyScreen(GambleScreen):
                 self.game_state = self.PLAYER_DRAW_SCREEN
             else:
                 print("SHIELD ROLL IS: " + str(random_shield))
-
                 self.game_state = self.PLAYER_LOSE_SCREEN
-
         elif self.coin_landed != self.player_choice:
             self.game_state = self.PLAYER_LOSE_SCREEN
 
@@ -513,8 +518,17 @@ class CoinFlipBettyScreen(GambleScreen):
 
     def update_flip_coin(self):
         if self.heads_force_active == True:
-            self.result = CoinFlipConstants.HEADS.value
-            #
+            heads_force_modifer = self.magic_bonus
+            self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
+
+            print("Heads force is: " + str(self.heads_force_randomizer))
+
+            if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
+                self.result = CoinFlipConstants.HEADS.value
+            else:
+                self.heads_force_active = False
+                self.result = CoinFlipConstants.TAILS.value
+            return
 
         # if self.heads_force_active == False:
         #     if self.phase == 1:
@@ -539,8 +553,7 @@ class CoinFlipBettyScreen(GambleScreen):
         # I could give sound indicator to let player know which state is active
         #npc: the dealer has a tell he makes a strange noise before flipping
 
-        if self.even == True and self.heads_force_active == False:
-
+        if self.even == True:
             if self.phase == 1:
                 self.result = CoinFlipConstants.HEADS.value
             elif self.phase == 2:
@@ -552,7 +565,7 @@ class CoinFlipBettyScreen(GambleScreen):
             elif self.phase == 5:
                 self.result = CoinFlipConstants.HEADS.value
 
-        elif self.odd == True and self.heads_force_active == False:
+        elif self.odd == True:
             if self.phase == 1:
                 self.result = CoinFlipConstants.TAILS.value
             elif self.phase == 2:
@@ -833,18 +846,12 @@ class CoinFlipBettyScreen(GambleScreen):
 
 
     def draw_results_screen_logic(self, state):
+        # Use the result variable to determine which coin image to display
         self.image_to_display = (
             self.heads_image
-            if self.coin_landed == CoinFlipConstants.HEADS.value
+            if self.result == CoinFlipConstants.HEADS.value
             else self.tails_image
         )
-
-        if self.heads_force_active and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
-            self.image_to_display = self.heads_image
-        else:
-            self.image_to_display = (
-                self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
-            )
 
 
         image_rect = self.image_to_display.get_rect()
@@ -920,5 +927,3 @@ class CoinFlipBettyScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-
-
