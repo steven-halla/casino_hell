@@ -77,7 +77,7 @@ class BlackJackMackScreen(GambleScreen):
         self.player_stamina_drain_high: int = 5
         self.player_debuff_double_draw: int = 0
         self.double_draw_duration_expired: int = 0
-        self.double_draw_turns_inflicted: int = 7
+        self.double_draw_turns_inflicted: int = 2
         self.draw_one_card: int = 1
 
 
@@ -242,7 +242,6 @@ class BlackJackMackScreen(GambleScreen):
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
-        self.mack_magic_points = 3
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -1104,16 +1103,21 @@ class BlackJackMackScreen(GambleScreen):
         for idx, choice in enumerate(self.player_action_phase_choices):
             y_position = start_y_right_box + idx * spacing_between_choices
 
+            # Check if this is the Draw option and if player has double draw debuff
+            display_text = choice
+            if idx == draw_option and self.player_debuff_double_draw > 0:
+                display_text = "DDraw"
+
             if choice == Magic.BLACK_JACK_REDRAW.value and self.redraw_counter == False:
-                rendered_choice = self.font.render(choice, True, RED)
+                rendered_choice = self.font.render(display_text, True, RED)
             else:
-                rendered_choice = self.font.render(choice, True, WHITE)
+                rendered_choice = self.font.render(display_text, True, WHITE)
 
             if (choice == self.player_action_phase_choices[draw_option]
                     and len(self.player_hand) == player_hand_max):
-                rendered_draw = self.font.render(choice, True, RED)
+                rendered_draw = self.font.render(display_text, True, RED)
             else:
-                rendered_draw = self.font.render(choice, True, WHITE)
+                rendered_draw = self.font.render(display_text, True, WHITE)
 
             state.DISPLAY.blit(rendered_choice, (start_x_right_box + text_x_offset, y_position + text_y_offset))
             state.DISPLAY.blit(rendered_draw, (start_x_right_box + text_x_offset, y_position + text_y_offset))
