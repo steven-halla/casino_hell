@@ -1,7 +1,7 @@
 {
     "current_stage": 2,
     "level": 3,
-    "exp": 300,
+    "exp": 330,
     "stamina_points": 200,
     "max_stamina_points": 200,
     "focus_points": 100,
@@ -29,7 +29,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 2900,
+    "money": 3000,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -37,8 +37,10 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 9,
-    "leveltwonpcstate": [],
+    "days": 10,
+    "leveltwonpcstate": [
+        "BLACK_JACK_MACK_DEFEATED"
+    ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
         "LEVEL_1_INN_KEY",
@@ -68,7 +70,7 @@
     "opossuminacanbillybobmoney": 444,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 900,
-    "blackjackmackmoney": 950,
+    "blackjackmackmoney": 0,
     "blackjackalbertmoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,

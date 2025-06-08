@@ -551,9 +551,9 @@ class CoinFlipFredScreen(GambleScreen):
         state.player.exp += self.exp_gain_high
         state.player.money += self.bet
         self.coinFlipFredMoney -= self.bet
-        self.reset_round(state)
 
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round(state)
 
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
@@ -563,9 +563,10 @@ class CoinFlipFredScreen(GambleScreen):
             total_gain = self.bet + self.spirit_bonus
             state.player.money += total_gain
             self.coinFlipFredMoney -= total_gain
-            self.reset_round(state)
 
             self.game_state = self.WELCOME_SCREEN
+            self.reset_round(state)
+
     def update_player_lose_message_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_low
         state.player.money -= self.bet

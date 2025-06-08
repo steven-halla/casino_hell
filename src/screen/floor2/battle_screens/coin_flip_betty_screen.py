@@ -237,7 +237,7 @@ class CoinFlipBettyScreen(GambleScreen):
         print("The magic spell chance is: " + str(silence_randomizer))
         print("The magic spell bonus penalty: " + str(self.silence_bonus_chance))
 
-        if silence_randomizer > 100 and self.betty_magic_points > 0 and self.debuff_silence == 0:
+        if silence_randomizer > 1 and self.betty_magic_points > 0 and self.debuff_silence == 0:
             self.game_state = self.BETTY_CASTING_SPELL_SCREEN
 
             self.silence_bonus_chance = 0
@@ -595,14 +595,9 @@ class CoinFlipBettyScreen(GambleScreen):
 
     def update_BETTY_CASTING_SPELL_SCREEN_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
-            match self.betty_magic_points:
-                case 3:
-                    self.spirit_bonus = 0
-                case 2:
-                    self.magic_bonus = 0
-                case 1:
-                    self.luck_bonus = 0
+
             self.betty_magic_points -= 1
+            self.debuff_silence += 7
 
             self.game_state = self.WELCOME_SCREEN
 
@@ -615,9 +610,9 @@ class CoinFlipBettyScreen(GambleScreen):
         state.player.exp += self.exp_gain_high
         state.player.money += self.bet
         self.money -= self.bet
-        self.reset_round(state)
 
         self.game_state = self.WELCOME_SCREEN
+        self.reset_round(state)
 
 
         if Equipment.COIN_FLIP_GLASSES.value in state.player.equipped_items:
@@ -627,9 +622,10 @@ class CoinFlipBettyScreen(GambleScreen):
             total_gain = self.bet + (self.spirit_bonus * 20)
             state.player.money += total_gain
             self.money -= total_gain
-            self.reset_round(state)
 
             self.game_state = self.WELCOME_SCREEN
+            self.reset_round(state)
+
     def update_player_lose_message_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_low
         state.player.money -= self.bet

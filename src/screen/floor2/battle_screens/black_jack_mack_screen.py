@@ -181,6 +181,9 @@ class BlackJackMackScreen(GambleScreen):
         if self.BACK not in self.magic_screen_choices:
             self.magic_screen_choices.append(self.BACK)
 
+        print("money is at;" + str(self.money))
+
+
     def round_reset(self):
         print("Round Reset")
         self.deck.shuffle()
