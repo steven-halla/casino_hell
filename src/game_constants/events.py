@@ -47,6 +47,7 @@ class Events(Enum):
     BLACK_JACK_THOMAS_DEFEATED = "BLACK_JACK_THOMAS_DEFEATED"
     LEVEL_1_BOSS_DEFEATED = "LEVEL_1_BOSS_DEFEATED"
     LEVEL_1_INN_KEY = "LEVEL_1_INN_KEY"
+    LEVEL_1_BOSS_KEY = "LEVEL_1_BOSS_KEY"
 
     # below is for level 3
     CRAPS_JUNPON_DEFEATED = "junpon defeated"
@@ -99,6 +100,11 @@ class Events(Enum):
     def add_level_one_event_to_player(player, event):
         if event.value not in player.level_one_npc_state:
             player.level_one_npc_state.append(event.value)
+
+    @staticmethod
+    def add_level_two_event_to_player(player, event):
+        if event.value not in player.level_two_npc_state:
+            player.level_two_npc_state.append(event.value)
 
     @staticmethod
     def add_level_three_event_to_player(player, event):

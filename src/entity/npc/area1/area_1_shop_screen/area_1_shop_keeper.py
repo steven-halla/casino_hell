@@ -34,9 +34,9 @@ class Area1ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.BLACK_JACK_HAT.value, Equipment.OPOSSUM_REPELLENT.value, Magic.REVEAL.value ]
+        self.shop_items = [Equipment.BLACK_JACK_HAT.value, Equipment.OPOSSUM_REPELLENT.value, Magic.REVEAL.value, Events.LEVEL_1_BOSS_KEY.value ]
 
-        self.shop_costs = ["500", "500", "500"]
+        self.shop_costs = ["500", "500", "500", "1000"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -77,6 +77,9 @@ class Area1ShopKeeper(Npc):
 
             if Magic.REVEAL.value in state.player.magicinventory:
                 self.shop_items[2] = "sold out"
+
+            if Events.LEVEL_1_BOSS_KEY.value in state.player.level_one_npc_state:
+                self.shop_items[3] = "sold out"
 
 
 
@@ -126,6 +129,15 @@ class Area1ShopKeeper(Npc):
                         else:
                             self.buy_sound.play()
                             state.player.magicinventory.append(Magic.REVEAL.value)
+                            state.player.money -= cost
+
+                    elif self.selected_item_index == 3:
+                        cost = 1000
+                        if state.player.money < cost or Events.LEVEL_1_BOSS_KEY.value in state.player.level_one_npc_state or state.player.perception != 1 or state.player.body != 1 or state.player.spirit != 1:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            Events.add_level_one_event_to_player(state.player, Events.LEVEL_1_BOSS_KEY)
                             state.player.money -= cost
 
 
@@ -284,6 +296,15 @@ class Area1ShopKeeper(Npc):
 
                 elif self.selected_item_index == 2 and Magic.REVEAL.value in state.player.magicinventory:
                     state.DISPLAY.blit(self.font.render(f"Reveal spell is sold out!", True,
+                                                        (255, 255, 255)), (70, 460))
+
+                if self.selected_item_index == 3 and Events.LEVEL_1_BOSS_KEY.value not in state.player.level_one_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Requires perception=1, body=1, spirit=1", True,
+                                                        (255, 255, 255)), (70, 460))
+                    state.DISPLAY.blit(self.font.render(f"A key that unlocks the path to the boss.", True,
+                                                        (255, 255, 255)), (70, 510))
+                elif self.selected_item_index == 3 and Events.LEVEL_1_BOSS_KEY.value in state.player.level_one_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Boss key is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
 
