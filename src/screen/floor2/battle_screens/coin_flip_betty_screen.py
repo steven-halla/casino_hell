@@ -159,6 +159,7 @@ class CoinFlipBettyScreen(GambleScreen):
         self.welcome_screen_index = 0
 
 
+
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck
@@ -248,6 +249,8 @@ class CoinFlipBettyScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
+        # print("is heads force active?: " + str(self.heads_force_active))
+
 
         controller = state.controller
         controller.update()
@@ -333,8 +336,8 @@ class CoinFlipBettyScreen(GambleScreen):
             self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
             if self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 state.player.canMove = True
 
 
@@ -396,8 +399,7 @@ class CoinFlipBettyScreen(GambleScreen):
             self.menu_movement_sound.play()
             self.headstailsindex = (self.headstailsindex + self.index_stepper) % len(self.heads_or_tails_menu)
         if controller.confirm_button:
-            controller.isTPressed = False
-            controller.isAPressedSwitch = False
+
             if self.headstailsindex == 0:
                 self.player_choice = CoinFlipConstants.HEADS.value
                 self.game_state = self.COIN_FLIP_SCREEN
@@ -455,8 +457,8 @@ class CoinFlipBettyScreen(GambleScreen):
         elif self.welcome_screen_index == self.bet_index and controller.confirm_button :
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
+            state.currentScreen = state.area2GamblingScreen
+            state.area2GamblingScreen.start(state)
             state.player.canMove = True
 
     def update_flip_coin_logic_helper(self,controller):
@@ -532,6 +534,7 @@ class CoinFlipBettyScreen(GambleScreen):
                 self.even = True
             elif coin_fate == 2:
                 self.odd = True
+            print("your coin fate is: " + str(coin_fate))
 
         # I could give sound indicator to let player know which state is active
         #npc: the dealer has a tell he makes a strange noise before flipping
@@ -836,15 +839,18 @@ class CoinFlipBettyScreen(GambleScreen):
             else self.tails_image
         )
 
-        if self.heads_force_active == True and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
+        if self.heads_force_active and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
             self.image_to_display = self.heads_image
         else:
-            self.image_to_display = self.tails_image
+            self.image_to_display = (
+                self.heads_image if self.coin_landed == CoinFlipConstants.HEADS.value else self.tails_image
+            )
 
 
         image_rect = self.image_to_display.get_rect()
         image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
         state.DISPLAY.blit(self.image_to_display, image_rect)
+
     def draw_magic_menu_selection_box(self, state):
         if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
             self.battle_messages[self.MAGIC_MENU_SHIELD_DESCRIPTION].draw(state)
