@@ -282,6 +282,7 @@ class Area1BossChinrogScreen(GambleScreen):
         elif self.game_state == self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN:
             if state.controller.confirm_button:
                 self.round_reset()
+                state.player.stamina_points -= self.player_stamina_drain_low
                 state.player.exp += self.low_exp
                 state.player.stamina_points -= self.player_stamina_drain_low
                 self.game_state = self.WELCOME_SCREEN
@@ -582,7 +583,7 @@ class Area1BossChinrogScreen(GambleScreen):
                                               + self.move_index_by_1) % len(self.player_action_phase_choices)
         elif state.controller.confirm_button:
             if self.player_action_phase_index == self.player_action_phase_play_index:
-                state.player.stamina_points -= self.low_stamina_drain
+                state.player.stamina_points -= 0
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
                     if self.enemy_score < self.player_score:
                         self.animate_face_down_card(state, len(self.enemy_hand))
