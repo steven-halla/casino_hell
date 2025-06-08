@@ -99,7 +99,7 @@ class Area2RestScreen(Screen):
             Area2InnKeeper(16 * 5, 16 * 5),  # fin
             # CodyTalk(16 * 5, 16 * 20),
             Area2RestToGamblingDoor(16 * 5, 16 * 40),
-            Area2RestToBarDoor(16 * 25, 16 * 40),
+            Area2RestToBarDoor(16 * 25, 16 * 30),
             Area2RestToShopDoor(16 * 45, 16 * 40),
             # PatrickTalk(16 * 5, 16 * 35),
             # CoinFlipTed(16 * 25, 16 * 35),
