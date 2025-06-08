@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="balance changes inn keeper now updates your current level">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="creating new NPCS for level 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game_constants/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/events.py" afterDir="false" />
     </list>
@@ -429,7 +429,7 @@
       <workItem from="1749228540449" duration="15453000" />
       <workItem from="1749255272311" duration="7530000" />
       <workItem from="1749312172389" duration="26904000" />
-      <workItem from="1749394822426" duration="942000" />
+      <workItem from="1749394822426" duration="2050000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -774,7 +774,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1555" />
+    <option name="localTasksCounter" value="1556" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -803,7 +803,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="huge resturcutre of files created section 3 structure" />
     <MESSAGE value="new sub directories created" />
     <MESSAGE value="area 4 complete" />
     <MESSAGE value="area 5 complete" />
@@ -828,7 +827,8 @@
     <MESSAGE value="minor bug fixes" />
     <MESSAGE value="balance changes" />
     <MESSAGE value="balance changes inn keeper now updates your current level" />
-    <option name="LAST_COMMIT_MESSAGE" value="balance changes inn keeper now updates your current level" />
+    <MESSAGE value="creating new NPCS for level 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="creating new NPCS for level 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

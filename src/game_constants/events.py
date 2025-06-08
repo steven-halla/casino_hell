@@ -35,8 +35,8 @@ class Events(Enum):
 
 
 
-    #------------------------------------------------------------------
-    #below is for level 1
+    #below is for level 1------------------------------------------------------------------
+
     COIN_FLIP_TED_DEFEATED = "COIN_FLIP_TED_DEFEATED"
     COIN_FLIP_FRED_DEFEATED = "COIN_FLIP_FRED_DEFEATED"
     OPOSSUM_IN_A_CAN_SALLY_DEFEATED = "OPOSSUM_IN_A_CAN_SALLY_DEFEATED"
@@ -45,14 +45,14 @@ class Events(Enum):
     LEVEL_1_INN_KEY = "LEVEL_1_INN_KEY"
     LEVEL_1_BOSS_KEY = "LEVEL_1_BOSS_KEY"
 
-    #---------------------------------------------------------------
+    #below is for level 2---------------------------------------------------------------
     BLACK_JACK_MACK_DEFEATED = "BLACK_JACK_MACK_DEFEATED"
     SLOTS_RIPPA_SNAPPA_DEFEATED = "SLOTS_RIPPA_SNAPPA_DEFEATED"  # this unlocks quest by Alice
     OPOSSUM_IN_A_CAN_CANDY_DEFEATED = "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
     COIN_FLIP_BETTY_DEFEATED = "COIN_FLIP_BETTY_DEFEATED"
     CRAPS_HAPPY_DEFEATED = "CRAPS_HAPPY_DEFEATED"
 
-    # below is for level 3
+    # below is for level 3--------------------------------
     CRAPS_JUNPON_DEFEATED = "junpon defeated"
     BLACK_JACK_ALBERT_DEFEATED = "black jack albert defeated"
     COIN_FLIP_DEXTER_DEFEATED = "coin flip dexter defeated"

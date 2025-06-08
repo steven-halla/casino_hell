@@ -194,14 +194,6 @@ class GameState:
 
 
 
-        self.slotsRippaSnappaScreen = SlotsRippaSnappaScreen()
-        self.hungryStarvingHippos = HungryStarvingHippos()
-        self.hungryStarvingHippos2 = HungryStarvingHippos2()
-        self.crapsHappyScreen = CrapsHappyScreen()
-        self.crapsBossScreen = CrapsBossScreen()
-        self.coinFlipBettyScreen = CoinFlipBettyScreen()
-        self.blackJackMackScreen = BlackJackMackScreen()
-        self.opossumInACanCandyScreen = OpossumInACanCandyScreen()
 
         self.area2BarCutScene1 = Area2BarCutScene1()
         self.area2BarCutScene2 = Area2BarCutScene2()
@@ -273,6 +265,16 @@ class GameState:
         self.area2RestScreen = Area2RestScreen()
         self.area2BossScreen = Area2BossScreen()
         self.area2GamblingScreen = Area2GamblingScreen()
+
+
+        self.slotsRippaSnappaScreen = SlotsRippaSnappaScreen()
+        self.hungryStarvingHippos = HungryStarvingHippos()
+        self.hungryStarvingHippos2 = HungryStarvingHippos2()
+        self.crapsHappyScreen = CrapsHappyScreen()
+        self.crapsBossScreen = CrapsBossScreen()
+        self.coinFlipBettyScreen = CoinFlipBettyScreen()
+        self.blackJackMackScreen = BlackJackMackScreen()
+        self.opossumInACanCandyScreen = OpossumInACanCandyScreen()
 
 
 
