@@ -44,7 +44,7 @@ class HungryStarvingHipposNippyScreen(Screen):
                 500
             ),
             "you_win": TextBox(
-                ["Congrats on your win here is 500 coins and a special coin", ""],
+                ["Congrats on your win here is 500 coins and a special prize enjoy", ""],
                 (65, 460, 700, 130),
                 36,
                 500
@@ -430,6 +430,9 @@ class HungryStarvingHipposNippyScreen(Screen):
                 state.area_2_gambling_area_to_rest_point = False
                 print("yupper")
                 state.player.canMove = True
+                # state.player.items.append(Equipment.HIPPO_HOUR_GLASS.value)
+                if state.player.current_stage == 2:
+                    state.player.items.append(Equipment.HIPPO_HOUR_GLASS.value)
 
                 # self.end_screen()
 

@@ -13,7 +13,8 @@
         "mp bracelet",
         "coin flip glasses",
         "HEALTHY GLOVES",
-        "Nuggie Amulet"
+        "Nuggie Amulet",
+        "HIPPO HOUR GLASS"
     ],
     "equipped_items": [
         "coin flip glasses",
@@ -34,7 +35,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 1520,
+    "money": 1920,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -43,7 +44,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 14,
+    "days": 15,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",

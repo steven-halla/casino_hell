@@ -430,7 +430,6 @@ class HungryStarvingHipposNippyScreen(Screen):
                 state.area_2_gambling_area_to_rest_point = False
                 print("yupper")
                 state.player.canMove = True
-                self.end_screen()
 
         if self.game_state == "you_lose_screen":
             print("you lose scren is here")
@@ -445,7 +444,6 @@ class HungryStarvingHipposNippyScreen(Screen):
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
-                self.end_screen()
 
 
 
