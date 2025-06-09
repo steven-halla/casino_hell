@@ -18,7 +18,7 @@ class CoinFlipBettyScreen(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100
-        self.dealer_name: str = "Wanton"
+        self.dealer_name: str = "Betty"
         self.initial_coin_image_position: tuple[int, int] = (300, 250)
         self.timer_start:bool = None
         self.coin_bottom:bool = False
@@ -78,7 +78,7 @@ class CoinFlipBettyScreen(GambleScreen):
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "Wanton: It's been a while since I last had a decent challenge."
+                "Betty: It's been a while since I last had a decent challenge."
             ]),
             self.BET_MESSAGE: MessageBox([
                 "Min bet of 50, max of 200. Press up and down keys to increase/decrease bet. Press B to go back."

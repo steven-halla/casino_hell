@@ -298,8 +298,8 @@ class OpossumInACanCandyScreen(GambleScreen):
     def update(self, state):
         if self.candyOpossumMoney <= self.candy_bankrupt:
             Events.add_level_two_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_CANDY_DEFEATED)
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area2GamblingScreen
+            state.area2GamblingScreen.start(state)
 
         super().update(state)
         controller = state.controller
@@ -415,8 +415,8 @@ class OpossumInACanCandyScreen(GambleScreen):
                     controller.isAPressedSwitch = False
                     self.opossum_round_reset(state)
                     state.player.money -= 100
-                    state.currentScreen = state.area3RestScreen
-                    state.area3RestScreen.start(state)
+                    state.currentScreen = state.area2GamblingScreen
+                    state.area2GamblingScreen.start(state)
 
 
     def draw(self, state):
@@ -982,8 +982,8 @@ class OpossumInACanCandyScreen(GambleScreen):
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.quit_index:
                 state.player.canMove = True
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
