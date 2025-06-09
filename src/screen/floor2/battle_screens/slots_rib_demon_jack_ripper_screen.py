@@ -24,7 +24,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
         self.spell_sound.set_volume(0.3)
         self.magic_screen_choices: list[str] = []
         self.hack_cost:int = 75
-        self.money: int = 1000
+        self.money: int = 200
         self.slot_hack_active: int = 5
         self.slot_hack_inactive: int = 0
         self.level_up_message_initialized = False
