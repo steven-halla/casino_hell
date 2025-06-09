@@ -28,10 +28,11 @@ class Area2ShopKeeper(Npc):
             Equipment.COIN_SAVE_AREA_2.value,
             Equipment.COIN_FLIP_GLASSES.value,
             Equipment.HEALTHY_GLOVES.value,
-            Events.STAT_POTION_AREA_2.value,
-            Equipment.BOSS_KEY.value
+            Magic.SHAKE.value,
+            Equipment.BOSS_KEY.value,
+            Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value
         ]
-        self.shop_costs = ["500", "500", "500", "500", "500"]
+        self.shop_costs = ["500", "500", "500", "500", "500", "500"]
         self.selected_item_index = 0
         self.character_sprite_image = pygame.image.load(
             "./assets/images/SNES - Harvest Moon - Tool Shop Owner.png").convert_alpha()
@@ -46,7 +47,6 @@ class Area2ShopKeeper(Npc):
         self.textbox.show_shop_menu = True
 
     def update(self, state: "GameState"):
-        stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
@@ -58,12 +58,12 @@ class Area2ShopKeeper(Npc):
                 self.shop_items[1] = "sold out"
             if Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
                 self.shop_items[2] = "sold out"
-            if Events.STAT_POTION_AREA_2.value in state.player.level_two_npc_state:
+            if Magic.SHAKE.value in state.player.magicinventory:
                 self.shop_items[3] = "sold out"
             if Equipment.BOSS_KEY.value in state.player.quest_items:
                 self.shop_items[4] = "sold out"
-
-            cost = int(self.shop_costs[self.selected_item_index])
+            if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.level_two_npc_state:
+                self.shop_items[5] = "sold out"
 
             if (state.controller.isBPressed or state.controller.isBPressedSwitch) and pygame.time.get_ticks() - self.input_time > 500 and not self.stat_point_increase:
                 self.input_time = pygame.time.get_ticks()
@@ -75,8 +75,8 @@ class Area2ShopKeeper(Npc):
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
                 if state.controller.confirm_button:
+                    cost = 500
                     if self.selected_item_index == 0:
-                        cost = 500
                         if state.player.money - cost < 500 or Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                             self.cant_buy_sound.play()
                         else:
@@ -84,7 +84,6 @@ class Area2ShopKeeper(Npc):
                             Equipment.add_equipment_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
                             state.player.money -= cost
                     elif self.selected_item_index == 1:
-                        cost = 500
                         if state.player.money - cost < 500 or Equipment.COIN_FLIP_GLASSES.value in state.player.items:
                             self.cant_buy_sound.play()
                         else:
@@ -92,7 +91,6 @@ class Area2ShopKeeper(Npc):
                             Equipment.add_equipment_to_player(state.player, Equipment.COIN_FLIP_GLASSES)
                             state.player.money -= cost
                     elif self.selected_item_index == 2:
-                        cost = 500
                         if state.player.money - cost < 500 or Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
                             self.cant_buy_sound.play()
                         else:
@@ -100,21 +98,25 @@ class Area2ShopKeeper(Npc):
                             Equipment.add_equipment_to_player(state.player, Equipment.HEALTHY_GLOVES)
                             state.player.money -= cost
                     elif self.selected_item_index == 3:
-                        cost = 500
-                        if state.player.money - cost < 500 or Events.STAT_POTION_AREA_2.value in state.player.level_two_npc_state:
+                        if state.player.money - cost < 500 or Magic.SHAKE.value in state.player.magicinventory:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Events.add_event_to_player(state.player, Events.STAT_POTION_AREA_2)
+                            Magic.add_magic_to_player(state.player, Magic.SHAKE)
                             state.player.money -= cost
-                            self.stat_point_increase = True
                     elif self.selected_item_index == 4:
-                        cost = 500
                         if state.player.money - cost < 500 or Equipment.BOSS_KEY.value in state.player.quest_items:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
                             Equipment.add_equipment_to_player(state.player, Equipment.BOSS_KEY)
+                            state.player.money -= cost
+                    elif self.selected_item_index == 5:
+                        if state.player.money - cost < 500 or Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.level_two_npc_state:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            Equipment.add_equipment_to_player(state.player, Equipment.DARLENES_CHICKEN_NUGGER_AMULET)
                             state.player.money -= cost
 
                 if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400 and not self.stat_point_increase:
@@ -180,3 +182,15 @@ class Area2ShopKeeper(Npc):
                 state.DISPLAY.blit(self.font.render("Good for keeping energy high!", True, (255, 255, 255)), (70, 510))
             elif self.selected_item_index == 2 and Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
                 state.DISPLAY.blit(self.font.render("Healthy Gloves already purchased!", True, (255, 255, 255)), (70, 460))
+
+            if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value not in state.player.level_two_npc_state:
+                state.DISPLAY.blit(self.font.render("There is only 1 of these on this floor so use it wisely.", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render("Saves your game.", True, (255, 255, 255)), (70, 510))
+            if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
+                state.DISPLAY.blit(self.font.render("Save Coin is Sold out!", True, (255, 255, 255)), (70, 460))
+
+            if self.selected_item_index == 5 and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.level_two_npc_state:
+                state.DISPLAY.blit(self.font.render("Darlene's Chicken Nugger Amulet - 1/2 stamina drain for point rolls", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render("Complete the quest for Darlene the Chicken to unlock its full power!", True, (255, 255, 255)), (70, 510))
+            if self.selected_item_index == 5 and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.level_two_npc_state:
+                state.DISPLAY.blit(self.font.render("Nuggie Amulet is Sold out!", True, (255, 255, 255)), (70, 460))

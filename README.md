@@ -432,8 +432,10 @@ LUCK - BONUS TO ALL GAMES
 
 level 2:
 1 craps item - store
+
 1 craps spell - level 2 mind
 1 opossum in a can spell - store
+
 1 coin flip item - store
 1 slot magic - prize
 1 hippo item - prize
