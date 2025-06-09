@@ -390,22 +390,41 @@ class SlotsRippaSnappaScreen(GambleScreen):
 
         elif self.slots == ["chest", "chest", "chest"]:
             self.jack_pot = 200
-            if self.secret_item_found == True:
+            if Magic.SLOTS_HACK.value not in state.player.magicinventory:
+                if controller.confirm_button:
+                    state.player.exp += self.exp_gain_high
+                    state.player.money += self.jack_pot
+                    state.player.magicinventory.append(Magic.SLOTS_HACK.value)
+                    self.reset_slots_juragan_round()
+                    self.game_state = self.WELCOME_SCREEN
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [
+                    f"You acquired the SLOTS_HACK spell and {self.jack_pot} coins. Gain {self.exp_gain_high} exp"
+                ]
+            else:
                 if controller.confirm_button:
                     state.player.money += self.jack_pot
                     state.player.exp += self.exp_gain_low
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
-
-            elif self.secret_item_found == False:
-                if controller.confirm_button:
-                    state.player.exp += self.exp_gain_high
-                    Events.add_level_four_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
-                    self.secret_item_found = True
-                    self.reset_slots_juragan_round()
-                    self.game_state = self.WELCOME_SCREEN
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [
+                    f"You already have the spell. You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"
+                ]
+            # if self.secret_item_found == True:
+            #     if controller.confirm_button:
+            #         state.player.money += self.jack_pot
+            #         state.player.exp += self.exp_gain_low
+            #         self.reset_slots_juragan_round()
+            #         self.game_state = self.WELCOME_SCREEN
+            #     self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
+            #
+            # elif self.secret_item_found == False:
+            #     if controller.confirm_button:
+            #         state.player.exp += self.exp_gain_high
+            #         Events.add_level_four_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+            #         self.secret_item_found = True
+            #         self.reset_slots_juragan_round()
+            #         self.game_state = self.WELCOME_SCREEN
+            #     self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
 
         elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
             self.jack_pot = 500

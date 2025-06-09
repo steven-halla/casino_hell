@@ -241,6 +241,13 @@ class Player(Entity):
             if self.exp > 300:
                 self.exp = 300
 
+        elif self.current_stage == 2:
+            if self.exp > 2800:
+                self.exp = 2800
+
+        if self.mind == 2:
+            self.magicinventory.append(Magic.CRAPS_LUCKY_7.value)
+
 
         # if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
         #     self.perception = self.base_perception + self.perception_boost_item
