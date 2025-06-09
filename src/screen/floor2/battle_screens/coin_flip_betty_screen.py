@@ -247,7 +247,7 @@ class CoinFlipBettyScreen(GambleScreen):
         print("The magic spell chance is: " + str(silence_randomizer))
         print("The magic spell bonus penalty: " + str(self.silence_bonus_chance))
 
-        if silence_randomizer > 1 and self.betty_magic_points > 0 and self.debuff_silence == 0:
+        if silence_randomizer > 100 and self.betty_magic_points > 0 and self.debuff_silence == 0:
             self.game_state = self.BETTY_CASTING_SPELL_SCREEN
 
 
