@@ -10,7 +10,8 @@
     "items": [
         "Black Hat",
         "opossum repellent",
-        "mp bracelet"
+        "mp bracelet",
+        "COIN_SAVE_AREA_2"
     ],
     "equipped_items": [],
     "npcitems": [
@@ -27,7 +28,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 4400,
+    "money": 3900,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -39,7 +40,8 @@
     "days": 12,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
-        "FEAST_CONSUMED"
+        "FEAST_CONSUMED",
+        "COIN_SAVE_AREA_2"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",

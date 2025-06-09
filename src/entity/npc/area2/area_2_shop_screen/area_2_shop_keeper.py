@@ -83,6 +83,8 @@ class Area2ShopKeeper(Npc):
                             self.buy_sound.play()
                             Equipment.add_equipment_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
                             state.player.money -= cost
+                            state.save_game(state.player, state)
+
                     elif self.selected_item_index == 1:
                         if state.player.money - cost < 500 or Equipment.COIN_FLIP_GLASSES.value in state.player.items:
                             self.cant_buy_sound.play()
