@@ -1,7 +1,7 @@
 {
     "current_stage": 2,
     "level": 3,
-    "exp": 425,
+    "exp": 600,
     "stamina_points": 230,
     "max_stamina_points": 230,
     "focus_points": 100,
@@ -27,7 +27,8 @@
     "magicinventory": [
         "Shield",
         "reveal",
-        "shake"
+        "shake",
+        "HACK"
     ],
     "body": 1,
     "mind": 1,
@@ -35,7 +36,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 1920,
+    "money": 4905,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -44,15 +45,13 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 15,
+    "days": 16,
     "leveltwonpcstate": [
-        "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
         "LEvel 2 save coin",
         "coin flip glasses",
         "HEALTHY GLOVES",
-        "Nuggie Amulet",
-        "COIN_FLIP_BETTY_DEFEATED"
+        "Nuggie Amulet"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -75,7 +74,7 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": -20,
+    "coinflipbetteymoney": 444,
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
@@ -84,7 +83,7 @@
     "opossuminacanbillybobmoney": 444,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 900,
-    "blackjackmackmoney": 0,
+    "blackjackmackmoney": 1110,
     "blackjackalbertmoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,

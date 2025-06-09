@@ -27,6 +27,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
         self.money: int = 1000
         self.slot_hack_active: int = 5
         self.slot_hack_inactive: int = 0
+        self.level_up_message_initialized = False
+
         self.slot_hack_debuff: int = 0
         self.exp_gain_low:int = 10
         self.exp_gain_no_match: int = 5
@@ -94,6 +96,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
             ]),
             self.RIPPASNAPPA_CASTING_SPELL_MESSAGE: MessageBox([
                 "O charitable one, please spare a coin to a hungry demon...double coin(increaed cost to play)"
+            ]),
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                f"You leveld up!"
             ]),
         }
 
@@ -209,6 +214,12 @@ class SlotsRippaSnappaScreen(GambleScreen):
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.game_over_screen_level_4(controller, state)
 
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+
+            self.handle_level_up(state, state.controller)
+
     def draw(self, state):
         super().draw(state)
         self.draw_hero_info_boxes(state)
@@ -233,6 +244,11 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
+
+            self.handle_level_up(state, state.controller)
         pygame.display.flip()
 
 
@@ -455,10 +471,10 @@ class SlotsRippaSnappaScreen(GambleScreen):
             if self.welcome_screen_index == self.welcome_screen_play_index:
                 self.game_state = self.SPIN_SCREEN
                 if self.slot_hack_debuff == self.slot_hack_inactive:
-                    state.player.stamina_points -= self.player_stamina_med_cost
+                    state.player.stamina_points -= self.player_stamina_low_cost
                     state.player.money -= self.bet
                 elif self.slot_hack_debuff > self.slot_hack_inactive:
-                    state.player.stamina_points -= self.player_stamina_med_cost
+                    state.player.stamina_points -= self.player_stamina_low_cost
                     if self.bet > 100:
                         state.player.money -= 50
 

@@ -29,6 +29,7 @@ class CrapsBossScreen(BattleScreen):
         self.sprite_sheet = pygame.image.load("./assets/images/dice45.png")
 
         self.spell_effect = True
+
         self.dice_roll_1 = 0
         self.dice_roll_2 = 0
         self.dice_roll_3 = 0

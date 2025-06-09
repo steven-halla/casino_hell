@@ -89,6 +89,8 @@ class CrapsHappyScreen(GambleScreen):
         self.greed_meter: int = 0
         self.greed_bank: bool = False
         self.hungry_dice_increased_chance:int = 0
+        self.level_up_message_initialized = False
+
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -126,6 +128,9 @@ class CrapsHappyScreen(GambleScreen):
             ]),
             self.HAPPY_CASTING_SPELL_MESSAGE: MessageBox([
                 f"Starving animals of eternal hunger, casts your misery upon the unworthy...weighted dice(all dice totals -1)"
+            ]),
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                f"You leveld up!"
             ]),
         }
 
@@ -264,6 +269,12 @@ class CrapsHappyScreen(GambleScreen):
             self.update_player_win_point_roll_helper(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.game_over_screen_level_4(state, controller)
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+
+            self.handle_level_up(state, state.controller)
+
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -327,7 +338,13 @@ class CrapsHappyScreen(GambleScreen):
                                (self.blit_message_x, self.blit_message_y))
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
+
+            self.handle_level_up(state, state.controller)
         pygame.display.flip()
+
 
     def update_player_win_point_roll_helper(self, state):
         if state.controller.confirm_button:

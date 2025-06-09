@@ -47,6 +47,8 @@ class OpossumInACanCandyScreen(GambleScreen):
         self.peek_points: int = 0
         self.buff_poison_bite: int = 0
         self.player_debuff_poison: int = 0
+        self.level_up_message_initialized = False
+
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -82,6 +84,9 @@ class OpossumInACanCandyScreen(GambleScreen):
                 "Candy:Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
             ]),
 
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                f"You leveld up!"
+            ]),
         }
 
 
@@ -263,10 +268,10 @@ class OpossumInACanCandyScreen(GambleScreen):
             if self.peek_points > 0:
                 self.buff_peek = True
 
-        
+
         if self.player_debuff_poison > 0:
             self.player_debuff_poison -= 1
-        
+
         if self.player_debuff_poison > 0:
             state.player.focus_points -= 10
 
@@ -388,6 +393,12 @@ class OpossumInACanCandyScreen(GambleScreen):
                     self.game_state = self.CANDY_CASTING_SPELL_SCREEN
                 else:
                     self.game_state = self.WELCOME_SCREEN
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+
+            self.handle_level_up(state, state.controller)
+
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0
             no_stamina_game_over = 0
@@ -457,6 +468,10 @@ class OpossumInACanCandyScreen(GambleScreen):
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             self.battle_messages[self.PLAYER_WIN_MESSAGE].draw(state)
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
+
+            self.handle_level_up(state, state.controller)
 
         elif self.game_state == self.GAME_OVER_SCREEN:
             no_money_game_over = 0

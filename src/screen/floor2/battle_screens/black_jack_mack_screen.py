@@ -353,8 +353,8 @@ class BlackJackMackScreen(GambleScreen):
             if self.battle_messages[
                 self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 state.player.canMove = True
 
     def draw(self, state: 'GameState'):
@@ -712,8 +712,8 @@ class BlackJackMackScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
 
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 state.player.canMove = True
 
     def initialize_music(self):
