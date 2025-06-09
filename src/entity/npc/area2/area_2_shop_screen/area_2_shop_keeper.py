@@ -34,9 +34,9 @@ class Area2ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value, Equipment.CRAPS_WRIST_WATCH.value, Equipment.STAT_POTION_AREA_3.value, Equipment.CHEFS_HAT.value, Equipment.MP_BRACELET.value,Equipment.MEDIUM_VEST.value ]
+        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value, ]
 
-        self.shop_costs = ["1200", "1000", "1000", "1000", "1000","1500"]
+        self.shop_costs = ["500", "500", "500", "500", "500","1000"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -77,61 +77,9 @@ class Area2ShopKeeper(Npc):
                 print(self.stat_point_increase_index)
 
 
-            # Handle selection confirmation (e.g., with 'T' press)
-            if (state.controller.isTPressed or state.controller.isAPressedSwitch) and pygame.time.get_ticks() - self.input_time > 400:
-                selected_stat = stats[self.stat_point_increase_index]
-                print(f"Player selected: {selected_stat}")
-                # Handle the logic for applying the stat point increase
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
-
-                if self.stat_point_increase_index == 0 and state.player.body < 3:
-                    state.player.body += 1
-                    state.player.max_stamina_points += state.player.level_2_body_stamina_increase
-                    state.player.stamina_points += state.player.level_2_body_stamina_increase
-
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
 
 
-                elif self.stat_point_increase_index == 1 and state.player.mind < 3:
-                    state.player.mind += 1
-                    state.player.max_focus_points += state.player.level_2_mind_focus_increase
-                    state.player.focus_points += state.player.level_2_mind_focus_increase
-                    Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
 
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 2 and state.player.spirit < 3:
-                    state.player.spirit += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 3 and state.player.perception < 3 and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
-                    state.player.perception += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 3 and state.player.perception < 4 and Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    state.player.perception += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 4 and state.player.luck < 3 and state.player.enhanced_luck == False:
-                    state.player.luck += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 4 and state.player.luck < 4 and state.player.enhanced_luck == True:
-                    state.player.luck += 1
-                    self.stat_point_increase = False
-                    state.area2RestScreen.shop_lock = False
 
         if self.state == "waiting":
             self.update_waiting(state)
