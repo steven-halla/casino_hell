@@ -305,6 +305,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
+
                         state.player.money -= self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.reset_slots_juragan_round()
@@ -312,6 +314,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
                     else:
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
+
                         state.player.exp += self.exp_gain_high
                         self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
@@ -322,13 +326,16 @@ class SlotsRippaSnappaScreen(GambleScreen):
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
-                        state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
+
                         state.player.exp += self.exp_gain_high
                         self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
                     else:
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
+
                         state.player.exp += self.exp_gain_high
                         self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
@@ -338,6 +345,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
+                self.money += self.player_coin_low_drain
+
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -347,6 +356,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_med_drain
+                self.money += self.player_coin_med_drain
+
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
@@ -361,6 +372,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.jack_pot = 50
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
+
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -371,6 +384,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
 
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
+
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -380,6 +395,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.jack_pot = 150
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
+
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -399,6 +416,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.jack_pot = 250
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
+
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -419,6 +438,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
             else:
                 if controller.confirm_button:
                     state.player.money += self.jack_pot
+                    self.money -= self.jack_pot
                     state.player.exp += self.exp_gain_low
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
@@ -449,7 +469,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
                 if Equipment.SLOTS_SHOES.value in state.player.equipped_items and self.debuff_increased_pay_to_play == 0:
                     state.player.stamina_points += 100
                     state.player.focus_points += 50
-
+                self.money -= self.jack_pot
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_high
                 self.reset_slots_juragan_round()

@@ -13,7 +13,7 @@ class GambleScreen:
         self.screenName: str = screenName
         self.startedAt: int = pygame.time.get_ticks()
         self.font: pygame.font.Font = pygame.font.Font(None, 36)  # Initialize the font attribute
-        self.money: int = 1000  # Add this line
+        self.money: int = 777  # Add this line
         self.bet: int = 50  # Add this line
         self.lock_down: int = 0
         self.index_stepper: int = 1
