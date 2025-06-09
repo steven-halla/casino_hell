@@ -24,10 +24,10 @@
     "body": 1,
     "mind": 1,
     "spirit": 1,
-    "perception": 1,
+    "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 5000,
+    "money": 4400,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -36,9 +36,10 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 11,
+    "days": 12,
     "leveltwonpcstate": [
-        "BLACK_JACK_MACK_DEFEATED"
+        "BLACK_JACK_MACK_DEFEATED",
+        "FEAST_CONSUMED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",

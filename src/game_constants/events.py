@@ -52,6 +52,8 @@ class Events(Enum):
     COIN_FLIP_BETTY_DEFEATED = "COIN_FLIP_BETTY_DEFEATED"
     CRAPS_HAPPY_DEFEATED = "CRAPS_HAPPY_DEFEATED"
 
+    FEAST_CONSUMED = "FEAST_CONSUMED"
+
     # below is for level 3--------------------------------
     CRAPS_JUNPON_DEFEATED = "junpon defeated"
     BLACK_JACK_ALBERT_DEFEATED = "black jack albert defeated"
