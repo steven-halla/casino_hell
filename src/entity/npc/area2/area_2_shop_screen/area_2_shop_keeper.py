@@ -26,7 +26,7 @@ class Area2ShopKeeper(Npc):
         self.state = "waiting"
         self.shop_items = [
             Equipment.COIN_SAVE_AREA_2.value,
-            Equipment.HIPPO_HOUR_GLASS.value,
+            Equipment.COIN_FLIP_GLASSES.value,
             Equipment.HEALTHY_GLOVES.value,
             Events.STAT_POTION_AREA_2.value,
             Equipment.BOSS_KEY.value
@@ -54,7 +54,7 @@ class Area2ShopKeeper(Npc):
 
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[0] = "sold out"
-            if Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
+            if Equipment.COIN_FLIP_GLASSES.value in state.player.level_two_npc_state:
                 self.shop_items[1] = "sold out"
             if Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
                 self.shop_items[2] = "sold out"
@@ -85,11 +85,11 @@ class Area2ShopKeeper(Npc):
                             state.player.money -= cost
                     elif self.selected_item_index == 1:
                         cost = 500
-                        if state.player.money - cost < 500 or Equipment.HIPPO_HOUR_GLASS.value in state.player.quest_items:
+                        if state.player.money - cost < 500 or Equipment.COIN_FLIP_GLASSES.value in state.player.items:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Equipment.add_equipment_to_player(state.player, Equipment.HIPPO_HOUR_GLASS)
+                            Equipment.add_equipment_to_player(state.player, Equipment.COIN_FLIP_GLASSES)
                             state.player.money -= cost
                     elif self.selected_item_index == 2:
                         cost = 500
