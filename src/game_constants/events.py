@@ -53,6 +53,7 @@ class Events(Enum):
     CRAPS_HAPPY_DEFEATED = "CRAPS_HAPPY_DEFEATED"
 
     FEAST_CONSUMED = "FEAST_CONSUMED"
+    LEVEL_SAVE_COIN_AREA_TWO  = "LEvel 2 save coin"
 
     # below is for level 3--------------------------------
     CRAPS_JUNPON_DEFEATED = "junpon defeated"

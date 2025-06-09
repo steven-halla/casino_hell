@@ -1,9 +1,9 @@
 {
     "current_stage": 2,
     "level": 3,
-    "exp": 300,
-    "stamina_points": 200,
-    "max_stamina_points": 200,
+    "exp": 425,
+    "stamina_points": 230,
+    "max_stamina_points": 230,
     "focus_points": 100,
     "max_focus_points": 100,
     "companions": [],
@@ -11,16 +11,22 @@
         "Black Hat",
         "opossum repellent",
         "mp bracelet",
-        "COIN_SAVE_AREA_2"
+        "coin flip glasses",
+        "HEALTHY GLOVES",
+        "Nuggie Amulet"
     ],
-    "equipped_items": [],
+    "equipped_items": [
+        "coin flip glasses",
+        "HEALTHY GLOVES"
+    ],
     "npcitems": [
         "level 2 token",
         "level 3 token"
     ],
     "magicinventory": [
         "Shield",
-        "reveal"
+        "reveal",
+        "shake"
     ],
     "body": 1,
     "mind": 1,
@@ -28,7 +34,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 3900,
+    "money": 1520,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -37,11 +43,15 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 12,
+    "days": 14,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
-        "COIN_SAVE_AREA_2"
+        "LEvel 2 save coin",
+        "coin flip glasses",
+        "HEALTHY GLOVES",
+        "Nuggie Amulet",
+        "COIN_FLIP_BETTY_DEFEATED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -64,7 +74,7 @@
     "quest1complete": false,
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 300,
+    "coinflipbetteymoney": -20,
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,

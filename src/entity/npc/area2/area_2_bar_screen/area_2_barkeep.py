@@ -64,10 +64,10 @@ class Area2BarKeep(Npc):
                 elif idx == 0:
                     self.buy_sound.play()
                     state.player.money -= 200
-                    state.player.stamina += 50
-                    state.player.max_stamina += 50
-                    state.player.max_focus += 25
-                    state.player.max_focus += 25
+                    state.player.stamina_points += 50
+                    state.player.max_stamina_points += 50
+                    state.player.focus_points += 25
+                    state.player.max_focus_points += 25
                     state.player.food -= 1
 
                 elif idx == 1:

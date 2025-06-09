@@ -103,8 +103,8 @@ class OpossumInACanCandy(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.opossumInACanSallyScreen
-                state.opossumInACanSallyScreen.start(state)
+                state.currentScreen = state.opossumInACanCandyScreen
+                state.opossumInACanCandyScreen.start(state)
 
             elif selected_option == "No":
                 self.state = "waiting"

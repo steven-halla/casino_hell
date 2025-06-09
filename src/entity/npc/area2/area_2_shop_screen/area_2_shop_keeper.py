@@ -77,11 +77,11 @@ class Area2ShopKeeper(Npc):
                 if state.controller.confirm_button:
                     cost = 500
                     if self.selected_item_index == 0:
-                        if state.player.money - cost < 500 or Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
+                        if state.player.money - cost < 500 or Events.LEVEL_SAVE_COIN_AREA_TWO.value in state.player.level_two_npc_state:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Equipment.add_equipment_to_player(state.player, Equipment.COIN_SAVE_AREA_2)
+                            Events.add_level_two_event_to_player(state.player, Events.LEVEL_SAVE_COIN_AREA_TWO)
                             state.player.money -= cost
                             state.save_game(state.player, state)
 
