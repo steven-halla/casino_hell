@@ -468,7 +468,7 @@ class CrapsHappyScreen(GambleScreen):
             selected_choice = self.magic_screen_choices[self.magic_screen_index]
 
             if selected_choice == Magic.CRAPS_LUCKY_7.value and state.player.focus_points >= self.triple_dice_cast_cost:
-                self.lucky_seven_buff_counter = self.triple_dice_counter_start_set
+                self.lucky_seven_buff_counter = 5 + state.player.mind
                 self.spell_sound.play()
                 state.player.focus_points -= self.triple_dice_cast_cost
                 self.magic_lock = True
@@ -559,7 +559,7 @@ class CrapsHappyScreen(GambleScreen):
     def update_power_meter_screen_helper(self, state):
         controller = state.controller
         controller.update()
-        nugget_amulet_buff = 10
+        nugget_amulet_buff = 10 + (state.player.spirit * 5)
 
         you_lose_unlucky_roll = 60
         self.battle_messages[self.POWER_METER_MESSAGE].update(state)
