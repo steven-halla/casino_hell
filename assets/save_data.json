@@ -1,7 +1,7 @@
 {
     "current_stage": 2,
     "level": 3,
-    "exp": 495,
+    "exp": 550,
     "stamina_points": 230,
     "max_stamina_points": 230,
     "focus_points": 100,
@@ -36,7 +36,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 4905,
+    "money": 5005,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -45,7 +45,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 16,
+    "days": 17,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
@@ -53,7 +53,8 @@
         "coin flip glasses",
         "HEALTHY GLOVES",
         "Nuggie Amulet",
-        "COIN_FLIP_BETTY_DEFEATED"
+        "COIN_FLIP_BETTY_DEFEATED",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -89,7 +90,7 @@
     "blackjackalbertmoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 200,
+    "slotsrippasnappamoney": 0,
     "slotsbroganmoney": 1000,
     "crapscrappymoney": 1000,
     "crapsjunponmoney": 1000,

@@ -10,6 +10,7 @@ class Magic(Enum):
     SHIELD = "Shield" # coin flip dedefends bad rolls
     # slots
     SLOTS_HACK = "HACK"  # pay 0 money for slots
+    LUCKY777 = "lucky777" # forces a 777 with a % chance to work
     # craps
     CRAPS_LUCKY_7 = "Triple D"    #  roll a 3rd dice, thx lady luck
     GREED_METER = "pig meter" #  scoring a 95 or higher nets you +50% win on bets

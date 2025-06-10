@@ -32,7 +32,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
         self.slot_hack_debuff: int = 0
         self.exp_gain_low:int = 10
         self.exp_gain_no_match: int = 5
-        self.bet = 100
+        self.bet = 25
         self.exp_gain_high: int = 50
         self.increased_coin_chance: int = 0
 
@@ -279,9 +279,10 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.magic_index = (self.magic_index + self.index_stepper) % len(self.magic_screen_choices)
 
         if controller.confirm_button:
+            magic_bonus = state.player.mind
             if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
                 state.player.focus_points -= self.hack_cost
-                self.slot_hack_debuff = 5
+                self.slot_hack_debuff = 5 + magic_bonus
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.magic_index = 0
@@ -493,6 +494,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
                 if self.slot_hack_debuff == self.slot_hack_inactive:
                     state.player.stamina_points -= self.player_stamina_low_cost
                     state.player.money -= self.bet
+                    self.money += self.bet
+
                 elif self.slot_hack_debuff > self.slot_hack_inactive:
                     state.player.stamina_points -= self.player_stamina_low_cost
                     if self.bet > 100:
