@@ -30,7 +30,7 @@ class CrapsHappyScreen(GambleScreen):
         self.power_meter_index: int = 0
         self.point_roll_total: int = 0
         self.point_roll_choices: list[str] = ["Play", "Blow", "Bet"]
-        self.magic_screen_choices: list[str] = [Magic.CRAPS_LUCKY_7.value, Magic.GREED_METER.value,  "Back"]
+        self.magic_screen_choices: list[str] = []
         self.bet_screen_choices: list[str] = ["Back"]
         self.magic_screen_index: int = 0
         self.triple_dice_index: int = 0
@@ -157,6 +157,7 @@ class CrapsHappyScreen(GambleScreen):
     PLAYER_LOSE_POINT_ROLL_SCREEN: str = "player_lose_point_roll_screen"
     BLOW_POINT_ROLL_SCREEN: str = "blow_point_roll_screen"
     HAPPY_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
+    BACK = "back"
 
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
@@ -164,6 +165,14 @@ class CrapsHappyScreen(GambleScreen):
         if (Magic.GREED_METER.value in state.player.magicinventory
                 and Magic.GREED_METER.value not in self.magic_screen_choices):
             self.magic_screen_choices.append(Magic.GREED_METER.value)
+
+
+
+        if Magic.CRAPS_LUCKY_7.value in state.player.magicinventory and Magic.CRAPS_LUCKY_7.value not in self.magic_screen_choices:
+            self.magic_screen_choices.append(Magic.CRAPS_LUCKY_7.value)
+
+        if self.BACK not in self.magic_screen_choices:
+            self.magic_screen_choices.append(self.BACK)
 
     def round_reset(self, state: 'GameState'):
 

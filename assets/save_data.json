@@ -1,5 +1,5 @@
 {
-    "current_stage": 2,
+    "current_stage": 3,
     "level": 4,
     "exp": 650,
     "stamina_points": 250,
@@ -14,7 +14,8 @@
         "coin flip glasses",
         "HEALTHY GLOVES",
         "Nuggie Amulet",
-        "HIPPO HOUR GLASS"
+        "HIPPO HOUR GLASS",
+        "boss key"
     ],
     "equipped_items": [
         "opossum repellent",
@@ -29,6 +30,7 @@
         "Shield",
         "reveal",
         "shake",
+        "Triple D",
         "HACK"
     ],
     "body": 1,
@@ -37,7 +39,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 6749,
+    "money": 6099,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -46,7 +48,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 18,
+    "days": 21,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
@@ -56,7 +58,10 @@
         "Nuggie Amulet",
         "COIN_FLIP_BETTY_DEFEATED",
         "SLOTS_RIPPA_SNAPPA_DEFEATED",
-        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "CRAPS_HAPPY_DEFEATED",
+        "boss key",
+        "LEVEL_2_BOSS_DEFEATED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -94,7 +99,7 @@
     "shopkeepersavecoin": false,
     "slotsrippasnappamoney": 0,
     "slotsbroganmoney": 1000,
-    "crapscrappymoney": 1000,
+    "crapscrappymoney": -5,
     "crapsjunponmoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
     "highlowdienamoney": 1000
