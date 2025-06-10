@@ -1,11 +1,11 @@
 {
     "current_stage": 2,
-    "level": 3,
-    "exp": 550,
-    "stamina_points": 230,
-    "max_stamina_points": 230,
-    "focus_points": 100,
-    "max_focus_points": 100,
+    "level": 4,
+    "exp": 650,
+    "stamina_points": 250,
+    "max_stamina_points": 250,
+    "focus_points": 120,
+    "max_focus_points": 120,
     "companions": [],
     "items": [
         "Black Hat",
@@ -17,12 +17,13 @@
         "HIPPO HOUR GLASS"
     ],
     "equipped_items": [
-        "coin flip glasses",
+        "opossum repellent",
         "HEALTHY GLOVES"
     ],
     "npcitems": [
         "level 2 token",
-        "level 3 token"
+        "level 3 token",
+        "level 4 token"
     ],
     "magicinventory": [
         "Shield",
@@ -36,7 +37,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 5005,
+    "money": 6749,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -45,7 +46,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 17,
+    "days": 18,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
@@ -54,7 +55,8 @@
         "HEALTHY GLOVES",
         "Nuggie Amulet",
         "COIN_FLIP_BETTY_DEFEATED",
-        "SLOTS_RIPPA_SNAPPA_DEFEATED"
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -82,7 +84,7 @@
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 444,
+    "opossuminacancandymoney": 0,
     "opossuminacanbillybobmoney": 444,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 900,

@@ -17,7 +17,7 @@ from game_constants.magic import Magic
 class OpossumInACanCandyScreen(GambleScreen):
     def __init__(self, screenName: str = "Opossum in a can Billy Bob") -> None:
         super().__init__(screenName)
-        self.bet: int = 300
+        self.bet: int = 200
         self.dealer_name = "Candy"
         self.candy_bankrupt = 0
         self.game_state:str = self.WELCOME_SCREEN
@@ -81,7 +81,7 @@ class OpossumInACanCandyScreen(GambleScreen):
                 "You lost the toss."
             ]),
             self.CANDY_CASTING_SPELL_MESSAGE: MessageBox([
-                "Candy:Here ya come now and git your fill. Why have 1 opossum when you can have 2...double pick"
+                "Candy: no need for books and fancy learning, grab yourself a banjo and sing a song...mind rot"
             ]),
 
             self.LEVEL_UP_MESSAGE: MessageBox([
@@ -233,7 +233,7 @@ class OpossumInACanCandyScreen(GambleScreen):
         self.pick_tally_screen_index = 0
         self.buff_peek = False
         [box.reset() for box in self.battle_messages.values()]
-        self.candy_magic_points: int = 3
+        self.candy_magic_points: int = 1
 
 
     def opossum_round_reset(self, state):
@@ -289,8 +289,9 @@ class OpossumInACanCandyScreen(GambleScreen):
             case 1:
                 inflict_poison_randomizer = random.randint(1, 80) + self.poison_chance
 
-        if inflict_poison_randomizer > 90 and self.candy_magic_points > 0 and self.player_debuff_poison == 0:
-            self.current_screen = self.CANDY_CASTING_SPELL_SCREEN
+        if inflict_poison_randomizer > 100 and self.candy_magic_points > 0 and self.player_debuff_poison == 0:
+            self.game_state = self.CANDY_CASTING_SPELL_SCREEN
+            print("dfjs;aljf")
             self.poison_chance = 0
 
 
@@ -311,10 +312,12 @@ class OpossumInACanCandyScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
 
         elif self.game_state == self.CANDY_CASTING_SPELL_SCREEN:
+            print("s;dafjlkdsajf;jaslfjdls;ajfl;dsajfkl;dsjafjdsal;jfkls;jfal;sdjf")
 
             self.battle_messages[self.CANDY_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.confirm_button:
                 self.player_debuff_poison = 5
+                self.candy_magic_points -= 1
 
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -359,8 +362,8 @@ class OpossumInACanCandyScreen(GambleScreen):
                         state.player.money += 200
 
                 state.player.exp += self.exp_gain_high
-                self.opossum_round_reset(state)
                 self.game_state = self.WELCOME_SCREEN
+                self.opossum_round_reset(state)
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
             if self.player_score > self.candyOpossumMoney   :
@@ -387,12 +390,12 @@ class OpossumInACanCandyScreen(GambleScreen):
                 self.candyOpossumMoney -= self.player_score
                 if self.candyOpossumMoney < 0:
                     self.candyOpossumMoney = 0
+                self.game_state = self.WELCOME_SCREEN
+
                 self.opossum_round_reset(state)
 
-                if self.candyOpossumMoney < 750  == False:
-                    self.game_state = self.CANDY_CASTING_SPELL_SCREEN
-                else:
-                    self.game_state = self.WELCOME_SCREEN
+
+
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0
             pygame.mixer.music.set_volume(self.music_volume)
@@ -446,6 +449,8 @@ class OpossumInACanCandyScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
 
         elif self.game_state == self.CANDY_CASTING_SPELL_SCREEN:
+            print("dslkjf;ldajfaj;fslafjlajf;js")
+
 
             self.battle_messages[self.CANDY_CASTING_SPELL_MESSAGE].draw(state)
 
