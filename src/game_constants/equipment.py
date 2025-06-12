@@ -19,6 +19,7 @@ class Equipment(Enum):
     CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
     DARLENES_CHICKEN_NUGGER_AMULET = "Nuggie Amulet" # complete main quest chicken nugger sauce
     #dice fighter
+    LUCKY_ROTTEN_SOCKS = "lucky rotten socks"
     #craps_wrist_watch applies
     #slots
     SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot

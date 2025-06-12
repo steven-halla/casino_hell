@@ -145,6 +145,12 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.MAGIC_MENU_BACK_DESCRIPTION: MessageBox([
                 "go back to previous menu"
             ]),
+            self.LEVEL_UP_SCREEN: MessageBox([
+                f"You leveld up!"
+            ]),
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                f"You leveld up!"
+            ]),
 
         }
 
@@ -182,6 +188,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
     PLAYER_DEFENSE_SCREEN: str = "player_defense_screen"
     ENEMY_DEFENSE_SCREEN: str = "enemy_defense_screen"
     POST_POINT_SET_SCREEN: str = "post_point_set_screen"
+    STOMP: str = "stomp"
 
 
 
@@ -248,11 +255,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.update_magic_menu_selection_box(controller, state)
 
         elif self.game_state == self.INITIATIVE_SCREEN:
-            if Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
+            if Equipment.LUCKY_ROTTEN_SOCKS.value in state.player.equipped_items:
                 if len(self.init_screen_choices) > 1:
-                    self.init_screen_choices[1] = "Blow"
+                    self.init_screen_choices[1] = self.STOMP
                 else:
-                    self.init_screen_choices.append("Blow")
+                    self.init_screen_choices.append(self.STOMP)
             else:
                 if len(self.init_screen_choices) > 1:
                     self.init_screen_choices[1] = "LOCKED"
@@ -403,12 +410,12 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 self.enemy_attack_roll_3: int = random.randint(1, 6)
 
                 if self.point_break > 1 and self.debuff_bad_luck > 0:
-                    unlucky_attack = random.randint(1, 20)
-                    unlucky_attack += state.player.luck * 2
+                    unlucky_attack = random.randint(1, 100)
+                    unlucky_attack += state.player.luck * 5
 
-                    if unlucky_attack > 17:
+                    if unlucky_attack > 80:
                         self.enemy_attack_roll_1 = 1
-                    if unlucky_attack > 22:
+                    if unlucky_attack > 100:
                         self.enemy_attack_roll_2 = 1
 
                 print(self.enemy_attack_roll_1)
@@ -740,7 +747,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
     def point_set_screen_logic_dice_fighter(self, controller):
-        print("there may be a bug here")
+        # print("there may be a bug here")
 
         if controller.isTPressed or controller.isAPressedSwitch:
             controller.isTPressed = False

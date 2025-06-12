@@ -15,11 +15,12 @@
         "HEALTHY GLOVES",
         "Nuggie Amulet",
         "HIPPO HOUR GLASS",
-        "boss key"
+        "boss key",
+        "lucky rotten socks"
     ],
     "equipped_items": [
         "opossum repellent",
-        "HEALTHY GLOVES"
+        "lucky rotten socks"
     ],
     "npcitems": [
         "level 2 token",
@@ -31,7 +32,8 @@
         "reveal",
         "shake",
         "Triple D",
-        "HACK"
+        "HACK",
+        "bad luck"
     ],
     "body": 1,
     "mind": 1,

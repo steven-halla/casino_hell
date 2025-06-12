@@ -57,6 +57,7 @@ class Area3BarScreen(Screen):
     def stop_music(self):
         pygame.mixer.music.stop()
 
+
     def initialize_music(self):
         # Initialize the mixer
         pygame.mixer.init()
