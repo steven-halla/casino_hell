@@ -74,16 +74,20 @@ from screen.floor2.map_screens.area_2_rib_demon_maze_screen3 import Area2RibDemo
 from screen.floor2.map_screens.area_2_shop_screen import Area2ShopScreen
 from screen.floor2.map_screens.area_2_start_screen import Area2StartScreen
 from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlbertScreen
-from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
-from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
-from screen.floor3.battle_screens.dice_fighter_sir_siegfried_screen import DiceFighterSirSiegfriedScreen
-from screen.floor3.battle_screens.high_low_diena_screen import HighLowDienaScreen
-from screen.floor3.battle_screens.hungry_starving_hippos_hippy_screen import HungryStarvingHipposHippyScreen
-from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
+from screen.floor3.battle_screensTRASH.coin_flip_dexter_screen import CoinFlipDexterScreen
+from screen.floor3.battle_screensTRASH.craps_junpon_screen import CrapsJunponScreen
+from screen.floor3.battle_screensTRASH.dice_fighter_sir_siegfried_screen import DiceFighterSirSiegfriedScreen
+from screen.floor3.battle_screensTRASH.high_low_diena_screen import HighLowDienaScreen
+from screen.floor3.battle_screensTRASH.hungry_starving_hippos_hippy_screen import HungryStarvingHipposHippyScreen
+from screen.floor3.battle_screensTRASH.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
 
 
-from screen.floor3.battle_screens.slots_brogan_screen import SlotsBroganScreen
+from screen.floor3.battle_screensTRASH.slots_brogan_screen import SlotsBroganScreen
+from screen.floor3.map_screens.area_3_bar_screen import Area3BarScreen
+from screen.floor3.map_screens.area_3_boss_screen import Area3BossScreen
+from screen.floor3.map_screens.area_3_gambling_screen import Area3GamblingScreen
 from screen.floor3.map_screens.area_3_rest_screen import Area3RestScreen
+from screen.floor3.map_screens.area_3_shop_screen import Area3ShopScreen
 from screen.floor4.battle_screens.black_jack_jasmine_screen import BlackJackJasmineScreen
 from screen.floor4.battle_screens.coin_flip_bonnie_screen import CoinFlipBonnieScreen
 from screen.floor4.battle_screens.craps_naba_screen import CrapsNabaScreen
@@ -183,7 +187,6 @@ class GameState:
 
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
-        self.area3RestScreen = Area3RestScreen()
         self.area4RestScreen = Area4RestScreen()
         self.area5RestScreen = Area5RestScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
@@ -282,6 +285,13 @@ class GameState:
 
 
 #-----------------area 3 is beloew-----------------------#
+        self.area3ShopScreen = Area3ShopScreen()
+        self.area3BarScreen = Area3BarScreen()
+        self.area3RestScreen = Area3RestScreen()
+        self.area3BossScreen = Area3BossScreen()
+        self.area3GamblingScreen = Area3GamblingScreen()
+
+
         self.crapsJunponScreen = CrapsJunponScreen()
         self.blackJackAlbertScreen = BlackJackAlbertScreen()
         self.coinFlipDexterScreen = CoinFlipDexterScreen()

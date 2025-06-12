@@ -8,7 +8,7 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
-class BlackJackAlbertScreen(GambleScreen):
+class BlackJackAlbertScreenTRASH(GambleScreen):
     def __init__(self, screenName: str = "Black Jack") -> None:
         super().__init__(screenName)
         self.enemy_card_y_positions: list[int] = []
@@ -299,7 +299,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
 
-         
+
 
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]

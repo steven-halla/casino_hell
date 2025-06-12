@@ -29,7 +29,7 @@ class Area2ShopKeeper(Npc):
             Equipment.COIN_FLIP_GLASSES.value,
             Equipment.HEALTHY_GLOVES.value,
             Magic.SHAKE.value,
-            Equipment.BOSS_KEY.value,
+            Equipment.BOSS_KEY.value,# i need to change this to EVENT
             Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value
         ]
         self.shop_costs = ["500", "500", "500", "500", "500", "500"]
