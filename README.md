@@ -481,6 +481,7 @@ for i in variable turn counter:
 
 Level 1 - black jack, opossum in a can, Neatrual
 level 2 - coin fip, craps, neatural, hungry starving hipppos, 
+level 3 -  
 
 
 ------------------------
@@ -489,7 +490,6 @@ level 2 - coin fip, craps, neatural, hungry starving hipppos,
     # opossum in a can
     VARMENT_HAT = "varment hat"# on a loss % chance to get gold back
     # hangry angry hippos
-    HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception  at level 3 spirit add + 1 second
     BACKWARDS_WATCH = "backwards watch" # This items slows non selected humans
     #black jack
     SIR_LEOPOLD_AMULET = "sir leopold amulet" #companion item for stealing enemy aces

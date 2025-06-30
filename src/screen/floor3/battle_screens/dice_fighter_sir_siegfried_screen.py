@@ -267,33 +267,28 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                     self.init_screen_choices.append("LOCKED")
             self.battle_messages[self.INIT_MESSAGE].update(state)
 
-            if controller.isUpPressed or controller.isUpPressedSwitch:
-                controller.isUpPressed = False
-                controller.isUpPressedSwitch = False
+            if controller.up_button:
                 self.init_screen_index = (self.init_screen_index + self.index_stepper) % len(self.init_screen_choices)
-            elif controller.isDownPressed or controller.isDownPressedSwitch:
-                controller.isDownPressed = False
-                controller.isDownPressedSwitch = False
+            elif controller.down_button:
+
                 self.init_screen_index = (self.init_screen_index - self.index_stepper) % len(self.init_screen_choices)
 
-            if (controller.isTPressed or controller.isAPressedSwitch) and self.init_screen_index == 0 and self.player_init_roll_total == 0:
+            if controller.confirm_button and self.init_screen_index == 0 and self.player_init_roll_total == 0:
                 controller.setTPressed = False
                 controller.isAPressedSwitch = False
                 print("Hi")
                 self.initiative_screen_logic(state)
-            elif (controller.isTPressed or controller.isAPressedSwitch) and self.init_screen_index == 1 and self.blow_init_dice == False:
-                controller.setTPressed = False
-                controller.isAPressedSwitch = False
+            elif controller.confirm_button  and self.init_screen_index == 1 and self.blow_init_dice == False:
+
                 print("Ya")
 
 
                 self.blow_init_dice = True
                 state.player.stamina_points -= self.blow_stamina_drain
             if self.enemy_win_init == True or self.player_win_init == True:
-                if state.controller.isTPressed or state.controller.isAPressedSwitch:
+                if state.controller.confirm_button:
                     self.game_state = self.POST_INIT_SCREEN
-                    state.controller.isTPressed = False
-                    state.controller.isAPressedSwitch = False
+
 
         elif self.game_state == self.POST_INIT_SCREEN:
             if self.player_init_roll_total > self.enemy_init_roll_total:
@@ -303,9 +298,8 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
             self.battle_messages[self.POST_INIT_MESSAGE].update(state)
 
-            if controller.isTPressed or controller.isAPressedSwitch:
-                controller.isTPressed = False
-                controller.isAPressedSwitch = False
+            if controller.confirm_button:
+
 
                 self.game_state = self.POINT_SET_SCREEN
 
@@ -329,9 +323,6 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                     self.game_state = self.ENEMY_ATTACK_SCREEN
                 else:
                     self.game_state = self.PLAYER_ATTACK_SCREEN
-
-
-
 
 
         elif self.game_state == self.PLAYER_ATTACK_SCREEN:
