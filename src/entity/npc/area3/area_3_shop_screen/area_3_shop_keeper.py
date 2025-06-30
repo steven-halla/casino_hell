@@ -34,7 +34,7 @@ class Area3ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value, Equipment.CRAPS_WRIST_WATCH.value, Equipment.STAT_POTION_AREA_3.value, Equipment.CHEFS_HAT.value, Equipment.MP_BRACELET.value,Equipment.MEDIUM_VEST.value ]
+        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value ]
 
         self.shop_costs = ["1200", "1000", "1000", "1000", "1000","1500"]
 

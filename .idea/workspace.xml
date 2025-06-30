@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="preping for leve 3">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="example commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/save_data.json" beforeDir="false" afterPath="$PROJECT_DIR$/assets/save_data.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game_constants/equipment.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/equipment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/dice_fighter_sir_siegfried_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/dice_fighter_sir_siegfried_screen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screen/floor3/map_screens/area_3_bar_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/map_screens/area_3_bar_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -434,7 +430,8 @@
       <workItem from="1749312172389" duration="26904000" />
       <workItem from="1749394822426" duration="28935000" />
       <workItem from="1749477293326" duration="18759000" />
-      <workItem from="1749578227131" duration="17730000" />
+      <workItem from="1749578227131" duration="22119000" />
+      <workItem from="1749918456662" duration="3550000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -779,7 +776,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1596" />
+    <option name="localTasksCounter" value="1597" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -808,7 +805,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="black jack mack double draw" />
     <MESSAGE value="double draw put back in" />
     <MESSAGE value="double draw full implemented" />
     <MESSAGE value="minor fixes such as to bet and reput ddraw debuff dur back to 7" />
@@ -833,7 +829,8 @@
     <MESSAGE value="fixed mp" />
     <MESSAGE value="boss fixed" />
     <MESSAGE value="preping for leve 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="preping for leve 3" />
+    <MESSAGE value="example commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="example commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

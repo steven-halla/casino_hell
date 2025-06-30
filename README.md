@@ -441,3 +441,97 @@ level 2:
 1 hippo item - prize
 hp bracelet - store
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+we build an array ["",""", ""]
+variable turn counter = 8
+for loop
+
+for i in variable turn counter:
+    
+       level 1-- self.shop_items = [Equipment.BLACK_JACK_HAT.value, Equipment.OPOSSUM_REPELLENT.value,Equipment.MP_BRACELET.value, Magic.REVEAL.value,  Events.LEVEL_1_BOSS_KEY.value ]
+        level 2--     self.shop_items = [
+            Equipment.COIN_SAVE_AREA_2.value,
+            Equipment.COIN_FLIP_GLASSES.value,
+            Equipment.HEALTHY_GLOVES.value,
+            Magic.SHAKE.value,
+            Equipment.BOSS_KEY.value,# i need to change this to EVENT
+            Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value
+        ]
+
+
+
+Level 1 - black jack, opossum in a can, Neatrual
+level 2 - coin fip, craps, neatural, hungry starving hipppos, 
+
+
+------------------------
+
+    COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
+    # opossum in a can
+    VARMENT_HAT = "varment hat"# on a loss % chance to get gold back
+    # hangry angry hippos
+    HIPPO_HOUR_GLASS = "HIPPO HOUR GLASS"  # level 3 perception  at level 3 spirit add + 1 second
+    BACKWARDS_WATCH = "backwards watch" # This items slows non selected humans
+    #black jack
+    SIR_LEOPOLD_AMULET = "sir leopold amulet" #companion item for stealing enemy aces
+    #craps
+    CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
+    #dice fighter
+    LUCKY_ROTTEN_SOCKS = "lucky rotten socks"
+    #craps_wrist_watch applies
+    #slots
+    SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
+    #hi low
+    HIGH_LOW_PANTS = "high low pants" # This item gives +1 spread via spirit higher spreads take more HP
+    #poker
+    POKER_BRACELET = "poker bracelet"
+
+
+
+    # wheel of torture
+    SIR_LEOPOLDS_RING = "sir leopolds ring"
+
+    SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
+
+    #companion items
+    LAW_BOOK = "law book" # companion item level 3 at vert start of level 4
+
+        # the below are for level 3 or EXPERIMENT
+    # but this adds depth as player cna still get enemy ace great way to burn cards
+
+    # level 3 and 4 below
+    LUCKY_CHARM = "lucky charm" # + 1 to luck
+    CHEFS_HAT = "chefs hat" # + 30 HP AND + 1 FOOD PER DAY
+    MEDIUM_VEST = "SLots Guard"  # -20 opposum and slot demon damage
+    HIGH_VEST = "medium vest"  # -30 opposum and slot demon damage and game 10
+    SPIRIT_CHARM = "spirit charm" # + 1 spirit lvl 4
+
+
+
+    # from quest and other
+    NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
+    BOSS_KEY = "boss key"
+    COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
+    COIN_SAVE_AREA_3 = "COIN_SAVE_AREA_3" # BUY IN SHOP ONE TIME USE
+    RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
+    STAT_POTION_AREA_2 = "STAT_POTION_AREA_2" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
+    STAT_POTION_AREA_3 = "STAT_POTION_AREA_3" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN

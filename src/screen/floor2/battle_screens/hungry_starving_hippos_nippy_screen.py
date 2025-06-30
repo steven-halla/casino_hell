@@ -428,6 +428,8 @@ class HungryStarvingHipposNippyScreen(Screen):
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
+                if Equipment.HIPPO_HOUR_GLASS.value not in state.player.items:
+                    state.player.items.append(Equipment.HIPPO_HOUR_GLASS.value)
                 print("yupper")
                 state.player.canMove = True
 
