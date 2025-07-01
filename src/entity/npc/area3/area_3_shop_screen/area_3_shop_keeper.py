@@ -312,7 +312,7 @@ class Area3ShopKeeper(Npc):
             if self.selected_item_index == 3 and Equipment.SAGE_AMULET.value not in state.player.level_three_npc_state:
                 state.DISPLAY.blit(self.font.render(f"Sage Amulet", True,
                                                     (255, 255, 255)), (70, 460))
-                state.DISPLAY.blit(self.font.render(f"Master black jack", True,
+                state.DISPLAY.blit(self.font.render(f"adds 15 to stamina 5 to magic", True,
                                                     (255, 255, 255)), (70, 510))
             elif self.selected_item_index == 3 and Equipment.SAGE_AMULET.value in state.player.level_three_npc_state:
                 state.DISPLAY.blit(self.font.render(f"Sage Amulet is sold out!", True,
@@ -345,56 +345,3 @@ class Area3ShopKeeper(Npc):
                 state.DISPLAY.blit(self.font.render(f"Boss Key is sold out!", True,
                                                     (255, 255, 255)), (70, 460))
 
-            # Handle drawing the shop interaction text
-            if self.stat_point_increase == True:
-                # Draw a box on the far right end of the screen, 260 pixels wide and 260 pixels high
-                box_width = 260
-                box_height = 260
-                border_width = 5
-                start_x = state.DISPLAY.get_width() - box_width - 25  # Far right of the screen
-                start_y = state.DISPLAY.get_height() // 2 - box_height // 2 + 10  # Centered vertically
-
-                # Create the black box
-                black_box = pygame.Surface((box_width, box_height))
-                black_box.fill((0, 0, 0))
-
-                # Create a white border
-                white_border = pygame.Surface(
-                    (box_width + 2 * border_width, box_height + 2 * border_width)
-                )
-                white_border.fill((255, 255, 255))
-                white_border.blit(black_box, (border_width, border_width))
-
-                # Draw the box on the far right
-                state.DISPLAY.blit(white_border, (start_x - border_width, start_y - border_width))
-
-                # Draw the label for maximum stat value
-                state.DISPLAY.blit(self.font.render("Max Value 3:", True, (255, 255, 255)), (start_x + 10, start_y + 20))
-
-                # Define the list of stats and the vertical position for each
-                stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
-                stat_values = [
-                    state.player.body,
-                    state.player.mind,
-                    state.player.spirit,
-                    state.player.perception - 1 if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items else state.player.perception,
-                    state.player.luck - 1 if state.player.enhanced_luck else state.player.luck,
-                ]
-
-                # Display the stats names
-                for idx, stat in enumerate(stats):
-                    y_position = start_y + 60 + idx * 40  # Adjust vertical spacing
-                    state.DISPLAY.blit(self.font.render(stat, True, (255, 255, 255)), (start_x + 60, y_position))
-
-                # Display the player's current stat values 30 pixels to the right of the stat names
-                for idx, stat_value in enumerate(stat_values):
-                    y_position = start_y + 60 + idx * 40  # Adjust vertical spacing
-                    state.DISPLAY.blit(self.font.render(str(stat_value), True, (255, 255, 255)), (start_x + 200, y_position))
-
-                # Draw the arrow next to the currently selected stat based on stat_point_increase_index
-                arrow_y_positions = [60, 100, 140, 180, 220]  # Y positions for the arrow, matching the stats' Y positions
-                arrow_x = start_x + 20  # X position for the arrow
-                arrow_y = start_y + arrow_y_positions[self.stat_point_increase_index]
-
-                # Draw the arrow ('->') at the current stat's position
-                state.DISPLAY.blit(self.font.render("->", True, (255, 255, 255)), (arrow_x, arrow_y))

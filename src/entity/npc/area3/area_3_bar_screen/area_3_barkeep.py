@@ -1,5 +1,4 @@
 import math
-
 import pygame
 
 from entity.gui.textbox.shop_npc_text_box import ShopNpcTextBox
@@ -14,194 +13,130 @@ class Area3BarKeep(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
         self.font = pygame.font.Font(None, 36)
-        self.buy_sound = pygame.mixer.Sound("./assets/music/BFBuyingSelling.wav")  # Adjust the path as needed
+        self.buy_sound = pygame.mixer.Sound("./assets/music/BFBuyingSelling.wav")
         self.buy_sound.set_volume(0.3)
 
-        self.cant_buy_sound = pygame.mixer.Sound("./assets/music/cantbuy3.wav")  # Adjust the path as needed
+        self.cant_buy_sound = pygame.mixer.Sound("./assets/music/cantbuy3.wav")
         self.cant_buy_sound.set_volume(0.5)
 
-        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")  # Adjust the path as needed
+        self.menu_movement_sound = pygame.mixer.Sound("./assets/music/1BItemMenuItng.wav")
         self.menu_movement_sound.set_volume(0.2)
 
-        self.textbox = ShopNpcTextBox(
-            [
-                ""],
-            (50, 450, 50, 45), 30, 500)
-        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
+        self.textbox = ShopNpcTextBox([""], (50, 450, 50, 45), 30, 500)
+        self.state_start_time = pygame.time.get_ticks()
         self.input_time = pygame.time.get_ticks()
+        self.state = "waiting"
 
-        self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
-        self.state = "waiting"  # states = "waiting" | "talking" | "finished"
-        # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [ "Hoppy Brew", "Carrion Nachos"]
+        self.shop_items = [
+            "Hoppy Brew", "Carrion Nachos", "Body Feast",
+            "Mind Feast", "Spirit Feast", "Luck Feast", "Perception Feast"
+        ]
+        self.shop_costs = ["200", "200", "500", "500", "500", "500", "500"]
 
-        self.shop_costs = ["200", "200"]
+        self.selected_item_index = 0
+        self.selected_money_index = 0
 
-        self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
             "./assets/images/SNES - Harvest Moon - Bartender.png").convert_alpha()
-        self.selected_money_index = 0  # New attribute to track selected item index
+
+    @staticmethod
+    def add_level_three_event_to_player(player, event):
+        if event.value not in player.level_three_npc_state:
+            player.level_three_npc_state.append(event.value)
 
     def show_shop(self, state: "GameState"):
-        # This method passes the shop items to the textbox
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
 
     def update(self, state: "GameState"):
-
-
         if self.state == "waiting":
             self.update_waiting(state)
         elif self.state == "talking":
-
             state.player.hide_player = True
-
 
             if state.controller.isTPressed and state.player.food > 0:
                 state.controller.isTPressed = False
+                idx = self.selected_item_index
+                cost = int(self.shop_costs[idx])
 
-
-                if self.selected_money_index == 0 and state.player.money < 500:
-
-                    self.cant_buy_sound.play()  # Play the sound effect once
-
-
-                elif self.selected_money_index == 0 and state.player.food < 1:
-                    self.cant_buy_sound.play()  # Play the sound effect once
-
-
-                elif self.selected_money_index == 1 and state.player.money < 500:
-                    self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_money_index == 1 and state.player.food < 1:
-                    self.cant_buy_sound.play()  # Play the sound effect once
-
-                elif self.selected_money_index == 1 and state.player.body < 2:
-                    self.cant_buy_sound.play()  # Play the sound effect once
-
-
-
-                if self.selected_item_index == 0 and state.player.money > 500:
-                    self.buy_sound.play()  # Play the sound effect once
-
-                    # print("mew")
+                if state.player.money < cost:
+                    self.cant_buy_sound.play()
+                elif idx == 0:
+                    self.buy_sound.play()
                     state.player.money -= 200
-                    state.player.stamina_points += 400
-                    if state.player.stamina_points > state.player.max_stamina_points:
-                        state.player.stamina_points = state.player.max_stamina_points
-                    state.player.focus_points += 400
-                    if state.player.focus_points > state.player.max_focus_points:
-                        state.player.focus_points = state.player.max_focus_points
+                    state.player.stamina_points += 50
+                    state.player.max_stamina_points += 50
+                    state.player.focus_points += 25
+                    state.player.max_focus_points += 25
                     state.player.food -= 1
 
-                    if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
-                        print("Your invited")
-                        state.currentScreen = state.area3BarCutScene1
-                        state.area3BarCutScene1.start(state)
-
-                    elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
-                        print("Your invited")
-                        state.currentScreen = state.area3BarCutScene2
-                        state.area3BarCutScene2.start(state)
-                        state.player.companions.append("erika")
-
-                    elif Events.SPIRIT_THREE_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_THREE_ALICE_QUEST_FINISHED.value not in state.player.level_three_npc_state:
-                        state.currentScreen = state.area3BarCutScene3
-                        state.area3BarCutScene3.start(state)
-
-
-
-                elif self.selected_item_index == 1 and state.player.money > 500 and state.player.body == 2:
-                    self.buy_sound.play()  # Play the sound effect once
+                elif idx == 1:
+                    self.buy_sound.play()
                     state.player.money -= 200
                     state.player.luck += 1
                     state.player.enhanced_luck = True
                     state.player.food -= 1
 
-                    if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
-                        print("Your invited")
-
-                        state.currentScreen = state.area3BarCutScene1
-                        state.area3BarCutScene1.start(state)
-
-                    elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
-                        print("Your invited")
-                        state.currentScreen = state.area3BarCutScene2
-                        state.area3BarCutScene2.start(state)
-                        state.player.companions.append("erika")
-
-                    elif Events.SPIRIT_THREE_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_THREE_ALICE_QUEST_FINISHED.value not in state.player.level_three_npc_state:
-                        state.currentScreen = state.area3BarCutScene3
-                        state.area3BarCutScene3.start(state)
-
-            cost = int(self.shop_costs[self.selected_item_index])
+                elif idx in range(2, 7) and Events.FEAST_CONSUMED.value not in state.player.level_three_npc_state:
+                    eligible = [
+                        state.player.body,
+                        state.player.mind,
+                        state.player.spirit,
+                        state.player.luck,
+                        state.player.perception
+                    ]
+                    stat_index = idx - 2
+                    if eligible[stat_index] == 3:
+                        self.cant_buy_sound.play()
+                    else:
+                        self.buy_sound.play()
+                        state.player.money -= 500
+                        if stat_index == 0:
+                            state.player.body += 1
+                        elif stat_index == 1:
+                            state.player.mind += 1
+                        elif stat_index == 2:
+                            state.player.spirit += 1
+                        elif stat_index == 3:
+                            state.player.luck += 1
+                        elif stat_index == 4:
+                            state.player.perception += 1
+                        self.add_level_three_event_to_player(state.player, Events.FEAST_CONSUMED)
 
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
                 self.state = "waiting"
                 state.controller.isBPressed = False
-
-                # Allow the player to move after leaving the shop
                 state.player.hide_player = False
                 state.player.canMove = True
                 self.textbox.reset()
 
             if self.textbox.message_index == 0 and self.textbox.is_finished():
-
-                if state.controller.isTPressed:
-                    state.controller.isTPressed = False
-
-
-
                 if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
                     self.input_time = pygame.time.get_ticks()
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    # Decrement the index but prevent it from going below 0
+                    self.menu_movement_sound.play()
                     if self.selected_item_index > 0:
                         self.selected_item_index -= 1
                         self.selected_money_index -= 1
-                    print(f"shop_items: {self.shop_items}")
-                    print(f"shop_costs: {self.shop_costs}")
-                    print(f"selected_item_index: {self.selected_item_index}")
-                    print(f"selected_money_index: {self.selected_money_index}")
-
                 elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
                     self.input_time = pygame.time.get_ticks()
-                    self.menu_movement_sound.play()  # Play the sound effect once
-
-                    # Increment the index but prevent it from exceeding the length of the list - 1
+                    self.menu_movement_sound.play()
                     if self.selected_item_index < len(self.shop_items) - 1:
                         self.selected_item_index += 1
                         self.selected_money_index += 1
-                    print(f"shop_items: {self.shop_items}")
-                    print(f"shop_costs: {self.shop_costs}")
-                    print(f"selected_item_index: {self.selected_item_index}")
-                    print(f"selected_money_index: {self.selected_money_index}")
 
             self.update_talking(state)
 
-
     def update_waiting(self, state: "GameState"):
         player = state.player
-
-
-
-        if state.controller.isTPressed and (
-                pygame.time.get_ticks() - self.state_start_time) > 500:
+        if state.controller.isTPressed and (pygame.time.get_ticks() - self.state_start_time) > 500:
             distance = math.sqrt(
-                (player.collision.x - self.collision.x) ** 2 + (
-                        player.collision.y - self.collision.y) ** 2)
-            # print("distance: " + str(distance))
-
-            if distance < 100 and state.player.menu_paused == False:
-                # print("start state: talking")
-
+                (player.collision.x - self.collision.x) ** 2 +
+                (player.collision.y - self.collision.y) ** 2)
+            if distance < 100 and not state.player.menu_paused:
                 self.state = "talking"
                 state.controller.isTPressed = False
-
                 self.state_start_time = pygame.time.get_ticks()
-                # the below is where kenny had it
                 self.textbox.reset()
 
     def update_talking(self, state: "GameState"):
@@ -209,68 +144,49 @@ class Area3BarKeep(Npc):
         self.show_shop(state)
 
         if state.controller.isTPressed and self.textbox.is_finished():
-            # Exiting the shop conversation, reset to waiting state and allow movement
             self.state = "waiting"
-            self.textbox.reset()  # Reset the textbox
-            return  # Ensure no further code is executed in this method
+            self.textbox.reset()
+            return
 
-            # During the conversation, prevent movement
         if self.state == "talking":
             state.player.canMove = False
-
-        # If already in 'waiting' state, ensure player can move
         if self.state == "waiting":
             state.player.canMove = True
 
-        # Prevent movement during conversation
-
     def draw(self, state):
         sprite_rect = pygame.Rect(5, 6, 23, 30)
-
-        # Get the subsurface for the area you want
         sprite = self.character_sprite_image.subsurface(sprite_rect)
-
-        # Scale the subsurface to make it two times bigger
-        scaled_sprite = pygame.transform.scale(sprite, (50, 50))  # 44*2 = 88
-
-        # Define the position where you want to draw the sprite
+        scaled_sprite = pygame.transform.scale(sprite, (50, 50))
         sprite_x = self.collision.x + state.camera.x - 20
         sprite_y = self.collision.y + state.camera.y - 10
-
-        # Draw the scaled sprite portion on the display
         state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
-        # rect = (
-        # self.collision.x + state.camera.x, self.collision.y + state.camera.y,
-        # self.collision.width, self.collision.height)
-        # pygame.draw.rect(state.DISPLAY, self.color, rect)
-
-        if self.state == "waiting":
-            pass
-        elif self.state == "talking":
-            # print("is talking")
+        if self.state == "talking":
             self.textbox.draw(state)
-            if self.state == "talking":
-                # state.DISPLAY.blit(self.font.render(f"Hurry and buy something", True,
-                #                                     (255, 255, 255)), (70, 460))
+            feast_bought = Events.FEAST_CONSUMED.value in state.player.level_three_npc_state
 
+            if self.selected_item_index == 0:
+                state.DISPLAY.blit(self.font.render("Made from the vomit of  hopping gluttons.", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render("Restores 150 HP and 75 Magic.", True, (255, 255, 255)), (70, 510))
+            elif self.selected_item_index == 1:
+                if state.player.body == 2:
+                    state.DISPLAY.blit(self.font.render("Nachos with extra maggots.", True, (255, 255, 255)), (70, 460))
+                    state.DISPLAY.blit(self.font.render("Adds +1 luck till next rest.", True, (255, 255, 255)), (70, 510))
+                else:
+                    state.DISPLAY.blit(self.font.render("You need a body of 2 to eat or you'll barf it up.", True, (255, 255, 255)), (70, 460))
 
-
-                if self.selected_item_index == 0:
-                    state.DISPLAY.blit(self.font.render(f"Made from the vomit of  hopping gluttons.", True,
-                                                        (255, 255, 255)), (70, 460))
-                    state.DISPLAY.blit(self.font.render(f"Restores 150 HP and 75 Magic.", True,
-                                                        (255, 255, 255)), (70, 510))
-
-
-                if self.selected_item_index == 1 and state.player.body == 2:
-                    state.DISPLAY.blit(self.font.render(f"Nachos with extra maggots. ", True,
-                                                        (255, 255, 255)), (70, 460))
-
-
-                    state.DISPLAY.blit(self.font.render(f" Adds +1 luck till next rest. ", True,
-                                                        (255, 255, 255)), (70, 510))
-
-                elif self.selected_item_index == 1 and state.player.body == 1:
-                    state.DISPLAY.blit(self.font.render(f"You need a body of 2 to eat or you'll barf it up. ", True,
-                                                        (255, 255, 255)), (70, 460))
+            elif self.selected_item_index >= 2:
+                stat_names = ["Body", "Mind", "Spirit", "Luck", "Perception"]
+                stat_values = [
+                    state.player.body,
+                    state.player.mind,
+                    state.player.spirit,
+                    state.player.luck,
+                    state.player.perception
+                ]
+                idx = self.selected_item_index - 2
+                if feast_bought or stat_values[idx] == 2:
+                    state.DISPLAY.blit(self.font.render(f"{stat_names[idx]} Feast is sold out!", True, (255, 255, 255)), (70, 460))
+                else:
+                    state.DISPLAY.blit(self.font.render(f"Feast of {stat_names[idx]}", True, (255, 255, 255)), (70, 460))
+                    state.DISPLAY.blit(self.font.render(f"+1 {stat_names[idx]}", True, (255, 255, 255)), (70, 510))
