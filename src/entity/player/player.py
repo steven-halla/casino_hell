@@ -1146,6 +1146,14 @@ class Player(Entity):
 
 
 
+                        if currently_equipped == Equipment.SAGE_AMULET.value:
+                            # Unequip the gloves and reduce stamina
+                            self.max_stamina_points -= 15
+                            self.stamina_points -= 5
+                            print(f"Unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
+
+
+
                         if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
                             self.perception -= 1
                             # for i in range(3, len(self.equipped_items)):
@@ -1175,8 +1183,13 @@ class Player(Entity):
                         if self.items[self.item_index] == Equipment.SPIRIT_SHOES.value:
                             self.spirit += 1
 
+                        if self.items[self.item_index] == Equipment.SAGE_AMULET.value:
+                            self.max_stamina_points += 15
+                            self.stamina_points += 5
+
                         print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
                         self.looking_at_items = False
+
 
 
                 if state.controller.isBPressed or state.controller.isBPressedSwitch:
