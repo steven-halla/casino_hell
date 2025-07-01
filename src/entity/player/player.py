@@ -245,8 +245,14 @@ class Player(Entity):
             if self.exp > 2800:
                 self.exp = 2800
 
+        # if self.mind == 1:
+        #     self.magicinventory.append(Magic.REVEAL.value)
+
         if self.mind == 2:
             self.magicinventory.append(Magic.CRAPS_LUCKY_7.value)
+
+        if self.mind == 3:
+            self.magicinventory.append(Magic.BAD_LUCK.value)
 
 
 
@@ -1142,14 +1148,14 @@ class Player(Entity):
 
                         if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
                             self.perception -= 1
-                            for i in range(3, len(self.equipped_items)):
-                                if self.equipped_items[i] == Equipment.HEALTHY_GLOVES.value:
-                                    self.max_stamina_points -= 30
-                                    self.stamina_points -= 30
-
-                                    self.stamina_points = min(self.stamina_points, self.max_stamina_points)  # Ensure stamina doesn't exceed max
-                                    print(f"Auto-unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
-                                    self.equipped_items[i] = None  # Unequip the Healthy Gloves
+                            # for i in range(3, len(self.equipped_items)):
+                            #     if self.equipped_items[i] == Equipment.HEALTHY_GLOVES.value:
+                            #         self.max_stamina_points -= 30
+                            #         self.stamina_points -= 30
+                            #
+                            #         self.stamina_points = min(self.stamina_points, self.max_stamina_points)  # Ensure stamina doesn't exceed max
+                            #         print(f"Auto-unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
+                            #         self.equipped_items[i] = None  # Unequip the Healthy Gloves
 
                         # Equip the new item
                         self.equipped_items[self.items_equipped_index] = self.items[self.item_index]

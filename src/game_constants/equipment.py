@@ -50,6 +50,7 @@ class Equipment(Enum):
     MEDIUM_VEST = "SLots Guard"  # -20 opposum and slot demon damage
     HIGH_VEST = "medium vest"  # -30 opposum and slot demon damage and game 10
     SPIRIT_CHARM = "spirit charm" # + 1 spirit lvl 4
+    SAGE_AMULET = "sage amulet"
 
 
 

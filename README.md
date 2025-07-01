@@ -477,11 +477,21 @@ for i in variable turn counter:
             Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value
         ]
 
+2
+3
+4
+
+
 
 equipment
 Level 1 - black jack, opossum in a can, Neatrual
 level 2 - coin fip, craps, neatural, hungry starving hipppos, 
-level 3 -  dice fighter, slots,black jack
+level 3 -  dice fighter, slots, neatural, opossum in a can,nuetral, 
+
+magic
+level 1 - reveal-black jack , shield - black jack, 
+level 2 - shake - opossum in a can, lucky 7-craps, hack-slots,
+level 3 -  flush deck-high/low, badluck-dice fighter, force heads-coin flip, redraw- black jack
 
 ------------------------
 
