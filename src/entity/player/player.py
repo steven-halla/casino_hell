@@ -249,6 +249,8 @@ class Player(Entity):
             self.magicinventory.append(Magic.CRAPS_LUCKY_7.value)
 
 
+
+
         # if Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
         #     self.perception = self.base_perception + self.perception_boost_item
         #
@@ -1133,6 +1135,11 @@ class Player(Entity):
                             self.stamina_points -= 30
                             print(f"Unequipped HEALTHY_GLOVES: Max stamina reduced by 30")
 
+                        if currently_equipped == Equipment.SPIRIT_SHOES.value:
+                            self.spirit -= 1
+
+
+
                         if currently_equipped == Equipment.SOCKS_OF_PERCEPTION.value:
                             self.perception -= 1
                             for i in range(3, len(self.equipped_items)):
@@ -1158,6 +1165,9 @@ class Player(Entity):
 
                         if self.items[self.item_index] == Equipment.SOCKS_OF_PERCEPTION.value:
                             self.perception += 1
+
+                        if self.items[self.item_index] == Equipment.SPIRIT_SHOES.value:
+                            self.spirit += 1
 
                         print(f"Equipped item: {self.items[self.item_index]} at slot {self.items_equipped_index}")
                         self.looking_at_items = False

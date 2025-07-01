@@ -478,11 +478,10 @@ for i in variable turn counter:
         ]
 
 
-
+equipment
 Level 1 - black jack, opossum in a can, Neatrual
 level 2 - coin fip, craps, neatural, hungry starving hipppos, 
-level 3 -  
-
+level 3 -  dice fighter, slots,black jack
 
 ------------------------
 

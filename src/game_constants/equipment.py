@@ -4,6 +4,7 @@ from enum import Enum
 
 class Equipment(Enum):
     # coin flip
+    SPIRIT_SHOES = "Spirit Shoes" # adds+1 to spirit
     COIN_FLIP_GLASSES = "coin flip glasses" # spirit 3 adds + 20 spirit 5 add + 50 to cins
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
     # opossum in a can
@@ -55,6 +56,7 @@ class Equipment(Enum):
     # from quest and other
     NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
     BOSS_KEY = "boss key"
+    LEVEL_3_BOSS_KEY = "LEVEL_3_BOSS_KEY"
     COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
     COIN_SAVE_AREA_3 = "COIN_SAVE_AREA_3" # BUY IN SHOP ONE TIME USE
     RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE

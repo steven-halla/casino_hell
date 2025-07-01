@@ -34,7 +34,7 @@ class Area3ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value ]
+        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value , Equipment.LUCKY_ROTTEN_SOCKS.value, Equipment.SPIRIT_SHOES.value, Equipment.SIR_LEOPOLD_AMULET.value, Magic.FLUSH_DECK.value, Equipment.LEVEL_3_BOSS_KEY.value]
 
         self.shop_costs = ["1200", "1000", "1000", "1000", "1000","1500"]
 
@@ -57,81 +57,6 @@ class Area3ShopKeeper(Npc):
     def update(self, state: "GameState"):
 
 
-
-        stats = ["Body", "Mind", "Spirit", "Perception", "Luck"]
-        # print(self.stat_point_increase)
-
-        if self.stat_point_increase == True:
-            state.area3RestScreen.shop_lock = True
-            if state.controller.isUpPressed and pygame.time.get_ticks() - self.input_time > 400:
-                self.input_time = pygame.time.get_ticks()
-                self.stat_point_increase_index = (self.stat_point_increase_index - 1) % len(stats)
-                state.controller.isUpPressed = False
-                print(self.stat_point_increase_index)
-
-            elif state.controller.isDownPressed and pygame.time.get_ticks() - self.input_time > 400:
-                self.input_time = pygame.time.get_ticks()
-                self.stat_point_increase_index = (self.stat_point_increase_index + 1) % len(stats)
-                state.controller.isDownPressed = False
-                print(self.stat_point_increase_index)
-
-
-            # Handle selection confirmation (e.g., with 'T' press)
-            if (state.controller.isTPressed or state.controller.isAPressedSwitch) and pygame.time.get_ticks() - self.input_time > 400:
-                selected_stat = stats[self.stat_point_increase_index]
-                print(f"Player selected: {selected_stat}")
-                # Handle the logic for applying the stat point increase
-                state.controller.isTPressed = False
-                state.controller.isAPressedSwitch = False
-
-                if self.stat_point_increase_index == 0 and state.player.body < 3:
-                    state.player.body += 1
-                    state.player.max_stamina_points += state.player.level_3_body_stamina_increase
-                    state.player.stamina_points += state.player.level_3_body_stamina_increase
-
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 1 and state.player.mind < 3:
-                    state.player.mind += 1
-                    state.player.max_focus_points += state.player.level_3_mind_focus_increase
-                    state.player.focus_points += state.player.level_3_mind_focus_increase
-                    Magic.CRAPS_LUCKY_7.add_magic_to_player(state.player, Magic.CRAPS_LUCKY_7)
-
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 2 and state.player.spirit < 3:
-                    state.player.spirit += 1
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 3 and state.player.perception < 3 and Equipment.SOCKS_OF_PERCEPTION.value not in state.player.equipped_items:
-                    state.player.perception += 1
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 3 and state.player.perception < 4 and Equipment.SOCKS_OF_PERCEPTION.value in state.player.equipped_items:
-                    state.player.perception += 1
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 4 and state.player.luck < 3 and state.player.enhanced_luck == False:
-                    state.player.luck += 1
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
-
-                elif self.stat_point_increase_index == 4 and state.player.luck < 4 and state.player.enhanced_luck == True:
-                    state.player.luck += 1
-                    self.stat_point_increase = False
-                    state.area3RestScreen.shop_lock = False
-
         if self.state == "waiting":
             self.update_waiting(state)
             # state.player.canMove = True
@@ -142,18 +67,18 @@ class Area3ShopKeeper(Npc):
             if Equipment.COIN_SAVE_AREA_3.value in state.player.level_three_npc_state:
                 self.shop_items[0] = "sold out"
 
-            if Equipment.CRAPS_WRIST_WATCH.value in state.player.level_three_npc_state:
+            if Equipment.LUCKY_ROTTEN_SOCKS.value in state.player.level_three_npc_state:
                 self.shop_items[1] = "sold out"
 
-            if Equipment.STAT_POTION_AREA_3.value in state.player.level_three_npc_state:
+            if Equipment.SLOTS_SHOES.value in state.player.level_three_npc_state:
                 self.shop_items[2] = "sold out"
 
-            if Equipment.CHEFS_HAT.value in state.player.level_three_npc_state:
+            if Equipment.SIR_LEOPOLD_AMULET.value in state.player.level_three_npc_state:
                 self.shop_items[3] = "sold out"
 
-            if Equipment.MP_BRACELET.value in state.player.level_three_npc_state:
+            if Magic.FLUSH_DECK.value in state.player.magicinventory:
                 self.shop_items[4] = "sold out"
-            if Equipment.MEDIUM_VEST.value in state.player.level_three_npc_state:
+            if Equipment.LEVEL_3_BOSS_KEY.value in state.player.level_three_npc_state:
                 self.shop_items[5] = "sold out"
 
 
@@ -356,16 +281,16 @@ class Area3ShopKeeper(Npc):
 
 
 
-                if self.selected_item_index == 1 and Equipment.CRAPS_WRIST_WATCH.value not in state.player.level_three_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Increases chance of winning at craps", True,
+                if self.selected_item_index == 1 and Equipment.LUCKY_ROTTEN_SOCKS.value not in state.player.level_three_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Increases chance of winning at battle dice", True,
                                                         (255, 255, 255)), (70, 460))
 
 
                     state.DISPLAY.blit(self.font.render(f"This will be always on once bought.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 1 and Equipment.CRAPS_WRIST_WATCH.value in state.player.level_three_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Craps Wrist Watch is sold out!", True,
+                elif self.selected_item_index == 1 and Equipment.LUCKY_ROTTEN_SOCKS.value in state.player.level_three_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"battle dice socks is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
 
