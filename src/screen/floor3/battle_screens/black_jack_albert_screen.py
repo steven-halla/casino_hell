@@ -77,7 +77,10 @@ class BlackJackAlbertScreen(GambleScreen):
         self.player_stamina_drain_high: int = 5
         self.player_debuff_double_draw: int = 0
 
+        self.cards_of_frailty: int = 0
+
         self.draw_one_card: int = 1
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -127,7 +130,7 @@ class BlackJackAlbertScreen(GambleScreen):
                 f"You leveld up!"
             ]),
             self.ALBERT_CASTING_SPELL: MessageBox([
-                f"Walking into a fog of confusion, forget and let your brain soak in the mist. Let your reality shift and increase times 2...double draw "
+                f"Time being ever so cruel, take strong bones and turn them to dust...cards of frailty"
             ]),
             self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE: MessageBox([
                 f"You ran out of Stamina, go rest your Hero."
@@ -195,8 +198,7 @@ class BlackJackAlbertScreen(GambleScreen):
         if self.reveal_buff_counter == 0 and self.redraw_debuff_counter == 0:
             self.magic_lock = False
 
-        if self.player_debuff_double_draw > 0:
-            self.player_debuff_double_draw -= 1
+
 
 
 
@@ -208,7 +210,8 @@ class BlackJackAlbertScreen(GambleScreen):
         self.player_card_x_positions = []
         self.enemy_card_x_positions = []
         self.luck_swapping_switch += 3
-
+        if self.cards_of_frailty > 0:
+            self.cards_of_frailty -= 1
 
         luck_swap_randomizer = 0
 
@@ -222,7 +225,7 @@ class BlackJackAlbertScreen(GambleScreen):
 
         print(luck_swap_randomizer)
 
-        if luck_swap_randomizer > 100 and self.albert_magic_points > 0 and self.player_debuff_double_draw == 0:
+        if luck_swap_randomizer > 100 and self.albert_magic_points > 0 and self.cards_of_frailty == 0:
             self.game_state = self.ALBERT_CASTING_SPELL_SCREEN
             print("yeah boy ")
 
@@ -240,10 +243,12 @@ class BlackJackAlbertScreen(GambleScreen):
         self.enemy_hand.clear()
         self.reveal_buff_counter = 0
         self.redraw_debuff_counter = 0
-        self.player_debuff_double_draw = 0
         self.ace_effect_triggered = False
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
+
+        self.cards_of_frailty = 2
+
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -283,6 +288,8 @@ class BlackJackAlbertScreen(GambleScreen):
             self.battle_messages[self.ALBERT_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
                 self.albert_magic_points -= 1
+                self.cards_of_frailty += 5
+
 
 
                 self.game_state = self.WELCOME_SCREEN
@@ -607,7 +614,9 @@ class BlackJackAlbertScreen(GambleScreen):
                                               + self.move_index_by_1) % len(self.player_action_phase_choices)
         elif state.controller.confirm_button:
             if self.player_action_phase_index == self.player_action_phase_play_index:
-                state.player.stamina_points -= 0
+                if self.cards_of_frailty > 0:
+                    self.player_score -= len(self.player_hand)
+                    print(self.player_score)
                 while self.enemy_score < 16 and len(self.enemy_hand) <= card_max:
                     if self.enemy_score < self.player_score:
                         self.animate_face_down_card(state, len(self.enemy_hand))
@@ -992,11 +1001,8 @@ class BlackJackAlbertScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}",
                                             True, WHITE),
                            (player_enemy_box_info_x_position, enemy_money_y_position))
-        if (self.reveal_buff_counter == self.reveal_end_not_active and self.redraw_debuff_counter
-                == self.reveal_end_counter and self.player_debuff_double_draw == self.double_draw_duration_expired):
-            state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE),
-                               (player_enemy_box_info_x_position, enemy_status_y_position))
-        elif self.reveal_buff_counter > self.reveal_end_not_active:
+
+        if self.reveal_buff_counter > self.reveal_end_not_active:
             state.DISPLAY.blit(self.font.render(f"{self.REVEAL}: {self.reveal_buff_counter} ",
                                                 True, WHITE), (player_enemy_box_info_x_position,
                                                                enemy_status_y_position))
@@ -1010,10 +1016,7 @@ class BlackJackAlbertScreen(GambleScreen):
                                                 True, WHITE), (player_enemy_box_info_x_position,
                                                                enemy_status_y_position))
 
-        elif self.player_debuff_double_draw > self.double_draw_duration_expired:
-            state.DISPLAY.blit(self.font.render(f"D. Draw: {self.player_debuff_double_draw}",
-                                                True, RED), (player_enemy_box_info_x_position,
-                                                             enemy_status_y_position))
+
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}",
                                             True, WHITE),
                            (player_enemy_box_info_x_position, bet_y_position))

@@ -14,6 +14,7 @@ from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area3.area_3_gamble_screen.area_3_gambling_to_rest_door import Area3GamblingToRestDoor
+from entity.npc.area3.area_3_gamble_screen.black_jack_albert import BlackJackAlbert
 from entity.npc.area3.area_3_gamble_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 from entity.npc.area3.area_3_rest_screen.area_3_inn_keeper import Area3InnKeeper
 from entity.npc.area3.area_3_rest_screen.area_3_rest_to_bar_door import Area3RestToBarDoor
@@ -101,6 +102,8 @@ class Area3GamblingScreen(Screen):
             Area3GamblingToRestDoor(16 * 5, 16 * 22),
             Area3GamblingToBossDoor(16 * 15, 16 * 22),
             DiceFighterSirSiegfried(16 * 25, 16 * 40),
+            BlackJackAlbert(16 * 5, 16 * 5),
+
 
 
         ]
