@@ -217,15 +217,15 @@ class BlackJackAlbertScreen(GambleScreen):
 
         match self.albert_magic_points:
             case 3:
-                luck_swap_randomizer = random.randint(1, 90) + self.luck_swapping_switch
+                luck_swap_randomizer = random.randint(1, 80) + self.luck_swapping_switch
             case 2:
                 luck_swap_randomizer = random.randint(1, 70) + self.luck_swapping_switch
             case 1:
-                luck_swap_randomizer = random.randint(1, 80) + self.luck_swapping_switch
+                luck_swap_randomizer = random.randint(1, 60) + self.luck_swapping_switch
 
         print(luck_swap_randomizer)
 
-        if luck_swap_randomizer > 100 and self.albert_magic_points > 0 and self.cards_of_frailty == 0:
+        if luck_swap_randomizer > 1 and self.albert_magic_points > 0 and self.cards_of_frailty == 0:
             self.game_state = self.ALBERT_CASTING_SPELL_SCREEN
             print("yeah boy ")
 
@@ -284,7 +284,6 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.ALBERT_CASTING_SPELL_SCREEN:
-            print("Line 279")
             self.battle_messages[self.ALBERT_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
                 self.albert_magic_points -= 1
@@ -1031,7 +1030,11 @@ class BlackJackAlbertScreen(GambleScreen):
                                             True, WHITE), (player_enemy_box_info_x_position,
                                                            hero_focus_y_position))
 
-        if self.lock_down <= self.lock_down_inactive:
+        if self.cards_of_frailty > 0:
+            state.DISPLAY.blit(self.font.render(f"frail {self.cards_of_frailty}",
+                                                True, RED), (player_enemy_box_info_x_position,
+                                                               hero_name_y_position))
+        elif self.lock_down <= self.lock_down_inactive:
             state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}",
                                                 True, WHITE), (player_enemy_box_info_x_position,
                                                                hero_name_y_position))
