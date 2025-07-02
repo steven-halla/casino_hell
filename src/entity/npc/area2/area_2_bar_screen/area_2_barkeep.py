@@ -91,6 +91,8 @@ class Area2BarKeep(Npc):
                     else:
                         self.buy_sound.play()
                         state.player.money -= 500
+                        state.player.food -= 1
+
                         if stat_index == 0:
                             state.player.body += 1
                         elif stat_index == 1:

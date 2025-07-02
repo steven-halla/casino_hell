@@ -28,10 +28,10 @@ class Area3BarKeep(Npc):
         self.state = "waiting"
 
         self.shop_items = [
-            "Hoppy Brew", "Carrion Nachos", "Body Feast",
+            "Hoppy Brew", "Carrion Nachos","Barf Soup", "Body Feast",
             "Mind Feast", "Spirit Feast", "Luck Feast", "Perception Feast"
         ]
-        self.shop_costs = ["200", "200", "500", "500", "500", "500", "500"]
+        self.shop_costs = ["200", "200", "200", "500", "500", "500", "500", "500"]
 
         self.selected_item_index = 0
         self.selected_money_index = 0
@@ -76,8 +76,15 @@ class Area3BarKeep(Npc):
                     state.player.luck += 1
                     state.player.enhanced_luck = True
                     state.player.food -= 1
+                    # i will need to add enhanced luck to level 3 npc state vs enhanced luck
 
-                elif idx in range(2, 7) and Events.FEAST_CONSUMED.value not in state.player.level_three_npc_state:
+                elif idx == 2:
+                    self.buy_sound.play()
+                    state.player.money -= 200
+                    state.player.spirit += 1
+                    state.player.food -= 1
+
+                elif idx in range(3, 8) and Events.FEAST_CONSUMED.value not in state.player.level_three_npc_state:
                     eligible = [
                         state.player.body,
                         state.player.mind,
@@ -85,12 +92,13 @@ class Area3BarKeep(Npc):
                         state.player.luck,
                         state.player.perception
                     ]
-                    stat_index = idx - 2
+                    stat_index = idx - 3
                     if eligible[stat_index] == 3:
                         self.cant_buy_sound.play()
                     else:
                         self.buy_sound.play()
                         state.player.money -= 500
+                        state.player.food -= 1
                         if stat_index == 0:
                             state.player.body += 1
                         elif stat_index == 1:
@@ -175,7 +183,7 @@ class Area3BarKeep(Npc):
                 else:
                     state.DISPLAY.blit(self.font.render("You need a body of 2 to eat or you'll barf it up.", True, (255, 255, 255)), (70, 460))
 
-            elif self.selected_item_index >= 2:
+            elif self.selected_item_index >= 3:
                 stat_names = ["Body", "Mind", "Spirit", "Luck", "Perception"]
                 stat_values = [
                     state.player.body,
@@ -184,8 +192,8 @@ class Area3BarKeep(Npc):
                     state.player.luck,
                     state.player.perception
                 ]
-                idx = self.selected_item_index - 2
-                if feast_bought or stat_values[idx] == 2:
+                idx = self.selected_item_index - 3
+                if feast_bought or stat_values[idx] == 3:
                     state.DISPLAY.blit(self.font.render(f"{stat_names[idx]} Feast is sold out!", True, (255, 255, 255)), (70, 460))
                 else:
                     state.DISPLAY.blit(self.font.render(f"Feast of {stat_names[idx]}", True, (255, 255, 255)), (70, 460))
