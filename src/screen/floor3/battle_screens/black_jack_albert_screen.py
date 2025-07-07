@@ -247,7 +247,8 @@ class BlackJackAlbertScreen(GambleScreen):
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
 
-        self.cards_of_frailty = 2
+        self.cards_of_frailty = 0
+        self.albert_magic_points = 2
 
 
     def update(self, state: 'GameState'):
