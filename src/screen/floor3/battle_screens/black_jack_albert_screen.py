@@ -261,7 +261,7 @@ class BlackJackAlbertScreen(GambleScreen):
         if self.money <= self.fengus_bankrupt:
             state.currentScreen = state.area3GamblingScreen
             state.area3GamblingScreen.start(state)
-            Events.add_level_two_event_to_player(state.player, Events.BLACK_JACK_MACK_DEFEATED)
+            Events.add_level_three_event_to_player(state.player, Events.BLACK_JACK_ALBERT_DEFEATED)
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:
