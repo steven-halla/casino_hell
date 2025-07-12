@@ -2,10 +2,11 @@ import random
 
 import pygame
 
-from constants import WHITE, BLACK
+from constants import WHITE, BLACK, GREEN
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from game_constants.magic import Magic
 
 # Game is not complete
@@ -97,6 +98,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         self.battle_screen_index: int = 0
         self.debuff_bad_luck: int = 0
         self.magic_screen_index: int = 0
+        self.siegfried_defeated: int = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -238,6 +240,11 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         controller = state.controller
         controller.update()
         state.player.update(state)
+
+        if self.money <= self.siegfried_defeated:
+            state.currentScreen = state.area3GamblingScreen
+            state.area3GamblingScreen.start(state)
+            Events.add_level_three_event_to_player(state.player, Events.DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic_dice_fighter(controller, state)
@@ -1208,7 +1215,10 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
 
-        state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
+        if self.debuff_bad_luck > 0:
+            state.DISPLAY.blit(self.font.render(f"bad luck + {self.debuff_bad_luck}", True, GREEN), (player_enemy_box_info_x_position, hero_name_y_position))
+        else:
+            state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
 
     def display_dice_init_roll(self, state: "GameState",
                                    player_init_roll_1: int, player_init_roll_2: int, player_init_roll_3: int,
