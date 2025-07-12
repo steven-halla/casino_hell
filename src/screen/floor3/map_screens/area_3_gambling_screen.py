@@ -99,11 +99,11 @@ class Area3GamblingScreen(Screen):
 
         state.npcs = [
 
-            Area3GamblingToRestDoor(16 * 5, 16 * 22),
-            Area3GamblingToBossDoor(16 * 15, 16 * 22),
+            Area3GamblingToRestDoor(16 * 5, 16 * 42),
+            Area3GamblingToBossDoor(16 * 15, 16 * 42),
             DiceFighterSirSiegfried(16 * 25, 16 * 40),
             BlackJackAlbert(16 * 5, 16 * 5),
-
+            DiceFighterSirSiegfried(16 * 25, 16 * 5),
 
 
         ]

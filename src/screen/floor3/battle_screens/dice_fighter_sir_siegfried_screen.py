@@ -268,26 +268,30 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
             self.battle_messages[self.INIT_MESSAGE].update(state)
 
             if controller.up_button:
+
                 self.init_screen_index = (self.init_screen_index + self.index_stepper) % len(self.init_screen_choices)
             elif controller.down_button:
 
                 self.init_screen_index = (self.init_screen_index - self.index_stepper) % len(self.init_screen_choices)
 
-            if controller.confirm_button and self.init_screen_index == 0 and self.player_init_roll_total == 0:
+            if (
+                    controller.isTPressed or controller.isAPressedSwitch) and self.init_screen_index == 0 and self.player_init_roll_total == 0:
                 controller.setTPressed = False
                 controller.isAPressedSwitch = False
                 print("Hi")
                 self.initiative_screen_logic(state)
-            elif controller.confirm_button  and self.init_screen_index == 1 and self.blow_init_dice == False:
-
+            elif (
+                    controller.isTPressed or controller.isAPressedSwitch) and self.init_screen_index == 1 and self.blow_init_dice == False:
+                controller.setTPressed = False
+                controller.isAPressedSwitch = False
                 print("Ya")
-
 
                 self.blow_init_dice = True
                 state.player.stamina_points -= self.blow_stamina_drain
             if self.enemy_win_init == True or self.player_win_init == True:
-                if state.controller.confirm_button:
+                if controller.confirm_button:
                     self.game_state = self.POST_INIT_SCREEN
+
 
 
         elif self.game_state == self.POST_INIT_SCREEN:
