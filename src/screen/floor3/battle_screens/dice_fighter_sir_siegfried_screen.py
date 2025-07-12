@@ -765,7 +765,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
                 print("Player point roll 3: " + str(self.player_attack_roll_3))
                 print("Player point roll total is : " + str(self.player_point_roll_total))
                 if self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 == self.player_attack_roll_3:
-                    self.game_state = self.PLAYER_DEALS_DAMAGE_SCREEN
+                    self.game_state = self.PLAYER_WIN_SCREEN
                     print("You got a triple you win")
                     return
                 if self.player_attack_roll_1 == self.player_attack_roll_2 and self.player_attack_roll_1 != self.player_attack_roll_3:
