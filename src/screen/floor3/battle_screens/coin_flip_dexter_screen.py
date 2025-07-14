@@ -557,10 +557,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
     def update_player_win_screen_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_high
-        state.player.money += self.bet
-        self.money -= self.bet
         self.reset_round(state)
-
         self.game_state = self.WELCOME_SCREEN
 
 
@@ -569,15 +566,48 @@ class CoinFlipDexterScreen(GambleScreen):
             if self.money < 0:
                 self.money = 0
             total_gain = self.bet + (self.spirit_bonus * 20)
-            state.player.money += total_gain
-            self.money -= total_gain
+
+
+            if self.debuff_money_balancer == 0:
+                state.player.money += total_gain
+                self.money -= self.bet
+
+            elif self.debuff_money_balancer > 0:
+                state.player.money += math.ceil(total_gain / 2)
+                self.money -= math.ceil(self.bet / 2)
+
+            self.reset_round(state)
+            self.game_state = self.WELCOME_SCREEN
+        elif Equipment.COIN_FLIP_GLASSES.value not in state.player.equipped_items:
+
+            if self.debuff_money_balancer == 0:
+                state.player.money += self.bet
+                self.money -= self.bet
+
+            elif self.debuff_money_balancer > 0:
+                state.player.money += math.ceil(self.bet / 2)
+                self.money -= math.ceil(self.bet / 2)
+
             self.reset_round(state)
 
             self.game_state = self.WELCOME_SCREEN
+
+
+
+
     def update_player_lose_message_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_low
-        state.player.money -= self.bet
-        self.money += self.bet
+
+
+        if self.debuff_money_balancer == 0:
+            state.player.money -= self.bet
+            self.money += self.bet
+        elif self.debuff_money_balancer > 0:
+            state.player.money -= math.ceil(self.bet * 2)
+            self.money += math.ceil(self.bet * 2)
+
+
+
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
 
