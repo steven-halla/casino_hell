@@ -15,6 +15,7 @@ from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area3.area_3_gamble_screen.area_3_gambling_to_rest_door import Area3GamblingToRestDoor
 from entity.npc.area3.area_3_gamble_screen.black_jack_albert import BlackJackAlbert
+from entity.npc.area3.area_3_gamble_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_gamble_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 from entity.npc.area3.area_3_gamble_screen.high_low_diena import HighLowDiena
 from entity.npc.area3.area_3_rest_screen.area_3_inn_keeper import Area3InnKeeper
@@ -105,7 +106,8 @@ class Area3GamblingScreen(Screen):
             DiceFighterSirSiegfried(16 * 25, 16 * 40),
             BlackJackAlbert(16 * 5, 16 * 5),
             DiceFighterSirSiegfried(16 * 25, 16 * 5),
-            HighLowDiena(16 * 40, 16 * 5)
+            HighLowDiena(16 * 40, 16 * 5),
+            CrapsJunpon(16 * 5, 16 * 20)
 
 
         ]
