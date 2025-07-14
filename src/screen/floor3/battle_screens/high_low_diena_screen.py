@@ -274,6 +274,7 @@ class HighLowDienaScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_helper(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+            print(self.deck.cards)
 
         elif self.game_state == self.CODY_CASTING_SPELL_SCREEN:
             self.battle_messages[self.CODY_CASTING_SPELL_MESSAGE].update(state)
