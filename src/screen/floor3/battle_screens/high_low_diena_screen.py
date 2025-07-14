@@ -25,9 +25,9 @@ class HighLowDienaScreen(GambleScreen):
         self.bet: int = 100
         self.money: int = 1000
         self.buff_red_card_only_in_deck_cost = 50
-        self.cody_magic_points = 2
+        self.cody_magic_points = 0
 
-        self.cody_bankrupt: int = 0
+        self.diena_bankrupt: int = 0
         self.magic_lock: bool = False
         self.dealer_name: str = "diena"
         self.magic_menu_screen_index: int = 0
@@ -40,7 +40,6 @@ class HighLowDienaScreen(GambleScreen):
         self.buff_red_card_only_in_deck: bool = False
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
-        self.debuff_countdown_rot: int = 0
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -200,10 +199,10 @@ class HighLowDienaScreen(GambleScreen):
 
 
 
-        if self.money <= self.cody_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.HIGH_LOW_CODY_DEFEATED)
+        if self.money <= self.diena_bankrupt:
+            state.currentScreen = state.area3GamblingScreen
+            state.area3GamblingScreen.start(state)
+            Events.add_level_three_event_to_player(state.player, Events.HIGH_LOW_DIENA_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_helper(state, controller)
@@ -335,14 +334,7 @@ class HighLowDienaScreen(GambleScreen):
                         state.player.exp += self.medium_exp
                         state.player.money += self.bet
                         self.money -= self.bet
-                    if self.spread_counter == 1:
-                        state.player.exp += self.high_exp
-                        state.player.money += self.bet * 3
-                        self.money -= self.bet * 3
-                    elif self.spread_counter == 2:
-                        state.player.exp += self.medium_exp
-                        state.player.money += self.bet * 2
-                        self.money -= self.bet * 2
+
                     elif self.spread_counter == 4:
                         state.player.exp += self.low_exp
                         state.player.money += self.bet // 2

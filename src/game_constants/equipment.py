@@ -4,7 +4,6 @@ from enum import Enum
 
 class Equipment(Enum):
     # coin flip
-    SPIRIT_SHOES = "Spirit Shoes" # adds+1 to spirit
     COIN_FLIP_GLASSES = "coin flip glasses" # spirit 3 adds + 20 spirit 5 add + 50 to cins
     COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
     # opossum in a can
@@ -51,6 +50,7 @@ class Equipment(Enum):
     HIGH_VEST = "medium vest"  # -30 opposum and slot demon damage and game 10
     SPIRIT_CHARM = "spirit charm" # + 1 spirit lvl 4
     SAGE_AMULET = "sage amulet"
+    SPIRIT_SHOES = "Spirit Shoes" # adds+1 to spirit
 
 
 

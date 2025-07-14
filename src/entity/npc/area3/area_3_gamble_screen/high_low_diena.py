@@ -14,7 +14,7 @@ from game_constants.magic import Magic
 # if you win 500 coins get a coin
 # if you win 500 coins from two games those coins become mega coin.
 # if you rest at the innn, the lower coins vanish , but an inn stay wont eras the mega coin
-class DiceFighterSirSiegfried(Npc):
+class HighLowDiena(Npc):
     def __init__(self, x: int, y: int):
         super().__init__(x, y)
 
@@ -22,10 +22,10 @@ class DiceFighterSirSiegfried(Npc):
         self.selected_item_index = 0
         self.craps_happy_messages = {
             "welcome_message": NpcTextBox(
-                ["Sir siegfreid: Are you sure you want to battle the king of dice fighter?"],
+                ["Diena: Are you sure you want to battle the king of high low ?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
-                ["Sir Siegfried: How, impossible, nobody has every defeated my double fighter technique."],
+                ["Diena: How, impossible, nobody has every defeated my double high low technique."],
                 (50, 450, 700, 130), 36, 500),
 
 
@@ -63,7 +63,7 @@ class DiceFighterSirSiegfried(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
 
-            if Events.DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED.value in state.player.level_three_npc_state:
+            if Events.HIGH_LOW_DIENA_DEFEATED.value in state.player.level_three_npc_state:
                 self.craps_happy_messages["defeated_message"].reset()
 
             else:
@@ -72,7 +72,7 @@ class DiceFighterSirSiegfried(Npc):
     def update_talking(self, state: "GameState"):
         current_message = (
             self.craps_happy_messages["defeated_message"]
-            if Events.DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED.value in state.player.level_three_npc_state
+            if Events.HIGH_LOW_DIENA_DEFEATED.value in state.player.level_three_npc_state
             else self.craps_happy_messages["welcome_message"]
         )
         current_message.update(state)
@@ -93,7 +93,7 @@ class DiceFighterSirSiegfried(Npc):
 
 
         # Check if the "T" key is pressed and the flag is not set
-        if (current_message.is_finished() and Events.DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED.value
+        if (current_message.is_finished() and Events.HIGH_LOW_DIENA_DEFEATED.value
                 not in state.player.level_three_npc_state
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
@@ -103,8 +103,8 @@ class DiceFighterSirSiegfried(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.diceFighterSirSiegfriedScreen
-                state.diceFighterSirSiegfriedScreen.start(state)
+                state.currentScreen = state.highLowDienaScreen
+                state.highLowDienaScreen.start(state)
 
             elif selected_option == "No":
                 self.state = "waiting"
@@ -140,12 +140,12 @@ class DiceFighterSirSiegfried(Npc):
         if self.state == "talking":
             current_message = (
                 self.craps_happy_messages["defeated_message"]
-                if Events.DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED.value in state.player.level_three_npc_state
+                if Events.HIGH_LOW_DIENA_DEFEATED.value in state.player.level_three_npc_state
                 else self.craps_happy_messages["welcome_message"]
             )
             current_message.draw(state)
 
-            if (current_message.is_finished() and Events.DICE_FIGHTER_SIR_SIEGFRIED_DEFEATED.value
+            if (current_message.is_finished() and Events.HIGH_LOW_DIENA_DEFEATED.value
                     not in state.player.level_three_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100
