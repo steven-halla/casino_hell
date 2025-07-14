@@ -8,6 +8,8 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
+# new spell
+# if there is an ACE in the next 4 top cards, you win the ace
 
 class HighLowDienaScreen(GambleScreen):
     def __init__(self, screenName: str = "high low") -> None:
@@ -43,7 +45,7 @@ class HighLowDienaScreen(GambleScreen):
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "Diena: This is the welcome screen"
+                "Diena: This is the welcome screendffdasdfasfafafsafa"
             ]),
 
             self.BET_MESSAGE: MessageBox([
@@ -117,6 +119,7 @@ class HighLowDienaScreen(GambleScreen):
 
         # Define allowed suits and ranks
         if self.buff_red_card_only_in_deck == False:
+
             allowed_suits = ["Hearts", "Clubs"]
             allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
@@ -156,6 +159,70 @@ class HighLowDienaScreen(GambleScreen):
 
 
             for suit in ["Clubs", "Spades", "Diamonds"]:
+                self.deck.cards.append(
+                    (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
+                )
+
+        elif self.magic_bonus == 5:
+            allowed_suits = ["Hearts"]
+            allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+
+            # Rebuild the deck with only the allowed suits and ranks
+            self.deck.cards = [
+                (self.deck.rank_strings[rank], suit, self.deck.rank_values_high_low[rank])
+                for suit in allowed_suits
+                for rank in allowed_ranks
+            ]
+
+            for suit in ["Clubs", "Spades", "Diamonds"]:
+                self.deck.cards.append(
+                    (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
+                )
+
+        elif self.magic_bonus >= 3:
+            # Separate allowed ranks for Hearts and Clubs
+            hearts_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+
+            clubs_ranks = [10, "Jack", "Queen", "King", "Ace"]
+
+            # Rebuild the deck with Hearts cards
+            self.deck.cards = [
+                (self.deck.rank_strings[rank], "Hearts", self.deck.rank_values_high_low[rank])
+                for rank in hearts_ranks
+            ]
+
+            # Add Clubs cards
+            self.deck.cards.extend([
+                (self.deck.rank_strings[rank], "Clubs", self.deck.rank_values_high_low[rank])
+                for rank in clubs_ranks
+            ])
+
+            # Add 2s for Spades and Diamonds
+            for suit in ["Spades", "Diamonds"]:
+                self.deck.cards.append(
+                    (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
+                )
+
+        elif self.magic_bonus < 3:
+            # self.magic_bonus < 3
+            # Separate allowed ranks for Hearts and Clubs
+            hearts_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+            clubs_ranks = [6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+
+            # Rebuild the deck with Hearts cards
+            self.deck.cards = [
+                (self.deck.rank_strings[rank], "Hearts", self.deck.rank_values_high_low[rank])
+                for rank in hearts_ranks
+            ]
+
+            # Add Clubs cards
+            self.deck.cards.extend([
+                (self.deck.rank_strings[rank], "Clubs", self.deck.rank_values_high_low[rank])
+                for rank in clubs_ranks
+            ])
+
+            # Add 2s for Spades and Diamonds
+            for suit in ["Spades", "Diamonds"]:
                 self.deck.cards.append(
                     (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
                 )
@@ -447,8 +514,8 @@ class HighLowDienaScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
 
             elif self.welcome_screen_index == leave_game:
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area3GamblingScreen
+                state.area3GamblingScreen.start(state)
 
     def update_bet_screen_helper(self, state, controller):
 
@@ -512,8 +579,8 @@ class HighLowDienaScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money -= 100
                 self.reset_high_low_game()
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area3GamblingScreen
+                state.area3GamblingScreen.start(state)
 
     def draw_magic_menu_selection_box(self, state):
         if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value:
@@ -750,7 +817,3 @@ class HighLowDienaScreen(GambleScreen):
         black_box_x = start_x_right_box - border_width
         black_box_y = start_y_right_box - border_width
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-
-
-
