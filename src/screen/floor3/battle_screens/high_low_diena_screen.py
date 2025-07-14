@@ -145,7 +145,25 @@ class HighLowDienaScreen(GambleScreen):
 
 
 
-        elif self.buff_red_card_only_in_deck == True:
+        # elif self.buff_red_card_only_in_deck == True:
+        #     allowed_suits = ["Hearts"]
+        #     allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
+        #
+        #     # Rebuild the deck with only the allowed suits and ranks
+        #     self.deck.cards = [
+        #         (self.deck.rank_strings[rank], suit, self.deck.rank_values_high_low[rank])
+        #         for suit in allowed_suits
+        #         for rank in allowed_ranks
+        #     ]
+        #
+        #
+        #
+        #     for suit in ["Clubs", "Spades", "Diamonds"]:
+        #         self.deck.cards.append(
+        #             (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
+        #         )
+
+        elif self.magic_bonus == 5 and self.buff_red_card_only_in_deck == True:
             allowed_suits = ["Hearts"]
             allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
@@ -156,30 +174,12 @@ class HighLowDienaScreen(GambleScreen):
                 for rank in allowed_ranks
             ]
 
-
-
             for suit in ["Clubs", "Spades", "Diamonds"]:
                 self.deck.cards.append(
                     (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
                 )
 
-        elif self.magic_bonus == 5:
-            allowed_suits = ["Hearts"]
-            allowed_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
-
-            # Rebuild the deck with only the allowed suits and ranks
-            self.deck.cards = [
-                (self.deck.rank_strings[rank], suit, self.deck.rank_values_high_low[rank])
-                for suit in allowed_suits
-                for rank in allowed_ranks
-            ]
-
-            for suit in ["Clubs", "Spades", "Diamonds"]:
-                self.deck.cards.append(
-                    (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
-                )
-
-        elif self.magic_bonus >= 3:
+        elif self.magic_bonus >= 3 and self.buff_red_card_only_in_deck == True:
             # Separate allowed ranks for Hearts and Clubs
             hearts_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
 
@@ -203,7 +203,7 @@ class HighLowDienaScreen(GambleScreen):
                     (self.deck.rank_strings[2], suit, self.deck.rank_values_high_low[2])
                 )
 
-        elif self.magic_bonus < 3:
+        elif self.magic_bonus < 3 and self.buff_red_card_only_in_deck == True:
             # self.magic_bonus < 3
             # Separate allowed ranks for Hearts and Clubs
             hearts_ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "Jack", "Queen", "King", "Ace"]
