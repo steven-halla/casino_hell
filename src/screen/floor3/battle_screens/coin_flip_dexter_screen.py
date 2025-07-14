@@ -75,9 +75,7 @@ class CoinFlipDexterScreen(GambleScreen):
         self.heads_force_randomizer_success_rate: int = 60
         self.money_balancer_chance: int = 0
         self.balance_modifier: int = 0
-
-
-
+        self.weighted_coin: bool = False
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -246,6 +244,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
+        print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -287,8 +286,6 @@ class CoinFlipDexterScreen(GambleScreen):
             self.battle_messages[self.COIN_FLIP_MESSAGE].update(state)
             self.update_coin_flip_screen_helper(state)
         elif self.game_state == self.RESULTS_SCREEN:
-            self.update_flip_coin()
-
             if controller.confirm_button:
                 self.update_flip_coin_logic_helper(controller)
         elif self.game_state == self.PLAYER_WIN_SCREEN:
@@ -553,6 +550,7 @@ class CoinFlipDexterScreen(GambleScreen):
     def update_coin_flip_screen_helper(self, state: 'GameState'):
         self.result_anchor = True
         if self.coin_bottom == True:
+            self.update_flip_coin()
             self.game_state = self.RESULTS_SCREEN
 
     def update_player_win_screen_helper(self, state: 'GameState'):
@@ -816,11 +814,6 @@ class CoinFlipDexterScreen(GambleScreen):
             else self.tails_image
         )
 
-        if self.heads_force_active == True and self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
-            self.image_to_display = self.heads_image
-        else:
-            self.image_to_display = self.tails_image
-
 
         image_rect = self.image_to_display.get_rect()
         image_rect.center = (state.DISPLAY.get_width() // 2, state.DISPLAY.get_height() // 2)
@@ -894,5 +887,3 @@ class CoinFlipDexterScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-
-

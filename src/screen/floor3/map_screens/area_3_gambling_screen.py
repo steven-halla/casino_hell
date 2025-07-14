@@ -15,6 +15,7 @@ from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area3.area_3_gamble_screen.area_3_gambling_to_rest_door import Area3GamblingToRestDoor
 from entity.npc.area3.area_3_gamble_screen.black_jack_albert import BlackJackAlbert
+from entity.npc.area3.area_3_gamble_screen.coin_flip_dexter import CoinFlipDexter
 from entity.npc.area3.area_3_gamble_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_gamble_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 from entity.npc.area3.area_3_gamble_screen.high_low_diena import HighLowDiena
@@ -32,6 +33,7 @@ from entity.player.player import Player
 from entity.npc.area3.area_3_gamble_screen.area_3_gambling_to_boss_door import Area3GamblingToBossDoor
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
 from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
@@ -103,11 +105,12 @@ class Area3GamblingScreen(Screen):
 
             Area3GamblingToRestDoor(16 * 5, 16 * 42),
             Area3GamblingToBossDoor(16 * 15, 16 * 42),
-            DiceFighterSirSiegfried(16 * 25, 16 * 40),
+
             BlackJackAlbert(16 * 5, 16 * 5),
-            DiceFighterSirSiegfried(16 * 25, 16 * 5),
-            HighLowDiena(16 * 40, 16 * 5),
-            CrapsJunpon(16 * 5, 16 * 20)
+            DiceFighterSirSiegfried(16 * 20, 16 * 5),
+            HighLowDiena(16 * 35, 16 * 5),
+            CrapsJunpon(16 * 5, 16 * 20),
+            CoinFlipDexter(16 * 20, 16 * 20)
 
 
         ]
