@@ -187,8 +187,10 @@ class CrapsJunponScreen(GambleScreen):
 
         debuff_dice_of_deception_random_chance = random.randint(1, 100) + self.debuff_chance_deception
 
-        if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0 and debuff_dice_of_deception_random_chance >= 100:
+        if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0 and debuff_dice_of_deception_random_chance >= 4:
             self.debuff_chance_deception = 0
+            print("jd;kj;fadsj;fljl;a")
+
             self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
 
     def reset_craps_game(self, state: 'GameState'):
@@ -333,17 +335,17 @@ class CrapsJunponScreen(GambleScreen):
 
     def update_player_win_point_roll_helper(self, state):
         if state.controller.confirm_button:
-            self.round_reset(state)
             self.money -= self.bet
             state.player.money += self.bet
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset(state)
 
     def update_player_lose_point_roll(self, state):
         if state.controller.confirm_button:
-            self.round_reset(state)
             self.money += self.bet
             state.player.money -= self.bet
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset(state)
 
     def update_blow_point_roll_helper(self, state):
         meter_finished = 7
@@ -374,10 +376,10 @@ class CrapsJunponScreen(GambleScreen):
             = f"You rolled a {self.come_out_roll_total}"
         self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
         if state.controller.confirm_button:
-            self.round_reset(state)
             state.player.money -= self.bet
             self.money += self.bet
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset(state)
 
     def update_junpon_casting_spell_helper(self, state):
         if state.controller.confirm_button:
@@ -388,10 +390,10 @@ class CrapsJunponScreen(GambleScreen):
 
     def update_come_out_roll_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
-            self.round_reset(state)
             state.player.money += self.bet
             self.money -= self.bet
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset(state)
 
     def update_handle_dice_rolling_simulation(self, controller):
         if controller.confirm_button:
