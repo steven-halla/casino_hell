@@ -77,6 +77,7 @@ from screen.floor3.battle_screens.black_jack_albert_screen import BlackJackAlber
 from screen.floor3.battle_screens.coin_flip_dexter_screen import CoinFlipDexterScreen
 from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.floor3.battle_screens.dice_fighter_sir_siegfried_screen import DiceFighterSirSiegfriedScreen
+from screen.floor3.battle_screens.hangry_angry_hippos_beff_screen import HungryStarvingHipposBeffScreen
 from screen.floor3.battle_screens.high_low_diena_screen import HighLowDienaScreen
 
 
@@ -303,7 +304,7 @@ class GameState:
         self.slotsBroganScreen = SlotsBroganScreen()
         self.diceFighterSirSiegfriedScreen = DiceFighterSirSiegfriedScreen()
         self.highLowDienaScreen = HighLowDienaScreen()
-        self.hungryStarvingHipposHippyScreen = HungryStarvingHipposHippyScreen()
+        self.hungryStarvingHipposBeffScreen = HungryStarvingHipposBeffScreen()
 
 #-----------------------Area 4 is below-----------------------------------------#
         self.coinFlipBonnieScreen = CoinFlipBonnieScreen()

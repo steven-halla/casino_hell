@@ -194,6 +194,8 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
     def reset_round(self, state):
+        print("Mooooooo")
+
 
         if state.player.money <= 0:
             self.game_state = GameOverScreen
@@ -244,7 +246,6 @@ class CoinFlipDexterScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
-        print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -489,6 +490,7 @@ class CoinFlipDexterScreen(GambleScreen):
     def update_player_draw_screen_helper(self, state):
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
+        print("493")
 
 
 
@@ -555,7 +557,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
     def update_player_win_screen_helper(self, state: 'GameState'):
         state.player.exp += self.exp_gain_high
-        self.reset_round(state)
+        print("561")
         self.game_state = self.WELCOME_SCREEN
 
 
@@ -574,8 +576,10 @@ class CoinFlipDexterScreen(GambleScreen):
                 state.player.money += math.ceil(total_gain / 2)
                 self.money -= math.ceil(self.bet / 2)
 
-            self.reset_round(state)
+            print("581")
             self.game_state = self.WELCOME_SCREEN
+            self.reset_round(state)
+
         elif Equipment.COIN_FLIP_GLASSES.value not in state.player.equipped_items:
 
             if self.debuff_money_balancer == 0:
@@ -586,10 +590,11 @@ class CoinFlipDexterScreen(GambleScreen):
                 state.player.money += math.ceil(self.bet / 2)
                 self.money -= math.ceil(self.bet / 2)
 
-            self.reset_round(state)
+            print("594")
 
             self.game_state = self.WELCOME_SCREEN
 
+            self.reset_round(state)
 
 
 
@@ -608,7 +613,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
-
+        print("615")
 
 
 
