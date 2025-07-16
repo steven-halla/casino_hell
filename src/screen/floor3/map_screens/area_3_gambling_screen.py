@@ -20,6 +20,7 @@ from entity.npc.area3.area_3_gamble_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_gamble_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
 from entity.npc.area3.area_3_gamble_screen.hangry_angry_hippos_beff import HangryAngryHipposBeff
 from entity.npc.area3.area_3_gamble_screen.high_low_diena import HighLowDiena
+from entity.npc.area3.area_3_gamble_screen.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
 from entity.npc.area3.area_3_rest_screen.area_3_inn_keeper import Area3InnKeeper
 from entity.npc.area3.area_3_rest_screen.area_3_rest_to_bar_door import Area3RestToBarDoor
 from entity.npc.area3.area_3_rest_screen.area_3_rest_to_gambling_door import Area3RestToGamblingDoor
@@ -113,6 +114,7 @@ class Area3GamblingScreen(Screen):
             CrapsJunpon(16 * 5, 16 * 20),
             CoinFlipDexter(16 * 20, 16 * 20),
             HangryAngryHipposBeff(16 * 35, 16 * 20),
+            OpossumInACanBillyBob(16 * 50, 16 * 20)
 
 
         ]
