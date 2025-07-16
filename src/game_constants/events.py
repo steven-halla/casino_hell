@@ -65,6 +65,7 @@ class Events(Enum):
     SLOTS_BROGAN_DEFEATED = "slots brogan defeated"
     HUNGRY_STARVING_HIPPOS_HIPPY_DEFEATED = "hungry starving hippos hippy defeated"
     HIGH_LOW_DIENA_DEFEATED = "high low diena defeated"
+    HANGRY_ANGRY_HIPPOS_BEFF = "hangry angry hippos beff"
 
     SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED = "slots_level_3_secret_item_acquired"
 

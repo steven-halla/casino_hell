@@ -18,6 +18,7 @@ from entity.npc.area3.area_3_gamble_screen.black_jack_albert import BlackJackAlb
 from entity.npc.area3.area_3_gamble_screen.coin_flip_dexter import CoinFlipDexter
 from entity.npc.area3.area_3_gamble_screen.craps_junpon import CrapsJunpon
 from entity.npc.area3.area_3_gamble_screen.dice_fighter_sir_siegfried import DiceFighterSirSiegfried
+from entity.npc.area3.area_3_gamble_screen.hangry_angry_hippos_beff import HangryAngryHipposBeff
 from entity.npc.area3.area_3_gamble_screen.high_low_diena import HighLowDiena
 from entity.npc.area3.area_3_rest_screen.area_3_inn_keeper import Area3InnKeeper
 from entity.npc.area3.area_3_rest_screen.area_3_rest_to_bar_door import Area3RestToBarDoor
@@ -110,7 +111,8 @@ class Area3GamblingScreen(Screen):
             DiceFighterSirSiegfried(16 * 20, 16 * 5),
             HighLowDiena(16 * 35, 16 * 5),
             CrapsJunpon(16 * 5, 16 * 20),
-            CoinFlipDexter(16 * 20, 16 * 20)
+            CoinFlipDexter(16 * 20, 16 * 20),
+            HangryAngryHipposBeff(16 * 35, 16 * 20),
 
 
         ]

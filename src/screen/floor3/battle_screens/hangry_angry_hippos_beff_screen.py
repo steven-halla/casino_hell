@@ -1,6 +1,7 @@
 import pygame
 from entity.gui.textbox.text_box import TextBox
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from screen.examples.screen import Screen
 import time
 import random
@@ -434,6 +435,7 @@ class HungryStarvingHipposBeffScreen(Screen):
                 if state.player.current_stage == 3:
                     Equipment.BACKWARDS_WATCH.add_equipment_to_player_level_3(state.player,
                                                                                 Equipment.BACKWARDS_WATCH)
+                Events.add_level_three_event_to_player(state.player, Events.HANGRY_ANGRY_HIPPOS_BEFF)
 
                 # self.end_screen()
 
