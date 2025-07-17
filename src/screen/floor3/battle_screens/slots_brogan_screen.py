@@ -196,9 +196,9 @@ class SlotsBroganScreen(GambleScreen):
         state.player.update(state)
 
         if self.money <= self.juragan_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.SLOTS_BROGAN_DEFEATED)
+            state.currentScreen = state.area3GamblingScreen
+            state.area3GamblingScreen.start(state)
+            Events.add_level_three_event_to_player(state.player, Events.SLOTS_BROGAN_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.spin_results_generated = False
@@ -233,8 +233,7 @@ class SlotsBroganScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
-        elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
-            self.battle_messages[self.BURBADAN_CASTING_SPELL_MESSAGE].draw(state)
+
         elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
             self.battle_messages[self.BROGAN_CASTING_SPELL_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -251,7 +250,7 @@ class SlotsBroganScreen(GambleScreen):
 
 
     def update_casting_spell_helper(self, state):
-        self.battle_messages[self.BURBADAN_CASTING_SPELL_MESSAGE].update(state)
+        self.battle_messages[self.BROGAN_CASTING_SPELL_MESSAGE].update(state)
         if state.controller.confirm_button:
             self.debuff_increased_pay_to_play = 5
             self.brogan_mp -= 1
@@ -432,7 +431,9 @@ class SlotsBroganScreen(GambleScreen):
             elif self.secret_item_found == False:
                 if controller.confirm_button:
                     state.player.exp += self.exp_gain_high
-                    Events.add_level_four_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+                    Events.add_level_three_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+                    state.player.items.append(Equipment.SLOTS_SHOES.value)
+
                     self.secret_item_found = True
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
@@ -479,8 +480,8 @@ class SlotsBroganScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area3GamblingScreen
+                state.area3GamblingScreen.start(state)
 
     def update_spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
@@ -593,8 +594,8 @@ class SlotsBroganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money -= 100
                 self.reset_juragan_slots_game()
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area3GamblingScreen
+                state.area3GamblingScreen.start(state)
 
 
     def draw_grid_box(self, state: "GameState") -> None:
