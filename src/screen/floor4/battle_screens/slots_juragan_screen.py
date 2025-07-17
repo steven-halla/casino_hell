@@ -62,7 +62,7 @@ class SlotsJuraganScreen(GambleScreen):
         self.lucky_strike:int = 0
         self.secret_item_found:bool = False
         self.debuff_equipment_break: int = 0
-        self.juragan_mp: int = 3
+        self.brogan_mp: int = 3
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
 
@@ -238,7 +238,7 @@ class SlotsJuraganScreen(GambleScreen):
         self.battle_messages[self.JURAGAN_CASTING_SPELL_MESSAGE].update(state)
         if state.controller.confirm_button:
             self.debuff_equipment_break = 5
-            self.juragan_mp -= 1
+            self.brogan_mp -= 1
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -289,14 +289,17 @@ class SlotsJuraganScreen(GambleScreen):
                         state.player.money -= self.player_coin_high_drain
                         state.player.money -= self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
-                        self.reset_slots_juragan_round()
+                        
                         self.game_state = self.WELCOME_SCREEN
+                        self.reset_slots_juragan_round()
+
                     else:
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
-                        self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
+                        self.reset_slots_juragan_round()
+
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
             elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items and self.debuff_equipment_break == 0:
                 if controller.confirm_button:
@@ -306,14 +309,16 @@ class SlotsJuraganScreen(GambleScreen):
                         state.player.money -= self.player_coin_high_drain
                         state.player.money -= self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
-                        self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
+                        self.reset_slots_juragan_round()
+
                     else:
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
-                        self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
+                        self.reset_slots_juragan_round()
+
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_med_cost} HP and {self.player_coin_high_drain} money. Gain {self.exp_gain_high} exp"]
 
         elif self.slots == ["dice", "dice", "dice"]:
@@ -321,8 +326,9 @@ class SlotsJuraganScreen(GambleScreen):
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_low_drain} money. gain {self.exp_gain_low} exp"]
 
         elif self.slots == ["coin", "coin", "coin"]:
@@ -331,11 +337,13 @@ class SlotsJuraganScreen(GambleScreen):
                 state.player.money -= self.player_coin_med_drain
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
-                if self.juragan_mp > 0 and self.debuff_equipment_break == 0:
+                if self.brogan_mp > 0 and self.debuff_equipment_break == 0:
                     self.game_state = self.JURAGAN_CASTING_SPELL_SCREEN
+                    self.reset_slots_juragan_round()
+
                 else:
                     self.game_state = self.WELCOME_SCREEN
+                    self.reset_slots_juragan_round()
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
 

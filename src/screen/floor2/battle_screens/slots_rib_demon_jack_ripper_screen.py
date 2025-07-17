@@ -310,16 +310,18 @@ class SlotsRippaSnappaScreen(GambleScreen):
 
                         state.player.money -= self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
-                        self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
+                        self.reset_slots_juragan_round()
+
                     else:
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
                         self.money += self.player_coin_high_drain
 
                         state.player.exp += self.exp_gain_high
-                        self.reset_slots_juragan_round()
                         self.game_state = self.WELCOME_SCREEN
+                        self.reset_slots_juragan_round()
+
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"double rib plucked! You lose {self.player_stamina_high_cost} HP and {self.player_coin_high_drain} money.Gain {self.exp_gain_high} exp"]
             elif Events.SLOTS_VEST_FOUND.value in state.player.quest_items and self.debuff_increased_pay_to_play == 0:
                 if controller.confirm_button:

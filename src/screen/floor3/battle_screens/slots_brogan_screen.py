@@ -176,12 +176,10 @@ class SlotsBroganScreen(GambleScreen):
             self.rib_stalker -= 1
         if self.lucky_strike > 0:
             self.lucky_strike -= 1
-        if self.debuff_increased_pay_to_play > 0:
-            self.debuff_increased_pay_to_play -= 1
+
         if self.debuff_double_pluck > 0:
             self.debuff_double_pluck -= 1
-        if self.debuff_double_pluck > 0:
-            self.debuff_double_pluck -= 1
+
         self.increased_double_pluck_chance += 3
         increased_coin_randomizer = random.randint(1, 100) + self.increased_double_pluck_chance
 
@@ -359,25 +357,29 @@ class SlotsBroganScreen(GambleScreen):
                 state.player.money -= self.player_coin_med_drain
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
-                if self.brogan_mp > 0 and self.debuff_increased_pay_to_play == 0:
+
+                if self.brogan_mp > 0 and self.debuff_double_pluck == 0:
                     self.game_state = self.BROGAN_CASTING_SPELL_SCREEN
-                elif self.brogan_mp > 0 and self.debuff_double_pluck == 0:
-                    self.game_state = self.BROGAN_CASTING_SPELL_SCREEN
+                    self.reset_slots_juragan_round()
+
                 else:
                     self.game_state = self.WELCOME_SCREEN
+                    self.reset_slots_juragan_round()
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"rib plucked! You lose {self.player_stamina_low_cost} HP and {self.player_coin_med_drain} money. You are cursed and Locked down. Gain {self.exp_gain_low} exp"]
             if self.battle_messages[self.PLAYER_WIN_MESSAGE].current_message_finished() and controller.confirm_button:
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
 
         elif self.slots == ["cherry", "cherry", "cherry"]:
             self.jack_pot = 50
             if controller.confirm_button:
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
         elif self.slots == ["spin", "spin", "spin"]:
@@ -386,8 +388,9 @@ class SlotsBroganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
         elif self.slots == ["crown", "crown", "crown"]:
@@ -395,8 +398,9 @@ class SlotsBroganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
         elif self.slots == ["dice_six", "dice_six", "dice_six"]:
             if controller.isTPressed or controller.isAPressedSwitch:
@@ -404,8 +408,8 @@ class SlotsBroganScreen(GambleScreen):
                 controller.isAPressedSwitch = False
                 self.lucky_strike += 6
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
 
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"Lucky Strike activated, time to get that money! Gain {self.exp_gain_low} exp"]
 
@@ -414,8 +418,9 @@ class SlotsBroganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_low
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. Gain {self.exp_gain_low} exp"]
 
         elif self.slots == ["chest", "chest", "chest"]:
@@ -424,8 +429,9 @@ class SlotsBroganScreen(GambleScreen):
                 if controller.confirm_button:
                     state.player.money += self.jack_pot
                     state.player.exp += self.exp_gain_low
-                    self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
+                    self.reset_slots_juragan_round()
+
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You win {self.jack_pot} coins. You already got the item. Gain {self.exp_gain_low} exp"]
 
             elif self.secret_item_found == False:
@@ -435,8 +441,9 @@ class SlotsBroganScreen(GambleScreen):
                     state.player.items.append(Equipment.SLOTS_SHOES.value)
 
                     self.secret_item_found = True
-                    self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
+                    self.reset_slots_juragan_round()
+
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
 
         elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
@@ -449,15 +456,17 @@ class SlotsBroganScreen(GambleScreen):
 
                 state.player.money += self.jack_pot
                 state.player.exp += self.exp_gain_high
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You got the jack pot, you win {self.jack_pot} coins. Gain {self.exp_gain_high} exp"]
 
         elif self.slots[0] != self.slots[1] or self.slots[0] != self.slots[2]:
             if controller.confirm_button:
                 state.player.exp += self.exp_gain_no_match
-                self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
+                self.reset_slots_juragan_round()
+
             self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"No matches.  Gain {self.exp_gain_no_match} exp"]
         self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)
 
