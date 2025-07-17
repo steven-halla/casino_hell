@@ -48,7 +48,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.buff_poison_bite: int = 0
         self.player_debuff_poison: int = 0
         self.level_up_message_initialized = False
-        self.debuff_opossum_shoes: int = 0
+        self.debuff_opossum_shoes: bool = False
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -161,7 +161,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
     PICK_TALLY_MENU_MESSAGE: str = "pick_tally_menu_message"
     PICK_SELECTION_MESSAGE: str = "pick_selection_message"
     BACK: str = "Back"
-    
+
 
 
     def initializeGarbageCans(self, state):
@@ -237,7 +237,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.buff_peek = False
         [box.reset() for box in self.battle_messages.values()]
         self.billy_bob_magic_points: int = 2
-        self.debuff_opossum_shoes = 0
+        self.debuff_opossum_shoes = False
 
 
     def opossum_round_reset(self, state):
@@ -271,9 +271,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             self.peek_points -= 1
             if self.peek_points > 0:
                 self.buff_peek = True
-        
-        if self.debuff_opossum_shoes > 0:
-            self.debuff_opossum_shoes -= 1
+
 
 
 
@@ -290,7 +288,8 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             case 1:
                 inflict_opossum_shoes_randomizer = random.randint(1, 50) + self.opossum_shoes_chance
 
-        if inflict_opossum_shoes_randomizer > 100 and self.billy_bob_magic_points > 0 and self.debuff_opossum_shoes == 0:
+        if inflict_opossum_shoes_randomizer > 1 and self.billy_bob_magic_points > 0 and self.debuff_opossum_shoes == False:
+            print("fjdaljf")
             self.game_state = self.BILLY_BOB_CASTING_SPELL_SCREEN
             self.opossum_shoes_chance = 0
 
@@ -316,7 +315,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
 
             self.battle_messages[self.BILLY_BOB_CASTING_SPELL_MESSAGE].update(state)
             if state.controller.confirm_button:
-                self.debuff_opossum_shoes = 5
+                self.debuff_opossum_shoes = True
                 self.billy_bob_magic_points -= 1
 
                 self.game_state = self.WELCOME_SCREEN
@@ -985,7 +984,7 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
 
                 self.game_state = self.MAGIC_MENU_SCREEN
-            elif self.welcome_screen_index == self.quit_index:
+            elif self.welcome_screen_index == self.quit_index and self.debuff_opossum_shoes == False:
                 state.player.canMove = True
                 state.currentScreen = state.area3GamblingScreen
                 state.area3GamblingScreen.start(state)
@@ -1010,6 +1009,11 @@ class OpossumInACanBillyBobScreen(GambleScreen):
             y_position = start_y_right_box + idx * spacing_between_choices
             display_text = choice
             text_color = WHITE
+
+            # Change "Quit" to "LOCKED" in red when debuff_opossum_shoes is True
+            if idx == self.quit_index and self.debuff_opossum_shoes == True:
+                display_text = "LOCKED"
+                text_color = RED
 
             state.DISPLAY.blit(
                 self.font.render(display_text, True, text_color),
@@ -1080,9 +1084,3 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-
-
-
-
-
-

@@ -79,12 +79,9 @@ from screen.floor3.battle_screens.craps_junpon_screen import CrapsJunponScreen
 from screen.floor3.battle_screens.dice_fighter_sir_siegfried_screen import DiceFighterSirSiegfriedScreen
 from screen.floor3.battle_screens.hangry_angry_hippos_beff_screen import HungryStarvingHipposBeffScreen
 from screen.floor3.battle_screens.high_low_diena_screen import HighLowDienaScreen
-
-
-
+from screen.floor3.battle_screens.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
 
 from screen.floor3.battle_screensTRASH.hungry_starving_hippos_hippy_screen import HungryStarvingHipposHippyScreen
-from screen.floor3.battle_screensTRASH.opossum_in_a_can_billy_bob_screen import OpossumInACanBillyBobScreen
 from screen.floor3.battle_screensTRASH.slots_brogan_screen import SlotsBroganScreen
 
 
