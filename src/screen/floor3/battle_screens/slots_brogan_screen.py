@@ -311,7 +311,9 @@ class SlotsBroganScreen(GambleScreen):
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -319,6 +321,7 @@ class SlotsBroganScreen(GambleScreen):
                     else:
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -330,7 +333,9 @@ class SlotsBroganScreen(GambleScreen):
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -338,6 +343,7 @@ class SlotsBroganScreen(GambleScreen):
                     else:
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -348,6 +354,7 @@ class SlotsBroganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
+                self.money += self.player_coin_low_drain
                 state.player.exp += self.exp_gain_low
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -358,6 +365,7 @@ class SlotsBroganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_med_drain
+                self.money += self.player_coin_med_drain
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
 
@@ -379,6 +387,7 @@ class SlotsBroganScreen(GambleScreen):
             self.jack_pot = 50
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -390,6 +399,7 @@ class SlotsBroganScreen(GambleScreen):
 
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -400,6 +410,7 @@ class SlotsBroganScreen(GambleScreen):
             self.jack_pot = 150
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -420,6 +431,7 @@ class SlotsBroganScreen(GambleScreen):
             self.jack_pot = 250
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -431,6 +443,7 @@ class SlotsBroganScreen(GambleScreen):
             if self.secret_item_found == True:
                 if controller.confirm_button:
                     state.player.money += self.jack_pot
+                    self.money -= self.jack_pot
                     state.player.exp += self.exp_gain_low
                     self.game_state = self.WELCOME_SCREEN
                     self.reset_slots_juragan_round()
@@ -458,6 +471,7 @@ class SlotsBroganScreen(GambleScreen):
                     state.player.focus_points += 50
 
                 state.player.money += self.jack_pot
+                self.money -= self.jack_pot
                 state.player.exp += self.exp_gain_high
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -487,6 +501,7 @@ class SlotsBroganScreen(GambleScreen):
                     state.player.stamina_points -= self.player_stamina_med_cost
                     if self.bet > 100:
                         state.player.money -= 50
+                        self.money += 50
 
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
@@ -606,6 +621,7 @@ class SlotsBroganScreen(GambleScreen):
         elif state.player.stamina_points <= no_stamina_game_over:
             if controller.confirm_button:
                 state.player.money -= 100
+                self.money += 100
                 self.reset_juragan_slots_game()
                 state.currentScreen = state.area3GamblingScreen
                 state.area3GamblingScreen.start(state)
