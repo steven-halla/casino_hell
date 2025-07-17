@@ -171,6 +171,7 @@ class SlotsBroganScreen(GambleScreen):
         self.debuff_increased_pay_to_play = 0
         self.debuff_double_pluck = 0
 
+
     def reset_slots_juragan_round(self):
         if self.rib_stalker > 0:
             self.rib_stalker -= 1
@@ -179,6 +180,10 @@ class SlotsBroganScreen(GambleScreen):
 
         if self.debuff_double_pluck > 0:
             self.debuff_double_pluck -= 1
+
+        if self.slot_hack_debuff > 0:
+            self.slot_hack_debuff -= 1
+
 
         self.increased_double_pluck_chance += 3
         increased_coin_randomizer = random.randint(1, 100) + self.increased_double_pluck_chance
@@ -203,8 +208,6 @@ class SlotsBroganScreen(GambleScreen):
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_helper(state)
-        elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
-            self.update_casting_spell_helper(state)
         elif self.game_state == self.BROGAN_CASTING_SPELL_SCREEN:
             self.update_brogan_casting_spell_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -479,6 +482,7 @@ class SlotsBroganScreen(GambleScreen):
                 if self.slot_hack_debuff == self.slot_hack_inactive:
                     state.player.stamina_points -= self.player_stamina_med_cost
                     state.player.money -= self.bet
+                    self.money += self.bet
                 elif self.slot_hack_debuff > self.slot_hack_inactive:
                     state.player.stamina_points -= self.player_stamina_med_cost
                     if self.bet > 100:
