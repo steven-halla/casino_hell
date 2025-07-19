@@ -8,6 +8,7 @@ from entity.npc.area4.area_4_gambling_screen.black_jack_jasmine import BlackJack
 from entity.npc.area4.area_4_gambling_screen.coin_flip_bonnie import CoinFlipBonnie
 from entity.npc.area4.area_4_gambling_screen.craps_naba import CrapsNaba
 from entity.npc.area4.area_4_gambling_screen.dice_fighter_sophia import DiceFighterSophia
+from entity.npc.area4.area_4_gambling_screen.high_low_cody import HighLowCody
 from entity.player.player import Player
 from entity.npc.area4.area_4_gambling_screen.area_4_gambling_to_boss_door import Area4GamblingToBossDoor
 from screen.examples.screen import Screen
@@ -82,7 +83,8 @@ class Area4GamblingScreen(Screen):
             BlackJackJasmine(16 * 5, 16 * 5),
             CoinFlipBonnie(16 * 15, 16 * 5),
             CrapsNaba(16 * 25, 16 * 5),
-            DiceFighterSophia(16 * 35, 16 * 5)
+            DiceFighterSophia(16 * 35, 16 * 5),
+            HighLowCody(16 * 45, 16 * 5)
 
 
         ]

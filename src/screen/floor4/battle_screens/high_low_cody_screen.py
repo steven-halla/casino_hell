@@ -503,8 +503,8 @@ class HighLowCodyScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
 
             elif self.welcome_screen_index == leave_game:
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area4GamblingScreen
+                state.area4GamblingScreen.start(state)
 
     def update_bet_screen_helper(self, state, controller):
 

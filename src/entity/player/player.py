@@ -231,6 +231,7 @@ class Player(Entity):
             "dicefightersophiamoney": state.diceFighterSophiaScreen.sophia_money,
 
             "highlowdienamoney": state.highLowDienaScreen.money,
+            "highlowcodymoney": state.highLowCodyScreen.cody_money
 
 
 
@@ -2199,6 +2200,7 @@ class Player(Entity):
             state.coinFlipBonnieScreen.money = player_data['coinflipbonniemoney']
             state.crapsNabaScreen.naba_money = player_data['crapsnabamoney']
             state.diceFighterSophiaScreen.sophia_money = player_data['dicefightersophiamoney']
+            state.highLowCodyScreen.cody_money = player_data['highlowcodymoney']
 
 
 
