@@ -5,6 +5,7 @@ from constants import PLAYER_OFFSET, BLUEBLACK
 
 from entity.npc.area4.area_4_gambling_screen.area_4_gambling_to_rest_door import Area4GamblingToRestDoor
 from entity.npc.area4.area_4_gambling_screen.black_jack_jasmine import BlackJackJasmine
+from entity.npc.area4.area_4_gambling_screen.coin_flip_bonnie import CoinFlipBonnie
 from entity.player.player import Player
 from entity.npc.area4.area_4_gambling_screen.area_4_gambling_to_boss_door import Area4GamblingToBossDoor
 from screen.examples.screen import Screen
@@ -77,6 +78,7 @@ class Area4GamblingScreen(Screen):
             Area4GamblingToBossDoor(16 * 15, 16 * 40),
 
             BlackJackJasmine(16 * 5, 16 * 5),
+            CoinFlipBonnie(16 * 15, 16 * 5)
 
 
         ]

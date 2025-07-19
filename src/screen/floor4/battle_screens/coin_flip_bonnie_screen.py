@@ -190,8 +190,8 @@ class CoinFlipBonnieScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.bonnie_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area4GamblingScreen
+            state.area4GamblingScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.COIN_FLIP_BONNIE_DEFEATED)
 
         # switch statement
@@ -370,8 +370,8 @@ class CoinFlipBonnieScreen(GambleScreen):
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
             self.reset_coin_flip_game()
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area4GamblingScreen
+            state.area4GamblingScreen.start(state)
 
     def update_flip_coin_logic_helper(self,controller):
         if self.heads_force_active == True:
@@ -612,8 +612,8 @@ class CoinFlipBonnieScreen(GambleScreen):
             if controller.confirm_button:
                 self.reset_coin_flip_game()
                 state.player.money -= 100
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area4GamblingScreen
+                state.area4GamblingScreen.start(state)
 
     def draw_game_over_screen_helper(self, state: 'Gamestate'):
         no_money_game_over = 0
