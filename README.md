@@ -481,17 +481,30 @@ for i in variable turn counter:
 3
 4
 
+equipment list fin
+opossum in a can
+hungry starving hippos
+black jack
+coin flip
+
+
+
+magic list
+coin flip
+
 
 
 equipment
 Level 1 - black jack, opossum in a can, Neatrual
 level 2 - coin fip, craps, neatural, hungry starving hipppos, 
 level 3 -  dice fighter, slots, neatural, opossum in a can,nuetral, 
+level 4 -   hungry starving hippos, coin flip, black jack, hi/low, poker, wheel of torture, nuetral
 
 magic
 level 1 - reveal-black jack , shield - black jack, 
 level 2 - shake - opossum in a can, lucky 7-craps, hack-slots,
 level 3 -  flush deck-high/low, badluck-dice fighter, force heads-coin flip, redraw- black jack
+level 4 -  wheel of torture, poker, craps,  slots, hi/low,
 
 ------------------------
 

@@ -25,7 +25,8 @@ class BlackJackJasmineScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.money: int = 950
+
+        self.jasmine_money: int = 950
         self.jasmine_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -146,6 +147,8 @@ class BlackJackJasmineScreen(GambleScreen):
     ENEMY_WIN_ACTION_SCREEN: str = "enemy_win_action_phase"
     PLAYER_ENEMY_DRAW_ACTION_SCREEN: str = "player_enemy_draw_action_phase"
     JASMINE_CASTING_SPELL_SCREEN: str = "JASMINE_CASTING_SPELL_screen"
+    MONEY_HEADER = "Money"
+
 
     def start(self, state: 'GameState'):
         self.deck.shuffle()
@@ -202,7 +205,7 @@ class BlackJackJasmineScreen(GambleScreen):
         super().update(state)
 
 
-        if self.money <= self.jasmine_bankrupt:
+        if self.jasmine_money <= self.jasmine_bankrupt:
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.BLACK_JACK_JASMINE_DEFEATED)
@@ -251,20 +254,20 @@ class BlackJackJasmineScreen(GambleScreen):
             self.battle_messages[self.PLAYER_ENEMY_DRAW_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_BLACK_JACK_SCREEN:
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].messages = [f"You got a blackjack! You gain {self.bet * self.critical_multiplier} "
-                                                                             f"money and gain {self.med_exp} experience points!"]
+                                                                             f"jasmine_money and gain {self.med_exp} experience points!"]
             if state.controller.confirm_button:
                 self.round_reset()
                 state.player.exp += self.med_exp
-                state.player.money += self.bet * self.critical_multiplier
-                self.money -= self.bet * self.critical_multiplier
+                self.jasmine_money += self.bet * self.critical_multiplier
+                self.jasmine_money -= self.bet * self.critical_multiplier
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.PLAYER_BLACK_JACK_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_BLACK_JACK_SCREEN:
-            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} money and gain {self.high_exp} experience points!"]
+            self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].messages = [f"Enemy got a blackjack! You Lose {self.bet * self.critical_multiplier} jasmine_money and gain {self.high_exp} experience points!"]
             if state.controller.confirm_button:
                 self.round_reset()
-                state.player.money -= self.bet * self.critical_multiplier
-                self.money += self.bet * self.critical_multiplier
+                self.jasmine_money -= self.bet * self.critical_multiplier
+                self.jasmine_money += self.bet * self.critical_multiplier
                 state.player.exp += self.high_exp
                 self.game_state = self.WELCOME_SCREEN
             self.battle_messages[self.ENEMY_BLACK_JACK_MESSAGE].update(state)
@@ -272,11 +275,11 @@ class BlackJackJasmineScreen(GambleScreen):
             self.update_player_action_logic(state, controller)
             self.battle_messages[self.PLAYER_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_WIN_ACTION_SCREEN:
-            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} money and gain {self.low_exp}   experience points!"]
+            self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].messages = [f"You WIN! You WIN {self.bet} jasmine_money and gain {self.low_exp}   experience points!"]
             self.update_player_phase_win(state, controller)
             self.battle_messages[self.PLAYER_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.ENEMY_WIN_ACTION_SCREEN:
-            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].messages = [f"You LOSE! You LOSE {self.bet} money and gain {self.low_exp}  experience points!"]
+            self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].messages = [f"You LOSE! You LOSE {self.bet} jasmine_money and gain {self.low_exp}  experience points!"]
             self.update_player_phase_lose(state, controller)
             self.battle_messages[self.ENEMY_WIN_ACTION_MESSAGE].update(state)
         elif self.game_state == self.PLAYER_ENEMY_DRAW_ACTION_SCREEN:
@@ -383,8 +386,8 @@ class BlackJackJasmineScreen(GambleScreen):
     def update_player_phase_lose(self, state, controller) -> None:
         if controller.confirm_button:
             self.round_reset()
-            state.player.money -= self.bet
-            self.money += self.bet
+            self.jasmine_money -= self.bet
+            self.jasmine_money += self.bet
             state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
@@ -575,7 +578,7 @@ class BlackJackJasmineScreen(GambleScreen):
             self.spirit_bonus: int = state.player.spirit * 10
             self.magic_bonus: int = state.player.mind * 10
 
-        if state.player.money <= 0:
+        if self.jasmine_money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
         elif state.player.stamina_points <= 0:
@@ -599,16 +602,16 @@ class BlackJackJasmineScreen(GambleScreen):
         pass
 
     def game_over_screen_level_4(self, state: 'GameState', controller):
-        no_money_game_over = 0
+        no_jasmine_money_game_over = 0
         no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
+        if self.jasmine_money <= no_jasmine_money_game_over:
             if controller.confirm_button:
                 state.currentScreen = state.gameOverScreen
                 state.gameOverScreen.start(state)
         elif state.player.stamina_points <= no_stamina_game_over:
             if controller.confirm_button:
                 self.reset_black_jack_game()
-                state.player.money -= 100
+                self.jasmine_money -= 100
                 state.currentScreen = state.area4RestScreen
                 state.area4RestScreen.start(state)
 
@@ -869,10 +872,10 @@ class BlackJackJasmineScreen(GambleScreen):
         player_enemy_box_info_x_position_score = 28
         score_y_position = 150
         enemy_name_y_position = 33
-        enemy_money_y_position = 70
+        enemy_jasmine_money_y_position = 70
         enemy_status_y_position = 110
         bet_y_position = 370
-        player_money_y_position = 250
+        player_jasmine_money_y_position = 250
         hero_name_y_position = 205
         hero_stamina_y_position = 290
         hero_focus_y_position = 330
@@ -880,9 +883,9 @@ class BlackJackJasmineScreen(GambleScreen):
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE),
                            (player_enemy_box_info_x_position, enemy_name_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}",
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.jasmine_money}",
                                             True, WHITE),
-                           (player_enemy_box_info_x_position, enemy_money_y_position))
+                           (player_enemy_box_info_x_position, enemy_jasmine_money_y_position))
         if (self.reveal_buff_counter == self.reveal_end_not_active and self.redraw_debuff_counter
                 == self.reveal_end_counter):
             state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE),
@@ -903,9 +906,9 @@ class BlackJackJasmineScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}",
                                             True, WHITE),
                            (player_enemy_box_info_x_position, bet_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}",
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {self.jasmine_money}",
                                             True, WHITE), (player_enemy_box_info_x_position,
-                                                           player_money_y_position))
+                                                           player_jasmine_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}",
                                             True, WHITE), (player_enemy_box_info_x_position,
                                                            hero_stamina_y_position))
@@ -1021,10 +1024,10 @@ class BlackJackJasmineScreen(GambleScreen):
     def draw_game_over_screen_helper(self, state: 'Gamestate'):
         self.blit_message_x: int = 65
         self.blit_message_y: int = 460
-        no_money_game_over = 0
+        no_jasmine_money_game_over = 0
         no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
-            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        if self.jasmine_money <= no_jasmine_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of jasmine_money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
         elif state.player.stamina_points <= no_stamina_game_over:
             state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 

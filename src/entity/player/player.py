@@ -213,6 +213,7 @@ class Player(Entity):
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
             "blackjackmackmoney": state.blackJackMackScreen.money,
             "blackjackalbertmoney": state.blackJackAlbertScreen.money,
+            "blackjackjasminemoney": state.blackJackJasmineScree.jasmine_money,
 
             "shopkeeperpotion": self.shop_keep_potion,
             "shopkeepersavecoin": self.shop_keep_save_coin,
@@ -2167,6 +2168,7 @@ class Player(Entity):
             state.blackJackThomasScreen.blackJackThomasMoney = player_data['blackjackthomasmoney']
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
             state.blackJackMackScreen.money = player_data['blackjackmackmoney']
+            state.blackJackJasmineScreen.jasmine_money = player_data['blackjackjasminemoney']
 
 
 

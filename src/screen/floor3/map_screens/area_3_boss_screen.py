@@ -13,6 +13,7 @@ from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area3.area_3_boss_screen.area_3_boss_to_gambling_screen import Area3BossToGamblingDoor
+from entity.npc.area3.area_3_boss_screen.boss_blarpeon import BossBlarpeon
 from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
 from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
 from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
@@ -93,6 +94,7 @@ class Area3BossScreen(Screen):
         #     state.treasurechests.append(Area3FocusBoost(16 * 111, 14 * 111))
 
         state.npcs = [
+            BossBlarpeon(16 * 5, 16 * 5),
 
             Area3BossToGamblingDoor(16 * 30, 16 * 25),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),

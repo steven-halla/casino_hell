@@ -25,7 +25,8 @@ class HighLowBossScreen(GambleScreen):
         self.player_score: int = 0
         self.enemy_score: int = 0
         self.bet: int = 100
-        self.money: int = 1000
+        self.money: int = 666
+        self.player_money: int = 666
         self.buff_red_card_only_in_deck_cost = 50
         self.cody_magic_points = 0
 
@@ -392,7 +393,7 @@ class HighLowBossScreen(GambleScreen):
                 self.round_reset_high_low()
                 self.player_hand.clear()
                 self.enemy_hand.clear()
-                state.player.money -= self.bet
+                self.player_money -= self.bet
                 state.player.exp += self.medium_exp
 
                 self.money += self.bet
@@ -413,7 +414,7 @@ class HighLowBossScreen(GambleScreen):
         if state.controller.confirm_button:
             if self.battle_messages[self.PLAYER_DRAWS_ACE_MESSAGE].is_finished():
                 self.buff_red_card_only_in_deck = False
-                state.player.money += self.bet
+                self.player_money += self.bet
                 state.player.exp += self.high_exp
                 self.money -= self.bet
                 self.round_reset_high_low()
@@ -430,20 +431,20 @@ class HighLowBossScreen(GambleScreen):
 
                     if self.spread_counter == 1:
                         state.player.exp += self.high_exp
-                        state.player.money += self.bet * 3
+                        self.player_money += self.bet * 3
                         self.money -= self.bet * 3
                     elif self.spread_counter == 2:
                         state.player.exp += self.medium_exp
-                        state.player.money += self.bet * 2
+                        self.player_money += self.bet * 2
                         self.money -= self.bet * 2
                     elif self.spread_counter == 3:
                         state.player.exp += self.medium_exp
-                        state.player.money += self.bet
+                        self.player_money += self.bet
                         self.money -= self.bet
 
                     elif self.spread_counter == 4:
                         state.player.exp += self.low_exp
-                        state.player.money += self.bet // 2
+                        self.player_money += self.bet // 2
                         self.money -= self.bet // 2
                     self.game_state = self.WELCOME_SCREEN
             elif self.game_state == self.ENEMY_WINS_SCREEN:
@@ -451,15 +452,15 @@ class HighLowBossScreen(GambleScreen):
                     self.reset_spread_no_ace(state)
                     if self.spread_counter == 1:
                         state.player.exp -= self.high_exp
-                        state.player.money -= self.bet * 3
+                        self.player_money -= self.bet * 3
                         self.money += self.bet * 3
                     elif self.spread_counter == 2:
                         state.player.exp -= self.medium_exp
-                        state.player.money -= self.bet * 2
+                        self.player_money -= self.bet * 2
                         self.money += self.bet * 2
                     elif self.spread_counter == 3:
                         state.player.exp -= self.medium_exp
-                        state.player.money -= self.bet
+                        self.player_money -= self.bet
                         self.money += self.bet
                     self.game_state = self.WELCOME_SCREEN
 
@@ -530,7 +531,7 @@ class HighLowBossScreen(GambleScreen):
         bet_screen = 2
         leave_game = 3
         # print(self.welcome_screen_index)
-        if state.player.money <= 0:
+        if self.player_money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
         elif state.player.stamina_points <= 0:
@@ -609,14 +610,14 @@ class HighLowBossScreen(GambleScreen):
         no_money_game_over = 0
         no_stamina_game_over = 0
 
-        if state.player.money <= no_money_game_over:
+        if self.player_money <= no_money_game_over:
             if controller.confirm_button:
                 state.currentScreen = state.gameOverScreen
                 state.gameOverScreen.start(state)
 
         elif state.player.stamina_points <= no_stamina_game_over:
             if controller.confirm_button:
-                state.player.money -= 100
+                self.player_money -= 100
                 self.reset_high_low_game()
                 state.currentScreen = state.area3GamblingScreen
                 state.area3GamblingScreen.start(state)
@@ -823,7 +824,7 @@ class HighLowBossScreen(GambleScreen):
                            (player_enemy_box_info_x_position, enemy_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE),
                            (player_enemy_box_info_x_position, bet_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE),
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {self.player_money}", True, WHITE),
                            (player_enemy_box_info_x_position, player_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE),
                            (player_enemy_box_info_x_position, hero_stamina_y_position))

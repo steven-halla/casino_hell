@@ -6,7 +6,7 @@ import json
 
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
-from entity.npc.area4.area_4_rest_screen_trash.black_jack_jasmine import BlackJackJasmine
+from entity.npc.area4.area_4_gambling_screen.black_jack_jasmine import BlackJackJasmine
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
@@ -98,7 +98,11 @@ from screen.floor4.battle_screens.opossum_in_a_can_silly_willy_screen import Opo
 from screen.floor4.battle_screens.poker_darnel import PokerDarnel
 from screen.floor4.battle_screens.slots_juragan_screen import SlotsJuraganScreen
 from screen.floor4.battle_screens.wheel_of_torture_vanessa_black_screen import WheelOfTortureVanessaBlackScreen
+from screen.floor4.map_screens.area_4_bar_screen import Area4BarScreen
+from screen.floor4.map_screens.area_4_boss_screen import Area4BossScreen
+from screen.floor4.map_screens.area_4_gambling_screen import Area4GamblingScreen
 from screen.floor4.map_screens.area_4_rest_screen import Area4RestScreen
+from screen.floor4.map_screens.area_4_shop_screen import Area4ShopScreen
 from screen.floor5.battle_screens.black_jack_fengus_screen import BlackJackFengusScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
@@ -187,7 +191,6 @@ class GameState:
 
 # level 2 area below
         self.area2StartScreen = Area2StartScreen()
-        self.area4RestScreen = Area4RestScreen()
         self.area5RestScreen = Area5RestScreen()
         self.area2NuggetScreen = Area2NuggetScreen()
         self.area2RibDemonMazeScreen = Area2RibDemonMazeScreen()
@@ -303,6 +306,12 @@ class GameState:
         self.highLowBossScreen = HighLowBossScreen()
 
 #-----------------------Area 4 is below-----------------------------------------#
+        self.area4ShopScreen = Area4ShopScreen()
+        self.area4BarScreen = Area4BarScreen()
+        self.area4RestScreen = Area4RestScreen()
+        self.area4BossScreen = Area4BossScreen()
+        self.area4GamblingScreen = Area4GamblingScreen()
+
         self.coinFlipBonnieScreen = CoinFlipBonnieScreen()
         self.blackJackJasmineScreen = BlackJackJasmineScreen()
         self.crapsNabaScreen = CrapsNabaScreen()

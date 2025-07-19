@@ -39,15 +39,15 @@ from entity.npc.area3.area_3_rest_screen_trash.hungry_starving_hippos_hippy impo
 from entity.npc.area3.area_3_rest_screen_trash.magic_man_level_3 import MagicManLevel3
 from entity.npc.area3.area_3_rest_screen_trash.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
 from entity.npc.area3.area_3_rest_screen_trash.slots_brogan import SlotsBrogan
-from entity.npc.area4.area_4_rest_screen_trash.black_jack_jasmine import BlackJackJasmine
-from entity.npc.area4.area_4_rest_screen_trash.coin_flip_bonnie import CoinFlipBonnie
-from entity.npc.area4.area_4_rest_screen_trash.craps_naba import CrapsNaba
-from entity.npc.area4.area_4_rest_screen_trash.dice_fighter_sophia import DiceFighterSophia
-from entity.npc.area4.area_4_rest_screen_trash.high_low_cody import HighLowCody
-from entity.npc.area4.area_4_rest_screen_trash.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
-from entity.npc.area4.area_4_rest_screen_trash.opossum_in_a_can_silly_willy import OpossumInACanSillyWilly
-from entity.npc.area4.area_4_rest_screen_trash.slots_juragan import SlotsJuragan
-from entity.npc.area4.area_4_rest_screen_trash.wheel_of_torture_vanessa_black import WheelOfTortureVanessaBlack
+from entity.npc.area4.area_4_gambling_screen.black_jack_jasmine import BlackJackJasmine
+from entity.npc.area4.area_4_gambling_screen.coin_flip_bonnie import CoinFlipBonnie
+from entity.npc.area4.area_4_gambling_screen.craps_naba import CrapsNaba
+from entity.npc.area4.area_4_gambling_screen.dice_fighter_sophia import DiceFighterSophia
+from entity.npc.area4.area_4_gambling_screen.high_low_cody import HighLowCody
+from entity.npc.area4.area_4_gambling_screen.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
+from entity.npc.area4.area_4_gambling_screen.opossum_in_a_can_silly_willy import OpossumInACanSillyWilly
+from entity.npc.area4.area_4_gambling_screen.slots_juragan import SlotsJuragan
+from entity.npc.area4.area_4_gambling_screen.wheel_of_torture_vanessa_black import WheelOfTortureVanessaBlack
 
 from entity.player.player import Player
 from entity.treasurechests.area_2_focus_boost import Area2FocusBoost

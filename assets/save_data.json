@@ -1,5 +1,5 @@
 {
-    "current_stage": 3,
+    "current_stage": 4,
     "level": 4,
     "exp": 650,
     "stamina_points": 250,
@@ -97,6 +97,7 @@
     "blackjackrumblebillmoney": 900,
     "blackjackmackmoney": 0,
     "blackjackalbertmoney": 500,
+    "blackjackjasminemoney": 1000,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
     "slotsrippasnappamoney": 0,
