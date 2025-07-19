@@ -6,26 +6,12 @@ from constants import WHITE, BLACK
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from game_constants.magic import Magic
 
-# Game is not complete
-# give option to concede a match
-# give option to attack or defend
-# create AI To make attack or defend or concede choices
-# blow command : win initiative every time, this is an equipment item
-#magic spell: elimiates 1s on attack dice rolls usable only during player attack phase for 1 roll
-#
 
-
-# How to play:
-# if you have point set, your deense dice needs to match this
-# attack dice are for breaking point with at least 2 of the 3 rolls
-# i need to dispaly break point
-# I need to have a attack dice box and a defense dice box and label them as such
-# need text to let player know when the point has been broke, maybe a sound effect?
 
 class DiceFighterSophiaScreen(GambleScreen):
-    # this class has an error with T key so far black jack is only class not affected
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.dice_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
@@ -62,7 +48,7 @@ class DiceFighterSophiaScreen(GambleScreen):
         self.point_break: int = 0
         self.stamina_points: int = 300
         self.inflict_damage: int = 75
-        self.money = 1000
+        self.sophia_money= 1000
         self.init_screen_index: int = 0
         self.index_stepper: int = 1
         self.blow_stamina_drain: int = 10
@@ -97,7 +83,7 @@ class DiceFighterSophiaScreen(GambleScreen):
         self.battle_screen_index: int = 0
         self.debuff_bad_luck: int = 0
         self.magic_screen_index: int = 0
-        self.buff_corruption_hole: int = 0
+        self.buff_rolls_of_fate: int = 0
         self.sophia_magic_points: int = 2
         self.buff_lucky_smile: int = 0
         self.spirit_bonus: int = 0
@@ -105,7 +91,7 @@ class DiceFighterSophiaScreen(GambleScreen):
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "I follow the path of the warrior, prepare yourself for destruction.."
+                "Sophia: I follow the path of the agile warrior, prepare yourself for my 1000 cuts technique.."
             ]),
 
             self.PLAYER_WIN_MESSAGE: MessageBox([
@@ -151,7 +137,7 @@ class DiceFighterSophiaScreen(GambleScreen):
                 "go back to previous menu"
             ]),
             self.SOPHIA_CASTING_SPELL_MESSAGE: MessageBox([
-                f"Steal from the poor and give to the rich, let the hungry peasants eat cake and grow fat with contempt...Corruption Hole"
+                f"Winds of fate, dictate who lives and who falls off the cliff...Rolls of fate(enemy defense rolls are now stronger with a +1 if below 6)"
             ]),
 
         }
@@ -211,7 +197,7 @@ class DiceFighterSophiaScreen(GambleScreen):
         self.magic_lock = False
         self.welcome_screen_index = 0
         self.magic_screen_index = 0
-        self.buff_corruption_hole = 0
+        self.buff_rolls_of_fate = 0
 
     def restart_dice_fighter_round(self, state: 'GameState'):
         self.player_win_init: bool = False
@@ -232,8 +218,8 @@ class DiceFighterSophiaScreen(GambleScreen):
             self.magic_lock = False
         elif self.debuff_bad_luck > 0:
             self.magic_lock = True
-        if self.buff_corruption_hole > 0:
-            self.buff_corruption_hole -= 1
+        if self.buff_rolls_of_fate > 0:
+            self.buff_rolls_of_fate -= 1
         if self.buff_lucky_smile > 0:
             self.buff_lucky_smile -= 1
             if self.buff_lucky_smile == 0:
@@ -245,6 +231,12 @@ class DiceFighterSophiaScreen(GambleScreen):
         controller = state.controller
         controller.update()
         state.player.update(state)
+
+
+        if self.sophia_money <= 0:
+            state.currentScreen = state.area4RestScreen
+            state.area4RestScreen.start(state)
+            Events.add_level_four_event_to_player(state.player, Events.DICE_FIGHTER_SOPHIA_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_logic_dice_fighter(controller, state)
@@ -380,15 +372,15 @@ class DiceFighterSophiaScreen(GambleScreen):
     def update_enemy_win_helper(self, state):
         self.battle_messages[self.ENEMY_WIN_MESSAGE].update(state)  # elif self.game_state == self.PLAYER_LOSE_SCREEN:
         if state.controller.confirm_button and self.battle_messages[self.ENEMY_WIN_MESSAGE].current_message_finished():
-            if self.buff_corruption_hole == 0:
+            if self.buff_rolls_of_fate == 0:
                 state.player.money -= self.bet
-                self.money += self.bet
+                self.sophia_money+= self.bet
                 self.restart_dice_fighter_round(state)
                 self.game_state = self.WELCOME_SCREEN
-            elif self.buff_corruption_hole > 0:
+            elif self.buff_rolls_of_fate > 0:
                 state.player.stamina_points += self.bet // 3
                 state.player.money -= self.bet * 3
-                self.money += self.bet * 3
+                self.sophia_money+= self.bet * 3
                 self.restart_dice_fighter_round(state)
                 self.game_state = self.WELCOME_SCREEN
 
@@ -396,7 +388,7 @@ class DiceFighterSophiaScreen(GambleScreen):
         self.battle_messages[self.PLAYER_WIN_MESSAGE].update(state)  # elif self.game_state == self.PLAYER_LOSE_SCREEN:
         if state.controller.confirm_button and self.battle_messages[self.PLAYER_WIN_MESSAGE].current_message_finished():
             state.player.money += self.bet
-            self.money -= self.bet
+            self.sophia_money-= self.bet
             self.restart_dice_fighter_round(state)
             self.game_state = self.WELCOME_SCREEN
 
@@ -408,6 +400,7 @@ class DiceFighterSophiaScreen(GambleScreen):
 
             self.enemy_defense_roll = random.randint(1, 6)
             print(self.enemy_defense_roll)
+
             if self.enemy_defense_roll == self.point_break:
                 print("we have LOST the game!!!!!!!!!!")
                 self.game_state = self.ENEMY_WIN_SCREEN
@@ -430,7 +423,15 @@ class DiceFighterSophiaScreen(GambleScreen):
                     self.game_state = self.PLAYER_DEFENSE_SCREEN
                     return
                 else:
-                    self.game_state = self.PLAYER_ATTACK_SCREEN
+                    if self.buff_rolls_of_fate > 0:
+                        if self.enemy_defense_roll < 6:
+                            self.enemy_defense_roll += 1
+                            if self.enemy_defense_roll == self.point_break:
+                                self.game_state = self.ENEMY_WIN_SCREEN
+                        else:
+                            self.game_state = self.PLAYER_ATTACK_SCREEN
+                    else:
+                        self.game_state = self.PLAYER_ATTACK_SCREEN
 
     def update_player_defense_helper(self, state, controller):
 
