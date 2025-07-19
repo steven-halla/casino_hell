@@ -23,7 +23,7 @@ class HighLowCodyScreen(GambleScreen):
         self.player_score: int = 0
         self.enemy_score: int = 0
         self.bet: int = 100
-        self.money: int = 1000
+        self.cody_money: int = 1000
         self.buff_red_card_only_in_deck_cost = 50
         self.cody_magic_points = 2
 
@@ -193,7 +193,7 @@ class HighLowCodyScreen(GambleScreen):
         if self.debuff_countdown_rot > 0:
             has_twos = any(card[0] == "2" for card in self.deck.cards)
             if not has_twos:
-                self.money += 1000
+                self.cody_money += 1000
                 state.player.money -= 1000
                 state.player.stamina_points -= 200
                 state.player.focus_points -= 100
@@ -243,7 +243,7 @@ class HighLowCodyScreen(GambleScreen):
 
 
 
-        if self.money <= self.cody_bankrupt:
+        if self.cody_money <= self.cody_bankrupt:
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.HIGH_LOW_CODY_DEFEATED)
@@ -334,11 +334,11 @@ class HighLowCodyScreen(GambleScreen):
                 state.player.money -= self.bet
                 state.player.exp += self.medium_exp
 
-                self.money += self.bet
+                self.cody_money += self.bet
                 self.buff_red_card_only_in_deck = False
 
                 self.game_state = self.WELCOME_SCREEN
-                
+
     def update_cody_casting_spell_screen_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
             self.cody_magic_points -= 1
@@ -354,7 +354,7 @@ class HighLowCodyScreen(GambleScreen):
                 self.buff_red_card_only_in_deck = False
                 state.player.money += self.bet
                 state.player.exp += self.high_exp
-                self.money -= self.bet
+                self.cody_money -= self.bet
                 self.round_reset_high_low()
                 self.player_hand.clear()
                 self.enemy_hand.clear()
@@ -370,27 +370,27 @@ class HighLowCodyScreen(GambleScreen):
                     if self.spread_counter == 1:
                         state.player.exp += self.high_exp
                         state.player.money += self.bet * 3
-                        self.money -= self.bet * 3
+                        self.cody_money -= self.bet * 3
                     elif self.spread_counter == 2:
                         state.player.exp += self.medium_exp
                         state.player.money += self.bet * 2
-                        self.money -= self.bet * 2
+                        self.cody_money -= self.bet * 2
                     elif self.spread_counter == 3:
                         state.player.exp += self.medium_exp
                         state.player.money += self.bet
-                        self.money -= self.bet
+                        self.cody_money -= self.bet
                     if self.spread_counter == 1:
                         state.player.exp += self.high_exp
                         state.player.money += self.bet * 3
-                        self.money -= self.bet * 3
+                        self.cody_money -= self.bet * 3
                     elif self.spread_counter == 2:
                         state.player.exp += self.medium_exp
                         state.player.money += self.bet * 2
-                        self.money -= self.bet * 2
+                        self.cody_money -= self.bet * 2
                     elif self.spread_counter == 4:
                         state.player.exp += self.low_exp
                         state.player.money += self.bet // 2
-                        self.money -= self.bet // 2
+                        self.cody_money -= self.bet // 2
                     self.game_state = self.WELCOME_SCREEN
             elif self.game_state == self.ENEMY_WINS_SCREEN:
                 if self.battle_messages[self.PLAYER_LOSE_SPREAD_MESSAGE].is_finished():
@@ -398,15 +398,15 @@ class HighLowCodyScreen(GambleScreen):
                     if self.spread_counter == 1:
                         state.player.exp -= self.high_exp
                         state.player.money -= self.bet * 3
-                        self.money += self.bet * 3
+                        self.cody_money += self.bet * 3
                     elif self.spread_counter == 2:
                         state.player.exp -= self.medium_exp
                         state.player.money -= self.bet * 2
-                        self.money += self.bet * 2
+                        self.cody_money += self.bet * 2
                     elif self.spread_counter == 3:
                         state.player.exp -= self.medium_exp
                         state.player.money -= self.bet
-                        self.money += self.bet
+                        self.cody_money += self.bet
                     self.game_state = self.WELCOME_SCREEN
 
     def update_draw_card_screen_logic(self, state: 'GameState'):
@@ -481,7 +481,7 @@ class HighLowCodyScreen(GambleScreen):
         elif state.player.stamina_points <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
-        elif self.money <= 0:
+        elif self.cody_money <= 0:
             print("enemy defeated")
 
         if len(self.deck.cards) < 2:
@@ -768,7 +768,7 @@ class HighLowCodyScreen(GambleScreen):
         hero_focus_y_position = 330
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.cody_money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))

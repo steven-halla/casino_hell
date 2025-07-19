@@ -234,8 +234,8 @@ class DiceFighterSophiaScreen(GambleScreen):
 
 
         if self.sophia_money <= 0:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area4GamblingScreen
+            state.area4GamblingScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.DICE_FIGHTER_SOPHIA_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
