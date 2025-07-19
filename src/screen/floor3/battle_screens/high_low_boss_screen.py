@@ -11,7 +11,7 @@ from game_constants.magic import Magic
 # new spell
 # if there is an ACE in the next 4 top cards, you win the ace
 
-class HighLowDienaScreen(GambleScreen):
+class HighLowBossScreen(GambleScreen):
     def __init__(self, screenName: str = "high low") -> None:
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
@@ -43,10 +43,11 @@ class HighLowDienaScreen(GambleScreen):
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
         self.deck_adder: int = 4
+        self.diamond_ranks = self.deck.ranks.copy()  # List of all possible card ranks
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "Diena: This is the welcome screendffdasdfasfafafsafa"
+                "Blarpeon: Forgottten ones, tear trhough the rules of reality and invade...deck of chaos"
             ]),
 
             self.BET_MESSAGE: MessageBox([
@@ -237,7 +238,23 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_score = 0
         self.player_hand: list = []
         self.enemy_hand: list = []
+        self.deck_adder += 1
+        if self.deck_adder == 4:
+            # Check if diamond_ranks is empty, if so replenish it
+            if not self.diamond_ranks:
+                self.diamond_ranks = self.deck.ranks.copy()
+                print("Diamond ranks list was empty, replenished with all ranks")
 
+            # Take a rank from the list and remove it
+            selected_rank = random.choice(self.diamond_ranks)
+            self.diamond_ranks.remove(selected_rank)
+
+            # Create a Diamond card with that rank
+            diamond_card = (self.deck.rank_strings[selected_rank], "Diamonds", self.deck.rank_values_high_low[selected_rank])
+            self.deck.cards.append(diamond_card)
+            print(f"Added Diamond card: {diamond_card[0]} of {diamond_card[1]}")
+        if self.deck_adder > 4:
+            self.deck_adder = 0
 
 
 
@@ -249,7 +266,23 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_score = 0
         self.player_hand: list = []
         self.enemy_hand: list = []
+        self.deck_adder += 1
+        if self.deck_adder == 4:
+            # Check if diamond_ranks is empty, if so replenish it
+            if not self.diamond_ranks:
+                self.diamond_ranks = self.deck.ranks.copy()
+                print("Diamond ranks list was empty, replenished with all ranks")
 
+            # Take a rank from the list and remove it
+            selected_rank = random.choice(self.diamond_ranks)
+            self.diamond_ranks.remove(selected_rank)
+
+            # Create a Diamond card with that rank
+            diamond_card = (self.deck.rank_strings[selected_rank], "Diamonds", self.deck.rank_values_high_low[selected_rank])
+            self.deck.cards.append(diamond_card)
+            print(f"Added Diamond card: {diamond_card[0]} of {diamond_card[1]}")
+        if self.deck_adder > 4:
+            self.deck_adder = 0
 
 
     # if an ace is gotten we do this
@@ -260,6 +293,8 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_score = 0
         self.player_hand: list = []
         self.enemy_hand: list = []
+        self.deck_adder += 1
+        self.deck_adder = 0
 
     def update(self, state: 'GameState'):
         controller = state.controller
