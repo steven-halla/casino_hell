@@ -228,6 +228,7 @@ class Player(Entity):
 
 
             "dicefightersirsiegfriedmoney": state.diceFighterSirSiegfriedScreen.money,
+            "dicefightersophiamoney": state.diceFighterSophiaScreen.sophia_money,
 
             "highlowdienamoney": state.highLowDienaScreen.money,
 
@@ -2169,7 +2170,6 @@ class Player(Entity):
             state.blackJackThomasScreen.blackJackThomasMoney = player_data['blackjackthomasmoney']
             state.blackJackRumbleBillScreen.cheater_bob_money = player_data['blackjackrumblebillmoney']
             state.blackJackMackScreen.money = player_data['blackjackmackmoney']
-            state.blackJackJasmineScreen.jasmine_money = player_data['blackjackjasminemoney']
 
 
 
@@ -2194,9 +2194,12 @@ class Player(Entity):
 
             #level 4
 
+            state.blackJackJasmineScreen.jasmine_money = player_data['blackjackjasminemoney']
 
             state.coinFlipBonnieScreen.money = player_data['coinflipbonniemoney']
             state.crapsNabaScreen.naba_money = player_data['crapsnabamoney']
+            state.diceFighterSophiaScreen.sophia_money = player_data['dicefightersophiamoney']
+
 
 
 
