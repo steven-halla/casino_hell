@@ -224,6 +224,7 @@ class Player(Entity):
 
             "crapscrappymoney": state.crapsHappyScreen.money,
             "crapsjunponmoney": state.crapsJunponScreen.money,
+            "crapsnabamoney": state.crapsNabaScreen.naba_money,
 
 
             "dicefightersirsiegfriedmoney": state.diceFighterSirSiegfriedScreen.money,
@@ -2195,6 +2196,7 @@ class Player(Entity):
 
 
             state.coinFlipBonnieScreen.money = player_data['coinflipbonniemoney']
+            state.crapsNabaScreen.naba_money = player_data['crapsnabamoney']
 
 
 

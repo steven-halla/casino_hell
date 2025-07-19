@@ -84,6 +84,7 @@ class CrapsNabaScreen(GambleScreen):
         self.debuff_counter:int = 3
         self.greed_meter: int = 0
         self.greed_bank: bool = False
+        self.naba_money: int = 1000
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -215,7 +216,7 @@ class CrapsNabaScreen(GambleScreen):
         state.player.update(state)
         super().update(state)
 
-        if self.money <= self.naba_bankrupt:
+        if self.naba_money <= self.naba_bankrupt:
             Events.add_event_to_player(state.player, Events.CRAPS_NABA_DEFEATED)
 
         try:
@@ -320,7 +321,7 @@ class CrapsNabaScreen(GambleScreen):
     def update_player_win_point_roll_helper(self, state):
         if state.controller.confirm_button:
             self.round_reset(state)
-            self.money -= self.bet
+            self.naba_money -= self.bet
             state.player.money += self.bet
             self.game_state = self.WELCOME_SCREEN
 
@@ -329,7 +330,7 @@ class CrapsNabaScreen(GambleScreen):
     def update_player_lose_point_roll(self, state):
         if state.controller.confirm_button:
             self.round_reset(state)
-            self.money += self.bet
+            self.naba_money += self.bet
             state.player.money -= self.bet
             self.game_state = self.WELCOME_SCREEN
 
@@ -368,7 +369,7 @@ class CrapsNabaScreen(GambleScreen):
         if state.controller.confirm_button:
             self.round_reset(state)
             state.player.money -= self.bet
-            self.money += self.bet
+            self.naba_money += self.bet
             self.game_state = self.WELCOME_SCREEN
 
     def update_naba_casting_spell_helper(self, state):
@@ -382,14 +383,14 @@ class CrapsNabaScreen(GambleScreen):
             self.round_reset(state)
             if self.greed_bank == False:
                 state.player.money += self.bet
-                self.money -= self.bet
+                self.naba_money -= self.bet
             if self.greed_bank == True:
                 state.player.money += int(self.bet * 1.5)
-                self.money -= int(self.bet * 1.5)
+                self.naba_money -= int(self.bet * 1.5)
 
             if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
                 dice_of_deception_random_chance = random.randint(9, 10)
-                if self.money < 1000 and self.naba_magic_points > 0:
+                if self.naba_money < 1000 and self.naba_magic_points > 0:
                     dice_of_deception_random_chance += 3
                 if dice_of_deception_random_chance > 9:
                     self.game_state = self.NABA_CASTING_SPELL_SCREEN
@@ -515,9 +516,9 @@ class CrapsNabaScreen(GambleScreen):
                 self.game_state = self.POINT_ROLL_SCREEN
 
     def game_over_screen_level_4(self, state: 'GameState', controller):
-        no_money_game_over = 0
+        no_naba_money_game_over = 0
         no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
+        if state.player.money <= no_naba_money_game_over:
             if controller.confirm_button:
                 state.currentScreen = state.gameOverScreen
                 state.gameOverScreen.start(state)
@@ -548,7 +549,7 @@ class CrapsNabaScreen(GambleScreen):
         if controller.action_and_cancel_button:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
-            
+
             if self.greed_meter > 0:
                 if self.power_meter_index >= greed_meter_min:
                     self.greed_bank = True
@@ -699,10 +700,10 @@ class CrapsNabaScreen(GambleScreen):
             )
 
     def draw_game_over_screen_helper(self, state: 'Gamestate'):
-        no_money_game_over = 0
+        no_naba_money_game_over = 0
         no_stamina_game_over = 0
-        if state.player.money <= no_money_game_over:
-            state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
+        if state.player.money <= no_naba_money_game_over:
+            state.DISPLAY.blit(self.font.render(f"You ran out of naba_money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
         elif state.player.stamina_points <= no_stamina_game_over:
             state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
@@ -765,24 +766,24 @@ class CrapsNabaScreen(GambleScreen):
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
         enemy_name_y_position = 33
-        enemy_money_y_position = 70
+        enemy_naba_money_y_position = 70
         enemy_status_y_position = 110
         bet_y_position = 370
-        player_money_y_position = 250
+        player_naba_money_y_position = 250
         hero_name_y_position = 205
         hero_stamina_y_position = 290
         hero_focus_y_position = 330
 
         state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.naba_money}", True, WHITE), (player_enemy_box_info_x_position, enemy_naba_money_y_position))
         if self.lucky_seven_buff_counter == self.lucky_seven_buff_not_active:
             state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
         elif self.lucky_seven_buff_counter > self.lucky_seven_buff_not_active:
             state.DISPLAY.blit(self.font.render(f"{self.TRIPLE_DICE}: {self.lucky_seven_buff_counter} ", True, WHITE), (player_enemy_box_info_x_position, enemy_status_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_naba_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
 
