@@ -191,12 +191,15 @@ class HighLowCodyScreen(GambleScreen):
     # this is for when we are still waiting on an ace
     def reset_spread_no_ace(self, state):
         if self.debuff_countdown_rot > 0:
+            self.debuff_countdown_rot -= 1
             has_twos = any(card[0] == "2" for card in self.deck.cards)
             if not has_twos:
                 self.cody_money += 1000
                 state.player.money -= 1000
                 state.player.stamina_points -= 200
                 state.player.focus_points -= 100
+                self.debuff_countdown_rot = 0
+                print("YOU GOT THE ROTTTTTTTTTT")
         self.player_score = 0
         self.enemy_score = 0
         self.player_hand: list = []
@@ -219,7 +222,8 @@ class HighLowCodyScreen(GambleScreen):
         self.player_hand: list = []
         self.enemy_hand: list = []
         if self.debuff_countdown_rot > 0:
-            self.debuff_countdown_rot -= 1
+
+            self.debuff_countdown_rot = 0
 
     # if an ace is gotten we do this
     def reset_high_low_game(self):
@@ -229,6 +233,7 @@ class HighLowCodyScreen(GambleScreen):
         self.enemy_score = 0
         self.player_hand: list = []
         self.enemy_hand: list = []
+        self.debuff_countdown_rot = 0
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -244,8 +249,8 @@ class HighLowCodyScreen(GambleScreen):
 
 
         if self.cody_money <= self.cody_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
+            state.currentScreen = state.area4GamblingScreen
+            state.area4GamblingScreen.start(state)
             Events.add_level_four_event_to_player(state.player, Events.HIGH_LOW_CODY_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -491,7 +496,7 @@ class HighLowCodyScreen(GambleScreen):
             if self.welcome_screen_index == draw_screen:
                 self.game_state = self.DRAW_CARD_SCREEN
 
-            elif self.welcome_screen_index == magic_screen:
+            elif self.welcome_screen_index == magic_screen and self.magic_lock == False and self.debuff_countdown_rot == 0:
                 self.game_state = self.MAGIC_MENU_SCREEN
 
             elif self.welcome_screen_index == bet_screen:
