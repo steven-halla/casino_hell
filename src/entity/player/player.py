@@ -208,6 +208,7 @@ class Player(Entity):
             "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
             "opossuminacancandymoney": state.opossumInACanCandyScreen.candyOpossumMoney,
             "opossuminacanbillybobmoney": state.opossumInACanBillyBobScreen.billybobMoney,
+            "opossuminacansillywillymoney": state.opossumInACanSillyWillyScreen.silly_willy_money,
 
             "blackjackthomasmoney": state.blackJackThomasScreen.blackJackThomasMoney,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,

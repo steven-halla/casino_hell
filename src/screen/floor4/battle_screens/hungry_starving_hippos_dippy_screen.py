@@ -1,6 +1,7 @@
 import pygame
 from entity.gui.textbox.text_box import TextBox
 from game_constants.equipment import Equipment
+from game_constants.events import Events
 from screen.examples.screen import Screen
 import time
 import random
@@ -296,10 +297,7 @@ class HungryStarvingHipposDippyScreen(Screen):
         # print(self.human_stats)
         print(self.game_state)
         pygame.mixer.music.stop()
-        if state.controller.isQPressed:
-            state.currentScreen = state.mainScreen
-            state.mainScreen.start(state)
-            return
+
 
         controller = state.controller
         controller.update()
@@ -394,12 +392,16 @@ class HungryStarvingHipposDippyScreen(Screen):
 
             if self.battle_messages["you_win"].message_index == 1:
                 state.area_2_gambling_area_to_rest_point = True
-                state.currentScreen = state.area2RestScreen
-                state.area2RestScreen.start(state)
+                state.currentScreen = state.area4GamblingScreen
+                state.area4GamblingScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
                 print("yupper")
                 state.player.canMove = True
                 self.end_screen()
+                if state.player.current_stage == 4:
+                    Equipment.BACKWARDS_WATCH.add_equipment_to_player_level_3(state.player,
+                                                                              Equipment.BACKWARDS_WATCH)
+                Events.add_level_four_event_to_player(state.player, Events.HANGRY_ANGRY_HIPPOS_DIPPY_DEFEATED)
 
         if self.game_state == "you_lose_screen":
             print("you lose scren is here")
@@ -411,8 +413,8 @@ class HungryStarvingHipposDippyScreen(Screen):
                 state.area_2_gambling_area_to_rest_point = True
                 state.player.canMove = True
 
-                state.currentScreen = state.area2RestScreen
-                state.area2RestScreen.start(state)
+                state.currentScreen = state.area4GamblingScreen
+                state.area4GamblingScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
                 self.end_screen()
 

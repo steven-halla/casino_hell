@@ -124,7 +124,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.exp_gain_high: int = 25
         self.exp_gain_low: int = 10
         self.exp_gain_medium: int = 20
-        self.money: int = 444
+        self.silly_willy_money: int = 444
         self.peek_cost: int = 25
         self.buff_peek: bool = False
         self.poison_chance: int = 0
@@ -242,7 +242,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
 
 
     def update(self, state):
-        if self.money <= self.silly_willy_bankrupt:
+        if self.silly_willy_money <= self.silly_willy_bankrupt:
             Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_IN_A_CAN_SILLY_WILLY_DEFEATED)
             state.currentScreen = state.area4RestScreen
             state.area4RestScreen.start(state)
@@ -317,8 +317,8 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.game_state == self.PLAYER_WIN_SCREEN:
-            if self.player_score > self.money:
-                self.player_score = self.money
+            if self.player_score > self.silly_willy_money:
+                self.player_score = self.silly_willy_money
             if self.player_score < 750:
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You WIN! You gain {self.player_score}: money and gain {self.exp_gain_low}:   experience points!"]
             elif self.player_score > 750:
@@ -334,16 +334,16 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                 controller.isTPressed = False
                 controller.isAPressedSwitch = False
 
-                if self.player_score > self.money:
-                    self.player_score = self.money
+                if self.player_score > self.silly_willy_money:
+                    self.player_score = self.silly_willy_money
 
                 state.player.money += self.player_score
-                self.money -= self.player_score
-                if self.money < 0:
-                    self.money = 0
+                self.silly_willy_money -= self.player_score
+                if self.silly_willy_money < 0:
+                    self.silly_willy_money = 0
                 self.opossum_round_reset(state)
 
-                if self.money < 750  == False:
+                if self.silly_willy_money < 750  == False:
                     self.game_state = self.SILLY_WILLY_CASTING_SPELL_SCREEN
                 else:
                     self.game_state = self.WELCOME_SCREEN
@@ -870,7 +870,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
             controller.isTPressed = False
             controller.isAPressedSwitch = False
             if self.welcome_screen_index == self.pick_index:
-                self.money += self.bet
+                self.silly_willy_money += self.bet
                 self.game_state = self.PICK_TALLY_MENU_SCREEN
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
                 if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
@@ -964,7 +964,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
             state.DISPLAY.blit(self.font.render(self.dealer_name, True, WHITE), (player_enemy_box_info_x_position, enemy_name_y_position))
 
 
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.silly_willy_money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
         state.DISPLAY.blit(self.font.render(f" Score: {self.player_score}", True, WHITE), (player_enemy_box_info_x_position - 7, choice_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))

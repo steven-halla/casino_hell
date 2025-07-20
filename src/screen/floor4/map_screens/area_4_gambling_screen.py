@@ -9,10 +9,12 @@ from entity.npc.area4.area_4_gambling_screen.coin_flip_bonnie import CoinFlipBon
 from entity.npc.area4.area_4_gambling_screen.craps_naba import CrapsNaba
 from entity.npc.area4.area_4_gambling_screen.dice_fighter_sophia import DiceFighterSophia
 from entity.npc.area4.area_4_gambling_screen.high_low_cody import HighLowCody
+from entity.npc.area4.area_4_gambling_screen.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
 from entity.player.player import Player
 from entity.npc.area4.area_4_gambling_screen.area_4_gambling_to_boss_door import Area4GamblingToBossDoor
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
+from screen.floor4.battle_screens.hungry_starving_hippos_dippy_screen import HungryStarvingHipposDippyScreen
 
 
 class Area4GamblingScreen(Screen):
@@ -84,7 +86,8 @@ class Area4GamblingScreen(Screen):
             CoinFlipBonnie(16 * 15, 16 * 5),
             CrapsNaba(16 * 25, 16 * 5),
             DiceFighterSophia(16 * 35, 16 * 5),
-            HighLowCody(16 * 45, 16 * 5)
+            HighLowCody(16 * 45, 16 * 5),
+            HungryStarvingHipposDippy(16 * 5, 16 * 15)
 
 
         ]
