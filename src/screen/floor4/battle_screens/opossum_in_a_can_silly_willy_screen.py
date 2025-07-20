@@ -186,8 +186,7 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.initializeGarbageCans(state)
 
         # staying at end appends this
-        if Events.REFRESH.value in state.player.level_four_npc_state:
-            self.poison_damage = 0
+
 
     def opossum_game_reset(self, state):
         self.shake = False
@@ -289,12 +288,6 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
 
             if controller.confirm_button:
                 if self.buff_poison_bite > 0:
-                    # add the opposite of the below to inn keeper level 4
-                    if Events.OPOSSUM_POISON.value not in state.player.level_four_npc_state:
-                        Events.add_level_four_event_to_player(state.player, Events.OPOSSUM_POISON)
-                        if Events.REFRESH in state.player.level_four_npc_state:
-                            state.player.level_four_npc_state.remove(Events.REFRESH)
-
                     self.poison_damage += 1
                     if self.poison_damage == state.player.body:
                         state.player.hp -= 999
@@ -876,9 +869,9 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                 if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
                     self.magic_menu_selector.insert(1, Magic.PEEK.value)
                 self.game_state = self.MAGIC_MENU_SCREEN
-            elif self.welcome_screen_index == self.quit_index:
-                state.currentScreen = state.area3RestScreen
-                state.area3RestScreen.start(state)
+            elif self.welcome_screen_index == self.quit_index and self.buff_poison_bite == 0:
+                state.currentScreen = state.area4GamblingScreen
+                state.area4GamblingScreen.start(state)
 
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
@@ -900,6 +893,21 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
             y_position = start_y_right_box + idx * spacing_between_choices
             display_text = choice
             text_color = WHITE
+
+            if self.buff_poison_bite > 0:
+                if idx == self.quit_index:
+                    text_color = RED
+                    display_text = "LOCKED"
+
+            elif self.buff_poison_bite  == 0 and self.magic_lock == False:
+                if idx == self.quit_index:
+                    text_color = WHITE
+                    display_text = "Quit"
+
+            else:
+                print("strange behavior worth looking into 908")
+
+
 
             state.DISPLAY.blit(
                 self.font.render(display_text, True, text_color),
@@ -972,9 +980,3 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE), (player_enemy_box_info_x_position, hero_focus_y_position))
 
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE), (player_enemy_box_info_x_position, hero_name_y_position))
-
-
-
-
-
-
