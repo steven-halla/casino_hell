@@ -82,6 +82,7 @@ class Events(Enum):
     WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED = "WHEEL OF torture vanessa black defeated"
 
     HANGRY_ANGRY_HIPPOS_DIPPY_DEFEATED = "hangry angry hippos DIPPY DEfeated"
+    SLOTS_LEVEL_4_SECRET_ITEM_ACQUIRED = "slots_level_4_secret_item_acquired"
 
 
 

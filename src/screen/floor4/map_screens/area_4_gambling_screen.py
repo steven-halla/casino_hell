@@ -10,6 +10,8 @@ from entity.npc.area4.area_4_gambling_screen.craps_naba import CrapsNaba
 from entity.npc.area4.area_4_gambling_screen.dice_fighter_sophia import DiceFighterSophia
 from entity.npc.area4.area_4_gambling_screen.high_low_cody import HighLowCody
 from entity.npc.area4.area_4_gambling_screen.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
+from entity.npc.area4.area_4_gambling_screen.opossum_in_a_can_silly_willy import OpossumInACanSillyWilly
+from entity.npc.area4.area_4_gambling_screen.slots_juragan import SlotsJuragan
 from entity.player.player import Player
 from entity.npc.area4.area_4_gambling_screen.area_4_gambling_to_boss_door import Area4GamblingToBossDoor
 from screen.examples.screen import Screen
@@ -87,7 +89,9 @@ class Area4GamblingScreen(Screen):
             CrapsNaba(16 * 25, 16 * 5),
             DiceFighterSophia(16 * 35, 16 * 5),
             HighLowCody(16 * 45, 16 * 5),
-            HungryStarvingHipposDippy(16 * 5, 16 * 15)
+            HungryStarvingHipposDippy(16 * 5, 16 * 15),
+            OpossumInACanSillyWilly(16 * 15, 16 * 15),
+            SlotsJuragan(16 * 25, 16 * 15)
 
 
         ]

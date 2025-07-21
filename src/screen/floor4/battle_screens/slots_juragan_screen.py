@@ -24,7 +24,7 @@ class SlotsJuraganScreen(GambleScreen):
         self.spell_sound.set_volume(0.3)
         self.magic_screen_choices: list[str] = []
         self.hack_cost:int = 75
-        self.money: int = 1000
+        self.juragan_money: int = 1000
         self.slot_hack_active: int = 5
         self.slot_hack_inactive: int = 0
         self.slot_hack_debuff: int = 0
@@ -62,7 +62,7 @@ class SlotsJuraganScreen(GambleScreen):
         self.lucky_strike:int = 0
         self.secret_item_found:bool = False
         self.debuff_equipment_break: int = 0
-        self.brogan_mp: int = 3
+        self.juragan_mp: int = 3
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
 
@@ -154,7 +154,7 @@ class SlotsJuraganScreen(GambleScreen):
 
 
     def start(self, state: 'GameState'):
-        if Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED.value in state.player.level_three_npc_state:
+        if Events.SLOTS_LEVEL_4_SECRET_ITEM_ACQUIRED.value in state.player.level_four_npc_state:
             self.secret_item_found = True
 
         self.spirit_bonus = state.player.spirit * 10
@@ -183,10 +183,10 @@ class SlotsJuraganScreen(GambleScreen):
         controller.update()
         state.player.update(state)
 
-        if self.money <= self.juragan_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.SLOTS_BROGAN_DEFEATED)
+        if self.juragan_money <= self.juragan_bankrupt:
+            state.currentScreen = state.area4GamblingScreen
+            state.area4GamblingScreen.start(state)
+            Events.add_level_four_event_to_player(state.player, Events.SLOTS_JURAGAN_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.spin_results_generated = False
@@ -238,7 +238,7 @@ class SlotsJuraganScreen(GambleScreen):
         self.battle_messages[self.JURAGAN_CASTING_SPELL_MESSAGE].update(state)
         if state.controller.confirm_button:
             self.debuff_equipment_break = 5
-            self.brogan_mp -= 1
+            self.juragan_mp -= 1
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -288,14 +288,17 @@ class SlotsJuraganScreen(GambleScreen):
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
                         state.player.money -= self.player_coin_high_drain
+                        self.juragan_money += self.player_coin_high_drain
+                        self.juragan_money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
-                        
+
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
 
                     else:
                         state.player.stamina_points -= self.player_stamina_high_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.juragan_money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -308,6 +311,8 @@ class SlotsJuraganScreen(GambleScreen):
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
                         state.player.money -= self.player_coin_high_drain
+                        self.juragan_money += self.player_coin_high_drain
+                        self.juragan_money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -315,6 +320,7 @@ class SlotsJuraganScreen(GambleScreen):
                     else:
                         state.player.stamina_points -= self.player_stamina_low_cost
                         state.player.money -= self.player_coin_high_drain
+                        self.juragan_money += self.player_coin_high_drain
                         state.player.exp += self.exp_gain_high
                         self.game_state = self.WELCOME_SCREEN
                         self.reset_slots_juragan_round()
@@ -325,6 +331,7 @@ class SlotsJuraganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_low_drain
+                self.juragan_money += self.player_coin_low_drain
                 state.player.exp += self.exp_gain_low
                 self.game_state = self.WELCOME_SCREEN
                 self.reset_slots_juragan_round()
@@ -335,9 +342,10 @@ class SlotsJuraganScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.stamina_points -= self.player_stamina_low_cost
                 state.player.money -= self.player_coin_med_drain
+                self.juragan_money += self.player_coin_med_drain
                 self.rib_stalker = 5
                 state.player.exp += self.exp_gain_low
-                if self.brogan_mp > 0 and self.debuff_equipment_break == 0:
+                if self.juragan_mp > 0 and self.debuff_equipment_break == 0:
                     self.game_state = self.JURAGAN_CASTING_SPELL_SCREEN
                     self.reset_slots_juragan_round()
 
@@ -351,6 +359,7 @@ class SlotsJuraganScreen(GambleScreen):
             self.jack_pot = 50
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.juragan_money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -361,6 +370,7 @@ class SlotsJuraganScreen(GambleScreen):
 
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.juragan_money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -370,6 +380,7 @@ class SlotsJuraganScreen(GambleScreen):
             self.jack_pot = 150
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.juragan_money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -389,6 +400,7 @@ class SlotsJuraganScreen(GambleScreen):
             self.jack_pot = 250
             if controller.confirm_button:
                 state.player.money += self.jack_pot
+                self.juragan_money -= self.jack_pot
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -399,6 +411,7 @@ class SlotsJuraganScreen(GambleScreen):
             if self.secret_item_found == True:
                 if controller.confirm_button:
                     state.player.money += self.jack_pot
+                    self.juragan_money -= self.jack_pot
                     state.player.exp += self.exp_gain_low
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
@@ -407,7 +420,7 @@ class SlotsJuraganScreen(GambleScreen):
             elif self.secret_item_found == False:
                 if controller.confirm_button:
                     state.player.exp += self.exp_gain_high
-                    Events.add_level_four_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
+                    Events.add_level_four_event_to_player(state.player, Events.SLOTS_LEVEL_4_SECRET_ITEM_ACQUIRED)
                     self.secret_item_found = True
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
@@ -422,6 +435,7 @@ class SlotsJuraganScreen(GambleScreen):
                     state.player.focus_points += 50
 
                 state.player.money += self.jack_pot
+                self.juragan_money -= self.jack_pot
                 state.player.exp += self.exp_gain_high
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -444,10 +458,12 @@ class SlotsJuraganScreen(GambleScreen):
                 if self.slot_hack_debuff == self.slot_hack_inactive:
                     state.player.stamina_points -= self.player_stamina_med_cost
                     state.player.money -= self.bet
+                    self.juragan_money += self.bet
                 elif self.slot_hack_debuff > self.slot_hack_inactive:
                     state.player.stamina_points -= self.player_stamina_med_cost
                     if self.bet > 100:
                         state.player.money -= 50
+                        self.juragan_money += 50
 
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
@@ -962,7 +978,7 @@ class SlotsJuraganScreen(GambleScreen):
         else:
             state.DISPLAY.blit(self.font.render(f"", True, RED), (player_enemy_box_info_x_position, enemy_name_y_position + 122))
 
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER} {self.juragan_money}", True, WHITE), (player_enemy_box_info_x_position, enemy_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE), (player_enemy_box_info_x_position, bet_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE), (player_enemy_box_info_x_position, player_money_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE), (player_enemy_box_info_x_position, hero_stamina_y_position))
