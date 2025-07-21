@@ -222,6 +222,7 @@ class Player(Entity):
 
             "slotsrippasnappamoney": state.slotsRippaSnappaScreen.money,
             "slotsbroganmoney": state.slotsBroganScreen.money,
+            "slotsjuraganmoney": state.slotsJuragonScreen.juragaon_money,
 
             "crapscrappymoney": state.crapsHappyScreen.money,
             "crapsjunponmoney": state.crapsJunponScreen.money,
@@ -2202,6 +2203,7 @@ class Player(Entity):
             state.crapsNabaScreen.naba_money = player_data['crapsnabamoney']
             state.diceFighterSophiaScreen.sophia_money = player_data['dicefightersophiamoney']
             state.highLowCodyScreen.cody_money = player_data['highlowcodymoney']
+            state.slotsJuraganScreen.juragan_money = player_data['slotsjuraganmoney']
 
 
 
