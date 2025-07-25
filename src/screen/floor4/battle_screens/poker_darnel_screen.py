@@ -366,6 +366,8 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.DEAL_CARDS_SCREEN:
+            self.battle_messages[self.DEAL_CARDS_MESSAGE].update(state)
+
             if state.controller.confirm_button:
                 lucky_roll = random.randint(1, 100) + (state.player.luck * 5)
                 if lucky_roll >= 90:
@@ -746,7 +748,8 @@ class PokerDarnelScreen(GambleScreen):
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             pass
         elif self.game_state == self.DEAL_CARDS_SCREEN:
-            pass
+            self.battle_messages[self.DEAL_CARDS_MESSAGE].draw(state)
+
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
