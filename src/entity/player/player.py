@@ -2204,6 +2204,9 @@ class Player(Entity):
             state.diceFighterSophiaScreen.sophia_money = player_data['dicefightersophiamoney']
             state.highLowCodyScreen.cody_money = player_data['highlowcodymoney']
             state.slotsJuraganScreen.juragan_money = player_data['slotsjuraganmoney']
+            
+
+            #level 5
 
 
 

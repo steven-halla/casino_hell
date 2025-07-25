@@ -394,6 +394,7 @@ class DiceFighterSirSiegfriedScreen(GambleScreen):
 
 
 
+
         elif self.game_state == self.ENEMY_ATTACK_SCREEN:
                 # unlucky_attack: int = random.randint(1, 20)
                 # unlucky_attack += state.player.luck * 2

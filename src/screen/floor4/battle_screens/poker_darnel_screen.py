@@ -12,7 +12,7 @@ import random
 # this spell doubles heat increse/decrease
 
 
-class PokerDarnel(GambleScreen):
+class PokerDarnelScreen(GambleScreen):
     def __init__(self, screenName: str = "poker_darnel"):
         super().__init__(screenName)
         self.deck = Deck()

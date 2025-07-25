@@ -276,7 +276,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.PLAYER_MOVE_FORWARD,  # 14
             self.ENEMY_MOVE_BACK,  # 15
             self.ENEMY_MOVE_BACK_3,  # 16
-            self.MID_POINT_MOVE,  # 17 ✅ moved here
+            self.MID_POINT_MOVE,  # 17
             self.SWAP_POSITIONS,  # 18
             self.SPECIAL_ITEM  # 19
         ]
@@ -383,7 +383,7 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
             self.PLAYER_MOVE_FORWARD,  # 14
             self.ENEMY_MOVE_BACK,  # 15
             self.ENEMY_MOVE_BACK_3,  # 16
-            self.MID_POINT_MOVE,  # 17 ✅ moved here
+            self.MID_POINT_MOVE,  # 17
             self.SWAP_POSITIONS,  # 18
             self.SPECIAL_ITEM  # 19
         ]
@@ -402,8 +402,14 @@ class WheelOfTortureVanessaBlackScreen(GambleScreen):
 
         if self.player_win_token >= 3:
             print("Plyer winss!!!")
+            state.currentScreen = state.area4GamblingScreen
+            state.area4GamblingScreen.start(state)
+            Events.add_level_four_event_to_player(state.player, Events.WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED)
+
         elif self.enemy_win_token >= 3:
             print("ENEMY WINSQWRERFEW######")
+            state.currentScreen = state.gameOverScreen
+            state.gameOverScreen.start(state)
 
         if state.controller.isEPressed:
             print("PLayer money is at: " + str(self.player_money_pile))

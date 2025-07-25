@@ -95,7 +95,7 @@ from screen.floor4.battle_screens.dice_fighter_sophia_screen import DiceFighterS
 from screen.floor4.battle_screens.high_low_cody_screen import HighLowCodyScreen
 from screen.floor4.battle_screens.hungry_starving_hippos_dippy_screen import HungryStarvingHipposDippyScreen
 from screen.floor4.battle_screens.opossum_in_a_can_silly_willy_screen import OpossumInACanSillyWillyScreen
-from screen.floor4.battle_screens.poker_darnel import PokerDarnel
+from screen.floor4.battle_screens.poker_darnel_screen import PokerDarnelScreen
 from screen.floor4.battle_screens.slots_juragan_screen import SlotsJuraganScreen
 from screen.floor4.battle_screens.wheel_of_torture_vanessa_black_screen import WheelOfTortureVanessaBlackScreen
 from screen.floor4.map_screens.area_4_bar_screen import Area4BarScreen
@@ -321,7 +321,7 @@ class GameState:
         self.opossumInACanSillyWillyScreen = OpossumInACanSillyWillyScreen()
         self.slotsJuraganScreen = SlotsJuraganScreen()
         self.wheelOfTortureVanessaBlackScreen = WheelOfTortureVanessaBlackScreen()
-        self.pokerDarnel = PokerDarnel()
+        self.pokerDarnelScreen = PokerDarnelScreen()
 
 #-----------------------Area 5 is below-----------------------------------------#
         self.coinFlipWantonScreen = CoinFlipWantonScreen()
