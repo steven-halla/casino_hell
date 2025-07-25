@@ -1,6 +1,6 @@
 import pygame
 
-from constants import WHITE, BLACK, RED
+from constants import WHITE, BLACK, RED, DISPLAY
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
 from entity.gui.textbox.message_box import MessageBox
@@ -739,6 +739,10 @@ class PokerDarnelScreen(GambleScreen):
         self.draw_menu_selection_box(state)
         self.draw_bottom_black_box(state)
         self.draw_box_info(state)
+        self.draw_hands(
+            player_hand=self.player_hand,
+            enemy_hand=self.enemy_hand,
+        )
 
         if self.game_state == self.WELCOME_SCREEN:
             self.draw_welcome_screen_box_info(state)
@@ -1309,3 +1313,30 @@ class PokerDarnelScreen(GambleScreen):
                           (player_enemy_box_info_x_position, hero_focus_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE),
                           (player_enemy_box_info_x_position, hero_name_y_position))
+
+    def draw_hands(self, player_hand: list, enemy_hand: list):
+        initial_x_position = 250
+        player_target_y_position = 300
+        enemy_target_y_position = 50
+        move_card_x = 75
+        flip_y_position = 145
+        deck = self.deck
+        display = DISPLAY
+
+        for i, card in enumerate(player_hand):
+            player_x_position = initial_x_position + i * move_card_x
+            player_y_position = player_target_y_position
+
+            if i == 1 and player_y_position >= flip_y_position:
+                deck.draw_card_face_up(card[1], card[0], (player_x_position,
+                                                          player_y_position), display)
+            else:
+                deck.draw_card_face_up(card[1], card[0], (player_x_position,
+                                                          player_y_position), display)
+
+        for i, card in enumerate(enemy_hand):
+            enemy_x_position = initial_x_position + i * move_card_x
+            enemy_y_position = enemy_target_y_position
+
+
+            deck.draw_card_face_up(card[1], card[0], (enemy_x_position, enemy_y_position), display)
