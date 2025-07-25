@@ -90,9 +90,12 @@ class PokerDarnelScreen(GambleScreen):
                 "Choose an option to continue."
             ]),
             self.BET_MESSAGE: MessageBox([
-                "How much would you like to bet?",
-                "Use up and down keys to adjust your bet.",
-                "Press confirm to place your bet."
+                "How much would you like to bet? Use up and down keys to adjust your bet."
+
+            ]),
+            self.DEAL_CARDS_MESSAGE: MessageBox([
+                "Time to deal your cards. Press confirm to receive your hand.",
+                "Good luck and may the best hand win!"
             ])
         }
 
@@ -136,6 +139,7 @@ class PokerDarnelScreen(GambleScreen):
     RESET: str = "reset"
     ENEMY_ACTION_SCREEN: str = "enemy action screen"
     BLUFFALO_SCREEN: str = "bluffalo screen"
+    DEAL_CARDS_MESSAGE: str = "deal cards message"
 
 
 
@@ -365,6 +369,7 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.DEAL_CARDS_SCREEN:
+            self.battle_messages[self.DEAL_CARDS_MESSAGE].update(state)
             if state.controller.confirm_button:
                 lucky_roll = random.randint(1, 100) + (state.player.luck * 5)
                 if lucky_roll >= 90:
@@ -745,8 +750,8 @@ class PokerDarnelScreen(GambleScreen):
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             pass
         elif self.game_state == self.DEAL_CARDS_SCREEN:
-            pass
-            # First we dela out 3 cards, players can fold/hold
+            self.battle_messages[self.DEAL_CARDS_MESSAGE].draw(state)
+            # First we deal out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
