@@ -1,7 +1,9 @@
 import pygame
 
+from constants import WHITE, BLACK, RED
 from deck import Deck
 from entity.gui.screen.gamble_screen import GambleScreen
+from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.magic import Magic
 from tests.test_poker_darnel import test_poker_score_tracker
@@ -26,6 +28,7 @@ class PokerDarnelScreen(GambleScreen):
         self.player_cards_swap_container = []
         self.swap_player_cards: bool = False
         self.swap_enemy_cards: bool = True
+        self.magic_lock: bool = False
         self.magic_menu_index: int = 0
         self.money: int = 1000
         self.enemy_compare_hand: str = ""
@@ -71,6 +74,15 @@ class PokerDarnelScreen(GambleScreen):
         self.enemy_hand_power: int = 0
         self.enemy_money = 2000
 
+        # Initialize battle messages
+        self.battle_messages: dict[str, MessageBox] = {
+            self.WELCOME_MESSAGE: MessageBox([
+                "Welcome to Poker! I'm Darnel, your dealer today.",
+                "Ready to test your luck and skill?",
+                "Choose an option to continue."
+            ])
+        }
+
         self.player_hand = [
 
 
@@ -91,7 +103,7 @@ class PokerDarnelScreen(GambleScreen):
         # ]
 
     SWAP_CARDS_SCREEN: str = "swap_cards_screen"
-
+    WELCOME_MESSAGE: str = "welcome_message"
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
@@ -682,9 +694,15 @@ class PokerDarnelScreen(GambleScreen):
 
     def draw(self, state):
         super().draw(state)
+        self.draw_enemy_info_box(state)
+        self.draw_hero_info_boxes(state)
+        self.draw_menu_selection_box(state)
+        self.draw_bottom_black_box(state)
+        self.draw_box_info(state)
 
         if self.game_state == self.WELCOME_SCREEN:
-            pass
+            self.draw_welcome_screen_box_info(state)
+            self.battle_messages[self.WELCOME_MESSAGE].draw(state)
         elif self.game_state == self.BET_SCREEN:
             pass
         elif self.game_state == self.MAGIC_MENU_SCREEN:
@@ -1032,5 +1050,194 @@ class PokerDarnelScreen(GambleScreen):
         print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
         self.enemy_discard_logic(index + 1, limit)
 
+    def draw_welcome_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+        arrow_y_coordinate_padding_play = 12
+        arrow_y_coordinate_padding_magic = 52
+        arrow_y_coordinate_padding_bet = 92
+        arrow_y_coordinate_padding_quit = 132
 
+        for idx, choice in enumerate(self.welcome_screen_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
 
+        # Check if player has the required magic for poker
+        # if Magic.BLUFFALO.value not in state.player.magicinventory and Magic.INFLICT_HEAT.value not in state.player.magicinventory:
+        #     self.magic_lock = True
+        #     self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        # elif Magic.BLUFFALO.value in state.player.magicinventory or Magic.INFLICT_HEAT.value in state.player.magicinventory:
+        #     self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+        #
+        # # Add available magic to the magic menu options
+        # if Magic.BLUFFALO.value in state.player.magicinventory and Magic.BLUFFALO.value not in self.magic_menu_options:
+        #     self.magic_menu_options.append(Magic.BLUFFALO.value)
+        #
+        # if Magic.INFLICT_HEAT.value in state.player.magicinventory and Magic.INFLICT_HEAT.value not in self.magic_menu_options:
+        #     self.magic_menu_options.append(Magic.INFLICT_HEAT.value)
+
+        # Add BACK option to magic menu if not already there
+        if "Back" not in self.magic_menu_options:
+            self.magic_menu_options.append("Back")
+
+        # Update magic menu based on lock status
+        if self.magic_lock == True:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+        elif self.magic_lock == False:
+            self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        # Draw the selection arrow based on current menu index
+        if self.welcome_screen_index == self.welcome_screen_play_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_play)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_magic_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_magic)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_bet_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_bet)
+            )
+        elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            state.DISPLAY.blit(
+                self.font.render("->", True, WHITE),
+                (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
+            )
+
+    def draw_poker_table(self, state: 'GameState'):
+        # Draw the poker table background
+        table_color = (0, 100, 0)  # Dark green
+        table_rect = pygame.Rect(200, 150, 600, 300)
+        pygame.draw.ellipse(state.DISPLAY, table_color, table_rect)
+
+        # Draw table border
+        border_color = (139, 69, 19)  # Brown
+        pygame.draw.ellipse(state.DISPLAY, border_color, table_rect, 10)
+
+    def draw_player_cards(self, state: 'GameState'):
+        # Draw player's cards at the bottom of the table
+        if self.player_hand:
+            card_width = 80
+            card_height = 120
+            card_spacing = 20
+            start_x = 300
+            y_position = 350
+
+            for i, card in enumerate(self.player_hand):
+                card_x = start_x + i * (card_width + card_spacing)
+                self.draw_card(state, card, card_x, y_position, card_width, card_height)
+
+    def draw_enemy_cards(self, state: 'GameState'):
+        # Draw enemy's cards at the top of the table
+        if self.enemy_hand:
+            card_width = 80
+            card_height = 120
+            card_spacing = 20
+            start_x = 300
+            y_position = 130
+
+            for i, card in enumerate(self.enemy_hand):
+                card_x = start_x + i * (card_width + card_spacing)
+                # Draw cards face down unless they should be revealed
+                if self.game_state in [self.FINAL_RESULTS, self.PLAYER_WINS, self.ENEMY_WINS, self.DRAW]:
+                    self.draw_card(state, card, card_x, y_position, card_width, card_height)
+                else:
+                    self.draw_card_back(state, card_x, y_position, card_width, card_height)
+
+    def draw_card(self, state: 'GameState', card, x, y, width, height):
+        # Draw a single card
+        card_color = (255, 255, 255)  # White
+        card_rect = pygame.Rect(x, y, width, height)
+        pygame.draw.rect(state.DISPLAY, card_color, card_rect)
+        pygame.draw.rect(state.DISPLAY, (0, 0, 0), card_rect, 2)  # Black border
+
+        # Draw card value and suit
+        rank, suit, _ = card
+        suit_color = (255, 0, 0) if suit in ["Hearts", "Diamonds"] else (0, 0, 0)  # Red for hearts/diamonds, black for clubs/spades
+
+        # Draw rank at top-left
+        state.DISPLAY.blit(
+            self.font.render(str(rank), True, suit_color),
+            (x + 5, y + 5)
+        )
+
+        # Draw suit below rank
+        state.DISPLAY.blit(
+            self.font.render(suit[0], True, suit_color),  # Just the first letter of the suit
+            (x + 5, y + 30)
+        )
+
+    def draw_card_back(self, state: 'GameState', x, y, width, height):
+        # Draw the back of a card
+        back_color = (0, 0, 139)  # Dark blue
+        card_rect = pygame.Rect(x, y, width, height)
+        pygame.draw.rect(state.DISPLAY, back_color, card_rect)
+        pygame.draw.rect(state.DISPLAY, (0, 0, 0), card_rect, 2)  # Black border
+
+        # Draw a pattern on the back
+        pattern_color = (255, 255, 255)  # White
+        for i in range(5):
+            pygame.draw.line(state.DISPLAY, pattern_color,
+                            (x + 10, y + 10 + i * 20),
+                            (x + width - 10, y + 10 + i * 20), 2)
+            pygame.draw.line(state.DISPLAY, pattern_color,
+                            (x + 10 + i * 15, y + 10),
+                            (x + 10 + i * 15, y + height - 10), 2)
+
+    def draw_box_info(self, state: 'GameState'):
+        player_enemy_box_info_x_position = 37
+        enemy_name_y_position = 33
+        enemy_pressure_y_position = 70
+        enemy_status_y_position = 110
+        bet_y_position = 370
+        player_money_y_position = 250
+        hero_name_y_position = 205
+        hero_stamina_y_position = 290
+        hero_focus_y_position = 330
+
+        # Draw dealer name
+        state.DISPLAY.blit(self.font.render("Poker Darnel", True, WHITE),
+                          (player_enemy_box_info_x_position, enemy_name_y_position))
+
+        # Draw enemy money and pressure
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {self.enemy_money}", True, WHITE),
+                          (player_enemy_box_info_x_position, enemy_pressure_y_position))
+
+        # Draw enemy status (pressure)
+        if self.enemy_pressure > 0:
+            state.DISPLAY.blit(self.font.render(f"Pressure: {self.enemy_pressure}", True, RED),
+                              (player_enemy_box_info_x_position, enemy_status_y_position))
+        else:
+            state.DISPLAY.blit(self.font.render(f"{self.STATUS_GREEN}", True, WHITE),
+                              (player_enemy_box_info_x_position, enemy_status_y_position))
+
+        # Draw bet amount
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.player_bet}", True, WHITE),
+                          (player_enemy_box_info_x_position, bet_y_position))
+
+        # Draw player money
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {state.player.money}", True, WHITE),
+                          (player_enemy_box_info_x_position, player_money_y_position))
+
+        # Draw player stats
+        state.DISPLAY.blit(self.font.render(f"{self.HP_HEADER}: {state.player.stamina_points}", True, WHITE),
+                          (player_enemy_box_info_x_position, hero_stamina_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.MP_HEADER}: {state.player.focus_points}", True, WHITE),
+                          (player_enemy_box_info_x_position, hero_focus_y_position))
+        state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE),
+                          (player_enemy_box_info_x_position, hero_name_y_position))

@@ -11,6 +11,7 @@ from entity.npc.area4.area_4_gambling_screen.dice_fighter_sophia import DiceFigh
 from entity.npc.area4.area_4_gambling_screen.high_low_cody import HighLowCody
 from entity.npc.area4.area_4_gambling_screen.hungary_starving_hippos_dippy import HungryStarvingHipposDippy
 from entity.npc.area4.area_4_gambling_screen.opossum_in_a_can_silly_willy import OpossumInACanSillyWilly
+from entity.npc.area4.area_4_gambling_screen.poker_darnel import PokerDarnel
 from entity.npc.area4.area_4_gambling_screen.slots_juragan import SlotsJuragan
 from entity.npc.area4.area_4_gambling_screen.wheel_of_torture_vanessa_black import WheelOfTortureVanessaBlack
 from entity.player.player import Player
@@ -18,7 +19,6 @@ from entity.npc.area4.area_4_gambling_screen.area_4_gambling_to_boss_door import
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
 from screen.floor4.battle_screens.hungry_starving_hippos_dippy_screen import HungryStarvingHipposDippyScreen
-from screen.floor4.battle_screens.poker_darnel import PokerDarnel
 
 
 class Area4GamblingScreen(Screen):

@@ -477,20 +477,7 @@ for i in variable turn counter:
             Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value
         ]
 
-2
-3
-4
 
-equipment list fin
-opossum in a can
-hungry starving hippos
-black jack
-coin flip
-
-
-
-magic list
-coin flip
 
 
 
@@ -508,52 +495,35 @@ level 4 -  wheel of torture, poker, craps,  slots, hi/low,
 
 ------------------------
 
-    COIN_FLIP_GLOVES = "coin flip gloves" # increase bet amount by +200 for CoinFlip
-    # opossum in a can
-    VARMENT_HAT = "varment hat"# on a loss % chance to get gold back
-    # hangry angry hippos
-    BACKWARDS_WATCH = "backwards watch" # This items slows non selected humans
-    #black jack
-    SIR_LEOPOLD_AMULET = "sir leopold amulet" #companion item for stealing enemy aces
-    #craps
-    CRAPS_WRIST_WATCH = "dice wrist watch" # blow command for all dice games
-    #dice fighter
-    LUCKY_ROTTEN_SOCKS = "lucky rotten socks"
-    #craps_wrist_watch applies
-    #slots
-    SLOTS_SHOES = "slots shoes" # gives player + 100 hp and 50 focus on jackpot
-    #hi low
-    HIGH_LOW_PANTS = "high low pants" # This item gives +1 spread via spirit higher spreads take more HP
-    #poker
-    POKER_BRACELET = "poker bracelet"
+Level 1
+self.shop_items = [
+BLACK_JACK_HAT - protects from bust
+OPOSSUM_REPELLENT - reduce damage from bites
+MP_BRACELET - increase in MP
+magic - REVEAL  -Black Jack - shows enemy hand points 
+]
+magic 1 - shield - Coin Flip -  defneds from bad choices
 
+Level 2
+self.shop_items = [
+        COIN_FLIP_GLASSES -coin flp - adds more money on wins
+        HEALTHY_GLOVES - incrase in HP
+        Magic - SHAKE -opposum in a can - Shake opossum cans
+        Equipment - DARLENES_CHICKEN_NUGGER_AMULET -Craps- extra luck on missed power roll, and other benifits
+    ]
+hippo prize equipment- hippos hour glass - hangry angry hippos - extra time for hippo to arrive
+slots prize magic- - hack - slots - dont pay money to play slots game
+magic 2 - lucky  7 - craps - more able to rolls better 
 
+Level 3
+self.shop_items = [ 
+    LUCKY_ROTTEN_SOCKS - Dice fighter - DOES NOT DO ANYTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    SPIRIT_SHOES - adds + 1 to spirit
+    magic - heads force - coin flip - forces heads every time
+    magic - BLACK_JACK_REDRAW -black jack - make enemy redraw
+    magic - FLUSH_DECK - hi low - 13 card deck
+]
+hippo prize equipment- backwards watch - hangy angry hippos - slows down non picks
+slots prize equipmnt - slots shoes - slots - more money on jck pot and more hp and mp
+magic 3 bad luck - dice fighter - worse rolls on defense
 
-    # wheel of torture
-    SIR_LEOPOLDS_RING = "sir leopolds ring"
-
-    SOCKS_OF_PERCEPTION = "Cool Shades"  # complete level 3 mc nugg quest
-
-    #companion items
-    LAW_BOOK = "law book" # companion item level 3 at vert start of level 4
-
-        # the below are for level 3 or EXPERIMENT
-    # but this adds depth as player cna still get enemy ace great way to burn cards
-
-    # level 3 and 4 below
-    LUCKY_CHARM = "lucky charm" # + 1 to luck
-    CHEFS_HAT = "chefs hat" # + 30 HP AND + 1 FOOD PER DAY
-    MEDIUM_VEST = "SLots Guard"  # -20 opposum and slot demon damage
-    HIGH_VEST = "medium vest"  # -30 opposum and slot demon damage and game 10
-    SPIRIT_CHARM = "spirit charm" # + 1 spirit lvl 4
-
-
-
-    # from quest and other
-    NUGG_QUEST_TWO_MONEY = "NUGG_QUEST_TWO_MONEY"  # quest reward for mcnug
-    BOSS_KEY = "boss key"
-    COIN_SAVE_AREA_2 = "COIN_SAVE_AREA_2" # BUY IN SHOP ONE TIME USE
-    COIN_SAVE_AREA_3 = "COIN_SAVE_AREA_3" # BUY IN SHOP ONE TIME USE
-    RE_EQUIP_AREA_2 = "RE_EQUIP_AREA_2" # BUY IN SHOP ONE TIME USE
-    STAT_POTION_AREA_2 = "STAT_POTION_AREA_2" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
-    STAT_POTION_AREA_3 = "STAT_POTION_AREA_3" # ONE TIME USE BUY IN SHOP - MAKE 2 K SO PLAYER HAS TO DEFEAT 1 SCREEN TO EARN
