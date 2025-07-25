@@ -22,6 +22,14 @@ class PokerDarnelScreen(GambleScreen):
 
         self.enemy_pressure: int = 0
 
+        self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
+        self.welcome_screen_play_index: int = 0
+        self.welcome_screen_magic_index: int = 1
+        self.welcome_screen_bet_index: int = 2
+        self.welcome_screen_quit_index: int = 3
+        self.welcome_screen_index: int = 0
+        self.bet: int = 100
+
 
         self.last_screen_check_time = pygame.time.get_ticks()
         self.enemy_cards_swap_container = []
@@ -35,11 +43,11 @@ class PokerDarnelScreen(GambleScreen):
         self.enemy_temp_discard_storage: list = []
         self.player_hand_type = ""
         self.enemy_hand_type = ""
-        self.player_bet: int = 50
+        self.bet: int = 50
         self.enemy_bet: int = 50
         self.player_redraw_menu_index = 0
         self.player_card_garbage_can = []
-        self.add_player_bet: int = 0
+        self.bet: int = 0
         self.add_enemy_bet:int = 0
         self.action_menu_index: int = 0
         self.future_cards_container: list = []
@@ -80,6 +88,11 @@ class PokerDarnelScreen(GambleScreen):
                 "Welcome to Poker! I'm Darnel, your dealer today.",
                 "Ready to test your luck and skill?",
                 "Choose an option to continue."
+            ]),
+            self.BET_MESSAGE: MessageBox([
+                "How much would you like to bet?",
+                "Use up and down keys to adjust your bet.",
+                "Press confirm to place your bet."
             ])
         }
 
@@ -104,6 +117,7 @@ class PokerDarnelScreen(GambleScreen):
 
     SWAP_CARDS_SCREEN: str = "swap_cards_screen"
     WELCOME_MESSAGE: str = "welcome_message"
+    BET_MESSAGE: str = "bet_message"
 
     DEAL_CARDS_SCREEN: str = "deal_cards_screen"
     PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
@@ -129,6 +143,27 @@ class PokerDarnelScreen(GambleScreen):
     # def start(self):
     #     print("Pew")
 
+    def update_welcome_screen_logic(self, controller, state):
+        if controller.up_button:
+            self.welcome_screen_index = (self.welcome_screen_index - 1) % len(self.welcome_screen_choices)
+            print(f"Selected option: {self.welcome_screen_choices[self.welcome_screen_index]}")
+        elif controller.down_button:
+            self.welcome_screen_index = (self.welcome_screen_index + 1) % len(self.welcome_screen_choices)
+            print(f"Selected option: {self.welcome_screen_choices[self.welcome_screen_index]}")
+
+        if controller.confirm_button:
+            if self.welcome_screen_index == self.welcome_screen_play_index:
+                print("Player money is: " + str(state.player.money))
+                self.game_state = self.DEAL_CARDS_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_magic_index and not self.magic_lock:
+                self.game_state = self.MAGIC_MENU_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_bet_index:
+                self.game_state = self.BET_SCREEN
+            elif self.welcome_screen_index == self.welcome_screen_quit_index:
+                state.currentScreen = state.area4GamblingScreen
+                state.area4GamblingScreen.start(state)
+                state.player.canMove = True
+
     def restart_poker_round(self):
         self.deck.poker_cards_shuffle()
         self.enemy_cards_swap_container = []
@@ -136,11 +171,11 @@ class PokerDarnelScreen(GambleScreen):
         self.swap_player_cards: bool = False
         self.swap_enemy_cards: bool = True
         self.magic_menu_index: int = 0
-        self.player_bet: int = 50
+        self.bet: int = 50
         self.enemy_bet: int = 50
         self.player_redraw_menu_index = 0
         self.player_card_garbage_can = []
-        self.add_player_bet: int = 0
+        self.bet: int = 0
         self.add_enemy_bet: int = 0
         self.enemy_hand_bet_strength:int = 0
         self.bluffalo_allowed = True
@@ -168,7 +203,7 @@ class PokerDarnelScreen(GambleScreen):
             print(f"Current screen: {self.game_state}")
             print(f"PLAYER HAND: {self.player_hand}")
             print(f"ENEMY HAND: {self.enemy_hand}")
-            print(f"Player bet is : " + str(self.player_bet))
+            print(f"Player bet is : " + str(self.bet))
             print(f"Enemy bet is : " + str(self.enemy_bet))
 
             self.last_screen_check_time = current_time
@@ -181,38 +216,37 @@ class PokerDarnelScreen(GambleScreen):
 
         if self.game_state == self.WELCOME_SCREEN:
             # print("Hi welcome to the welcome screen press T to start")
-
-            if state.controller.confirm_button:
-                print("Player money is: " + str(state.player.money))
-                self.game_state = self.DEAL_CARDS_SCREEN
+            self.battle_messages[self.WELCOME_MESSAGE].update(state)
+            self.update_welcome_screen_logic(state.controller, state)
         elif self.game_state == self.BET_SCREEN:
+            self.battle_messages[self.BET_MESSAGE].update(state)
             if state.controller.up_button:
-                if self.add_player_bet + 25 <= 50:  # Check if adding 25 won't exceed max
-                    self.add_player_bet += 25
-                    print(f"Bet increased to: {self.add_player_bet}")
+                if self.bet + 25 <= 50:  # Check if adding 25 won't exceed max
+                    self.bet += 25
+                    print(f"Bet increased to: {self.bet}")
 
             elif state.controller.down_button:
-                if self.add_player_bet - 25 >= 25:  # Check if subtracting 25 won't go below min
-                    self.add_player_bet -= 25
-                    print(f"Bet decreased to: {self.add_player_bet}")
+                if self.bet - 25 >= 25:  # Check if subtracting 25 won't go below min
+                    self.bet -= 25
+                    print(f"Bet decreased to: {self.bet}")
 
             # Ensure bet stays within valid range
-            if self.add_player_bet < 25:
-                self.add_player_bet = 25
-            elif self.add_player_bet > 50:
-                self.add_player_bet = 50
+            if self.bet < 25:
+                self.bet = 25
+            elif self.bet > 50:
+                self.bet = 50
 
             # Ensure bet doesn't exceed player's money
-            if self.add_player_bet > state.player.money:
-                self.add_player_bet = (state.player.money // 25) * 25  # Round down to nearest 25
-                if self.add_player_bet < 0:  # If player has less than minimum bet
-                    self.add_player_bet = 0  # Or handle insufficient funds cas
+            if self.bet > state.player.money:
+                self.bet = (state.player.money // 25) * 25  # Round down to nearest 25
+                if self.bet < 0:  # If player has less than minimum bet
+                    self.bet = 0  # Or handle insufficient funds cas
 
             if state.controller.confirm_button:
-                self.player_bet += self.add_player_bet
-                print("How much will you add?" + str(self.add_player_bet))
-                print("Your total bet amount" + str(self.player_bet))
-                self.add_player_bet = 0
+                self.bet += self.bet
+                print("How much will you add?" + str(self.bet))
+                print("Your total bet amount" + str(self.bet))
+                self.bet = 0
 
 
 
@@ -508,7 +542,7 @@ class PokerDarnelScreen(GambleScreen):
                 elif self.action_menu_index == 3:
                     print("time to fold")
                     print("Player money is now: " + str(state.player.money))
-                    state.player.money -= self.player_bet
+                    state.player.money -= self.bet
                     print("Player money is now: " + str(state.player.money))
 
                     self.restart_poker_round()
@@ -519,11 +553,11 @@ class PokerDarnelScreen(GambleScreen):
             card_length = len(self.enemy_hand)  # assuming this exists
             card_modifier = card_length * 3 # dummy multiplier, tweak later
             bet_modifier = 0
-            if self.player_bet < 150:
+            if self.bet < 150:
                 bet_modifier += 5
-            elif self.player_bet < 250:
+            elif self.bet < 250:
                 bet_modifier += 15
-            elif self.player_bet < 350:
+            elif self.bet < 350:
                 bet_modifier += 20
             else:
                 bet_modifier += 30
@@ -657,11 +691,11 @@ class PokerDarnelScreen(GambleScreen):
             print("Player wins ")
             state.player.money += self.enemy_bet
             self.money -= self.enemy_bet
-            if self.player_bet <= 150:
+            if self.bet <= 150:
                 self.enemy_pressure += 10
-            elif self.player_bet <= 250:
+            elif self.bet <= 250:
                 self.enemy_pressure += 15
-            elif self.player_bet <= 350:
+            elif self.bet <= 350:
                 self.enemy_pressure += 20
             else:
                 self.enemy_pressure += 25
@@ -673,11 +707,11 @@ class PokerDarnelScreen(GambleScreen):
             print("ENEMY WINS")
             state.player.money -= self.enemy_bet
             self.money += self.enemy_bet
-            if self.player_bet <= 150:
+            if self.bet <= 150:
                 self.enemy_pressure -= 10
-            elif self.player_bet <= 250:
+            elif self.bet <= 250:
                 self.enemy_pressure -= 15
-            elif self.player_bet <= 350:
+            elif self.bet <= 350:
                 self.enemy_pressure -= 20
             else:
                 self.enemy_pressure -= 25
@@ -692,6 +726,9 @@ class PokerDarnelScreen(GambleScreen):
 
 
 
+#-----------------------------------------------------------------------------------------------------------------------
+
+
     def draw(self, state):
         super().draw(state)
         self.draw_enemy_info_box(state)
@@ -704,7 +741,7 @@ class PokerDarnelScreen(GambleScreen):
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
         elif self.game_state == self.BET_SCREEN:
-            pass
+            self.battle_messages[self.BET_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
             pass
         elif self.game_state == self.DEAL_CARDS_SCREEN:
@@ -1050,6 +1087,33 @@ class PokerDarnelScreen(GambleScreen):
         print(f"This is your hand and we are moving on: {[c[2] for c in self.enemy_hand]}\n")
         self.enemy_discard_logic(index + 1, limit)
 
+    def draw_bet_screen_info(self, state: 'GameState'):
+        # Draw a box showing current bet amount and options
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        black_box_height = 150
+        border_width = 5
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+
+        # Create and draw the black box with white border
+        black_box = pygame.Surface((black_box_width, black_box_height))
+        black_box.fill(BLACK)
+        white_border = pygame.Surface(
+            (black_box_width + 2 * border_width, black_box_height + 2 * border_width)
+        )
+        white_border.fill(WHITE)
+        white_border.blit(black_box, (border_width, border_width))
+        black_box_x = start_x_right_box - border_width
+        black_box_y = start_y_right_box - border_width
+        state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
+
+
+
     def draw_welcome_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
         horizontal_padding = 25
@@ -1227,7 +1291,7 @@ class PokerDarnelScreen(GambleScreen):
                               (player_enemy_box_info_x_position, enemy_status_y_position))
 
         # Draw bet amount
-        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.player_bet}", True, WHITE),
+        state.DISPLAY.blit(self.font.render(f"{self.BET_HEADER}: {self.bet}", True, WHITE),
                           (player_enemy_box_info_x_position, bet_y_position))
 
         # Draw player money
