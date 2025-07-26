@@ -23,11 +23,13 @@ class PokerDarnelScreen(GambleScreen):
         self.enemy_pressure: int = 0
 
         self.welcome_screen_choices: list[str] = ["Play", "Magic", "Bet", "Quit"]
+        self.deal_cards_screen_choices: list[str] = ["Accept", "ReDraw"]
         self.welcome_screen_play_index: int = 0
         self.welcome_screen_magic_index: int = 1
         self.welcome_screen_bet_index: int = 2
         self.welcome_screen_quit_index: int = 3
         self.welcome_screen_index: int = 0
+        self.deal_cards_screen_index: int = 0
         self.bet: int = 100
 
 
@@ -205,10 +207,10 @@ class PokerDarnelScreen(GambleScreen):
             self.poker_score_tracker()
 
             print(f"Current screen: {self.game_state}")
-            print(f"PLAYER HAND: {self.player_hand}")
-            print(f"ENEMY HAND: {self.enemy_hand}")
-            print(f"Player bet is : " + str(self.bet))
-            print(f"Enemy bet is : " + str(self.enemy_bet))
+            # print(f"PLAYER HAND: {self.player_hand}")
+            # print(f"ENEMY HAND: {self.enemy_hand}")
+            # print(f"Player bet is : " + str(self.bet))
+            # print(f"Enemy bet is : " + str(self.enemy_bet))
 
             self.last_screen_check_time = current_time
 
@@ -411,7 +413,7 @@ class PokerDarnelScreen(GambleScreen):
             elif state.controller.down_button:
 
                 # Move down with wraparound
-                self.player_redraw_menu_index = (self.player_redraw_menu_index + 1) % 5
+                self.player_redraw_menu_index = (self.player_redraw_menu_index + 1) % 2
                 # Print current selection based on index
                 if self.player_redraw_menu_index == 0:
                     print("Play selected")
@@ -754,6 +756,7 @@ class PokerDarnelScreen(GambleScreen):
         elif self.game_state == self.DEAL_CARDS_SCREEN:
             self.battle_messages[self.DEAL_CARDS_MESSAGE].draw(state)
 
+
             # First we dela out 3 cards, players can fold/hold
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
@@ -761,7 +764,7 @@ class PokerDarnelScreen(GambleScreen):
             pass
 
         elif self.game_state == self.PLAYER_DISCARD_SCREEN:
-            pass
+            self.draw_player_discard_screen_box_info(state)
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             pass
 
@@ -786,6 +789,7 @@ class PokerDarnelScreen(GambleScreen):
             pass
 
         pygame.display.flip()
+
 
 
     def get_hand_score(self, hand_type: str) -> int:
@@ -1313,6 +1317,40 @@ class PokerDarnelScreen(GambleScreen):
                           (player_enemy_box_info_x_position, hero_focus_y_position))
         state.DISPLAY.blit(self.font.render(f"{self.HERO_HEADER}", True, WHITE),
                           (player_enemy_box_info_x_position, hero_name_y_position))
+
+    def draw_player_discard_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+
+        # Define the choices for the player discard screen
+        player_discard_choices = ["Play", "Redraw"]
+
+        # Add card options if they exist
+        # for i, card in enumerate(self.player_hand):
+        #     player_discard_choices.append(f"Card {i+1}: {card[0]} of {card[1]}")
+
+        # Draw the choices
+        for idx, choice in enumerate(player_discard_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        # Draw the selection arrow based on current menu index
+        arrow_y_position = start_y_right_box + self.player_redraw_menu_index * spacing_between_choices + text_y_offset
+        state.DISPLAY.blit(
+            self.font.render("->", True, WHITE),
+            (start_x_right_box + arrow_x_coordinate_padding, arrow_y_position)
+        )
 
     def draw_hands(self, player_hand: list, enemy_hand: list):
         initial_x_position = 250
