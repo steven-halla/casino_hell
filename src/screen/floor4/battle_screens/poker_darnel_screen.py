@@ -1391,6 +1391,13 @@ class PokerDarnelScreen(GambleScreen):
                 deck.draw_card_face_up(card[1], card[0], (player_x_position,
                                                           player_y_position), display)
 
+            # Draw a red square around the selected card when in the PLAYER_DISCARD_SCREEN state
+            if self.game_state == self.PLAYER_DISCARD_SCREEN and i == self.player_card_discard_index:
+                # Create a rectangle around the card with a 2-pixel border
+                card_rect = pygame.Rect(player_x_position - 2, player_y_position - 2,
+                                       deck.card_width + 4, deck.card_height + 4)
+                pygame.draw.rect(display, RED, card_rect, 2)
+
         for i, card in enumerate(enemy_hand):
             enemy_x_position = initial_x_position + i * move_card_x
             enemy_y_position = enemy_target_y_position
