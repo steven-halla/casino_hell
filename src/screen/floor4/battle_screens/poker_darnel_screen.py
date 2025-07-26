@@ -48,6 +48,7 @@ class PokerDarnelScreen(GambleScreen):
         self.bet: int = 50
         self.enemy_bet: int = 50
         self.player_redraw_menu_index = 0
+        self.player_card_discard_index = 0
         self.player_card_garbage_can = []
         self.bet: int = 0
         self.add_enemy_bet:int = 0
@@ -180,6 +181,7 @@ class PokerDarnelScreen(GambleScreen):
         self.bet: int = 50
         self.enemy_bet: int = 50
         self.player_redraw_menu_index = 0
+        self.player_card_discard_index = 0
         self.player_card_garbage_can = []
         self.bet: int = 0
         self.add_enemy_bet: int = 0
@@ -411,9 +413,8 @@ class PokerDarnelScreen(GambleScreen):
                     print(f"Card {self.player_redraw_menu_index - 1} selected: {self.player_hand[self.player_redraw_menu_index - 2]}")
 
             elif state.controller.down_button:
-
                 # Move down with wraparound
-                self.player_redraw_menu_index = (self.player_redraw_menu_index + 1) % 2
+                self.player_redraw_menu_index = (self.player_redraw_menu_index + 1) % 5
                 # Print current selection based on index
                 if self.player_redraw_menu_index == 0:
                     print("Play selected")
@@ -421,6 +422,16 @@ class PokerDarnelScreen(GambleScreen):
                     print("Redraw selected")
                 else:
                     print(f"Card {self.player_redraw_menu_index - 1} selected: {self.player_hand[self.player_redraw_menu_index - 2]}")
+
+            elif state.controller.left_button:
+                # Move left with wraparound (3 indices: 0, 1, 2)
+                self.player_card_discard_index = (self.player_card_discard_index - 1) % 3
+                print(f"Card discard index: {self.player_card_discard_index}")
+
+            elif state.controller.right_button:
+                # Move right with wraparound (3 indices: 0, 1, 2)
+                self.player_card_discard_index = (self.player_card_discard_index + 1) % 3
+                print(f"Card discard index: {self.player_card_discard_index}")
 
             if state.controller.confirm_button and len(self.player_card_garbage_can) <= 2:
                 if self.player_redraw_menu_index == 0:
@@ -439,23 +450,11 @@ class PokerDarnelScreen(GambleScreen):
                         self.game_state = self.PLAYER_REDRAW_SCREEN
 
                 elif self.player_redraw_menu_index == 2:
-                    if len(self.player_card_garbage_can) < 2 and self.player_hand[0] not in self.player_card_garbage_can:
-                        print("place card selected is: " + str(self.player_hand[0]))
-                        self.player_card_garbage_can.append(self.player_hand[0])
-                        print("your trash can contents" + str(self.player_card_garbage_can))
-                    else:
-                        print("Cannot discard more cards or this card is already in the discard pile")
-                elif self.player_redraw_menu_index == 3:
-                    if len(self.player_card_garbage_can) < 2 and self.player_hand[1] not in self.player_card_garbage_can:
-                        print("place card selected is: " + str(self.player_hand[1]))
-                        self.player_card_garbage_can.append(self.player_hand[1])
-                        print("your trash can contents" + str(self.player_card_garbage_can))
-                    else:
-                        print("Cannot discard more cards or this card is already in the discard pile")
-                elif self.player_redraw_menu_index == 4:
-                    if len(self.player_card_garbage_can) < 2 and self.player_hand[2] not in self.player_card_garbage_can:
-                        print("place card selected is: " + str(self.player_hand[2]))
-                        self.player_card_garbage_can.append(self.player_hand[2])
+                    # Use the player_card_discard_index to determine which card to discard
+                    card_index = self.player_card_discard_index
+                    if len(self.player_card_garbage_can) < 2 and self.player_hand[card_index] not in self.player_card_garbage_can:
+                        print("place card selected is: " + str(self.player_hand[card_index]))
+                        self.player_card_garbage_can.append(self.player_hand[card_index])
                         print("your trash can contents" + str(self.player_card_garbage_can))
                     else:
                         print("Cannot discard more cards or this card is already in the discard pile")
@@ -463,15 +462,10 @@ class PokerDarnelScreen(GambleScreen):
 
 
             elif state.controller.action_and_cancel_button:
-                if self.player_redraw_menu_index == 2 and self.player_hand[0] in self.player_card_garbage_can:
-                    self.player_card_garbage_can.remove(self.player_hand[0])
-                    print(f"Removed first card from discard pile: {self.player_hand[0]}")
-                elif self.player_redraw_menu_index == 3 and self.player_hand[1] in self.player_card_garbage_can:
-                    self.player_card_garbage_can.remove(self.player_hand[1])
-                    print(f"Removed second card from discard pile: {self.player_hand[1]}")
-                elif self.player_redraw_menu_index == 4 and self.player_hand[2] in self.player_card_garbage_can:
-                    self.player_card_garbage_can.remove(self.player_hand[2])
-                    print(f"Removed third card from discard pile: {self.player_hand[2]}")
+                # Use the player_card_discard_index to determine which card to remove from discard pile
+                if self.player_redraw_menu_index == 2 and self.player_hand[self.player_card_discard_index] in self.player_card_garbage_can:
+                    self.player_card_garbage_can.remove(self.player_hand[self.player_card_discard_index])
+                    print(f"Removed card from discard pile: {self.player_hand[self.player_card_discard_index]}")
 
 
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
@@ -1351,6 +1345,31 @@ class PokerDarnelScreen(GambleScreen):
             self.font.render("->", True, WHITE),
             (start_x_right_box + arrow_x_coordinate_padding, arrow_y_position)
         )
+
+        # # Draw card discard index indicator
+        # if len(self.player_hand) > 0:
+        #     card_indicator_y = start_y_right_box + 120  # Position below the menu options
+        #     state.DISPLAY.blit(
+        #         self.font.render("Card Selection (Left/Right):", True, WHITE),
+        #         (start_x_right_box, card_indicator_y)
+        #     )
+        #
+        #     # Draw indicators for each card
+        #     for i in range(3):
+        #         card_x = start_x_right_box + i * 60 + 20
+        #         card_y = card_indicator_y + 30
+        #
+        #         # Highlight the selected card
+        #         if i == self.player_card_discard_index:
+        #             # Draw a highlighted box for the selected card
+        #             highlight_rect = pygame.Rect(card_x - 5, card_y - 5, 50, 30)
+        #             pygame.draw.rect(state.DISPLAY, RED, highlight_rect, 2)
+        #
+        #         # Draw card number
+        #         state.DISPLAY.blit(
+        #             self.font.render(f"Card {i+1}", True, WHITE),
+        #             (card_x, card_y)
+        #         )
 
     def draw_hands(self, player_hand: list, enemy_hand: list):
         initial_x_position = 250
