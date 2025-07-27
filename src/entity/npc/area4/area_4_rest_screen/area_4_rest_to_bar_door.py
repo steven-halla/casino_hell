@@ -71,7 +71,7 @@ class Area4RestToBarDoor(Npc):
         state.area4BarScreen.start(state)
 
         # Lock the player in place while talking
-        state.player.canMove = False
+        state.player.canMove = True
 
 
 

@@ -30,7 +30,7 @@ class CrapsWimpletonScreen(GambleScreen):
         self.power_meter_index: int = 0
         self.point_roll_total: int = 0
         self.point_roll_choices: list[str] = ["Play", "Blow", "Bet"]
-        self.magic_screen_choices: list[str] = [Magic.CRAPS_LUCKY_7.value, Magic.GREED_METER.value,  "Back"]
+        self.magic_screen_choices: list[str] = [Magic.CRAPS_LUCKY_7.value,   "Back"]
         self.bet_screen_choices: list[str] = ["Back"]
         self.magic_screen_index: int = 0
         self.triple_dice_index: int = 0

@@ -529,11 +529,10 @@ magic 3 bad luck - dice fighter - worse rolls on defense
 
 Level 4
 self.shop_items =[
-CoinFlipGloves -Coin flip - alllows + 200 on bets for coin flip
-HighLowPants - hilow - adds extra spread factor
-POker bracelet  - poker - player will no longer draw any 2 cards
-WHeel Dice - wheel of torture -  DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-LUCKY Human's Foot - general - adds +1 LUCK
+equipment - CoinFlipGloves -Coin flip - alllows + 200 on bets for coin flip
+equipment - HighLowPants - hilow - adds extra spread factor
+equipment - POker bracelet  - poker - player will no longer draw any 2 cards
+equipment - LUCKY Human's Foot - general - adds +1 LUCK
 magic - poker - Swap - DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 magic - Greed -craps - DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ]
