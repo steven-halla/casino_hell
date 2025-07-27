@@ -41,7 +41,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 6099,
+    "money": 5999,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -50,7 +50,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 21,
+    "days": 22,
     "leveltwonpcstate": [
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
@@ -93,7 +93,7 @@
     "opossumsallymoney": 0,
     "opossuminacancandymoney": 0,
     "opossuminacanbillybobmoney": 111,
-    "opossuminacansillywillymoney": 232,
+    "opossuminacansillywillymoney": 444,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 900,
     "blackjackmackmoney": 0,
@@ -103,13 +103,13 @@
     "shopkeepersavecoin": false,
     "slotsrippasnappamoney": 0,
     "slotsbroganmoney": 1000,
-    "slotsjuraganmoney" : 233,
+    "slotsjuraganmoney": 233,
     "crapscrappymoney": -5,
     "crapsjunponmoney": 200,
     "crapsnabamoney": 200,
-
     "dicefightersirsiegfriedmoney": 200,
     "dicefightersophiamoney": 333,
     "highlowdienamoney": 100,
-    "highlowcodymoney": 431
+    "highlowcodymoney": 431,
+    "pokerdarnelmoney": 433
 }

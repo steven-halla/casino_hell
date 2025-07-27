@@ -207,14 +207,14 @@ class Player(Entity):
             "opossumnellymoney": state.opossumInACanNellyScreen.nellyOpossumMoney,
             "opossumsallymoney": state.opossumInACanSallyScreen.sallyOpossumMoney,
             "opossuminacancandymoney": state.opossumInACanCandyScreen.candyOpossumMoney,
-            "opossuminacanbillybobmoney": state.opossumInACanBillyBobScreen.billybobMoney,
+            "opossuminacanbillybobmoney": state.opossumInACanBillyBobScreen.billyBobOpossumMoney,
             "opossuminacansillywillymoney": state.opossumInACanSillyWillyScreen.silly_willy_money,
 
             "blackjackthomasmoney": state.blackJackThomasScreen.blackJackThomasMoney,
             "blackjackrumblebillmoney": state.blackJackRumbleBillScreen.cheater_bob_money,
             "blackjackmackmoney": state.blackJackMackScreen.money,
             "blackjackalbertmoney": state.blackJackAlbertScreen.money,
-            "blackjackjasminemoney": state.blackJackJasmineScree.jasmine_money,
+            "blackjackjasminemoney": state.blackJackJasmineScreen.jasmine_money,
 
             "shopkeeperpotion": self.shop_keep_potion,
             "shopkeepersavecoin": self.shop_keep_save_coin,
@@ -222,7 +222,7 @@ class Player(Entity):
 
             "slotsrippasnappamoney": state.slotsRippaSnappaScreen.money,
             "slotsbroganmoney": state.slotsBroganScreen.money,
-            "slotsjuraganmoney": state.slotsJuragonScreen.juragaon_money,
+            "slotsjuraganmoney": state.slotsJuraganScreen.juragan_money,
 
             "crapscrappymoney": state.crapsHappyScreen.money,
             "crapsjunponmoney": state.crapsJunponScreen.money,
@@ -235,7 +235,7 @@ class Player(Entity):
             "highlowdienamoney": state.highLowDienaScreen.money,
             "highlowcodymoney": state.highLowCodyScreen.cody_money,
 
-            "pokerdarnellmoney": state.pokerDarnellScreen.money,
+            "pokerdarnelmoney": state.pokerDarnelScreen.darnel_money
 
 
 
@@ -2191,7 +2191,7 @@ class Player(Entity):
 
             # level 3
             state.coinFlipDexterScreen.money = player_data['coinflipdextermoney']
-            state.opossumInACanBillyBobScreen.money = player_data['opossuminacanbillybobmoney']
+            state.opossumInACanBillyBobScreen.billyBobOpossumMoney = player_data['opossuminacanbillybobmoney']
             state.blackJackAlbertScreen.money = player_data['blackjackalbertmoney']
             state.slotsBroganScreen.money = player_data['slotsbroganmoney']
             state.crapsJunponScreen.money = player_data['crapsjunponmoney']
@@ -2208,6 +2208,7 @@ class Player(Entity):
             state.diceFighterSophiaScreen.sophia_money = player_data['dicefightersophiamoney']
             state.highLowCodyScreen.cody_money = player_data['highlowcodymoney']
             state.slotsJuraganScreen.juragan_money = player_data['slotsjuraganmoney']
+            state.pokerDarnelScreen.darnel_money = player_data['pokerdarnelmoney']
 
 
             #level 5
