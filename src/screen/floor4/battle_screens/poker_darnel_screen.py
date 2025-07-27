@@ -53,6 +53,7 @@ class PokerDarnelScreen(GambleScreen):
         self.bet: int = 0
         self.add_enemy_bet:int = 0
         self.action_menu_index: int = 0
+        self.action_menu_choices: list[str] = ["Play", "Magic", "Quit"]
         self.future_cards_container: list = []
         self.magic_menu_options: list = []
         self.swap_cards_menu_options: list = []
@@ -582,10 +583,10 @@ class PokerDarnelScreen(GambleScreen):
 
 
             if state.controller.up_button:
-                self.action_menu_index = (self.action_menu_index + 1) % 4
+                self.action_menu_index = (self.action_menu_index - 1) % len(self.action_menu_choices)
                 print("the action menu index is: " + str(self.action_menu_index))
             elif state.controller.down_button:
-                self.action_menu_index = (self.action_menu_index - 1) % 4
+                self.action_menu_index = (self.action_menu_index + 1) % len(self.action_menu_choices)
                 print("the action menu index is: " + str(self.action_menu_index))
 
             if state.controller.confirm_button:
@@ -599,16 +600,16 @@ class PokerDarnelScreen(GambleScreen):
                     elif len(self.player_hand) == 5:
                         self.game_state = self.FINAL_RESULTS
 
-
-                elif self.action_menu_index == 1 and self.bluffalo_allowed == True:
-                    print("time to bluffallo")
-                    self.game_state = self.BLUFFALO_SCREEN
-                elif self.action_menu_index == 2:
+                #
+                # elif self.action_menu_index == 1 and self.bluffalo_allowed == True:
+                #     print("time to bluffallo")
+                #     self.game_state = self.BLUFFALO_SCREEN
+                elif self.action_menu_index == 1:
                     print("time to cast a spell card swap")
                     self.game_state = self.MAGIC_MENU_SCREEN
 
 
-                elif self.action_menu_index == 3:
+                elif self.action_menu_index == 2:
                     print("time to fold")
                     print("Player money is now: " + str(state.player.money))
                     state.player.money -= self.bet
@@ -840,6 +841,7 @@ class PokerDarnelScreen(GambleScreen):
             self.battle_messages[self.ENEMY_REDRAW_MESSAGE].draw(state)
 
         elif self.game_state == self.ACTION_SCREEN:
+            self.draw_action_screen_box_info(state)
             self.battle_messages[self.ACTION_MESSAGE].draw(state)
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             pass
@@ -1263,6 +1265,33 @@ class PokerDarnelScreen(GambleScreen):
                 self.font.render("->", True, WHITE),
                 (start_x_right_box + arrow_x_coordinate_padding, start_y_right_box + arrow_y_coordinate_padding_quit)
             )
+
+    def draw_action_screen_box_info(self, state: 'GameState'):
+        box_width_offset = 10
+        horizontal_padding = 25
+        vertical_position = 240
+        spacing_between_choices = 40
+        text_x_offset = 60
+        text_y_offset = 15
+        black_box_width = 200 - box_width_offset
+        start_x_right_box = state.DISPLAY.get_width() - black_box_width - horizontal_padding
+        start_y_right_box = vertical_position
+        arrow_x_coordinate_padding = 12
+
+        # Display action menu choices
+        for idx, choice in enumerate(self.action_menu_choices):
+            y_position = start_y_right_box + idx * spacing_between_choices
+            state.DISPLAY.blit(
+                self.font.render(choice, True, WHITE),
+                (start_x_right_box + text_x_offset, y_position + text_y_offset)
+            )
+
+        # Draw the selection arrow based on current action menu index
+        arrow_y_coordinate = start_y_right_box + (self.action_menu_index * spacing_between_choices) + 12
+        state.DISPLAY.blit(
+            self.font.render("->", True, RED),  # Using RED to make it stand out
+            (start_x_right_box + arrow_x_coordinate_padding, arrow_y_coordinate)
+        )
 
     def draw_poker_table(self, state: 'GameState'):
         # Draw the poker table background
