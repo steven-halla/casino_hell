@@ -115,6 +115,10 @@ class PokerDarnelScreen(GambleScreen):
             self.ENEMY_REDRAW_MESSAGE: MessageBox([
                 "Press confirm button to get out of here of your ENEMY REDRAW MESSAGE",
 
+            ]),
+            self.ACTION_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your ACTION MESSAGE",
+
             ])
 
         }
@@ -158,6 +162,7 @@ class PokerDarnelScreen(GambleScreen):
     ENEMY_WINS: str = "enemy_wins"
     DRAW: str = "draw"
     ACTION_SCREEN: str = "action_screen"
+    ACTION_MESSAGE: str = "action_message"
     RESET: str = "reset"
     ENEMY_ACTION_SCREEN: str = "enemy action screen"
     BLUFFALO_SCREEN: str = "bluffalo screen"
@@ -573,6 +578,8 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.ACTION_SCREEN:
+            self.battle_messages[self.ACTION_MESSAGE].update(state)
+
 
             if state.controller.up_button:
                 self.action_menu_index = (self.action_menu_index + 1) % 4
@@ -833,7 +840,7 @@ class PokerDarnelScreen(GambleScreen):
             self.battle_messages[self.ENEMY_REDRAW_MESSAGE].draw(state)
 
         elif self.game_state == self.ACTION_SCREEN:
-            pass
+            self.battle_messages[self.ACTION_MESSAGE].draw(state)
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             pass
 
