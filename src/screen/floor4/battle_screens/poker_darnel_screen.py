@@ -1140,18 +1140,39 @@ class PokerDarnelScreen(GambleScreen):
             screen_height = state.DISPLAY.get_height()
 
             # Position for the first card (centered)
-            first_card_x = (screen_width - card_width) // 2
-            first_card_y = (screen_height - card_height) // 2
+            first_card_x = (screen_width - card_width) // 2 - 120
+            first_card_y = (screen_height - card_height) // 2 - 60
 
             # Position for the second card (10 pixels to the right of the first card)
-            second_card_x = first_card_x + card_width + 10
+            second_card_x = first_card_x + card_width + 3
             second_card_y = first_card_y
+
+            third_card_x = second_card_x + card_width + 3
+            third_card_y = second_card_y
+
+            fourth_card_x = third_card_x + card_width + 3
+            fourth_card_y = third_card_y
+
+            # fifth_card_x = fourth_card_x + card_width + 3
+            # fifth_card_y = fourth_card_y
+            #
+            # sixth_card_x = fifth_card_x + card_width + 3
+            # sixth_card_y = fifth_card_y
+
+
+
+
 
             # Draw the first card
             self.draw_card(state, self.future_cards_container[0], first_card_x, first_card_y, card_width, card_height)
 
             # Draw the second card
             self.draw_card(state, self.future_cards_container[1], second_card_x, second_card_y, card_width, card_height)
+
+            self.draw_card(state, self.future_cards_container[2], third_card_x, third_card_y, card_width, card_height)
+            self.draw_card(state, self.future_cards_container[3], fourth_card_x, fourth_card_y, card_width, card_height)
+            # self.draw_card(state, self.future_cards_container[4], fifth_card_x, fifth_card_y, card_width, card_height)
+            # self.draw_card(state, self.future_cards_container[5], sixth_card_x, sixth_card_y, card_width, card_height)
 
     def enemy_discard_logic(self, index: int = 0, limit: int = 1):
         if index >= limit:
