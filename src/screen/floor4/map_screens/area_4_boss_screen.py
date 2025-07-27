@@ -13,6 +13,7 @@ from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area4.area_4_boss_screen.area_4_boss_to_gambling_screen import Area4BossToGamblingDoor
+from entity.npc.area4.area_4_boss_screen.wheel_of_torture_boss import WheelOfTortureBoss
 from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
 from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
 from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
@@ -95,6 +96,7 @@ class Area4BossScreen(Screen):
         state.npcs = [
 
             Area4BossToGamblingDoor(16 * 30, 16 * 25),
+            WheelOfTortureBoss(16 * 5, 16 * 5),
             # Area1GamblingToMazeDoor(16 * 45, 16 * 40),
 
         ]
@@ -173,9 +175,9 @@ class Area4BossScreen(Screen):
             npc.draw(state)  # Not skipping any
 
         # 2. Then draw only the dialog box for the talking one
-        for npc in state.npcs:
-            if npc.state == "talking":
-                npc.draw(state, only_dialog=True)
+        # for npc in state.npcs:
+        #     if npc.state == "talking":
+        #         npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)

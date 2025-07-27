@@ -80,6 +80,7 @@ class Events(Enum):
     OPOSSUM_IN_A_CAN_SILLY_WILLY_DEFEATED = "opossum in a can silly willy defeated"
     SLOTS_JURAGAN_DEFEATED = "slots juragan defeated"
     WHEEL_OF_TORTURE_VANESSA_BLACK_DEFEATED = "WHEEL OF torture vanessa black defeated"
+    WHEEL_OF_TORTURE_BOSS_DEFEATED = "WHEEL OF torture boss defeated"
 
     HANGRY_ANGRY_HIPPOS_DIPPY_DEFEATED = "hangry angry hippos DIPPY DEfeated"
     SLOTS_LEVEL_4_SECRET_ITEM_ACQUIRED = "slots_level_4_secret_item_acquired"
