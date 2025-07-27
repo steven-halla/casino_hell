@@ -99,7 +99,16 @@ class PokerDarnelScreen(GambleScreen):
             self.DEAL_CARDS_MESSAGE: MessageBox([
                 "Time to deal your cards",
 
+            ]),
+            self.PLAYER_DISCARD_MESSAGE: MessageBox([
+                "Press up/down to go through menu, as well as left/right to go through cards you want to discard.2 discard max.",
+
+            ]),
+            self.PLAYER_REDRAW_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your PLAYER REDRAW SCREEN",
+
             ])
+
         }
 
         self.player_hand = [
@@ -143,6 +152,8 @@ class PokerDarnelScreen(GambleScreen):
     ENEMY_ACTION_SCREEN: str = "enemy action screen"
     BLUFFALO_SCREEN: str = "bluffalo screen"
     DEAL_CARDS_MESSAGE: str = "deal cards message"
+    PLAYER_DISCARD_MESSAGE: str = "player discard message"
+    PLAYER_REDRAW_MESSAGE: str = "player redraw message"
 
 
 
@@ -400,6 +411,8 @@ class PokerDarnelScreen(GambleScreen):
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
         elif self.game_state == self.PLAYER_DISCARD_SCREEN:
+            self.battle_messages[self.PLAYER_DISCARD_MESSAGE].update(state)
+
             # Initialize index if not already set
             if state.controller.up_button:
                 if self.player_redraw_menu_index < 0:
@@ -502,6 +515,8 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
+            self.battle_messages[self.PLAYER_REDRAW_MESSAGE].update(state)
+
             while len(self.player_hand) < 3:
                 drawn_card = self.deck.poker_get_next_card()
 
@@ -521,8 +536,9 @@ class PokerDarnelScreen(GambleScreen):
             #     self.player_hand.append(drawn_card)
             #     print(f"Drew card: {drawn_card}")
             #     print("your player hand" + str(self.player_hand))
-                if state.controller.confirm_button:
-                    self.game_state = self.ENEMY_DISCARD_SCREEN
+            if state.controller.confirm_button and len(self.player_hand) > 2:
+                print("yeippjfsladjlfjd;a;fj 532")
+                self.game_state = self.ENEMY_DISCARD_SCREEN
 
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             # print("enemey ")
@@ -788,10 +804,13 @@ class PokerDarnelScreen(GambleScreen):
             # 4th round we show cards , then shuffle and deal
             # 5th round is the same
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
-            pass
+            self.battle_messages[self.PLAYER_REDRAW_MESSAGE].draw(state)
+
 
         elif self.game_state == self.PLAYER_DISCARD_SCREEN:
             self.draw_player_discard_screen_box_info(state)
+            self.battle_messages[self.PLAYER_DISCARD_MESSAGE].draw(state)
+
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
             pass
 
