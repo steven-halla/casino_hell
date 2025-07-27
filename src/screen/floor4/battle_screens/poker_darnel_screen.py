@@ -693,7 +693,6 @@ class PokerDarnelScreen(GambleScreen):
             self.battle_messages[self.REVEAL_FUTURE_CARDS_MESSAGE].update(state)
 
             if state.controller.confirm_button:
-                self.reveal_future_cards(state)
                 self.game_state = self.DRAW_ONE_CARD
 
 
@@ -852,6 +851,7 @@ class PokerDarnelScreen(GambleScreen):
             self.battle_messages[self.ACTION_MESSAGE].draw(state)
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
             self.battle_messages[self.REVEAL_FUTURE_CARDS_MESSAGE].draw(state)
+            self.reveal_future_cards(state)
 
 
         elif self.game_state == self.DRAW_ONE_CARD:
@@ -1097,35 +1097,61 @@ class PokerDarnelScreen(GambleScreen):
     #     return dummy_enemy_hands[index % len(dummy_enemy_hands)]  # Cycle if limit > length
 
     def reveal_future_cards(self, state):
-        # Print initial top 6 cards
-        print("Initial top 6 cards of deck:")
-        for i in range(min(6, len(self.deck.poker_cards))):
-            print(self.deck.poker_cards[-(i+1)])
-        print("\n")
+        # If future_cards_container is not initialized yet, initialize it
+        if not hasattr(self, 'future_cards_container') or not self.future_cards_container:
+            # Print initial top 6 cards
+            print("Initial top 6 cards of deck:")
+            for i in range(min(6, len(self.deck.poker_cards))):
+                print(self.deck.poker_cards[-(i+1)])
+            print("\n")
 
-        # Draw 4 cards and store them
-        self.future_cards_container = self.deck.poker_enemy_draw_hand(4)
+            # Draw 4 cards and store them
+            self.future_cards_container = self.deck.poker_enemy_draw_hand(4)
 
-        print("Initial 4 drawn cards:")
-        for card in self.future_cards_container:
-            print(card)
-        print("\n")
+            print("Initial 4 drawn cards:")
+            for card in self.future_cards_container:
+                print(card)
+            print("\n")
 
-        # Shuffle the drawn cards
-        random.shuffle(self.future_cards_container)
+            # Shuffle the drawn cards
+            random.shuffle(self.future_cards_container)
 
-        print("4 cards after shuffling:")
-        for card in self.future_cards_container:
-            print(card)
-        print("\n")
+            print("4 cards after shuffling:")
+            for card in self.future_cards_container:
+                print(card)
+            print("\n")
 
-        # Place the shuffled cards back on top of the deck
-        for card in reversed(self.future_cards_container):
-            self.deck.poker_cards.append(card)
+            # Place the shuffled cards back on top of the deck
+            for card in reversed(self.future_cards_container):
+                self.deck.poker_cards.append(card)
 
-        print("Top 6 cards after placing shuffled cards on deck:")
-        for i in range(min(6, len(self.deck.poker_cards))):
-            print(self.deck.poker_cards[-(i+1)])
+            print("Top 6 cards after placing shuffled cards on deck:")
+            for i in range(min(6, len(self.deck.poker_cards))):
+                print(self.deck.poker_cards[-(i+1)])
+
+        # Draw the first two cards in the middle of the screen
+        if len(self.future_cards_container) >= 2:
+            # Card dimensions
+            card_width = 80
+            card_height = 120
+
+            # Calculate the center of the screen
+            screen_width = state.DISPLAY.get_width()
+            screen_height = state.DISPLAY.get_height()
+
+            # Position for the first card (centered)
+            first_card_x = (screen_width - card_width) // 2
+            first_card_y = (screen_height - card_height) // 2
+
+            # Position for the second card (10 pixels to the right of the first card)
+            second_card_x = first_card_x + card_width + 10
+            second_card_y = first_card_y
+
+            # Draw the first card
+            self.draw_card(state, self.future_cards_container[0], first_card_x, first_card_y, card_width, card_height)
+
+            # Draw the second card
+            self.draw_card(state, self.future_cards_container[1], second_card_x, second_card_y, card_width, card_height)
 
     def enemy_discard_logic(self, index: int = 0, limit: int = 1):
         if index >= limit:
@@ -1342,44 +1368,15 @@ class PokerDarnelScreen(GambleScreen):
                     self.draw_card_back(state, card_x, y_position, card_width, card_height)
 
     def draw_card(self, state: 'GameState', card, x, y, width, height):
-        # Draw a single card
-        card_color = (255, 255, 255)  # White
-        card_rect = pygame.Rect(x, y, width, height)
-        pygame.draw.rect(state.DISPLAY, card_color, card_rect)
-        pygame.draw.rect(state.DISPLAY, (0, 0, 0), card_rect, 2)  # Black border
-
-        # Draw card value and suit
+        # Use the sprite sheet-based drawing from deck.py
         rank, suit, _ = card
-        suit_color = (255, 0, 0) if suit in ["Hearts", "Diamonds"] else (0, 0, 0)  # Red for hearts/diamonds, black for clubs/spades
-
-        # Draw rank at top-left
-        state.DISPLAY.blit(
-            self.font.render(str(rank), True, suit_color),
-            (x + 5, y + 5)
-        )
-
-        # Draw suit below rank
-        state.DISPLAY.blit(
-            self.font.render(suit[0], True, suit_color),  # Just the first letter of the suit
-            (x + 5, y + 30)
-        )
+        # Call the deck's draw_card_face_up method to draw the card using the sprite sheet
+        self.deck.draw_card_face_up(suit, rank, (x, y), state.DISPLAY)
 
     def draw_card_back(self, state: 'GameState', x, y, width, height):
-        # Draw the back of a card
-        back_color = (0, 0, 139)  # Dark blue
-        card_rect = pygame.Rect(x, y, width, height)
-        pygame.draw.rect(state.DISPLAY, back_color, card_rect)
-        pygame.draw.rect(state.DISPLAY, (0, 0, 0), card_rect, 2)  # Black border
-
-        # Draw a pattern on the back
-        pattern_color = (255, 255, 255)  # White
-        for i in range(5):
-            pygame.draw.line(state.DISPLAY, pattern_color,
-                            (x + 10, y + 10 + i * 20),
-                            (x + width - 10, y + 10 + i * 20), 2)
-            pygame.draw.line(state.DISPLAY, pattern_color,
-                            (x + 10 + i * 15, y + 10),
-                            (x + 10 + i * 15, y + height - 10), 2)
+        # Use the sprite sheet-based drawing from deck.py
+        # Call the deck's draw_card_face_down method to draw the card back using the sprite sheet
+        self.deck.draw_card_face_down((x, y), state.DISPLAY)
 
     def draw_box_info(self, state: 'GameState'):
         player_enemy_box_info_x_position = 37
