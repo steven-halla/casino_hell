@@ -107,6 +107,14 @@ class PokerDarnelScreen(GambleScreen):
             self.PLAYER_REDRAW_MESSAGE: MessageBox([
                 "Press confirm button to get out of here of your PLAYER REDRAW SCREEN",
 
+            ]),
+            self.ENEMY_DISCARD_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your ENEMY DISCARD MESSAGE" ,
+
+            ]),
+            self.ENEMY_REDRAW_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your ENEMY REDRAW MESSAGE",
+
             ])
 
         }
@@ -138,7 +146,9 @@ class PokerDarnelScreen(GambleScreen):
     PLAYER_REDRAW_SCREEN: str = "player_redraw_screen"
     PLAYER_DISCARD_SCREEN: str = "player_discard_screen"
     ENEMY_REDRAW_SCREEN: str = "enemy_redraw_screen"
+    ENEMY_REDRAW_MESSAGE: str = "enemy_redraw messages"
     ENEMY_DISCARD_SCREEN: str = "enemy_discard_screen"
+    ENEMY_DISCARD_MESSAGE: str = "enemy_discard_,message"
     REVEAL_FUTURE_CARDS: str = "reveal_future_cards"
     DRAW_ONE_CARD: str = "draw_one_card"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
@@ -541,6 +551,8 @@ class PokerDarnelScreen(GambleScreen):
                 self.game_state = self.ENEMY_DISCARD_SCREEN
 
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
+            self.battle_messages[self.ENEMY_DISCARD_MESSAGE].update(state)
+
             # print("enemey ")
             if  state.controller.confirm_button:
                 self.enemy_discard_logic()
@@ -548,6 +560,8 @@ class PokerDarnelScreen(GambleScreen):
                 # self.poker_score_tracker()
 
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
+            self.battle_messages[self.ENEMY_REDRAW_MESSAGE].update(state)
+
             while len(self.enemy_hand) < 3:
                 drawn_card = self.deck.poker_get_next_card()
                 self.enemy_hand.append(drawn_card)
@@ -812,10 +826,12 @@ class PokerDarnelScreen(GambleScreen):
             self.battle_messages[self.PLAYER_DISCARD_MESSAGE].draw(state)
 
         elif self.game_state == self.ENEMY_DISCARD_SCREEN:
-            pass
+            self.battle_messages[self.ENEMY_DISCARD_MESSAGE].draw(state)
+
 
         elif self.game_state == self.ENEMY_REDRAW_SCREEN:
-            pass
+            self.battle_messages[self.ENEMY_REDRAW_MESSAGE].draw(state)
+
         elif self.game_state == self.ACTION_SCREEN:
             pass
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
