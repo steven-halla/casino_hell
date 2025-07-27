@@ -124,7 +124,28 @@ class PokerDarnelScreen(GambleScreen):
             self.REVEAL_FUTURE_CARDS_MESSAGE: MessageBox([
                 "Press confirm button to get out of here of your Reveal Future cards message",
 
+            ]),
+            self.DRAW_ONE_CARD_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your DRAW ONE CARD",
+
+            ]),
+            self.FINAL_RESULTS_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your final results message",
+
+            ]),
+            self.PLAYER_WINS_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your PLAYER WINS MESSAGE",
+
+            ]),
+            self.ENEMY_WINS_MESSAGE: MessageBox([
+                    "Press confirm button to get out of here of your ENEMY WINS MESSAGE",
+
+                ]),
+            self.DRAW_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your DRAW MESSAGE",
+
             ])
+
 
         }
 
@@ -161,9 +182,11 @@ class PokerDarnelScreen(GambleScreen):
     REVEAL_FUTURE_CARDS: str = "reveal_future_cards"
     REVEAL_FUTURE_CARDS_MESSAGE: str = "reveal_future_cards messages"
     DRAW_ONE_CARD: str = "draw_one_card"
+    DRAW_ONE_CARD_MESSAGE: str = "draw_one_card message"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
     FIFTH_ROUND_DEAL: str = "fifth_round_deal"
     FINAL_RESULTS: str = "final_results"
+    FINAL_RESULTS_MESSAGE: str = "final_results messsage"
     PLAYER_WINS: str = "player_wins"
     ENEMY_WINS: str = "enemy_wins"
     DRAW: str = "draw"
@@ -175,12 +198,9 @@ class PokerDarnelScreen(GambleScreen):
     DEAL_CARDS_MESSAGE: str = "deal cards message"
     PLAYER_DISCARD_MESSAGE: str = "player discard message"
     PLAYER_REDRAW_MESSAGE: str = "player redraw message"
-
-
-
-
-    # def start(self):
-    #     print("Pew")
+    PLAYER_WINS_MESSAGE: str = "player wins message"
+    ENEMY_WINS_MESSAGE: str = "enemy wins message"
+    DRAW_MESSAGE: str = "draw message"
 
     def update_welcome_screen_logic(self, controller, state):
         if controller.up_button:
@@ -207,6 +227,8 @@ class PokerDarnelScreen(GambleScreen):
         self.deck.poker_cards_shuffle()
         self.enemy_cards_swap_container = []
         self.player_cards_swap_container = []
+        self.player_hand = []
+        self.enemy_hand = []
         self.swap_player_cards: bool = False
         self.swap_enemy_cards: bool = True
         self.magic_menu_index: int = 0
@@ -697,6 +719,8 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_ONE_CARD:
+            self.battle_messages[self.DRAW_ONE_CARD_MESSAGE].update(state)
+
 
             if state.controller.confirm_button:
 
@@ -734,6 +758,8 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.FINAL_RESULTS:
+            self.battle_messages[self.FINAL_RESULTS_MESSAGE].update(state)
+
             if state.controller.confirm_button:
                 self.poker_score_tracker()
 
@@ -764,36 +790,57 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.PLAYER_WINS:
-            print("Player wins ")
-            state.player.money += self.enemy_bet
-            self.money -= self.enemy_bet
-            if self.bet <= 150:
-                self.enemy_pressure += 10
-            elif self.bet <= 250:
-                self.enemy_pressure += 15
-            elif self.bet <= 350:
-                self.enemy_pressure += 20
-            else:
-                self.enemy_pressure += 25
+
+
+
+            self.battle_messages[self.PLAYER_WINS_MESSAGE].update(state)
+
+            if state.controller.confirm_button:
+                if self.bet <= 150:
+                    self.enemy_pressure += 10
+                elif self.bet <= 250:
+                    self.enemy_pressure += 15
+                elif self.bet <= 350:
+                    self.enemy_pressure += 20
+                else:
+                    self.enemy_pressure += 25
+                print("Player wins ")
+                state.player.money += self.enemy_bet
+                self.money -= self.enemy_bet
+                self.game_state = self.WELCOME_SCREEN
+                self.restart_poker_round()
 
 
 
 
         elif self.game_state == self.ENEMY_WINS:
-            print("ENEMY WINS")
-            state.player.money -= self.enemy_bet
-            self.money += self.enemy_bet
-            if self.bet <= 150:
-                self.enemy_pressure -= 10
-            elif self.bet <= 250:
-                self.enemy_pressure -= 15
-            elif self.bet <= 350:
-                self.enemy_pressure -= 20
-            else:
-                self.enemy_pressure -= 25
+            self.battle_messages[self.ENEMY_WINS_MESSAGE].update(state)
+
+
+
+            if state.controller.confirm_button:
+
+                if self.bet <= 150:
+                    self.enemy_pressure -= 10
+                elif self.bet <= 250:
+                    self.enemy_pressure -= 15
+                elif self.bet <= 350:
+                    self.enemy_pressure -= 20
+                else:
+                    self.enemy_pressure -= 25
+
+                print("ENEMY WINS")
+                state.player.money -= self.enemy_bet
+                self.money += self.enemy_bet
+                self.game_state = self.WELCOME_SCREEN
+                self.restart_poker_round()
 
         elif self.game_state == self.DRAW:
-            print("Draw")
+            self.battle_messages[self.DRAW_MESSAGE].update(state)
+
+            if state.controller.confirm_button:
+                self.game_state = self.WELCOME_SCREEN
+                self.restart_poker_round()
 
 
 
@@ -855,17 +902,21 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.DRAW_ONE_CARD:
-            pass
+            self.battle_messages[self.DRAW_ONE_CARD_MESSAGE].draw(state)
+
 
 
         elif self.game_state == self.FINAL_RESULTS:
-            pass
+            self.battle_messages[self.FINAL_RESULTS_MESSAGE].draw(state)
+
         elif self.game_state == self.PLAYER_WINS:
-            pass
+            self.battle_messages[self.PLAYER_WINS_MESSAGE].draw(state)
+
         elif self.game_state == self.ENEMY_WINS:
-            pass
+            self.battle_messages[self.ENEMY_WINS_MESSAGE].draw(state)
+
         elif self.game_state == self.DRAW:
-            pass
+            self.battle_messages[self.DRAW_MESSAGE].draw(state)
 
         pygame.display.flip()
 
