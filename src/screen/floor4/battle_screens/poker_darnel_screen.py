@@ -53,7 +53,7 @@ class PokerDarnelScreen(GambleScreen):
         self.bet: int = 0
         self.add_enemy_bet:int = 0
         self.action_menu_index: int = 0
-        self.action_menu_choices: list[str] = ["Play", "Magic", "Quit"]
+        self.action_menu_choices: list[str] = ["Play", "Magic", "Fold"]
         self.future_cards_container: list = []
         self.magic_menu_options: list = []
         self.swap_cards_menu_options: list = []
@@ -120,6 +120,10 @@ class PokerDarnelScreen(GambleScreen):
             self.ACTION_MESSAGE: MessageBox([
                 "Press confirm button to get out of here of your ACTION MESSAGE",
 
+            ]),
+            self.REVEAL_FUTURE_CARDS_MESSAGE: MessageBox([
+                "Press confirm button to get out of here of your Reveal Future cards message",
+
             ])
 
         }
@@ -155,6 +159,7 @@ class PokerDarnelScreen(GambleScreen):
     ENEMY_DISCARD_SCREEN: str = "enemy_discard_screen"
     ENEMY_DISCARD_MESSAGE: str = "enemy_discard_,message"
     REVEAL_FUTURE_CARDS: str = "reveal_future_cards"
+    REVEAL_FUTURE_CARDS_MESSAGE: str = "reveal_future_cards messages"
     DRAW_ONE_CARD: str = "draw_one_card"
     FIFTH_ROUND_SHOW: str = "fifth_round_show"
     FIFTH_ROUND_DEAL: str = "fifth_round_deal"
@@ -685,6 +690,8 @@ class PokerDarnelScreen(GambleScreen):
 
 
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
+            self.battle_messages[self.REVEAL_FUTURE_CARDS_MESSAGE].update(state)
+
             if state.controller.confirm_button:
                 self.reveal_future_cards(state)
                 self.game_state = self.DRAW_ONE_CARD
@@ -844,7 +851,8 @@ class PokerDarnelScreen(GambleScreen):
             self.draw_action_screen_box_info(state)
             self.battle_messages[self.ACTION_MESSAGE].draw(state)
         elif self.game_state == self.REVEAL_FUTURE_CARDS:
-            pass
+            self.battle_messages[self.REVEAL_FUTURE_CARDS_MESSAGE].draw(state)
+
 
         elif self.game_state == self.DRAW_ONE_CARD:
             pass
