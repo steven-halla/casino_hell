@@ -40,7 +40,7 @@ class PokerDarnelScreen(GambleScreen):
         self.swap_enemy_cards: bool = True
         self.magic_lock: bool = False
         self.magic_menu_index: int = 0
-        self.money: int = 1000
+        self.darnel_money: int = 1000
         self.enemy_compare_hand: str = ""
         self.enemy_temp_discard_storage: list = []
         self.player_hand_type = ""
@@ -84,7 +84,6 @@ class PokerDarnelScreen(GambleScreen):
         self.enemy_hand_score: int = 0
         self.enemy_value_score: int = 0
         self.enemy_hand_power: int = 0
-        self.enemy_money = 2000
 
         # Initialize battle messages
         self.battle_messages: dict[str, MessageBox] = {
@@ -252,6 +251,7 @@ class PokerDarnelScreen(GambleScreen):
         state.player.update(state)
         super().update(state)
 
+        # if this triggers it means there is a 2 card in player hand which should not be the case if poker bracelet is equipped
         if Equipment.POKER_BRACELET.value in state.player.equipped_items:
             for card in self.player_hand:
                 if card[0] == "2":
@@ -806,7 +806,7 @@ class PokerDarnelScreen(GambleScreen):
                     self.enemy_pressure += 25
                 print("Player wins ")
                 state.player.money += self.enemy_bet
-                self.money -= self.enemy_bet
+                self.darnel_money-= self.enemy_bet
                 self.game_state = self.WELCOME_SCREEN
                 self.restart_poker_round()
 
@@ -831,7 +831,7 @@ class PokerDarnelScreen(GambleScreen):
 
                 print("ENEMY WINS")
                 state.player.money -= self.enemy_bet
-                self.money += self.enemy_bet
+                self.darnel_money += self.enemy_bet
                 self.game_state = self.WELCOME_SCREEN
                 self.restart_poker_round()
 
@@ -1466,7 +1466,7 @@ class PokerDarnelScreen(GambleScreen):
                           (player_enemy_box_info_x_position, enemy_name_y_position))
 
         # Draw enemy money and pressure
-        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {self.enemy_money}", True, WHITE),
+        state.DISPLAY.blit(self.font.render(f"{self.MONEY_HEADER}: {self.darnel_money}", True, WHITE),
                           (player_enemy_box_info_x_position, enemy_pressure_y_position))
 
         # Draw enemy status (pressure)

@@ -422,15 +422,15 @@ class Area4ShopKeeper(Npc):
                     state.DISPLAY.blit(self.font.render(f"Poker Bracelet is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 3 and Equipment.COIN_SAVE_AREA_4.value not in state.player.level_four_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Saves your coins when you lose a game.", True,
+                if self.selected_item_index == 3 and Equipment.WHEEL_DICE.value not in state.player.level_four_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Improves your chances at the Wheel of Torture.", True,
                                                         (255, 255, 255)), (70, 460))
 
-                    state.DISPLAY.blit(self.font.render(f"One-time use item for area 4.", True,
+                    state.DISPLAY.blit(self.font.render(f"Helps control the outcome of wheel spins.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 3 and Equipment.COIN_SAVE_AREA_4.value in state.player.level_four_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Coin Save Area 4 is sold out!", True,
+                elif self.selected_item_index == 3 and Equipment.WHEEL_DICE.value in state.player.level_four_npc_state:
+                    state.DISPLAY.blit(self.font.render(f"Wheel Dice are sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
                 if self.selected_item_index == 4 and Equipment.LUCKY_CHARM.value not in state.player.level_four_npc_state:
@@ -464,17 +464,6 @@ class Area4ShopKeeper(Npc):
 
                 elif self.selected_item_index == 6 and Magic.GREED.value in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Greed spell is sold out!", True,
-                                                        (255, 255, 255)), (70, 460))
-
-                if self.selected_item_index == 7 and Equipment.LEVEL_4_BOSS_KEY.value not in state.player.level_four_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Key to access the level 4 boss.", True,
-                                                        (255, 255, 255)), (70, 460))
-
-                    state.DISPLAY.blit(self.font.render(f"Required to progress to the next area.", True,
-                                                        (255, 255, 255)), (70, 510))
-
-                elif self.selected_item_index == 7 and Equipment.LEVEL_4_BOSS_KEY.value in state.player.level_four_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Level 4 Boss Key is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
                 # Handle drawing the shop interaction text
 

@@ -233,7 +233,9 @@ class Player(Entity):
             "dicefightersophiamoney": state.diceFighterSophiaScreen.sophia_money,
 
             "highlowdienamoney": state.highLowDienaScreen.money,
-            "highlowcodymoney": state.highLowCodyScreen.cody_money
+            "highlowcodymoney": state.highLowCodyScreen.cody_money,
+
+            "pokerdarnellmoney": state.pokerDarnellScreen.money,
 
 
 
