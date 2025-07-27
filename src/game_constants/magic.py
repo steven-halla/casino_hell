@@ -13,7 +13,7 @@ class Magic(Enum):
     LUCKY777 = "lucky777" # forces a 777 with a % chance to work
     # craps
     CRAPS_LUCKY_7 = "Triple D"    #  roll a 3rd dice, thx lady luck
-    GREED_METER = "pig meter" #  scoring a 95 or higher nets you +50% win on bets
+    GREED = "greed" #  scoring a 95 or higher nets you +50% win on bets
     # opossum in a can
     SHAKE = "shake"
     PEEK = "peek" #level 3 using your wit you ask the dealer whats in the can

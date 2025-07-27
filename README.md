@@ -488,10 +488,10 @@ level 3 -  dice fighter, slots, neatural, opossum in a can,nuetral,
 level 4 -   hungry starving hippos, coin flip, black jack, hi/low, poker, wheel of torture, nuetral
 
 magic
-level 1 - reveal-black jack , shield - black jack, 
-level 2 - shake - opossum in a can, lucky 7-craps, hack-slots,
-level 3 -  flush deck-high/low, badluck-dice fighter, force heads-coin flip, redraw- black jack
-level 4 -  wheel of torture, poker, craps,  slots, hi/low,
+level 1 - reveal-black jack , shield - black jack,  - 2
+level 2 - shake - opossum in a can, lucky 7-craps, hack-slots, - 3
+level 3 -  flush deck-high/low, badluck-dice fighter, force heads-coin flip, redraw- black jack - 4
+level 4 -  wheel of torture, poker, craps,  slots  - 4
 
 ------------------------
 
@@ -534,8 +534,10 @@ HighLowPants - hilow - adds extra spread factor
 POker bracelet  - poker - player will no longer draw any 2 cards
 WHeel Dice - wheel of torture -  DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 LUCKY Human's Foot - general - adds +1 LUCK
+magic - poker - Swap - DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+magic - Greed -craps - DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ]
 
 Hippo prize equipment - SirLeopoldsAmulet - black jack - protects with aces and other benifits
 Slots prize Magic - LUCKY777 - slots - DOES NOT DO ANYTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Could have it to where if you get a 777 on first slot then all of them get that
-magic 4 - Dice force - THIS SPELL DOES NOT DO ANYTHING
+magic 4 - Dice force -wheel of torture- THIS SPELL DOES NOT DO ANYTHING
