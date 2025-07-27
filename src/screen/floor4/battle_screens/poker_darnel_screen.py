@@ -495,9 +495,10 @@ class PokerDarnelScreen(GambleScreen):
 
             elif state.controller.action_and_cancel_button:
                 # Use the player_card_discard_index to determine which card to remove from discard pile
-                if self.player_redraw_menu_index == 2 and self.player_hand[self.player_card_discard_index] in self.player_card_garbage_can:
-                    self.player_card_garbage_can.remove(self.player_hand[self.player_card_discard_index])
-                    print(f"Removed card from discard pile: {self.player_hand[self.player_card_discard_index]}")
+                selected_card = self.player_hand[self.player_card_discard_index]
+                if selected_card in self.player_card_garbage_can:
+                    self.player_card_garbage_can.remove(selected_card)
+                    print(f"Removed card from discard pile: {selected_card}")
 
 
         elif self.game_state == self.PLAYER_REDRAW_SCREEN:
