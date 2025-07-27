@@ -34,7 +34,7 @@ class Area3ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value , Equipment.LUCKY_ROTTEN_SOCKS.value, Equipment.SPIRIT_SHOES.value, Magic.HEADS_FORCE.value, Magic.BLACK_JACK_REDRAW.value, Magic.FLUSH_DECK.value, Equipment.LEVEL_3_BOSS_KEY.value]
+        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value , Equipment.LUCKY_ROTTEN_SOCKS.value, Equipment.SPIRIT_SHOES.value, Magic.HEADS_FORCE.value, Magic.BLACK_JACK_REDRAW.value, Magic.BAD_LUCK.value, Equipment.LEVEL_3_BOSS_KEY.value]
 
         self.shop_costs = ["1200", "1000", "1000","1000", "1000", "1000","1500"]
 
@@ -79,7 +79,7 @@ class Area3ShopKeeper(Npc):
             if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
                 self.shop_items[4] = "sold out"
 
-            if Magic.FLUSH_DECK.value in state.player.magicinventory:
+            if Magic.BAD_LUCK.value in state.player.magicinventory:
                 self.shop_items[5] = "sold out"
             if Equipment.LEVEL_3_BOSS_KEY.value in state.player.level_three_npc_state:
                 self.shop_items[6] = "sold out"
@@ -158,11 +158,11 @@ class Area3ShopKeeper(Npc):
 
                     elif self.selected_item_index == 5:
                         cost = 1000
-                        if state.player.money - cost < 500 or Magic.FLUSH_DECK.value in state.player.magicinventory:
+                        if state.player.money - cost < 500 or Magic.BAD_LUCK.value in state.player.magicinventory:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Magic.add_magic_to_player(state.player, Magic.FLUSH_DECK)
+                            Magic.add_magic_to_player(state.player, Magic.BAD_LUCK)
                             state.player.money -= cost
 
                     elif self.selected_item_index == 6:
@@ -327,13 +327,13 @@ class Area3ShopKeeper(Npc):
                 state.DISPLAY.blit(self.font.render(f"Black Jack Redraw is sold out!", True,
                                                     (255, 255, 255)), (70, 460))
 
-            if self.selected_item_index == 5 and Magic.FLUSH_DECK.value not in state.player.magicinventory:
-                state.DISPLAY.blit(self.font.render(f"Resets the deck in card games.", True,
+            if self.selected_item_index == 5 and Magic.BAD_LUCK.value not in state.player.magicinventory:
+                state.DISPLAY.blit(self.font.render(f"Affects enemy attack rolls in dice fighter.", True,
                                                     (255, 255, 255)), (70, 460))
                 state.DISPLAY.blit(self.font.render(f"A good investment for tough battles.", True,
                                                     (255, 255, 255)), (70, 510))
-            elif self.selected_item_index == 5 and Magic.FLUSH_DECK.value in state.player.magicinventory:
-                state.DISPLAY.blit(self.font.render(f"Flush Deck is sold out!", True,
+            elif self.selected_item_index == 5 and Magic.BAD_LUCK.value in state.player.magicinventory:
+                state.DISPLAY.blit(self.font.render(f"Bad Luck is sold out!", True,
                                                     (255, 255, 255)), (70, 460))
 
             if self.selected_item_index == 6 and Equipment.LEVEL_3_BOSS_KEY.value not in state.player.level_three_npc_state:

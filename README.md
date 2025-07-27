@@ -497,8 +497,8 @@ level 4 -  wheel of torture, poker, craps,  slots, hi/low,
 
 Level 1
 self.shop_items = [
-BLACK_JACK_HAT - protects from bust
-OPOSSUM_REPELLENT - reduce damage from bites
+BLACK_JACK_HAT - black jack -protects from bust
+OPOSSUM_REPELLENT -opossum in a can - reduce damage from bites
 MP_BRACELET - increase in MP
 magic - REVEAL  -Black Jack - shows enemy hand points 
 ]
@@ -527,3 +527,15 @@ hippo prize equipment- backwards watch - hangy angry hippos - slows down non pic
 slots prize equipmnt - slots shoes - slots - more money on jck pot and more hp and mp
 magic 3 bad luck - dice fighter - worse rolls on defense
 
+Level 4
+self.shop_items =[
+CoinFlipGloves -Coin flip - alllows + 200 on bets for coin flip
+HighLowPants - hilow - adds extra spread factor
+POker bracelet  - poker - player will no longer draw any 2 cards
+WHeel Dice - wheel of torture -  DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+LUCKY Human's Foot - general - adds +1 LUCK
+]
+
+Hippo prize equipment - SirLeopoldsAmulet - black jack - protects with aces and other benifits
+Slots prize Magic - LUCKY777 - slots - DOES NOT DO ANYTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Could have it to where if you get a 777 on first slot then all of them get that
+magic 4 - Dice force - THIS SPELL DOES NOT DO ANYTHING

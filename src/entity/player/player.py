@@ -258,7 +258,9 @@ class Player(Entity):
             self.magicinventory.append(Magic.CRAPS_LUCKY_7.value)
 
         if self.mind == 3:
-            self.magicinventory.append(Magic.BAD_LUCK.value)
+            self.magicinventory.append(Magic.FLUSH_DECK.value)
+
+
 
 
 
@@ -2204,7 +2206,7 @@ class Player(Entity):
             state.diceFighterSophiaScreen.sophia_money = player_data['dicefightersophiamoney']
             state.highLowCodyScreen.cody_money = player_data['highlowcodymoney']
             state.slotsJuraganScreen.juragan_money = player_data['slotsjuraganmoney']
-            
+
 
             #level 5
 
