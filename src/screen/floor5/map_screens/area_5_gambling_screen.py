@@ -3,36 +3,18 @@ import pytmx
 
 from constants import PLAYER_OFFSET, BLUEBLACK
 
-from entity.npc.area1.area_1_rest_screen.area_1_inn_keeper import Area1InnKeeper
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_bar_door import Area1RestToBarDoor
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_gambling_door import Area1RestToGamblingDoor
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_intro_door import Area1RestToIntroDoor
-from entity.npc.area1.area_1_rest_screen.area_1_rest_to_shop_door import Area1RestToShopDoor
-from entity.npc.area1.area_1_rest_screen.cody_talk import CodyTalk
-from entity.npc.area1.area_1_start_screen.anna_quest import AnnaQuest
-from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
-from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
-from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
 from entity.npc.area5.area_5_gamble_screen.area_5_gambling_to_rest_door import Area5GamblingToRestDoor
-from entity.npc.area5.area_5_rest_screen.area_5_inn_keeper import Area5InnKeeper
-from entity.npc.area5.area_5_rest_screen.area_5_rest_to_bar_door import Area5RestToBarDoor
-from entity.npc.area5.area_5_rest_screen.area_5_rest_to_gambling_door import Area5RestToGamblingDoor
-from entity.npc.area5.area_5_rest_screen.area_5_rest_to_shop_door import Area5RestToShopDoor
-from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
-from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
-from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
-from entity.npc.area5.area_5_rest_screen_trash.hangry_angry_hippos_nippy import HangryAngryHipposNippy
-from entity.npc.area5.area_5_rest_screen_trash.opossum_in_a_can_bubba import OpossumInACanBubba
-from entity.npc.area5.area_5_rest_screen_trash.slots_burbadan import SlotsBurbadan
+from entity.npc.area5.area_5_gamble_screen.black_jack_fengus import BlackJackFengus
+from entity.npc.area5.area_5_gamble_screen.coin_flip_wanton import CoinFlipWanton
+from entity.npc.area5.area_5_gamble_screen.craps_wimpleton import CrapsWimpleton
+from entity.npc.area5.area_5_gamble_screen.hangry_angry_hippos_nippy import HangryAngryHipposNippy
+from entity.npc.area5.area_5_gamble_screen.opossum_in_a_can_bubba import OpossumInACanBubba
+from entity.npc.area5.area_5_gamble_screen.slots_burbadan import SlotsBurbadan
 from entity.player.player import Player
 from entity.npc.area5.area_5_gamble_screen.area_5_gambling_to_boss_door import Area5GamblingToBossDoor
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
-from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
 from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
-from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
-from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
 class Area5GamblingScreen(Screen):
@@ -99,6 +81,13 @@ class Area5GamblingScreen(Screen):
 
             Area5GamblingToRestDoor(16 * 5, 16 * 40),
             Area5GamblingToBossDoor(16 * 15, 16 * 40),
+
+            BlackJackFengus(16 * 5, 16 * 5),
+            CoinFlipWanton(16 * 15, 16 * 5),
+            CrapsWimpleton(16 * 25, 16 * 5),
+            HangryAngryHipposNippy(16 * 35, 16 * 5),
+            OpossumInACanBubba(16 * 45, 16 * 5),
+            SlotsBurbadan(16 * 5, 16 * 15)
 
 
         ]
@@ -177,9 +166,9 @@ class Area5GamblingScreen(Screen):
             npc.draw(state)  # Not skipping any
 
         # 2. Then draw only the dialog box for the talking one
-        for npc in state.npcs:
-            if npc.state == "talking":
-                npc.draw(state, only_dialog=True)
+        # for npc in state.npcs:
+        #     if npc.state == "talking":
+        #         npc.draw(state, only_dialog=True)
 
         for treasurechest in state.treasurechests:
             treasurechest.draw(state)

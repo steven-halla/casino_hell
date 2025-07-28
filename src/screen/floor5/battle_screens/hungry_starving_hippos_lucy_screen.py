@@ -9,7 +9,7 @@ from typing import Dict, Tuple, List, Optional,Union ,  Any
 
 # its possible to eat two humans need unique message for that
 # hippo should appear at random locations to make it more fare
-class HungryStarvingHipposNippyScreen(Screen):
+class HungryStarvingHipposLucyScreen(Screen):
     def __init__(self, screenName: str = "Casino Hippo Screen") -> None:
         super().__init__(screenName)
         self.game_state: str = "welcome_screen"

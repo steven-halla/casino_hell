@@ -103,8 +103,8 @@ class CrapsWimpleton(Npc):
             # Check if the selected option is "Yes" and execute the code you provided
             if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
 
-                state.currentScreen = state.crapsWantonScreen
-                state.crapsWantonScreen.start(state)
+                state.currentScreen = state.crapsWimpletonScreen
+                state.crapsWimpletonScreen.start(state)
 
 
 

@@ -18,6 +18,7 @@ import random
 from game_constants.magic import Magic
 
 
+#  I NEED TO UPDATE THIS file with unique effect and board
 class WheelOfTortureBossScreen(GambleScreen):
     def __init__(self, screenName: str = "wheel of torturett"):
         super().__init__(screenName)

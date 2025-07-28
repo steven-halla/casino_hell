@@ -57,6 +57,7 @@ from screen.floor2.battle_screens.craps_boss_screen import CrapsBossScreen
 from screen.floor2.battle_screens.craps_happy_screen import CrapsHappyScreen
 from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHippos
 from screen.floor2.battle_screens.hungry_starving_hippos2 import HungryStarvingHippos2
+from screen.floor2.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
 from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
 from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_1 import Area2BarCutScene1
@@ -107,10 +108,14 @@ from screen.floor4.map_screens.area_4_shop_screen import Area4ShopScreen
 from screen.floor5.battle_screens.black_jack_fengus_screen import BlackJackFengusScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
-from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
+from screen.floor5.battle_screens.hungry_starving_hippos_lucy_screen import HungryStarvingHipposLucyScreen
 from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
+from screen.floor5.map_screens.area_5_bar_screen import Area5BarScreen
+from screen.floor5.map_screens.area_5_boss_screen import Area5BossScreen
+from screen.floor5.map_screens.area_5_gambling_screen import Area5GamblingScreen
 from screen.floor5.map_screens.area_5_rest_screen import Area5RestScreen
+from screen.floor5.map_screens.area_5_shop_screen import Area5ShopScreen
 from screen.menu_screen.equipment_screen import EquipmentScreen
 
 
@@ -282,6 +287,8 @@ class GameState:
         self.coinFlipBettyScreen = CoinFlipBettyScreen()
         self.blackJackMackScreen = BlackJackMackScreen()
         self.opossumInACanCandyScreen = OpossumInACanCandyScreen()
+        self.hungryStaringHipposNippyScreen = HungryStarvingHipposNippyScreen()
+
 
 
 
@@ -326,12 +333,19 @@ class GameState:
         self.pokerDarnelScreen = PokerDarnelScreen()
 
 #-----------------------Area 5 is below-----------------------------------------#
+        self.area5ShopScreen = Area5ShopScreen()
+        self.area5BarScreen = Area5BarScreen()
+        self.area5BossScreen = Area5BossScreen()
+        self.area5GamblingScreen = Area5GamblingScreen()
+
+
         self.coinFlipWantonScreen = CoinFlipWantonScreen()
         self.blackJackFengusScreen = BlackJackFengusScreen()
         self.crapsWimpletonScreen = CrapsWimpletonScreen()
-        self.hungryStaringHipposNippyScreen = HungryStarvingHipposNippyScreen()
         self.opossumInACanBubbaScreen = OpossumInACanBubbaScreen()
         self.slotsBurbadanScreen = SlotsBurbadanScreen()
+        self.hungryStarvingHipposLucyScreen = HungryStarvingHipposLucyScreen()
+
 
 
 

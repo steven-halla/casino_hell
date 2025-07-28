@@ -34,7 +34,7 @@ class BlackJackFengusScreen(GambleScreen):
         self.reveal_start_duration: int = 7
         self.reveal_end_not_active: int = 0
         self.magic_lock: bool = False
-        self.dealer_name: str = "jasmine"
+        self.dealer_name: str = "Fengus"
         self.lock_down_inactive: int = 0
         self.initial_hand: int = 2
         self.hedge_hog_time: bool = False
@@ -237,8 +237,8 @@ class BlackJackFengusScreen(GambleScreen):
 
 
         if self.money <= self.fengus_bankrupt:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
+            state.currentScreen = state.area5GamblingScreen
+            state.area5GamblingScreen.start(state)
             Events.add_level_five_event_to_player(state.player, Events.BLACK_JACK_FENGUS_DEFEATED)
 
         try:
@@ -327,8 +327,8 @@ class BlackJackFengusScreen(GambleScreen):
             if self.battle_messages[
                 self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
                 state.player.canMove = True
 
     def draw(self, state: 'GameState'):
@@ -654,8 +654,8 @@ class BlackJackFengusScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
 
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
                 state.player.canMove = True
 
     def initialize_music(self):

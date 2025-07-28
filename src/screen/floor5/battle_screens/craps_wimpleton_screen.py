@@ -19,7 +19,7 @@ class CrapsWimpletonScreen(GambleScreen):
         self.game_state: str = self.WELCOME_SCREEN
         self.sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/dice45.png")
         self.come_out_roll_total: int = 0
-        self.dealer_name: str = "Naba"
+        self.dealer_name: str = "Wimpleton"
         self.start_time: int = 0
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound(
             "./assets/music/spell_sound.mp3")  # Adjust the path as needed
@@ -93,7 +93,7 @@ class CrapsWimpletonScreen(GambleScreen):
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
-                "This is the welcome screen"
+                "Wimpleton: This is the welcome screen"
             ]),
             self.BET_MESSAGE: MessageBox([
                 "Max bet of 75 during Come out Roll. Point Roll Max is 200"
@@ -541,8 +541,8 @@ class CrapsWimpletonScreen(GambleScreen):
             if controller.confirm_button:
                 self.reset_craps_game(state)
                 state.player.money -= 100
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
 
     def update_power_meter_screen_helper(self, state):
         controller = state.controller
@@ -677,8 +677,8 @@ class CrapsWimpletonScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.lock_down == self.lock_down_inactive:
                 self.reset_craps_game(state)
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
 
     def draw_point_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10

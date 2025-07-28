@@ -243,8 +243,8 @@ class CoinFlipWantonScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.wanton_bankrupt:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
+            state.currentScreen = state.area5GamblingScreen
+            state.area5GamblingScreen.start(state)
             state.player.canMove = True
             #------------------------------------Check other files for below_____________________________
             Events.add_level_five_event_to_player(state.player, Events.COIN_FLIP_WANTON_DEFEATED)
@@ -322,8 +322,8 @@ class CoinFlipWantonScreen(GambleScreen):
             self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
             if self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].is_finished() and state.controller.confirm_button:
                 state.player.money -= 100
-                state.currentScreen = state.area5RestScreen
-                state.area5RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
                 state.player.canMove = True
 
 
@@ -444,8 +444,8 @@ class CoinFlipWantonScreen(GambleScreen):
         elif self.welcome_screen_index == self.bet_index and controller.confirm_button :
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
-            state.currentScreen = state.area5RestScreen
-            state.area5RestScreen.start(state)
+            state.currentScreen = state.area5GamblingScreen
+            state.area5GamblingScreen.start(state)
             state.player.canMove = True
 
     def update_flip_coin_logic_helper(self,controller):

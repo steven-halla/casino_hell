@@ -8,22 +8,11 @@ from entity.npc.area1.area_1_start_screen.area_1_intro_to_rest_door import Area1
 from entity.npc.area1.area_1_start_screen.coin_flip_ted import CoinFlipTed
 from entity.npc.area1.area_1_start_screen.mike_talk import MikeTalk
 from entity.npc.area1.area_1_start_screen.patrick_talk import PatrickTalk
-from entity.npc.area5.area_5_rest_screen_trash.black_jack_fengus import BlackJackFengus
-from entity.npc.area5.area_5_rest_screen_trash.coin_flip_wanton import CoinFlipWanton
-from entity.npc.area5.area_5_rest_screen_trash.craps_wimpleton import CrapsWimpleton
-from entity.npc.area5.area_5_rest_screen_trash.hangry_angry_hippos_nippy import HangryAngryHipposNippy
-from entity.npc.area5.area_5_rest_screen_trash.opossum_in_a_can_bubba import OpossumInACanBubba
-from entity.npc.area5.area_5_rest_screen_trash.slots_burbadan import SlotsBurbadan
 
 from entity.player.player import Player
 
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
-from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
-from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
-from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
-from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
 
 
 class Area1IntroScreen(Screen):
