@@ -191,9 +191,9 @@ class SlotsBurbadanScreen(GambleScreen):
         state.player.update(state)
 
         if self.money <= self.juragan_bankrupt:
-            state.currentScreen = state.area4RestScreen
-            state.area4RestScreen.start(state)
-            Events.add_level_four_event_to_player(state.player, Events.SLOTS_BROGAN_DEFEATED)
+            state.currentScreen = state.area5GamblingScreen
+            state.area5GamblingScreen.start(state)
+            Events.add_level_five_event_to_player(state.player, Events.SLOTS_BROGAN_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.spin_results_generated = False
@@ -453,8 +453,8 @@ class SlotsBurbadanScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
 
     def update_spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
@@ -567,8 +567,8 @@ class SlotsBurbadanScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money -= 100
                 self.reset_juragan_slots_game()
-                state.currentScreen = state.area4RestScreen
-                state.area4RestScreen.start(state)
+                state.currentScreen = state.area5GamblingScreen
+                state.area5GamblingScreen.start(state)
 
 
     def draw_grid_box(self, state: "GameState") -> None:
