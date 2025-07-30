@@ -14,7 +14,6 @@ from entity.player.player import Player
 from entity.npc.area5.area_5_gamble_screen.area_5_gambling_to_boss_door import Area5GamblingToBossDoor
 from screen.examples.screen import Screen
 from physics.rectangle import Rectangle
-from screen.floor5.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
 
 
 class Area5GamblingScreen(Screen):

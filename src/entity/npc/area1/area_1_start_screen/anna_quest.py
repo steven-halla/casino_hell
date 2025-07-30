@@ -82,6 +82,8 @@ class AnnaQuest(Npc):
                 state.player.mind = 1
                 state.player.quest_items.append(Events.LEVEL_1_INN_KEY.value)
                 state.player.magicinventory.append(Magic.SHIELD.value)
+                state.player.focus_points += 100
+                state.player.max_focus_points += 100
                 state.player.level_one_npc_state.append(Events.LEVEL_1_INN_KEY.value)
 
         # Lock the player in place while talking

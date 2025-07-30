@@ -96,6 +96,12 @@ class Events(Enum):
     HUNGRY_STARVING_HIPPOS_NIPPY_DEFEATED = "hungry starving hippos nippy defeated"
     OPOSSUM_IN_A_CAN_BUBBA_DEFEATED = "OPOSSUM_IN_A_CAN_BUBBA_DEFEATED"
     SLOTS_BURBADAN_DEFEATED = "SLOTS_BURBADAN_DEFEATED"
+    WHEEL_OF_TORTURE_MATT_BEIJACK_DEFEATED = "wheel of toture matt beijack defeated"
+    POKER_CODY_DEFEATED = "POKER_CODY DEfeated"
+    HIGH_LOW_SANDY_DEFEATED = "high low sandy defeated"
+    DICE_FIGHTER_ALICE_DEFEATED_LEVEL_5 = "Dice fighter Alice'defeated level 5"
+
+
 
 
 

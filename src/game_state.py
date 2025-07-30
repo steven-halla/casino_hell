@@ -108,9 +108,12 @@ from screen.floor4.map_screens.area_4_shop_screen import Area4ShopScreen
 from screen.floor5.battle_screens.black_jack_fengus_screen import BlackJackFengusScreen
 from screen.floor5.battle_screens.coin_flip_wanton_screen import CoinFlipWantonScreen
 from screen.floor5.battle_screens.craps_wimpleton_screen import CrapsWimpletonScreen
+from screen.floor5.battle_screens.dice_fighter_alice_screen import DiceFighterAliceScreen
+from screen.floor5.battle_screens.high_low_sandy_screen import HighLowSandyScreen
 from screen.floor5.battle_screens.hungry_starving_hippos_lucy_screen import HungryStarvingHipposLucyScreen
 from screen.floor5.battle_screens.opossum_in_a_can_bubba_screen import OpossumInACanBubbaScreen
 from screen.floor5.battle_screens.slots_burbadan_screen import SlotsBurbadanScreen
+from screen.floor5.battle_screens.wheel_of_torture_matt_beijack_screen import WheelOfTortureMattBeijackScreen
 from screen.floor5.map_screens.area_5_bar_screen import Area5BarScreen
 from screen.floor5.map_screens.area_5_boss_screen import Area5BossScreen
 from screen.floor5.map_screens.area_5_gambling_screen import Area5GamblingScreen
@@ -345,6 +348,10 @@ class GameState:
         self.opossumInACanBubbaScreen = OpossumInACanBubbaScreen()
         self.slotsBurbadanScreen = SlotsBurbadanScreen()
         self.hungryStarvingHipposLucyScreen = HungryStarvingHipposLucyScreen()
+        self.diceFighterAliceScreen = DiceFighterAliceScreen()
+        self.wheelOfTortureMattBeijackScreen = WheelOfTortureMattBeijackScreen()
+        self.highLowSandyScreen = HighLowSandyScreen()
+
 
 
 

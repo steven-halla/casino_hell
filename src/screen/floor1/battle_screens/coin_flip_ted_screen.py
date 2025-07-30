@@ -60,7 +60,7 @@ class CoinFlipTedScreen(GambleScreen):
         self.exp_gain_high: int = 20
         self.exp_gain_low: int = 10
         self.result_anchor: bool = False
-        self.coinFlipTedMoney: int = 100
+        self.coinFlipTedMoney: int = 300
         self.wanton_magic_points: int = 0
         self.even: bool = False
         self.odd: bool = False
