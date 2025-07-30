@@ -229,6 +229,8 @@ class CoinFlipFredScreen(GambleScreen):
             state.player.canMove = True
             #------------------------------------Check other files for below_____________________________
             Events.add_level_one_event_to_player(state.player, Events.COIN_FLIP_FRED_DEFEATED)
+            if state.player.spirit == 0:
+                state.player.spirit = 1
 
 
         if self.game_state == self.WELCOME_SCREEN:

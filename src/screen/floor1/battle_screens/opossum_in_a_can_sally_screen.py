@@ -296,6 +296,7 @@ class OpossumInACanSallyScreen(GambleScreen):
             state.currentScreen = state.area1GamblingScreen
             state.area1GamblingScreen.start(state)
 
+
         super().update(state)
         controller = state.controller
         controller.update()

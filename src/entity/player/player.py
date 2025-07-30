@@ -1207,7 +1207,8 @@ class Player(Entity):
                     state.controller.isBPressedSwitch = False
                     self.looking_at_items = False
                 # Handle up/down navigation for items
-                if state.controller.isUpPressed or state.controller.isUpPressedSwitch:
+                if (state.controller.isUpPressed or state.controller.isUpPressedSwitch) and len(self.items) > 0:
+
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.item_index = (self.item_index - 1) % len(self.items)
@@ -1217,7 +1218,8 @@ class Player(Entity):
                     print(self.items[self.item_index])  # Print the item at the current index
                     self.show_item_description(state)
 
-                elif state.controller.isDownPressed or state.controller.isDownPressedSwitch:
+                elif (state.controller.isDownPressed or state.controller.isDownPressedSwitch) and len(self.items) > 0:
+
                     self.menu_movement_sound.play()  # Play the sound effect once
 
                     self.item_index = (self.item_index + 1) % len(self.items)

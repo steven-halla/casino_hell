@@ -241,6 +241,8 @@ class BlackJackThomasScreen(GambleScreen):
             state.currentScreen = state.area1GamblingScreen
             state.area1GamblingScreen.start(state)
             Events.add_level_one_event_to_player(state.player, Events.BLACK_JACK_THOMAS_DEFEATED)
+            if state.player.perception == 0:
+                state.player.perception = 1
 
         try:
             if self.reveal_buff_counter > self.reveal_end_not_active or self.redraw_debuff_counter > self.redraw_end_counter:

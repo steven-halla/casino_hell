@@ -71,22 +71,16 @@ class Area1BarKeep(Npc):
 
 
 
-                elif self.selected_item_index == 1:
+            elif state.controller.confirm_button and self.selected_item_index == 1:
+                if state.player.money < 200:
+                    self.cant_buy_sound.play()
+                else:
                     self.buy_sound.play()
                     state.player.money -= 200
-                    state.player.food -= 1
-                    state.player.body += 1  # ✅ Grant +1 body permanently
+                    # state.player.food -= 1
+                    state.player.body += 1
 
-                    if Treasure.INVITATION.value in state.player.quest_items and Treasure.RIB_DEMON_KEY.value not in state.player.quest_items:
-                        state.currentScreen = state.area2BarCutScene1
-                        state.area2BarCutScene1.start(state)
-                    elif Events.NUGGIE_SAUCE_1_FOUND.value in state.player.quest_items and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value not in state.player.items:
-                        state.currentScreen = state.area2BarCutScene2
-                        state.area2BarCutScene2.start(state)
-                        state.player.companions.append("erika")
-                    elif Events.SPIRIT_TWO_ALICE_QUEST.value in state.player.quest_items and Events.SPIRIT_TWO_ALICE_QUEST_FINISHED.value not in state.player.level_two_npc_state:
-                        state.currentScreen = state.area2BarCutScene3
-                        state.area2BarCutScene3.start(state)
+
 
             if state.controller.isBPressed and pygame.time.get_ticks() - self.input_time > 500:
                 self.input_time = pygame.time.get_ticks()
