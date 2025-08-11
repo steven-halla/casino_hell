@@ -6,7 +6,6 @@ import json
 
 from entity.demon.demon1 import Demon1
 from entity.gui.textbox.text_box import TextBox
-from entity.npc.area4.area_4_gambling_screen.black_jack_jasmine import BlackJackJasmine
 from entity.npc.rest_screen.shop_keeper import ShopKeeper
 from entity.npc.start_screen.cindy_long_hair import CindyLongHair
 from entity.npc.rest_screen.quest_giver_janet import QuestGiverJanet
@@ -59,7 +58,7 @@ from screen.floor2.battle_screens.hungry_starving_hippos import HungryStarvingHi
 from screen.floor2.battle_screens.hungry_starving_hippos2 import HungryStarvingHippos2
 from screen.floor2.battle_screens.hungry_starving_hippos_nippy_screen import HungryStarvingHipposNippyScreen
 from screen.floor2.battle_screens.opossum_in_a_can_candy_screen import OpossumInACanCandyScreen
-from screen.floor2.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
+from screen.floor3.battle_screens.slots_rib_demon_jack_ripper_screen import SlotsRippaSnappaScreen
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_1 import Area2BarCutScene1
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_2 import Area2BarCutScene2
 from screen.floor2.cut_scenes.area_2_bar_cut_scene_3 import Area2BarCutScene3

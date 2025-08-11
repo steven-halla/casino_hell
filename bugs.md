@@ -23,5 +23,10 @@ IDK
 
 ###############################
 
+Equipment screen has bugs
+cant open near NPC
+also it should go to index of 0 after closing
+black jack mack level 2 - i suffered DD, 4th card got cancelled, I was above 21 and i did not bust.     DD is not showne when REVEAl is active - 
 
+All gamble screens: Ensure message is at end before skipping any screens. Magic screens seem to have issues
 

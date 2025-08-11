@@ -12,6 +12,7 @@ from entity.npc.area3.area_3_gamble_screen.hangry_angry_hippos_beff import Hangr
 from entity.npc.area3.area_3_gamble_screen.high_low_diena import HighLowDiena
 from entity.npc.area3.area_3_gamble_screen.opossum_in_a_can_billy_bob import OpossumInACanBillyBob
 from entity.npc.area3.area_3_gamble_screen.slots_brogan import SlotsBrogan
+from entity.npc.area3.area_3_gamble_screen.slots_rippasnapp import SlotsRippaSnappa
 from entity.player.player import Player
 from entity.npc.area3.area_3_gamble_screen.area_3_gambling_to_boss_door import Area3GamblingToBossDoor
 from screen.examples.screen import Screen
@@ -84,9 +85,9 @@ class Area3GamblingScreen(Screen):
             Area3GamblingToBossDoor(16 * 15, 16 * 42),
 
             BlackJackAlbert(16 * 5, 16 * 5),
-            DiceFighterSirSiegfried(16 * 20, 16 * 5),
+            # DiceFighterSirSiegfried(16 * 20, 16 * 5),
             HighLowDiena(16 * 35, 16 * 5),
-            SlotsBrogan(16 * 50, 16 * 5),
+            SlotsRippaSnappa(16 * 50, 16 * 5),
 
             CrapsJunpon(16 * 5, 16 * 20),
             CoinFlipDexter(16 * 20, 16 * 20),

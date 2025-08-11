@@ -9,7 +9,6 @@ from entity.npc.area2.area_2_gamble_screen.coin_clip_betty import CoinFlipBetty
 from entity.npc.area2.area_2_gamble_screen.craps_happy import CrapsHappy
 from entity.npc.area2.area_2_gamble_screen.hangry_angry_hippos import HangryAngryHippos
 from entity.npc.area2.area_2_gamble_screen.opossum_in_a_can_candy import OpossumInACanCandy
-from entity.npc.area2.area_2_gamble_screen.slots_rippasnapp import SlotsRippaSnappa
 from entity.player.player import Player
 from entity.npc.area2.area_2_gamble_screen.area_2_gambling_to_boss_door import Area2GamblingToBossDoor
 from screen.examples.screen import Screen
@@ -80,12 +79,13 @@ class Area2GamblingScreen(Screen):
 
             Area2GamblingToRestDoor(16 * 5, 16 * 40),
             Area2GamblingToBossDoor(16 * 15, 16 * 40),
+
             BlackJackMack(16 * 5, 16 * 5),
             CoinFlipBetty(16 * 15, 16 * 5),
             CrapsHappy(16 * 25, 16 * 5),
             HangryAngryHippos(16 * 5, 16 * 15),
-            OpossumInACanCandy(16 * 15, 16 * 15),
-            SlotsRippaSnappa(16 * 25, 16 * 15),
+            OpossumInACanCandy(16 * 15, 16 * 15)
+            # SlotsRippaSnappa(16 * 25, 16 * 15),
 
         ]
 

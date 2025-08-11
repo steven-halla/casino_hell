@@ -1,7 +1,7 @@
 {
     "current_stage": 2,
     "level": 3,
-    "exp": 300,
+    "exp": 565,
     "stamina_points": 230,
     "max_stamina_points": 230,
     "focus_points": 115,
@@ -10,10 +10,12 @@
     "items": [
         "opossum repellent",
         "Black Hat",
-        "mp bracelet"
+        "mp bracelet",
+        "coin flip glasses",
+        "Nuggie Amulet"
     ],
     "equipped_items": [
-        "Black Hat",
+        "Nuggie Amulet",
         "mp bracelet"
     ],
     "npcitems": [
@@ -22,7 +24,8 @@
     ],
     "magicinventory": [
         "Shield",
-        "reveal"
+        "reveal",
+        "shake"
     ],
     "body": 1,
     "mind": 1,
@@ -30,7 +33,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1400,
+    "money": 1910,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -40,8 +43,12 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 9,
-    "leveltwonpcstate": [],
+    "days": 13,
+    "leveltwonpcstate": [
+        "BLACK_JACK_MACK_DEFEATED",
+        "coin flip glasses",
+        "Nuggie Amulet"
+    ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
         "LEVEL_1_INN_KEY",
@@ -68,12 +75,12 @@
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 444,
+    "opossuminacancandymoney": 134,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
     "blackjackthomasmoney": -100,
     "blackjackrumblebillmoney": 900,
-    "blackjackmackmoney": 200,
+    "blackjackmackmoney": 0,
     "blackjackalbertmoney": 200,
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,
@@ -81,7 +88,7 @@
     "slotsrippasnappamoney": 200,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
-    "crapscrappymoney": 777,
+    "crapscrappymoney": 477,
     "crapsjunponmoney": 777,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
