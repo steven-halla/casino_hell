@@ -84,15 +84,15 @@ class Area3GamblingScreen(Screen):
             Area3GamblingToRestDoor(16 * 5, 16 * 42),
             Area3GamblingToBossDoor(16 * 15, 16 * 42),
 
-            BlackJackAlbert(16 * 5, 16 * 5),
+            # BlackJackAlbert(16 * 5, 16 * 5),
             # DiceFighterSirSiegfried(16 * 20, 16 * 5),
             HighLowDiena(16 * 35, 16 * 5),
             SlotsRippaSnappa(16 * 50, 16 * 5),
 
             CrapsJunpon(16 * 5, 16 * 20),
             CoinFlipDexter(16 * 20, 16 * 20),
-            HangryAngryHipposBeff(16 * 35, 16 * 20),
-            OpossumInACanBillyBob(16 * 50, 16 * 20)
+            HangryAngryHipposBeff(16 * 35, 16 * 20)
+            # OpossumInACanBillyBob(16 * 50, 16 * 20)
 
 
         ]

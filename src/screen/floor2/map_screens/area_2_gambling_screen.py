@@ -81,7 +81,7 @@ class Area2GamblingScreen(Screen):
             Area2GamblingToBossDoor(16 * 15, 16 * 40),
 
             BlackJackMack(16 * 5, 16 * 5),
-            CoinFlipBetty(16 * 15, 16 * 5),
+            # CoinFlipBetty(16 * 15, 16 * 5),
             CrapsHappy(16 * 25, 16 * 5),
             HangryAngryHippos(16 * 5, 16 * 15),
             OpossumInACanCandy(16 * 15, 16 * 15)
