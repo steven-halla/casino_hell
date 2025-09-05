@@ -1,65 +1,44 @@
 {
-    "current_stage": 2,
-    "level": 3,
-    "exp": 565,
-    "stamina_points": 230,
-    "max_stamina_points": 230,
-    "focus_points": 115,
-    "max_focus_points": 115,
+    "current_stage": 1,
+    "level": 1,
+    "exp": 0,
+    "stamina_points": 100,
+    "max_stamina_points": 100,
+    "focus_points": 0,
+    "max_focus_points": 0,
     "companions": [],
     "items": [
-        "opossum repellent",
-        "Black Hat",
-        "mp bracelet",
-        "coin flip glasses",
-        "Nuggie Amulet"
+
     ],
     "equipped_items": [
-        "Nuggie Amulet",
-        "mp bracelet"
+
     ],
     "npcitems": [
-        "level 2 token",
-        "level 3 token"
+
     ],
     "magicinventory": [
-        "Shield",
-        "reveal",
-        "shake"
+
     ],
-    "body": 1,
-    "mind": 1,
-    "spirit": 1,
-    "perception": 1,
+    "body": 0,
+    "mind": 0,
+    "spirit": 0,
+    "perception": 0,
     "baseperception": 1,
-    "luck": 1,
-    "money": 1910,
+    "luck": 0,
+    "money": 1000,
     "rabies": false,
     "immunity": false,
     "quest_items": [
-        "contract",
-        "LEVEL_1_INN_KEY",
-        "LEVEL_1_BOSS_KEY"
+        "contract"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 13,
+    "days": 1,
     "leveltwonpcstate": [
-        "BLACK_JACK_MACK_DEFEATED",
-        "coin flip glasses",
-        "Nuggie Amulet"
+
     ],
     "levelonenpcstate": [
-        "COIN_FLIP_TED_DEFEATED",
-        "LEVEL_1_INN_KEY",
-        "opossum repellent",
-        "OPOSSUM_IN_A_CAN_SALLY_DEFEATED",
-        "COIN_FLIP_FRED_DEFEATED",
-        "Black Hat",
-        "mp bracelet",
-        "LEVEL_1_BOSS_KEY",
-        "BLACK_JACK_THOMAS_DEFEATED",
-        "LEVEL_1_BOSS_DEFEATED"
+
     ],
     "levelthreenpcstate": [],
     "levelfournpcstate": [],
@@ -68,19 +47,19 @@
     "cutscene1": false,
     "cutscene2": false,
     "quest1complete": false,
-    "coinfliptedmoney": 0,
-    "coinflipfredmoney": 0,
-    "coinflipbetteymoney": 300,
+    "coinfliptedmoney": 300,
+    "coinflipfredmoney": 700,
+    "coinflipbetteymoney": 999,
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
-    "opossumsallymoney": 0,
+    "opossumsallymoney": 100,
     "opossuminacancandymoney": 134,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
-    "blackjackthomasmoney": -100,
+    "blackjackthomasmoney": 100,
     "blackjackrumblebillmoney": 900,
-    "blackjackmackmoney": 0,
+    "blackjackmackmoney": 330,
     "blackjackalbertmoney": 200,
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,

@@ -253,8 +253,7 @@ class Player(Entity):
             if self.exp > 2800:
                 self.exp = 2800
 
-        if self.mind == 1 and Magic.REVEAL.value not in state.player.magicinventory:
-            self.magicinventory.append(Magic.REVEAL.value)
+
 
         if self.mind == 2:
             self.magicinventory.append(Magic.CRAPS_LUCKY_7.value)
