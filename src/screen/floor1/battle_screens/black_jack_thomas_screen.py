@@ -213,6 +213,10 @@ class BlackJackThomasScreen(GambleScreen):
 
 
 
+
+
+
+
     def reset_black_jack_game(self):
         self.player_card_y_positions = []
         self.enemy_card_y_positions = []
@@ -259,10 +263,14 @@ class BlackJackThomasScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            
+            if state.player.money <= 0 or state.player.stamina_points <= 0:
+                print("jafd;sja;fljs;fljsjf;lasjf;lj;")
+
+                self.game_state = self.GAME_OVER_SCREEN
+
             # put the below back in later
             # if state.player.stamina_points <= 0:
-            # 
+            #
             #     self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
             self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
@@ -662,7 +670,7 @@ class BlackJackThomasScreen(GambleScreen):
 
 
 
-        if state.player.money <= 0 or state.player.stamina_points <= 0:
+        if state.player.money <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
 

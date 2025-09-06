@@ -396,23 +396,7 @@ class OpossumInACanSallyScreen(GambleScreen):
                 # else:
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-
-            if state.player.money <= no_money_game_over:
-                if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-            elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    self.opossum_round_reset(state)
-                    state.player.money -= 100
-                    state.currentScreen = state.area1RestScreen
-                    state.area1RestScreen.start(state)
+            self.game_over_screen_level(state, controller)
 
 
     def draw(self, state):
@@ -966,7 +950,7 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
     def update_welcome_screen_logic(self, controller, state):
-        if state.player.money <= 0:
+        if state.player.money <= 0 or state.player.stamina_points <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
         if state.player.leveling_up:
