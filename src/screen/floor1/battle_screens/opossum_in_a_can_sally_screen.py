@@ -966,6 +966,9 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
     def update_welcome_screen_logic(self, controller, state):
+        if state.player.money <= 0:
+            self.game_state = self.GAME_OVER_SCREEN
+            return
         if state.player.leveling_up:
             self.game_state = self.LEVEL_UP_SCREEN
             return

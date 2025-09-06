@@ -259,16 +259,18 @@ class BlackJackThomasScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            if state.player.stamina_points <= 0:
-
-                self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
+            
+            # put the below back in later
+            # if state.player.stamina_points <= 0:
+            # 
+            #     self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
             self.update_welcome_screen_update_logic(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.FENGUS_CASTING_SPELL_SCREEN:
             self.battle_messages[self.FENGUS_CASTING_SPELL].update(state)
             if state.controller.confirm_button:
-                self.fengus_magic_points -= 1
-                self.debuff_buff_luck_switch += 10
+                # self.fengus_magic_points -= 1
+                # self.debuff_buff_luck_switch += 10
                 self.game_state = self.WELCOME_SCREEN
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0
@@ -323,7 +325,7 @@ class BlackJackThomasScreen(GambleScreen):
             self.update_player_phase_draw(state, controller)
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.game_over_screen_level_5(state, controller)
+            self.game_over_screen_level(state, controller)
         elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
 
             self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)
@@ -660,7 +662,7 @@ class BlackJackThomasScreen(GambleScreen):
 
 
 
-        if state.player.money <= 0:
+        if state.player.money <= 0 or state.player.stamina_points <= 0:
             self.game_state = self.GAME_OVER_SCREEN
             return
 
@@ -675,8 +677,8 @@ class BlackJackThomasScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index:
 
-                state.currentScreen = state.area1RestScreen
-                state.area1RestScreen.start(state)
+                state.currentScreen = state.area1GamblingScreen
+                state.area1GamblingScreen.start(state)
                 state.player.canMove = True
 
     def initialize_music(self):

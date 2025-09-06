@@ -353,7 +353,7 @@ class BlackJackAlbertScreen(GambleScreen):
             self.update_player_phase_draw(state, controller)
             self.battle_messages[self.PLAYER_ENEMY_DRAW_ACTION_MESSAGE].update(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.game_over_screen_level_5(state, controller)
+            self.game_over_screen_level(state, controller)
         elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
 
             self.battle_messages[self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE].update(state)

@@ -130,6 +130,28 @@ class GambleScreen:
         if self.game_state == self.WELCOME_SCREEN:
             self.welcome_screen_logic(state)
 
+        # if state.player.stamina_points < 0:
+        #     if state.player.current_stage == 1:
+        # 
+        #         state.currentScreen = state.area1RestScreen
+        #         state.area1RestScreen.start(state)
+        # 
+        #     if state.player.current_stage == 2:
+        # 
+        #         state.currentScreen = state.area2RestScreen
+        #         state.area2RestScreen.start(state)
+        # 
+        #     if state.player.current_stage == 3:
+        # 
+        #         state.currentScreen = state.area3RestScreen
+        #         state.area3RestScreen.start(state)
+        # 
+        #     if state.player.current_stage == 4:
+        # 
+        #         state.currentScreen = state.area4RestScreen
+        #         state.area4RestScreen.start(state)
+
+
 
 
 
@@ -313,13 +335,33 @@ class GambleScreen:
                 state.currentScreen = state.area4RestScreen
                 state.area4RestScreen.start(state)
 
-    def game_over_screen_level_5(self, state: 'GameState', controller):
+    def game_over_screen_level(self, state: 'GameState', controller):
         no_money_game_over = 0
         if state.player.money <= no_money_game_over:
             if controller.confirm_button:
                 state.currentScreen = state.gameOverScreen
                 state.gameOverScreen.start(state)
 
+        if state.player.stamina_points <= 0:
+            if state.player.current_stage == 1:
+
+                state.currentScreen = state.area1RestScreen
+                state.area1RestScreen.start(state)
+
+            if state.player.current_stage == 2:
+
+                state.currentScreen = state.area2RestScreen
+                state.area2RestScreen.start(state)
+
+            if state.player.current_stage == 3:
+
+                state.currentScreen = state.area3RestScreen
+                state.area3RestScreen.start(state)
+
+            if state.player.current_stage == 4:
+
+                state.currentScreen = state.area4RestScreen
+                state.area4RestScreen.start(state)
 
     def draw(self, state: 'GameState') -> None:
         state.DISPLAY.fill(BLUEBLACK)
@@ -505,10 +547,3 @@ class GambleScreen:
         black_box_y = screen_height - black_box_height - vertical_padding - border_width
 
         state.DISPLAY.blit(white_border, (black_box_x, black_box_y))
-
-
-
-
-
-
-

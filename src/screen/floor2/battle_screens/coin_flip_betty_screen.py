@@ -337,7 +337,7 @@ class CoinFlipBettyScreen(GambleScreen):
             if controller.confirm_button:
                 self.update_player_draw_screen_helper(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.game_over_screen_level_5(state, controller)
+            self.game_over_screen_level(state, controller)
 
         elif self.game_state == self.GAME_OVER_ZERO_STAMINA_SCREEN:
 
