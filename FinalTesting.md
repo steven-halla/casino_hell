@@ -13,3 +13,5 @@ Final testing for all screens.
 
 LEVEL 1
 ALL LEVEL UPS HAVE BEEN TESTED AND WORK
+All game over screens work though there is an issue with having both low stamina and low money
+

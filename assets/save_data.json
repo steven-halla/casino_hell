@@ -2,26 +2,27 @@
     "current_stage": 1,
     "level": 3,
     "exp": 300,
-    "stamina_points": 130,
+    "stamina_points": 100,
     "max_stamina_points": 130,
     "focus_points": 165,
     "max_focus_points": 165,
     "companions": [],
     "items": [
-        "Black Hat",
+        "mp bracelet",
         "opossum repellent",
-        "mp bracelet"
+        "Black Hat"
     ],
     "equipped_items": [
-        "opossum repellent",
-        "mp bracelet"
+        "mp bracelet",
+        "Black Hat"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token"
     ],
     "magicinventory": [
-        "Shield"
+        "Shield",
+        "reveal"
     ],
     "body": 1,
     "mind": 1,
@@ -38,15 +39,14 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 6,
+    "days": 7,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
         "LEVEL_1_INN_KEY",
-        "Black Hat",
+        "mp bracelet",
         "opossum repellent",
-        "mp bracelet"
-
+        "Black Hat"
     ],
     "levelthreenpcstate": [],
     "levelfournpcstate": [],

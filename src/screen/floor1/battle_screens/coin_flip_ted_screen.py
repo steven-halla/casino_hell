@@ -50,7 +50,7 @@ class CoinFlipTedScreen(GambleScreen):
         self.double_coin_landed:str = CoinFlipConstants.HEADS.value
         self.wanton_bankrupt: int = 0
         self.magic_lock = False
-        self.low_stamina_drain: int = 10
+        self.low_stamina_drain: int = 0
         self.index_stepper: int = 1
         self.magic_screen_index: int = 0
         self.shield_cost: int = 30
@@ -189,8 +189,8 @@ class CoinFlipTedScreen(GambleScreen):
 
     def reset_round(self, state):
 
-        if state.player.money <= 0:
-            self.game_state = GameOverScreen
+        # if state.player.money <= 0:
+        #     self.game_state = GameOverScreen
 
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
