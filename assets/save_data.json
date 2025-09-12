@@ -2,7 +2,7 @@
     "current_stage": 1,
     "level": 3,
     "exp": 300,
-    "stamina_points": 100,
+    "stamina_points": 333,
     "max_stamina_points": 130,
     "focus_points": 165,
     "max_focus_points": 165,
@@ -10,10 +10,11 @@
     "items": [
         "mp bracelet",
         "opossum repellent",
+        "sir leopold amulet",
         "Black Hat"
     ],
     "equipped_items": [
-        "mp bracelet",
+        "sir leopold amulet" ,
         "Black Hat"
     ],
     "npcitems": [

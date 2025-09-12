@@ -23,7 +23,7 @@ class BlackJackEquipment:
         Handle bust protection with Black Jack Hat.
         Returns True if the player is protected from busting, False otherwise.
         """
-        if not self.has_black_jack_hat():
+        if Equipment.BLACK_JACK_HAT.value not in self.player.equipped_items:
             return False
 
         # Generate lucky roll internally
@@ -44,20 +44,31 @@ class BlackJackEquipment:
         print("yes bust line 40 black jack equpiment")
         return False
 
-    def should_steal_ace(self, enemy_hand: list, ace_effect_triggered: bool, level_4_percentage_chance: int) -> bool:
+
+    def should_steal_ace(self, enemy_hand: list, deck, ace_effect_triggered: bool) -> bool:
         """
-        Check if Sir Leopold's Amulet should steal an ace from the enemy.
-        Returns True if an ace should be stolen, False otherwise.
+        Sir Leopold's Amulet: If roll succeeds and enemy_hand[1] is an Ace and
+        effect hasn't triggered, pop it and replace with a new card.
+        Mutates enemy_hand. Returns True iff effect applied.
         """
-        if not self.has_sir_leopold_amulet():
+        if Equipment.SIR_LEOPOLD_AMULET.value not in self.player.equipped_items:
+            return False
+        if ace_effect_triggered:
             return False
 
-        # Get spirit bonus from player
-        spirit_bonus = self.player.spirit * 10
-        sir_leopold_steal_roll = random.randint(1, 100) + spirit_bonus
+        # roll logic
+        lucky_roll = random.randint(1, 100)
+        min_roll_for_success = (self.state.player.current_stage * 5) + 50
+        adjusted_roll = self.state.player.spirit * 10
+        player_roll = lucky_roll + adjusted_roll
 
-        if sir_leopold_steal_roll > level_4_percentage_chance:
-            if len(enemy_hand) > 1 and enemy_hand[1][0] == "Ace" and not ace_effect_triggered:
-                return True
+        if player_roll >= min_roll_for_success and len(enemy_hand) > 1 and enemy_hand[1][0] == "Ace":
+            # POP/INSERT on the PARAM, not self
+            enemy_hand.pop(1)
+            new_card = deck.enemy_draw_hand(1)[0]
+            enemy_hand.insert(1, new_card)
+            print("Hell yeah you got that ace bro")
+            return True
 
+        print("no ace for you home slice")
         return False

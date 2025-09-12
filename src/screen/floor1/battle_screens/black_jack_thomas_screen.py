@@ -471,6 +471,7 @@ class BlackJackThomasScreen(GambleScreen):
             self.player_hand = self.deck.player_draw_hand(2)
             # if self.debuff_buff_luck_switch == 0:
             self.enemy_hand = self.deck.enemy_draw_hand(2)
+            print("Enemy's initial hand:", self.enemy_hand)
             # elif self.debuff_buff_luck_switch > 0:
             #     lucky_enemy_roll = random.randint(1, 100)
             #     lucky_enemy_strike = lucky_enemy_roll + self.luck_bonus
@@ -825,23 +826,28 @@ class BlackJackThomasScreen(GambleScreen):
                                              self.enemy_card_y_positions[i]), DISPLAY)
 
         # level 5 remove this and put in update no idea why its in draw
-        # if self.black_jack_equipment.should_steal_ace(self.enemy_hand, self.ace_effect_triggered, self.LEVEL_4_PERCENTAGE_CHANCE):
-        #     if self.ace_detected_time is None:
-        #         self.ace_detected_time = pygame.time.get_ticks()
-        #
-        # if self.ace_detected_time is not None:
-        #     current_time = pygame.time.get_ticks()
-        #     elapsed_time = current_time - self.ace_detected_time
-        #     if elapsed_time >= 1200:
-        #         self.enemy_hand.pop(1)
-        #         new_card = self.deck.enemy_draw_hand(1)[0]
-        #         self.enemy_hand.insert(1, new_card)
-        #         self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-        #
-        #         self.ace_effect_triggered = True
-        #         self.ace_detected_time = None
-        #     else:
-        #         return
+        # after both hands are dealt, inside draw or update (where appropriate)
+        if self.black_jack_equipment is None:
+            self.black_jack_equipment = BlackJackEquipment(state)
+
+        if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace":
+            if self.black_jack_equipment is None:
+                self.black_jack_equipment = BlackJackEquipment(state)
+
+            if self.black_jack_equipment.should_steal_ace(
+                    self.enemy_hand, self.deck, self.ace_effect_triggered
+            ):
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                self.ace_effect_triggered = True
+
+
+
+
+
+
+
+
+
 
         if self.player_score == 21 and self.enemy_score == 21:
             self.game_state = self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN
