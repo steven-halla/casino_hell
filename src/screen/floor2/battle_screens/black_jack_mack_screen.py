@@ -7,6 +7,8 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_equipment.black_jack_equipment import BlackJackEquipment
+
 
 #There is  a bug on the redraw
 class BlackJackMackScreen(GambleScreen):
@@ -625,21 +627,19 @@ class BlackJackMackScreen(GambleScreen):
             if (self.player_action_phase_index == self.player_action_phase_draw_index
                     and len(self.player_hand) <= card_max):
                 self.animate_face_down_card_player(state, len(self.player_hand))
+
                 if self.player_score > max_before_bust:
-                    if Equipment.BLACK_JACK_HAT.value not in state.player.equipped_items:
-                        if self.player_score > max_before_bust:
-                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
-                    elif Equipment.BLACK_JACK_HAT.value in state.player.equipped_items:
-
-                        lucky_roll = random.randint(1, 100) + self.spirit_bonus
-
-                        if lucky_roll >= self.LEVEL_4_PERCENTAGE_CHANCE:
+                    if self.black_jack_equipment.handle_bust_protection(
+                            self.player_hand, self.player_score):
+                        # prevent bust: remove the just-drawn card, then recompute
+                        if self.player_hand:
                             self.player_hand.pop()
-                            self.player_score = self.deck.compute_hand_value(self.player_hand)
-                            self.lucky_strike.play()
-
-                        else:
-                            self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+                        self.player_score = self.deck.compute_hand_value(self.player_hand)
+                        self.lucky_strike.play()
+                        print("You protected against a bust even though it feels good")
+                    else:
+                        print("busting makes me feel good, hat failed.")
+                        self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
 
 
@@ -875,26 +875,18 @@ class BlackJackMackScreen(GambleScreen):
                                              self.enemy_card_y_positions[i]), DISPLAY)
 
         # level 5 remove this and put in update no idea why its in draw
-        sir_leopold_steal_roll = random.randint(1, 100) + self.spirit_bonus
-        if Equipment.SIR_LEOPOLD_AMULET.value in state.player.equipped_items and sir_leopold_steal_roll > self.LEVEL_4_PERCENTAGE_CHANCE:
-            if (len(self.enemy_hand) > 1 and self.enemy_hand[1][0]
-                    == "Ace" and not self.ace_effect_triggered):
-                if self.ace_detected_time is None:
-                    self.ace_detected_time = pygame.time.get_ticks()
+        if self.black_jack_equipment is None:
+            self.black_jack_equipment = BlackJackEquipment(state)
 
-            if self.ace_detected_time is not None:
-                current_time = pygame.time.get_ticks()
-                elapsed_time = current_time - self.ace_detected_time
-                if elapsed_time >= 1200:
-                    self.enemy_hand.pop(1)
-                    new_card = self.deck.enemy_draw_hand(1)[0]
-                    self.enemy_hand.insert(1, new_card)
-                    self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+        if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace":
+            if self.black_jack_equipment is None:
+                self.black_jack_equipment = BlackJackEquipment(state)
 
-                    self.ace_effect_triggered = True
-                    self.ace_detected_time = None
-                else:
-                    return
+            if self.black_jack_equipment.should_steal_ace(
+                    self.enemy_hand, self.deck, self.ace_effect_triggered
+            ):
+                self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                self.ace_effect_triggered = True
 
         if self.player_score == 21 and self.enemy_score == 21:
             self.game_state = self.PLAYER_ENEMY_DRAW_BLACK_JACK_SCREEN
