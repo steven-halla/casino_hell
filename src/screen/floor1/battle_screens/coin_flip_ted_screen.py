@@ -219,6 +219,7 @@ class CoinFlipTedScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
+
         if state.player.exp > 100:
             state.player.exp = 99
 
@@ -237,6 +238,8 @@ class CoinFlipTedScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             if state.player.stamina_points <= 0:
                 self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
+            elif state.player.money <= 0:
+                self.game_state = self.GAME_OVER_SCREEN
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)

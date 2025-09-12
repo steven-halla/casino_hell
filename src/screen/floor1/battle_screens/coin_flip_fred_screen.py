@@ -189,8 +189,8 @@ class CoinFlipFredScreen(GambleScreen):
 
     def reset_round(self, state):
 
-        if state.player.money <= 0:
-            self.game_state = GameOverScreen
+        # if state.player.money <= 0:
+        #     self.game_state = GameOverScreen
 
         self.battle_messages[self.WELCOME_MESSAGE].reset()
 
@@ -236,6 +236,8 @@ class CoinFlipFredScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             if state.player.stamina_points <= 0:
                 self.game_state = self.GAME_OVER_ZERO_STAMINA_SCREEN
+            elif state.player.money <= 0:
+                self.game_state = self.GAME_OVER_SCREEN
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
             self.battle_messages[self.BET_MESSAGE].reset()
             self.update_welcome_screen_logic(controller, state)
