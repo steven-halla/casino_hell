@@ -34,7 +34,7 @@ class Area1ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.BLACK_JACK_HAT.value, Equipment.OPOSSUM_REPELLENT.value,Equipment.MP_BRACELET.value, Magic.SHIELD.value,  Events.LEVEL_1_BOSS_KEY.value ]
+        self.shop_items = [Equipment.BLACK_JACK_HAT.value, Equipment.OPOSSUM_REPELLENT.value,Equipment.MP_BRACELET.value, Magic.REVEAL.value,  Events.LEVEL_1_BOSS_KEY.value ]
 
         self.shop_costs = ["500", "500", "500", "500", "1000"]
 
@@ -75,7 +75,7 @@ class Area1ShopKeeper(Npc):
             if Equipment.OPOSSUM_REPELLENT.value in state.player.items:
                 self.shop_items[1] = "sold out"
 
-            if Magic.SHIELD.value in state.player.magicinventory:
+            if Magic.REVEAL.value in state.player.magicinventory:
                 self.shop_items[2] = "sold out"
 
             if Equipment.MP_BRACELET.value in state.player.level_one_npc_state:
@@ -129,11 +129,11 @@ class Area1ShopKeeper(Npc):
 
                     elif self.selected_item_index == 2:
                         cost = 500
-                        if state.player.money - cost < 800 or Magic.SHIELD.value in state.player.magicinventory:
+                        if state.player.money - cost < 800 or Magic.REVEAL.value in state.player.magicinventory:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            state.player.magicinventory.append(Magic.SHIELD.value)
+                            state.player.magicinventory.append(Magic.REVEAL.value)
                             state.player.money -= cost
 
                     elif self.selected_item_index == 3:
@@ -305,16 +305,16 @@ class Area1ShopKeeper(Npc):
 
 
 
-                if self.selected_item_index == 2 and Magic.SHIELD.value not in state.player.magicinventory:
+                if self.selected_item_index == 2 and Magic.REVEAL.value not in state.player.magicinventory:
                     state.DISPLAY.blit(self.font.render(f"Shows how many points enemy has in card games.", True,
                                                         (255, 255, 255)), (70, 460))
 
 
-                    state.DISPLAY.blit(self.font.render(f"A magical spell that SHIELDs hidden information.", True,
+                    state.DISPLAY.blit(self.font.render(f"A magical spell that reveals hidden information.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 2 and Magic.SHIELD.value in state.player.magicinventory:
-                    state.DISPLAY.blit(self.font.render(f"SHIELD spell is sold out!", True,
+                elif self.selected_item_index == 2 and Magic.REVEAL.value in state.player.magicinventory:
+                    state.DISPLAY.blit(self.font.render(f"REVEAL spell is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
                 if self.selected_item_index == 3 and Equipment.MP_BRACELET.value not in state.player.level_one_npc_state:

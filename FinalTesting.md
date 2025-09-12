@@ -10,3 +10,6 @@ Final testing for all screens.
 8) update shops
 9) make sure level up works for all screens
 10) IF we are here then we only have a week left to finish project
+
+LEVEL 1
+ALL LEVEL UPS HAVE BEEN TESTED AND WORK

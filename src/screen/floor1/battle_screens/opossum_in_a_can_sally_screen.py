@@ -196,7 +196,8 @@ class OpossumInACanSallyScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.opossum_game_reset(state)
         self.welcome_screen_index = 0
-        self.stamina_drain_repellant = 5 * state.player.spirit
+        # Fixed to 25 as per issue description
+        # self.stamina_drain_repellant = 5 * state.player.spirit
 
 
 
@@ -348,7 +349,7 @@ class OpossumInACanSallyScreen(GambleScreen):
 
 
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
-                    state.player.stamina_points -= self.stamina_drain - self.stamina_drain_repellant
+                    state.player.stamina_points -= self.stamina_drain_repellant
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
 
@@ -457,7 +458,7 @@ class OpossumInACanSallyScreen(GambleScreen):
             no_stamina_game_over = 0
             if state.player.money <= no_money_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of money and are now a prisoner of hell", True, WHITE), (self.blit_message_x, self.blit_message_y))
-            elif state.player.stamina <= no_stamina_game_over:
+            elif state.player.stamina_points <= no_stamina_game_over:
                 state.DISPLAY.blit(self.font.render(f"You ran out of stamina , you lose -100 gold", True, WHITE), (self.blit_message_x, self.blit_message_y))
 
         pygame.display.flip()

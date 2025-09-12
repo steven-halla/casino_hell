@@ -213,32 +213,13 @@ class CoinFlipTedScreen(GambleScreen):
 
         # ------------------------------------Check other files for below_____________________________
 
-        self.spirit_magic_bonus_zero_chance += 0
-        player_luck_bonus = self.luck_bonus * 4
-
-        match self.wanton_magic_points:
-            case 3:
-                man_trap_randomizer = random.randint(1, 90) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
-            case 2:
-                man_trap_randomizer = random.randint(1, 70) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
-            case 1:
-                man_trap_randomizer = random.randint(1, 50) + self.spirit_magic_bonus_zero_chance - player_luck_bonus
 
 
-        print("The magic spell chance is: " + str(man_trap_randomizer))
-        print("The magic spell bonus penalty: " + str(self.spirit_magic_bonus_zero_chance))
-
-        if man_trap_randomizer > 100 and self.wanton_magic_points > 0 and self.debuff_magic_equipment_break == 0:
-            self.game_state = self.WANTON_CASTING_SPELL_SCREEN
-            self.even = False
-            self.odd = False
-            self.tri = False
-            self.spirit_magic_bonus_zero_chance = 0
 
 
     def update(self, state):
         super().update(state)
-        if state.player.exp > 0:
+        if state.player.exp > 100:
             state.player.exp = 99
 
 

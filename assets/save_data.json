@@ -1,43 +1,51 @@
 {
     "current_stage": 1,
-    "level": 1,
-    "exp": 0,
-    "stamina_points": 100,
-    "max_stamina_points": 100,
-    "focus_points": 0,
-    "max_focus_points": 0,
+    "level": 3,
+    "exp": 300,
+    "stamina_points": 130,
+    "max_stamina_points": 130,
+    "focus_points": 165,
+    "max_focus_points": 165,
     "companions": [],
     "items": [
-
+        "Black Hat",
+        "opossum repellent",
+        "mp bracelet"
     ],
     "equipped_items": [
-
+        "opossum repellent",
+        "mp bracelet"
     ],
     "npcitems": [
-
+        "level 2 token",
+        "level 3 token"
     ],
     "magicinventory": [
-
+        "Shield"
     ],
-    "body": 0,
-    "mind": 0,
+    "body": 1,
+    "mind": 1,
     "spirit": 0,
     "perception": 0,
     "baseperception": 1,
     "luck": 0,
-    "money": 1000,
+    "money": 100,
     "rabies": false,
     "immunity": false,
     "quest_items": [
-        "contract"
+        "contract",
+        "LEVEL_1_INN_KEY"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 1,
-    "leveltwonpcstate": [
-
-    ],
+    "days": 6,
+    "leveltwonpcstate": [],
     "levelonenpcstate": [
+        "COIN_FLIP_TED_DEFEATED",
+        "LEVEL_1_INN_KEY",
+        "Black Hat",
+        "opossum repellent",
+        "mp bracelet"
 
     ],
     "levelthreenpcstate": [],
@@ -47,19 +55,19 @@
     "cutscene1": false,
     "cutscene2": false,
     "quest1complete": false,
-    "coinfliptedmoney": 300,
-    "coinflipfredmoney": 700,
-    "coinflipbetteymoney": 999,
+    "coinfliptedmoney": 0,
+    "coinflipfredmoney": 100,
+    "coinflipbetteymoney": 300,
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
-    "opossumsallymoney": 100,
-    "opossuminacancandymoney": 134,
+    "opossumsallymoney": 110,
+    "opossuminacancandymoney": 444,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
-    "blackjackthomasmoney": 100,
+    "blackjackthomasmoney": 500,
     "blackjackrumblebillmoney": 900,
-    "blackjackmackmoney": 330,
+    "blackjackmackmoney": 200,
     "blackjackalbertmoney": 200,
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,
@@ -67,7 +75,7 @@
     "slotsrippasnappamoney": 200,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
-    "crapscrappymoney": 477,
+    "crapscrappymoney": 777,
     "crapsjunponmoney": 777,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,

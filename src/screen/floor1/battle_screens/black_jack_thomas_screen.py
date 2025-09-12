@@ -28,7 +28,7 @@ class BlackJackThomasScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.blackJackThomasMoney: int = 300
+        self.blackJackThomasMoney: int = 1000
         self.thomas_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -199,17 +199,7 @@ class BlackJackThomasScreen(GambleScreen):
         self.enemy_card_x_positions = []
         self.luck_swapping_switch += 3
 
-        match self.fengus_magic_points:
-            case 3:
-                luck_swap_randomizer = random.randint(1, 90) + self.luck_swapping_switch
-            case 2:
-                luck_swap_randomizer = random.randint(1, 70) + self.luck_swapping_switch
-            case 1:
-                luck_swap_randomizer = random.randint(1, 50) + self.luck_swapping_switch
 
-        if luck_swap_randomizer > 100 and self.fengus_magic_points > 0 and self.debuff_buff_luck_switch == 0:
-            self.game_state = self.FENGUS_CASTING_SPELL_SCREEN
-            self.luck_swapping_switch = 0
 
 
 
@@ -458,6 +448,7 @@ class BlackJackThomasScreen(GambleScreen):
             state.player.money -= self.bet
             self.blackJackThomasMoney += self.bet
             state.player.exp += self.low_exp
+            state.player.stamina_points -= self.low_stamina_drain
             self.game_state = self.WELCOME_SCREEN
 
     def update_draw_card_screen_logic(self, state: 'GameState'):
