@@ -540,3 +540,5 @@ magic - Greed -craps - DOES NOT DO ANYTHING !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Hippo prize equipment - SirLeopoldsAmulet - black jack - protects with aces and other benifits
 Slots prize Magic - LUCKY777 - slots - DOES NOT DO ANYTHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Could have it to where if you get a 777 on first slot then all of them get that
 magic 4 - Dice force -wheel of torture- THIS SPELL DOES NOT DO ANYTHING
+
+

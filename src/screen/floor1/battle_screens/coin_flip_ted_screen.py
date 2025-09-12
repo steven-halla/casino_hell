@@ -57,8 +57,8 @@ class CoinFlipTedScreen(GambleScreen):
         self.shield_debuff: int = 0
         self.heads_force_cost: int = 50
         self.heads_force_active: bool = False
-        self.exp_gain_high: int = 20
-        self.exp_gain_low: int = 10
+        self.exp_gain_high: int = 5
+        self.exp_gain_low: int = 2
         self.result_anchor: bool = False
         self.coinFlipTedMoney: int = 300
         self.wanton_magic_points: int = 0
@@ -185,7 +185,7 @@ class CoinFlipTedScreen(GambleScreen):
             self.timer_start = None
             self.image_to_display = ""
             self.player_choice = ""
-            self.wanton_magic_points = 3
+            self.wanton_magic_points = 0
 
     def reset_round(self, state):
 
@@ -213,7 +213,7 @@ class CoinFlipTedScreen(GambleScreen):
 
         # ------------------------------------Check other files for below_____________________________
 
-        self.spirit_magic_bonus_zero_chance += 3
+        self.spirit_magic_bonus_zero_chance += 0
         player_luck_bonus = self.luck_bonus * 4
 
         match self.wanton_magic_points:
@@ -238,7 +238,9 @@ class CoinFlipTedScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
-        print(self.game_state)
+        if state.player.exp > 0:
+            state.player.exp = 99
+
 
         controller = state.controller
         controller.update()
