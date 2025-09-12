@@ -30,7 +30,7 @@
     "perception": 0,
     "baseperception": 1,
     "luck": 0,
-    "money": 100,
+    "money": 3333,
     "rabies": false,
     "immunity": false,
     "quest_items": [

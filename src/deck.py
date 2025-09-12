@@ -2,7 +2,6 @@ import random
 from typing import List, Tuple, Union, Dict
 
 import pygame
-from game_constants.equipment import Equipment
 
 from entity.entity import Entity
 
