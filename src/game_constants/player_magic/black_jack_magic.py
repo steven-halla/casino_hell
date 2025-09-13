@@ -1,3 +1,7 @@
+import random
+
+
+
 class BlackJackMagic:
     def __init__(self, state):
         """
@@ -13,5 +17,9 @@ class BlackJackMagic:
 
         self.REDRAW_DURATION = 7
         self.REDRAW_MP_COST = 40
+
+
+
+
 
 
