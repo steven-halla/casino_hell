@@ -2,19 +2,18 @@
     "current_stage": 1,
     "level": 3,
     "exp": 300,
-    "stamina_points": 333,
+    "stamina_points": 555,
     "max_stamina_points": 130,
     "focus_points": 165,
     "max_focus_points": 165,
     "companions": [],
     "items": [
         "mp bracelet",
-        "opossum repellent",
         "sir leopold amulet",
         "Black Hat"
     ],
     "equipped_items": [
-        "sir leopold amulet" ,
+        "sir leopold amulet",
         "Black Hat"
     ],
     "npcitems": [
@@ -23,6 +22,7 @@
     ],
     "magicinventory": [
         "Shield",
+        "redraw",
         "reveal"
     ],
     "body": 1,

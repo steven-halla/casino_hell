@@ -42,6 +42,7 @@ class Magic(Enum):
 
 
 
+
     @staticmethod
     def add_magic_to_player(player, magic):
         if magic.value not in player.magicinventory:

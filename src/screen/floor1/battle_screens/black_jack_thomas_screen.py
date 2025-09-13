@@ -8,6 +8,7 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 from game_constants.player_equipment.black_jack_equipment import BlackJackEquipment
+from game_constants.player_magic.black_jack_magic import BlackJackMagic
 
 
 #There is  a bug on the redraw
@@ -168,7 +169,6 @@ class BlackJackThomasScreen(GambleScreen):
         self.magic_bonus: int = state.player.mind * 10
         self.luck_bonus: int = state.player.luck * 5
         self.welcome_screen_index = 0
-        self.black_jack_equipment = BlackJackEquipment(state)
 
         if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:
             self.magic_screen_choices.append(Magic.BLACK_JACK_REDRAW.value)
@@ -178,6 +178,8 @@ class BlackJackThomasScreen(GambleScreen):
 
         if self.BACK not in self.magic_screen_choices:
             self.magic_screen_choices.append(self.BACK)
+        self.black_jack_magic = BlackJackMagic(state)
+        self.black_jack_equipment = BlackJackEquipment(state)
 
     def round_reset(self):
         print("Round Reset")
@@ -225,6 +227,19 @@ class BlackJackThomasScreen(GambleScreen):
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
         self.fengus_magic_points = 3
+
+    def force_enemy_redraw_faceup(self, state) -> None:
+        faceup_index = 1  # enemy face-up card
+        if len(self.enemy_hand) > faceup_index and self.redraw_counter:
+            # Optionally hide current card for a beat:
+            # self.deck.draw_card_face_down((250 + faceup_index * 75, 50), state.DISPLAY)
+            # pygame.display.flip(); pygame.time.delay(120)
+
+            new_card = self.deck.enemy_draw_hand(1)[0]
+            self.enemy_hand[faceup_index] = new_card
+            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+            self.redraw_counter = False  # once per turn
+
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -550,16 +565,16 @@ class BlackJackThomasScreen(GambleScreen):
                     and self.magic_menu_index
                     == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value)):
                 if state.player.focus_points >= self.redraw_cast_cost:
-                    self.redraw_debuff_counter = self.redraw_start_counter
+                    self.redraw_debuff_counter = self.black_jack_magic.REDRAW_DURATION
                     self.spell_sound.play()
-                    state.player.focus_points -= self.redraw_cast_cost
+                    state.player.focus_points -= self.black_jack_magic.REDRAW_MP_COST
                     self.magic_lock = True
                     self.magic_menu_index = 0
                     self.game_state = self.WELCOME_SCREEN
             elif (Magic.REVEAL.value in self.magic_screen_choices
                   and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value)):
-                if state.player.focus_points >= self.reveal_cast_cost:
-                    self.reveal_buff_counter = self.reveal_start_counter + state.player.mind
+                if state.player.focus_points >= self.black_jack_magic.REVEAL_MP_COST:
+                    self.reveal_buff_counter = self.black_jack_magic.REVEAL_DURATION
                     self.spell_sound.play()
                     state.player.focus_points -= self.reveal_cast_cost
                     self.magic_lock = True
@@ -618,6 +633,14 @@ class BlackJackThomasScreen(GambleScreen):
                 else:
                     print("busting makes me feel good, hat failed.")
                     self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+
+            if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
+                  and Magic.BLACK_JACK_REDRAW.value in self.player_action_phase_choices):
+                # Only act if we still have a redraw available this turn
+                if self.redraw_counter:
+                    self.force_enemy_redraw_faceup(state)
+                # Stay in PLAYER_ACTION_SCREEN so the player can continue
+                return
 
 
     def animate_face_down_card_player(self, state, card_index):
@@ -830,7 +853,7 @@ class BlackJackThomasScreen(GambleScreen):
         if self.black_jack_equipment is None:
             self.black_jack_equipment = BlackJackEquipment(state)
 
-        if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace":
+        if len(self.enemy_hand) > 1 and self.enemy_hand[0][0] == "Ace":
             if self.black_jack_equipment is None:
                 self.black_jack_equipment = BlackJackEquipment(state)
 

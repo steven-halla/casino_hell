@@ -8,6 +8,7 @@ from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 from game_constants.player_equipment.black_jack_equipment import BlackJackEquipment
+from game_constants.player_magic.black_jack_magic import BlackJackMagic
 
 
 #There is  a bug on the redraw
@@ -79,6 +80,8 @@ class Area1BossChinrogScreen(GambleScreen):
         self.demon_money: int = 666
         self.player_stamina_drain_low: int = 3
         self.player_stamina_drain_high: int = 5
+        self.black_jack_equipment: BlackJackEquipment | None = None
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -183,6 +186,9 @@ class Area1BossChinrogScreen(GambleScreen):
 
         if self.BACK not in self.magic_screen_choices:
             self.magic_screen_choices.append(self.BACK)
+
+        self.black_jack_magic = BlackJackMagic(state)
+        self.black_jack_equipment = BlackJackEquipment(state)
 
     def round_reset(self):
         print("Round Reset")
@@ -557,8 +563,8 @@ class Area1BossChinrogScreen(GambleScreen):
                     self.game_state = self.WELCOME_SCREEN
             elif (Magic.REVEAL.value in self.magic_screen_choices
                   and self.magic_menu_index == self.magic_screen_choices.index(Magic.REVEAL.value)):
-                if state.player.focus_points >= self.reveal_cast_cost:
-                    self.reveal_buff_counter = self.reveal_start_counter + state.player.mind
+                if state.player.focus_points >= self.black_jack_magic.REVEAL_MP_COST:
+                    self.reveal_buff_counter = self.black_jack_magic.REVEAL_DURATION
                     self.spell_sound.play()
                     state.player.focus_points -= self.reveal_cast_cost
                     self.magic_lock = True
@@ -823,10 +829,10 @@ class Area1BossChinrogScreen(GambleScreen):
                                              self.enemy_card_y_positions[i]), DISPLAY)
 
         # level 5 remove this and put in update no idea why its in draw
-        if self.black_jack_equipment is None:
-            self.black_jack_equipment = BlackJackEquipment(state)
+        # if self.black_jack_equipment is None:
+        #     self.black_jack_equipment = BlackJackEquipment(state)
 
-        if len(self.enemy_hand) > 1 and self.enemy_hand[1][0] == "Ace":
+        if len(self.enemy_hand) > 1 and self.enemy_hand[0][0] == "Ace":
             if self.black_jack_equipment is None:
                 self.black_jack_equipment = BlackJackEquipment(state)
 
