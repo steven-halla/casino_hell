@@ -228,39 +228,7 @@ class BlackJackThomasScreen(GambleScreen):
         self.redraw_counter = True
         self.fengus_magic_points = 3
 
-    def force_enemy_redraw_faceup(self, state) -> bool:
-        """
-        Attempt to replace the enemy's face-up card (index 1) once this turn.
-        Returns True on success (card replaced), False on failure.
-        Consumes this turn's redraw attempt whether it succeeds or fails.
-        """
-        faceup_index = 1
 
-        # Must have a face-up slot and the once-per-turn token available
-        if len(self.enemy_hand) <= faceup_index:
-            return False
-        if not self.redraw_counter:
-            return False
-
-        # Roll gating (kept exactly as requested, but fixed to use `state`)
-        lucky_roll = random.randint(1, 100)
-        min_roll_for_success = (state.player.current_stage * 5) + 50
-        adjusted_roll = state.player.mind * 10
-        player_roll = lucky_roll + adjusted_roll
-
-        if player_roll >= min_roll_for_success:
-            print("busting makes me feel good")
-            new_card = self.deck.enemy_draw_hand(1)[0]
-            self.enemy_hand[faceup_index] = new_card
-            self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
-            self.redraw_counter = False  # once per turn
-            return True
-
-        # Fail case still consumes the per-turn attempt
-        print("busting makes me feel sic")
-
-        self.redraw_counter = False
-        return False
 
 
     def update(self, state: 'GameState'):
@@ -658,10 +626,11 @@ class BlackJackThomasScreen(GambleScreen):
 
             if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
                   and Magic.BLACK_JACK_REDRAW.value in self.player_action_phase_choices):
-                # Only act if we still have a redraw available this turn
                 if self.redraw_counter:
-                    self.force_enemy_redraw_faceup(state)
-                # Stay in PLAYER_ACTION_SCREEN so the player can continue
+                    if self.black_jack_magic.force_enemy_redraw_faceup(self.enemy_hand, self.deck):
+                        self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                    # consume once-per-turn regardless of success/fail (your current rule)
+                    self.redraw_counter = False
                 return
 
 
