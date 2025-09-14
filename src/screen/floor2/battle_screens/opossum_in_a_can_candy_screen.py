@@ -9,6 +9,9 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_equipment.opossum_in_a_can_equipment import OpossumInACanEquipment
+from game_constants.player_magic.opossum_in_a_can_magic import OpossumInACanMagic
+
 
 # opssoum shuffle - reshuffles the cans
 # opossum guilty shoes- if score is above 750 and you lose , retain 200 points
@@ -194,6 +197,8 @@ class OpossumInACanCandyScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.opossum_game_reset(state)
         self.welcome_screen_index = 0
+        self.opossum_in_a_can_magic = OpossumInACanMagic(state)
+        self.opossum_in_a_can_equipment = OpossumInACanEquipment(state)
 
 
 
@@ -349,7 +354,8 @@ class OpossumInACanCandyScreen(GambleScreen):
 
 
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
-                    state.player.stamina_points -= self.stamina_drain_repellant
+                    state.player.stamina_points -= (self.stamina_drain - self.opossum_in_a_can_equipment.POISION_RESIST)
+
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
 

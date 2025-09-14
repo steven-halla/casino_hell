@@ -9,6 +9,9 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_equipment.opossum_in_a_can_equipment import OpossumInACanEquipment
+from game_constants.player_magic.opossum_in_a_can_magic import OpossumInACanMagic
+
 
 # opssoum shuffle - reshuffles the cans
 # opossum guilty shoes- if score is above 750 and you lose , retain 200 points
@@ -183,10 +186,27 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
 
 
     def start(self, state: 'GameState'):
+        self.opossum_game_reset(state)
+        self.welcome_screen_index = 0
+        self.opossum_in_a_can_magic = OpossumInACanMagic(state)
+        self.opossum_in_a_can_equipment = OpossumInACanEquipment(state)
+
+
+
         self.initializeGarbageCans(state)
+        self.spirit_bonus: int = state.player.spirit * 10
+        self.magic_bonus: int = state.player.mind * 10
+        self.luck_bonus: int = state.player.luck * 5
+        self.buff_peek_amount: int = 0
 
-        # staying at end appends this
+        if Magic.PEEK.value in state.player.magicinventory and Magic.PEEK.value not in self.magic_menu_selector:
+            self.magic_menu_selector.insert(1, Magic.PEEK.value)
 
+        if Magic.SHAKE.value in state.player.magicinventory and Magic.SHAKE.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.SHAKE.value)
+
+        if self.BACK not in self.magic_menu_selector:
+            self.magic_menu_selector.append(self.BACK)
 
     def opossum_game_reset(self, state):
         self.shake = False
@@ -293,7 +313,8 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                         state.player.hp -= 999
 
                 if Equipment.OPOSSUM_REPELLENT.value in state.player.equipped_items:
-                    state.player.stamina_points -= self.stamina_drain_repellant
+                    state.player.stamina_points -= (self.stamina_drain - self.opossum_in_a_can_equipment.POISION_RESIST)
+
                 elif Equipment.OPOSSUM_REPELLENT.value not in state.player.equipped_items:
                     state.player.stamina_points -= self.stamina_drain
 

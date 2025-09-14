@@ -1,37 +1,33 @@
 {
     "current_stage": 1,
-    "level": 3,
-    "exp": 300,
-    "stamina_points": 555,
-    "max_stamina_points": 130,
-    "focus_points": 165,
-    "max_focus_points": 165,
+    "level": 1,
+    "exp": 15,
+    "stamina_points": 100,
+    "max_stamina_points": 100,
+    "focus_points": 150,
+    "max_focus_points": 150,
     "companions": [],
     "items": [
         "mp bracelet",
-        "sir leopold amulet",
+        "opossum repellent",
         "Black Hat"
     ],
     "equipped_items": [
-        "sir leopold amulet",
-        "Black Hat"
+        "Black Hat",
+        "mp bracelet"
     ],
-    "npcitems": [
-        "level 2 token",
-        "level 3 token"
-    ],
+    "npcitems": [],
     "magicinventory": [
         "Shield",
-        "redraw",
         "reveal"
     ],
-    "body": 1,
+    "body": 0,
     "mind": 1,
     "spirit": 0,
     "perception": 0,
     "baseperception": 1,
     "luck": 0,
-    "money": 3333,
+    "money": 1200,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -40,7 +36,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 7,
+    "days": 1,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -57,16 +53,16 @@
     "cutscene2": false,
     "quest1complete": false,
     "coinfliptedmoney": 0,
-    "coinflipfredmoney": 100,
+    "coinflipfredmoney": 300,
     "coinflipbetteymoney": 300,
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
-    "opossumsallymoney": 110,
+    "opossumsallymoney": 300,
     "opossuminacancandymoney": 444,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
-    "blackjackthomasmoney": 500,
+    "blackjackthomasmoney": 1000,
     "blackjackrumblebillmoney": 900,
     "blackjackmackmoney": 200,
     "blackjackalbertmoney": 200,

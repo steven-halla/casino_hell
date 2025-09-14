@@ -544,3 +544,11 @@ magic 4 - Dice force -wheel of torture- THIS SPELL DOES NOT DO ANYTHING
 
 To SOlvE MY SOUND ISSUE WHEN FIRST STARTING GAME:
 HAVE A CHECKER THAT IS SET TO FALSE AND THEN TRUE AFTER LOAD GAME OR NEW GAME IS SELECTED
+
+
+FOR LUCK:
+Lets create a global luck function , which I will put ina  seperat folder, 
+Store the following:
+Luck chance
+luck bonus
+Luck roll
