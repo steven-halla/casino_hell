@@ -554,7 +554,7 @@ class BlackJackThomasScreen(GambleScreen):
             if (Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices
                     and self.magic_menu_index
                     == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value)):
-                if state.player.focus_points >= self.redraw_cast_cost:
+                if state.player.focus_points >= self.black_jack_magic.REDRAW_MP_COST:
                     self.redraw_debuff_counter = self.black_jack_magic.REDRAW_DURATION
                     self.spell_sound.play()
                     state.player.focus_points -= self.black_jack_magic.REDRAW_MP_COST
@@ -566,7 +566,7 @@ class BlackJackThomasScreen(GambleScreen):
                 if state.player.focus_points >= self.black_jack_magic.REVEAL_MP_COST:
                     self.reveal_buff_counter = self.black_jack_magic.REVEAL_DURATION
                     self.spell_sound.play()
-                    state.player.focus_points -= self.reveal_cast_cost
+                    state.player.focus_points -= self.black_jack_magic.REVEAL_MP_COST
                     self.magic_lock = True
                     self.magic_menu_index = 0
                     self.game_state = self.WELCOME_SCREEN

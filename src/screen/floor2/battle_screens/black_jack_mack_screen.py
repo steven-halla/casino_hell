@@ -578,10 +578,10 @@ class BlackJackMackScreen(GambleScreen):
             if (Magic.BLACK_JACK_REDRAW.value in self.magic_screen_choices
                     and self.magic_menu_index
                     == self.magic_screen_choices.index(Magic.BLACK_JACK_REDRAW.value)):
-                if state.player.focus_points >= self.redraw_cast_cost:
-                    self.redraw_debuff_counter = self.redraw_start_counter
+                if state.player.focus_points >= self.black_jack_magic.REDRAW_MP_COST:
+                    self.redraw_debuff_counter = self.black_jack_magic.REDRAW_DURATION
                     self.spell_sound.play()
-                    state.player.focus_points -= self.redraw_cast_cost
+                    state.player.focus_points -= self.black_jack_magic.REDRAW_MP_COST
                     self.magic_lock = True
                     self.magic_menu_index = 0
                     self.game_state = self.WELCOME_SCREEN
@@ -590,7 +590,7 @@ class BlackJackMackScreen(GambleScreen):
                 if state.player.focus_points >= self.black_jack_magic.REVEAL_MP_COST:
                     self.reveal_buff_counter = self.black_jack_magic.REVEAL_DURATION
                     self.spell_sound.play()
-                    state.player.focus_points -= self.reveal_cast_cost
+                    state.player.focus_points -= self.black_jack_magic.REVEAL_MP_COST
                     self.magic_lock = True
                     self.magic_menu_index = 0
                     self.game_state = self.WELCOME_SCREEN
@@ -634,22 +634,27 @@ class BlackJackMackScreen(GambleScreen):
                     and len(self.player_hand) <= card_max):
                 self.animate_face_down_card_player(state, len(self.player_hand))
 
-                if self.player_score > max_before_bust:
-                    if self.black_jack_equipment.handle_bust_protection(
-                            self.player_hand, self.player_score):
-                        # prevent bust: remove the just-drawn card, then recompute
-                        if self.player_hand:
-                            self.player_hand.pop()
-                        self.player_score = self.deck.compute_hand_value(self.player_hand)
-                        self.lucky_strike.play()
-                        print("You protected against a bust even though it feels good")
-                    else:
-                        print("busting makes me feel good, hat failed.")
-                        self.game_state = self.ENEMY_WIN_ACTION_SCREEN
+            if self.player_score > max_before_bust:
+                if self.black_jack_equipment.handle_bust_protection(
+                        self.player_hand, self.player_score):
+                    # prevent bust: remove the just-drawn card, then recompute
+                    if self.player_hand:
+                        self.player_hand.pop()
+                    self.player_score = self.deck.compute_hand_value(self.player_hand)
+                    self.lucky_strike.play()
+                    print("You protected against a bust even though it feels good")
+                else:
+                    print("busting makes me feel good, hat failed.")
+                    self.game_state = self.ENEMY_WIN_ACTION_SCREEN
 
-
-
-
+            if (self.player_action_phase_index == self.player_action_phase_force_redraw_index
+                    and Magic.BLACK_JACK_REDRAW.value in self.player_action_phase_choices):
+                if self.redraw_counter:
+                    if self.black_jack_magic.force_enemy_redraw_faceup(self.enemy_hand, self.deck):
+                        self.enemy_score = self.deck.compute_hand_value(self.enemy_hand)
+                    # consume once-per-turn regardless of success/fail (your current rule)
+                    self.redraw_counter = False
+                return
 
     def animate_face_down_card_player(self, state, card_index):
         initial_y_position = 0
