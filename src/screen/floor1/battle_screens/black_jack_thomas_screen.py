@@ -167,7 +167,6 @@ class BlackJackThomasScreen(GambleScreen):
         self.initialize_music()
         self.spirit_bonus: int = state.player.spirit * 10
         self.magic_bonus: int = state.player.mind * 10
-        self.luck_bonus: int = state.player.luck * 5
         self.welcome_screen_index = 0
 
         if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory and Magic.BLACK_JACK_REDRAW.value not in self.magic_screen_choices:

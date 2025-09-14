@@ -162,6 +162,8 @@ class BlackJackJasmineScreen(GambleScreen):
         self.magic_bonus: int = state.player.mind * 10
         self.black_jack_magic = BlackJackMagic(state)
         self.black_jack_equipment = BlackJackEquipment(state)
+        self.luck_bonus: int = state.player.luck * 5
+
 
     def round_reset(self):
         print("Round Reset")

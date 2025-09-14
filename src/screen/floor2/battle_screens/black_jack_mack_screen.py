@@ -491,6 +491,8 @@ class BlackJackMackScreen(GambleScreen):
         level_1_luck_score = 0
         lucky_strike_threshhold = 75
         initial_hand = 2
+        adjusted_lucky_roll = lucky_roll + state.player.luck * luck_muliplier
+
         # if self.debuff_buff_luck_switch == 0:
         #     adjusted_lucky_roll = lucky_roll + self.luck_bonus
         # elif self.debuff_buff_luck_switch > 0:
@@ -527,15 +529,15 @@ class BlackJackMackScreen(GambleScreen):
                 self.player_score = self.deck.compute_hand_value(self.player_hand)
                 attempts += 1
 
-            # if state.player.luck > level_1_luck_score:
-            #     if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-            #         if adjusted_lucky_roll >= lucky_strike_threshhold:
-            #             self.lucky_strike.play()
-            #             while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
-            #                 self.player_hand = self.deck.player_draw_hand(initial_hand)
-            #                 self.player_score = self.deck.compute_hand_value(self.player_hand)
-            #                 self.critical_hit = True
-            #                 print("LINE 715 MAYBE THE ERROR IS HERE")
+            if state.player.luck > level_1_luck_score:
+                if self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                    if adjusted_lucky_roll >= lucky_strike_threshhold:
+                        self.lucky_strike.play()
+                        while self.player_score > player_bad_score_min_range and self.player_score < player_bad_score_max_range:
+                            self.player_hand = self.deck.player_draw_hand(initial_hand)
+                            self.player_score = self.deck.compute_hand_value(self.player_hand)
+                            self.critical_hit = True
+                            print("LINE 715 MAYBE THE ERROR IS HERE")
 
     def update_player_phase_draw(self, state, controller) -> None:
         if controller.confirm_button:
