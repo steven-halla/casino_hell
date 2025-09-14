@@ -416,9 +416,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
         if controller.confirm_button:
             if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value and state.player.focus_points >= self.shield_cost:
-                state.player.focus_points -= self.shield_cost
-
-                self.shield_debuff = 3
+                self.shield_debuff = self.coinflip_magic.cast_shield()
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
@@ -468,19 +466,15 @@ class CoinFlipDexterScreen(GambleScreen):
         if self.coin_landed == self.player_choice:
             self.game_state = self.PLAYER_WIN_SCREEN
         elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-            # in future we will need a message to display roll chances for player spells
-            shield_chance = self.magic_bonus
-            random_shield = random.randint(1, 100) + shield_chance
-            # Each level should have a different % higher
-            if random_shield > 75:
-                print("SHIELD ROLL IS: " + str(random_shield))
-                self.game_state = self.PLAYER_DRAW_SCREEN
-            else:
-                print("SHIELD ROLL IS: " + str(random_shield))
-
-                self.game_state = self.PLAYER_LOSE_SCREEN
-
-        elif self.coin_landed != self.player_choice:
+            next_state = self.coinflip_magic.shield_outcome(
+                self.coin_landed,
+                self.player_choice,
+                self.shield_debuff,
+                self.magic_bonus
+            )
+            self.game_state = getattr(self, next_state)
+            return
+        else:
             self.game_state = self.PLAYER_LOSE_SCREEN
 
 
