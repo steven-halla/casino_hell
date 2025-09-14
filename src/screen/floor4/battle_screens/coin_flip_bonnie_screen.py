@@ -10,6 +10,7 @@ from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_magic.coin_flip_magic import CoinFlipMagic
 
 
 class CoinFlipBonnieScreen(GambleScreen):
@@ -143,8 +144,25 @@ class CoinFlipBonnieScreen(GambleScreen):
     BONNIE_CASTING_SPELL_MESSAGE: str= "BONNIE_CASTING_SPELL_MESSAGE"
 
     def start(self, state: 'GameState'):
-        self.spirit_bonus: int = state.player.spirit
-        self.magic_bonus: int = state.player.mind
+
+        self.reset_coin_flip_game()
+
+
+        self.welcome_screen_index = 0
+        self.coinflip_magic = CoinFlipMagic(state)
+
+
+        self.luck_bonus: int = state.player.luck
+
+        if Magic.HEADS_FORCE.value in state.player.magicinventory and Magic.HEADS_FORCE.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.HEADS_FORCE.value)
+
+        if Magic.SHIELD.value in state.player.magicinventory and Magic.SHIELD.value not in self.magic_menu_selector:
+            self.magic_menu_selector.append(Magic.SHIELD.value)
+
+        if self.BACK not in self.magic_menu_selector:
+            self.magic_menu_selector.append(self.BACK)
+
     def reset_coin_flip_game(self):
         self.battle_messages[self.WELCOME_MESSAGE].reset()
         self.battle_messages[self.COIN_FLIP_MESSAGE].reset()

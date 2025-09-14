@@ -10,6 +10,7 @@ from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_magic.coin_flip_magic import CoinFlipMagic
 from screen.floor1.map_screens.game_over_screen import GameOverScreen
 
 
@@ -156,6 +157,7 @@ class CoinFlipFredScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.reset_coin_flip_game()
         self.welcome_screen_index = 0
+        self.coinflip_magic = CoinFlipMagic(state)
 
 
         self.spirit_bonus: int = state.player.spirit * 20
@@ -218,7 +220,6 @@ class CoinFlipFredScreen(GambleScreen):
 
     def update(self, state):
         super().update(state)
-        print(self.game_state)
 
         controller = state.controller
         controller.update()
@@ -405,9 +406,9 @@ class CoinFlipFredScreen(GambleScreen):
 
         if controller.confirm_button:
             if self.magic_menu_selector[self.magic_screen_index] == Magic.SHIELD.value and state.player.focus_points >= self.shield_cost:
-                state.player.focus_points -= self.shield_cost
-
-                self.shield_debuff = 3
+                # self.coinflip_magic.cast_shield()
+                # when you want to apply the shield
+                self.shield_debuff = self.coinflip_magic.cast_shield()
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
@@ -462,13 +463,13 @@ class CoinFlipFredScreen(GambleScreen):
             self.game_state = self.PLAYER_WIN_SCREEN
             return
         elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
-            shield_chance = self.magic_bonus
-            random_shield = random.randint(1, 100) + shield_chance
-            print("SHIELD ROLL IS: " + str(random_shield))
-            if random_shield > 30:
-                self.game_state = self.PLAYER_DRAW_SCREEN
-            else:
-                self.game_state = self.PLAYER_LOSE_SCREEN
+            next_state = self.coinflip_magic.shield_outcome(
+                self.coin_landed,
+                self.player_choice,
+                self.shield_debuff,
+                self.magic_bonus
+            )
+            self.game_state = getattr(self, next_state)
             return
         else:
             self.game_state = self.PLAYER_LOSE_SCREEN

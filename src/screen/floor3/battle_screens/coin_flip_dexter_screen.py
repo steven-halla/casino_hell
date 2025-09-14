@@ -10,6 +10,7 @@ from game_constants.coin_flip_constants import CoinFlipConstants
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_magic.coin_flip_magic import CoinFlipMagic
 from screen.floor1.map_screens.game_over_screen import GameOverScreen
 
 
@@ -157,6 +158,7 @@ class CoinFlipDexterScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.reset_coin_flip_game()
         self.welcome_screen_index = 0
+        self.coinflip_magic = CoinFlipMagic(state)
 
 
         self.spirit_bonus: int = state.player.spirit
