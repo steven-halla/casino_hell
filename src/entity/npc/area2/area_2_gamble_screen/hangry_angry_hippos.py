@@ -6,6 +6,7 @@ import pygame
 
 from entity.npc.npc import Npc
 from entity.gui.textbox.npc_text_box import NpcTextBox
+from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
 
@@ -67,12 +68,11 @@ class HangryAngryHippos(Npc):
             self.hippo_messages["welcome_message"].reset()
 
     def update_talking(self, state: "GameState"):
-        # current_message = (
-        #     self.hippo_messages["defeated_message"]
-        #     if Events.CRAPS_HAPPY_DEFEATED.value in state.player.level_two_npc_state
-        #     else self.hippo_messages["welcome_message"]
-        # )
-        current_message = self.hippo_messages["welcome_message"]
+        current_message = (
+            self.hippo_messages["defeated_message"]
+            if Equipment.HIPPO_HOUR_GLASS.value in state.player.items
+            else self.hippo_messages["welcome_message"]
+        )
         current_message.update(state)
 
         # Lock the player in place while talking
@@ -91,15 +91,15 @@ class HangryAngryHippos(Npc):
 
 
         # Check if the "T" key is pressed and the flag is not set
-        if (current_message.is_finished() and Events.CRAPS_HAPPY_DEFEATED.value
-                not in state.player.level_two_npc_state
+        if (current_message.is_finished() and Equipment.HIPPO_HOUR_GLASS.value
+                not in state.player.items
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
             selected_option = self.choices[self.arrow_index]
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes" and state.player.stamina_points > 0 and state.player.money >= 50:
+            if selected_option == "Yes" and Equipment.HIPPO_HOUR_GLASS.value not in state.player.items:
 
                 state.currentScreen = state.hungryStaringHipposNippyScreen
                 state.hungryStaringHipposNippyScreen.start(state)
@@ -136,17 +136,16 @@ class HangryAngryHippos(Npc):
             state.DISPLAY.blit(scaled_sprite, (sprite_x, sprite_y))
 
         if self.state == "talking":
-            # current_message = (
-            #     self.hippo_messages["defeated_message"]
-            #     if Events.CRAPS_HAPPY_DEFEATED.value in state.player.level_two_npc_state
-            #     else self.hippo_messages["welcome_message"]
-            # )
-            current_message = self.hippo_messages["welcome_message"]
+            current_message = (
+                self.hippo_messages["defeated_message"]
+                if Equipment.HIPPO_HOUR_GLASS.value in state.player.items
+                else self.hippo_messages["welcome_message"]
+            )
 
             current_message.draw(state)
 
-            if (current_message.is_finished() and Events.CRAPS_HAPPY_DEFEATED.value
-                    not in state.player.level_two_npc_state and current_message.message_at_end()):
+            if (current_message.is_finished() and Equipment.HIPPO_HOUR_GLASS.value
+                    not in state.player.items and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

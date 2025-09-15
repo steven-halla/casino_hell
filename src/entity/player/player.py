@@ -255,10 +255,10 @@ class Player(Entity):
 
 
 
-        if self.mind == 2:
+        if self.mind == 2 and Magic.CRAPS_LUCKY_7.value not in self.magicinventory:
             self.magicinventory.append(Magic.CRAPS_LUCKY_7.value)
 
-        if self.mind == 3:
+        if self.mind == 3 and Magic.FLUSH_DECK.value not in self.magicinventory:
             self.magicinventory.append(Magic.FLUSH_DECK.value)
 
 

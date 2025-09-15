@@ -1,7 +1,7 @@
 {
     "current_stage": 2,
     "level": 3,
-    "exp": 555,
+    "exp": 590,
     "stamina_points": 130,
     "max_stamina_points": 130,
     "focus_points": 165,
@@ -10,13 +10,10 @@
     "items": [
         "mp bracelet",
         "opossum repellent",
-        "Black Hat",
-        "sir leopold amulet",
-        "HIPPO HOUR GLASS"
+        "Black Hat"
     ],
     "equipped_items": [
-        "Black Hat",
-        "sir leopold amulet"
+
     ],
     "npcitems": [
         "level 2 token",
@@ -32,7 +29,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1600,
+    "money": 2500,
     "rabies": false,
     "immunity": false,
     "quest_items": [

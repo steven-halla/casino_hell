@@ -15,3 +15,4 @@ LEVEL 1
 ALL LEVEL UPS HAVE BEEN TESTED AND WORK
 All game over screens work though there is an issue with having both low stamina and low money
 
+Blacl jack if you get a bj at 100 gold winning 200 player gets 200 not 100

@@ -26,7 +26,7 @@ class Area2ShopKeeper(Npc):
         self.state = "waiting"
         self.shop_items = [
             Equipment.COIN_SAVE_AREA_2.value,
-            Equipment.COIN_FLIP_GLASSES.value,
+            Equipment.SIR_LEOPOLD_AMULET.value,
             Equipment.HEALTHY_GLOVES.value,
             Magic.SHAKE.value,
             Equipment.BOSS_KEY.value,# i need to change this to EVENT
@@ -54,7 +54,7 @@ class Area2ShopKeeper(Npc):
 
             if Equipment.COIN_SAVE_AREA_2.value in state.player.level_two_npc_state:
                 self.shop_items[0] = "sold out"
-            if Equipment.COIN_FLIP_GLASSES.value in state.player.level_two_npc_state:
+            if Equipment.SIR_LEOPOLD_AMULET.value in state.player.level_two_npc_state:
                 self.shop_items[1] = "sold out"
             if Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
                 self.shop_items[2] = "sold out"
@@ -86,11 +86,11 @@ class Area2ShopKeeper(Npc):
                             state.save_game(state.player, state)
 
                     elif self.selected_item_index == 1:
-                        if state.player.money - cost < 500 or Equipment.COIN_FLIP_GLASSES.value in state.player.items:
+                        if state.player.money - cost < 500 or Equipment.SIR_LEOPOLD_AMULET.value in state.player.items:
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Equipment.add_equipment_to_player(state.player, Equipment.COIN_FLIP_GLASSES)
+                            Equipment.add_equipment_to_player(state.player, Equipment.SIR_LEOPOLD_AMULET)
                             state.player.money -= cost
                     elif self.selected_item_index == 2:
                         if state.player.money - cost < 500 or Equipment.HEALTHY_GLOVES.value in state.player.level_two_npc_state:
@@ -196,3 +196,9 @@ class Area2ShopKeeper(Npc):
                 state.DISPLAY.blit(self.font.render("Complete the quest for Darlene the Chicken to unlock its full power!", True, (255, 255, 255)), (70, 510))
             if self.selected_item_index == 5 and Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.level_two_npc_state:
                 state.DISPLAY.blit(self.font.render("Nuggie Amulet is Sold out!", True, (255, 255, 255)), (70, 460))
+
+            if self.selected_item_index == 1 and Equipment.SIR_LEOPOLD_AMULET.value not in state.player.level_two_npc_state:
+                state.DISPLAY.blit(self.font.render("Sir Leopold Amulet - companion item for stealing enemy aces", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render("Useful for Black Jack games!", True, (255, 255, 255)), (70, 510))
+            if self.selected_item_index == 1 and Equipment.SIR_LEOPOLD_AMULET.value in state.player.level_two_npc_state:
+                state.DISPLAY.blit(self.font.render("Sir Leopold Amulet is Sold out!", True, (255, 255, 255)), (70, 460))
