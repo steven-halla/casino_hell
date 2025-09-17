@@ -1,6 +1,5 @@
 import random
 
-
 class CrapsMagic:
     def __init__(self, state):
         self.state = state
@@ -8,12 +7,12 @@ class CrapsMagic:
         self.LUCKY_7_MP_COSTS = 25
         self.LUCKY_7_DURATION = state.player.mind + 5
 
-    @staticmethod
     def apply_lucky_seven_buff(
-            lucky_seven_buff_counter: int,
-            dice_roll_1: int,
-            dice_roll_2: int,
-            come_out_roll_total: int,
+        self,
+        lucky_seven_buff_counter: int,
+        dice_roll_1: int,
+        dice_roll_2: int,
+        come_out_roll_total: int,
     ) -> tuple[int, int]:
         point_roll_total = dice_roll_1 + dice_roll_2
         print(f"[Lucky 7] Starting → dice1={dice_roll_1}, dice2={dice_roll_2}, total={point_roll_total}")
@@ -22,14 +21,24 @@ class CrapsMagic:
             dice_roll_3 = random.randint(1, 6)
             print(f"[Lucky 7] Rerolled dice3={dice_roll_3}")
 
-            original_dice = dice_roll_2
-            dice_roll_2 = dice_roll_3
-            point_roll_total = dice_roll_1 + dice_roll_2
-            print(f"[Lucky 7] After reroll → dice1={dice_roll_1}, dice2={dice_roll_2}, total={point_roll_total}")
+            lucky_roll = random.randint(1, 100)
+            min_roll_for_success = (self.state.player.current_stage * 5) + 50
+            adjusted_roll = self.state.player.mind * 10
+            player_roll = lucky_roll + adjusted_roll
+            print(f"[Lucky 7] Check → lucky_roll={lucky_roll}, adjusted={adjusted_roll}, "
+                  f"player_roll={player_roll}, min_needed={min_roll_for_success}")
 
-            if point_roll_total == 7:
-                dice_roll_2 = original_dice
+            if player_roll >= min_roll_for_success:
+                original_dice = dice_roll_2
+                dice_roll_2 = dice_roll_3
                 point_roll_total = dice_roll_1 + dice_roll_2
-                print(f"[Lucky 7] Reverted to original dice2={dice_roll_2}, total={point_roll_total}")
+                print(f"[Lucky 7] After reroll → dice1={dice_roll_1}, dice2={dice_roll_2}, total={point_roll_total}")
+
+                if point_roll_total == 7:
+                    dice_roll_2 = original_dice
+                    point_roll_total = dice_roll_1 + dice_roll_2
+                    print(f"[Lucky 7] Reverted to original dice2={dice_roll_2}, total={point_roll_total}")
+            else:
+                print("[Lucky 7] Reroll FAILED check — keeping original dice2")
 
         return dice_roll_2, point_roll_total
