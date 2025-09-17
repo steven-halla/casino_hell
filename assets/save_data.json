@@ -1,7 +1,7 @@
 {
     "current_stage": 2,
     "level": 4,
-    "exp": 610,
+    "exp": 620,
     "stamina_points": 150,
     "max_stamina_points": 150,
     "focus_points": 185,
@@ -36,7 +36,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1150,
+    "money": 1344,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -46,12 +46,13 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 11,
+    "days": 12,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "BLACK_JACK_MACK_DEFEATED",
         "Nuggie Amulet",
-        "FEAST_CONSUMED"
+        "FEAST_CONSUMED",
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -79,7 +80,7 @@
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 94,
+    "opossuminacancandymoney": 0,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
     "blackjackthomasmoney": -100,

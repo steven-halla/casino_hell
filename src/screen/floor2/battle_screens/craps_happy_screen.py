@@ -9,6 +9,9 @@ from game_constants.magic import Magic
 
 from typeguard import typechecked
 
+from game_constants.player_equipment.craps_equipment import CrapsEquipment
+from game_constants.player_magic.craps_magic import CrapsMagic
+
 
 # an eleven is a win condition for come out roll
 # need to animate extra dice
@@ -175,6 +178,9 @@ class CrapsHappyScreen(GambleScreen):
 
         if self.BACK not in self.magic_screen_choices:
             self.magic_screen_choices.append(self.BACK)
+
+        self.craps_magic = CrapsMagic(state)
+        self.craps_equipment = CrapsEquipment(state)
 
     def round_reset(self, state: 'GameState'):
 
@@ -481,10 +487,10 @@ class CrapsHappyScreen(GambleScreen):
         if controller.confirm_button:
             selected_choice = self.magic_screen_choices[self.magic_screen_index]
 
-            if selected_choice == Magic.CRAPS_LUCKY_7.value and state.player.focus_points >= self.triple_dice_cast_cost:
-                self.lucky_seven_buff_counter = 5 + state.player.mind
+            if selected_choice == Magic.CRAPS_LUCKY_7.value and state.player.focus_points >= self.craps_magic.LUCKY_7_MP_COSTS:
+                self.lucky_seven_buff_counter = self.craps_magic.LUCKY_7_DURATION
                 self.spell_sound.play()
-                state.player.focus_points -= self.triple_dice_cast_cost
+                state.player.focus_points -= self.craps_magic.LUCKY_7_MP_COSTS
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
 
@@ -968,13 +974,16 @@ class CrapsHappyScreen(GambleScreen):
                 self.start_time = 0
 
                 if self.lucky_seven_buff_counter > 0 and self.point_roll_total != self.come_out_roll_total and self.point_roll_total != 7:
-                    self.dice_roll_3 = random.randint(1, 6)
-                    original_dice = self.dice_roll_2
-                    self.dice_roll_2 = self.dice_roll_3
-                    self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
-                    if self.point_roll_total == 7:
-                        self.dice_roll_2 = original_dice
-                        self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                    self.dice_roll_2, self.point_roll_total = self.craps_magic.apply_lucky_seven_buff(
+                        self.lucky_seven_buff_counter, self.dice_roll_1, self.dice_roll_2, self.come_out_roll_total
+                    )
+                    # self.dice_roll_3 = random.randint(1, 6)
+                    # original_dice = self.dice_roll_2
+                    # self.dice_roll_2 = self.dice_roll_3
+                    # self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                    # if self.point_roll_total == 7:
+                    #     self.dice_roll_2 = original_dice
+                    #     self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
 
                 if self.point_roll_total == 7:
                     self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
