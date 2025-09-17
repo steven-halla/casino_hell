@@ -307,6 +307,11 @@ class OpossumInACanCandyScreen(GambleScreen):
             state.currentScreen = state.area2GamblingScreen
             state.area2GamblingScreen.start(state)
 
+        if state.player.stamina_points <= 0:
+            state.currentScreen = state.area2GamblingScreen
+            state.area2GamblingScreen.start(state)
+
+
         super().update(state)
         controller = state.controller
         controller.update()
@@ -409,23 +414,7 @@ class OpossumInACanCandyScreen(GambleScreen):
             self.handle_level_up(state, state.controller)
 
         elif self.game_state == self.GAME_OVER_SCREEN:
-            no_money_game_over = 0
-            no_stamina_game_over = 0
-
-            if state.player.money <= no_money_game_over:
-                if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    state.currentScreen = state.gameOverScreen
-                    state.gameOverScreen.start(state)
-            elif state.player.stamina_points <= no_stamina_game_over:
-                if controller.isTPressed or controller.isAPressedSwitch:
-                    controller.isTPressed = False
-                    controller.isAPressedSwitch = False
-                    self.opossum_round_reset(state)
-                    state.player.money -= 100
-                    state.currentScreen = state.area2GamblingScreen
-                    state.area2GamblingScreen.start(state)
+            self.game_over_screen_level(state, controller)
 
 
     def draw(self, state):
@@ -592,7 +581,7 @@ class OpossumInACanCandyScreen(GambleScreen):
             controller.isTPressed = False
             controller.isAPressedSwitch = False
             if self.magic_menu_selector[self.magic_screen_index] == Magic.SHAKE.value and state.player.focus_points >= self.shake_cost:
-                state.player.focus_points -= self.shake_cost
+                state.player.focus_points -=  self.opossum_in_a_can_magic.SHAKE_MP_COST
                 self.debuff_keen_perception = True
                 self.spell_sound.play()  # Play the sound effect once
                 self.magic_lock = True
@@ -866,7 +855,7 @@ class OpossumInACanCandyScreen(GambleScreen):
                         time_since_last_shake = current_time % shake_interval
                         should_shake = False
 
-                        if state.player.mind < 3:
+                        if state.player.mind < 2:
                             if current_can_content == 'X3_star' and not shaken_x3_star:
                                 shaken_x3_star = True
                                 should_shake = True
@@ -876,7 +865,7 @@ class OpossumInACanCandyScreen(GambleScreen):
                             elif current_can_content == 'win':
                                 should_shake = True
 
-                        elif state.player.mind in [3, 4]:
+                        elif state.player.mind in [2, 3]:
                             if current_can_content == 'X3_star' and not shaken_x3_star:
                                 shaken_x3_star = True
                                 should_shake = True
@@ -885,7 +874,7 @@ class OpossumInACanCandyScreen(GambleScreen):
                                 should_shake = True
 
 
-                        elif state.player.mind == 5:
+                        elif state.player.mind == 4:
                             if current_can_content == 'X3_star':
                                 should_shake = True
                             else:

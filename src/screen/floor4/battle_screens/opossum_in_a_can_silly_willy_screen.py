@@ -774,22 +774,38 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
                 # Determine the content of the current trash can
                 current_can_content = getattr(self, f'can{len(self.positions)}')
                 # Apply the shaking effect if debuff is active
-                if self.debuff_keen_perception == True:
+                if self.debuff_keen_perception:
                     shake_effect = (0, 0)  # Default to no shake
+                    time_since_last_shake = current_time % shake_interval
+                    should_shake = False
 
-                    # Check and apply shake for "lose" cans
-                    if current_can_content == 'lose' and not shaken_lose:
-                        shaken_lose = True
-                        time_since_last_shake = current_time % shake_interval
-                        if time_since_last_shake < shake_duration:
-                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
+                    if state.player.mind < 2:
+                        if current_can_content == 'X3_star' and not shaken_x3_star:
+                            shaken_x3_star = True
+                            should_shake = True
+                        elif current_can_content == 'lose' and not shaken_lose:
+                            shaken_lose = True
+                            should_shake = True
+                        elif current_can_content == 'win':
+                            should_shake = True
 
-                    # Check and apply shake for "X3_star" cans
-                    elif current_can_content == 'X3_star' and not shaken_x3_star:
-                        shaken_x3_star = True
-                        time_since_last_shake = current_time % shake_interval
-                        if time_since_last_shake < shake_duration:
-                            shake_effect = random.randint(-2, 2), random.randint(-2, 2)
+                    elif state.player.mind in [2, 3]:
+                        if current_can_content == 'X3_star' and not shaken_x3_star:
+                            shaken_x3_star = True
+                            should_shake = True
+                        elif current_can_content == 'lose' and not shaken_lose:
+                            shaken_lose = True
+                            should_shake = True
+
+
+                    elif state.player.mind == 4:
+                        if current_can_content == 'X3_star':
+                            should_shake = True
+                        else:
+                            should_shake = False  # override all else
+
+                    if should_shake and time_since_last_shake < shake_duration:
+                        shake_effect = random.randint(-2, 2), random.randint(-2, 2)
 
                     # Apply the shake effect to the position
                     x += shake_effect[0]

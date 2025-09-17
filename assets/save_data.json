@@ -1,38 +1,42 @@
 {
     "current_stage": 2,
-    "level": 3,
-    "exp": 555,
-    "stamina_points": 130,
-    "max_stamina_points": 130,
-    "focus_points": 165,
-    "max_focus_points": 165,
+    "level": 4,
+    "exp": 610,
+    "stamina_points": 150,
+    "max_stamina_points": 150,
+    "focus_points": 185,
+    "max_focus_points": 185,
     "companions": [],
     "items": [
         "mp bracelet",
         "opossum repellent",
         "Black Hat",
         "sir leopold amulet",
-        "HIPPO HOUR GLASS"
+        "HIPPO HOUR GLASS",
+        "Nuggie Amulet"
     ],
     "equipped_items": [
-        "Black Hat",
+        "opossum repellent",
         "sir leopold amulet"
     ],
     "npcitems": [
         "level 2 token",
-        "level 3 token"
+        "level 3 token",
+        "level 4 token"
     ],
     "magicinventory": [
         "Shield",
-        "reveal"
+        "reveal",
+        "shake",
+        "Triple D"
     ],
     "body": 1,
-    "mind": 1,
+    "mind": 2,
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1600,
+    "money": 1150,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -42,10 +46,12 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 10,
+    "days": 11,
     "leveltwonpcstate": [
         "sir leopold amulet",
-        "BLACK_JACK_MACK_DEFEATED"
+        "BLACK_JACK_MACK_DEFEATED",
+        "Nuggie Amulet",
+        "FEAST_CONSUMED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -73,7 +79,7 @@
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 444,
+    "opossuminacancandymoney": 94,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
     "blackjackthomasmoney": -100,

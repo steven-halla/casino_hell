@@ -282,7 +282,9 @@ class CrapsHappyScreen(GambleScreen):
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
             self.update_player_win_point_roll_helper(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
-            self.game_over_screen_level_4(state, controller)
+            self.game_over_screen_level(state, controller)
+
+
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.music_volume = 0
             pygame.mixer.music.set_volume(self.music_volume)
@@ -352,6 +354,7 @@ class CrapsHappyScreen(GambleScreen):
                                (self.blit_message_x, self.blit_message_y))
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
+
 
         elif self.game_state == self.LEVEL_UP_SCREEN:
             self.draw_level_up(state)
