@@ -9,6 +9,9 @@ from game_constants.magic import Magic
 
 from typeguard import typechecked
 
+from game_constants.player_equipment.craps_equipment import CrapsEquipment
+from game_constants.player_magic.craps_magic import CrapsMagic
+
 
 # an eleven is a win condition for come out roll
 # need to animate extra dice
@@ -168,6 +171,9 @@ class CrapsBossScreen(GambleScreen):
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
         self.magic_bonus: int = state.player.mind
+
+        self.craps_magic = CrapsMagic(state)
+        self.craps_equipment = CrapsEquipment(state)
         if (Magic.GREED_METER.value in state.player.magicinventory
                 and Magic.GREED_METER.value not in self.magic_screen_choices):
             self.magic_screen_choices.append(Magic.GREED_METER.value)
@@ -969,13 +975,9 @@ class CrapsBossScreen(GambleScreen):
                 self.start_time = 0
 
                 if self.lucky_seven_buff_counter > 0 and self.point_roll_total != self.come_out_roll_total and self.point_roll_total != 7:
-                    self.dice_roll_3 = random.randint(1, 6)
-                    original_dice = self.dice_roll_2
-                    self.dice_roll_2 = self.dice_roll_3
-                    self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
-                    if self.point_roll_total == 7:
-                        self.dice_roll_2 = original_dice
-                        self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                    self.dice_roll_2, self.point_roll_total = self.craps_magic.apply_lucky_seven_buff(
+                        self.lucky_seven_buff_counter, self.dice_roll_1, self.dice_roll_2, self.come_out_roll_total
+                    )
 
                 if self.point_roll_total == 7:
                     self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
