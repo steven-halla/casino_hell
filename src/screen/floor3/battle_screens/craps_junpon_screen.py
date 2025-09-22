@@ -83,6 +83,8 @@ class CrapsJunponScreen(GambleScreen):
         self.hungry_dice_increased_chance:int = 0
         self.debuff_dice_of_deception: int = 0
         self.debuff_chance_deception: int = 0
+        self.high_exp: int = 10
+        self.low_exp: int = 5
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -310,6 +312,7 @@ class CrapsJunponScreen(GambleScreen):
         if state.controller.confirm_button:
             self.money -= self.bet
             state.player.money += self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
 
@@ -317,6 +320,7 @@ class CrapsJunponScreen(GambleScreen):
         if state.controller.confirm_button:
             self.money += self.bet
             state.player.money -= self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
 
@@ -328,6 +332,7 @@ class CrapsJunponScreen(GambleScreen):
         if state.controller.confirm_button:
             state.player.money -= self.bet
             self.money += self.bet
+            state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
 
@@ -342,6 +347,7 @@ class CrapsJunponScreen(GambleScreen):
         if state.controller.confirm_button:
             state.player.money += self.bet
             self.money -= self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
 

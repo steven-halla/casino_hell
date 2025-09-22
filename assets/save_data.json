@@ -1,9 +1,9 @@
 {
     "current_stage": 2,
     "level": 4,
-    "exp": 620,
-    "stamina_points": 150,
-    "max_stamina_points": 150,
+    "exp": 999,
+    "stamina_points": 180,
+    "max_stamina_points": 180,
     "focus_points": 185,
     "max_focus_points": 185,
     "companions": [],
@@ -14,12 +14,11 @@
         "sir leopold amulet",
         "HIPPO HOUR GLASS",
         "Nuggie Amulet",
-        "HEALTHY GLOVES",
-        "boss key"
+        "HEALTHY GLOVES"
     ],
     "equipped_items": [
-        "opossum repellent",
-        "sir leopold amulet"
+        "HEALTHY GLOVES",
+        "Nuggie Amulet"
     ],
     "npcitems": [
         "level 2 token",
@@ -38,17 +37,18 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 869,
+    "money": 1555,
     "rabies": false,
     "immunity": false,
     "quest_items": [
         "contract",
         "LEVEL_1_INN_KEY",
-        "LEVEL_1_BOSS_KEY"
+        "LEVEL_1_BOSS_KEY",
+        "boss key"
     ],
     "level3reward": false,
     "food": 1,
-    "days": 15,
+    "days": 16,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "BLACK_JACK_MACK_DEFEATED",

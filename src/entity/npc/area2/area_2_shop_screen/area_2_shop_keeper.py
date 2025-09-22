@@ -111,7 +111,7 @@ class Area2ShopKeeper(Npc):
                             self.cant_buy_sound.play()
                         else:
                             self.buy_sound.play()
-                            Equipment.add_equipment_to_player(state.player, Equipment.BOSS_KEY)
+                            Equipment.add_item_to_quest_state(state.player, Equipment.BOSS_KEY)
                             state.player.money -= cost
                     elif self.selected_item_index == 5:
                         if state.player.money - cost < 500 or Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.level_two_npc_state:

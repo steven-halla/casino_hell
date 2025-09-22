@@ -89,6 +89,8 @@ class CrapsNabaScreen(GambleScreen):
         self.greed_meter: int = 0
         self.greed_bank: bool = False
         self.naba_money: int = 1000
+        self.high_exp: int = 10
+        self.low_exp: int = 5
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -331,6 +333,7 @@ class CrapsNabaScreen(GambleScreen):
             self.round_reset(state)
             self.naba_money -= self.bet
             state.player.money += self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -340,6 +343,7 @@ class CrapsNabaScreen(GambleScreen):
             self.round_reset(state)
             self.naba_money += self.bet
             state.player.money -= self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
 
 
@@ -378,6 +382,7 @@ class CrapsNabaScreen(GambleScreen):
             self.round_reset(state)
             state.player.money -= self.bet
             self.naba_money += self.bet
+            state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
     def update_naba_casting_spell_helper(self, state):
@@ -392,9 +397,11 @@ class CrapsNabaScreen(GambleScreen):
             if self.greed_bank == False:
                 state.player.money += self.bet
                 self.naba_money -= self.bet
+                state.player.exp += self.high_exp
             if self.greed_bank == True:
                 state.player.money += int(self.bet * 1.5)
                 self.naba_money -= int(self.bet * 1.5)
+                state.player.exp += self.high_exp
 
             if self.debuff_spirit_drain == 0 and self.naba_magic_points > 0:
                 dice_of_deception_random_chance = random.randint(9, 10)

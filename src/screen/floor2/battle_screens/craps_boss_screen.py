@@ -174,9 +174,9 @@ class CrapsBossScreen(GambleScreen):
 
         self.craps_magic = CrapsMagic(state)
         self.craps_equipment = CrapsEquipment(state)
-        if (Magic.GREED_METER.value in state.player.magicinventory
-                and Magic.GREED_METER.value not in self.magic_screen_choices):
-            self.magic_screen_choices.append(Magic.GREED_METER.value)
+        # if (Magic.GREED_METER.value in state.player.magicinventory
+        #         and Magic.GREED_METER.value not in self.magic_screen_choices):
+        #     self.magic_screen_choices.append(Magic.GREED_METER.value)
 
 
 
@@ -704,7 +704,7 @@ class CrapsBossScreen(GambleScreen):
             if self.welcome_screen_index == self.welcome_screen_play_index:
                 self.game_state = self.POWER_METER_SCREEN
                 state.player.stamina_points -= self.player_stamina_med_cost
-                self.money += self.bet
+                # self.money += self.bet
             elif self.welcome_screen_index == self.welcome_screen_magic_index and self.magic_lock == False \
                     and Magic.CRAPS_LUCKY_7.value in state.player.magicinventory:
                 self.magic_screen_index = self.magic_screen_menu_lucky_seven_index
