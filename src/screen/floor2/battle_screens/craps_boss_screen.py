@@ -618,14 +618,17 @@ class CrapsBossScreen(GambleScreen):
             if self.lucky_seven == False:
                 unlucky_two_roll = random.randint(1, 100)
                 if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items:
-                    unlucky_two_roll -= nugget_amulet_buff
-                if unlucky_two_roll >= you_lose_unlucky_roll:
+                    unlucky_two_roll = self.craps_equipment.CHICKEN_NUGGER_SUCCESS_BONUS
+                if unlucky_two_roll < self.craps_equipment.PLAYER_LOSE_ROLL:
+                    print("Player rolls a: " + str(unlucky_two_roll))
+                    print("what is my lose percent :: " + str(self.craps_equipment.PLAYER_LOSE_ROLL))
                     self.dice_roll_1 = 1
                     self.dice_roll_2 = 1
                     self.come_out_roll_total = 2
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
-                elif unlucky_two_roll < you_lose_unlucky_roll:
-                    self.dice_roll_1 = random.randint(1, 6)
+                elif unlucky_two_roll >= self.craps_equipment.PLAYER_LOSE_ROLL:
+                    print("Player rolls a: " + str(unlucky_two_roll))
+                    print("what is my lose percent :: " + str(self.craps_equipment.PLAYER_LOSE_ROLL))
                     if self.debuff_weighted_dice == 0:
                         self.dice_roll_2 = random.randint(1, 6)
                     elif self.debuff_weighted_dice > 0:

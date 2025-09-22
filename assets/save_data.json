@@ -13,7 +13,9 @@
         "Black Hat",
         "sir leopold amulet",
         "HIPPO HOUR GLASS",
-        "Nuggie Amulet"
+        "Nuggie Amulet",
+        "HEALTHY GLOVES",
+        "boss key"
     ],
     "equipped_items": [
         "opossum repellent",
@@ -36,7 +38,7 @@
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1344,
+    "money": 869,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -46,13 +48,16 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 12,
+    "days": 15,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "BLACK_JACK_MACK_DEFEATED",
         "Nuggie Amulet",
         "FEAST_CONSUMED",
-        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
+        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
+        "HEALTHY GLOVES",
+        "CRAPS_HAPPY_DEFEATED",
+        "boss key"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -93,7 +98,7 @@
     "slotsrippasnappamoney": 200,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
-    "crapscrappymoney": 777,
+    "crapscrappymoney": -48,
     "crapsjunponmoney": 777,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,

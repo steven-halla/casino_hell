@@ -540,15 +540,19 @@ class CrapsNabaScreen(GambleScreen):
     def update_power_meter_screen_helper(self, state):
         controller = state.controller
         controller.update()
-        nugget_amulet_buff = 10
+        nugget_amulet_buff = 10 + (state.player.spirit * 5)
+
         you_lose_unlucky_roll = 60
         self.battle_messages[self.POWER_METER_MESSAGE].update(state)
         erika_nugget_amulet_protection = 4
         power_meter_max = 100
         power_meter_min = 0
-        power_meter_success = 80
+        if self.greed_meter == 0:
+            power_meter_success = 80
+        elif self.greed_meter > 0:
+            power_meter_success = self.piggy_meter_goal
+
         player_lucky_7_come_out_roll_reward = 7
-        greed_meter_min = 95
 
         self.power_meter_index += self.power_meter_speed
         if self.power_meter_index >= power_meter_max:
@@ -557,9 +561,10 @@ class CrapsNabaScreen(GambleScreen):
         if controller.action_and_cancel_button:
             self.power_meter_speed = power_meter_min
             self.power_meter_index = self.power_meter_index
+            print("Your roll is: " + str(self.power_meter_index))
 
             if self.greed_meter > 0:
-                if self.power_meter_index >= greed_meter_min:
+                if self.power_meter_index >= self.piggy_meter_goal:
                     self.greed_bank = True
 
             if self.power_meter_index >= power_meter_success:
@@ -571,20 +576,30 @@ class CrapsNabaScreen(GambleScreen):
             if self.lucky_seven == False:
                 unlucky_two_roll = random.randint(1, 100)
                 if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items:
-                    unlucky_two_roll -= nugget_amulet_buff
-                if unlucky_two_roll >= you_lose_unlucky_roll:
+                    unlucky_two_roll = self.craps_equipment.CHICKEN_NUGGER_SUCCESS_BONUS
+                if unlucky_two_roll < self.craps_equipment.PLAYER_LOSE_ROLL:
+                    print("Player rolls a: " + str(unlucky_two_roll))
+                    print("what is my lose percent :: " + str(self.craps_equipment.PLAYER_LOSE_ROLL))
                     self.dice_roll_1 = 1
                     self.dice_roll_2 = 1
                     self.come_out_roll_total = 2
                     self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
-                elif unlucky_two_roll < you_lose_unlucky_roll:
+                elif unlucky_two_roll >= self.craps_equipment.PLAYER_LOSE_ROLL:
+                    print("Player rolls a: " + str(unlucky_two_roll))
+                    print("what is my lose percent :: " + str(self.craps_equipment.PLAYER_LOSE_ROLL))
                     self.dice_roll_1 = random.randint(1, 6)
-                    self.dice_roll_2 = random.randint(1, 6)
+                    if self.debuff_weighted_dice == 0:
+                        self.dice_roll_2 = random.randint(1, 6)
+                    elif self.debuff_weighted_dice > 0:
+                        self.dice_roll_2 = self.dice_roll_1
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
                     if self.come_out_roll_total == 2 or self.come_out_roll_total == 12:
                         self.game_state = self.PLAYER_LOSE_COME_OUT_SCREEN
                         return
                     elif self.come_out_roll_total == 7:
+                        self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
+                        return
+                    elif self.come_out_roll_total == 11:
                         self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                         return
                     if Equipment.DARLENES_CHICKEN_NUGGER_AMULET.value in state.player.equipped_items and self.come_out_roll_total == 3:

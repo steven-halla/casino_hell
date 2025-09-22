@@ -95,6 +95,8 @@ class CrapsHappyScreen(GambleScreen):
         self.greed_bank: bool = False
         self.hungry_dice_increased_chance:int = 0
         self.level_up_message_initialized = False
+        self.high_exp: int = 10
+        self.low_exp: int = 5
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -374,6 +376,7 @@ class CrapsHappyScreen(GambleScreen):
             self.round_reset(state)
             self.money -= self.bet
             state.player.money += self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_lose_point_roll(self, state):
@@ -381,6 +384,7 @@ class CrapsHappyScreen(GambleScreen):
             self.round_reset(state)
             self.money += self.bet
             state.player.money -= self.bet
+            state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
 
     def update_blow_point_roll_helper(self, state):
@@ -415,6 +419,7 @@ class CrapsHappyScreen(GambleScreen):
             self.round_reset(state)
             state.player.money -= self.bet
             self.money += self.bet
+            state.player.exp += self.low_exp
             self.game_state = self.WELCOME_SCREEN
 
     def update_naba_casting_spell_helper(self, state):
@@ -429,12 +434,15 @@ class CrapsHappyScreen(GambleScreen):
             if self.greed_bank == False:
                 state.player.money += self.bet
                 self.money -= self.bet
+                state.player.exp += self.high_exp
             if self.greed_bank == True:
                 state.player.money += int(self.bet * 1.5)
                 self.money -= int(self.bet * 1.5)
 
 
             else:
+                state.player.exp += self.high_exp
+
                 self.game_state = self.WELCOME_SCREEN
 
     def update_handle_dice_rolling_simulation(self, controller):
