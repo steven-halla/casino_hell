@@ -454,7 +454,11 @@ class SlotsBroganScreen(GambleScreen):
                 if controller.confirm_button:
                     state.player.exp += self.exp_gain_high
                     Events.add_level_three_event_to_player(state.player, Events.SLOTS_LEVEL_3_SECRET_ITEM_ACQUIRED)
-                    state.player.items.append(Equipment.SLOTS_SHOES.value)
+                    # state.player.items.append(Equipment.SLOTS_SHOES.value)
+                    state.player.stamina_points += 30
+                    state.player.focus_points += 10
+                    state.player.max_stamina_points += 30
+                    state.player.max_focus_points += 10
 
                     self.secret_item_found = True
                     self.game_state = self.WELCOME_SCREEN
