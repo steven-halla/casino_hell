@@ -68,7 +68,7 @@ class CrapsBossScreen(GambleScreen):
         self.reset_power_meter_to_base: int = 2
 
         self.power_meter_goal: int = 85
-        self.money = 55
+        self.money = 75
         self.player_money = 4000
 
 

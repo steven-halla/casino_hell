@@ -146,6 +146,7 @@ class Area3InnKeeper(Npc):
 
                     print("Yes selected, closing shop.")
                     self.arrow_index = 0
+                    state.player.current_stage = 3  # ← THIS LINE
                     self.state = "waiting"
                     self.state_start_time = pygame.time.get_ticks()
                     state.player.canMove = True

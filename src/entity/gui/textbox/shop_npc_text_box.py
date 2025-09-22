@@ -90,7 +90,7 @@ class ShopNpcTextBox(Entity):
         item_x_offset: int = 50
         arrow_offset: int = -40
 
-        shop_title: str = "Must have 700 gold after purchase!"
+        shop_title: str = "Must have 500 gold after purchase!"
         title_surface: pygame.Surface = state.FONT.render(shop_title, True, (255, 255, 255))
         state.DISPLAY.blit(title_surface, (box_x + 10, box_y + 10))
 

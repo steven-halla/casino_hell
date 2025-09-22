@@ -1,5 +1,5 @@
 {
-    "current_stage": 2,
+    "current_stage": 3,
     "level": 4,
     "exp": 999,
     "stamina_points": 180,
@@ -36,8 +36,8 @@
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
-    "luck": 1,
-    "money": 1555,
+    "luck": 2,
+    "money": 2222,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -48,7 +48,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 16,
+    "days": 17,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "BLACK_JACK_MACK_DEFEATED",
@@ -56,6 +56,7 @@
         "FEAST_CONSUMED",
         "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
         "HEALTHY GLOVES",
+        "CRAPS_HAPPY_DEFEATED",
         "boss key"
     ],
     "levelonenpcstate": [
@@ -97,7 +98,7 @@
     "slotsrippasnappamoney": 200,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
-    "crapscrappymoney": 500,
+    "crapscrappymoney": -48,
     "crapsjunponmoney": 777,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
