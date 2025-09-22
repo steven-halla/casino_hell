@@ -885,6 +885,7 @@ class CrapsNabaScreen(GambleScreen):
     def update_point_screen_helper(self, state):
         controller = state.controller
         controller.update()
+        print("Your point roll index is: " + str(self.point_roll_index))
         if (controller.isUpPressed or controller.isUpPressedSwitch) and self.is_timer_active == False:
             self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -897,29 +898,28 @@ class CrapsNabaScreen(GambleScreen):
             controller.isDownPressed = False
             controller.isDownPressedSwitch = False
 
-        if (controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 0:
-            self.start_time = pygame.time.get_ticks()  # Set start time
-            self.is_timer_active = True
-            self.blow_turn += 1
-            controller.isTPressed = False
-            controller.isAPressedSwitch = False
-
-        elif controller.confirm_button and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 0:
-            state.player.stamina_points -= self.player_stamina_high_cost
-            self.game_state = self.BLOW_POINT_ROLL_SCREEN
-
-
-        elif controller.confirm_button and not self.is_timer_active and self.point_roll_index == 2:
-            self.game_state = self.BET_SCREEN
+        # handle confirm for the 3 choices in one shot
+        if controller.confirm_button and not self.is_timer_active:
+            if self.point_roll_index == 0:
+                self.start_time = pygame.time.get_ticks()
+                self.is_timer_active = True
+                self.blow_turn += 1
+            elif self.point_roll_index == 1 and self.blow_turn >= 0:
+                state.player.stamina_points -= self.player_stamina_high_cost
+                self.game_state = self.BLOW_POINT_ROLL_SCREEN
+                return
+            elif self.point_roll_index == 2:
+                print("mdls;afj;ldsajlf")
+                self.game_state = self.BET_SCREEN
+                return
 
         if self.is_timer_active:
             if self.rolling_dice_timer():
                 self.dice_roll_1 = random.randint(1, 6)
-                state.player.stamina_points -= self.player_stamina_low_cost
-                if self.debuff_spirit_drain > 0 and self.debuff_counter > 0:
-                    self.dice_roll_1 = 3
-                    self.debuff_counter -= 1
                 self.dice_roll_2 = random.randint(1, 6)
+
+                state.player.stamina_points -= self.player_stamina_low_cost
+
                 self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
                 self.is_timer_active = False
                 self.start_time = 0
@@ -928,6 +928,13 @@ class CrapsNabaScreen(GambleScreen):
                     self.dice_roll_2, self.point_roll_total = self.craps_magic.apply_lucky_seven_buff(
                         self.lucky_seven_buff_counter, self.dice_roll_1, self.dice_roll_2, self.come_out_roll_total
                     )
+                    # self.dice_roll_3 = random.randint(1, 6)
+                    # original_dice = self.dice_roll_2
+                    # self.dice_roll_2 = self.dice_roll_3
+                    # self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
+                    # if self.point_roll_total == 7:
+                    #     self.dice_roll_2 = original_dice
+                    #     self.point_roll_total = self.dice_roll_1 + self.dice_roll_2
 
                 if self.point_roll_total == 7:
                     self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
