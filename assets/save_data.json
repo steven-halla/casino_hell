@@ -56,7 +56,6 @@
         "FEAST_CONSUMED",
         "OPOSSUM_IN_A_CAN_CANDY_DEFEATED",
         "HEALTHY GLOVES",
-        "CRAPS_HAPPY_DEFEATED",
         "boss key"
     ],
     "levelonenpcstate": [
@@ -98,7 +97,7 @@
     "slotsrippasnappamoney": 200,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
-    "crapscrappymoney": -48,
+    "crapscrappymoney": 500,
     "crapsjunponmoney": 777,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,

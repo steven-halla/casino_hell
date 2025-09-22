@@ -946,6 +946,7 @@ class CrapsHappyScreen(GambleScreen):
     def update_point_screen_helper(self, state):
         controller = state.controller
         controller.update()
+        print("Your point roll index is: " + str(self.point_roll_index))
         if (controller.isUpPressed or controller.isUpPressedSwitch) and self.is_timer_active == False:
             self.menu_movement_sound.play()  # Play the sound effect once
 
@@ -958,21 +959,20 @@ class CrapsHappyScreen(GambleScreen):
             controller.isDownPressed = False
             controller.isDownPressedSwitch = False
 
-        if (
-                controller.isTPressed or controller.isAPressedSwitch) and not self.is_timer_active and self.point_roll_index == 0:
-            self.start_time = pygame.time.get_ticks()  # Set start time
-            self.is_timer_active = True
-            self.blow_turn += 1
-            controller.isTPressed = False
-            controller.isAPressedSwitch = False
-
-        elif controller.confirm_button and not self.is_timer_active and self.point_roll_index == 1 and self.blow_turn >= 0:
-            state.player.stamina_points -= self.player_stamina_high_cost
-            self.game_state = self.BLOW_POINT_ROLL_SCREEN
-
-
-        elif controller.confirm_button and not self.is_timer_active and self.point_roll_index == 2:
-            self.game_state = self.BET_SCREEN
+        # handle confirm for the 3 choices in one shot
+        if controller.confirm_button and not self.is_timer_active:
+            if self.point_roll_index == 0:
+                self.start_time = pygame.time.get_ticks()
+                self.is_timer_active = True
+                self.blow_turn += 1
+            elif self.point_roll_index == 1 and self.blow_turn >= 0:
+                state.player.stamina_points -= self.player_stamina_high_cost
+                self.game_state = self.BLOW_POINT_ROLL_SCREEN
+                return
+            elif self.point_roll_index == 2:
+                print("mdls;afj;ldsajlf")
+                self.game_state = self.BET_SCREEN
+                return
 
         if self.is_timer_active:
             if self.rolling_dice_timer():
