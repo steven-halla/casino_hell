@@ -34,12 +34,19 @@ class Area3ShopKeeper(Npc):
         self.state_start_time = pygame.time.get_ticks()  # initialize start_time to the current time
         self.state = "waiting"  # states = "waiting" | "talking" | "finished"
         # New: Initialize an array of items for the shopkeeper
-        self.shop_items = [Equipment.COIN_SAVE_AREA_3.value,
-                           Equipment.SPIRIT_SHOES.value,
-                           Magic.HEADS_FORCE.value,
-                           Equipment.LEVEL_3_BOSS_KEY.value]
+        self.shop_items = [
+            Magic.SLOTS_HACK.value,
+            Equipment.SPIRIT_SHOES.value,
+            Magic.HEADS_FORCE.value,
+            Equipment.LEVEL_3_BOSS_KEY.value,
+            Equipment.SLOTS_SHOES.value,
+            Equipment.HIGH_LOW_PANTS.value,
+            Equipment.COIN_FLIP_GLASSES.value,  # ← NEW
+            Magic.BLACK_JACK_REDRAW.value
 
-        self.shop_costs = ["500", "500", "500", "500"]
+        ]
+
+        self.shop_costs = ["500", "500", "500", "500", "500","500", "500","500"]  # add cost for the new item
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -67,7 +74,7 @@ class Area3ShopKeeper(Npc):
 
             state.player.hide_player = True
 
-            if Equipment.COIN_SAVE_AREA_3.value in state.player.level_three_npc_state:
+            if Magic.SLOTS_HACK.value in state.player.magicinventory:
                 self.shop_items[0] = "sold out"
 
             if Equipment.SPIRIT_SHOES.value in state.player.level_three_npc_state:
@@ -78,6 +85,16 @@ class Area3ShopKeeper(Npc):
 
             if Equipment.LEVEL_3_BOSS_KEY.value in state.player.level_three_npc_state:
                 self.shop_items[3] = "sold out"
+
+            if Equipment.SLOTS_SHOES.value in state.player.level_three_npc_state:
+                self.shop_items[4] = "sold out"
+            if Equipment.COIN_FLIP_GLASSES.value in state.player.level_three_npc_state:
+                self.shop_items[5] = "sold out"
+            if Equipment.HIGH_LOW_PANTS.value in state.player.level_three_npc_state:
+                self.shop_items[6] = "sold out"
+
+            if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+                self.shop_items[7] = "sold out"
 
 
 
@@ -102,17 +119,13 @@ class Area3ShopKeeper(Npc):
                     if self.selected_item_index == 0:
                         print("Yes")
                         cost = 500
-                        if state.player.money - cost < 500 or Equipment.COIN_SAVE_AREA_3.value in state.player.level_three_npc_state:
+                        if state.player.money - cost < 500 or Magic.SLOTS_HACK.value in state.player.magicinventory:
                             self.cant_buy_sound.play()  # Not enough money left or already purchased
                         else:
                             self.buy_sound.play()
-                            if state.player.enhanced_luck:
-                                state.player.luck -= 1
-                            Equipment.add_shop_items_to_player_inventory(state.player, Equipment.COIN_SAVE_AREA_3)
+                            Magic.add_magic_to_player(state.player, Magic.SLOTS_HACK)
                             state.player.money -= cost
-                            state.save_game(state.player, state)
-                            if state.player.enhanced_luck:
-                                state.player.luck += 1
+
 
                     elif self.selected_item_index == 1:
                         cost = 500
@@ -131,7 +144,7 @@ class Area3ShopKeeper(Npc):
                             self.buy_sound.play()
                             Magic.add_magic_to_player(state.player, Magic.HEADS_FORCE)
                             state.player.money -= cost
-                            self.stat_point_increase = True
+                            # self.stat_point_increase = True
 
                     elif self.selected_item_index == 3:
                         cost = 500
@@ -141,6 +154,46 @@ class Area3ShopKeeper(Npc):
                             self.buy_sound.play()
                             Equipment.add_equipment_to_player_level_3(state.player, Equipment.LEVEL_3_BOSS_KEY)
                             state.player.money -= cost
+
+                    elif self.selected_item_index == 4:
+                        cost = 500
+                        if state.player.money - cost < 500 or Equipment.SLOTS_SHOES.value in state.player.level_three_npc_state:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            Equipment.add_equipment_to_player_level_3(state.player, Equipment.SLOTS_SHOES)
+                            state.player.money -= cost
+
+
+                    elif self.selected_item_index == 5:
+                        cost = 500
+                        if state.player.money - cost < 500 or Equipment.COIN_FLIP_GLASSES.value in state.player.level_three_npc_state:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            # Treat as equipment on level 3 like Spirit Shoes / Boss Key
+                            Equipment.add_equipment_to_player_level_3(state.player, Equipment.COIN_FLIP_GLASSES)
+                            state.player.money -= cost
+
+                    elif self.selected_item_index == 6:
+                        cost = 500
+                        if state.player.money - cost < 500 or Equipment.HIGH_LOW_PANTS.value in state.player.level_three_npc_state:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            # Treat as equipment on level 3 like Spirit Shoes / Boss Key
+                            Equipment.add_equipment_to_player_level_3(state.player, Equipment.HIGH_LOW_PANTS)
+                            state.player.money -= cost
+
+                    elif self.selected_item_index == 7:
+                        cost = 500
+                        if state.player.money - cost < 500 or Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+                            self.cant_buy_sound.play()
+                        else:
+                            self.buy_sound.play()
+                            Magic.add_magic_to_player(state.player, Magic.BLACK_JACK_REDRAW)
+                            state.player.money -= cost
+                            # self.stat_point_increase = True
 
 
 
@@ -250,13 +303,13 @@ class Area3ShopKeeper(Npc):
         elif self.state == "talking":
             self.textbox.draw(state)
 
-            if self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_3.value not in state.player.level_three_npc_state:
-                state.DISPLAY.blit(self.font.render(f"There is only 1 of these on this floor so use it wisely.", True,
+            if self.selected_item_index == 0 and Magic.SLOTS_HACK.value not in state.player.magicinventory:
+                state.DISPLAY.blit(self.font.render(f"hack magic.", True,
                                                     (255, 255, 255)), (70, 460))
-                state.DISPLAY.blit(self.font.render(f"Saves your game.", True,
+                state.DISPLAY.blit(self.font.render(f"hack the slots.", True,
                                                     (255, 255, 255)), (70, 510))
             elif self.selected_item_index == 0 and Equipment.COIN_SAVE_AREA_3.value in state.player.level_three_npc_state:
-                state.DISPLAY.blit(self.font.render(f"Save Coin is Sold out!", True,
+                state.DISPLAY.blit(self.font.render(f"hack magic is Sold out!", True,
                                                     (255, 255, 255)), (70, 460))
 
             if self.selected_item_index == 1 and Equipment.SPIRIT_SHOES.value not in state.player.level_three_npc_state:
@@ -285,3 +338,36 @@ class Area3ShopKeeper(Npc):
             elif self.selected_item_index == 3 and Equipment.LEVEL_3_BOSS_KEY.value in state.player.level_three_npc_state:
                 state.DISPLAY.blit(self.font.render(f"Boss Key is sold out!", True,
                                                     (255, 255, 255)), (70, 460))
+
+            if self.selected_item_index == 4 and Equipment.SLOTS_SHOES.value not in state.player.level_three_npc_state:
+                state.DISPLAY.blit(self.font.render(f"Gives player +100 HP and 50 focus on jackpot.", True,
+                                                    (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render(f"Useful for slots games.", True,
+                                                    (255, 255, 255)), (70, 510))
+            elif self.selected_item_index == 4 and Equipment.SLOTS_SHOES.value in state.player.level_three_npc_state:
+                state.DISPLAY.blit(self.font.render(f"Slots Shoes are sold out!", True,
+                                                    (255, 255, 255)), (70, 460))
+
+            if self.selected_item_index == 5 and Equipment.COIN_FLIP_GLASSES.value not in state.player.level_three_npc_state:
+                state.DISPLAY.blit(self.font.render(f"Coin Flip Glasses", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render(f"+5% success on coin magic.", True, (255, 255, 255)), (70, 510))
+            elif self.selected_item_index == 5 and Equipment.COIN_FLIP_GLASSES.value in state.player.level_three_npc_state:
+                state.DISPLAY.blit(self.font.render(f"Coin Flip Glasses are sold out!", True, (255, 255, 255)),
+                                   (70, 460))
+
+
+
+            if self.selected_item_index == 6 and Equipment.HIGH_LOW_PANTS.value not in state.player.level_three_npc_state:
+                state.DISPLAY.blit(self.font.render(f"HIGH LOW PANTS", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render(f"+5% success on PANTS magic.", True, (255, 255, 255)), (70, 510))
+            elif self.selected_item_index == 6 and Equipment.HIGH_LOW_PANTS.value in state.player.level_three_npc_state:
+                state.DISPLAY.blit(self.font.render(f"HIGH LOW PANTS are sold out!", True, (255, 255, 255)),
+                                   (70, 460))
+
+            if self.selected_item_index == 7 and Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
+                state.DISPLAY.blit(self.font.render(f"Black jack redraw", True, (255, 255, 255)), (70, 460))
+                state.DISPLAY.blit(self.font.render(f"redraw face down cards.", True, (255, 255, 255)), (70, 510))
+            elif self.selected_item_index == 7 and Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
+                state.DISPLAY.blit(self.font.render(f"magic redraw!", True, (255, 255, 255)),
+                                   (70, 460))
+

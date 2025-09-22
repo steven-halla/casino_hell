@@ -7,6 +7,11 @@ class CoinFlipMagic:
         self.state = state
         self.shield_duration = 3
         self.shield_cost = 10
+        self.HEADS_FORCE_COST = 10
+        self.HEADS_FORCE_SUCCESS_CHANCE = state.player.mind * 10
+        self.HEADS_FORCE_ENEMY_DEFENSE = random.randint(1, 100) + (state.player.current_stage * 5)
+
+
 
 
     def cast_shield(self):

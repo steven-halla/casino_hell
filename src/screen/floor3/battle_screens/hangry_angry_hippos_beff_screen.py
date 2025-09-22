@@ -111,6 +111,10 @@ class HungryStarvingHipposBeffScreen(Screen):
         self.human_picks = []
         self.win = False
 
+    def start(self, state):
+        super().start(state)
+        self.reset_screen(state)
+
     def human_stamina(self) -> None:
         # Ensure human stamina reduction only starts after the initial 10 seconds
         if not hasattr(self, 'stamina_start_time'):
@@ -739,5 +743,42 @@ class HungryStarvingHipposBeffScreen(Screen):
             pos = self.humans[closest_label]["pos"]
             return closest_label, pos[0], pos[1]
         return None, None, None
+
+    def reset_screen(self, state) -> None:
+        # core state
+        self.game_state = "bet_screen"
+        self.money_reward = 500
+        self.commentary = False
+        self.comment_to_use = 0
+
+        # race state
+        self.winners = []
+        self.human_picks = []
+        self.win = False
+        self.bet_selection_index = 0
+
+        # entities
+        self.humans = {}
+        self.hippo = None
+        self.hippo2 = None
+        self.hippo_stopping_eating = 0
+        self.hippo2_stopping_eating = 0
+
+        # timers
+        self.last_time = time.time()
+        self.start_time = time.time()
+        if hasattr(self, "stamina_start_time"): del self.stamina_start_time
+        if hasattr(self, "human_race_start_time"): del self.human_race_start_time
+        if hasattr(self, "hippo_target_label"): del self.hippo_target_label
+
+        # UI / input
+        # self.textbox.reset()
+        self.selected_item_index = 0
+        self.selected_money_index = 0
+        self.input_time = pygame.time.get_ticks()
+        state.player.canMove = True
+
+        # clear sticky buttons (edge-trigger next frame)
+   
 
 

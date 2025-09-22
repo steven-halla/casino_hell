@@ -106,6 +106,7 @@ class HangryAngryHipposBeff(Npc):
                 state.currentScreen = state.hungryStarvingHipposBeffScreen
                 state.hungryStarvingHipposBeffScreen.start(state)
 
+
             elif selected_option == "No":
                 self.state = "waiting"
                 state.player.canMove = True

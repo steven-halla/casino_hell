@@ -14,7 +14,13 @@
         "sir leopold amulet",
         "HIPPO HOUR GLASS",
         "Nuggie Amulet",
-        "HEALTHY GLOVES"
+        "HEALTHY GLOVES",
+        "Spirit Shoes",
+        "LEVEL_3_BOSS_KEY",
+        "slots shoes",
+        "coin flip glasses",
+        "high low pants",
+        "backwards watch"
     ],
     "equipped_items": [
         "HEALTHY GLOVES",
@@ -29,15 +35,18 @@
         "Shield",
         "reveal",
         "shake",
-        "Triple D"
+        "Triple D",
+        "HACK",
+        "Force",
+        "redraw"
     ],
     "body": 1,
     "mind": 2,
-    "spirit": 1,
+    "spirit": 2,
     "perception": 1,
     "baseperception": 1,
     "luck": 2,
-    "money": 2222,
+    "money": 2255,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -48,7 +57,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 17,
+    "days": 20,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "BLACK_JACK_MACK_DEFEATED",
@@ -71,7 +80,16 @@
         "LEVEL_1_BOSS_KEY",
         "LEVEL_1_BOSS_DEFEATED"
     ],
-    "levelthreenpcstate": [],
+    "levelthreenpcstate": [
+        "Spirit Shoes",
+        "LEVEL_3_BOSS_KEY",
+        "slots shoes",
+        "coin flip glasses",
+        "high low pants",
+        "FEAST_CONSUMED",
+        "backwards watch",
+        "hangry angry hippos beff"
+    ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],
     "slots_vest": false,

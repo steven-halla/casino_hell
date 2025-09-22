@@ -253,8 +253,8 @@ class CoinFlipDexterScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         if self.money <= self.dexter_bankrupt:
-            state.currentScreen = state.area3gamblingScreen
-            state.area3gamblingScreen.start(state)
+            state.currentScreen = state.area3GamblingScreen
+            state.area3GamblingScreen.start(state)
             state.player.canMove = True
             #------------------------------------Check other files for below_____________________________
             Events.add_level_three_event_to_player(state.player, Events.COIN_FLIP_DEXTER_DEFEATED)
@@ -420,8 +420,8 @@ class CoinFlipDexterScreen(GambleScreen):
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
-            elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value and state.player.focus_points >= self.heads_force_cost:
-                state.player.focus_points -= self.heads_force_cost
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value and state.player.focus_points >= self.coinflip_magic.HEADS_FORCE_COST:
+                state.player.focus_points -= self.coinflip_magic.HEADS_FORCE_COST
                 self.heads_force_active = True
                 self.spell_sound.play()
                 self.magic_lock = True
@@ -438,8 +438,8 @@ class CoinFlipDexterScreen(GambleScreen):
         elif self.welcome_screen_index == self.bet_index and controller.confirm_button :
             self.game_state = self.BET_SCREEN
         elif self.welcome_screen_index == self.quit_index and controller.confirm_button:
-            state.currentScreen = state.area3gamblingScreen
-            state.area3gamblingScreen.start(state)
+            state.currentScreen = state.area3GamblingScreen
+            state.area3GamblingScreen.start(state)
             state.player.canMove = True
 
     def update_flip_coin_logic_helper(self,controller):
