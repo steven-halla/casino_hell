@@ -429,6 +429,7 @@ class CoinFlipDexterScreen(GambleScreen):
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:
                 self.game_state = self.WELCOME_SCREEN
 
+
     def update_welcome_screen_logic(self, controller, state):
         if self.welcome_screen_index == self.flip_coin_index and controller.confirm_button:
             state.player.stamina_points -= self.low_stamina_drain
