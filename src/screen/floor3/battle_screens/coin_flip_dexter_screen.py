@@ -244,6 +244,7 @@ class CoinFlipDexterScreen(GambleScreen):
             self.odd = False
             self.tri = False
             self.spirit_magic_bonus_zero_chance = 0
+            print("Oh no")
 
 
     def update(self, state):
@@ -445,24 +446,22 @@ class CoinFlipDexterScreen(GambleScreen):
 
     def update_flip_coin_logic_helper(self,controller):
         if self.heads_force_active == True:
-            heads_force_modifer = self.magic_bonus
-            self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
+            # heads_force_modifer = self.magic_bonus
+            # self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
 
-            print("Heads force is: " + str(self.heads_force_randomizer))
+            # print("Heads force is: " + str(self.heads_force_randomizer))
 
-            if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
+            if self.coinflip_magic.HEADS_FORCE_SUCCESS_CHANCE > self.coinflip_magic.HEADS_FORCE_ENEMY_DEFENSE:
                 self.coin_landed = CoinFlipConstants.HEADS.value
+                self.game_state = self.PLAYER_WIN_SCREEN
+                return
             else:
                 self.heads_force_active = False
                 self.coin_landed = CoinFlipConstants.TAILS.value
-
-        if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
-            if self.heads_force_randomizer > self.heads_force_randomizer_success_rate:
-                self.game_state = self.PLAYER_WIN_SCREEN
-            else:
-                self.heads_force_active = False
-
                 self.game_state = self.PLAYER_LOSE_SCREEN
+                return
+
+
 
         if self.coin_landed == self.player_choice:
             self.game_state = self.PLAYER_WIN_SCREEN

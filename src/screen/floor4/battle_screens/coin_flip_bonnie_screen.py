@@ -360,8 +360,8 @@ class CoinFlipBonnieScreen(GambleScreen):
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
-            elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value and state.player.focus_points >= self.heads_force_cost:
-                state.player.focus_points -= self.heads_force_cost
+            elif self.magic_menu_selector[self.magic_screen_index] == Magic.HEADS_FORCE.value and state.player.focus_points >= self.coinflip_magic.HEADS_FORCE_COST:
+                state.player.focus_points -= self.coinflip_magic.HEADS_FORCE_COST
                 self.heads_force_active = True
                 self.spell_sound.play()
                 self.magic_lock = True
@@ -383,11 +383,27 @@ class CoinFlipBonnieScreen(GambleScreen):
             state.area4GamblingScreen.start(state)
 
     def update_flip_coin_logic_helper(self,controller):
-        if self.heads_force_active == True:
-            self.coin_landed = CoinFlipConstants.HEADS.value
+        # if self.heads_force_active == True:
+        #     self.coin_landed = CoinFlipConstants.HEADS.value
+        #
+        # if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
+        #     self.game_state = self.PLAYER_WIN_SCREEN
 
-        if self.player_choice == CoinFlipConstants.HEADS.value and self.heads_force_active == True:
-            self.game_state = self.PLAYER_WIN_SCREEN
+        if self.heads_force_active == True:
+            # heads_force_modifer = self.magic_bonus
+            # self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
+
+            # print("Heads force is: " + str(self.heads_force_randomizer))
+
+            if self.coinflip_magic.HEADS_FORCE_SUCCESS_CHANCE > self.coinflip_magic.HEADS_FORCE_ENEMY_DEFENSE:
+                self.coin_landed = CoinFlipConstants.HEADS.value
+                self.game_state = self.PLAYER_WIN_SCREEN
+                return
+            else:
+                self.heads_force_active = False
+                self.coin_landed = CoinFlipConstants.TAILS.value
+                self.game_state = self.PLAYER_LOSE_SCREEN
+                return
 
         if self.debuff_double_flip == 0:
             if self.coin_landed == self.player_choice:

@@ -1,11 +1,11 @@
 {
     "current_stage": 3,
-    "level": 4,
-    "exp": 999,
-    "stamina_points": 180,
-    "max_stamina_points": 180,
-    "focus_points": 185,
-    "max_focus_points": 185,
+    "level": 6,
+    "exp": 1824,
+    "stamina_points": 240,
+    "max_stamina_points": 240,
+    "focus_points": 205,
+    "max_focus_points": 205,
     "companions": [],
     "items": [
         "mp bracelet",
@@ -24,12 +24,14 @@
     ],
     "equipped_items": [
         "HEALTHY GLOVES",
-        "Nuggie Amulet"
+        "coin flip glasses"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token",
-        "level 4 token"
+        "level 4 token",
+        "level 5 token",
+        "level 6 token"
     ],
     "magicinventory": [
         "Shield",
@@ -40,13 +42,13 @@
         "Force",
         "redraw"
     ],
-    "body": 1,
+    "body": 2,
     "mind": 2,
     "spirit": 2,
     "perception": 1,
     "baseperception": 1,
-    "luck": 2,
-    "money": 2255,
+    "luck": 3,
+    "money": 3574,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -57,7 +59,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 20,
+    "days": 22,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "BLACK_JACK_MACK_DEFEATED",
@@ -88,7 +90,8 @@
         "high low pants",
         "FEAST_CONSUMED",
         "backwards watch",
-        "hangry angry hippos beff"
+        "hangry angry hippos beff",
+        "coin flip dexter defeated"
     ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],
@@ -99,7 +102,7 @@
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
     "coinflipbetteymoney": 300,
-    "coinflipdextermoney": 999,
+    "coinflipdextermoney": 0,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
