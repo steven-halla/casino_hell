@@ -8,3 +8,4 @@ class Vector:
 
     def toTuple(self) -> Tuple[float, float]:
         return (self.x, self.y)
+

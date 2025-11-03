@@ -133,6 +133,7 @@ class CrapsJunponScreen(GambleScreen):
         }
 
     POWER_METER_MESSAGE: str = "power_meter_message"
+    BLOW_POINT_ROLL_SCREEN: str = "blow point roll screen"
     MAGIC_MENU_TRIPLE_DICE_DESCRIPTION: str = "magic_menu_triple_dice_description"
     MAGIC_MENU_BACK_DESCRIPTION: str = "magic_menu_back_description"
     POINT_ROLL_MESSAGE: str = "point_roll_message"
@@ -237,7 +238,7 @@ class CrapsJunponScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.update_welcome_screen_helper(state)
+            self.update_welcome_screen_8helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
             self.battle_messages[self.JUNPON_CASTING_SPELL_MESSAGE].update(state)

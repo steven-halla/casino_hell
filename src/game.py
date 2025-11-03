@@ -36,3 +36,5 @@ class Game:
             # self.textBox.display()
 
         pygame.quit()
+
+# Welcome to Casino Hell! May the odds be ever in your favor... or not. The house always wins!

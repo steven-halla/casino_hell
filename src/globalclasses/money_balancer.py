@@ -5,6 +5,6 @@ class MoneyBalancer:
     def balance_money(self, state: "GameState", initial_enemy_money: int) -> None:
         if self.money < 0:
             print("money is at 0")
-            amount_needed = initial_enemy_money  # Amount of gold the enemy had before it fell below zero
-            state.player.money += amount_needed  # Add this amount to the player's money
+            amount_needed = initial_enemy_money
+            state.player.money += amount_needed
             self.money = 0
