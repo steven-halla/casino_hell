@@ -220,6 +220,7 @@ class CrapsJunponScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        print(self.game_state)
 
         if self.money <= 0:
             state.currentScreen = state.area3GamblingScreen
@@ -238,7 +239,7 @@ class CrapsJunponScreen(GambleScreen):
             self.magic_lock = False
 
         if self.game_state == self.WELCOME_SCREEN:
-            self.update_welcome_screen_8helper(state)
+            self.update_welcome_screen_helper(state)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
         elif self.game_state == self.JUNPON_CASTING_SPELL_SCREEN:
             self.battle_messages[self.JUNPON_CASTING_SPELL_MESSAGE].update(state)
@@ -825,7 +826,7 @@ class CrapsJunponScreen(GambleScreen):
                 self.blow_turn += 1
             elif self.point_roll_index == 1 and self.blow_turn >= 0:
                 state.player.stamina_points -= self.player_stamina_high_cost
-                self.game_state = self.BLOW_POINT_ROLL_SCREEN
+                self.game_state = self.BET_SCREEN
                 return
             elif self.point_roll_index == 2:
                 print("mdls;afj;ldsajlf")
