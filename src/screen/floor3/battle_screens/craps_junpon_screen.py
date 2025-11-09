@@ -94,6 +94,8 @@ class CrapsJunponScreen(GambleScreen):
         self.play_tune: bool = False
         self.blow_meter_ready: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/blowready.wav")
         self.blow_meter_ready.set_volume(0.6)
+        self.level_up_message_initialized = False
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
@@ -132,7 +134,10 @@ class CrapsJunponScreen(GambleScreen):
             ]),
             self.JUNPON_CASTING_SPELL_MESSAGE: MessageBox([
                 "Corrupting tendrils of hell, avert lady luck's gaze to evil incarnate...dice of deception"
-            ])
+            ]),
+            self.LEVEL_UP_MESSAGE: MessageBox([
+                f"You leveld up!"
+            ]),
         }
 
     POWER_METER_MESSAGE: str = "power_meter_message"
