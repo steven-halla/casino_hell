@@ -189,10 +189,16 @@ class CrapsJunponScreen(GambleScreen):
         self.power_meter_speed = self.reset_power_meter_to_base
         self.lucky_seven = True
         self.debuff_counter = 3
+        if "Blow" in self.point_roll_choices:
+            self.point_roll_choices.remove("Blow")
         if self.debuff_dice_of_deception > 0:
             self.debuff_dice_of_deception -= 1
 
         self.debuff_chance_deception += 3
+        self.point_roll_index = 0
+        self.blow_counter = 0
+        self.blow_timer_start = 0
+        self.blow_turn = 0
 
 
         debuff_dice_of_deception_random_chance = random.randint(1, 100) + self.debuff_chance_deception
@@ -220,6 +226,13 @@ class CrapsJunponScreen(GambleScreen):
         self.junpon_magic_points = 1
         self.debuff_weighted_dice = 0
         self.debuff_dice_of_deception = 0
+        if "Blow" in self.point_roll_choices:
+            self.point_roll_choices.remove("Blow")
+        self.point_roll_index = 0
+        self.blow_counter = 0
+        self.blow_timer_start = 0
+        self.blow_turn = 0
+
 
 
     def update(self, state: 'GameState'):
@@ -353,37 +366,40 @@ class CrapsJunponScreen(GambleScreen):
         blow_counter_min_needed = 20
         controller = state.controller
 
-        # ===================== 🌀 Blow Meter Input Handling =====================
-        # Cooldown between increments (in ms)
-        cooldown = 150
+        # --- input cooldown (to prevent multiple increments per frame) ---
+        cooldown = 150  # ms
         now = pygame.time.get_ticks()
-
         if not hasattr(self, "last_blow_input_time"):
             self.last_blow_input_time = 0
 
         if (
-                controller.isAPressed or controller.isAPressedSwitch
-        ) and (
-                controller.isLeftPressed or controller.isLeftPressedSwitch or
-                controller.isRightPressed or controller.isRightPressedSwitch
+                (controller.isAPressed or controller.isAPressedSwitch) and
+                (controller.isLeftPressed or controller.isLeftPressedSwitch or
+                 controller.isRightPressed or controller.isRightPressedSwitch)
         ):
             if now - self.last_blow_input_time >= cooldown:
                 self.blow_counter += 1
                 self.last_blow_input_time = now
 
-        # Prevent runaway counter
-        if self.blow_counter < 0:
-            self.blow_counter = 0
-        elif self.blow_counter > blow_counter_max:
+        # --- decay: every 1s, reduce meter by 3 ---
+        if not hasattr(self, "last_blow_decrement_time"):
+            self.last_blow_decrement_time = now
+        if now - self.last_blow_decrement_time >= 1000:
+            if self.blow_counter > 0:
+                self.blow_counter = max(0, self.blow_counter - 3)
+            self.last_blow_decrement_time = now
+
+        # clamp
+        if self.blow_counter > blow_counter_max:
             self.blow_counter = blow_counter_max
 
-        # ===================== ⏱️ Timer Setup =====================
-        if not hasattr(self, "blow_timer_start"):
+        # --- timer setup ---
+        if not hasattr(self, "blow_timer_start") or self.blow_timer_start == 0:
             self.blow_timer_start = pygame.time.get_ticks()
 
         time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
 
-        # ===================== ❌ Lose Condition =====================
+        # lose condition (time up)
         if time_elapsed >= meter_finished:
             self.dice_roll_1 = 3
             self.dice_roll_2 = 4
@@ -392,17 +408,15 @@ class CrapsJunponScreen(GambleScreen):
             self.blow_timer_start = pygame.time.get_ticks()
             return
 
-        # ===================== ✅ Win Condition =====================
+        # win condition (meter filled enough and buttons released)
         if (
-                (controller.isTPressed or controller.isAPressedSwitch) == False
-                and self.blow_counter >= blow_counter_min_needed
-        ):
+                not controller.isTPressed and not controller.isAPressedSwitch) and self.blow_counter >= blow_counter_min_needed:
             self.blow_timer_start = pygame.time.get_ticks()
             self.point_roll_total = self.come_out_roll_total
             self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
             return
 
-        # ===================== 💬 Update Message =====================
+        # update blow message (if present)
         if self.BLOW_POINT_ROLL_MESSAGE in self.battle_messages:
             self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
 
@@ -943,11 +957,14 @@ class CrapsJunponScreen(GambleScreen):
                 self.start_time = pygame.time.get_ticks()
                 self.is_timer_active = True
                 self.blow_turn += 1
+
                 # Unlock Blow command after 3+ turns if wrist watch is equipped (only once)
                 if "Blow" not in self.point_roll_choices and self.blow_turn >= 3:
                     if Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
                         self.point_roll_choices.insert(2, "Blow")
                         print("Blow command unlocked!")
+
+                # Increment Blow turn after the check
             elif self.point_roll_index == 1 and self.blow_turn >= 0:
                 state.player.stamina_points -= self.player_stamina_high_cost
                 self.game_state = self.BET_SCREEN
