@@ -459,12 +459,13 @@ class SlotsBroganScreen(GambleScreen):
                     state.player.focus_points += 10
                     state.player.max_stamina_points += 30
                     state.player.max_focus_points += 10
+                    # Equipment.add_equipment_to_player_level_3(state.player, Equipment.CRAPS_WRIST_WATCH)
 
                     self.secret_item_found = True
                     self.game_state = self.WELCOME_SCREEN
                     self.reset_slots_juragan_round()
 
-                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret item. Gain {self.exp_gain_high} exp"]
+                self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [f"You acquired the super secret: {Equipment.CRAPS_WRIST_WATCH.value}. Gain {self.exp_gain_high} exp"]
 
         elif self.slots == ["lucky_seven", "lucky_seven", "lucky_seven"]:
             self.jack_pot = 500

@@ -127,6 +127,9 @@ class CrapsJunponScreen(GambleScreen):
             self.POINT_ROLL_ROLLED_DICE_MESSAGE: MessageBox([
                 f"Whoa You rolled a place holder"
             ]),
+            self.BLOW_POINT_ROLL_MESSAGE: MessageBox([
+                f"Hold A key and rock d pad"
+            ]),
             self.JUNPON_CASTING_SPELL_MESSAGE: MessageBox([
                 "Corrupting tendrils of hell, avert lady luck's gaze to evil incarnate...dice of deception"
             ])
@@ -154,6 +157,10 @@ class CrapsJunponScreen(GambleScreen):
     PLAYER_WIN_POINT_ROLL_SCREEN: str = "player_win_point_roll_screen"
     PLAYER_LOSE_POINT_ROLL_SCREEN: str = "player_lose_point_roll_screen"
     JUNPON_CASTING_SPELL_SCREEN: str = "junpon_cating_spell_screen"
+    # 🔥 Blow Phase References
+    BLOW_POINT_ROLL_MESSAGE: str = "blow_point_roll_message"
+    PLAYER_WIN_BLOW_POINT_ROLL_SCREEN: str = "player_win_blow_point_roll_screen"
+    PLAYER_LOSE_BLOW_POINT_ROLL_SCREEN: str = "player_lose_blow_point_roll_screen"
 
     def start(self, state: 'GameState'):
         self.spirit_bonus: int = state.player.spirit
@@ -259,12 +266,18 @@ class CrapsJunponScreen(GambleScreen):
             self.update_player_lose_come_out_roll(state)
         elif self.game_state == self.POINT_ROLL_SCREEN:
             self.update_point_screen_helper(state)
+        elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+            self.update_blow_point_roll_helper(state)
         elif self.game_state == self.PLAYER_LOSE_POINT_ROLL_SCREEN:
             self.update_player_lose_point_roll(state)
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
             self.update_player_win_point_roll_helper(state)
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.game_over_screen_level_4(state, controller)
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+            self.handle_level_up(state, state.controller)
 
     def draw(self, state: 'GameState'):
         super().draw(state)
@@ -307,6 +320,16 @@ class CrapsJunponScreen(GambleScreen):
             else:
                 state.DISPLAY.blit(self.font.render(f"Rolling the dice ", True, WHITE),
                                    (self.blit_message_x, self.blit_message_y))
+        elif self.game_state == self.BLOW_POINT_ROLL_SCREEN:
+            time_elapsed: int = int((pygame.time.get_ticks() - self.blow_timer_start) / 1000)
+            timer_x_pois = 333
+            timer_y_pois = 125
+            state.DISPLAY.blit(self.font.render(f"TIMER: {time_elapsed}/7  ", True, RED), (timer_x_pois, timer_y_pois))
+            if time_elapsed >= 7:
+                self.blow_timer_start = pygame.time.get_ticks()
+            self.draw_create_blow_meter(state, time_elapsed)
+            self.draw_create_blow_meter(state, self.blow_counter)
+            self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].draw(state)
         elif self.game_state == self.PLAYER_WIN_POINT_ROLL_SCREEN:
             self.draw_display_dice(state, self.dice_roll_1, self.dice_roll_2)
             state.DISPLAY.blit(self.font.render(
@@ -318,7 +341,70 @@ class CrapsJunponScreen(GambleScreen):
                                (self.blit_message_x, self.blit_message_y))
         elif self.game_state == self.GAME_OVER_SCREEN:
             self.draw_game_over_screen_helper(state)
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
+            self.handle_level_up(state, state.controller)
         pygame.display.flip()
+
+    def update_blow_point_roll_helper(self, state):
+        meter_finished = 7
+        self.bet = self.bet_minimum
+        blow_counter_max = 21
+        blow_counter_min_needed = 20
+        controller = state.controller
+
+        # ===================== 🌀 Blow Meter Input Handling =====================
+        # Cooldown between increments (in ms)
+        cooldown = 150
+        now = pygame.time.get_ticks()
+
+        if not hasattr(self, "last_blow_input_time"):
+            self.last_blow_input_time = 0
+
+        if (
+                controller.isAPressed or controller.isAPressedSwitch
+        ) and (
+                controller.isLeftPressed or controller.isLeftPressedSwitch or
+                controller.isRightPressed or controller.isRightPressedSwitch
+        ):
+            if now - self.last_blow_input_time >= cooldown:
+                self.blow_counter += 1
+                self.last_blow_input_time = now
+
+        # Prevent runaway counter
+        if self.blow_counter < 0:
+            self.blow_counter = 0
+        elif self.blow_counter > blow_counter_max:
+            self.blow_counter = blow_counter_max
+
+        # ===================== ⏱️ Timer Setup =====================
+        if not hasattr(self, "blow_timer_start"):
+            self.blow_timer_start = pygame.time.get_ticks()
+
+        time_elapsed = (pygame.time.get_ticks() - self.blow_timer_start) / 1000
+
+        # ===================== ❌ Lose Condition =====================
+        if time_elapsed >= meter_finished:
+            self.dice_roll_1 = 3
+            self.dice_roll_2 = 4
+            self.point_roll_total = 7
+            self.game_state = self.PLAYER_LOSE_POINT_ROLL_SCREEN
+            self.blow_timer_start = pygame.time.get_ticks()
+            return
+
+        # ===================== ✅ Win Condition =====================
+        if (
+                (controller.isTPressed or controller.isAPressedSwitch) == False
+                and self.blow_counter >= blow_counter_min_needed
+        ):
+            self.blow_timer_start = pygame.time.get_ticks()
+            self.point_roll_total = self.come_out_roll_total
+            self.game_state = self.PLAYER_WIN_POINT_ROLL_SCREEN
+            return
+
+        # ===================== 💬 Update Message =====================
+        if self.BLOW_POINT_ROLL_MESSAGE in self.battle_messages:
+            self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].update(state)
 
     def update_player_win_point_roll_helper(self, state):
         if state.controller.confirm_button:
@@ -335,6 +421,8 @@ class CrapsJunponScreen(GambleScreen):
             state.player.exp += self.high_exp
             self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
+
+
 
 
     def update_player_lose_come_out_roll(self, state):
@@ -602,6 +690,27 @@ class CrapsJunponScreen(GambleScreen):
                 state.currentScreen = state.area3GamblingScreen
                 state.area3GamblingScreen.start(state)
 
+    def draw_create_blow_meter(self, state: "GameState", blow_counter: int) -> None:
+        meter_width = 300  # Total width of the meter
+        meter_height = 30
+        max_blow_counter = 20  # 100% equals 20 points (5% per point, so 20 points total for full meter)
+        white_border_width = 2
+        meter_x_position = 250
+        meter_y_position = 50
+        line_y_start = 50
+        line_y_end = 80
+        line_thickness = 5
+        filled_width = int((blow_counter / max_blow_counter) * meter_width)
+        meter_bg_rect = pygame.Rect(meter_x_position, meter_y_position, meter_width,
+                                    meter_height)  # Position: (250, 50)
+        pygame.draw.rect(state.DISPLAY, RED, meter_bg_rect)  # Red background
+        meter_fill_rect = pygame.Rect(meter_x_position, meter_y_position, filled_width, meter_height)
+        pygame.draw.rect(state.DISPLAY, GREEN, meter_fill_rect)  # Green filled portion
+        pygame.draw.rect(state.DISPLAY, WHITE, meter_bg_rect, white_border_width)  # White border
+        goal_position = int((self.power_meter_goal / max_blow_counter) * meter_width) + meter_x_position
+        pygame.draw.line(state.DISPLAY, WHITE, (goal_position, line_y_start), (goal_position, line_y_end),
+                         line_thickness)
+
     def draw_point_screen_box_info(self, state: 'GameState'):
         box_width_offset = 10
         horizontal_padding = 25
@@ -622,6 +731,16 @@ class CrapsJunponScreen(GambleScreen):
             text_surface = self.font.render(choice, True, WHITE)
 
             state.DISPLAY.blit(text_surface, (start_x_right_box + text_x_offset, y_position + text_y_offset))
+
+        # 🔒 Handle Blow command visual lock state
+        if "Blow" in self.point_roll_choices:
+            blow_index = self.point_roll_choices.index("Blow")
+            if Equipment.CRAPS_WRIST_WATCH.value not in state.player.equipped_items:
+                # Player doesn't have the wrist watch, show as locked
+                self.point_roll_choices[blow_index] = "Locked"
+            else:
+                # Player has the watch, ensure Blow is visible
+                self.point_roll_choices[blow_index] = "Blow"
 
         if self.point_roll_index == self.point_roll_dice_index:
             state.DISPLAY.blit(
@@ -824,14 +943,28 @@ class CrapsJunponScreen(GambleScreen):
                 self.start_time = pygame.time.get_ticks()
                 self.is_timer_active = True
                 self.blow_turn += 1
+                # Unlock Blow command after 3+ turns if wrist watch is equipped (only once)
+                if "Blow" not in self.point_roll_choices and self.blow_turn >= 3:
+                    if Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
+                        self.point_roll_choices.insert(2, "Blow")
+                        print("Blow command unlocked!")
             elif self.point_roll_index == 1 and self.blow_turn >= 0:
                 state.player.stamina_points -= self.player_stamina_high_cost
                 self.game_state = self.BET_SCREEN
                 return
-            elif self.point_roll_index == 2:
-                print("mdls;afj;ldsajlf")
-                self.game_state = self.BET_SCREEN
-                return
+            # 🌀 Handle Blow command selection
+            elif "Blow" in self.point_roll_choices and self.point_roll_index == 2:
+                # Only allow Blow if the player still has the wrist watch
+                if Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
+                    state.player.stamina_points -= self.player_stamina_high_cost
+                    self.game_state = self.BLOW_POINT_ROLL_SCREEN
+                    print("Entering Blow Phase!")
+                    return
+                else:
+                    # Prevent activation if somehow selected without watch
+                    print("Cannot use Blow without Dice Wrist Watch equipped.")
+                    self.menu_movement_sound.play()
+                    return
 
         if self.is_timer_active:
             if self.rolling_dice_timer():
@@ -866,6 +999,65 @@ class CrapsJunponScreen(GambleScreen):
                     if self.blow_turn == 0 and self.blow_sound_checker == True:
                         self.blow_sound_checker = False
                         self.blow_meter_ready.play()
+
+    def draw_blow_point_roll_screen(self, state: 'GameState') -> None:
+        # Draw background and core layout
+        state.DISPLAY.fill(BLACK)
+
+        # Timer display
+        if hasattr(self, 'blow_timer_start') and self.blow_timer_start != 0:
+            time_elapsed = int((pygame.time.get_ticks() - self.blow_timer_start) / 1000)
+        else:
+            time_elapsed = 0
+
+        timer_text = self.font.render(f"TIMER: {time_elapsed}/7", True, RED)
+        state.DISPLAY.blit(timer_text, (333, 125))
+
+        # Blow meter bar
+        self.draw_create_blow_meter(state, self.blow_counter)
+
+        # Instruction text
+        instructions = [
+            "Rock D-Pad or tap buttons to build power!",
+            "Fill the bar before time runs out!"
+        ]
+        for i, line in enumerate(instructions):
+            text_surface = self.font.render(line, True, WHITE)
+            state.DISPLAY.blit(text_surface, (250, 300 + i * 30))
+
+        # Draw the Blow phase message box if it exists
+        if hasattr(self.battle_messages, 'BLOW_POINT_ROLL_MESSAGE'):
+            self.battle_messages[self.BLOW_POINT_ROLL_MESSAGE].draw(state)
+
+    def update_handle_dice_rolling_simulation(self, controller) -> None:
+        # Increment the meter when the player performs the left-then-confirm combo within 0.5s
+        if controller.confirm_button:
+            if (controller.isLeftPressed or controller.isLeftPressedSwitch) and not getattr(self, "is_left_pressed",
+                                                                                            False):
+                self.is_left_pressed = True
+                self.left_press_time = pygame.time.get_ticks()
+                controller.isLeftPressed = False
+                controller.isLeftPressedSwitch = False
+
+            elif controller.confirm_button and getattr(self, "is_left_pressed", False):
+                time_since_left = (pygame.time.get_ticks() - self.left_press_time) / 1000
+                if time_since_left <= 0.5:
+                    self.is_left_pressed = False
+                    controller.isRightPressed = False
+                    controller.isRightPressedSwitch = False
+                    self.blow_counter += 2
+                else:
+                    self.is_left_pressed = False
+
+        if not controller.confirm_button:
+            self.is_left_pressed = False
+
+        # Natural decay every 2 seconds
+        current_time = pygame.time.get_ticks()
+        if current_time - getattr(self, "last_blow_decrement_time", 0) >= 2000:
+            if self.blow_counter > 0:
+                self.blow_counter -= 1
+            self.last_blow_decrement_time = current_time
 
 
     def draw_magic_menu_selection_box(self, state):
@@ -907,3 +1099,4 @@ class CrapsJunponScreen(GambleScreen):
             self.font.render("->", True, WHITE),
             (start_x_right_box + arrow_x_offset, start_y_right_box + arrow_y_offset)
         )
+

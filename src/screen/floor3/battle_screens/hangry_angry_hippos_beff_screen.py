@@ -437,8 +437,8 @@ class HungryStarvingHipposBeffScreen(Screen):
                 state.player.canMove = True
                 # state.player.items.append(Equipment.HIPPO_HOUR_GLASS.value)
                 if state.player.current_stage == 3:
-                    Equipment.BACKWARDS_WATCH.add_equipment_to_player_level_3(state.player,
-                                                                                Equipment.BACKWARDS_WATCH)
+                    Equipment.CRAPS_WRIST_WATCH.add_equipment_to_player_level_3(state.player,
+                                                                                Equipment.CRAPS_WRIST_WATCH)
                 Events.add_level_three_event_to_player(state.player, Events.HANGRY_ANGRY_HIPPOS_BEFF)
 
                 # self.end_screen()
@@ -779,6 +779,6 @@ class HungryStarvingHipposBeffScreen(Screen):
         state.player.canMove = True
 
         # clear sticky buttons (edge-trigger next frame)
-   
+
 
 

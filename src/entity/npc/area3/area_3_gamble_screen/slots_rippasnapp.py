@@ -22,7 +22,7 @@ class SlotsRippaSnappa(Npc):
         self.selected_item_index = 0
         self.slots_rippanappa_mesages = {
             "welcome_message": NpcTextBox(
-                ["rippa snappa: Are you sure you want to battle the king of slots?"],
+                ["rippa snappa: Are you sure you want to battle the king of slots of level 3?"],
                 (50, 450, 700, 130), 36, 500),
             "defeated_message": NpcTextBox(
                 ["rippa snappa: How, impossible, nobody has every defeated my slots."],
