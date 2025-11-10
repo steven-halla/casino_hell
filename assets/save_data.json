@@ -1,7 +1,7 @@
 {
     "current_stage": 3,
     "level": 7,
-    "exp": 2210,
+    "exp": 2610,
     "stamina_points": 260,
     "max_stamina_points": 260,
     "focus_points": 235,
@@ -119,7 +119,7 @@
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 200,
+    "slotsrippasnappamoney": 1000,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
     "crapscrappymoney": -48,

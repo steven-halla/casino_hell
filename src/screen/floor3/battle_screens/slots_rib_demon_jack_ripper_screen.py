@@ -32,7 +32,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
         self.slot_hack_debuff: int = 0
         self.exp_gain_low:int = 10
         self.exp_gain_no_match: int = 5
-        self.bet = 25
+        self.bet = 100
         self.exp_gain_high: int = 50
         self.increased_coin_chance: int = 0
 
@@ -191,8 +191,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
         state.player.update(state)
 
         if self.money <= self.juragan_bankrupt:
-            state.currentScreen = state.area2GamblingScreen
-            state.area2GamblingScreen.start(state)
+            state.currentScreen = state.area3GamblingScreen
+            state.area3GamblingScreen.start(state)
             Events.add_level_two_event_to_player(state.player, Events.SLOTS_RIPPA_SNAPPA_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
@@ -508,8 +508,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
+                state.currentScreen = state.area3GamblingScreen
+                state.area3GamblingScreen.start(state)
 
     def update_spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
@@ -622,8 +622,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             if controller.confirm_button:
                 state.player.money -= 100
                 self.reset_juragan_slots_game()
-                state.currentScreen = state.area2GamblingScreen
-                state.area2GamblingScreen.start(state)
+                state.currentScreen = state.area3GamblingScreen
+                state.area3GamblingScreen.start(state)
 
 
     def draw_grid_box(self, state: "GameState") -> None:
