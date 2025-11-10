@@ -264,6 +264,7 @@ class SlotsJuraganScreen(GambleScreen):
             if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
                 state.player.focus_points -= self.hack_cost
                 self.slot_hack_debuff = 5
+                Magic.SLOTS_MP_COST
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.magic_index = 0

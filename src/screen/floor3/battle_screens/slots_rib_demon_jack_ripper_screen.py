@@ -9,6 +9,8 @@ from entity.gui.textbox.message_box import MessageBox
 from game_constants.equipment import Equipment
 from game_constants.events import Events
 from game_constants.magic import Magic
+from game_constants.player_magic.slots_magic import SlotsMagic
+
 
 # spell: rib lock on : roll 6 times, take 25 damage per successful hit
 # i still need to make a new speical item
@@ -165,6 +167,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
 
         self.spirit_bonus = state.player.spirit * 10
         self.magic_bonus = state.player.mind * 10
+        self.slots_magic = SlotsMagic(state)
+
 
 
     def reset_juragan_slots_game(self):
@@ -184,8 +188,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.debuff_increased_pay_to_play -= 1
         if self.slot_hack_debuff > 0:
             self.slot_hack_debuff -= 1
-            if self.slots_hack_debuff == 0:
+            if self.slot_hack_debuff == 0:
                 self.magic_lock = False
+        # should i have it to where when rib stalker active make hack go away?
 
 
 
@@ -286,8 +291,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
         if controller.confirm_button:
             magic_bonus = state.player.mind
             if self.magic_screen_choices[self.magic_index] == Magic.SLOTS_HACK.value and state.player.focus_points >= self.hack_cost:
-                state.player.focus_points -= self.hack_cost
-                self.slot_hack_debuff = 5 + magic_bonus
+                state.player.focus_points -= self.slots_magic.SLOTS_MP_COST
+                self.slot_hack_debuff = self.slots_magic.SLOTS_HACK_DURATION
                 self.spell_sound.play()
                 self.magic_lock = True
                 self.magic_index = 0
