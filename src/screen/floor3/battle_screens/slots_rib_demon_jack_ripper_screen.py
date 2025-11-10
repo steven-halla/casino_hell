@@ -172,6 +172,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
         self.rib_stalker = 0
         self.lucky_strike = 0
         self.debuff_increased_pay_to_play = 0
+        self.slot_hack_debuff = 0
+        self.magic_lock = False
 
     def reset_slots_juragan_round(self):
         if self.rib_stalker > 0:
@@ -182,6 +184,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.debuff_increased_pay_to_play -= 1
         if self.slot_hack_debuff > 0:
             self.slot_hack_debuff -= 1
+
 
 
     def update(self, state):
@@ -510,6 +513,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             elif self.welcome_screen_index == self.welcome_screen_quit_index and self.rib_stalker == 0:
                 state.currentScreen = state.area3GamblingScreen
                 state.area3GamblingScreen.start(state)
+                self.reset_juragan_slots_game()
+
 
     def update_spin_reels_helper(self, controller, state):
         # Get current time once at the beginning
@@ -609,7 +614,11 @@ class SlotsRippaSnappaScreen(GambleScreen):
             elif self.welcome_screen_index == self.bet_screen_index:
                 self.game_state = self.BET_SCREEN
             elif self.welcome_screen_index == self.quit_index:
-                print("this will come later")
+                # Lock the Quit option if rib_stalker is active
+                if self.rib_stalker > 0:
+                    self.welcome_screen_choices[self.welcome_screen_quit_index] = "Locked"
+                else:
+                    self.welcome_screen_choices[self.welcome_screen_quit_index] =  "Quit"
 
     def game_over_screen_level_4(self, controller, state):
         no_money_game_over = 0
