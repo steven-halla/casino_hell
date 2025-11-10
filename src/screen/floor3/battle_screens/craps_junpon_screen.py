@@ -270,6 +270,8 @@ class CrapsJunponScreen(GambleScreen):
             self.battle_messages[self.JUNPON_CASTING_SPELL_MESSAGE].update(state)
             self.update_junpon_casting_spell_helper(state)
         elif self.game_state == self.BET_SCREEN:
+            if self.bet > 200:
+                self.bet = 200
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.update_bet_screen_helper(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
