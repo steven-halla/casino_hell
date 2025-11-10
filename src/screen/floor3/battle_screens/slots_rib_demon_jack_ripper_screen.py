@@ -184,6 +184,8 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.debuff_increased_pay_to_play -= 1
         if self.slot_hack_debuff > 0:
             self.slot_hack_debuff -= 1
+            if self.slots_hack_debuff == 0:
+                self.magic_lock = False
 
 
 
