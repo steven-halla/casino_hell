@@ -247,6 +247,7 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
 
+
         if self.current_stage == 1:
             if self.exp > 300:
                 self.exp = 300
@@ -1159,6 +1160,10 @@ class Player(Entity):
                         if currently_equipped == Equipment.SPIRIT_SHOES.value:
                             self.spirit -= 1
 
+                        if currently_equipped == Equipment.MP_BRACELET.value:
+                            self.focus_points -= 10 * self.spirit
+                            self.max_focus_points -= 10 * self.spirit
+
 
 
                         if currently_equipped == Equipment.SAGE_AMULET.value:
@@ -1197,6 +1202,11 @@ class Player(Entity):
 
                         if self.items[self.item_index] == Equipment.SPIRIT_SHOES.value:
                             self.spirit += 1
+
+                        if self.items[self.item_index] == Equipment.MP_BRACELET.value:
+                            self.focus_points += 10 * self.spirit
+                            self.max_focus_points += 10 * self.spirit
+
 
                         if self.items[self.item_index] == Equipment.SAGE_AMULET.value:
                             self.max_stamina_points += 15
