@@ -1,7 +1,7 @@
 {
     "current_stage": 1,
     "level": 2,
-    "exp": 165,
+    "exp": 210,
     "stamina_points": 120,
     "max_stamina_points": 120,
     "focus_points": 160,
@@ -29,7 +29,7 @@
     "perception": 0,
     "baseperception": 1,
     "luck": 0,
-    "money": 1400,
+    "money": 1490,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -38,7 +38,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 7,
+    "days": 8,
     "leveltwonpcstate": [],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -61,7 +61,7 @@
     "coinflipdextermoney": 999,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
-    "opossumsallymoney": 1000,
+    "opossumsallymoney": 810,
     "opossuminacancandymoney": 444,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,

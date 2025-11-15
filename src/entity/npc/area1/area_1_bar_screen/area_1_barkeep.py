@@ -79,6 +79,8 @@ class Area1BarKeep(Npc):
                         state.player.money -= 200
                         # state.player.food -= 1
                         state.player.body += 1
+                        state.player.stamina_points += 10
+                        state.player.max_stamina_points += 10
 
 
 
