@@ -19,7 +19,7 @@ class CoinFlipFredScreen(GambleScreen):
     def __init__(self, screenName: str = "Coin FLip") -> None:
         super().__init__(screenName)
         self.bet:int = 100
-        self.dealer_name: str = "Ted"
+        self.dealer_name: str = "Fred"
         self.initial_coin_image_position: tuple[int, int] = (300, 250)
         self.timer_start:bool = None
         self.coin_bottom:bool = False
@@ -58,10 +58,12 @@ class CoinFlipFredScreen(GambleScreen):
         self.shield_debuff: int = 0
         self.heads_force_cost: int = 50
         self.heads_force_active: bool = False
-        self.exp_gain_high: int = 15
-        self.exp_gain_low: int = 10
+        # EXP below
+        self.exp_gain_high: int = 10
+        self.exp_gain_low: int = 5
+        #
         self.result_anchor: bool = False
-        self.coinFlipFredMoney: int = 300
+        self.coinFlipFredMoney: int = 700
         self.wanton_magic_points: int = 0
         self.even: bool = False
         self.odd: bool = False
@@ -187,6 +189,7 @@ class CoinFlipFredScreen(GambleScreen):
             self.timer_start = None
             self.image_to_display = ""
             self.player_choice = ""
+            self.magic_lock = False
             # self.wanton_magic_points = 3
 
     def reset_round(self, state):
@@ -480,6 +483,7 @@ class CoinFlipFredScreen(GambleScreen):
 
 
     def update_player_draw_screen_helper(self, state):
+        state.player.exp += self.exp_gain_low
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
 

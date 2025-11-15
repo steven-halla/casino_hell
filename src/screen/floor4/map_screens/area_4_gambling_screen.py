@@ -89,13 +89,13 @@ class Area4GamblingScreen(Screen):
             BlackJackJasmine(16 * 5, 16 * 5),
             CoinFlipBonnie(16 * 15, 16 * 5),
             CrapsNaba(16 * 25, 16 * 5),
-            DiceFighterSophia(16 * 35, 16 * 5),
+            # DiceFighterSophia(16 * 35, 16 * 5),
             HighLowCody(16 * 45, 16 * 5),
             HungryStarvingHipposDippy(16 * 5, 16 * 15),
             OpossumInACanSillyWilly(16 * 15, 16 * 15),
-            SlotsJuragan(16 * 25, 16 * 15),
-            WheelOfTortureVanessaBlack(16 * 35, 16 * 15),
-            PokerDarnel(16 * 45, 16 * 15)
+            SlotsJuragan(16 * 25, 16 * 15)
+            # WheelOfTortureVanessaBlack(16 * 35, 16 * 15),
+            # PokerDarnel(16 * 45, 16 * 15)
 
 
         ]

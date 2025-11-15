@@ -10,9 +10,21 @@ Final testing for all screens.
 8) update shops
 9) make sure level up works for all screens
 10) IF we are here then we only have a week left to finish project
+11) Is all game screens set magic lock to false after an exit?
 
-LEVEL 1
-ALL LEVEL UPS HAVE BEEN TESTED AND WORK
-All game over screens work though there is an issue with having both low stamina and low money
+LEVEL 1 CHECK List
+Talked to an NPC Sally said NO and it put me in a strange spot no idea how i got in this bug
+Sally opossum might have an issue with Money when creating a game for  first time maybe a good idea
+to check each game to make sure they each have proper money ( do not save before doing this check)
+Test level ups for all screens - COMPLETE
 
-Blacl jack if you get a bj at 100 gold winning 200 player gets 200 not 100
+
+
+
+
+
+COIN FLIP - I fixed this for EXP be sure to do the other coin flips
+    def update_player_draw_screen_helper(self, state):
+        state.player.exp += self.exp_gain_low 
+        self.game_state = self.WELCOME_SCREEN
+        self.reset_round(state)

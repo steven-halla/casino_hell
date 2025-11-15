@@ -154,6 +154,8 @@ class Player(Entity):
             5: 1500,
             6: 2100,
             7: 2800,  # Continue adding levels as needed
+            8: 3600,
+            9: 4500
             # Add more levels as needed
         }
 
@@ -250,6 +252,10 @@ class Player(Entity):
                 self.exp = 300
 
         elif self.current_stage == 2:
+            if self.exp > 2800:
+                self.exp = 2800
+
+        elif self.current_stage == 3:
             if self.exp > 2800:
                 self.exp = 2800
 

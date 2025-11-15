@@ -39,9 +39,9 @@ class Area1BarKeep(Npc):
         self.shop_items = [self.all_items[0]]
         self.shop_costs = [self.all_costs[0]]
 
-        if state.player.body == 0:
-            self.shop_items.append(self.all_items[1])
-            self.shop_costs.append(self.all_costs[1])
+
+        self.shop_items.append(self.all_items[1])
+        self.shop_costs.append(self.all_costs[1])
 
         self.textbox.set_shop_items(self.shop_items, self.shop_costs)
         self.textbox.show_shop_menu = True
@@ -52,13 +52,13 @@ class Area1BarKeep(Npc):
         elif self.state == "talking":
             state.player.hide_player = True
 
-            if state.controller.isTPressed and state.player.food > 0:
+            if state.controller.isTPressed:
                 state.controller.isTPressed = False
 
                 if state.player.money < 200:
                     self.cant_buy_sound.play()
 
-                elif self.selected_item_index == 0:
+                elif self.selected_item_index == 0 and state.player.food > 0:
                     self.buy_sound.play()
                     state.player.money -= 200
                     state.player.stamina_points += 50
@@ -71,14 +71,14 @@ class Area1BarKeep(Npc):
 
 
 
-            elif state.controller.confirm_button and self.selected_item_index == 1:
-                if state.player.money < 200:
-                    self.cant_buy_sound.play()
-                else:
-                    self.buy_sound.play()
-                    state.player.money -= 200
-                    # state.player.food -= 1
-                    state.player.body += 1
+                elif self.selected_item_index == 1 and state.player.body == 0:
+                    if state.player.money < 200:
+                        self.cant_buy_sound.play()
+                    else:
+                        self.buy_sound.play()
+                        state.player.money -= 200
+                        # state.player.food -= 1
+                        state.player.body += 1
 
 
 
@@ -143,6 +143,8 @@ class Area1BarKeep(Npc):
             if self.selected_item_index == 0:
                 state.DISPLAY.blit(self.font.render("Made from the vomit of hopping gluttons.", True, (255, 255, 255)), (70, 460))
                 state.DISPLAY.blit(self.font.render("Restores 150 HP and 75 Magic.", True, (255, 255, 255)), (70, 510))
-            elif len(self.shop_items) > 1 and self.selected_item_index == 1:
+            elif len(self.shop_items) > 1 and self.selected_item_index == 1 and state.player.body == 0:
                 state.DISPLAY.blit(self.font.render("Nachos with extra maggots.", True, (255, 255, 255)), (70, 460))
                 state.DISPLAY.blit(self.font.render("Adds +1 body permanently.", True, (255, 255, 255)), (70, 510))
+            elif self.selected_item_index == 1 and state.player.body > 0:
+                state.DISPLAY.blit(self.font.render("SOLD OUT.", True, (255, 255, 255)), (70, 460))

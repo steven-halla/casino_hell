@@ -10,6 +10,7 @@ from game_constants.magic import Magic
 
 # new spell
 # if there is an ACE in the next 4 top cards, you win the ace
+# stamina loss needs to be high for fucking up maybe higher spreads should have higher stamina loss
 
 class HighLowDienaScreen(GambleScreen):
     def __init__(self, screenName: str = "high low") -> None:
@@ -114,8 +115,7 @@ class HighLowDienaScreen(GambleScreen):
         self.magic_bonus: int = state.player.mind
 
     def build_custom_26_card_deck(self):
-        print("build custon 25 card deck fun")
-        # Start fresh
+
         self.deck.cards.clear()
 
         # Define allowed suits and ranks
@@ -277,7 +277,7 @@ class HighLowDienaScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_helper(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
-            print(self.deck.cards)
+            # print(self.deck.cards)
 
         elif self.game_state == self.CODY_CASTING_SPELL_SCREEN:
             self.battle_messages[self.CODY_CASTING_SPELL_MESSAGE].update(state)

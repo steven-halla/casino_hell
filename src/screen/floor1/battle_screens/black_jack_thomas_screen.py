@@ -226,9 +226,7 @@ class BlackJackThomasScreen(GambleScreen):
         self.hedge_hog_time: bool = False
         self.redraw_counter = True
         self.fengus_magic_points = 3
-
-
-
+        self.magic_lock = False
 
     def update(self, state: 'GameState'):
         controller = state.controller
