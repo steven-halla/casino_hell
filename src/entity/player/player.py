@@ -14,7 +14,7 @@ from game_constants.events import Events
 from game_constants.magic import Magic
 from game_constants.treasure import Treasure
 
-
+#line 11 has EQUIPMENT
 class Player(Entity):
     def __init__(self, x: float, y: float):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE)
@@ -813,7 +813,7 @@ class Player(Entity):
 
             # Define the menu items - note this needs 3 more to fill the screen proper
             # config, load,
-            menu_items = ["Equipment", "Quest Items", "Magic", "Status"]
+            menu_items = ["Equipment", "Quest Items", "Magic", "Status" ]
 
 
 
@@ -835,7 +835,8 @@ class Player(Entity):
                 text_surface = font.render(item, True, (255, 255, 255))  # White color for text
                 third_box.blit(text_surface, (50, item_y))  # Adjust x-position as needed
                 item_y += text_surface.get_height() + 20  # Move to the next line with 20 pixels spacing
-
+            stage_surface = font.render(str("Stage ") + str(self.current_stage), True, (255, 255, 255))
+            state.DISPLAY.blit(stage_surface, (400, 200))  # Example Y position
             # Define the arrow symbol
 
             arrow = "->"
