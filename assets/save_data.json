@@ -1,11 +1,11 @@
 {
     "current_stage": 2,
-    "level": 5,
-    "exp": 1400,
-    "stamina_points": 170,
-    "max_stamina_points": 170,
-    "focus_points": 195,
-    "max_focus_points": 195,
+    "level": 6,
+    "exp": 1525,
+    "stamina_points": 240,
+    "max_stamina_points": 240,
+    "focus_points": 205,
+    "max_focus_points": 205,
     "companions": [],
     "items": [
         "Black Hat",
@@ -13,17 +13,19 @@
         "mp bracelet",
         "sir leopold amulet",
         "Nuggie Amulet",
-        "coin flip glasses"
+        "coin flip glasses",
+        "HEALTHY GLOVES"
     ],
     "equipped_items": [
-        "Black Hat",
-        "sir leopold amulet"
+        "HEALTHY GLOVES",
+        "Nuggie Amulet"
     ],
     "npcitems": [
         "level 2 token",
         "level 3 token",
         "level 4 token",
-        "level 5 token"
+        "level 5 token",
+        "level 6 token"
     ],
     "magicinventory": [
         "Shield",
@@ -31,13 +33,13 @@
         "shake",
         "Triple D"
     ],
-    "body": 1,
+    "body": 2,
     "mind": 2,
     "spirit": 2,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 2019,
+    "money": 2044,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -46,13 +48,14 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 21,
+    "days": 23,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
         "BLACK_JACK_MACK_DEFEATED",
         "FEAST_CONSUMED",
-        "OPOSSUM_IN_A_CAN_CANDY_DEFEATED"
+        "HEALTHY GLOVES",
+        "CRAPS_HAPPY_DEFEATED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -78,7 +81,7 @@
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
-    "opossuminacancandymoney": 0,
+    "opossuminacancandymoney": 1000,
     "opossuminacanbillybobmoney": 444,
     "opossuminacansillywillymoney": 444,
     "blackjackthomasmoney": 0,
@@ -91,7 +94,7 @@
     "slotsrippasnappamoney": 200,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
-    "crapscrappymoney": 925,
+    "crapscrappymoney": 0,
     "crapsjunponmoney": 1000,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,

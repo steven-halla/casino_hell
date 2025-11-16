@@ -219,7 +219,7 @@ class CrapsHappyScreen(GambleScreen):
 
 
     def reset_craps_game(self, state: 'GameState'):
-        self.welcome_screen_quit_index = self.welcome_screen_play_index
+        # self.welcome_screen_quit_index = self.welcome_screen_play_index
         self.lucky_seven_buff_counter = self.lucky_seven_buff_not_active
         self.magic_lock = False
         self.bet = self.bet_minimum
@@ -376,23 +376,25 @@ class CrapsHappyScreen(GambleScreen):
 
     def update_player_win_point_roll_helper(self, state):
         if state.controller.confirm_button:
-            self.round_reset(state)
             self.money -= self.bet
             state.player.money += self.bet
             state.player.exp += self.high_exp
+            self.round_reset(state)
+
             self.game_state = self.WELCOME_SCREEN
 
     def update_player_lose_point_roll(self, state):
         if state.controller.confirm_button:
-            self.round_reset(state)
             self.money += self.bet
             state.player.money -= self.bet
             state.player.exp += self.high_exp
+            self.round_reset(state)
+
             self.game_state = self.WELCOME_SCREEN
 
     def update_blow_point_roll_helper(self, state):
         meter_finished = 7
-        self.bet = self.bet_minimum
+        # self.bet = self.bet_minimum
         blow_counter_max = 21
         blow_counter_min_needed = 20
         self.update_handle_dice_rolling_simulation(state.controller)
@@ -419,10 +421,11 @@ class CrapsHappyScreen(GambleScreen):
             = f"You rolled a {self.come_out_roll_total}"
         self.battle_messages[self.PLAYER_LOSE_COME_OUT_ROLL_MESSAGE].update(state)
         if state.controller.confirm_button:
-            self.round_reset(state)
             state.player.money -= self.bet
             self.money += self.bet
             state.player.exp += self.low_exp
+            self.round_reset(state)
+
             self.game_state = self.WELCOME_SCREEN
 
     def update_naba_casting_spell_helper(self, state):
@@ -433,14 +436,17 @@ class CrapsHappyScreen(GambleScreen):
 
     def update_come_out_roll_helper(self, state: 'GameState'):
         if state.controller.confirm_button:
-            self.round_reset(state)
             if self.greed_bank == False:
                 state.player.money += self.bet
                 self.money -= self.bet
                 state.player.exp += self.high_exp
+                self.round_reset(state)
+
             if self.greed_bank == True:
                 state.player.money += int(self.bet * 1.5)
                 self.money -= int(self.bet * 1.5)
+                self.round_reset(state)
+
 
 
             else:
@@ -531,6 +537,9 @@ class CrapsHappyScreen(GambleScreen):
                 self.menu_movement_sound.play()  # Play the sound effect once
                 self.bet += come_out_point_roll_bet_min
 
+                if self.bet > 75:
+                    self.bet = 75
+
                 if self.point_roll_total == is_player_in_come_out_roll:
                     if self.bet >= come_out_roll_bet_max:
                         self.bet = come_out_roll_bet_max
@@ -549,6 +558,8 @@ class CrapsHappyScreen(GambleScreen):
                 self.game_state = self.WELCOME_SCREEN
 
         elif self.come_out_roll_total > player_at_point_phase:
+            if self.bet > 200:
+                self.bet = 200
 
             if controller.isUpPressed or controller.isUpPressedSwitch:
                 controller.isUpPressed = False

@@ -42,3 +42,9 @@ ANy screen with spells
             self.welcome_screen_choices[self.welcome_screen_quit_index] = "Quit"
 
 this should lock it down for quit menu
+
+
+CRAPS: 
+check for instaneces of round rest and make sure everything triggers for this fun after bet totals 
+also for craps test to maek sure betting works for both point and set screens
+Make sure yuo can exit aftter first round, in the Game rest we reset the menu option

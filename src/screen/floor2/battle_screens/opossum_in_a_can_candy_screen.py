@@ -34,6 +34,10 @@ class OpossumInACanCandyScreen(GambleScreen):
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
         self.luck_bonus: int = 0
+        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
+        self.welcome_screen_play_index = 0
+        self.welcome_screen_magic_index = 1
+        self.welcome_screen_quit_index = 2
         self.magic_index: int = 1
         self.quit_index: int = 2
         self.blit_message_x: int = 65
@@ -283,9 +287,9 @@ class OpossumInACanCandyScreen(GambleScreen):
 
 
 
-        self.poison_chance += 3
+        self.poison_chance += 30
         inflict_poison_randomizer = 0
-
+        print(f"your poison chance {self.poison_chance}")
         match self.candy_magic_points:
             case 3:
                 inflict_poison_randomizer = random.randint(1, 90) + self.poison_chance
@@ -296,7 +300,7 @@ class OpossumInACanCandyScreen(GambleScreen):
 
         if inflict_poison_randomizer > 100 and self.candy_magic_points > 0 and self.player_debuff_poison == 0:
             self.game_state = self.CANDY_CASTING_SPELL_SCREEN
-            print("dfjs;aljf")
+            print("CASTING SPELL NOW")
             self.poison_chance = 0
 
 
@@ -980,7 +984,7 @@ class OpossumInACanCandyScreen(GambleScreen):
             elif self.welcome_screen_index == self.magic_index and self.magic_lock == False:
 
                 self.game_state = self.MAGIC_MENU_SCREEN
-            elif self.welcome_screen_index == self.quit_index:
+            elif self.welcome_screen_index == self.quit_index and self.player_debuff_poison == 0:
                 state.player.canMove = True
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
@@ -1018,6 +1022,11 @@ class OpossumInACanCandyScreen(GambleScreen):
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
         elif Magic.SHAKE.value in state.player.magicinventory:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        if self.player_debuff_poison > 0:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Locked Down"
+        else:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Quit"
 
 
 
