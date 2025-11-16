@@ -965,7 +965,7 @@ class CrapsHappyScreen(GambleScreen):
                 self.start_time = pygame.time.get_ticks()
                 self.is_timer_active = True
                 self.blow_turn += 1
-            elif self.point_roll_index == 1 and self.blow_turn >= 0:
+            elif self.point_roll_index == 1 and self.blow_turn >= 0 and Equipment.CRAPS_WRIST_WATCH.value in state.player.equipped_items:
                 state.player.stamina_points -= self.player_stamina_high_cost
                 self.game_state = self.BLOW_POINT_ROLL_SCREEN
                 return

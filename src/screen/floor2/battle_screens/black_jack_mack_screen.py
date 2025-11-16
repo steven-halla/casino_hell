@@ -31,7 +31,7 @@ class BlackJackMackScreen(GambleScreen):
         self.lucky_strike: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/luckystrike.wav")  # Adjust the path as needed
         self.lucky_strike.set_volume(0.6)
         self.bet: int = 100
-        self.money: int = 200
+        self.money: int = 1000
         self.fengus_bankrupt: int = 0
         self.reveal_buff_counter: int = 0
         self.reveal_start_duration: int = 7
@@ -724,7 +724,7 @@ class BlackJackMackScreen(GambleScreen):
                 self.game_state = self.MAGIC_MENU_SCREEN
             elif self.welcome_screen_index == self.welcome_screen_bet_index:
                 self.game_state = self.BET_SCREEN
-            elif self.welcome_screen_index == self.welcome_screen_quit_index:
+            elif self.welcome_screen_index == self.welcome_screen_quit_index and self.player_debuff_double_draw == 0:
 
                 state.currentScreen = state.area2GamblingScreen
                 state.area2GamblingScreen.start(state)
@@ -951,8 +951,15 @@ class BlackJackMackScreen(GambleScreen):
 
         if self.magic_lock == True:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.LOCKED
+
         elif self.magic_lock == False:
             self.welcome_screen_choices[self.welcome_screen_magic_index] = self.MAGIC
+
+        # --- Lock QUIT option if double-draw debuff is active ---
+        if self.player_debuff_double_draw > 0:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Locked Down"
+        else:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Quit"
 
         if self.welcome_screen_index == self.welcome_screen_play_index:
             state.DISPLAY.blit(

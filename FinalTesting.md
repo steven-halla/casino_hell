@@ -11,6 +11,7 @@ Final testing for all screens.
 9) make sure level up works for all screens
 10) IF we are here then we only have a week left to finish project
 11) Is all game screens set magic lock to false after an exit?
+12) make sure that player cant leave while enemy spell active
 
 LEVEL 1 CHECK List
 Talked to an NPC Sally said NO and it put me in a strange spot no idea how i got in this bug
@@ -28,3 +29,16 @@ COIN FLIP - I fixed this for EXP be sure to do the other coin flips
         state.player.exp += self.exp_gain_low 
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
+
+
+LEvel 2 check list
+ANy screen with spells
+
+
+        # --- Lock QUIT option if double-draw debuff is active ---
+        if self.player_debuff_double_draw > 0:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Locked Down"
+        else:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Quit"
+
+this should lock it down for quit menu
