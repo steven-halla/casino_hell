@@ -70,7 +70,7 @@ class HangryAngryHippos(Npc):
     def update_talking(self, state: "GameState"):
         current_message = (
             self.hippo_messages["defeated_message"]
-            if Equipment.HIPPO_HOUR_GLASS.value in state.player.items
+            if Equipment.COIN_FLIP_GLASSES.value in state.player.items
             else self.hippo_messages["welcome_message"]
         )
         current_message.update(state)
@@ -91,7 +91,7 @@ class HangryAngryHippos(Npc):
 
 
         # Check if the "T" key is pressed and the flag is not set
-        if (current_message.is_finished() and Equipment.HIPPO_HOUR_GLASS.value
+        if (current_message.is_finished() and Equipment.COIN_FLIP_GLASSES.value
                 not in state.player.items
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
@@ -99,7 +99,7 @@ class HangryAngryHippos(Npc):
             print(f"Selected option: {selected_option}")
 
             # Check if the selected option is "Yes" and execute the code you provided
-            if selected_option == "Yes" and Equipment.HIPPO_HOUR_GLASS.value not in state.player.items:
+            if selected_option == "Yes" and Equipment.COIN_FLIP_GLASSES.value not in state.player.items:
 
                 state.currentScreen = state.hungryStaringHipposNippyScreen
                 state.hungryStaringHipposNippyScreen.start(state)
@@ -138,13 +138,13 @@ class HangryAngryHippos(Npc):
         if self.state == "talking":
             current_message = (
                 self.hippo_messages["defeated_message"]
-                if Equipment.HIPPO_HOUR_GLASS.value in state.player.items
+                if Equipment.COIN_FLIP_GLASSES.value in state.player.items
                 else self.hippo_messages["welcome_message"]
             )
 
             current_message.draw(state)
 
-            if (current_message.is_finished() and Equipment.HIPPO_HOUR_GLASS.value
+            if (current_message.is_finished() and Equipment.COIN_FLIP_GLASSES.value
                     not in state.player.items and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100

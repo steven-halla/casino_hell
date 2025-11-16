@@ -97,6 +97,9 @@ class CrapsHappyScreen(GambleScreen):
         self.level_up_message_initialized = False
         self.high_exp: int = 10
         self.low_exp: int = 5
+        # self.money: int = 1000
+        self.money: int = 1000  # Add this line
+
 
 
         self.battle_messages: dict[str, MessageBox] = {
