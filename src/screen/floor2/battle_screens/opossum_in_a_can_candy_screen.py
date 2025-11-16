@@ -287,7 +287,7 @@ class OpossumInACanCandyScreen(GambleScreen):
 
 
 
-        self.poison_chance += 30
+        self.poison_chance += 3
         inflict_poison_randomizer = 0
         print(f"your poison chance {self.poison_chance}")
         match self.candy_magic_points:

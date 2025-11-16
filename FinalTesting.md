@@ -48,3 +48,14 @@ CRAPS:
 check for instaneces of round rest and make sure everything triggers for this fun after bet totals 
 also for craps test to maek sure betting works for both point and set screens
 Make sure yuo can exit aftter first round, in the Game rest we reset the menu option
+
+opossum in a can:
+put the below in init methods 
+self.welcome_screen_choices = ["Play", "Magic", "Quit"]self.welcome_screen_play_index = 0
+self.welcome_screen_magic_index = 1
+self.welcome_screen_quit_index = 2
+the below is how we do lock down the above suupliements this
+        if self.player_debuff_poison > 0:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Locked Down"
+        else:
+            self.welcome_screen_choices[self.welcome_screen_quit_index] = "Quit"
