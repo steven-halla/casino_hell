@@ -446,11 +446,11 @@ class HungryStarvingHipposNippyScreen(Screen):
 
             if self.battle_messages["you_win"].message_index == 1:
                 state.area_2_gambling_area_to_rest_point = True
-                state.currentScreen = state.area2RestScreen
-                state.area2RestScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 state.area_2_gambling_area_to_rest_point = False
-                if Equipment.HIPPO_HOUR_GLASS.value not in state.player.items:
-                    state.player.items.append(Equipment.HIPPO_HOUR_GLASS.value)
+                if Equipment.COIN_FLIP_GLASSES.value not in state.player.items:
+                    state.player.items.append(Equipment.COIN_FLIP_GLASSES.value)
                 print("yupper")
                 state.player.canMove = True
 
@@ -464,8 +464,8 @@ class HungryStarvingHipposNippyScreen(Screen):
                 state.area_2_gambling_area_to_rest_point = True
                 state.player.canMove = True
 
-                state.currentScreen = state.area2RestScreen
-                state.area2RestScreen.start(state)
+                state.currentScreen = state.area2GamblingScreen
+                state.area2GamblingScreen.start(state)
                 self.reset_game()  # ← IMPORTANT
 
                 state.area_2_gambling_area_to_rest_point = False
