@@ -110,6 +110,27 @@ class HungryStarvingHipposNippyScreen(Screen):
         self.human_picks = []
         self.win = False
 
+    def reset_game(self):
+        self.game_state = "bet_screen"
+        self.human_picks = []
+        self.bet_selection_index = 0
+        self.winners = []
+        self.humans = {}
+        self.hippo = None
+        self.hippo2 = None
+        self.hippo_stopping_eating = 0
+        self.hippo2_stopping_eating = 0
+        self.commentary = False
+        self.comment_to_use = 0
+        self.start_time = time.time()
+        self.last_time = time.time()
+
+        # Reset stamina timer
+        if hasattr(self, "stamina_start_time"):
+            del self.stamina_start_time
+        if hasattr(self, "human_race_start_time"):
+            del self.human_race_start_time
+
     def human_stamina(self) -> None:
         # Ensure human stamina reduction only starts after the initial 10 seconds
         if not hasattr(self, 'stamina_start_time'):
@@ -445,6 +466,8 @@ class HungryStarvingHipposNippyScreen(Screen):
 
                 state.currentScreen = state.area2RestScreen
                 state.area2RestScreen.start(state)
+                self.reset_game()  # ← IMPORTANT
+
                 state.area_2_gambling_area_to_rest_point = False
 
 

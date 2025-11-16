@@ -1,11 +1,11 @@
 {
     "current_stage": 2,
-    "level": 3,
-    "exp": 570,
-    "stamina_points": 130,
-    "max_stamina_points": 130,
-    "focus_points": 165,
-    "max_focus_points": 165,
+    "level": 4,
+    "exp": 620,
+    "stamina_points": 150,
+    "max_stamina_points": 150,
+    "focus_points": 185,
+    "max_focus_points": 185,
     "companions": [],
     "items": [
         "Black Hat",
@@ -20,20 +20,22 @@
     ],
     "npcitems": [
         "level 2 token",
-        "level 3 token"
+        "level 3 token",
+        "level 4 token"
     ],
     "magicinventory": [
         "Shield",
         "reveal",
-        "shake"
+        "shake",
+        "Triple D"
     ],
     "body": 1,
-    "mind": 1,
+    "mind": 2,
     "spirit": 1,
     "perception": 1,
     "baseperception": 1,
     "luck": 1,
-    "money": 1550,
+    "money": 1100,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -42,10 +44,12 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 17,
+    "days": 18,
     "leveltwonpcstate": [
         "sir leopold amulet",
-        "Nuggie Amulet"
+        "Nuggie Amulet",
+        "BLACK_JACK_MACK_DEFEATED",
+        "FEAST_CONSUMED"
     ],
     "levelonenpcstate": [
         "COIN_FLIP_TED_DEFEATED",
@@ -76,7 +80,7 @@
     "opossuminacansillywillymoney": 444,
     "blackjackthomasmoney": 0,
     "blackjackrumblebillmoney": 900,
-    "blackjackmackmoney": 150,
+    "blackjackmackmoney": 0,
     "blackjackalbertmoney": 200,
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,
