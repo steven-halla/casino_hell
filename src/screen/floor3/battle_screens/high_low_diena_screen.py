@@ -439,7 +439,14 @@ class HighLowDienaScreen(GambleScreen):
                         state.player.exp -= self.medium_exp
                         state.player.money -= self.bet
                         self.money += self.bet
+                    elif self.spread_counter == 4:
+                        state.player.exp -= self.low_exp
+                        state.player.money -= self.bet // 2
+                        self.money += self.bet // 2
                     self.game_state = self.WELCOME_SCREEN
+                    self.game_state = self.WELCOME_SCREEN
+
+
 
     def update_draw_card_screen_logic(self, state: 'GameState'):
         # Only draw if hands are empty
