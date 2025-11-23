@@ -17,10 +17,11 @@
         "HEALTHY GLOVES",
         "Spirit Shoes",
         "slots shoes",
-        "high low pants"
+        "high low pants",
+        "dice wrist watch"
     ],
     "equipped_items": [
-        "Spirit Shoes",
+        "dice wrist watch",
         "Nuggie Amulet"
     ],
     "npcitems": [
@@ -40,11 +41,11 @@
     ],
     "body": 2,
     "mind": 2,
-    "spirit": 3,
+    "spirit": 2,
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 1494,
+    "money": 1894,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -53,7 +54,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 27,
+    "days": 28,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -77,7 +78,9 @@
         "FEAST_CONSUMED",
         "Spirit Shoes",
         "slots shoes",
-        "high low pants"
+        "high low pants",
+        "dice wrist watch",
+        "hangry angry hippos beff"
     ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],

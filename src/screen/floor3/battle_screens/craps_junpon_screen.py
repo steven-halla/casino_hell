@@ -204,7 +204,7 @@ class CrapsJunponScreen(GambleScreen):
         self.blow_timer_start = 0
         self.blow_turn = 0
 
-        self.debuff_chance_deception += 100
+        self.debuff_chance_deception += 3
 
         debuff_dice_of_deception_random_chance = random.randint(1, 100) + self.debuff_chance_deception
 
