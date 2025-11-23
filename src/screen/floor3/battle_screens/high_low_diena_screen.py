@@ -511,7 +511,7 @@ class HighLowDienaScreen(GambleScreen):
             if self.welcome_screen_index == draw_screen:
                 self.game_state = self.DRAW_CARD_SCREEN
 
-            elif self.welcome_screen_index == magic_screen:
+            elif self.welcome_screen_index == magic_screen and self.magic_lock == False:
                 self.game_state = self.MAGIC_MENU_SCREEN
 
             elif self.welcome_screen_index == bet_screen:
@@ -548,6 +548,7 @@ class HighLowDienaScreen(GambleScreen):
                 self.buff_red_card_only_in_deck = True
                 self.reset_high_low_game()
                 state.player.focus_points -= self.buff_red_card_only_in_deck_cost
+                self.magic_lock = True
                 self.game_state = self.WELCOME_SCREEN
 
             elif self.magic_menu_selector[self.magic_screen_index] == self.BACK:

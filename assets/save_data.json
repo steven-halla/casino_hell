@@ -1,7 +1,7 @@
 {
     "current_stage": 3,
     "level": 8,
-    "exp": 3410,
+    "exp": 3485,
     "stamina_points": 320,
     "max_stamina_points": 320,
     "focus_points": 245,
@@ -48,7 +48,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 2,
-    "money": 2564,
+    "money": 3039,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -57,7 +57,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 35,
+    "days": 36,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -85,7 +85,8 @@
         "dice wrist watch",
         "hangry angry hippos beff",
         "junpon defeated",
-        "SLOTS_RIPPA_SNAPPA_DEFEATED"
+        "SLOTS_RIPPA_SNAPPA_DEFEATED",
+        "coin flip dexter defeated"
     ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],
@@ -96,7 +97,7 @@
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
     "coinflipbetteymoney": 300,
-    "coinflipdextermoney": 699,
+    "coinflipdextermoney": -40,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,

@@ -531,6 +531,8 @@ class HighLowCodyScreen(GambleScreen):
         if controller.confirm_button:
             if self.magic_menu_selector[self.magic_screen_index] == Magic.FLUSH_DECK.value:
                 self.buff_red_card_only_in_deck = True
+                self.magic_lock = True
+
                 self.reset_high_low_game()
                 state.player.focus_points -= self.buff_red_card_only_in_deck_cost
                 self.game_state = self.WELCOME_SCREEN
