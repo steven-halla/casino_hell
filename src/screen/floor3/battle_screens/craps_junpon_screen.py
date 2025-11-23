@@ -432,16 +432,18 @@ class CrapsJunponScreen(GambleScreen):
             self.money -= self.bet
             state.player.money += self.bet
             state.player.exp += self.high_exp
-            self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
+
+            self.game_state = self.WELCOME_SCREEN
 
     def update_player_lose_point_roll(self, state):
         if state.controller.confirm_button:
             self.money += self.bet
             state.player.money -= self.bet
             state.player.exp += self.high_exp
-            self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
+
+            self.game_state = self.WELCOME_SCREEN
 
 
 
@@ -454,8 +456,9 @@ class CrapsJunponScreen(GambleScreen):
             state.player.money -= self.bet
             self.money += self.bet
             state.player.exp += self.low_exp
-            self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
+
+            self.game_state = self.WELCOME_SCREEN
 
     def update_junpon_casting_spell_helper(self, state):
         if state.controller.confirm_button:
@@ -469,8 +472,9 @@ class CrapsJunponScreen(GambleScreen):
             state.player.money += self.bet
             self.money -= self.bet
             state.player.exp += self.high_exp
-            self.game_state = self.WELCOME_SCREEN
             self.round_reset(state)
+
+            self.game_state = self.WELCOME_SCREEN
 
 
     def update_magic_menu_helper(self, state):

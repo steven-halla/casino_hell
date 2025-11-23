@@ -24,11 +24,6 @@ Test level ups for all screens - COMPLETE
 
 
 
-COIN FLIP - I fixed this for EXP be sure to do the other coin flips
-    def update_player_draw_screen_helper(self, state):
-        state.player.exp += self.exp_gain_low 
-        self.game_state = self.WELCOME_SCREEN
-        self.reset_round(state)
 
 
 LEvel 2 check list
