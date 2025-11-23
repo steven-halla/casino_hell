@@ -173,6 +173,8 @@ class CoinFlipBonnieScreen(GambleScreen):
         self.coin_bottom = False
         self.result_anchor = False
         self.timer_start = None
+        self.magic_lock = False
+
         self.image_to_display = ""
         self.player_choice = ""
         self.bonnie_magic_points = 2
