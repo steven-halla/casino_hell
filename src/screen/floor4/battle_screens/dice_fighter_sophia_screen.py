@@ -51,7 +51,7 @@ class DiceFighterSophiaScreen(GambleScreen):
         self.sophia_money= 444
         self.init_screen_index: int = 0
         self.index_stepper: int = 1
-        self.blow_stamina_drain: int = 10
+        self.blow_stamina_drain: int = 5
         self.blow_init_dice: bool = False
         self.enemy_attack_roll_1: int = 0
         self.enemy_attack_roll_2: int = 0

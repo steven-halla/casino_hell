@@ -1,11 +1,11 @@
 {
     "current_stage": 3,
-    "level": 6,
-    "exp": 1620,
-    "stamina_points": 210,
-    "max_stamina_points": 210,
-    "focus_points": 205,
-    "max_focus_points": 205,
+    "level": 7,
+    "exp": 2700,
+    "stamina_points": 230,
+    "max_stamina_points": 230,
+    "focus_points": 215,
+    "max_focus_points": 215,
     "companions": [],
     "items": [
         "Black Hat",
@@ -29,7 +29,8 @@
         "level 3 token",
         "level 4 token",
         "level 5 token",
-        "level 6 token"
+        "level 6 token",
+        "level 7 token"
     ],
     "magicinventory": [
         "Shield",
@@ -44,8 +45,8 @@
     "spirit": 2,
     "perception": 2,
     "baseperception": 1,
-    "luck": 1,
-    "money": 1894,
+    "luck": 2,
+    "money": 2044,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -54,7 +55,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 28,
+    "days": 30,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -80,7 +81,8 @@
         "slots shoes",
         "high low pants",
         "dice wrist watch",
-        "hangry angry hippos beff"
+        "hangry angry hippos beff",
+        "junpon defeated"
     ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],
@@ -105,11 +107,11 @@
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 200,
+    "slotsrippasnappamoney": 1000,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
     "crapscrappymoney": 0,
-    "crapsjunponmoney": 350,
+    "crapsjunponmoney": 0,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
     "dicefightersophiamoney": 444,

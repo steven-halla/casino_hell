@@ -20,13 +20,13 @@ class SlotsRippaSnappaScreen(GambleScreen):
         super().__init__(screenName)
         self.game_state: str = self.WELCOME_SCREEN
         self.slots: List[str] = []  # Initialize slots as an empty list
-        self.dealer_name: str = "Burbadan"
+        self.dealer_name: str = "RippaSnappa"
         self.slot_images_sprite_sheet: pygame.Surface = pygame.image.load("./assets/images/slots_images_trans.png")
         self.spell_sound: pygame.mixer.Sound = pygame.mixer.Sound("./assets/music/spell_sound.mp3")  # Adjust the path as needed
         self.spell_sound.set_volume(0.3)
         self.magic_screen_choices: list[str] = []
         self.hack_cost:int = 75
-        self.money: int = 200
+        self.money: int = 1000
         self.slot_hack_active: int = 5
         self.slot_hack_inactive: int = 0
         self.level_up_message_initialized = False
@@ -203,7 +203,7 @@ class SlotsRippaSnappaScreen(GambleScreen):
         if self.money <= self.juragan_bankrupt:
             state.currentScreen = state.area3GamblingScreen
             state.area3GamblingScreen.start(state)
-            Events.add_level_two_event_to_player(state.player, Events.SLOTS_RIPPA_SNAPPA_DEFEATED)
+            Events.add_level_three_event_to_player(state.player, Events.SLOTS_RIPPA_SNAPPA_DEFEATED)
 
         if self.game_state == self.WELCOME_SCREEN:
             self.spin_results_generated = False
@@ -438,11 +438,15 @@ class SlotsRippaSnappaScreen(GambleScreen):
 
         elif self.slots == ["chest", "chest", "chest"]:
             self.jack_pot = 200
-            if Magic.SLOTS_HACK.value not in state.player.magicinventory:
+            if Equipment.VARMENT_HAT.value not in state.player.items:
                 if controller.confirm_button:
                     state.player.exp += self.exp_gain_high
                     state.player.money += self.jack_pot
-                    state.player.magicinventory.append(Magic.SLOTS_HACK.value)
+                    state.player.items.append(Equipment.VARMENT_HAT.value)
+                    state.player.stamina_points += 30
+                    state.player.focus_points += 10
+                    state.player.max_stamina_points += 30
+                    state.player.max_focus_points += 10
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
                 self.battle_messages[self.PLAYER_WIN_MESSAGE].messages = [

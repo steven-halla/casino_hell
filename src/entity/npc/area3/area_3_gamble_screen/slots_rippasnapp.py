@@ -63,7 +63,7 @@ class SlotsRippaSnappa(Npc):
             self.state_start_time = pygame.time.get_ticks()
 
 
-            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state:
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_three_npc_state:
                 self.slots_rippanappa_mesages["defeated_message"].reset()
 
             else:
@@ -72,7 +72,7 @@ class SlotsRippaSnappa(Npc):
     def update_talking(self, state: "GameState"):
         current_message = (
             self.slots_rippanappa_mesages["defeated_message"]
-            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state
+            if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_three_npc_state
             else self.slots_rippanappa_mesages["welcome_message"]
         )
         current_message.update(state)
@@ -94,7 +94,7 @@ class SlotsRippaSnappa(Npc):
 
         # Check if the "T" key is pressed and the flag is not set
         if (current_message.is_finished() and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value
-                not in state.player.level_two_npc_state
+                not in state.player.level_three_npc_state
                 and current_message.message_at_end()
                 and (state.controller.isTPressed or state.controller.isAPressedSwitch)):
             selected_option = self.choices[self.arrow_index]
@@ -140,13 +140,13 @@ class SlotsRippaSnappa(Npc):
         if self.state == "talking":
             current_message = (
                 self.slots_rippanappa_mesages["defeated_message"]
-                if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_two_npc_state
+                if Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value in state.player.level_three_npc_state
                 else self.slots_rippanappa_mesages["welcome_message"]
             )
             current_message.draw(state)
 
             if (current_message.is_finished() and Events.SLOTS_RIPPA_SNAPPA_DEFEATED.value
-                    not in state.player.level_two_npc_state and current_message.message_at_end()):
+                    not in state.player.level_three_npc_state and current_message.message_at_end()):
                 bet_box_width = 150
                 bet_box_height = 100
                 border_width = 5

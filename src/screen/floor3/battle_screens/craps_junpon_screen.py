@@ -376,7 +376,8 @@ class CrapsJunponScreen(GambleScreen):
         meter_finished = 7
         self.bet = self.bet_minimum
         blow_counter_max = 21
-        blow_counter_min_needed = 20
+        # for testing the below is set to 10 was set at 20
+        blow_counter_min_needed = 10
         controller = state.controller
 
         # --- input cooldown (to prevent multiple increments per frame) ---
