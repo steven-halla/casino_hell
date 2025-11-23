@@ -186,6 +186,7 @@ class CoinFlipDexterScreen(GambleScreen):
             self.coin_bottom = False
             self.result_anchor = False
             self.timer_start = None
+            self.magic_lock = False
             self.image_to_display = ""
             self.player_choice = ""
             self.dexter_magic_points = 2
@@ -225,7 +226,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
         # ------------------------------------Check other files for below_____________________________
 
-        self.money_balancer_chance += 100
+        self.money_balancer_chance += 3
 
         player_luck_bonus = self.luck_bonus * 4
 

@@ -1,7 +1,7 @@
 {
     "current_stage": 3,
     "level": 8,
-    "exp": 3210,
+    "exp": 3410,
     "stamina_points": 320,
     "max_stamina_points": 320,
     "focus_points": 245,
@@ -22,7 +22,7 @@
         "varment hat"
     ],
     "equipped_items": [
-        "slots shoes",
+        "coin flip glasses",
         "Nuggie Amulet"
     ],
     "npcitems": [
@@ -48,7 +48,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 2,
-    "money": 2244,
+    "money": 2564,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -57,7 +57,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 34,
+    "days": 35,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -96,7 +96,7 @@
     "coinfliptedmoney": 0,
     "coinflipfredmoney": 0,
     "coinflipbetteymoney": 300,
-    "coinflipdextermoney": 999,
+    "coinflipdextermoney": 699,
     "coinflipbonniemoney": 999,
     "opossumnellymoney": 500,
     "opossumsallymoney": 0,
