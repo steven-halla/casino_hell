@@ -49,6 +49,10 @@ class OpossumInACanBillyBobScreen(GambleScreen):
         self.player_debuff_poison: int = 0
         self.level_up_message_initialized = False
         self.debuff_opossum_shoes: bool = False
+        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
+        self.welcome_screen_play_index = 0
+        self.welcome_screen_magic_index = 1
+        self.welcome_screen_quit_index = 2
 
 
         self.battle_messages: dict[str, MessageBox] = {

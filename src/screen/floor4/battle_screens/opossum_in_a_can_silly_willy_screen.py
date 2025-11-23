@@ -46,6 +46,12 @@ class OpossumInACanSillyWillyScreen(GambleScreen):
         self.shake_cost = 10
         self.buff_poison_bite: int = 0
         self.poison_damage: int = 0
+
+        self.welcome_screen_choices = ["Play", "Magic", "Quit"]
+        self.welcome_screen_play_index = 0
+        self.welcome_screen_magic_index = 1
+        self.welcome_screen_quit_index = 2
+
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
                 "Silly Willy: My Opossums sure are friendly, they wont bite you. They just wanna nibble."
