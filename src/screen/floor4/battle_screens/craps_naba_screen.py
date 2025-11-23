@@ -333,9 +333,9 @@ class CrapsNabaScreen(GambleScreen):
             self.naba_money -= self.bet
             state.player.money += self.bet
             state.player.exp += self.high_exp
-            self.round_reset(state)
 
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset(state)
 
 
 
@@ -344,10 +344,10 @@ class CrapsNabaScreen(GambleScreen):
             self.naba_money += self.bet
             state.player.money -= self.bet
             state.player.exp += self.high_exp
-            self.round_reset(state)
 
             self.game_state = self.WELCOME_SCREEN
 
+            self.round_reset(state)
 
 
 
@@ -384,9 +384,9 @@ class CrapsNabaScreen(GambleScreen):
             state.player.money -= self.bet
             self.naba_money += self.bet
             state.player.exp += self.low_exp
-            self.round_reset(state)
 
             self.game_state = self.WELCOME_SCREEN
+            self.round_reset(state)
 
     def update_naba_casting_spell_helper(self, state):
         if state.controller.confirm_button:
@@ -415,13 +415,14 @@ class CrapsNabaScreen(GambleScreen):
                 if dice_of_deception_random_chance > 9:
                     self.game_state = self.NABA_CASTING_SPELL_SCREEN
                 else:
-                    self.round_reset(state)
 
                     self.game_state = self.WELCOME_SCREEN
+                    self.round_reset(state)
+
             else:
-                self.round_reset(state)
 
                 self.game_state = self.WELCOME_SCREEN
+                self.round_reset(state)
 
     def update_handle_dice_rolling_simulation(self, controller):
         if controller.confirm_button:
