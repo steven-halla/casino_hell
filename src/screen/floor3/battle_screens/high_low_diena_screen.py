@@ -44,6 +44,8 @@ class HighLowDienaScreen(GambleScreen):
         self.spirit_bonus: int = 0
         self.magic_bonus: int = 0
         self.deck_adder: int = 4
+        self.level_up_message_initialized = False
+
 
         self.battle_messages: dict[str, MessageBox] = {
             self.WELCOME_MESSAGE: MessageBox([
@@ -260,6 +262,7 @@ class HighLowDienaScreen(GambleScreen):
         self.enemy_score = 0
         self.player_hand: list = []
         self.enemy_hand: list = []
+        self.magic_lock = False
 
     def update(self, state: 'GameState'):
         controller = state.controller

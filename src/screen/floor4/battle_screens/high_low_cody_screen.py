@@ -234,6 +234,10 @@ class HighLowCodyScreen(GambleScreen):
         self.player_hand: list = []
         self.enemy_hand: list = []
         self.debuff_countdown_rot = 0
+        self.magic_lock = False
+        self.level_up_message_initialized = False
+
+
 
     def update(self, state: 'GameState'):
         controller = state.controller
@@ -256,6 +260,13 @@ class HighLowCodyScreen(GambleScreen):
         if self.game_state == self.WELCOME_SCREEN:
             self.update_welcome_screen_helper(state, controller)
             self.battle_messages[self.WELCOME_MESSAGE].update(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.music_volume = 0
+            pygame.mixer.music.set_volume(self.music_volume)
+
+            self.handle_level_up(state, state.controller)
+
 
         elif self.game_state == self.CODY_CASTING_SPELL_SCREEN:
             self.battle_messages[self.CODY_CASTING_SPELL_MESSAGE].update(state)
@@ -299,6 +310,9 @@ class HighLowCodyScreen(GambleScreen):
             self.draw_menu_selection_box(state)
             self.draw_welcome_screen_box_info(state)
             self.battle_messages[self.WELCOME_MESSAGE].draw(state)
+
+        elif self.game_state == self.LEVEL_UP_SCREEN:
+            self.draw_level_up(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].draw(state)
         elif self.game_state == self.MAGIC_MENU_SCREEN:
