@@ -508,7 +508,7 @@ class HighLowCodyScreen(GambleScreen):
             print("enemy defeated")
 
         if len(self.deck.cards) < 2:
-            self.reset_high_low_game()
+            self.round_reset_high_low()
 
         if controller.confirm_button:
             if self.welcome_screen_index == draw_screen:
@@ -521,6 +521,8 @@ class HighLowCodyScreen(GambleScreen):
                 self.game_state = self.BET_SCREEN
 
             elif self.welcome_screen_index == leave_game:
+                self.reset_high_low_game()
+
                 state.currentScreen = state.area4GamblingScreen
                 state.area4GamblingScreen.start(state)
 

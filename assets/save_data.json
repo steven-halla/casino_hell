@@ -1,11 +1,11 @@
 {
     "current_stage": 3,
-    "level": 8,
-    "exp": 3555,
+    "level": 9,
+    "exp": 3600,
     "stamina_points": 320,
     "max_stamina_points": 320,
-    "focus_points": 245,
-    "max_focus_points": 245,
+    "focus_points": 265,
+    "max_focus_points": 265,
     "companions": [],
     "items": [
         "Black Hat",
@@ -40,15 +40,16 @@
         "shake",
         "Triple D",
         "Force",
-        "HACK"
+        "HACK",
+        "flush deck"
     ],
     "body": 3,
-    "mind": 2,
+    "mind": 3,
     "spirit": 2,
     "perception": 2,
     "baseperception": 1,
     "luck": 2,
-    "money": 3039,
+    "money": 3339,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -57,7 +58,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 36,
+    "days": 37,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -119,7 +120,7 @@
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
     "dicefightersophiamoney": 444,
-    "highlowdienamoney": 1000,
+    "highlowdienamoney": 600,
     "highlowcodymoney": 1000,
     "pokerdarnelmoney": 1000
 }
