@@ -570,11 +570,11 @@ class CoinFlipDexterScreen(GambleScreen):
 
             if self.debuff_money_balancer == 0:
                 state.player.money += total_gain
-                self.money -= self.bet
+                self.money -= total_gain
 
             elif self.debuff_money_balancer > 0:
                 state.player.money += math.ceil(total_gain / 2)
-                self.money -= math.ceil(self.bet / 2)
+                self.money -= math.ceil(total_gain / 2)
 
             print("581")
             self.game_state = self.WELCOME_SCREEN
