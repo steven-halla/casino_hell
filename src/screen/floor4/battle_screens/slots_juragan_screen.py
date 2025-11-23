@@ -359,8 +359,10 @@ class SlotsJuraganScreen(GambleScreen):
         elif self.slots == ["cherry", "cherry", "cherry"]:
             self.jack_pot = 50
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.juragan_money -= self.jack_pot
+                payout = min(self.jack_pot, self.juragan_money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.juragan_money -= payout
+
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -370,8 +372,9 @@ class SlotsJuraganScreen(GambleScreen):
             self.jack_pot = 100
 
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.juragan_money -= self.jack_pot
+                payout = min(self.jack_pot, self.juragan_money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.juragan_money -= payout
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -380,8 +383,9 @@ class SlotsJuraganScreen(GambleScreen):
         elif self.slots == ["crown", "crown", "crown"]:
             self.jack_pot = 150
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.juragan_money -= self.jack_pot
+                payout = min(self.jack_pot, self.juragan_money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.juragan_money -= payout
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -400,8 +404,9 @@ class SlotsJuraganScreen(GambleScreen):
         elif self.slots == ["diamond", "diamond", "diamond"]:
             self.jack_pot = 250
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.juragan_money -= self.jack_pot
+                payout = min(self.jack_pot, self.juragan_money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.juragan_money -= payout
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
@@ -411,8 +416,9 @@ class SlotsJuraganScreen(GambleScreen):
             self.jack_pot = 200
             if self.secret_item_found == True:
                 if controller.confirm_button:
-                    state.player.money += self.jack_pot
-                    self.juragan_money -= self.jack_pot
+                    payout = min(self.jack_pot, self.juragan_money)  # don’t pay more than dealer has
+                    state.player.money += payout
+                    self.juragan_money -= payout
                     state.player.exp += self.exp_gain_low
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
@@ -435,8 +441,9 @@ class SlotsJuraganScreen(GambleScreen):
                     state.player.stamina_points += 100
                     state.player.focus_points += 50
 
-                state.player.money += self.jack_pot
-                self.juragan_money -= self.jack_pot
+                payout = min(self.jack_pot, self.juragan_money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.juragan_money -= payout
                 state.player.exp += self.exp_gain_high
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN

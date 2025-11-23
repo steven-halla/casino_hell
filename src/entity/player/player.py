@@ -247,18 +247,21 @@ class Player(Entity):
 
     def update(self, state: "GameState"):
 
-
+        # max level 3
         if self.current_stage == 1:
             if self.exp > 300:
                 self.exp = 300
 
+        # max level 6
         elif self.current_stage == 2:
             if self.exp > 1500:
                 self.exp = 1500
 
+
+        # max level 9
         elif self.current_stage == 3:
-            if self.exp > 2800:
-                self.exp = 2800
+            if self.exp > 3600:
+                self.exp = 3600
 
 
 
@@ -425,8 +428,30 @@ class Player(Entity):
             self.level8checker = True
             self.level += 1
             self.leveling_up = True
+            self.stat_point_increase = True
+
 
             return
+
+
+        if self.exp >= 3600 and self.level8checker == False and "level 9 token" not in state.player.npc_items:
+            state.player.stat_point_increase = False
+            print("grats you leveld up to level 8")
+            if "level 8 token" not in state.player.npc_items:
+                # if "shield" not in self.magicinventory:
+                state.player.npc_items.append("level 8 token")
+                # TODO, DO THIS! NOT RAW STRING
+                # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
+                self.max_stamina_points += 40
+                self.max_focus_points += 20
+            self.level8checker = True
+            self.level += 1
+            self.leveling_up = True
+            self.stat_point_increase = True
+
+
+            return
+
 
 
         # Define canMove before the for loop

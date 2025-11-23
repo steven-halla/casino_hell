@@ -1,11 +1,11 @@
 {
     "current_stage": 3,
-    "level": 7,
-    "exp": 2700,
-    "stamina_points": 230,
-    "max_stamina_points": 230,
-    "focus_points": 215,
-    "max_focus_points": 215,
+    "level": 8,
+    "exp": 3210,
+    "stamina_points": 320,
+    "max_stamina_points": 320,
+    "focus_points": 245,
+    "max_focus_points": 245,
     "companions": [],
     "items": [
         "Black Hat",
@@ -18,10 +18,11 @@
         "Spirit Shoes",
         "slots shoes",
         "high low pants",
-        "dice wrist watch"
+        "dice wrist watch",
+        "varment hat"
     ],
     "equipped_items": [
-        "dice wrist watch",
+        "slots shoes",
         "Nuggie Amulet"
     ],
     "npcitems": [
@@ -30,7 +31,8 @@
         "level 4 token",
         "level 5 token",
         "level 6 token",
-        "level 7 token"
+        "level 7 token",
+        "level 8 token"
     ],
     "magicinventory": [
         "Shield",
@@ -40,13 +42,13 @@
         "Force",
         "HACK"
     ],
-    "body": 2,
+    "body": 3,
     "mind": 2,
     "spirit": 2,
     "perception": 2,
     "baseperception": 1,
     "luck": 2,
-    "money": 2044,
+    "money": 2244,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -55,7 +57,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 30,
+    "days": 34,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -82,7 +84,8 @@
         "high low pants",
         "dice wrist watch",
         "hangry angry hippos beff",
-        "junpon defeated"
+        "junpon defeated",
+        "SLOTS_RIPPA_SNAPPA_DEFEATED"
     ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],
@@ -107,7 +110,7 @@
     "blackjackjasminemoney": 950,
     "shopkeeperpotion": false,
     "shopkeepersavecoin": false,
-    "slotsrippasnappamoney": 1000,
+    "slotsrippasnappamoney": 0,
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
     "crapscrappymoney": 0,

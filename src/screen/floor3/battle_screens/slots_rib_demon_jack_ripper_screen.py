@@ -384,8 +384,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
         elif self.slots == ["cherry", "cherry", "cherry"]:
             self.jack_pot = 50
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.money -= self.jack_pot
+                payout = min(self.jack_pot, self.money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.money -= payout
 
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
@@ -396,8 +397,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
             self.jack_pot = 100
 
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.money -= self.jack_pot
+                payout = min(self.jack_pot, self.money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.money -= payout
 
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
@@ -407,8 +409,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
         elif self.slots == ["crown", "crown", "crown"]:
             self.jack_pot = 150
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.money -= self.jack_pot
+                payout = min(self.jack_pot, self.money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.money -= payout
 
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
@@ -428,8 +431,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
         elif self.slots == ["diamond", "diamond", "diamond"]:
             self.jack_pot = 250
             if controller.confirm_button:
-                state.player.money += self.jack_pot
-                self.money -= self.jack_pot
+                payout = min(self.jack_pot, self.money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.money -= payout
 
                 state.player.exp += self.exp_gain_low
                 self.reset_slots_juragan_round()
@@ -454,8 +458,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
                 ]
             else:
                 if controller.confirm_button:
-                    state.player.money += self.jack_pot
-                    self.money -= self.jack_pot
+                    payout = min(self.jack_pot, self.money)  # don’t pay more than dealer has
+                    state.player.money += payout
+                    self.money -= payout
                     state.player.exp += self.exp_gain_low
                     self.reset_slots_juragan_round()
                     self.game_state = self.WELCOME_SCREEN
@@ -486,8 +491,9 @@ class SlotsRippaSnappaScreen(GambleScreen):
                 if Equipment.SLOTS_SHOES.value in state.player.equipped_items and self.debuff_increased_pay_to_play == 0:
                     state.player.stamina_points += 100
                     state.player.focus_points += 50
-                self.money -= self.jack_pot
-                state.player.money += self.jack_pot
+                payout = min(self.jack_pot, self.money)  # don’t pay more than dealer has
+                state.player.money += payout
+                self.money -= payout
                 state.player.exp += self.exp_gain_high
                 self.reset_slots_juragan_round()
                 self.game_state = self.WELCOME_SCREEN
