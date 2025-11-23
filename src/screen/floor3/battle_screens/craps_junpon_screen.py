@@ -215,7 +215,7 @@ class CrapsJunponScreen(GambleScreen):
             self.game_state = self.JUNPON_CASTING_SPELL_SCREEN
 
     def reset_craps_game(self, state: 'GameState'):
-        self.welcome_screen_quit_index = self.welcome_screen_play_index
+        # self.welcome_screen_quit_index = self.welcome_screen_play_index
         self.lucky_seven_buff_counter = self.lucky_seven_buff_not_active
         self.magic_lock = False
         self.bet = self.bet_minimum

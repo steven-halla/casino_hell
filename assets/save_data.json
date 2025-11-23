@@ -1,9 +1,9 @@
 {
     "current_stage": 3,
     "level": 6,
-    "exp": 1500,
-    "stamina_points": 240,
-    "max_stamina_points": 240,
+    "exp": 1590,
+    "stamina_points": 210,
+    "max_stamina_points": 210,
     "focus_points": 205,
     "max_focus_points": 205,
     "companions": [],
@@ -14,10 +14,13 @@
         "sir leopold amulet",
         "Nuggie Amulet",
         "coin flip glasses",
-        "HEALTHY GLOVES"
+        "HEALTHY GLOVES",
+        "Spirit Shoes",
+        "slots shoes",
+        "high low pants"
     ],
     "equipped_items": [
-        "HEALTHY GLOVES",
+        "Spirit Shoes",
         "Nuggie Amulet"
     ],
     "npcitems": [
@@ -31,15 +34,17 @@
         "Shield",
         "reveal",
         "shake",
-        "Triple D"
+        "Triple D",
+        "Force",
+        "HACK"
     ],
     "body": 2,
     "mind": 2,
-    "spirit": 2,
-    "perception": 1,
+    "spirit": 3,
+    "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 4144,
+    "money": 1119,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -48,7 +53,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 24,
+    "days": 26,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -68,7 +73,12 @@
         "OPOSSUM_IN_A_CAN_SALLY_DEFEATED",
         "BLACK_JACK_THOMAS_DEFEATED"
     ],
-    "levelthreenpcstate": [],
+    "levelthreenpcstate": [
+        "FEAST_CONSUMED",
+        "Spirit Shoes",
+        "slots shoes",
+        "high low pants"
+    ],
     "levelfournpcstate": [],
     "levelfivenpcstate": [],
     "slots_vest": false,
@@ -96,7 +106,7 @@
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
     "crapscrappymoney": 0,
-    "crapsjunponmoney": 1000,
+    "crapsjunponmoney": 825,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
     "dicefightersophiamoney": 444,
