@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="put controller update for controls for spell screen">
+    <list default="true" id="12310878-53ff-45d9-be33-db26bd7a0499" name="Changes" comment="fixed magic lock when quitting coin flip dexter 4th floor">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game_constants/player_magic/coin_flip_magic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/game_constants/player_magic/coin_flip_magic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screen/floor3/battle_screens/coin_flip_dexter_screen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/screen/floor3/battle_screens/coin_flip_dexter_screen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -441,7 +443,7 @@
       <workItem from="1758574435512" duration="17040000" />
       <workItem from="1760301691062" duration="91019000" />
       <workItem from="1763219956769" duration="44443000" />
-      <workItem from="1763919582963" duration="5996000" />
+      <workItem from="1763919582963" duration="6697000" />
     </task>
     <task id="LOCAL-00004" summary="&quot;first&quot;">
       <created>1669701236457</created>
@@ -786,7 +788,7 @@
       <option name="project" value="LOCAL" />
       <updated>1670994339292</updated>
     </task>
-    <option name="localTasksCounter" value="1661" />
+    <option name="localTasksCounter" value="1663" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -815,8 +817,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="blow command correctly works" />
-    <MESSAGE value="level up corrected" />
     <MESSAGE value="fixed two bugs for going back to screen 2 and bet being set below 100" />
     <MESSAGE value="fixed a few minor bugs for slots" />
     <MESSAGE value="fixed magic lock bug" />
@@ -840,7 +840,9 @@
     <MESSAGE value="updating slots" />
     <MESSAGE value="updated levels and up dated slots screens so they dont pay out when enmy money is not enough to cover pay out" />
     <MESSAGE value="put controller update for controls for spell screen" />
-    <option name="LAST_COMMIT_MESSAGE" value="put controller update for controls for spell screen" />
+    <MESSAGE value="fixed magic lock when quitting coin flip dexter 3rd floor" />
+    <MESSAGE value="fixed magic lock when quitting coin flip dexter 4th floor" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed magic lock when quitting coin flip dexter 4th floor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -887,7 +889,7 @@
     <SUITE FILE_PATH="coverage/casino_hell$game_state.coverage" NAME="game_state Coverage Results" MODIFIED="1708242608772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/casino_hell$.coverage" NAME=" Coverage Results" MODIFIED="1745976951215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/newGameProject$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1670802715482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1763930787685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/casino_hell$main.coverage" NAME="main Coverage Results" MODIFIED="1763931444558" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/nfeGame$playground.coverage" NAME="playground Coverage Results" MODIFIED="1702955061339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/casino_hell$craps_happy_screen.coverage" NAME="craps_happy_screen Coverage Results" MODIFIED="1724895355000" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/screen/floor2/battle_screens" />
     <SUITE FILE_PATH="coverage/casino_hell$poker_bracelet.coverage" NAME="poker_bracelet Coverage Results" MODIFIED="1747171467337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />

@@ -8,8 +8,11 @@ class CoinFlipMagic:
         self.shield_duration = 3
         self.shield_cost = 10
         self.HEADS_FORCE_COST = 10
-        self.HEADS_FORCE_SUCCESS_CHANCE = random.randint(1,100 ) +( state.player.mind * 10)
-        self.HEADS_FORCE_ENEMY_DEFENSE = 50 + (state.player.current_stage * 5)
+
+    def heads_force_success(self) -> bool:
+        success_roll = random.randint(1, 100) + (self.player.mind * 10)
+        enemy_defense = 50 + (self.player.current_stage * 5)
+        return success_roll > enemy_defense
 
 
 

@@ -446,25 +446,24 @@ class CoinFlipDexterScreen(GambleScreen):
             state.area3GamblingScreen.start(state)
             state.player.canMove = True
 
-    def update_flip_coin_logic_helper(self,controller):
-        if self.heads_force_active == True:
-            # heads_force_modifer = self.magic_bonus
-            # self.heads_force_randomizer = random.randint(1, 100) + heads_force_modifer
-
-            # print("Heads force is: " + str(self.heads_force_randomizer))
-
-            if self.coinflip_magic.HEADS_FORCE_SUCCESS_CHANCE > self.coinflip_magic.HEADS_FORCE_ENEMY_DEFENSE:
-                self.coin_landed = CoinFlipConstants.HEADS.value
-                self.game_state = self.PLAYER_WIN_SCREEN
-                return
+    def update_flip_coin_logic_helper(self, controller):
+        # Handle Heads Force logic first
+        if self.heads_force_active:
+            # Only meaningful if player picked HEADS
+            if self.player_choice == CoinFlipConstants.HEADS.value:
+                if self.coinflip_magic.heads_force_success():
+                    # Successful force: guarantee heads and win
+                    self.coin_landed = CoinFlipConstants.HEADS.value
+                    self.game_state = self.PLAYER_WIN_SCREEN
+                    return
+                else:
+                    # Spell failed: just turn it off and fall back to normal logic
+                    self.heads_force_active = False
             else:
+                # Player didn’t pick HEADS; turn off the spell, resolve normally
                 self.heads_force_active = False
-                self.coin_landed = CoinFlipConstants.TAILS.value
-                self.game_state = self.PLAYER_LOSE_SCREEN
-                return
 
-
-
+        # ----- Normal resolution path -----
         if self.coin_landed == self.player_choice:
             self.game_state = self.PLAYER_WIN_SCREEN
         elif self.coin_landed != self.player_choice and self.shield_debuff > 0:
@@ -478,7 +477,6 @@ class CoinFlipDexterScreen(GambleScreen):
             return
         else:
             self.game_state = self.PLAYER_LOSE_SCREEN
-
 
 
 
