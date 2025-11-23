@@ -484,6 +484,8 @@ class CoinFlipDexterScreen(GambleScreen):
 
 
     def update_player_draw_screen_helper(self, state):
+        state.player.exp += self.exp_gain_low
+
         self.game_state = self.WELCOME_SCREEN
         self.reset_round(state)
         print("493")

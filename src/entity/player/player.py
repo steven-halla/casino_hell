@@ -253,8 +253,8 @@ class Player(Entity):
                 self.exp = 300
 
         elif self.current_stage == 2:
-            if self.exp > 2800:
-                self.exp = 2800
+            if self.exp > 1500:
+                self.exp = 1500
 
         elif self.current_stage == 3:
             if self.exp > 2800:

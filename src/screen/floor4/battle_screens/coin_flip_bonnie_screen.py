@@ -510,7 +510,9 @@ class CoinFlipBonnieScreen(GambleScreen):
 
         self.result_anchor = False
 
-    def update_player_draw_screen_helper(self):
+    def update_player_draw_screen_helper(self, state):
+        state.player.exp += self.exp_gain_low
+
         self.game_state = self.WELCOME_SCREEN
         self.reset_round()
 
