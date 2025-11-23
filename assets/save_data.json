@@ -1,7 +1,7 @@
 {
     "current_stage": 3,
     "level": 6,
-    "exp": 1590,
+    "exp": 1620,
     "stamina_points": 210,
     "max_stamina_points": 210,
     "focus_points": 205,
@@ -44,7 +44,7 @@
     "perception": 2,
     "baseperception": 1,
     "luck": 1,
-    "money": 1119,
+    "money": 1494,
     "rabies": false,
     "immunity": false,
     "quest_items": [
@@ -53,7 +53,7 @@
     ],
     "level3reward": false,
     "food": 1,
-    "days": 26,
+    "days": 27,
     "leveltwonpcstate": [
         "sir leopold amulet",
         "Nuggie Amulet",
@@ -106,7 +106,7 @@
     "slotsbroganmoney": 1000,
     "slotsjuraganmoney": 1000,
     "crapscrappymoney": 0,
-    "crapsjunponmoney": 825,
+    "crapsjunponmoney": 350,
     "crapsnabamoney": 1000,
     "dicefightersirsiegfriedmoney": 1000,
     "dicefightersophiamoney": 444,

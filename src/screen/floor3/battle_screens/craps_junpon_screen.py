@@ -199,14 +199,20 @@ class CrapsJunponScreen(GambleScreen):
         if self.debuff_dice_of_deception > 0:
             self.debuff_dice_of_deception -= 1
 
-        self.debuff_chance_deception += 3
         self.point_roll_index = 0
         self.blow_counter = 0
         self.blow_timer_start = 0
         self.blow_turn = 0
 
+        self.debuff_chance_deception += 50
 
         debuff_dice_of_deception_random_chance = random.randint(1, 100) + self.debuff_chance_deception
+
+        match self.junpon_magic_points:
+            case 2:
+                debuff_dice_of_deception_random_chance = random.randint(1, 70) + self.debuff_chance_deception
+            case 1:
+                debuff_dice_of_deception_random_chance = random.randint(1, 50) + self.debuff_chance_deception
 
         if self.debuff_dice_of_deception == 0 and self.junpon_magic_points > 0 and debuff_dice_of_deception_random_chance >= 100:
             self.debuff_chance_deception = 0
@@ -245,7 +251,7 @@ class CrapsJunponScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
-        print(self.game_state)
+        # print(self.game_state)
 
         if self.money <= 0:
             state.currentScreen = state.area3GamblingScreen
@@ -628,9 +634,9 @@ class CrapsJunponScreen(GambleScreen):
                     print("Player rolls a: " + str(unlucky_two_roll))
                     print("what is my lose percent :: " + str(self.craps_equipment.PLAYER_LOSE_ROLL))
                     self.dice_roll_1 = random.randint(1, 6)
-                    if self.debuff_weighted_dice == 0:
+                    if self.debuff_dice_of_deception == 0:
                         self.dice_roll_2 = random.randint(1, 6)
-                    elif self.debuff_weighted_dice > 0:
+                    elif self.debuff_dice_of_deception > 0:
                         self.dice_roll_2 = self.dice_roll_1
                     self.come_out_roll_total = self.dice_roll_1 + self.dice_roll_2
                     if self.come_out_roll_total == 2 or self.come_out_roll_total == 12:
@@ -667,9 +673,9 @@ class CrapsJunponScreen(GambleScreen):
                     self.game_state = self.PLAYER_WIN_COME_OUT_SCREEN
                 elif lucky_7_roll < luck_roll_success:
                     self.dice_roll_1 = random.randint(1, 6)
-                    if self.debuff_weighted_dice == 0:
+                    if self.debuff_dice_of_deception == 0:
                         self.dice_roll_2 = random.randint(1, 6)
-                    elif self.debuff_weighted_dice > 0:
+                    elif self.debuff_dice_of_deception > 0:
                         self.dice_roll_2 = self.dice_roll_1
 
 
@@ -949,7 +955,7 @@ class CrapsJunponScreen(GambleScreen):
     def update_point_screen_helper(self, state):
         controller = state.controller
         controller.update()
-        print("Your point roll index is: " + str(self.point_roll_index))
+        # print("Your point roll index is: " + str(self.point_roll_index))
         if (controller.isUpPressed or controller.isUpPressedSwitch) and self.is_timer_active == False:
             self.menu_movement_sound.play()  # Play the sound effect once
 
