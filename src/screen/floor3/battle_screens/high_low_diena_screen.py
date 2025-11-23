@@ -269,6 +269,7 @@ class HighLowDienaScreen(GambleScreen):
         controller.update()
         state.player.update(state)
         super().update(state)
+        print(state.player.exp)
 
 
 

@@ -58,6 +58,7 @@ class Player(Entity):
         self.level6checker = False
         self.level7checker = False
         self.level8checker = False
+        self.level9checker = False
         self.close_status_screen = False
         self.days = 0
         self.isBossWorthy = False
@@ -434,17 +435,17 @@ class Player(Entity):
             return
 
 
-        if self.exp >= 3600 and self.level8checker == False and "level 9 token" not in state.player.npc_items:
+        if self.exp >= 3600 and self.level9checker == False and "level 9 token" not in state.player.npc_items:
             state.player.stat_point_increase = False
-            print("grats you leveld up to level 8")
-            if "level 8 token" not in state.player.npc_items:
+            print("grats you leveld up to level 9")
+            if "level 9 token" not in state.player.npc_items:
                 # if "shield" not in self.magicinventory:
-                state.player.npc_items.append("level 8 token")
+                state.player.npc_items.append("level 09 token")
                 # TODO, DO THIS! NOT RAW STRING
                 # state.player.npc_items.append(Events.LEVEL_4_TOKEN)
                 self.max_stamina_points += 40
                 self.max_focus_points += 20
-            self.level8checker = True
+            self.level9checker = True
             self.level += 1
             self.leveling_up = True
             self.stat_point_increase = True
