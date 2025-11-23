@@ -118,7 +118,7 @@ class CoinFlipDexterScreen(GambleScreen):
             # if player gets first flip, then we flip one more time.
             #  Heads force only works for first flip not 2nd
             self.DEXTER_CASTING_SPELL_MESSAGE: MessageBox([
-                f"Poison heads"
+                f"Poison heads is what i like dont you know what i like"
             ]),
             self.GAME_OVER_SCREEN_ZERO_STAMINA_MESSAGE: MessageBox([
                 f"You ran out of Stamina, go rest your Hero."
@@ -225,7 +225,7 @@ class CoinFlipDexterScreen(GambleScreen):
 
         # ------------------------------------Check other files for below_____________________________
 
-        self.money_balancer_chance += 3
+        self.money_balancer_chance += 100
 
         player_luck_bonus = self.luck_bonus * 4
 
@@ -275,10 +275,11 @@ class CoinFlipDexterScreen(GambleScreen):
             self.handle_level_up(state, state.controller)
 
         elif self.game_state == self.DEXTER_CASTING_SPELL_SCREEN:
+            print("jd;lsjfldsj;fjdsaljfl;sjafl;ajsfj;safjl;skjafl;sjfljsa;lfjs")
 
             self.battle_messages[self.DEXTER_CASTING_SPELL_MESSAGE].update(state)
 
-            self.update_DEXTER_CASTING_SPELL_SCREEN_helper(state)
+            self.update_dexter_casting_spell_screen_helper(state)
         elif self.game_state == self.BET_SCREEN:
             self.battle_messages[self.BET_MESSAGE].update(state)
             self.update_bet_screen_helper(state, controller)
@@ -540,12 +541,14 @@ class CoinFlipDexterScreen(GambleScreen):
         elif self.bet >= max_bet:
             self.bet = max_bet
 
-    def update_DEXTER_CASTING_SPELL_SCREEN_helper(self, state: 'GameState'):
+    def update_dexter_casting_spell_screen_helper(self, state: 'GameState'):
+            if state.controller.confirm_button:
 
-            self.debuff_money_balancer = 5
-            self.dexter_magic_points -= 1
 
-            self.game_state = self.WELCOME_SCREEN
+                self.debuff_money_balancer = 5
+                self.dexter_magic_points -= 1
+
+                self.game_state = self.WELCOME_SCREEN
 
     def update_coin_flip_screen_helper(self, state: 'GameState'):
         self.result_anchor = True
