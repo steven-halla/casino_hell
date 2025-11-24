@@ -178,7 +178,7 @@ class Area4BarKeep(Npc):
 
         if self.state == "talking":
             self.textbox.draw(state)
-            feast_bought = Events.FEAST_CONSUMED.value in state.player.level_three_npc_state
+            feast_bought = Events.FEAST_CONSUMED.value in state.player.level_four_npc_state
 
             if self.selected_item_index == 0:
                 state.DISPLAY.blit(self.font.render("Made from the vomit of  hopping gluttons.", True, (255, 255, 255)), (70, 460))

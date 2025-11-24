@@ -38,14 +38,13 @@ class Area4ShopKeeper(Npc):
             Equipment.COIN_FLIP_GLOVES.value,
             Equipment.HIGH_LOW_PANTS.value,
             Equipment.POKER_BRACELET.value,
-            Equipment.COIN_SAVE_AREA_4.value,
             Equipment.LUCKY_CHARM.value,
             Magic.POKER_CARD_SWAP.value,
             Magic.GREED.value,
             Equipment.LEVEL_4_BOSS_KEY.value
         ]
 
-        self.shop_costs = ["1200", "1000", "1000", "1000", "1000", "1500", "1500", "1500"]
+        self.shop_costs = ["1200", "1000", "1000", "1000", "1500", "1500", "1500"]
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -157,20 +156,17 @@ class Area4ShopKeeper(Npc):
             if Equipment.POKER_BRACELET.value in state.player.level_four_npc_state:
                 self.shop_items[2] = "sold out"
 
-            if Equipment.COIN_SAVE_AREA_4.value in state.player.level_four_npc_state:
-                self.shop_items[3] = "sold out"
-
             if Equipment.LEVEL_4_BOSS_KEY.value in state.player.level_four_npc_state:
-                self.shop_items[7] = "sold out"
+                self.shop_items[6] = "sold out"
 
             if Equipment.LUCKY_CHARM.value in state.player.level_four_npc_state:
-                self.shop_items[4] = "sold out"
+                self.shop_items[3] = "sold out"
 
             if Magic.POKER_CARD_SWAP.value in state.player.magicinventory:
-                self.shop_items[5] = "sold out"
+                self.shop_items[4] = "sold out"
 
             if Magic.GREED.value in state.player.magicinventory:
-                self.shop_items[6] = "sold out"
+                self.shop_items[5] = "sold out"
 
 
 
@@ -228,17 +224,8 @@ class Area4ShopKeeper(Npc):
                             state.player.level_four_npc_state.append(Equipment.POKER_BRACELET.value)
                             state.player.money -= cost
 
-                    elif self.selected_item_index == 3:
-                        cost = 1000
-                        if state.player.money - cost < 500 or Equipment.COIN_SAVE_AREA_4.value in state.player.level_four_npc_state:
-                            self.cant_buy_sound.play()
-                        else:
-                            self.buy_sound.play()
-                            Equipment.add_equipment_to_player(state.player, Equipment.COIN_SAVE_AREA_4)
-                            state.player.level_four_npc_state.append(Equipment.COIN_SAVE_AREA_4.value)
-                            state.player.money -= cost
 
-                    elif self.selected_item_index == 4:
+                    elif self.selected_item_index == 3:
                         cost = 1000
                         if state.player.money - cost < 500 or Equipment.LUCKY_CHARM.value in state.player.level_four_npc_state:
                             self.cant_buy_sound.play()
@@ -248,7 +235,7 @@ class Area4ShopKeeper(Npc):
                             state.player.level_four_npc_state.append(Equipment.LUCKY_CHARM.value)
                             state.player.money -= cost
 
-                    elif self.selected_item_index == 5:
+                    elif self.selected_item_index == 4:
                         cost = 1500
                         if state.player.money - cost < 500 or Magic.POKER_CARD_SWAP.value in state.player.magicinventory:
                             self.cant_buy_sound.play()
@@ -257,7 +244,7 @@ class Area4ShopKeeper(Npc):
                             Magic.POKER_CARD_SWAP.add_magic_to_player(state.player, Magic.POKER_CARD_SWAP)
                             state.player.money -= cost
 
-                    elif self.selected_item_index == 6:
+                    elif self.selected_item_index == 5:
                         cost = 1500
                         if state.player.money - cost < 500 or Magic.GREED.value in state.player.magicinventory:
                             self.cant_buy_sound.play()
@@ -266,7 +253,7 @@ class Area4ShopKeeper(Npc):
                             Magic.GREED.add_magic_to_player(state.player, Magic.GREED)
                             state.player.money -= cost
 
-                    elif self.selected_item_index == 7:
+                    elif self.selected_item_index == 6:
                         cost = 1500
                         if state.player.money - cost < 500 or Equipment.LEVEL_4_BOSS_KEY.value in state.player.level_four_npc_state:
                             self.cant_buy_sound.play()
@@ -422,47 +409,36 @@ class Area4ShopKeeper(Npc):
                     state.DISPLAY.blit(self.font.render(f"Poker Bracelet is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 3 and Equipment.WHEEL_DICE.value not in state.player.level_four_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Improves your chances at the Wheel of Torture.", True,
-                                                        (255, 255, 255)), (70, 460))
-
-                    state.DISPLAY.blit(self.font.render(f"Helps control the outcome of wheel spins.", True,
-                                                        (255, 255, 255)), (70, 510))
-
-                elif self.selected_item_index == 3 and Equipment.WHEEL_DICE.value in state.player.level_four_npc_state:
-                    state.DISPLAY.blit(self.font.render(f"Wheel Dice are sold out!", True,
-                                                        (255, 255, 255)), (70, 460))
-
-                if self.selected_item_index == 4 and Equipment.LUCKY_CHARM.value not in state.player.level_four_npc_state:
+                if self.selected_item_index == 3 and Equipment.LUCKY_CHARM.value not in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Adds +1 to your luck stat when equipped.", True,
                                                         (255, 255, 255)), (70, 460))
 
                     state.DISPLAY.blit(self.font.render(f"Luck affects many aspects of gambling games.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 4 and Equipment.LUCKY_CHARM.value in state.player.level_four_npc_state:
+                elif self.selected_item_index == 3 and Equipment.LUCKY_CHARM.value in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Lucky Charm is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 5 and Magic.POKER_CARD_SWAP.value not in state.player.level_four_npc_state:
+                if self.selected_item_index == 4 and Magic.POKER_CARD_SWAP.value not in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Allows you to swap cards in poker games.", True,
                                                         (255, 255, 255)), (70, 460))
 
                     state.DISPLAY.blit(self.font.render(f"Can turn a losing hand into a winner.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 5 and Magic.POKER_CARD_SWAP.value in state.player.level_four_npc_state:
+                elif self.selected_item_index == 4 and Magic.POKER_CARD_SWAP.value in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Poker Card Swap is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
 
-                if self.selected_item_index == 6 and Magic.GREED.value not in state.player.level_four_npc_state:
+                if self.selected_item_index == 5 and Magic.GREED.value not in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Scoring 95 or higher nets you +50% win on bets.", True,
                                                         (255, 255, 255)), (70, 460))
 
                     state.DISPLAY.blit(self.font.render(f"High risk, high reward magic.", True,
                                                         (255, 255, 255)), (70, 510))
 
-                elif self.selected_item_index == 6 and Magic.GREED.value in state.player.level_four_npc_state:
+                elif self.selected_item_index == 5 and Magic.GREED.value in state.player.level_four_npc_state:
                     state.DISPLAY.blit(self.font.render(f"Greed spell is sold out!", True,
                                                         (255, 255, 255)), (70, 460))
                 # Handle drawing the shop interaction text

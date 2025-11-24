@@ -40,12 +40,10 @@ class Area3ShopKeeper(Npc):
             Magic.HEADS_FORCE.value,
             Equipment.LEVEL_3_BOSS_KEY.value,
             Equipment.SLOTS_SHOES.value,
-            Equipment.HIGH_LOW_PANTS.value,
-            Magic.BLACK_JACK_REDRAW.value
-
+            Equipment.HIGH_LOW_PANTS.value
         ]
 
-        self.shop_costs = ["500", "500", "500", "500", "500","500", "500"]  # removed coin flip glasses
+        self.shop_costs = ["500", "500", "500", "500", "500","500"]  # removed coin flip glasses and BLACK_JACK_REDRAW
 
         self.selected_item_index = 0  # New attribute to track selected item index
         self.character_sprite_image = pygame.image.load(
@@ -89,9 +87,6 @@ class Area3ShopKeeper(Npc):
                 self.shop_items[4] = "sold out"
             if Equipment.HIGH_LOW_PANTS.value in state.player.level_three_npc_state:
                 self.shop_items[5] = "sold out"
-
-            if Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-                self.shop_items[6] = "sold out"
 
 
 
@@ -172,15 +167,6 @@ class Area3ShopKeeper(Npc):
                             Equipment.add_equipment_to_player_level_3(state.player, Equipment.HIGH_LOW_PANTS)
                             state.player.money -= cost
 
-                    elif self.selected_item_index == 6:
-                        cost = 500
-                        if state.player.money - cost < 500 or Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-                            self.cant_buy_sound.play()
-                        else:
-                            self.buy_sound.play()
-                            Magic.add_magic_to_player(state.player, Magic.BLACK_JACK_REDRAW)
-                            state.player.money -= cost
-                            # self.stat_point_increase = True
 
 
 
@@ -342,9 +328,3 @@ class Area3ShopKeeper(Npc):
                 state.DISPLAY.blit(self.font.render(f"HIGH LOW PANTS are sold out!", True, (255, 255, 255)),
                                    (70, 460))
 
-            if self.selected_item_index == 6 and Magic.BLACK_JACK_REDRAW.value not in state.player.magicinventory:
-                state.DISPLAY.blit(self.font.render(f"Black jack redraw", True, (255, 255, 255)), (70, 460))
-                state.DISPLAY.blit(self.font.render(f"redraw face down cards.", True, (255, 255, 255)), (70, 510))
-            elif self.selected_item_index == 6 and Magic.BLACK_JACK_REDRAW.value in state.player.magicinventory:
-                state.DISPLAY.blit(self.font.render(f"magic redraw!", True, (255, 255, 255)),
-                                   (70, 460))
